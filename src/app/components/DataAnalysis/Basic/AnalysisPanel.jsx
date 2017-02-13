@@ -39,6 +39,9 @@ import CircularProgress from 'material-ui/CircularProgress';
 import ChartComponent from './ChartComponent.jsx';
 import {MenuAction} from 'constants/AnalysisConstants.jsx';
 import BasicAnalysisAction from 'actions/DataAnalysis/BasicAnalysisAction.jsx';
+import CommodityStore from 'stores/CommodityStore.jsx';
+import HierarchyStore from 'stores/HierarchyStore.jsx';
+import TagAction from 'actions/TagAction.jsx';
 
 const DIALOG_TYPE = {
   SWITCH_WIDGET: "switchwidget",
@@ -76,7 +79,7 @@ class AnalysisPanel extends Component {
     this._handleCalendarChange = this._handleCalendarChange.bind(this);
     this.routerWillLeave  = this.routerWillLeave.bind(this);
     this.getCurrentWidgetDto  = this.getCurrentWidgetDto.bind(this);
-
+    this.getRemarck  = this.getRemarck.bind(this);
   }
 
   state={
@@ -97,6 +100,10 @@ class AnalysisPanel extends Component {
       willLeave:false,
       showLeaveDialog:false,
       sureLevalCallback: null,
+      hierarchyId:this.props.hierarchyId,
+      isBuilding:this.props.isBuilding,
+      dimId:null,
+      tagId:null
   }
 
   isMultiTime=false;
@@ -107,6 +114,12 @@ class AnalysisPanel extends Component {
     let last7Days = CommonFuns.dateAdd(date, -6, 'days');
     let endDate = CommonFuns.dateAdd(date, 1, 'days');
     return CommonFuns.getTimeRangesByDate(last7Days,endDate);
+  }
+
+  getRemarck(e) {
+    this.setState({
+      remarkText: e.target.value
+    });
   }
 
   energyDataLoad(timeRanges, step, tagOptions, relativeDate, weatherOption) {
@@ -157,7 +170,7 @@ class AnalysisPanel extends Component {
     step = limitInterval.display;
   }
   this.setState({
-    isCalendarInited: false
+    isCalendarInited: false,
   });
 
   this.energyDataLoad(timeRanges, step, tagOptions, relativeDate, weather);
@@ -765,6 +778,8 @@ class AnalysisPanel extends Component {
   }
     this.setState({
       relativeDate:value
+    },()=>{
+      this._onSearchDataButtonClick()
     })
   }
 
@@ -772,6 +787,7 @@ class AnalysisPanel extends Component {
     this.setState({
       relativeDate: 'Customerize'
     });
+    this._onSearchDataButtonClick()
   }
 
   canShareDataWith(curChartType, nextChartType) {
@@ -846,7 +862,7 @@ class AnalysisPanel extends Component {
     }
     return(
       <div className={'jazz-alarm-chart-toolbar'} style={{
-          marginTop: '30px'
+          marginTop: '30px',marginLeft:'30px'
         }}>
        <div className={'jazz-full-border-dropdownmenu-container'} style={{
           display: 'flex',
@@ -1181,6 +1197,27 @@ class AnalysisPanel extends Component {
 
     }
 
+  componentWillMount(){
+    if(!this.props.isNew){
+      this._initChartPanelByWidgetDto();
+      let hierNode = CommodityStore.getHierNode();
+      let dimNode = CommodityStore.getCurrentDimNode();
+      if (!!dimNode) {
+        this.setState({
+          dimId: dimNode.dimId
+        });
+      }
+      if (!!hierNode) {
+        let tagId = TagStore.getCurrentHierIdTagStatus().last();
+        this.setState({
+          hierarchyId:hierNode.hierId,
+          isBuilding:HierarchyStore.IsBuilding(hierNode.hierId),
+          tagId
+        })
+      }
+    }
+  }
+
   componentDidMount(){
     this.isInitial=true;
     this.getInitParam();
@@ -1191,12 +1228,7 @@ class AnalysisPanel extends Component {
     EnergyStore.addEnergyDataLoadErrorsListener(this._onGetEnergyDataErrors);
     AlarmTagStore.addChangeListener(this._onTagChanged);
     FolderStore.addCheckWidgetUpdateChangeListener(this._onCheckWidgetUpdate);
-    if(!this.props.isNew){
-      this._initChartPanelByWidgetDto();
-      //var dto=this.getCurrentWidgetDto();
-      //console.log(dto);
-      //BasicAnalysisAction.setInitialWidgetDto(dto);
-    }
+
     this.props.router.setRouteLeaveHook(
          this.props.route,
          this.routerWillLeave
@@ -1233,6 +1265,7 @@ class AnalysisPanel extends Component {
     AlarmTagStore.removeChangeListener(this._onTagChanged);
     FolderStore.removeCheckWidgetUpdateChangeListener(this._onCheckWidgetUpdate);
     this.resetCalendarType();
+    TagAction.clearAlarmSearchTagList();
   }
 
   render(){
@@ -1263,9 +1296,10 @@ class AnalysisPanel extends Component {
           <ChartSubToolbar {...props.subToolBar}/>
           {this._renderChartCmp()}
         </div>
-        {<TagDrawer hierarchyId={this.props.hierarchyId}
-                    isBuilding={this.props.isBuilding}
+        {<TagDrawer hierarchyId={this.state.hierarchyId}
+                    isBuilding={this.state.isBuilding}
                     customerId={this.context.router.params.customerId}
+                    tagId={this.state.tagId}
                     open={this.state.tagShow}
                     onClose={(open)=>{
                       this.setState({

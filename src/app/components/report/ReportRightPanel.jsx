@@ -79,11 +79,11 @@ var ReportRightPanel = React.createClass({
     if (reportData.DateType !== 11) {
       var dateType = CommonFuns.GetStrDateType(reportData.DateType);
       var timeregion = CommonFuns.GetDateRegion(dateType);
-      list = CommonFuns.getInterval(timeregion.start, timeregion.end).stepList;
+      list = CommonFuns.getOldInterval(timeregion.start, timeregion.end).stepList;
     } else {
       var startTime = j2d(reportData.DataStartTime, false);
       var endTime = j2d(reportData.DataEndTime, false);
-      list = CommonFuns.getInterval(startTime, endTime).stepList;
+      list = CommonFuns.getOldInterval(startTime, endTime).stepList;
     }
     var map = {
       'Hourly': 1,

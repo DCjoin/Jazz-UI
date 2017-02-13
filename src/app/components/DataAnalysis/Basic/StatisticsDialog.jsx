@@ -186,7 +186,7 @@ export default class StatisticsDialog extends Component {
         var start=new Date(j2d(StartTime)),end=new Date(j2d(EndTime));
         let props={
           columnValue:DataAnalysisStore.getDisplayDate(start,false)+I18N.Setting.DataAnalysis.To+DataAnalysisStore.getDisplayDate(end,true),
-          typeValue:ItemGatherValue+''+UomName,
+          typeValue:ItemGatherValue+' '+UomName,
           time:null,
         };
         return <TableRow {...props}/>
@@ -202,7 +202,7 @@ export default class StatisticsDialog extends Component {
         var {UomName,TagName,ItemGatherValue}=item;
         let props={
           columnValue:TagName,
-          typeValue:ItemGatherValue+''+UomName,
+          typeValue:ItemGatherValue+' '+UomName,
           time:null,
         };
         return <TableRow {...props}/>
@@ -233,7 +233,7 @@ export default class StatisticsDialog extends Component {
         var start=new Date(j2d(StartTime)),end=new Date(j2d(EndTime));
         let props={
           columnValue:DataAnalysisStore.getDisplayDate(start,false)+I18N.Setting.DataAnalysis.To+DataAnalysisStore.getDisplayDate(end,true),
-          typeValue:ItemGatherValue+''+UomName,
+          typeValue:ItemGatherValue+' '+UomName,
           time:DataAnalysisStore.getDisplayDate(new Date(j2d(ItemTime)),false),
         };
         return <TableRow {...props}/>
@@ -250,7 +250,7 @@ export default class StatisticsDialog extends Component {
         var j2d = CommonFuns.DataConverter.JsonToDateTime;
         let props={
           columnValue:TagName,
-          typeValue:ItemGatherValue+''+UomName,
+          typeValue:ItemGatherValue+' '+UomName,
           time:DataAnalysisStore.getDisplayDate(new Date(j2d(ItemTime)),false),
         };
         return <TableRow {...props}/>

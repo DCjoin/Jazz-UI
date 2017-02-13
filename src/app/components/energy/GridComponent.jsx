@@ -201,8 +201,6 @@ let GridComponent = React.createClass({
       {headerCols}
       {bodyCols}
       </Table>
-      <Pagination {...pagingPropTypes}></Pagination>
-
     </div>;
   },
   _previousPage() {

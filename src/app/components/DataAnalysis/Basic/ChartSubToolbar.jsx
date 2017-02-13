@@ -212,7 +212,7 @@ export default class ChartSubToolbar extends Component {
         }}>
         <div style={{display:'flex'}}>
           {this.getChartTypeIconMenu()}
-          <StepSelector disabled={!this.getConfigBtnStatus()} stepValue={this.props.step} onStepChange={this.props.onStepChange} timeRanges={this.props.timeRanges}/>
+          {this.props.timeRanges && <StepSelector disabled={!this.getConfigBtnStatus()} stepValue={this.props.step} onStepChange={this.props.onStepChange} timeRanges={this.props.timeRanges}/>}
        </div>
         <div style={{display:'flex'}}>
           <FlatButton disabled={this.getHistoryBtnStatus()} label={I18N.EM.Tool.HistoryCompare} labelStyle={styles.label}
