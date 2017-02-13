@@ -3,13 +3,30 @@ import { Action } from '../../constants/actionType/DataAnalysis.jsx';
 import Ajax from '../../ajax/Ajax.jsx';
 import Path from 'constants/Path.jsx';
 
+let getTagIdsFromTagOptions = function(tagOptions) {
+  let tagIds = [];
+  for (let i = 0, len = tagOptions.length; i < len; i++) {
+    tagIds.push(tagOptions[i].tagId);
+  }
+  return tagIds;
+};
+
 const BasicAnalysisAction = {
 
-  getWidgetGatherInfo(dto){
+  getWidgetGatherInfo(timeRanges,step,tagOptions){
     var url = Path.DataAnalysis.getWidgetGatherInfo;
+    var tagIds = getTagIdsFromTagOptions(tagOptions);
     Ajax.post(url,
       {
-      params: dto,
+      params: {
+        tagIds: tagIds,
+        viewOption: {
+          DataUsageType: 1,
+          IncludeNavigatorData: true,
+          Step: step,
+          TimeRanges: timeRanges
+        }
+      },
       success: function(resBody) {
         AppDispatcher.dispatch({
           type: Action.GET_WIDGET_GATHER_INFO,

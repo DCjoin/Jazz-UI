@@ -320,7 +320,7 @@ class AnalysisPanel extends Component {
     this._onEnergyDataChange(false, errorObj);
   }
 
-  _onCheckWidgetUpdate(sureLevalCallback, cancelLevalCallback) {    
+  _onCheckWidgetUpdate(sureLevalCallback, cancelLevalCallback) {
     if(!!this.state.energyData){
       var currentWidgetDto=Immutable.fromJS(this.getCurrentWidgetDto());
       var originalWidgetDto=Immutable.fromJS(this.props.widgetDto);
@@ -724,7 +724,7 @@ class AnalysisPanel extends Component {
       <div className="head">
         <div style={{display:'flex',alignItems:'center'}}>
           <div className="title">{this.props.chartTitle}</div>
-          <div className="description">{`(${I18N.format(I18N.Folder.Detail.SubTitile,this.props.sourceUserName)})`}</div>
+          <div className="description">{this.props.sourceUserName && `(${I18N.format(I18N.Folder.Detail.SubTitile,this.props.sourceUserName)})`}</div>
         </div>
         <div className="operation">
           <FlatButton label={I18N.Common.Button.Save} disabled={!this.state.energyData} labelstyle={styles.label}
@@ -921,7 +921,7 @@ class AnalysisPanel extends Component {
                               label={I18N.Common.Button.Save}
                               onClick={()=>{
                                 let sureLevalCallback = this.state.sureLevalCallback;
-                                // this._handleSave(true);                                
+                                // this._handleSave(true);
                                 this.setState({
                                   willLeave:true,
                                   showLeaveDialog:false,
@@ -1117,7 +1117,7 @@ class AnalysisPanel extends Component {
     ) {
         return true;
     }
-    FolderAction.checkWidgetUpdate(() => {  
+    FolderAction.checkWidgetUpdate(() => {
       if(this.state.energyData) {
         this._handleSave(true);
       }
@@ -1254,12 +1254,12 @@ AnalysisPanel.propTypes = {
   isNew:React.PropTypes.bool,
 };
 
-AnalysisPanel.defaultProps={
-  hierarchyId:100016,
-  isBuilding:true,
-  chartTitle:'冷机COP',
-  sourceUserName:'Uxteam',
-  isNew:true
-}
+// AnalysisPanel.defaultProps={
+//   hierarchyId:100016,
+//   isBuilding:true,
+//   chartTitle:'冷机COP',
+//   sourceUserName:'Uxteam',
+//   isNew:true
+// }
 
 export default withRouter(AnalysisPanel)
