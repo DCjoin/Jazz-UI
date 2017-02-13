@@ -918,6 +918,9 @@ class AnalysisPanel extends Component {
 
   _renderLeaveDialog(){
     var _buttonActions=[],content=null;
+    if( this.state.willLeave ) {
+      return null;
+    }
     if(!!this.state.energyData){
       content=I18N.Setting.DataAnalysis.SaveTip;
        _buttonActions = [<FlatButton
@@ -937,6 +940,9 @@ class AnalysisPanel extends Component {
                                   if(sureLevalCallback) {
                                     sureLevalCallback();
                                   }
+                                  this.setState({
+                                    willLeave: false,
+                                  });
                                   // this.props.router.replace(ntLocation.pathname)
                                 })
                               }} />,
@@ -956,6 +962,9 @@ class AnalysisPanel extends Component {
                                     if(sureLevalCallback) {
                                       sureLevalCallback();
                                     }
+                                    this.setState({
+                                      willLeave: false,
+                                    });
                                     // this.props.router.replace(ntLocation.pathname)
                                   })
                                 }} />];
@@ -977,6 +986,9 @@ class AnalysisPanel extends Component {
                                   if(sureLevalCallback) {
                                     sureLevalCallback();
                                   }
+                                  this.setState({
+                                    willLeave: false,
+                                  });
                                   // this.props.router.replace(ntLocation.pathname)
                                 })
                               }} />,
@@ -1126,10 +1138,12 @@ class AnalysisPanel extends Component {
     ) {
         return true;
     }
-    FolderAction.checkWidgetUpdate(() => {  
-      this.props.router.replace(nextLocation.pathname);
-    });
-    return false;
+    if( !this.state.willLeave ) {
+      FolderAction.checkWidgetUpdate(() => {  
+        this.props.router.replace(nextLocation.pathname);
+      });
+    }
+    return this.state.willLeave;
       // console.log(nextLocation);
       // ntLocation=nextLocation;
       // if(!!this.state.energyData){
