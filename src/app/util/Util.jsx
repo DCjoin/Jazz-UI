@@ -754,6 +754,68 @@ let CommonFuns = {
     interval.gridList = gridList;
     return interval;
   },
+  getOldInterval: function(start, end) {
+    if (end < start) return;
+    var ft = FIXEDTIMES;
+    var lvs = [];
+    lvs.push(ft.day); // 1day
+    lvs.push(ft.week); //1week
+    lvs.push(31 * ft.day); //1month 31day
+    lvs.push(31 * 3 * ft.day); //3month 93day
+    lvs.push(ft.year); // 1year
+    lvs.push(2 * ft.year); // 2year
+    lvs.push(10 * ft.year); // 5year
+
+    var diff = end - start;
+    var interval = {};
+    var i;
+    for (i = 0; i < lvs.length; i++) {
+      if (diff < lvs[i]) {
+        break;
+      }
+    }
+    var list = [],
+      display,
+      gridList = [];
+    //1-Hourly,2-Daily,3-Monthly,4-Yearly,5-Weekly
+    switch (i) {
+      case 0: //<1day
+        list = [0, 1]; //can raw & hour
+        gridList = [0, 1]; //can raw & hour
+        display = 1; //default hour
+        break;
+      case 1: //<=1week
+        list = [0, 1, 2]; //can raw & hour & day
+        gridList = [0, 1, 2]; //can raw & hour & day
+        display = 2; //default day
+        break;
+      case 2: //<=1month
+        list = [0, 1, 2, 5]; //can raw & hour & day & week
+        gridList = [0, 1, 2, 5]; //can raw & hour & day & week
+        display = 2; //default day
+        break;
+      case 3: //<=3month
+        list = [0, 1, 2, 3, 5]; //can raw & hour & day & month & week
+        gridList = [0, 1, 2, 3, 5]; //can raw & hour & day & month & week
+        display = 3; //default month
+        break;
+      case 4: //<=1year
+        list = [1, 2, 3, 5]; //can hour & day & month & week
+        gridList = [1, 2, 3, 5]; //can hour & day & month & week
+        display = 3; //default month
+        break;
+      case 5: //<=2year
+      case 6: //<=10year
+        list = [2, 3, 4, 5]; //can day & month & year & week
+        gridList = [2, 3, 4, 5]; //can day & month & year & week
+        display = 3; //default month
+        break;
+    }
+    interval.stepList = list;
+    interval.display = display;
+    interval.gridList = gridList;
+    return interval;
+  },
   getLimitInterval(timeRanges) {
     let timeRange = timeRanges[0];
     let j2d = CommonFuns.DataConverter.JsonToDateTime;
@@ -761,7 +823,7 @@ let CommonFuns = {
     let startTime = j2d(timeRange.StartTime, true),
       endTime = j2d(timeRange.EndTime, true);
 
-    let interval = CommonFuns.getInterval(startTime, endTime);
+    let interval = CommonFuns.getOldInterval(startTime, endTime);
     return interval;
   },
   getUomById(id) {

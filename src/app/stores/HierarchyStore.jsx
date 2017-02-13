@@ -83,6 +83,10 @@ var HierarchyStore = assign({}, PrototypeStore, {
   getBuildingList() {
     return _buildingList;
   },
+  IsBuilding(hierarchyId){
+    let index=Immutable.fromJS(_buildingList).findIndex(item=>(item.get('Id')===hierarchyId));
+    return index>-1;
+  },
   emitNodeLoadingChange: function() {
     this.emit(NODE_LOADING_EVENT);
   },

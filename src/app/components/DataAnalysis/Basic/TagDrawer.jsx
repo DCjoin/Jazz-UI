@@ -9,6 +9,7 @@ import TagStore from 'stores/TagStore.jsx';
 import TagAction from 'actions/TagAction.jsx';
 import TagMenu from '../../tag/TagMenu.jsx';
 import Pagination from 'controls/paging/Pagination.jsx';
+import CommodityStore from 'stores/CommodityStore.jsx';
 
 var filters = null;
 var timeoutID = null;
@@ -30,6 +31,8 @@ export default class TagDrawer extends Component {
 		this._onCleanButtonClick = this._onCleanButtonClick.bind(this);
 		this._onHierachyTreeClick = this._onHierachyTreeClick.bind(this);
     this._onTagNodeChange = this._onTagNodeChange.bind(this);
+    this._onAlarmTagNodeChange = this._onAlarmTagNodeChange.bind(this);
+
 
 	}
 
@@ -37,7 +40,7 @@ export default class TagDrawer extends Component {
     isLoading:this.props.hierarchyId?true:false,
     searchValue:'',
     tagList: [],
-    tagId: null,
+    tagId: this.props.tagId,
     optionType: null,
   }
 
@@ -50,6 +53,26 @@ export default class TagDrawer extends Component {
     });
     }
 
+  _onAlarmTagNodeChange() {
+  var data = TagStore.getData();
+  var tagId;
+
+  let hierNode = CommodityStore.getHierNode();
+    if (!!hierNode) {
+      tagId = hierNode.hierId;
+    }
+
+
+  page = data.pageIndex;
+  total=data.total;
+
+  this.setState({
+    tagList: data.Data,
+    tagId: tagId,
+    optionType: 2,
+    isLoading: false,
+  });
+}
   _onHierachyTreeClick(node,optionType){
     if(optionType===nodeType.Hierarchy){
       filters = null;
@@ -156,6 +179,7 @@ export default class TagDrawer extends Component {
     TagAction.loadData(customerId,this.state.tagId, this.state.optionType, page, null, filters);
   }
 
+
   _renderTagList(){
     var menupaper, pagination,
         totalPageNum = parseInt((total + 19) / 20),
@@ -206,19 +230,29 @@ export default class TagDrawer extends Component {
 
   componentWillMount(){
     customerId=parseInt(this.props.customerId);
-    TagAction.resetTagInfo('DataAnalysis');
+    //TagAction.resetTagInfo('DataAnalysis');
   }
 
   componentDidMount(){
     TagStore.addTagNodeListener(this._onTagNodeChange);
     if(this.props.hierarchyId){
-      page=1;
-      this.setState({
-        tagId:this.props.hierarchyId,
-        optionType:nodeType.Hierarchy
-      },()=>{
-        TagAction.loadData(customerId,this.props.hierarchyId, nodeType.Hierarchy, page, null, null);
-      })
+      if(this.props.tagId){
+        TagStore.addAlarmTagNodeListener(this._onAlarmTagNodeChange);
+        let data = {
+          hierId: this.props.hierarchyId,
+          tagId: this.props.tagId
+        };
+        TagAction.loadAlarmData(data);
+      }
+      else {
+        page=1;
+        this.setState({
+          tagId:this.props.hierarchyId,
+          optionType:nodeType.Hierarchy
+        },()=>{
+          TagAction.loadData(customerId,this.props.hierarchyId, nodeType.Hierarchy, page, null, null);
+        })
+      }
 
     }
   }
