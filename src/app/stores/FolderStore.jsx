@@ -619,8 +619,8 @@ var FolderStore = assign({}, PrototypeStore, {
       this.removeListener(SAVE_ALARM_WIDGET_ERROR_EVENT, callback);
       this.dispose();
     },
-    emitCheckWidgetUpdateChange: function(done, cancel) {
-      this.emit(CHECK_WIDGET_UPDATE_CHANGE_EVENT, done, cancel);
+    emitCheckWidgetUpdateChange: function(done, cancel, doned) {
+      this.emit(CHECK_WIDGET_UPDATE_CHANGE_EVENT, done, cancel, doned);
     },
     addCheckWidgetUpdateChangeListener: function(callback) {
       this.on(CHECK_WIDGET_UPDATE_CHANGE_EVENT, callback);
@@ -719,8 +719,9 @@ var FolderStore = assign({}, PrototypeStore, {
         FolderStore.switchWidget();
         FolderStore.emitSelectedNodeChange();
         FolderStore.emitFolderTreeChange();
+        break;
       case FolderAction.CHECK_WIDGET_UPDATE:
-        FolderStore.emitCheckWidgetUpdateChange(action.done, action.cancel);
+        FolderStore.emitCheckWidgetUpdateChange(action.done, action.cancel, action.doned);
         break;
     }
   });

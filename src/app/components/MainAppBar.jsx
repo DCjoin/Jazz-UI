@@ -120,14 +120,21 @@ var MainAppBar = React.createClass({
   },
   _showCustomerList: function() {
     // this.props.showCustomerList();
-
+    let doned = false;
     FolderAction.checkWidgetUpdate(() => {
       if( !this.props.disabledSelectCustomer ) {
         this.setState({
           showCustomerList: true
         });
       }
-    });
+    }, null, () => {doned = true});
+    if( !doned ) {
+      if( !this.props.disabledSelectCustomer ) {
+        this.setState({
+          showCustomerList: true
+        });
+      }      
+    }
   },
 
   _savePassword: function() {
