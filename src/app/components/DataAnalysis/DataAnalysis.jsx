@@ -181,15 +181,12 @@ export default class DataAnalysis extends Component {
   }
 
 	_onSelectNode(node) {
-    let callback = () => {      
+    let {widgetDto, selectedNode} = this.state;
+    let callback = () => {
+      if( selectedNode && isWidget(selectedNode) && widgetDto && !widgetDto.get('ChartType') ) {
+        FolderAction.deleteItem(selectedNode, false);
+      }
       FolderAction.setSelectedNode(node);
-      this.setState({
-        treeLoading: false,
-        selectedNode: node,
-        treeList: FolderStore.getFolderTree(),
-      }, () => {
-        this._changeNodeId(node.get('Id'));
-      });
       if( node ) {
         if( isWidget(node) ) {
           FolderAction.GetWidgetDtos([node.get('Id')], node, true);
@@ -198,8 +195,15 @@ export default class DataAnalysis extends Component {
           FolderAction.modifyFolderReadStatus(node);
         }
       }
+      this.setState({
+        treeLoading: false,
+        selectedNode: node,
+        treeList: FolderStore.getFolderTree(),
+      }, () => {
+        this._changeNodeId(node.get('Id'));
+      });
     };
-    if( this.state.selectedNode && isWidget(this.state.selectedNode) ) {
+    if( selectedNode && isWidget(selectedNode) ) {
       FolderAction.checkWidgetUpdate(callback);
     } else {
       callback();
