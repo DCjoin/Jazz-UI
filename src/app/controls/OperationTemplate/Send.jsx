@@ -106,7 +106,7 @@ var Send = React.createClass({
       actions: actions,
       modal: true,
       open: this.state.open,
-      onDismiss: ()=>{
+      onRequestClose: ()=>{
         this._dismiss();
         this.props.onDismiss()},
       titleStyle: titleStyle,

@@ -22,7 +22,7 @@ var SendView = React.createClass({
       userId:this.props.sendNode.get('UserId'),
       type:type,
       onFirstActionTouchTap:this._onSendItem,
-      onDismiss:this.props.onDismiss
+      onSecondActionTouchTap:this.props.onDismiss
     };
 
     return(
