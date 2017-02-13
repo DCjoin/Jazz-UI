@@ -1142,7 +1142,7 @@ class AnalysisPanel extends Component {
   }
 
   routerWillLeave(nextLocation){
-    if( this.state.energyData &&
+    if( !this.state.energyData ||
       Immutable.is(
         Immutable.fromJS(this.getCurrentWidgetDto()),
         DataAnalysisStore.getInitialWidgetDto()
