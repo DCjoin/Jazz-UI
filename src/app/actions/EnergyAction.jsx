@@ -85,6 +85,7 @@ let EnergyAction = {
       tagOptions: tagOptions,
       relativeDate: relativeDate
     });
+    // console.log('/Energy/GetTagsData');
 
     Ajax.post('/Energy/GetTagsData', {
       avoidDuplicate:true,
@@ -317,7 +318,7 @@ let EnergyAction = {
       tagOptions: tagOptions,
       relativeDate: relativeDate
     });
-
+    // console.log('/Energy/GetTagsData');
     Ajax.post('/Energy/GetTagsData', {
       avoidDuplicate:true,
       tag:submitParams.tagIds,
