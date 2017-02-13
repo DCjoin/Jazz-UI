@@ -24,6 +24,27 @@ let UserAction = {
       }
     });
   },
+  getUsersByPrivilegeItem: function(ExcludeUserId, PrivileteItemId) {
+    Ajax.post('/AccessControl/GetUsersByPrivilegeItem', {
+      params: {
+        filter: {
+          ExcludeUserId,
+          PrivileteItemId,
+          PrivilegeType: 0
+        }
+      },
+      success: function(userList) {
+        AppDispatcher.dispatch({
+          type: Action.LOAD_USER_LIST,
+          userList: Immutable.fromJS(userList)
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+
+  },
   setUserStatus(user, status) {
     AppDispatcher.dispatch({
       type: Action.SET_USER_STATUS,

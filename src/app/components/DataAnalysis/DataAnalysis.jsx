@@ -25,17 +25,12 @@ import SaveAsView from '../folder/operationView/SaveAsView.jsx';
 import ExportView from '../folder/operationView/ExportView.jsx';
 
 import FolderAction from 'actions/FolderAction.jsx';
+import UserAction from 'actions/UserAction.jsx';
 
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import FolderStore from 'stores/FolderStore.jsx';
 import WidgetStore from 'stores/Energy/WidgetStore.jsx';
 
-function isBasic() {
-	return privilegeUtil.isFull(PermissionCode.BASIC_DATA_ANALYSE, CurrentUserStore.getCurrentPrivilege());
-}
-function isSenior() {
-	return privilegeUtil.isFull(PermissionCode.SENIOR_DATA_ANALYSE, CurrentUserStore.getCurrentPrivilege());
-}
 function isWidget(node) {
 	return node.get('Type') === nodeType.Widget;
 }
@@ -143,6 +138,7 @@ export default class DataAnalysis extends Component {
 		this.setState({
 			treeLoading: true
 		});
+    UserAction.getUsersByPrivilegeItem(CurrentUserStore.getCurrentUser().Id, this._getHierarchyId(context));
 		FolderAction.getFolderTreeByHierarchyId( this._getHierarchyId(context), true );
 	}
 
