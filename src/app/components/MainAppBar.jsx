@@ -120,14 +120,21 @@ var MainAppBar = React.createClass({
   },
   _showCustomerList: function() {
     // this.props.showCustomerList();
-
+    let doned = false;
     FolderAction.checkWidgetUpdate(() => {
       if( !this.props.disabledSelectCustomer ) {
         this.setState({
           showCustomerList: true
         });
       }
-    });
+    }, null, () => {doned = true});
+    if( !doned ) {
+      if( !this.props.disabledSelectCustomer ) {
+        this.setState({
+          showCustomerList: true
+        });
+      }      
+    }
   },
 
   _savePassword: function() {
@@ -206,11 +213,18 @@ var MainAppBar = React.createClass({
     }));
   },
   _showLogout: function() {
+    let doned = false   
     FolderAction.checkWidgetUpdate(() => {
       this.setState(assign({}, this.getInitialState(), {
         dialogType: DIALOG_TYPE.LOGOUT
       }));
-    });
+    }, null, () => {doned = true});
+    if( !doned ) {
+      this.setState(assign({}, this.getInitialState(), {
+        dialogType: DIALOG_TYPE.LOGOUT
+      }));
+    }
+
   },
   // ************* Change State End *************
   // ************* Render Component Start *************

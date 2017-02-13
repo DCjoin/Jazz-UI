@@ -335,10 +335,10 @@ let FolderAction = {
     });
 
   },
-  checkWidgetUpdate: function(done, cancel) {
+  checkWidgetUpdate: function(done, cancel, doned) {
     AppDispatcher.dispatch({
       type: Action.CHECK_WIDGET_UPDATE,
-      done, cancel
+      done, cancel, doned
     });
   }
 };

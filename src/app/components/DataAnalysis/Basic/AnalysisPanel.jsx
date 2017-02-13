@@ -320,7 +320,10 @@ class AnalysisPanel extends Component {
     this._onEnergyDataChange(false, errorObj);
   }
 
-  _onCheckWidgetUpdate(sureLevalCallback, cancelLevalCallback) {
+  _onCheckWidgetUpdate(sureLevalCallback, cancelLevalCallback, doned) {
+    if( doned ) {
+      doned();
+    }
     if(!!this.state.energyData){
       var currentWidgetDto=Immutable.fromJS(this.getCurrentWidgetDto());
       var originalWidgetDto=Immutable.fromJS(this.props.widgetDto);
@@ -920,8 +923,11 @@ class AnalysisPanel extends Component {
        _buttonActions = [<FlatButton
                               label={I18N.Common.Button.Save}
                               onClick={()=>{
+                                if(this.state.energyData) {
+                                  this._handleSave(true);
+                                }
                                 let sureLevalCallback = this.state.sureLevalCallback;
-                                // this._handleSave(true);
+
                                 this.setState({
                                   willLeave:true,
                                   showLeaveDialog:false,
@@ -958,6 +964,9 @@ class AnalysisPanel extends Component {
       _buttonActions = [<FlatButton
                               label={I18N.Folder.Widget.LeaveButton}
                               onClick={()=>{
+                                if(this.state.energyData) {
+                                  this._handleSave(true);
+                                }
                                 let sureLevalCallback = this.state.sureLevalCallback;
                                 this.setState({
                                   willLeave:true,
@@ -1117,10 +1126,7 @@ class AnalysisPanel extends Component {
     ) {
         return true;
     }
-    FolderAction.checkWidgetUpdate(() => {
-      if(this.state.energyData) {
-        this._handleSave(true);
-      }
+    FolderAction.checkWidgetUpdate(() => {  
       this.props.router.replace(nextLocation.pathname);
     });
     return false;
