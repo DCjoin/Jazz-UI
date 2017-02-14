@@ -800,14 +800,14 @@ let CommonFuns = {
         display = 3; //default month
         break;
       case 4: //<=1year
-        list = [1, 2, 3, 5]; //can hour & day & month & week
-        gridList = [1, 2, 3, 5]; //can hour & day & month & week
+        list = [0,1, 2, 3, 5]; //can hour & day & month & week
+        gridList = [0,1, 2, 3, 5]; //can hour & day & month & week
         display = 3; //default month
         break;
       case 5: //<=2year
       case 6: //<=10year
-        list = [2, 3, 4, 5]; //can day & month & year & week
-        gridList = [2, 3, 4, 5]; //can day & month & year & week
+        list = [1,2, 3, 4, 5]; //can day & month & year & week
+        gridList = [1,2, 3, 4, 5]; //can day & month & year & week
         display = 3; //default month
         break;
     }

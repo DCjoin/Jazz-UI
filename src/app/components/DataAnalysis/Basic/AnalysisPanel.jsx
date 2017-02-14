@@ -1215,11 +1215,14 @@ class AnalysisPanel extends Component {
           tagId
         })
       }
+      this.isInitial=true;
+    }
+    else {
+      BasicAnalysisAction.setInitialWidgetDto(null);
     }
   }
 
   componentDidMount(){
-    this.isInitial=true;
     this.getInitParam();
     FolderStore.addDialogListener(this._onDialogChanged);
     EnergyStore.addEnergyDataLoadingListener(this._onLoadingStatusChange);
