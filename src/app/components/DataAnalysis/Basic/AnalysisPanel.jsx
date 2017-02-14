@@ -1012,7 +1012,7 @@ class AnalysisPanel extends Component {
                                   cancelLevalCallback: null,
                                 },()=>{
                                   if(sureLevalCallback) {
-                                    sureLevalCallback();
+                                    sureLevalCallback(true);
                                   }
                                   this.setState({
                                     willLeave: false,
