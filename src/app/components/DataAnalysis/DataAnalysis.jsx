@@ -185,8 +185,8 @@ export default class DataAnalysis extends Component {
 
 	_onSelectNode(node) {
     let {widgetDto, selectedNode} = this.state;
-    let callback = () => {
-      if( selectedNode && isWidget(selectedNode) && widgetDto && !widgetDto.get('ChartType') ) {
+    let callback = (widgetIsInit) => {
+      if( widgetIsInit ) {
         FolderAction.deleteItem(selectedNode, false);
       }
       FolderAction.setSelectedNode(node);
