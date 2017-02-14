@@ -201,12 +201,13 @@ export default class DataAnalysis extends Component {
       this.setState({
         treeLoading: false,
         selectedNode: node,
+        widgetDto: null,
         treeList: FolderStore.getFolderTree(),
       }, () => {
         this._changeNodeId(node.get('Id'));
       });
     };
-    if( selectedNode && isWidget(selectedNode) ) {
+    if( selectedNode && isWidget(selectedNode) && selectedNode.get('Id') !== node.get('Id') ) {
       FolderAction.checkWidgetUpdate(callback);
     } else {
       callback();
