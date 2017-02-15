@@ -1342,6 +1342,7 @@ I18N.Folder.NewWidget.Menu5 = 'Ranking';
 I18N.Folder.NewWidget.DefaultName = 'Last 7 Days {0}';
 
 I18N.Folder.NewFolder = 'New folder';
+I18N.Folder.NewWidgetDataAnalysis = 'New chart';
 I18N.Folder.FolderName = 'Folder';
 I18N.Folder.WidgetName = 'Chart';
 I18N.Folder.DataAnalysisWidget = '分析图表';

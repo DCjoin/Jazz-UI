@@ -1342,6 +1342,7 @@ I18N.Folder.NewWidget.Menu5 = '集团排名';
 I18N.Folder.NewWidget.DefaultName = '最近7天{0}';
 
 I18N.Folder.NewFolder = '新建文件夹';
+I18N.Folder.NewWidgetDataAnalysis = '新建分析图表';
 I18N.Folder.FolderName = '文件夹';
 I18N.Folder.WidgetName = '图表';
 I18N.Folder.DataAnalysisWidget = '分析图表';
