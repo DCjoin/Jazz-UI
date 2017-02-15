@@ -201,7 +201,7 @@ export default class Actuality extends Component {
 		let kpiHide = this.state.show.kpi === false;
 		let reportHide = this.state.show.report === false;
 		let isCustomer = this._isCustomer();
-		let hasKPIEdit = reportHide && isFull();
+		let hasKPIEdit = isCustomer && isFull();
 		if(singleKPI) {
 		    // chartData = SingleKPIStore.getKPIChart();
     		prefixTitle = 
