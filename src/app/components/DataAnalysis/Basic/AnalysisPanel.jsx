@@ -352,6 +352,8 @@ class AnalysisPanel extends Component {
     if(!!this.state.energyData){
       var currentWidgetDto=Immutable.fromJS(this.getCurrentWidgetDto());
       var originalWidgetDto=DataAnalysisStore.getInitialWidgetDto();
+      console.log(currentWidgetDto.toJS());
+      console.log(originalWidgetDto.toJS());
       if(Immutable.is(currentWidgetDto,originalWidgetDto)){
         return sureLevalCallback()
       }
@@ -464,6 +466,7 @@ class AnalysisPanel extends Component {
     if (!isSave) {
         return widgetDto;
       } else {
+        BasicAnalysisAction.setInitialWidgetDto(widgetDto);
         FolderAction.updateWidgetDtos(widgetDto);
       }
   }
@@ -720,7 +723,7 @@ class AnalysisPanel extends Component {
 
     return(
       <div>
-        <FlatButton label={I18N.Common.Button.More} labelStyle={styles.label} icon={<FontIcon className="icon-marker" style={styles.label}/>} onClick={handleTouchTap}/>
+        <FlatButton label={I18N.Common.Button.More} labelStyle={styles.label} icon={<FontIcon className="icon-more" style={styles.label}/>} onClick={handleTouchTap}/>
         <Popover
           open={this.state.operationMenuOpen}
           anchorEl={this.state.anchorEl}
@@ -758,7 +761,7 @@ class AnalysisPanel extends Component {
           <FlatButton label={I18N.Common.Button.Save} disabled={!this.state.energyData} labelstyle={styles.label}
             icon={<FontIcon className="icon-save" style={styles.label}/>} style={styles.button}
             onClick={()=>{this._handleSave()}}/>
-          <FlatButton label={I18N.Setting.DataAnalysis.Scheme} labelstyle={styles.label} icon={<FontIcon className="icon-save" style={styles.label}/>} style={styles.button}/>
+          <FlatButton label={I18N.Setting.DataAnalysis.Scheme} labelstyle={styles.label} icon={<FontIcon className="icon-to-ecm" style={styles.label}/>} style={styles.button}/>
           {this._renderMoreOperation()}
       </div>
       </div>
@@ -786,8 +789,10 @@ class AnalysisPanel extends Component {
   _onDateSelectorChanged() {
     this.setState({
       relativeDate: 'Customerize'
+    },()=>{
+      this._onSearchDataButtonClick()
     });
-    this._onSearchDataButtonClick()
+
   }
 
   canShareDataWith(curChartType, nextChartType) {
@@ -1158,6 +1163,12 @@ class AnalysisPanel extends Component {
   }
 
   routerWillLeave(nextLocation){
+    console.log(this.getCurrentWidgetDto());
+    console.log(DataAnalysisStore.getInitialWidgetDto().toJS());
+    console.log(Immutable.is(
+      Immutable.fromJS(this.getCurrentWidgetDto()),
+      DataAnalysisStore.getInitialWidgetDto()
+    ));
     if( !this.state.energyData ||
       Immutable.is(
         Immutable.fromJS(this.getCurrentWidgetDto()),
@@ -1199,7 +1210,6 @@ class AnalysisPanel extends Component {
 
   componentWillMount(){
     if(!this.props.isNew){
-      this._initChartPanelByWidgetDto();
       let hierNode = CommodityStore.getHierNode();
       let dimNode = CommodityStore.getCurrentDimNode();
       if (!!dimNode) {
@@ -1231,7 +1241,9 @@ class AnalysisPanel extends Component {
     EnergyStore.addEnergyDataLoadErrorsListener(this._onGetEnergyDataErrors);
     AlarmTagStore.addChangeListener(this._onTagChanged);
     FolderStore.addCheckWidgetUpdateChangeListener(this._onCheckWidgetUpdate);
-
+    if(!this.props.isNew){
+      this._initChartPanelByWidgetDto();
+    }
     this.props.router.setRouteLeaveHook(
          this.props.route,
          this.routerWillLeave

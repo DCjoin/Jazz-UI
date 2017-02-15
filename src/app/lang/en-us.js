@@ -529,6 +529,7 @@ I18N.EM.CharType.Bar = 'Column';
 I18N.EM.CharType.Stack = 'Stack';
 I18N.EM.CharType.Pie = 'Pie';
 I18N.EM.CharType.RawData = 'Raw data';
+I18N.EM.CharType.GridTable = '数据表';
 
 I18N.EM.RawData = {};
 I18N.EM.RawData.ErrorForEnergy = 'Raw data only support with 7 days';
