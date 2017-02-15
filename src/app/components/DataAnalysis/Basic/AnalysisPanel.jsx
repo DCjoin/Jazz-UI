@@ -80,6 +80,8 @@ class AnalysisPanel extends Component {
     this.routerWillLeave  = this.routerWillLeave.bind(this);
     this.getCurrentWidgetDto  = this.getCurrentWidgetDto.bind(this);
     this.getRemarck  = this.getRemarck.bind(this);
+    this._onDialogChanged  = this._onDialogChanged.bind(this);
+
   }
 
   state={
@@ -910,11 +912,17 @@ class AnalysisPanel extends Component {
         )
 
         }else {
-          return (
-            <div className="flex-center">
-              {I18N.Setting.DataAnalysis.NotagRecommend}
-            </div>
-          )
+          let tagList=AlarmTagStore.getSearchTagList();
+          if(tagList.length===0){
+            return (
+              <div className="flex-center">
+                {I18N.Setting.DataAnalysis.NotagRecommend}
+              </div>
+            )
+          }
+          else {
+            return null
+          }
         }
 
   }
