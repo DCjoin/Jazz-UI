@@ -16,8 +16,11 @@ var TagItem = React.createClass({
     disable: React.PropTypes.bool,
     widgetType: React.PropTypes.string
   },
-  _onClick: function() {
-    TagAction.setTagStatusByTag(this.props.nodeData, !this.props.status);
+  _onClick: function(disabled) {
+    if(!disabled){
+        TagAction.setTagStatusByTag(this.props.nodeData, !this.props.status);
+    }
+
   },
   getInitialState: function() {
     return {
@@ -62,7 +65,7 @@ var TagItem = React.createClass({
                                                     {baseline}
                                                   </div>) : null;
     return (
-      <div className="taglist"  onClick={this._onClick} title={this.props.title}>
+      <div className="taglist"  onClick={()=>{this._onClick(boxDisabledStatus)}} title={this.props.title}>
         <Checkbox
       checked={this.props.status}
       disabled={boxDisabledStatus}
