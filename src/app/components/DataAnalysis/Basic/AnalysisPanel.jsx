@@ -352,8 +352,8 @@ class AnalysisPanel extends Component {
     if(!!this.state.energyData){
       var currentWidgetDto=Immutable.fromJS(this.getCurrentWidgetDto());
       var originalWidgetDto=DataAnalysisStore.getInitialWidgetDto();
-      console.log(currentWidgetDto.toJS());
-      console.log(originalWidgetDto.toJS());
+      // console.log(currentWidgetDto.toJS());
+      // console.log(originalWidgetDto.toJS());
       if(Immutable.is(currentWidgetDto,originalWidgetDto)){
         return sureLevalCallback()
       }
@@ -1163,12 +1163,12 @@ class AnalysisPanel extends Component {
   }
 
   routerWillLeave(nextLocation){
-    console.log(this.getCurrentWidgetDto());
-    console.log(DataAnalysisStore.getInitialWidgetDto().toJS());
-    console.log(Immutable.is(
-      Immutable.fromJS(this.getCurrentWidgetDto()),
-      DataAnalysisStore.getInitialWidgetDto()
-    ));
+    // console.log(this.getCurrentWidgetDto());
+    // console.log(DataAnalysisStore.getInitialWidgetDto().toJS());
+    // console.log(Immutable.is(
+    //   Immutable.fromJS(this.getCurrentWidgetDto()),
+    //   DataAnalysisStore.getInitialWidgetDto()
+    // ));
     if( !this.state.energyData ||
       Immutable.is(
         Immutable.fromJS(this.getCurrentWidgetDto()),
