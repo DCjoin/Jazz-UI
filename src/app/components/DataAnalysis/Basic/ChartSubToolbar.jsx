@@ -152,7 +152,7 @@ export default class ChartSubToolbar extends Component {
     <MenuItem primaryText={I18N.EM.CharType.Bar} value="column" leftIcon={columnIcon} />
     <MenuItem primaryText={I18N.EM.CharType.Stack} value="stack" leftIcon={stackIcon} />
     <MenuItem primaryText={I18N.EM.CharType.Pie} value="pie" leftIcon={pieIcon} />
-    <MenuItem primaryText={I18N.EM.CharType.RawData} value="rawdata" leftIcon={rawdataIcon} />
+    <MenuItem primaryText={I18N.EM.CharType.GridTable} value="rawdata" leftIcon={rawdataIcon} />
   </DropDownMenu>
   )
   }

@@ -619,6 +619,7 @@ class AnalysisPanel extends Component {
 
   this.energyDataLoad(timeRanges, step, tagOptions, false);
   }
+  
   exportChart() {
     if (!this.state.energyData) {
       return;
@@ -667,6 +668,7 @@ class AnalysisPanel extends Component {
       charTypes.push(curChartType);
     }
   }
+
   params.charTypes = charTypes;
   ExportChartAction.getTagsData4Export(params, path);
   }
