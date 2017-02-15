@@ -173,6 +173,7 @@ export default class DataAnalysis extends Component {
     this._onSelectedNodeChange();
   }
   _onMoveItemError() {
+    this._loadInitData(this.props, this.context); 
     this.setState({
       errorText: FolderStore.getMoveItemError(),
     });

@@ -701,7 +701,7 @@ class AnalysisPanel extends Component {
     };
 
     var handleMenuItemClick= (event, menuItem,index)=>{
-
+      handleRequestClose();
       switch (index){
         case 0:
               //另存为
