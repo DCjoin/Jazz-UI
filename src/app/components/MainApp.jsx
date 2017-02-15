@@ -76,7 +76,9 @@ function groupProjectMenuItems(customerId) {
       Id: -1,
       disabled: true,
       Name: I18N.Kpi.GroupProject
-    }].concat( getCustomerById(customerId) );
+    }].concat( {...getCustomerById(customerId), ...{
+      disabled: getCustomerPrivilageById( customerId ) && !getCustomerPrivilageById( customerId ).get('WholeCustomer')
+    }} );
 }
 
 function getCustomerPrivilageById(customerId) {
