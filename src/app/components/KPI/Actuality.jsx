@@ -83,7 +83,7 @@ export default class Actuality extends Component {
 			store: HierarchyStore,
 			add: ['addBuildingListListener'],
 			remove: ['removeBuildingListListener'],
-		},*/ UserStore, ReportStore];
+		},*/ /*UserStore, */ReportStore];
 	};
 
 	static calculateState(prevState) {
@@ -121,7 +121,7 @@ export default class Actuality extends Component {
 	}
 	componentWillUnmount() {		
 		// HierarchyStore.removeBuildingListListener(this._onPreActopn);
-		UserStore.removeChangeListener(this._onPreActopn);
+		// UserStore.removeChangeListener(this._onPreActopn);
 	}
 	_getInitialState(props) {
 		this.setState({
@@ -153,7 +153,7 @@ export default class Actuality extends Component {
 				allBuildingsExistence: null,
 			});
 			// HierarchyAction.getBuildingListByCustomerId(props.router.params.customerId);
-			UserAction.getCustomerByUser(CurrentUserStore.getCurrentUser().Id);
+			// UserAction.getCustomerByUser(CurrentUserStore.getCurrentUser().Id);
 			ReportAction.allBuildingsExistence(props.router.params.customerId);
 		}
 	}
@@ -186,7 +186,7 @@ export default class Actuality extends Component {
 		return this.props.router.location.query.kpiId;
 	}
 	_isCustomer() {
-		return this.props.router.params.customerId === this.context.hierarchyId;
+		return this.props.router.params.customerId*1 === this.context.hierarchyId;
 	}
 	_routerPush(path) {
 		this.props.router.push(path);
@@ -201,7 +201,7 @@ export default class Actuality extends Component {
 		let kpiHide = this.state.show.kpi === false;
 		let reportHide = this.state.show.report === false;
 		let isCustomer = this._isCustomer();
-		let hasKPIEdit = reportHide && isFull();
+		let hasKPIEdit = isCustomer && isFull();
 		if(singleKPI) {
 		    // chartData = SingleKPIStore.getKPIChart();
     		prefixTitle = 
