@@ -186,7 +186,7 @@ export default class Actuality extends Component {
 		return this.props.router.location.query.kpiId;
 	}
 	_isCustomer() {
-		return this.props.router.params.customerId === this.context.hierarchyId;
+		return this.props.router.params.customerId*1 === this.context.hierarchyId;
 	}
 	_routerPush(path) {
 		this.props.router.push(path);
