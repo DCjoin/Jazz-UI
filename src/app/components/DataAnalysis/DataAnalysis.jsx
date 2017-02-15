@@ -91,7 +91,7 @@ export default class DataAnalysis extends Component {
 
 	componentWillReceiveProps(nextProps, nextContext) {
 		if( !util.shallowEqual(nextContext.hierarchyId, this.context.hierarchyId) ) {
-			this._getInitialState(nextProps);
+			this.setState(this._getInitialState(nextProps));
 			this._loadInitData(nextProps, nextContext);
       if( this.context.hierarchyId ) {
         nextProps.router.push(RoutePath.dataAnalysis(nextProps.params));
