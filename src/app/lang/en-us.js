@@ -529,6 +529,7 @@ I18N.EM.CharType.Bar = 'Column';
 I18N.EM.CharType.Stack = 'Stack';
 I18N.EM.CharType.Pie = 'Pie';
 I18N.EM.CharType.RawData = 'Raw data';
+I18N.EM.CharType.GridTable = '数据表';
 
 I18N.EM.RawData = {};
 I18N.EM.RawData.ErrorForEnergy = 'Raw data only support with 7 days';
@@ -2107,4 +2108,11 @@ I18N.Setting.KPI.Report.TimeRangeComment= '注：当前年为{0}年，只需配�
 I18N.Setting.KPI.Report.DuplicatedName = '已经存在名称为“{0}”的模板，请更改名称后重新上传。';
 I18N.Setting.KPI.Report.DeleteTemplateMessage = '模板“{0}”将被删除。';
 I18N.Setting.KPI.Report.StartCellHintText = '填写起始单元格';
+
+I18N.Setting.DataAnalysis = {};
+I18N.Setting.DataAnalysis.Scheme = '生成方案';
+I18N.Setting.DataAnalysis.To = '至';
+I18N.Setting.DataAnalysis.NotagRecommend = '点击“+数据点”按钮，选择要查看的数据点';
+I18N.Setting.DataAnalysis.SaveTip = '图表未保存，是否保存图表并离开？';
+I18N.Setting.DataAnalysis.LeaveTip = '图表为空，离开将直接删除该图表，是否离开？';
 module.exports = I18N;
