@@ -64,7 +64,6 @@ var TagMenu = React.createClass({
     var buttonStyle = {
       height: '25px',
     };
-    console.log(that.state.tagStatus.toJS());
     var tooltipText = I18N.format(I18N.Tag.Tooltip, TagStore.getTagTotal(), TagStore.getTagSum());
     if (this.state.allCheckDisable) {
       tooltipText += I18N.Tag.ExceedTooltip;
