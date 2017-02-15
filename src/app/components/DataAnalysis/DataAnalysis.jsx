@@ -57,6 +57,7 @@ export default class DataAnalysis extends Component {
 		this._handleWidgetSelectChange = this._handleWidgetSelectChange.bind(this);
 		this._onSelectedNodeChange = this._onSelectedNodeChange.bind(this);
 		this._onModifyNameError = this._onModifyNameError.bind(this);
+    this._onMoveItemSuccess = this._onMoveItemSuccess.bind(this);
 		this._onMoveItemError = this._onMoveItemError.bind(this);
 		this._onSendStatusChange = this._onSendStatusChange.bind(this);
     this._onShareStatusChange = this._onShareStatusChange.bind(this);
@@ -77,7 +78,7 @@ export default class DataAnalysis extends Component {
     FolderStore.addShareStatusListener(this._onShareStatusChange);
     FolderStore.addModifyNameSuccessListener(this._onSelectedNodeChange);
     FolderStore.addDeleteItemSuccessListener(this._onDeleteNode);
-    FolderStore.addMoveItemSuccessListener(this._onSelectedNodeChange);
+    FolderStore.addMoveItemSuccessListener(this._onMoveItemSuccess);
     FolderStore.addModfiyReadingStatusListener(this._onSelectedNodeChange);
     FolderStore.addCopyItemSuccessListener(this._onSelectedNodeChange);
 
@@ -108,7 +109,7 @@ export default class DataAnalysis extends Component {
 		FolderStore.removeShareStatusListener(this._onShareStatusChange);
     FolderStore.removeModifyNameSuccessListener(this._onSelectedNodeChange);
     FolderStore.removeDeleteItemSuccessListener(this._onDeleteNode);
-    FolderStore.removeMoveItemSuccessListener(this._onSelectedNodeChange);
+    FolderStore.removeMoveItemSuccessListener(this._onMoveItemSuccess);
     FolderStore.removeModfiyReadingStatusListener(this._onSelectedNodeChange);
     FolderStore.removeCopyItemSuccessListener(this._onSelectedNodeChange);
 	}
@@ -166,6 +167,10 @@ export default class DataAnalysis extends Component {
     this.setState({
       errorText: FolderStore.GetModifyNameError(),
     });
+  }
+  _onMoveItemSuccess() {
+    this._loadInitData(this.props, this.context); 
+    this._onSelectedNodeChange();
   }
   _onMoveItemError() {
     this.setState({
