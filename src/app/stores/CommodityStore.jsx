@@ -56,10 +56,15 @@ var CommodityStore = assign({}, PrototypeStore, {
     _currentHierId = id;
     _currentHierName = name;
     _currentDimNode = null;
-    _hierNode = {
-      hierId: id,
-      hierName: name
-    };
+    if(id===null){
+      _hierNode=null
+    }else {
+      _hierNode = {
+        hierId: id,
+        hierName: name
+      };  
+    }
+
   },
   getCurrentHierarchyId: function() {
     return _currentHierId;

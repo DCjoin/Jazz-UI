@@ -42,6 +42,7 @@ import BasicAnalysisAction from 'actions/DataAnalysis/BasicAnalysisAction.jsx';
 import CommodityStore from 'stores/CommodityStore.jsx';
 import HierarchyStore from 'stores/HierarchyStore.jsx';
 import TagAction from 'actions/TagAction.jsx';
+import CommodityAction from 'actions/CommodityAction.jsx'
 
 const DIALOG_TYPE = {
   SWITCH_WIDGET: "switchwidget",
@@ -1289,6 +1290,8 @@ class AnalysisPanel extends Component {
     FolderStore.removeCheckWidgetUpdateChangeListener(this._onCheckWidgetUpdate);
     this.resetCalendarType();
     TagAction.clearAlarmSearchTagList();
+    TagAction.setCurrentHierarchyId(null);
+    CommodityAction.setCurrentHierarchyInfo({Id:null,name:null});//清空hierarchy 信息，否则会影响能源
   }
 
   render(){
