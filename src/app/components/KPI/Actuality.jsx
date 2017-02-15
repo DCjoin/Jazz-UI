@@ -83,7 +83,7 @@ export default class Actuality extends Component {
 			store: HierarchyStore,
 			add: ['addBuildingListListener'],
 			remove: ['removeBuildingListListener'],
-		},*/ UserStore, ReportStore];
+		},*/ /*UserStore, */ReportStore];
 	};
 
 	static calculateState(prevState) {
@@ -121,7 +121,7 @@ export default class Actuality extends Component {
 	}
 	componentWillUnmount() {		
 		// HierarchyStore.removeBuildingListListener(this._onPreActopn);
-		UserStore.removeChangeListener(this._onPreActopn);
+		// UserStore.removeChangeListener(this._onPreActopn);
 	}
 	_getInitialState(props) {
 		this.setState({
@@ -153,7 +153,7 @@ export default class Actuality extends Component {
 				allBuildingsExistence: null,
 			});
 			// HierarchyAction.getBuildingListByCustomerId(props.router.params.customerId);
-			UserAction.getCustomerByUser(CurrentUserStore.getCurrentUser().Id);
+			// UserAction.getCustomerByUser(CurrentUserStore.getCurrentUser().Id);
 			ReportAction.allBuildingsExistence(props.router.params.customerId);
 		}
 	}
