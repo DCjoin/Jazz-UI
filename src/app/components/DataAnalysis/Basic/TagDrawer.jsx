@@ -78,6 +78,7 @@ export default class TagDrawer extends Component {
       filters = null;
       ReactDom.findDOMNode(this.refs.searchIcon).style.display = 'block';
       TagAction.loadData(customerId,node.Id, nodeType.Hierarchy, 1, null, filters);
+      TagAction.setCurrentHierarchyId(node.Id);
       page = 1;
       this.setState({
         isLoading: true,
