@@ -205,7 +205,7 @@ let RawDataList = React.createClass({
           data,
           nId
         })}
-        onDataChange={(data)=>{this._onDataChange(index,data)}}/>
+        onDataChange={(data)=>{this._onDataChange(data,index)}}/>
       )
       indexItem[nId] = index;
       nId++;

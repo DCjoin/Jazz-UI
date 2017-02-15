@@ -394,6 +394,7 @@ var TagStore = assign({}, PrototypeStore, {
         if (_tagTotal == _tagSum) {
           this.setTagTotalStatus();
         }
+        this.checkBaselineBtnDisabled();
         this.emitTagStatusChange();
       }
     } else {

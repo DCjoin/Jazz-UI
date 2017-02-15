@@ -188,7 +188,7 @@ export default class RankChart extends Component {
 	}
 	_getDateLabel() {
 		let jsonstring = this._getCurrentMonthRank().Date,
-		date = new Date(parseInt(jsonstring.substr(6, jsonstring.length - 8)));
+		date = new Date(moment.utc(jsonstring));
 		return util.replacePathParams(I18N.Kpi.YearMonth, date.getFullYear(), date.getMonth() + 1);
 	}
 	_getRankLabel() {
@@ -213,9 +213,9 @@ export default class RankChart extends Component {
 	_generatorOptions() {
 		let {RankName, RankType} = this.props,
 		{rankIndex} = this.state,
-		{_getTooltip, 
-		_getDataLabel, 
-		_jumpToSingle, 
+		{_getTooltip,
+		_getDataLabel,
+		_jumpToSingle,
 		_getSeries,
 		_getCategories} = this,
 		options = util.merge(true, {}, DEFAULT_OPTIONS, {
@@ -229,7 +229,7 @@ export default class RankChart extends Component {
 			    		return util.getLabelData(this.value)
 			    	},
 		    	},
-		    	title:{ 
+		    	title:{
 		    		text: getUnitLabel(this.props),
 		    	},
 		    },
@@ -251,7 +251,7 @@ export default class RankChart extends Component {
 		});
 		if( RankType === KPIType.RankType.GroupRank ) {
 			options.plotOptions.series.cursor = 'pointer';
-			options.plotOptions.series.events = {				
+			options.plotOptions.series.events = {
 				click: function (event) {
 					_jumpToSingle(event.point.index);
 				}
@@ -262,7 +262,7 @@ export default class RankChart extends Component {
 
 	render() {
 		let {
-			RankName, 
+			RankName,
 			RankType,
 			MonthRank,
 		} = this.props,
@@ -303,19 +303,19 @@ export default class RankChart extends Component {
 				this.setState({
 					rankIndex: rankIndex + 10
 				});
-			};			
+			};
 		}
 
         return (
         	<div className='kpi-rank-chart'>
         		<div className='kpi-rank-chart-title'>{RankName}</div>
-        		<SwitchBar 
+        		<SwitchBar
         			className='switch-month'
         			label={this._getDateLabel()}
         			onLeft={onLastMonth}
         			onRight={onNextMonth}
         		/>
-        		<SwitchBar 
+        		<SwitchBar
         			className='switch-range'
         			label={this._getRankLabel()}
         			onLeft={onLastRank}

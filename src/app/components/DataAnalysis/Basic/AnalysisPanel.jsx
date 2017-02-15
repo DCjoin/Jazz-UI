@@ -42,6 +42,7 @@ import BasicAnalysisAction from 'actions/DataAnalysis/BasicAnalysisAction.jsx';
 import CommodityStore from 'stores/CommodityStore.jsx';
 import HierarchyStore from 'stores/HierarchyStore.jsx';
 import TagAction from 'actions/TagAction.jsx';
+import CommodityAction from 'actions/CommodityAction.jsx'
 
 const DIALOG_TYPE = {
   SWITCH_WIDGET: "switchwidget",
@@ -50,6 +51,7 @@ const DIALOG_TYPE = {
 };
 
 var ntLocation=null;
+
 
 class AnalysisPanel extends Component {
 
@@ -80,6 +82,8 @@ class AnalysisPanel extends Component {
     this.routerWillLeave  = this.routerWillLeave.bind(this);
     this.getCurrentWidgetDto  = this.getCurrentWidgetDto.bind(this);
     this.getRemarck  = this.getRemarck.bind(this);
+    this._onDialogChanged  = this._onDialogChanged.bind(this);
+
   }
 
   state={
@@ -99,6 +103,7 @@ class AnalysisPanel extends Component {
       timeRanges:this.getInitTimeRanges(),
       willLeave:false,
       showLeaveDialog:false,
+      showSaveDialog:false,
       sureLevalCallback: null,
       hierarchyId:this.props.hierarchyId,
       isBuilding:this.props.isBuilding,
@@ -349,7 +354,36 @@ class AnalysisPanel extends Component {
     if( doned ) {
       doned();
     }
-    if(!!this.state.energyData){
+    if(this.props.isNew){
+      if(!!this.state.energyData){
+        this.setState({
+          showLeaveDialog:false,
+          showSaveDialog:true,
+          sureLevalCallback,
+          cancelLevalCallback,
+        })
+      }else {
+        //无tag 提示是否离开
+        //有tag，提示是否保存 loading的时候
+        var tagList=AlarmTagStore.getSearchTagList();
+        if(tagList.length===0){
+          this.setState({
+            showLeaveDialog:true,
+            showSaveDialog:false,
+            sureLevalCallback,
+            cancelLevalCallback,
+          })
+        }else {
+          this.setState({
+            showLeaveDialog:false,
+            showSaveDialog:true,
+            sureLevalCallback,
+            cancelLevalCallback,
+          })
+        }
+      }
+    }
+    else {
       var currentWidgetDto=Immutable.fromJS(this.getCurrentWidgetDto());
       var originalWidgetDto=DataAnalysisStore.getInitialWidgetDto();
       // console.log(currentWidgetDto.toJS());
@@ -359,19 +393,14 @@ class AnalysisPanel extends Component {
       }
       else {
         this.setState({
-          showLeaveDialog:true,
+          showLeaveDialog:false,
+          showSaveDialog:true,
           sureLevalCallback,
           cancelLevalCallback,
         })
       }
-    } else {
-      this.setState({
-        showLeaveDialog:true,
-        sureLevalCallback,
-        cancelLevalCallback,
-      })
     }
-  }
+    }
 
   showStepError(step, EnergyStore) {
   let btns = [],
@@ -910,11 +939,17 @@ class AnalysisPanel extends Component {
         )
 
         }else {
-          return (
-            <div className="flex-center">
-              {I18N.Setting.DataAnalysis.NotagRecommend}
-            </div>
-          )
+          let tagList=AlarmTagStore.getSearchTagList();
+          if(tagList.length===0){
+            return (
+              <div className="flex-center">
+                {I18N.Setting.DataAnalysis.NotagRecommend}
+              </div>
+            )
+          }
+          else {
+            return null
+          }
         }
 
   }
@@ -954,54 +989,6 @@ class AnalysisPanel extends Component {
     if( this.state.willLeave ) {
       return null;
     }
-    if(!!this.state.energyData){
-      content=I18N.Setting.DataAnalysis.SaveTip;
-       _buttonActions = [<FlatButton
-                              label={I18N.Common.Button.Save}
-                              onClick={()=>{
-                                if(this.state.energyData) {
-                                  this._handleSave(true);
-                                }
-                                let sureLevalCallback = this.state.sureLevalCallback;
-
-                                this.setState({
-                                  willLeave:true,
-                                  showLeaveDialog:false,
-                                  sureLevalCallback: null,
-                                  cancelLevalCallback: null,
-                                },()=>{
-                                  if(sureLevalCallback) {
-                                    sureLevalCallback();
-                                  }
-                                  this.setState({
-                                    willLeave: false,
-                                  });
-                                  // this.props.router.replace(ntLocation.pathname)
-                                })
-                              }} />,
-                            <FlatButton
-                              label={I18N.Common.Button.NotSave}
-                              style={{
-                                marginLeft: '10px'
-                                }}
-                                onClick={()=>{
-                                  let sureLevalCallback = this.state.sureLevalCallback;
-                                  this.setState({
-                                    willLeave:true,
-                                    showLeaveDialog:false,
-                                    sureLevalCallback: null,
-                                    cancelLevalCallback: null,
-                                  },()=>{
-                                    if(sureLevalCallback) {
-                                      sureLevalCallback();
-                                    }
-                                    this.setState({
-                                      willLeave: false,
-                                    });
-                                    // this.props.router.replace(ntLocation.pathname)
-                                  })
-                                }} />];
-    }else {
       content=I18N.Setting.DataAnalysis.LeaveTip;
       _buttonActions = [<FlatButton
                               label={I18N.Folder.Widget.LeaveButton}
@@ -1013,6 +1000,7 @@ class AnalysisPanel extends Component {
                                 this.setState({
                                   willLeave:true,
                                   showLeaveDialog:false,
+                                  showSaveDialog:false,
                                   sureLevalCallback: null,
                                   cancelLevalCallback: null,
                                 },()=>{
@@ -1034,6 +1022,7 @@ class AnalysisPanel extends Component {
                                   let cancelLevalCallback = this.state.cancelLevalCallback;
                                   this.setState({
                                     showLeaveDialog:false,
+                                    showSaveDialog:false,
                                     sureLevalCallback: null,
                                     cancelLevalCallback: null,
                                   }, () => {
@@ -1042,7 +1031,6 @@ class AnalysisPanel extends Component {
                                     }
                                   })
                                 }} />];
-    }
 
     return(
       <NewDialog actions={_buttonActions} modal={true} open={true}>
@@ -1051,6 +1039,65 @@ class AnalysisPanel extends Component {
     )
   }
 
+  _renderSaveDialog(){
+    var _buttonActions=[],content=null;
+    if( this.state.willLeave ) {
+      return null;
+    }
+    content=I18N.Setting.DataAnalysis.SaveTip;
+     _buttonActions = [<FlatButton
+                            label={I18N.Common.Button.Save}
+                            onClick={()=>{
+                              if(this.state.energyData) {
+                                this._handleSave(true);
+                              }
+                              let sureLevalCallback = this.state.sureLevalCallback;
+
+                              this.setState({
+                                willLeave:true,
+                                showLeaveDialog:false,
+                                showSaveDialog:false,
+                                sureLevalCallback: null,
+                                cancelLevalCallback: null,
+                              },()=>{
+                                if(sureLevalCallback) {
+                                  sureLevalCallback();
+                                }
+                                this.setState({
+                                  willLeave: false,
+                                });
+                                // this.props.router.replace(ntLocation.pathname)
+                              })
+                            }} />,
+                          <FlatButton
+                            label={I18N.Common.Button.NotSave}
+                            style={{
+                              marginLeft: '10px'
+                              }}
+                              onClick={()=>{
+                                let sureLevalCallback = this.state.sureLevalCallback;
+                                this.setState({
+                                  willLeave:true,
+                                  showLeaveDialog:false,
+                                  showSaveDialog:false,
+                                  sureLevalCallback: null,
+                                  cancelLevalCallback: null,
+                                },()=>{
+                                  if(sureLevalCallback) {
+                                    sureLevalCallback();
+                                  }
+                                  this.setState({
+                                    willLeave: false,
+                                  });
+                                  // this.props.router.replace(ntLocation.pathname)
+                                })
+                              }} />];
+    return(
+      <NewDialog actions={_buttonActions} modal={true} open={true}>
+        {content}
+      </NewDialog>
+    )
+  }
   getInitParam(analysisPanel) {
     let date = new Date();
     date.setHours(0, 0, 0);
@@ -1209,6 +1256,7 @@ class AnalysisPanel extends Component {
     }
 
   componentWillMount(){
+    console.log(this.props.widgetDto);
     if(!this.props.isNew){
       let hierNode = CommodityStore.getHierNode();
       let dimNode = CommodityStore.getCurrentDimNode();
@@ -1281,6 +1329,8 @@ class AnalysisPanel extends Component {
     FolderStore.removeCheckWidgetUpdateChangeListener(this._onCheckWidgetUpdate);
     this.resetCalendarType();
     TagAction.clearAlarmSearchTagList();
+    TagAction.setCurrentHierarchyId(null);
+    CommodityAction.setCurrentHierarchyInfo({Id:null,name:null});//清空hierarchy 信息，否则会影响能源
   }
 
   render(){
@@ -1324,6 +1374,7 @@ class AnalysisPanel extends Component {
         {errorDialog}
         {this._renderDialog()}
         {this.state.showLeaveDialog && this._renderLeaveDialog()}
+        {this.state.showSaveDialog && this._renderSaveDialog()}
       </div>
     )
   }
