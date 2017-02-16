@@ -216,8 +216,8 @@ let EnergyStore = assign({}, PrototypeStore, {
   addEnergyDataLoadingListener: function(callback) {
     this.on(ENERGY_DATA_LOADING_EVENT, callback);
   },
-  emitEnergyDataLoading: function() {
-    this.emit(ENERGY_DATA_LOADING_EVENT);
+  emitEnergyDataLoading: function(id) {
+    this.emit(ENERGY_DATA_LOADING_EVENT, id);
   },
   removeEnergyDataLoadingListener: function(callback) {
     this.removeListener(ENERGY_DATA_LOADING_EVENT, callback);
@@ -225,8 +225,8 @@ let EnergyStore = assign({}, PrototypeStore, {
   addEnergyDataLoadedListener: function(callback) {
     this.on(ENERGY_DATA_LOADED_EVENT, callback);
   },
-  emitEnergyDataLoadedListener: function() {
-    this.emit(ENERGY_DATA_LOADED_EVENT);
+  emitEnergyDataLoadedListener: function(id) {
+    this.emit(ENERGY_DATA_LOADED_EVENT, id);
   },
   removeEnergyDataLoadedListener: function(callback) {
     this.removeListener(ENERGY_DATA_LOADED_EVENT, callback);
@@ -234,8 +234,8 @@ let EnergyStore = assign({}, PrototypeStore, {
   addEnergyDataLoadErrorListener: function(callback) {
     this.on(ENERGY_DATA_LOAD_ERROR_EVENT, callback);
   },
-  emitEnergyDataLoadErrorListener: function(callback) {
-    this.emit(ENERGY_DATA_LOAD_ERROR_EVENT);
+  emitEnergyDataLoadErrorListener: function(callback, id) {
+    this.emit(ENERGY_DATA_LOAD_ERROR_EVENT, id);
   },
   removeEnergyDataLoadErrorListener: function(callback) {
     this.removeListener(ENERGY_DATA_LOAD_ERROR_EVENT, callback);
@@ -256,17 +256,17 @@ EnergyStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
     case Action.GET_ENERGY_DATA_LOADING:
       EnergyStore._onDataLoading(action.submitParams, action.tagOptions, action.relativeDate);
-      EnergyStore.emitEnergyDataLoading();
+      EnergyStore.emitEnergyDataLoading(action.widgetId);
       break;
     case Action.GET_ENERGY_DATA_SUCCESS:
       EnergyStore._onDataChanged(action.energyData, action.submitParams);
-      EnergyStore.emitEnergyDataLoadedListener();
+      EnergyStore.emitEnergyDataLoadedListener(action.widgetId);
       EnergyStore._checkErrors(action.energyData);
       break;
     case Action.GET_ENERGY_DATA_ERROR:
       EnergyStore._onDataChanged(null, action.submitParams);
       EnergyStore._initErrorText(action.errorText);
-      EnergyStore.emitEnergyDataLoadErrorListener();
+      EnergyStore.emitEnergyDataLoadErrorListener(action.widgetId);
       break;
     case Action.SET_ENERGY_TIME_RANGE:
       EnergyStore._onChangeTimeRange(action.startTime, action.endTime);

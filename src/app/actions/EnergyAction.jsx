@@ -61,7 +61,7 @@ let EnergyAction = {
       }
     });
   },
-  getEnergyTrendChartData(date, step, tagOptions, relativeDate, weatherOption) {
+  getEnergyTrendChartData(date, step, tagOptions, relativeDate, weatherOption, widgetId) {
     var timeRange = date;
 
     var tagIds = getTagIdsFromTagOptions(tagOptions);
@@ -83,7 +83,8 @@ let EnergyAction = {
       type: Action.GET_ENERGY_DATA_LOADING,
       submitParams: submitParams,
       tagOptions: tagOptions,
-      relativeDate: relativeDate
+      relativeDate: relativeDate,
+      widgetId,
     });
     // console.log('/Energy/GetTagsData');
 
@@ -96,14 +97,16 @@ let EnergyAction = {
         AppDispatcher.dispatch({
           type: Action.GET_ENERGY_DATA_SUCCESS,
           energyData: energyData,
-          submitParams: submitParams
+          submitParams: submitParams,
+          widgetId,
         });
       },
       error: function(err, res) {
         AppDispatcher.dispatch({
           type: Action.GET_ENERGY_DATA_ERROR,
           errorText: res.text,
-          submitParams: submitParams
+          submitParams: submitParams,
+          widgetId,
         });
       }
     });
