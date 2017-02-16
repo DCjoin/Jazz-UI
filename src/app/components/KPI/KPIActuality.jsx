@@ -346,48 +346,42 @@ export default class Actuality extends Component {
 			return (<TipMessage message={I18N.Kpi.Error.KPIConguredNotAnyBuilding}/>);
 		}
 		let wholeCustomer = this._privilegedCustomer();
-		if( isOnlyView() ) {
-			if( !wholeCustomer && !isSingleBuilding() ) {
-				return (<TipMessage message={I18N.Kpi.Error.KPIConguredMoreBuilding}/>);
-			}
-		}
-			return (
-				<MinHeight400 className='jazz-kpi-actuality'>
-					<ActualityContent
-						chartReady={SingleKPIStore.chartReady()}
-						period={SingleKPIStore.getYearQuotaperiod()}
-						customerId={+this._getCustomerId()}
-						hierarchyId={this._getHierarchyId()}
-						data={SingleKPIStore.getKPIChart()}
-						year={this.state.year}
-						summaryData={SingleKPIStore.getKPIChartSummary()}
-						onChangeYear={(year) => {
-			        		this._getData(this._getCustomerId(), year, this._getHierarchyId());
-							this.setState({year});
-						}}
-						onEdit={(Id) => {
-							this.setState({
-								showCreate: true,
-								kpiId: Id
-							});
-						}}
-						onRefresh={(Id) => {
-							this.setState({
-								showRefreshDialog: true,
-								kpiId: Id
-							});
-						}}
-					/>
-					{this.state.showRefreshDialog && <UpdatePrediction
-						hierarchyId={this._getHierarchyId()}
-						hierarchyName={getHierarchyNameById(this._getHierarchyId())}
-						kpiId={this.state.kpiId}
-						isCreate={!this.state.kpiId}
-						onSave={this._reload}
-						onCancel={this._cancleRefreshDialog}
-						year={this.state.year}/>}
-				</MinHeight400>
-			);
-		// }
+		return (
+			<MinHeight400 className='jazz-kpi-actuality'>
+				<ActualityContent
+					chartReady={SingleKPIStore.chartReady()}
+					period={SingleKPIStore.getYearQuotaperiod()}
+					customerId={+this._getCustomerId()}
+					hierarchyId={this._getHierarchyId()}
+					data={SingleKPIStore.getKPIChart()}
+					year={this.state.year}
+					summaryData={SingleKPIStore.getKPIChartSummary()}
+					onChangeYear={(year) => {
+		        		this._getData(this._getCustomerId(), year, this._getHierarchyId());
+						this.setState({year});
+					}}
+					onEdit={(Id) => {
+						this.setState({
+							showCreate: true,
+							kpiId: Id
+						});
+					}}
+					onRefresh={(Id) => {
+						this.setState({
+							showRefreshDialog: true,
+							kpiId: Id
+						});
+					}}
+				/>
+				{this.state.showRefreshDialog && <UpdatePrediction
+					hierarchyId={this._getHierarchyId()}
+					hierarchyName={getHierarchyNameById(this._getHierarchyId())}
+					kpiId={this.state.kpiId}
+					isCreate={!this.state.kpiId}
+					onSave={this._reload}
+					onCancel={this._cancleRefreshDialog}
+					year={this.state.year}/>}
+			</MinHeight400>
+		);
 	}
 }
