@@ -287,7 +287,7 @@ export default class DataAnalysis extends Component {
 				</div>);
 		if( selectedNode ) {
 			if( isWidget(selectedNode) ) {
-				if( widgetLoaded(selectedNode) ) {
+				if( widgetLoaded(selectedNode) && this.state.widgetDto ) {
           content = React.cloneElement(this.props.children, {
             hierarchyId: this._getHierarchyId(this.context),
             isBuilding: !this._isCustomer(),
