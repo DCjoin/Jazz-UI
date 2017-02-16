@@ -72,6 +72,19 @@ export default class ChartSubToolbar extends Component {
     }
   }
 
+  getMoreBtnDisableStatus(){
+    var chartType=this.props.selectedChartType;
+    if(!this.props.hasTagData){
+      return true
+    }
+    if (chartType === "pie" || chartType === "rawdata"){
+      return true
+    }
+    else {
+      return false
+    }
+  }
+
   getHistoryBtnStatus(){
     var chartType=this.props.selectedChartType;
     if(!this.props.hasTagData){
@@ -119,7 +132,7 @@ export default class ChartSubToolbar extends Component {
         <ButtonMenu label={I18N.EM.Tool.MoreAnalysis}  style={{
           marginLeft: '10px'
         }} backgroundColor="#fbfbfb"
-        onItemTouchTap={this._onConfigBtnItemTouchTap}>
+        onItemTouchTap={this._onConfigBtnItemTouchTap} disabled={this.getMoreBtnDisableStatus()}>
        <MenuItem primaryText={I18N.EM.Tool.DataStatistics} value='sum' disabled={disabled}/>
          {calendarEl}
       <MenuItem primaryText={I18N.EM.Tool.YaxisConfig} value='yaxis' disabled={disabled}/>

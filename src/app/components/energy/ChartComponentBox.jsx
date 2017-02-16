@@ -428,6 +428,7 @@ let ChartComponentBox = React.createClass({
     this.refs.ignoreDialogWindow.dismiss();
   },
   render() {
+    console.log('render');
     let that = this;
     if (!this.props.energyData) {
       return null;
@@ -539,6 +540,10 @@ let ChartComponentBox = React.createClass({
     var realData = this.convertData(data.Data, newConfig);
     var timeRange = this.initRange(newConfig, realData);
     this.initNavigatorData(newConfig, timeRange, data);
+
+    //多时间段，添加legend Title
+    this.initLegendTitle(newConfig,realData);
+
     if (this.props.chartType == "line" || this.props.chartType == "column") {
       this.initFlagSeriesData(newConfig, realData);
     }
@@ -558,6 +563,30 @@ let ChartComponentBox = React.createClass({
 
     return newConfig;
 
+  },
+  initLegendTitle:function(newConfig,realData){
+    if(this.props.chartType === "pie"){
+      if(realData[0].data.length>1 && realData[0].data[0].name.indexOf('<br/>')>-1){
+        var nodeOptions = AlarmTagStore.getSearchTagList();
+        newConfig.legend.title={
+          text:JazzCommon.GetArialStr(nodeOptions[0].tagName,23),
+        }
+      }
+      else {
+        newConfig.legend.title={}
+      }
+    }
+    else {
+      if(realData.length>1 && realData[0].name.indexOf('<br/>')>-1){
+        var nodeOptions = AlarmTagStore.getSearchTagList();
+        newConfig.legend.title={
+          text:JazzCommon.GetArialStr(nodeOptions[0].tagName,23),
+        }
+      }
+      else {
+          newConfig.legend.title={}
+      }
+    }
   },
   initSeriesVisibility: function(series) {
     if (series && series[0]) {
@@ -700,17 +729,6 @@ let ChartComponentBox = React.createClass({
     }
     newConfig.series = newConfig.series.concat(flagSeries);
     newConfig.series = newConfig.series.concat(alarmSeries);
-
-    //多时间段，添加legend title
-    if(newConfig.series.length>1 && newConfig.series[0].name.indexOf('<br/>')>-1){
-      var nodeOptions = AlarmTagStore.getSearchTagList();
-      newConfig.legend.title={
-        text:JazzCommon.GetArialStr(nodeOptions[0].tagName,23),
-      }
-    }
-    else {
-      newConfig.legend.title={}
-    }
   }
 });
 
