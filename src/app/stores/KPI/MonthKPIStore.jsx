@@ -86,6 +86,8 @@ const MonthKPIStore = assign({}, PrototypeStore, {
               values,
               validateQuota=SingleKPIStore.validateQuota
             ){
+    console.log(calcSum);
+    console.log(values);
     if(!calcSum){
       return _annualValueSum
     }
@@ -99,6 +101,7 @@ const MonthKPIStore = assign({}, PrototypeStore, {
         _annualValueSum=_.sum(_.map(values,'Value'));
       }
     }
+    console.log(_annualValueSum);
     return _annualValueSum
   },
 

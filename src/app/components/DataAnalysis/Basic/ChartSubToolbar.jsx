@@ -136,7 +136,8 @@ export default class ChartSubToolbar extends Component {
       padding: '0px',
       height: '18px',
       width: '18px',
-      fontSize: '18px'
+      fontSize: '18px',
+      marginTop:'-5px'
     };
     var lineIcon=<FontIcon className="icon-line" iconStyle ={iconStyle} style = {style} />,
         columnIcon=<FontIcon className="icon-column" iconStyle ={iconStyle} style = {style}  />,
@@ -148,11 +149,11 @@ export default class ChartSubToolbar extends Component {
   return(
     <DropDownMenu disabled={!this.props.hasTagData}
       style={{width: '120px'}} labelStyle={{top:'10px',lineHeight:'32px',paddingRight:'0'}} value={chartType} onChange={this._onChartTypeChanged}>
-    <MenuItem primaryText={I18N.EM.CharType.Line} value="line" leftIcon={lineIcon} />
-    <MenuItem primaryText={I18N.EM.CharType.Bar} value="column" leftIcon={columnIcon} />
-    <MenuItem primaryText={I18N.EM.CharType.Stack} value="stack" leftIcon={stackIcon} />
-    <MenuItem primaryText={I18N.EM.CharType.Pie} value="pie" leftIcon={pieIcon} />
-    <MenuItem primaryText={I18N.EM.CharType.GridTable} value="rawdata" leftIcon={rawdataIcon} />
+    <MenuItem primaryText={I18N.EM.CharType.Line} value="line" leftIcon={lineIcon}/>
+    <MenuItem primaryText={I18N.EM.CharType.Bar} value="column" leftIcon={columnIcon}/>
+    <MenuItem primaryText={I18N.EM.CharType.Stack} value="stack" leftIcon={stackIcon}/>
+    <MenuItem primaryText={I18N.EM.CharType.Pie} value="pie" leftIcon={pieIcon}/>
+    <MenuItem primaryText={I18N.EM.CharType.GridTable} value="rawdata" leftIcon={rawdataIcon}/>
   </DropDownMenu>
   )
   }

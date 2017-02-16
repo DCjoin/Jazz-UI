@@ -629,14 +629,13 @@ let ChartCmpStrategyFactor = {
             x: -6 * sign,
             formatter: dataLabelFormatter
           },
-          offset: yList.length > 2 ? -10000 :0,
+          offset: yList.length >= 2 ? -10000 :0,
           opposite:!(count===0) //,
         //gridLineWidth: count == 0 ? 1 : 0//for contour 等高线对齐，要使用此属性
         });
         count++;
         dic[uom] = true;
       }
-      // console.log(yList);
       if (yList.length === 0) {
         yList.push({});
       }

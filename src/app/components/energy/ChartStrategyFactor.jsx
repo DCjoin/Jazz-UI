@@ -440,9 +440,21 @@ let ChartStrategyFactor = {
         let needReload = EnergyStore.removeSeriesDataByUid(uid);
 
         if (needReload) {
+          // if (multiTimespanIndex !== -1) {
+          //   timeRanges = [timeRanges[0]];
+          //   MultiTimespanAction.clearMultiTimespan('both');
+          // }
+
           if (multiTimespanIndex !== -1) {
-            timeRanges = [timeRanges[0]];
-            MultiTimespanAction.clearMultiTimespan('both');
+            var multiTimespanList=MultipleTimespanStore.getRelativeList();
+            if(multiTimespanList===2){
+              timeRanges = [timeRanges[0]];
+              MultiTimespanAction.clearMultiTimespan('both');
+            }
+            else {
+              timeRanges=MultipleTimespanStore.getSubmitTimespans();
+            }
+
           }
           var chartType = analysisPanel.state.selectedChartType;
           if (chartType == 'line' || chartType == 'column' || chartType == 'stack') {
