@@ -517,6 +517,7 @@ class AnalysisPanel extends Component {
         FolderAction.updateWidgetDtos(widgetDto);
       }
   }
+  
   getCurrentWidgetDto(){
     let chartType = this.state.selectedChartType;
     let tagOptions = EnergyStore.getTagOpions();
