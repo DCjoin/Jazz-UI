@@ -128,7 +128,7 @@ class AnalysisPanel extends Component {
   }
 
   energyDataLoad(timeRanges, step, tagOptions, relativeDate, weatherOption) {
-    EnergyAction.getEnergyTrendChartData(timeRanges, step, tagOptions, relativeDate, weatherOption);
+    EnergyAction.getEnergyTrendChartData(timeRanges, step, tagOptions, relativeDate, weatherOption, this.props.widgetDto.Id);
   }
 
   pieEnergyDataLoad(timeRanges, step, tagOptions, relativeDate) {
@@ -302,7 +302,10 @@ class AnalysisPanel extends Component {
     });
   }
 
-  _onLoadingStatusChange() {
+  _onLoadingStatusChange(widgetId) {
+    if( widgetId !== this.props.widgetDto.Id ) {
+      return;
+    }
     let isLoading = EnergyStore.getLoadingStatus(),
       paramsObj = EnergyStore.getParamsObj(),
       // tagOption = EnergyStore.getTagOpions()[0],
@@ -318,6 +321,9 @@ class AnalysisPanel extends Component {
   }
 
   _onEnergyDataChange(isError, errorObj, args) {
+    if( typeof isError === 'number' && isError !== this.props.widgetDto.Id ) {
+      return;
+    }
     let isLoading = EnergyStore.getLoadingStatus(),
         energyData = EnergyStore.getEnergyData(),
         energyRawData = EnergyStore.getEnergyRawData(),
@@ -350,7 +356,10 @@ class AnalysisPanel extends Component {
 
   }
 
-  _onGetEnergyDataError() {
+  _onGetEnergyDataError(widgetId) {
+    if( widgetId !== this.props.widgetDto.Id ) {
+      return;
+    }
     let errorObj = this.errorProcess(EnergyStore);
     this._onEnergyDataChange(true, errorObj);
   }
