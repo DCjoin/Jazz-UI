@@ -183,7 +183,10 @@ class AnalysisPanel extends Component {
 
   _onSearchDataButtonClick(invokeFromMultiTime=false){
     //invokeFromMultiTime 来判断是不是点击多时间段的绘制按钮进行查看。
-    if(invokeFromMultiTime!==null)this.isMultiTime=invokeFromMultiTime;
+    if(invokeFromMultiTime!==null){
+      this.isMultiTime=invokeFromMultiTime;
+    }
+    // console.log(invokeFromMultiTime);
     let dateSelector = this.refs.dateTimeSelector;
     let dateRange = dateSelector.getDateTime(),
         startDate = dateRange.start,
@@ -285,7 +288,12 @@ class AnalysisPanel extends Component {
   }
   }
   _onTagChanged(){
-    this._onSearchDataButtonClick();
+    this.setState({
+      errorObj:null
+    },()=>{
+      this._onSearchDataButtonClick();
+    })
+
   }
 
   _onDialogChanged() {
@@ -333,6 +341,8 @@ class AnalysisPanel extends Component {
     if (!!args && args.length && args[0] === '') {
 
     }
+  }else {
+    state.errorObj = null;
   }
     this.setState(state,()=>{
       if(this.isInitial){
@@ -395,9 +405,7 @@ class AnalysisPanel extends Component {
     else {
       var currentWidgetDto=Immutable.fromJS(this.getCurrentWidgetDto());
       var originalWidgetDto=DataAnalysisStore.getInitialWidgetDto();
-      // console.log(currentWidgetDto.toJS());
-      // console.log(originalWidgetDto.toJS());
-      if(Immutable.is(currentWidgetDto,originalWidgetDto)){
+      if(originalWidgetDto===null || Immutable.is(currentWidgetDto,originalWidgetDto)){
         return sureLevalCallback()
       }
       else {
@@ -628,6 +636,7 @@ class AnalysisPanel extends Component {
 
   this.energyDataLoad(timeRanges, step, tagOptions, false);
   }
+
   exportChart() {
     if (!this.state.energyData) {
       return;
@@ -676,6 +685,7 @@ class AnalysisPanel extends Component {
       charTypes.push(curChartType);
     }
   }
+
   params.charTypes = charTypes;
   ExportChartAction.getTagsData4Export(params, path);
   }
@@ -1265,7 +1275,7 @@ class AnalysisPanel extends Component {
     }
 
   componentWillMount(){
-    console.log(this.props.widgetDto);
+    BasicAnalysisAction.setInitialWidgetDto(null);
     if(!this.props.isNew){
       let hierNode = CommodityStore.getHierNode();
       let dimNode = CommodityStore.getCurrentDimNode();
@@ -1283,9 +1293,6 @@ class AnalysisPanel extends Component {
         })
       }
       this.isInitial=true;
-    }
-    else {
-      BasicAnalysisAction.setInitialWidgetDto(null);
     }
   }
 
@@ -1340,6 +1347,7 @@ class AnalysisPanel extends Component {
     TagAction.clearAlarmSearchTagList();
     TagAction.setCurrentHierarchyId(null);
     CommodityAction.setCurrentHierarchyInfo({Id:null,name:null});//清空hierarchy 信息，否则会影响能源
+    MultipleTimespanStore.clearMultiTimespan('both');
   }
 
   render(){
