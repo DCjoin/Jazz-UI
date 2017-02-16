@@ -294,7 +294,7 @@ export default class Actuality extends Component {
 				}
 			} else {
 				if( buildingList.length > 1 ) {
-					message = I18N.Kpi.Error.KPIConguredMoreBuilding;
+					// message = I18N.Kpi.Error.KPIConguredMoreBuilding;
 				} else {
 					if( isOnlyView() ) {
 						message = I18N.Kpi.Error.KPIConguredNotAnyBuilding;
@@ -312,37 +312,9 @@ export default class Actuality extends Component {
 			return (<TipMessage message={message}/>);
 		}
 		let {router} = this.props,
-		hierarchyId = this._getHierarchyId(this.context),
-		buildingProps = {
-	        isViewStatus: false,
-	        defaultValue: hierarchyId,
-	        style: {
-	        	width: 200,
-	        	margin: '0 20px',
-	        },
-	        labelStyle: {
-	        	color: '#fff',
-	        },
-	        listStyle: {
-	        	width: 200,
-	        },
-	        underlineStyle: {
-	        	display: 'none',
-	        },
-	        didChanged: (hierarchyId) => {
-	        	this._routerPush(
-	        		RoutePath.Actuality(this._getParams(this.props))
-	        		+ '?hierarchyId=' + hierarchyId
-	        	);
-	        },
-	        disabled: !this._privilegedCustomer() && this.state.buildingList.length === 1,
-	        textField: 'Name',
-	        valueField: 'Id',
-	        dataItems: groupProjectMenuItems(router.params.customerId).concat(singleProjectMenuItems()),
-	    };
+		hierarchyId = this._getHierarchyId(this.context);
 		return (
 			<div className='jazz-actuality'>
-				{/*!this._isSingleKPI() && isFull() && <div className='jazz-top-select-hierarchy'><ViewableDropDownMenu {...buildingProps}/></div>*/}
 				{!hierarchyId && (<div className='flex-center'><b>{I18N.Kpi.Error.SelectBuilding}</b></div>)}
 				{this._renderActuality()}
 				{this._renderEditPage()}
