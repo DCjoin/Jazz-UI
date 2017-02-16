@@ -39,7 +39,7 @@ export default class ReportActuality extends Component {
 	}
 	_onChange() {
 		this.setState({
-			buildingList: HierarchyStore.getBuildingList()
+			buildingList: HierarchyStore.getActiveBuildingList()
 		});
 	}
 	_loadInitData(props, context) {

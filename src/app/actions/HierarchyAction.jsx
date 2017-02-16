@@ -58,7 +58,8 @@ let HierarchyAction = {
 
         AppDispatcher.dispatch({
           type: Action.GET_BUILDING_LIST_BY_CUSTOMER_ID,
-          data: buildingList
+          data: buildingList,
+          isActive: true,
         });
       },
       error: function(err, res) {

@@ -3,6 +3,7 @@ import PrototypeStore from './PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
 import { List, updater, update, Map } from 'immutable';
+import { JazzCommon } from 'util/Util.jsx';
 
 import Folder from '../constants/actionType/Folder.jsx';
 import UserStore from './UserStore.jsx';
@@ -338,7 +339,7 @@ var FolderStore = assign({}, PrototypeStore, {
 
     setSendStatus: function(sourceNode, userIds) {
       if (userIds.length === 0) {
-        _sendStatus = I18N.format(I18N.Folder.Send.Success, sourceNode.get('Name'));
+        _sendStatus = I18N.format(I18N.Folder.Send.Success, JazzCommon.GetArialStr(sourceNode.get('Name'), 20));
       } else {
         let userNames;
         let userList = UserStore.getUserStatus();
@@ -357,7 +358,7 @@ var FolderStore = assign({}, PrototypeStore, {
             }
           }
         });
-        _sendStatus = I18N.format(I18N.Folder.Send.Error, sourceNode.get('Name'), userNames);
+        _sendStatus = I18N.format(I18N.Folder.Send.Error, JazzCommon.GetArialStr(sourceNode.get('Name'), 10 - userNames.length), userNames);
 
       }
 
@@ -709,7 +710,7 @@ var FolderStore = assign({}, PrototypeStore, {
       case FolderAction.UPDATE_WIDGETDTOS_SUCCESS:
         FolderStore.updateWidgetDtosSuccess(action.widgetDto);
         // FolderStore.emitFolderTreeChange();
-        //FolderStore.emitSelectedNodeChange();
+        FolderStore.emitSelectedNodeChange();
         break;
       case FolderAction.DISPLAY_DIALOG:
         FolderStore.setDisplayDialog(action.dialogType, action.nodeData, action.contentInfo);

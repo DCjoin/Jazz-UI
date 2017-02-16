@@ -10,6 +10,7 @@ let BUILDING_LIST_EVENT = 'building_list_event';
 var _data = {};
 var _isLoading = false;
 var _buildingList = false;
+var _activeLuildingList = false;
 
 var HierarchyStore = assign({}, PrototypeStore, {
   traversalNode: function(node) {
@@ -83,6 +84,12 @@ var HierarchyStore = assign({}, PrototypeStore, {
   getBuildingList() {
     return _buildingList;
   },
+  setActiveBuildingList(data) {
+    _activeLuildingList = data;
+  },
+  getActiveBuildingList() {
+    return _activeLuildingList;
+  },
   IsBuilding(hierarchyId){
     let index=Immutable.fromJS(_buildingList).findIndex(item=>(item.get('Id')===hierarchyId));
     return index>-1;
@@ -135,7 +142,11 @@ HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
       HierarchyStore.emitNodeLoadingChange();
       break;
     case Action.GET_BUILDING_LIST_BY_CUSTOMER_ID:
-      HierarchyStore.setBuildingList(action.data);
+      if(action.isActive) {
+        HierarchyStore.setActiveBuildingList(action.data);
+      } else {
+        HierarchyStore.setBuildingList(action.data);
+      }
       HierarchyStore.emitBuildingListChange();
       break;
 
