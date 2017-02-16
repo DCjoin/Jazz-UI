@@ -373,6 +373,10 @@ class AnalysisPanel extends Component {
     if( doned ) {
       doned();
     }
+    if(this.state.willLeave) {
+      sureLevalCallback();
+      return;
+    }
     if(this.props.isNew){
       if(!!this.state.energyData){
         this.setState({
@@ -763,8 +767,14 @@ class AnalysisPanel extends Component {
         case 2:
               //分享
               this._handleSave(true);
-        case 3:
               this.props.onOperationSelect(menuItem.key);
+              break;
+        case 3:
+              this.setState({
+                willLeave:true
+              });
+              this.props.onOperationSelect(menuItem.key);
+              break;
             }
 
     };
