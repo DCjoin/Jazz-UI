@@ -69,16 +69,14 @@ function singleProjectMenuItems() {
     }].concat(HierarchyStore.getBuildingList());
 }
 function groupProjectMenuItems(customerId) {
-  if( !CurrentUserCustomerStore.getAll() || CurrentUserCustomerStore.getAll().length === 0 ) {
+  if( !CurrentUserCustomerStore.getAll() || CurrentUserCustomerStore.getAll().length === 0 || (getCustomerPrivilageById( customerId ) && !getCustomerPrivilageById( customerId ).get('WholeCustomer')) ) {
     return [];
   }
   return [{
       Id: -1,
       disabled: true,
       Name: I18N.Kpi.GroupProject
-    }].concat( {...getCustomerById(customerId), ...{
-      disabled: getCustomerPrivilageById( customerId ) && !getCustomerPrivilageById( customerId ).get('WholeCustomer')
-    }} );
+    }].concat(getCustomerById(customerId));
 }
 
 function getCustomerPrivilageById(customerId) {
