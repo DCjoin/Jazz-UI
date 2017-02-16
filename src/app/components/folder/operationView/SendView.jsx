@@ -14,7 +14,7 @@ var SendView = React.createClass({
   },
   _onSendItem:function(){
     this.props.onDismiss();
-    FolderAction.sendFolderCopy(this.props.sendNode,UserStore.getUserIds(), this.props.isNew);
+    FolderAction.sendFolderCopy(this.props.getNode ? this.props.getNode() : this.props.sendNode,UserStore.getUserIds(), this.props.isNew);
   },
   render:function(){
     var type=(this.props.sendNode.get('Type')==nodeType.Folder)?I18N.Folder.FolderName:I18N.Folder.WidgetName;

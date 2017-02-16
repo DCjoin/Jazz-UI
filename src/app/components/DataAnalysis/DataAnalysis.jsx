@@ -327,10 +327,12 @@ export default class DataAnalysis extends Component {
 			// 	dialog = <CopyView isNew={true} onDismiss={this._onDialogDismiss} copyNode={dialogData}/>;
 			// 	break;
 			case MenuAction.Send:
-				dialog = <SendView isNew={true} onDismiss={this._onDialogDismiss} sendNode={dialogData}/>;
+				dialog = <SendView isNew={true} onDismiss={this._onDialogDismiss} sendNode={dialogData}
+          getNode={isWidget(dialogData) ? FolderStore.getSelectedNode : null}/>;
 				break;
 			case MenuAction.Share:
-				dialog = <SendView isNew={true} onDismiss={this._onDialogDismiss} sendNode={dialogData}/>;
+				dialog = <SendView isNew={true} onDismiss={this._onDialogDismiss} sendNode={dialogData}
+          getNode={isWidget(dialogData) ? FolderStore.getSelectedNode : null}/>;
 				break;
 			case MenuAction.Delete:
 				dialog = <DeleteView isLoadByWidget={selectedNode.get('Id') === dialogData.get('Id')} onDismiss={this._onDialogDismiss} deleteNode={dialogData}/>;
