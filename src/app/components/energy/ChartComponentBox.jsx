@@ -705,7 +705,8 @@ let ChartComponentBox = React.createClass({
     if(newConfig.series.length>1 && newConfig.series[0].name.indexOf('<br/>')>-1){
       var nodeOptions = AlarmTagStore.getSearchTagList();
       newConfig.legend.title={
-        text:nodeOptions[0].tagName
+        text:nodeOptions[0].tagName,
+        style:{maxWidth:'269px'}
       }
     }
     else {
