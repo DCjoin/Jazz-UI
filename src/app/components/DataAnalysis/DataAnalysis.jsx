@@ -81,6 +81,7 @@ export default class DataAnalysis extends Component {
     FolderStore.addMoveItemSuccessListener(this._onMoveItemSuccess);
     FolderStore.addModfiyReadingStatusListener(this._onSelectedNodeChange);
     FolderStore.addCopyItemSuccessListener(this._onSelectedNodeChange);
+    FolderStore.addSelectedNodeListener(this._onSelectedNodeChange);
 
 		this.state = this._getInitialState();
 
@@ -112,6 +113,7 @@ export default class DataAnalysis extends Component {
     FolderStore.removeMoveItemSuccessListener(this._onMoveItemSuccess);
     FolderStore.removeModfiyReadingStatusListener(this._onSelectedNodeChange);
     FolderStore.removeCopyItemSuccessListener(this._onSelectedNodeChange);
+    FolderStore.removeSelectedNodeListener(this._onSelectedNodeChange);
 	}
 
 	_getInitialState() {
@@ -160,7 +162,9 @@ export default class DataAnalysis extends Component {
 	}
 
 	_onSelectedNodeChange() {
-		this._onSelectNode(FolderStore.getSelectedNode());
+    if( !Immutable.is(this.state.selectedNode, FolderStore.getSelectedNode()) ) {
+  		this._onSelectNode(FolderStore.getSelectedNode());
+    }
 	}
 
   _onModifyNameError() {

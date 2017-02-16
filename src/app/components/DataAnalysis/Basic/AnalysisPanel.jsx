@@ -357,9 +357,6 @@ class AnalysisPanel extends Component {
   }
 
   _onGetEnergyDataError(widgetId) {
-    if( widgetId !== this.props.widgetDto.Id ) {
-      return;
-    }
     let errorObj = this.errorProcess(EnergyStore);
     this._onEnergyDataChange(true, errorObj);
   }
@@ -372,6 +369,10 @@ class AnalysisPanel extends Component {
   _onCheckWidgetUpdate(sureLevalCallback, cancelLevalCallback, doned) {
     if( doned ) {
       doned();
+    }
+    if(this.state.willLeave) {
+      sureLevalCallback();
+      return;
     }
     if(this.props.isNew){
       if(!!this.state.energyData){
@@ -763,8 +764,14 @@ class AnalysisPanel extends Component {
         case 2:
               //分享
               this._handleSave(true);
-        case 3:
               this.props.onOperationSelect(menuItem.key);
+              break;
+        case 3:
+              this.setState({
+                willLeave:true
+              });
+              this.props.onOperationSelect(menuItem.key);
+              break;
             }
 
     };

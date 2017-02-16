@@ -1305,6 +1305,7 @@ I18N.Message.M05025 = 'The share has been deleted.';
 I18N.Message.M05024 = 'The user has been deleted.';
 I18N.Message.M05027 = 'The subscriber has been deleted.';
 I18N.Message.M05028 = 'The subscriber has been deleted.';
+I18N.Message.M05304 = '父文件夹无法拖入子文件夹。';
 I18N.Message.M00953 = 'Illegal entry.';
 
 I18N.Message.M11600 = 'The customized labeling already exists under this customer. Please use another name.';
