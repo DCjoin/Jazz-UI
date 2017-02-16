@@ -265,8 +265,8 @@ export default class StatisticsDialog extends Component {
   }
 
   _renderContent(){
-    //var isMultiTime=this.props.analysisPanel.isMultiTime;
-    var isMultiTime=false;
+    var isMultiTime=this.props.analysisPanel.isMultiTime;
+    // var isMultiTime=false;
     return(
       <div style={{overflow:'auto'}}>
         {this._renderSum(isMultiTime)}
@@ -277,8 +277,8 @@ export default class StatisticsDialog extends Component {
   }
 
   getTitle(){
-    //var isMultiTime=this.props.analysisPanel.isMultiTime;
-    var isMultiTime=false;
+    var isMultiTime=this.props.analysisPanel.isMultiTime;
+    // var isMultiTime=false;
     if(isMultiTime){
       var tagName=AlarmTagStore.getSearchTagList()[0].tagName;
       return I18N.EM.Tool.DataStatistics+' '+tagName
