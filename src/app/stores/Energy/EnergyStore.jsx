@@ -284,6 +284,7 @@ EnergyStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case Action.GET_ENERGY_DATA_ERROR:
       var isCurrentEnergyData=EnergyStore._onDataChanged(null, action.submitParams);
+      console.log(isCurrentEnergyData);
       if(isCurrentEnergyData){
         EnergyStore._initErrorText(action.errorText);
         EnergyStore.emitEnergyDataLoadErrorListener();

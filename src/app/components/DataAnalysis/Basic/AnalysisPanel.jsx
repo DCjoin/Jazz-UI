@@ -208,12 +208,12 @@ class AnalysisPanel extends Component {
               dateSelector.setDateField(multiDateRange[0], multiDateRange[1]);
             }
             if (relativeDateValue !== 'Customerize') {
-              this._onRelativeDateChange(null,null,multiRelativeType);
+              this._onRelativeDateChange(null,null,multiRelativeType,false);
             }
           } else {
 
             if (relativeDateValue !== multiRelativeType) {
-              this._onRelativeDateChange(null,null,multiRelativeType);
+              this._onRelativeDateChange(null,null,multiRelativeType,false);
             }
           }
         } else {
@@ -823,7 +823,7 @@ class AnalysisPanel extends Component {
     )
   }
 
-  _onRelativeDateChange(e, selectedIndex, value) {
+  _onRelativeDateChange(e, selectedIndex, value,refresh=true) {
     let dateSelector = this.refs.dateTimeSelector;
 
     if (this.state.selectedChartType === 'rawdata' && value !== 'Customerize' && value !== 'Last7Day' && value !== 'Today' && value !== 'Yesterday' && value !== 'ThisWeek' && value !== 'LastWeek') {
@@ -837,7 +837,7 @@ class AnalysisPanel extends Component {
     this.setState({
       relativeDate:value
     },()=>{
-      this._onSearchDataButtonClick()
+      if(refresh){this._onSearchDataButtonClick()}
     })
   }
 
@@ -1198,9 +1198,9 @@ class AnalysisPanel extends Component {
 
     let initPanelDate = (timeRange) => {
       if (timeRange.relativeDate) {
-        this._onRelativeDateChange(null,null,timeRange.relativeDate);
+        this._onRelativeDateChange(null,null,timeRange.relativeDate,false);
       } else {
-        this._onRelativeDateChange(null,null,'Customerize');
+        this._onRelativeDateChange(null,null,'Customerize',false);
         let start = j2d(timeRange.StartTime, false);
         let end = j2d(timeRange.EndTime, false);
         if (this.refs.dateTimeSelector) {
