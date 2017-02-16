@@ -9,6 +9,7 @@ import Immutable from 'immutable';
 import CommonFuns from '../../util/Util.jsx';
 import { Action } from '../../constants/actionType/Energy.jsx';
 import ChartReaderStrategyFactor from './ChartReaderStrategyFactor.jsx';
+import AlarmTagStore from '../AlarmTagStore.jsx';
 
 
 let _isLoading = false,
@@ -73,6 +74,13 @@ let EnergyStore = assign({}, PrototypeStore, {
   getErrorCodes() {
     return _errorCodes;
   },
+  getTagIdsFromTagOptions(tagOptions) {
+    let tagIds = [];
+    for (let i = 0, len = tagOptions.length; i < len; i++) {
+      tagIds.push(tagOptions[i].tagId);
+    }
+    return tagIds;
+  },
   clearEnergyStore() {
     _isLoading = false;
     _energyData = null;
@@ -128,23 +136,32 @@ let EnergyStore = assign({}, PrototypeStore, {
     };
   },
   _onDataChanged(data, params) {
-    _isLoading = false;
-    _energyRawData = data;
+    var currentNodeOptionsIds = this.getTagIdsFromTagOptions(AlarmTagStore.getSearchTagList());
+    var paramsTagIds=params.tagIds;
+    if(currentNodeOptionsIds.toString()===paramsTagIds.toString()){
+      _isLoading = false;
+      _energyRawData = data;
 
-    let obj = {
-      start: params.viewOption.TimeRanges[0].StartTime,
-      end: params.viewOption.TimeRanges[0].EndTime,
-      step: params.viewOption.Step,
-      timeRanges: params.viewOption.TimeRanges
-    };
+      let obj = {
+        start: params.viewOption.TimeRanges[0].StartTime,
+        end: params.viewOption.TimeRanges[0].EndTime,
+        step: params.viewOption.Step,
+        timeRanges: params.viewOption.TimeRanges
+      };
 
-    //add this for test team start
-    window.testObj = window.testObj || {};
-    window.testObj._energyRawData = _energyRawData;
-    //add this for test team end
+      //add this for test team start
+      window.testObj = window.testObj || {};
+      window.testObj._energyRawData = _energyRawData;
+      //add this for test team end
 
-    ChartStatusStore.onEnergyDataLoaded(data, _submitParams);
-    _energyData = Immutable.fromJS(this.readerStrategy.convertFn(data, obj, this));
+      ChartStatusStore.onEnergyDataLoaded(data, _submitParams);
+      _energyData = Immutable.fromJS(this.readerStrategy.convertFn(data, obj, this));
+      return true
+    }
+    else {
+      return false
+    }
+
   },
   _onChangeTimeRange(startTime, endTime) {
     let timeRanges = CommonFuns.getTimeRangesByDate(startTime, endTime);
@@ -259,14 +276,18 @@ EnergyStore.dispatchToken = AppDispatcher.register(function(action) {
       EnergyStore.emitEnergyDataLoading(action.widgetId);
       break;
     case Action.GET_ENERGY_DATA_SUCCESS:
-      EnergyStore._onDataChanged(action.energyData, action.submitParams);
-      EnergyStore.emitEnergyDataLoadedListener(action.widgetId);
-      EnergyStore._checkErrors(action.energyData);
+      var isCurrentEnergyData=EnergyStore._onDataChanged(action.energyData, action.submitParams);
+      if(isCurrentEnergyData){
+        EnergyStore.emitEnergyDataLoadedListener();
+        EnergyStore._checkErrors(action.energyData);
+      }
       break;
     case Action.GET_ENERGY_DATA_ERROR:
-      EnergyStore._onDataChanged(null, action.submitParams);
-      EnergyStore._initErrorText(action.errorText);
-      EnergyStore.emitEnergyDataLoadErrorListener(action.widgetId);
+      var isCurrentEnergyData=EnergyStore._onDataChanged(null, action.submitParams);
+      if(isCurrentEnergyData){
+        EnergyStore._initErrorText(action.errorText);
+        EnergyStore.emitEnergyDataLoadErrorListener();
+      }
       break;
     case Action.SET_ENERGY_TIME_RANGE:
       EnergyStore._onChangeTimeRange(action.startTime, action.endTime);
