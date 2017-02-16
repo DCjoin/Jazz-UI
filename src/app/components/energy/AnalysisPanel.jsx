@@ -284,7 +284,7 @@ let AnalysisPanel = React.createClass({
     let chartCmp = me.refs.ChartComponent;
     if (chartCmp) {
       let chartObj = chartCmp.refs.highstock;
-      if (!!this.state.calendarType) {
+      if (!!this.state.calendarType && !this.state.chartStrategy.isCalendarDisabledFn(this)) {
         CalendarManager.showCalendar(chartObj, this.state.calendarType);
       } else {
         CalendarManager.hideCalendar(chartObj);
