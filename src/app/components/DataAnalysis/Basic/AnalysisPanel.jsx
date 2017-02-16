@@ -357,9 +357,6 @@ class AnalysisPanel extends Component {
   }
 
   _onGetEnergyDataError(widgetId) {
-    if( widgetId !== this.props.widgetDto.Id ) {
-      return;
-    }
     let errorObj = this.errorProcess(EnergyStore);
     this._onEnergyDataChange(true, errorObj);
   }
