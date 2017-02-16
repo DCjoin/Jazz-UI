@@ -79,11 +79,12 @@ var TagDetail = React.createClass({
     var selectedTag = me.props.selectedTag,
       isView = me.props.formStatus === formStatus.VIEW,
       isAdd = me.props.formStatus === formStatus.ADD;
+      console.log(selectedTag.toJS());
     var tagNameProps = {
       ref: 'tagName',
       isViewStatus: this.props.showBasic ? isView : true,
       title: I18N.Setting.Tag.TagName,
-      defaultValue: selectedTag.get('Name'),
+      defaultValue: selectedTag.get('Name') || '',
       isRequired: true,
       didChanged: value => {
         me.props.mergeTag({
