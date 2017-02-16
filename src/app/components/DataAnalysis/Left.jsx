@@ -26,7 +26,7 @@ export default class Left extends Component {
 		this._generateNodeConent = this._generateNodeConent.bind(this);
 	}
 	_onNewWidget() {
-		this.props.createWidgetOrFolder(I18N.Folder.NewWidget.Menu1, nodeType.Widget);
+		this.props.createWidgetOrFolder(I18N.Folder.NewWidgetDataAnalysis, nodeType.Widget);
 	}
 	_onNewFolder() {
 		this.props.createWidgetOrFolder(I18N.Folder.NewFolder, nodeType.Folder);

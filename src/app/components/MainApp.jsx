@@ -178,7 +178,7 @@ let MainApp = React.createClass({
   _renderTopSelectHierarchy: function() {
     let customerId = this.props.params.customerId;
     let isFull = PrivilegeUtil.isFull(PermissionCode.BUILDING_LIST, CurrentUserStore.getCurrentPrivilege());
-    return (<div className='jazz-top-select-hierarchy' style={{
+    return this.state.hierarchyId && (<div className='jazz-top-select-hierarchy' style={{
           marginTop: isFull ? 10 : 20,
           marginLeft : isFull ? 10 : 30,
           color: '#fff'
