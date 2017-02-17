@@ -67,7 +67,7 @@ export default class ChartComponent extends Component {
 
       if (multiTimespanIndex !== -1) {
         var multiTimespanList=MultipleTimespanStore.getRelativeList();
-        if(multiTimespanList===2){
+        if(multiTimespanList.length===1){
           timeRanges = [timeRanges[0]];
           MultiTimespanAction.clearMultiTimespan('both');
         }

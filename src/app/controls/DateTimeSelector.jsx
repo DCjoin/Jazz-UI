@@ -76,13 +76,13 @@ let DateTimeSelector = React.createClass({
       endDate = ed,
       endTime = et;
     if (sd === null) {
-      startDate = this.state.startDate;
+      startDate = new Date(this.state.startDate);
     }
     if (st === null) {
       startTime = this.state.startTime;
     }
     if (ed === null) {
-      endDate = this.state.endDate;
+      endDate = new Date(this.state.endDate);
     }
     if (et === null) {
       endTime = this.state.endTime;
