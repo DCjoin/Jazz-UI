@@ -116,7 +116,7 @@ var Send = React.createClass({
     };
     let content;
     if (this.state.isLoading) {
-      content = <CircularProgress  mode="indeterminate" size={1} />
+      content = <div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>
     } else {
       content = (this.state.users != null) ? <UsersOperation users={this.state.users} type={this.props.isNew ? I18N.Template.Share.User : I18N.Template.Send.Send}/> : null;
     }
