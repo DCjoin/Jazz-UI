@@ -26,30 +26,38 @@ let MultipleTimespanStore = assign({}, PrototypeStore, {
     } else if (dateType === 'mainDate') {
       _relativeList = null;
     } else {
-      _tempRelativeList = null;
+      if(_tempRelativeList===null){
+          _relativeList = null;
+      }else {
+        _tempRelativeList = null;
+      }
     }
-
   },
   initData(originalType, startDate, endDate) {
     let me = this;
     _originalType = originalType;
-
+    // console.log(originalType);
     if (_relativeList === null || _relativeList.size === 0 || _relativeList.size === 1) {
       _relativeList = Immutable.List([]);
       _relativeList = _relativeList.push(me.generateTimespanItem(true, originalType, null, startDate, endDate, null));
-      _relativeList = _relativeList.push(me.generateTimespanItem(false, originalType, null, null, null, 1));
+      if(originalType==='Customerize'){
+        _relativeList = _relativeList.push(me.generateTimespanItem(false, originalType, null, startDate, endDate, 1));
+      }else {
+        _relativeList = _relativeList.push(me.generateTimespanItem(false, originalType, null, null, null, 1));
+      }
+
 
     } else if (this.isOriginalDateChanged(_relativeList, originalType, startDate, endDate)) {
       let mainItem = _relativeList.get(0),
-        dateInterval = startDate.getTime() - mainItem.get('startDate').getTime(),
-        dateSpan = endDate.getTime() - startDate.getTime();
+        startDateInterval = startDate.getTime() - mainItem.get('startDate').getTime(),
+        endDateInterval=endDate.getTime() - mainItem.get('endDate').getTime();
       let newRelativeList = Immutable.List([]);
       newRelativeList = newRelativeList.push(me.generateTimespanItem(true, originalType, null, startDate, endDate, null));
 
       _relativeList.forEach((item, index) => {
         if (index !== 0) {
-          let startDate = new Date(item.get('startDate').getTime() + dateInterval),
-            endDate = new Date(startDate.getTime() + dateSpan);
+          let startDate = new Date(item.get('startDate').getTime() + startDateInterval),
+            endDate = new Date(item.get('endDate').getTime() + endDateInterval);
 
           let newItem = me.generateTimespanItem(false, 'Customerize', null, startDate, endDate, index);
           newRelativeList = newRelativeList.push(newItem);
@@ -162,11 +170,17 @@ let MultipleTimespanStore = assign({}, PrototypeStore, {
       _tempRelativeList = _relativeList;
     }
   },
-  addNewCompareDate() {
+  addNewCompareDate(start,end) {
     let me = this;
     me._initTempRelativeList();
-    if (_tempRelativeList.size < 5)
-      _tempRelativeList = _tempRelativeList.push(me.generateTimespanItem(false, _originalType, null, null, null, _tempRelativeList.size));
+    if (_tempRelativeList.size < 5){
+      if(_originalType==='Customerize'){
+          _tempRelativeList = _tempRelativeList.push(me.generateTimespanItem(false, _originalType, null, start, end, _tempRelativeList.size));
+      }else {
+          _tempRelativeList = _tempRelativeList.push(me.generateTimespanItem(false, _originalType, null, null, null, _tempRelativeList.size));
+      }
+    }
+
   },
   removeCompareDate(compareIndex, confirm) {
     let me = this;
@@ -535,7 +549,7 @@ MultipleTimespanStore.dispatchToken = PopAppDispatcher.register(function(action)
       MultipleTimespanStore.emitChange();
       break;
     case Action.ADD_MULTITIMESPAN_DATA:
-      MultipleTimespanStore.addNewCompareDate();
+      MultipleTimespanStore.addNewCompareDate(action.start,action.end);
       MultipleTimespanStore.emitChange();
       break;
     case Action.REMOVE_MULTITIMESPAN_DATA:
