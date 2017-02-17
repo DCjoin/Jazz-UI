@@ -164,6 +164,8 @@ class AnalysisPanel extends Component {
     timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
   } else {
     timeRanges = MultipleTimespanStore.getSubmitTimespans();
+    console.log('setFitStepAndGetData');
+    console.log(timeRanges);
     if (timeRanges === null) {
       timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
     }
@@ -219,11 +221,12 @@ class AnalysisPanel extends Component {
           }
         } else {
           let timeRanges = MultipleTimespanStore.getSubmitTimespans();
+          // console.log(timeRanges);
           if (timeRanges !== null && timeRanges.length !== 1) {
             let multiRelativeType = MultipleTimespanStore.getOriginalType();
             let relativeDateValue = this.state.relativeDate;
-            console.log(multiRelativeType);
-            console.log(relativeDateValue);
+            // console.log(multiRelativeType);
+            // console.log(relativeDateValue);
             if (multiRelativeType !== 'Customerize' && multiRelativeType === relativeDateValue) {
 
             } else {
