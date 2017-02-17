@@ -36,7 +36,7 @@ I18N.format = function(res) {
   return s.replace(/\{\d+\}/ig, '');
 };
 
-I18N.BlankPage='暂无任何功能权限，请联系您的管理员';
+I18N.BlankPage=‘Access denied, please contact the administrator’;
 I18N.MainMenu = {};
 I18N.MainMenu.Asset = 'My assets';
 I18N.MainMenu.Alarm = 'Failure alarm';
@@ -45,10 +45,10 @@ I18N.MainMenu.Setting = 'Setting';
 I18N.MainMenu.DeviceTemplate = 'Ledger template ';
 I18N.MainMenu.ParameterTemplate = 'Parameter template';
 
-I18N.MainMenu.KPI = '指标·报表';
-I18N.MainMenu.DataAnalysis = '数据分析';
-I18N.MainMenu.KPIActuality = '指标现状';
-I18N.MainMenu.KPIConfig = '指标现状配置';
+I18N.MainMenu.KPI = ‘KPI · Report’;
+I18N.MainMenu.DataAnalysis = ‘Data Analysis’;
+I18N.MainMenu.KPIActuality = ‘KPI Actuality’;
+I18N.MainMenu.KPIConfig = ‘KPI Configuration’;
 I18N.MainMenu.Map = 'Map';
 I18N.MainMenu.Alarm = 'Alarm';
 I18N.MainMenu.Energy = 'Energy';
@@ -66,7 +66,7 @@ I18N.MainMenu.HierarchyLog = 'Import log';
 I18N.MainMenu.CustomSetting = 'Customer';
 I18N.MainMenu.HierarchySetting = 'Hierarchy';
 I18N.MainMenu.CustomizedLabeling = 'Labelling';
-I18N.MainMenu.KPICycle = '指标计算周期';
+I18N.MainMenu.KPICycle = ‘KPI Cycle’;
 
 I18N.MainMenu.Calendar = 'Calendar';
 I18N.MainMenu.WorkdaySetting = 'Work day';
@@ -156,7 +156,7 @@ I18N.M212007 = 'Incorrect service provider domain name';
 I18N.Common = {};
 I18N.Common.Commodity = {};
 I18N.Common.Commodity.Electric = 'Electricity';
-I18N.Common.Commodity.ElectricOther = '电';
+I18N.Common.Commodity.ElectricOther = ‘Electricity’;
 I18N.Common.Commodity.Water = 'Water';
 I18N.Common.Commodity.Gas = 'Gas';
 I18N.Common.Commodity.Air = 'AirQuality';
@@ -164,7 +164,7 @@ I18N.Common.Commodity.Steam = 'Steam';
 I18N.Common.Commodity.HeatQ = 'HeatQ';
 I18N.Common.Commodity.CoolQ = 'CoolQ';
 I18N.Common.Commodity.Coal = 'Coal';
-I18N.Common.Commodity.CoalOther = '煤';
+I18N.Common.Commodity.CoalOther = ‘Coal’;
 I18N.Common.Commodity.Oil = 'Crude oil';
 I18N.Common.Commodity.Other = 'Others';
 I18N.Common.Commodity.CleanedCoal = 'Cleaned coal';
@@ -299,7 +299,7 @@ I18N.Common.Glossary.UOM = 'Unit';
 I18N.Common.Glossary.Type = 'Type';
 I18N.Common.Glossary.Operation = 'Operate';
 I18N.Common.Glossary.PriceStrategy = 'Price strategy';
-I18N.Common.Glossary.Rank = '名次';
+I18N.Common.Glossary.Rank = ‘Rank’;
 
 
 I18N.Common.Button = {};
@@ -311,7 +311,7 @@ I18N.Common.Button.Add = 'Add';
 I18N.Common.Button.Comparation = 'Compare';
 I18N.Common.Button.Confirm = 'Confirm';
 I18N.Common.Button.Save = 'Save';
-I18N.Common.Button.NotSave = '不保存';
+I18N.Common.Button.NotSave = ‘Do not save’;
 I18N.Common.Button.SaveExport = 'Save and export';
 I18N.Common.Button.Import = 'Import';
 I18N.Common.Button.Export = 'Export';
@@ -327,7 +327,7 @@ I18N.Common.Button.ClearAll = 'Clear all';
 I18N.Common.Button.Send = 'Send';
 I18N.Common.Button.GoOn = 'Continue';
 I18N.Common.Button.Confirmed = 'OK';
-I18N.Common.Button.More = '更多';
+I18N.Common.Button.More = ‘More’;
 
 
 I18N.Common.CarbonUomType = {};
@@ -395,7 +395,7 @@ I18N.DateTimeFormat.IntervalFormat.Hour = 'HH';
 I18N.DateTimeFormat.IntervalFormat.FullDay = 'MM/DD, YYYY';
 I18N.DateTimeFormat.IntervalFormat.Day = 'DD';
 I18N.DateTimeFormat.IntervalFormat.Week = 'MM/DD, YYYY';
-I18N.DateTimeFormat.IntervalFormat.OnlyMonth = 'MM月';
+I18N.DateTimeFormat.IntervalFormat.OnlyMonth = 'MM';
 I18N.DateTimeFormat.IntervalFormat.Month = 'MM, YYYY';
 I18N.DateTimeFormat.IntervalFormat.MonthDate = 'MM/DD';
 I18N.DateTimeFormat.IntervalFormat.Year = 'YYYY';
@@ -447,9 +447,9 @@ I18N.EM.Tool.Benchmark = 'Industry benchmark';
 I18N.EM.Tool.HistoryCompare = 'History comparison';
 I18N.EM.Tool.BenchmarkSetting = 'Baseline setting';
 I18N.EM.Tool.DataSum = 'Data Sum';
-I18N.EM.Tool.DataStatistics = '数据统计';
-I18N.EM.Tool.YaxisConfig = 'Y轴设置';
-I18N.EM.Tool.MoreAnalysis = '更多分析';
+I18N.EM.Tool.DataStatistics = ‘Data Statistics’;
+I18N.EM.Tool.YaxisConfig = ‘Y-Axis Options’;
+I18N.EM.Tool.MoreAnalysis = ‘More Analysis’;
 
 I18N.EM.KpiModeEM = 'Energy';
 I18N.EM.KpiModeCarbon = 'Carbon';
@@ -529,7 +529,7 @@ I18N.EM.CharType.Bar = 'Column';
 I18N.EM.CharType.Stack = 'Stack';
 I18N.EM.CharType.Pie = 'Pie';
 I18N.EM.CharType.RawData = 'Raw data';
-I18N.EM.CharType.GridTable = '数据表';
+I18N.EM.CharType.GridTable = 'Grid';
 
 I18N.EM.RawData = {};
 I18N.EM.RawData.ErrorForEnergy = 'Raw data only support with 7 days';
@@ -976,7 +976,7 @@ I18N.Setting.Tag.PTagRawData.DifferenceValue = 'Difference';
 I18N.Setting.Tag.PTagRawData.normal = 'Normal';
 I18N.Setting.Tag.PTagRawData.abnormal = 'Abnormal';
 I18N.Setting.Tag.PTagRawData.repair = 'Modify';
-I18N.Setting.Tag.PTagRawData.RollBack = '撤销修复';
+I18N.Setting.Tag.PTagRawData.RollBack = ‘Undo Modification’;
 
 I18N.ServerError = {};
 I18N.ServerError.BtnLabel = 'OK';
@@ -1055,8 +1055,9 @@ I18N.Message.M02407 = 'Electricity price in peak/valley/normal period cannot be 
 I18N.Message.M02408 = 'This node is not configured with peak/valley period and thus cannot be displayed.';
 I18N.Message.M02027 = 'Can not view data because the step in record is smaller than supported minimum step.';
 
-I18N.Message.M02601 = 'The day and night calendar is missing, and chart cannot be drawn. Please try again after setting.'; //'{0}所对应的层级节点没有设置昼夜日历，无法查看昼夜比数��?;
-I18N.Message.M02602 = 'The working calendar is missing, and chart cannot be drawn. Please try again after setting.'; //'{0}所对应的层级节点没有设置工作日历，无法查看公休比数��?;
+I18N.Message.M02601 = 'The day and night calendar is missing, and chart cannot be drawn. Please try again after setting.'; //'{0} Not available to see the day-night ratio bacause no Day-night calendar has been set.Please set it and try again???;
+I18N.Message.M02602 = 'The working calendar is missing, and chart cannot be drawn. Please try again after setting.'; //'{0} Not available to see the on/off-work ratio bacause no working calendar has been set.Please set it and try again???;
+
 I18N.Message.M02603 = 'The total area is missing, and chart cannot be drawn. Please try again after setting.';
 I18N.Message.M02604 = 'The cooling area is missing, and chart cannot be drawn. Please try again after setting.';
 I18N.Message.M02605 = 'The heating area is missing, and chart cannot be drawn. Please try again after setting.';
@@ -1090,7 +1091,7 @@ I18N.Message.M02810 = 'The area of the selected tag does not support the weather
  * Carbon
  ******/
 I18N.Message.M03005 = 'The conversion factor is the same as before, and the page will be refreshed.';
-I18N.Message.M03006 = '未配置碳排放转换因子，无法绘图。';
+I18N.Message.M03006 = 'Can not draw chart because of no carbon emission conversion factor has been set.';
 I18N.Message.M03008 = 'This conversion is not in line with the target,and the conversion factor cannot be saved.';
 
 /******
@@ -1305,7 +1306,7 @@ I18N.Message.M05025 = 'The share has been deleted.';
 I18N.Message.M05024 = 'The user has been deleted.';
 I18N.Message.M05027 = 'The subscriber has been deleted.';
 I18N.Message.M05028 = 'The subscriber has been deleted.';
-I18N.Message.M05304 = '父文件夹无法拖入子文件夹。';
+I18N.Message.M05304 = 'Folder can not drog to sub-folder';
 I18N.Message.M00953 = 'Illegal entry.';
 
 I18N.Message.M11600 = 'The customized labeling already exists under this customer. Please use another name.';
@@ -1328,10 +1329,10 @@ I18N.Message.M21707 = 'Report {0} is deleted. Will refresh report list soon.';
 I18N.Message.M21705 = 'Duplicate report title  ';
 I18N.Message.M21702 = 'The report has been modified and the page will be refreshed immediately.';
 I18N.Message.M21706 = 'The report has duplicate Tag, please check it.';
-I18N.Message.M21709 = '模板格式有误，请重新上传。';
+I18N.Message.M21709 = 'Incorrect format template, please upload again';
 I18N.Message.M21802 = 'Selected tag include vtag, cannot support raw data view, please select again.';
 
-I18N.Message.M28001 = '"{0}"{1}已存在，请修改名称后再保存。';
+I18N.Message.M28001 = '"{0}"{1} This name already exists, please save with a different name.';
 
 I18N.Folder = {};
 I18N.Folder.NewWidget = {};
@@ -1346,9 +1347,9 @@ I18N.Folder.NewFolder = 'New folder';
 I18N.Folder.NewWidgetDataAnalysis = 'New chart';
 I18N.Folder.FolderName = 'Folder';
 I18N.Folder.WidgetName = 'Chart';
-I18N.Folder.DataAnalysisWidget = '分析图表';
+I18N.Folder.DataAnalysisWidget = 'Chart Analysis';
 I18N.Folder.WidgetSaveSuccess = 'The chart has been saved successfully.';
-I18N.Folder.EmptyFolder = '文件夹为空，点击左侧“+文件夹/+分析图表”按钮进行添加';
+I18N.Folder.EmptyFolder = 'This folder is empty. Please click the “+Folder/+Chart Analysis” icon on the left to create new ones.';
 
 I18N.Folder.SaveNameError = {};
 I18N.Folder.SaveNameError.E032 = '{1} named "{0}" already exists. Please choose another name.';
@@ -1393,7 +1394,7 @@ I18N.Folder.Detail.WidgetMenu.Menu2 = 'Send';
 I18N.Folder.Detail.WidgetMenu.Menu3 = 'Share';
 I18N.Folder.Detail.WidgetMenu.Menu4 = 'Export';
 I18N.Folder.Detail.WidgetMenu.Menu5 = 'Delete';
-I18N.Folder.Detail.WidgetMenu.Menu6 = '分享';
+I18N.Folder.Detail.WidgetMenu.Menu6 = 'Share';
 
 I18N.Folder.Widget = {};
 I18N.Folder.Widget.Leave = 'Leave tip';
@@ -1618,38 +1619,38 @@ I18N.Paging.Button.PrePage = 'Pre Page';
 I18N.Paging.Button.NextPage = 'Next Page';
 
 I18N.Kpi = {
-  Month: '{0}月',
-  YearMonth: '{0}年{1}月',
-  ActualValues: '实际值',
-  TargetValues: '指标值',
-  PredictionValues: '预测值',
-  MonthUsaged: '指标使用量: {0}%',
-  MonthUsagedPrediction: '指标使用量: {0}%(预测)',
-  RatioMonthUsaged: '同比节能率: {0}%',
-  RatioMonthUsagedPrediction: '同比节能率: {0}%(预测)',
-  EditTarget: '编辑指标',
-  UpdatePrediction: '更新预测值',
-  ActualityFractionalEnergySaving: '截止上月节能率',
-  KPIActual: '指标现状',
-  GroupProject: '集团',
-  IndexValue: '全年定额指标值',
-  SavingValue: '全年节能率指标值',
-  ActualSum: '全年用量实际值',
-  PredictSum: '全年用量预测值',
-  ActualSaving: '全年节能率实际值',
-  PredictSaving: '全年节能率预测值',
+  Month: '{0}Month',
+  YearMonth: '{0}Year{1}Month',
+  ActualValues: 'Actual Values',
+  TargetValues: 'Target Values',
+  PredictionValues: 'Prediction Values',
+  MonthUsaged: 'Indicator Usage: {0}%',
+  MonthUsagedPrediction: 'Indicator Usage: {0}%(Prediction)',
+  RatioMonthUsaged: 'year-on-year Energy Saving Rate: {0}%',
+  RatioMonthUsagedPrediction: 'year-on-year Energy Saving Rate: {0}%(Prediction)',
+  EditTarget: 'Edit Target',
+  UpdatePrediction: 'Update Prediction',
+  ActualityFractionalEnergySaving: 'Energy Saving Rate by Last Month',
+  KPIActual: 'KPI Actuality',
+  GroupProject: 'Group Project',
+  IndexValue: 'Annual Quota Target Value',
+  SavingValue: 'Annual Energy Saving Index Target Value',
+  ActualSum: 'Annual Actual Value',
+  PredictSum: 'Annual Prediction Value',
+  ActualSaving: 'Annual Actual Energy Saving Rate',
+  PredictSaving: 'Annual Prediction Energy Saving Rate',
   Error:{
-    SelectBuilding: '请点击上方按钮，选择要查看或配置项目吧～',
-    NonKPIConguredInThisYear: '本年度未配置指标，切换其他年份看看～',
-    NonKPIConguredSingleBuilding: '未配置指标报表，请联系您的咨询顾问。',
-    NonKPICongured: '暂无指标，点击上方编辑按钮，开始配置吧~',
-    NonKPIConguredInBuilding: '暂无指标，选择集团节点并配置吧~',
-    KPIConguredNotAnyBuilding: '未配置任何数据权限，请联系您的咨询顾问。',
-    KPIConguredNotAnyBuildingAdmin: '未配置任何数据权限，请配置您的数据权限。',
-    KPIConguredMoreBuilding: '指标报表暂不支持多项目，请持续关注。',
-    KPINonMoreBuilding: '楼宇数据权限不足，请联系您的管理员。',
-    KPINonBuilding: '未配置任何建筑，请联系您的咨询顾问。',
-    KPINonBuildingAdmin: '未配置任何建筑，请新建您的层级。',
+    SelectBuilding: 'Please click the icon above to select or configure projects.',
+    NonKPIConguredInThisYear: 'No KPI is set for this year, please check other periods.',
+    NonKPIConguredSingleBuilding: ' No KPI report is set, please contact your consultant ',
+    NonKPICongured: 'No KPI is set, please click the edit icon above to start setting.',
+    NonKPIConguredInBuilding: ' No KPI is set, please choose a group and start setting.',
+    KPIConguredNotAnyBuilding: 'No data authority is set, please contact your consultant. ',
+    KPIConguredNotAnyBuildingAdmin: 'No data authority is set, please set.',
+    KPIConguredMoreBuilding: 'Multiple projects are currently not supported. We are working on that. ',
+    KPINonMoreBuilding: 'Insufficient building data authority, please contact your administrator.',
+    KPINonBuilding: 'No building is set, please contact your consultant',
+    KPINonBuildingAdmin: 'No building is set, please create your hierarchy.',
   }
 };
 
@@ -1689,7 +1690,7 @@ I18N.Platform = {};
 I18N.Platform.Title = 'EnergyMost';
 I18N.Platform.Config = 'Platform configuration';
 I18N.Platform.SP = 'Service provider administrator';
-I18N.Platform.InEnglish = '中文版';
+I18N.Platform.InEnglish = 'Chinese Version';
 I18N.Platform.MaxLengthError = 'Please input less than 200 character';
 I18N.Platform.User = {};
 I18N.Platform.User.Name = 'User Name';
@@ -1736,9 +1737,9 @@ I18N.Platform.ServiceProvider.Status = 'Status';
 I18N.Platform.ServiceProvider.DeleteContent = 'Delete SP “{0}”，All public data, customer data and associate data will be deleted.';
 
 I18N.Platform.ServiceProvider.SendEmail = 'Send mail';
-I18N.Platform.ServiceProvider.ResetDefault = '恢复默认';
-I18N.Platform.ServiceProvider.Reset = '恢复';
-I18N.Platform.ServiceProvider.ResetContent = '该操作会清空服务器名称、LOGO等全部自定义信息。是否恢复默认？';
+I18N.Platform.ServiceProvider.ResetDefault = 'Reset to Default';
+I18N.Platform.ServiceProvider.Reset = 'Reset';
+I18N.Platform.ServiceProvider.ResetContent = 'All customized information such as server name and logo will be deleted, continue to reset?';
 I18N.Platform.ServiceProvider.SendEmailSuccess = 'Mail send successfully';
 I18N.Platform.ServiceProvider.Error001 = 'SP is modified by other user';
 I18N.Platform.ServiceProvider.Error002 = 'SP ID already existed';
@@ -1746,20 +1747,20 @@ I18N.Platform.ServiceProvider.Error003 = 'SP is deleted by other user';
 I18N.Platform.ServiceProvider.Error007 = 'SP Domain already existed!';
 I18N.Platform.ServiceProvider.ErrorNotice = 'Error message';
 
-I18N.Platform.ServiceProvider.AddImage = '上传';
-I18N.Platform.ServiceProvider.UpdateImage = '重新上传';
-I18N.Platform.ServiceProvider.SPInfo = '服务商信息';
-I18N.Platform.ServiceProvider.Customer = '自定义标识';
-I18N.Platform.ServiceProvider.AddInfo = '用户还未自定义标识，请点击"编辑"按钮设置';
-I18N.Platform.ServiceProvider.Tips = '填写以下内容可以自定义LOGO及千里眼平台首页服务商名称、背景图片等相关信息';
-I18N.Platform.ServiceProvider.FullName = '服务商全称';
-I18N.Platform.ServiceProvider.FullNameEtc = '（例：施耐德电气中国有限公司）';
-I18N.Platform.ServiceProvider.Abbreviation = '服务商简称';
-I18N.Platform.ServiceProvider.AbbreviationEtc = '（例：施耐德电气）';
-I18N.Platform.ServiceProvider.About = '"关于服务商"页面链接';
-I18N.Platform.ServiceProvider.AboutUrlError = '请填写网址';
-I18N.Platform.ServiceProvider.Logo = '"服务商LOGO';
-I18N.Platform.ServiceProvider.Background = '首页背景图';
+I18N.Platform.ServiceProvider.AddImage = 'Upload';
+I18N.Platform.ServiceProvider.UpdateImage = 'Re-Upload ';
+I18N.Platform.ServiceProvider.SPInfo = 'Service Provider Information';
+I18N.Platform.ServiceProvider.Customer = 'Set Logo';
+I18N.Platform.ServiceProvider.AddInfo = 'Logo has not been set, please click “edit” to set logo.';
+I18N.Platform.ServiceProvider.Tips = 'Please fill out the blanks below to set logo, service provider name, background pictures and other customized information ';
+I18N.Platform.ServiceProvider.FullName = 'Service Provider’s Full Name';
+I18N.Platform.ServiceProvider.FullNameEtc = '（Eg. Schneider Electric China Co., Ltd.）';
+I18N.Platform.ServiceProvider.Abbreviation = 'Service Provider’s Abbreviation';
+I18N.Platform.ServiceProvider.AbbreviationEtc = '（Eg. SE）';
+I18N.Platform.ServiceProvider.About = '"About the Service Provider"web link';
+I18N.Platform.ServiceProvider.AboutUrlError = 'Please enter the link';
+I18N.Platform.ServiceProvider.Logo = '"Service Provider’s LOGO';
+I18N.Platform.ServiceProvider.Background = 'Homepage Background Picture';
 I18N.Platform.ServiceProvider.SPName = 'Name';
 I18N.Platform.ServiceProvider.SPID = 'ID';
 I18N.Platform.ServiceProvider.SPDomain = 'Domain';
@@ -1778,9 +1779,9 @@ I18N.Platform.ServiceProvider.CalcStatus = 'Benchmark Calculation';
 
 
 I18N.Privilege = {};
-I18N.Privilege.None = '无权限';
-I18N.Privilege.Readonly = '仅查看';
-I18N.Privilege.Full = '完整权限';
+I18N.Privilege.None = 'No Access';
+I18N.Privilege.Readonly = 'Read Only';
+I18N.Privilege.Full = 'Full Privilege';
 I18N.Privilege.Common = {};
 I18N.Privilege.Common.Common = 'Common role';
 I18N.Privilege.Common.DashboardView = 'folder and widget view';
@@ -1811,12 +1812,12 @@ I18N.Privilege.Role.TagMapping = 'Association';
 I18N.Privilege.Role.CustomerInfoView = 'View customer information';
 I18N.Privilege.Role.CustomerInfoManagement = 'Manage customer information';
 I18N.Privilege.Role.CustomLabeling = 'Customized labeling';
-I18N.Privilege.Role.NewCustomLabeling = '自定义配置';
+I18N.Privilege.Role.NewCustomLabeling = 'Customized Setting';
 I18N.Privilege.Role.BaselineConfiguration = 'Energy analysis and baseline setting';
-I18N.Privilege.Role.IndexAndReport = '指标&报表';
-I18N.Privilege.Role.BasicDataAnalyse = '基本数据分析';
-I18N.Privilege.Role.SeniorDataAnalyse = '高级数据分析';
-I18N.Privilege.Role.BuildingList = '项目列表';
+I18N.Privilege.Role.IndexAndReport = 'Index & Report';
+I18N.Privilege.Role.BasicDataAnalyse = 'Basic Data Analysis';
+I18N.Privilege.Role.SeniorDataAnalyse = 'Senior Data Analysis';
+I18N.Privilege.Role.BuildingList = 'Project List';
 
 I18N.Remark = {};
 I18N.Remark.Label = 'Comment';
@@ -1832,7 +1833,7 @@ I18N.Setting.Role.Type = 'Type';
 I18N.Setting.Role.Name = 'Name';
 I18N.Setting.Role.Privilege = 'Privilege';
 I18N.Setting.Role.ErrorTitle = 'Can not delete role “{0}”';
-I18N.Setting.Role.ErrorContent = 'Role can not be deleted because “{0}��?is referred by some users。Please delete users then try again.';
+I18N.Setting.Role.ErrorContent = 'Role can not be deleted because “{0}???is referred by some users。Please delete users then try again.';
 I18N.Setting.Role.DeleteTitle = 'Delete role ';
 I18N.Setting.Role.DeleteContent = 'Role "{0}" will be deleted';
 
@@ -1844,7 +1845,7 @@ I18N.Setting.CarbonFactor.DeleteContent = 'Conversion factor “{0}” will be d
 I18N.Setting.CarbonFactor.Source = 'Conversion object';
 I18N.Setting.CarbonFactor.Target = 'Conversion target';
 I18N.Setting.CarbonFactor.EffectiveYear = 'Effective date';
-I18N.Setting.CarbonFactor.ErrorContent = '请输入小于1000000000的正数，小数点后最多保留6位';
+I18N.Setting.CarbonFactor.ErrorContent = 'The number should be positive and less than 1000000000, with at most 6 digits after the decimal point.';
 I18N.Setting.CarbonFactor.Conflict = 'Timespan overlapped, please select again';
 
 I18N.Setting.TOUTariff = {};
@@ -1983,138 +1984,139 @@ I18N.Setting.Cost.OtherCommodities = 'Other cost property';
 I18N.Setting.Cost.CostCommodity = 'Cost';
 
 I18N.Setting.KPI = {};
-I18N.Setting.KPI.Name = '指标';
-I18N.Setting.KPI.Building='建筑';
-I18N.Setting.KPI.create='新建指标';
-I18N.Setting.KPI.edit='编辑指标';
-I18N.Setting.KPI.Prolong='延续往年指标';
-I18N.Setting.KPI.Quota='定额';
-I18N.Setting.KPI.SavingRate='节能率';
+I18N.Setting.KPI.Name = 'Index';
+I18N.Setting.KPI.Building='Building';
+I18N.Setting.KPI.create='Create New Index';
+I18N.Setting.KPI.edit='Edit Index';
+I18N.Setting.KPI.Prolong='Prolong Used Index';
+I18N.Setting.KPI.Quota='Quota';
+I18N.Setting.KPI.SavingRate='Energy Saving Rate';
 I18N.Setting.KPI.Tag = {};
-I18N.Setting.KPI.Tag.Title = '选择添加指标的数据点';
-I18N.Setting.KPI.Tag.NoTags = '请先在左侧选择维度节点，再选择对应数据点';
-I18N.Setting.KPI.Tag.Select = '选择';
-I18N.Setting.KPI.Tag.SelectAgain = '重新选择';
-I18N.Setting.KPI.SelectProject = '选择项目';
-I18N.Setting.KPI.SelectBuilding = '选择建筑';
+I18N.Setting.KPI.Tag.Title = 'Please select the data point to create index.';
+I18N.Setting.KPI.Tag.NoTags = 'Please select first the dimension on the left, then the corresponding data point.';
+I18N.Setting.KPI.Tag.Select = 'Select';
+I18N.Setting.KPI.Tag.SelectAgain = 'Select Again';
+I18N.Setting.KPI.SelectProject = 'Choose a Project';
+I18N.Setting.KPI.SelectBuilding = 'Choose a Building';
 I18N.Setting.KPI.Basic = {};
-I18N.Setting.KPI.Basic.Title= '第一步:基础配置';
-I18N.Setting.KPI.Basic.Name= '指标名称';
-I18N.Setting.KPI.Basic.NameHint= '输入指标名称';
+I18N.Setting.KPI.Basic.Title= 'Step One: Basic Configuration';
+I18N.Setting.KPI.Basic.Name= 'Index Name';
+I18N.Setting.KPI.Basic.NameHint= 'Enter Index Name';
 I18N.Setting.KPI.YearAndType = {};
-I18N.Setting.KPI.YearAndType.Title= '第二步:指标年份和类型配置';
-I18N.Setting.KPI.YearAndType.SelectYear= '选择配置年份';
-I18N.Setting.KPI.YearAndType.SelectType= '选择指标类型';
-I18N.Setting.KPI.YearAndType.Quota= '定额指标';
-I18N.Setting.KPI.YearAndType.SavingRate= '节能率指标';
+I18N.Setting.KPI.YearAndType.Title= 'Step Two: Year and Type of the Index ';
+I18N.Setting.KPI.YearAndType.SelectYear= 'Choose a Year';
+I18N.Setting.KPI.YearAndType.SelectType= 'Choose a Type';
+I18N.Setting.KPI.YearAndType.Quota= 'Quota Index ';
+I18N.Setting.KPI.YearAndType.SavingRate= 'Energy Saving Rate Index';
 I18N.Setting.KPI.Parameter = {};
-I18N.Setting.KPI.Parameter.Title= '第三步:参数配置';
-I18N.Setting.KPI.Parameter.Indicator= '配置指标值';
-I18N.Setting.KPI.Parameter.Annual= '全年{0}指标值';
-I18N.Setting.KPI.Parameter.InputAnnual= '输入全年{0}';
-I18N.Setting.KPI.Parameter.QuotaErrorText= '请输入0或正整数';
-I18N.Setting.KPI.Parameter.SavingRateErrorText= '请输入-100.0~100.0';
-I18N.Setting.KPI.Parameter.MonthValue= '逐月指标值';
-I18N.Setting.KPI.Parameter.CalcViaHistory= '根据历史数据计算';
-I18N.Setting.KPI.Parameter.NoCalcViaHistory='无历史数据可用';
-I18N.Setting.KPI.Parameter.Prediction= '配置预测值';
-I18N.Setting.KPI.Parameter.UpdatePrediction= '更新预测值';
-I18N.Setting.KPI.Parameter.TagSavingRates= '分项节能率配置';
-I18N.Setting.KPI.Parameter.SavingRates= '分项节能率';
-I18N.Setting.KPI.Parameter.MonthPrediction= '逐月预测值';
-I18N.Setting.KPI.Parameter.CalcViaSavingRates= '根据分项节能率计算';
-I18N.Setting.KPI.GroupQuotaType= '集团定额';
-I18N.Setting.KPI.GroupSavingRateType= '节能率';
+I18N.Setting.KPI.Parameter.Title= 'Step Three: Parameter Setting';
+I18N.Setting.KPI.Parameter.Indicator= 'Set Target';
+I18N.Setting.KPI.Parameter.Annual= 'Annual{0}Target';
+I18N.Setting.KPI.Parameter.InputAnnual= 'Enter Annual{0}';
+I18N.Setting.KPI.Parameter.QuotaErrorText= 'Please enter 0 or positive integers.';
+I18N.Setting.KPI.Parameter.SavingRateErrorText= 'The number should be -100.0~100.0';
+I18N.Setting.KPI.Parameter.MonthValue= 'Monthly Target';
+I18N.Setting.KPI.Parameter.CalcViaHistory= 'Calculated Based on History';
+I18N.Setting.KPI.Parameter.NoCalcViaHistory='No Available Historical Data';
+I18N.Setting.KPI.Parameter.Prediction= 'Set Prediction';
+I18N.Setting.KPI.Parameter.UpdatePrediction= 'Update Prediction';
+I18N.Setting.KPI.Parameter.TagSavingRates= 'Set Subitem Saving Rates';
+I18N.Setting.KPI.Parameter.SavingRates= 'Subitem Saving Rates';
+I18N.Setting.KPI.Parameter.MonthPrediction= 'Monthly Predictions Value';
+I18N.Setting.KPI.Parameter.CalcViaSavingRates= 'Calculated Based on Subitem Saving Rates';
+I18N.Setting.KPI.GroupQuotaType= 'Group Quota';
+I18N.Setting.KPI.GroupSavingRateType= 'Energy Saving Rate';
 I18N.Setting.KPICycle = {};
-I18N.Setting.KPICycle.Title = '指标计算周期';
-I18N.Setting.KPICycle.StartTime = '起始日期';
-I18N.Setting.KPICycle.Date = '第N年的周期为 第{0}年的{1}月{2}日 至 第{3}年的{4}月{5}日';
+I18N.Setting.KPICycle.Title = 'KPI Cycle';
+I18N.Setting.KPICycle.StartTime = 'Start Date';
+I18N.Setting.KPICycle.Date = 'The cycle for Year N would be from Year{0} Month{1} Day{2} to Year{3} Month{4} Day{5}.';
 I18N.Setting.KPICycle.NextYear = 'N+1';
 I18N.Setting.KPICycle.ThisYear = 'N';
 I18N.Setting.KPICycle.LastYear = 'N-1';
-I18N.Setting.KPICycle.Month = '{0}月';
-I18N.Setting.KPICycle.Day = '{0}日';
-I18N.Setting.KPICycle.Non = '未配置指标计算周期时，默认按照自然年和自然月进行计算';
+I18N.Setting.KPICycle.Month = '{0}Month';
+I18N.Setting.KPICycle.Day = '{0}Day';
+I18N.Setting.KPICycle.Non = 'If KPI cycle not set, calculation would be based on natural year and natural month.';
 I18N.Setting.KPI.Group = {};
-I18N.Setting.KPI.Group.Commodity = '指标介质';
-I18N.Setting.KPI.Group.Prolongkpi = '延续指标';
-I18N.Setting.KPI.Group.HeaderYear = '{0}年';
-I18N.Setting.KPI.Group.New = '新建指标-{0}年';
-I18N.Setting.KPI.Group.Edit = '编辑指标-{0}年-{1}';
-I18N.Setting.KPI.Group.Prolong = '延续上年指标-{0}年';
-I18N.Setting.KPI.Group.Config = '配置';
+I18N.Setting.KPI.Group.Commodity = 'Index Commodity';
+I18N.Setting.KPI.Group.Prolongkpi = 'Prolong the Index';
+I18N.Setting.KPI.Group.HeaderYear = '{0}Year';
+I18N.Setting.KPI.Group.New = 'New Index-{0}Year';
+I18N.Setting.KPI.Group.Edit = 'Edit Index-{0}Year-{1}';
+I18N.Setting.KPI.Group.Prolong = 'Prolong the Index of last year-{0}Year';
+I18N.Setting.KPI.Group.Config = 'Configure';
 I18N.Setting.KPI.Group.GroupConfig ={};
-I18N.Setting.KPI.Group.GroupConfig.Title='第二步：集团指标配置';
-I18N.Setting.KPI.Group.GroupConfig.Annual= '集团{0}指标值';
-I18N.Setting.KPI.Group.GroupConfig.InputAnnual= '输入集团{0}';
+I18N.Setting.KPI.Group.GroupConfig.Title='Step Two：Group Index Setting';
+I18N.Setting.KPI.Group.GroupConfig.Annual= 'Group{0}Target Value';
+I18N.Setting.KPI.Group.GroupConfig.InputAnnual= 'Enter Group{0}';
 I18N.Setting.KPI.Group.BuildingConfig ={};
-I18N.Setting.KPI.Group.GroupConfig.SelectTag='引用实际值数据点';
-I18N.Setting.KPI.Group.GroupConfig.SelectTagForPrediction='选择分项数据点';
-I18N.Setting.KPI.Group.BuildingConfig.Title='第三步：建筑指标配置';
-I18N.Setting.KPI.Group.BuildingConfig.SumTitle='建筑定额指标值总计 ({0})';
-I18N.Setting.KPI.Group.BuildingConfig.Name='建筑名称';
-I18N.Setting.KPI.Group.BuildingConfig.Value='{0}指标值 ({1})';
-I18N.Setting.KPI.Group.BuildingConfig.Tag='引用数据点';
-I18N.Setting.KPI.Group.BuildingConfig.Operation='操作';
-I18N.Setting.KPI.Group.BuildingConfig.MonthConfig='配置逐月值';
-I18N.Setting.KPI.Group.BuildingConfig.Input='输入建筑{0}';
+I18N.Setting.KPI.Group.GroupConfig.SelectTag='Quote Actual Data Point';
+I18N.Setting.KPI.Group.GroupConfig.SelectTagForPrediction='Select Subitem Data Points';
+I18N.Setting.KPI.Group.BuildingConfig.Title='Step Three：Set Building Index';
+I18N.Setting.KPI.Group.BuildingConfig.SumTitle='Sum Value of Building Quota Index ({0})';
+I18N.Setting.KPI.Group.BuildingConfig.Name='Building’s Name';
+I18N.Setting.KPI.Group.BuildingConfig.Value='{0}Index Value ({1})';
+I18N.Setting.KPI.Group.BuildingConfig.Tag='Quote Data Points';
+I18N.Setting.KPI.Group.BuildingConfig.Operation='Operation';
+I18N.Setting.KPI.Group.BuildingConfig.MonthConfig='Set Monthly Value';
+I18N.Setting.KPI.Group.BuildingConfig.Input='Enter Building{0}';
 I18N.Setting.KPI.Group.MonthConfig = {};
-I18N.Setting.KPI.Group.MonthConfig.Title='配置逐月值';
-I18N.Setting.KPI.Group.MonthConfig.TagSelect='引用实际值数据点';
-I18N.Setting.KPI.Group.MonthConfig.AnnualTotal='年指标总量 ({0})';
-I18N.Setting.KPI.Group.MonthConfig.MonthValueSum='逐月指标值总计 ({0})';
+I18N.Setting.KPI.Group.MonthConfig.Title='Set Monthly Value';
+I18N.Setting.KPI.Group.MonthConfig.TagSelect='Quote Actual Data Points';
+I18N.Setting.KPI.Group.MonthConfig.AnnualTotal='Total Annual Target({0})';
+I18N.Setting.KPI.Group.MonthConfig.MonthValueSum='Sum Value of Monthly target({0})';
 I18N.Setting.KPI.GroupList = {};
-I18N.Setting.KPI.GroupList.Header = '指标配置';
-I18N.Setting.KPI.GroupList.DeleteTitle = '删除指标“{0}”';
-I18N.Setting.KPI.GroupList.DeleteComment = '删除指标将导致所有相关图表都被删除。';
+I18N.Setting.KPI.GroupList.Header = 'Index Setting';
+I18N.Setting.KPI.GroupList.DeleteTitle = 'Delete the Index“{0}”';
+I18N.Setting.KPI.GroupList.DeleteComment = 'All related charts will be deleted, continue?';
 
 I18N.Setting.KPI.Group.Ranking = {};
-I18N.Setting.KPI.Group.Ranking.Title='排名配置';
-I18N.Setting.KPI.Group.Ranking.kpi='指标排名';
-I18N.Setting.KPI.Group.Ranking.Up='置顶排名';
-I18N.Setting.KPI.Group.Ranking.Algorithm='排名算法';
-I18N.Setting.KPI.Group.Ranking.None='无';
-I18N.Setting.KPI.Group.Ranking.OrignValue='总量';
-I18N.Setting.KPI.Group.Ranking.TotalAreaUnit='单位建筑面积';
-I18N.Setting.KPI.Group.Ranking.TotalRoomUnit='单位客房';
-I18N.Setting.KPI.Group.Ranking.TotalPersonUnit='单位人员';
-I18N.Setting.KPI.Group.Ranking.MonthRatio='逐月同比';
-I18N.Setting.KPI.Group.Ranking.SelectSource='选择数据来源';
-I18N.Setting.KPI.Group.Ranking.NoKpi='请先新建指标并引用建筑数据点，再进行排名配置';
+I18N.Setting.KPI.Group.Ranking.Title='Rank Setting';
+I18N.Setting.KPI.Group.Ranking.kpi='Index Ranking';
+I18N.Setting.KPI.Group.Ranking.Up='Pinned Ranking';
+I18N.Setting.KPI.Group.Ranking.Algorithm='Ranking Algorithm';
+I18N.Setting.KPI.Group.Ranking.None='None';
+I18N.Setting.KPI.Group.Ranking.OrignValue='Total Value';
+I18N.Setting.KPI.Group.Ranking.TotalAreaUnit=' Unit Area';
+I18N.Setting.KPI.Group.Ranking.TotalRoomUnit=' Unit Room';
+I18N.Setting.KPI.Group.Ranking.TotalPersonUnit='Unit Person';
+I18N.Setting.KPI.Group.Ranking.MonthRatio='Monthly year-on-year change';
+I18N.Setting.KPI.Group.Ranking.SelectSource='Choose Data Source';
+I18N.Setting.KPI.Group.Ranking.NoKpi='Please create new index and set building data points before setting ranking.';
 I18N.Setting.KPI.Group.Ranking.History = {};
-I18N.Setting.KPI.Group.Ranking.History.Name='{0}-排名历史';
-I18N.Setting.KPI.Group.Ranking.History.Ratio='对比上月';
-I18N.Setting.KPI.Group.Ranking.History.Value='用量';
-I18N.Setting.KPI.Group.Ranking.History.NoValue='无数据';
+I18N.Setting.KPI.Group.Ranking.History.Name='{0}-Ranking History';
+I18N.Setting.KPI.Group.Ranking.History.Ratio='Comparison with Last Month';
+I18N.Setting.KPI.Group.Ranking.History.Value='Usage';
+I18N.Setting.KPI.Group.Ranking.History.NoValue='No Value';
 
 I18N.Setting.KPI.Rank = {};
-I18N.Setting.KPI.Rank.Name = '排名';
-I18N.Setting.KPI.Rank.Amount = '总量';
-I18N.Setting.KPI.Rank.ShowHistory = '查看排名历史';
-I18N.Setting.KPI.Rank.UsageAmountRank = '指标使用量排名';
-I18N.Setting.KPI.Rank.RatioMonthSavingRank = '同比节能率排名';
-I18N.Setting.KPI.Rank.LastRank = '最新排名';
+I18N.Setting.KPI.Rank.Name = 'Ranking';
+I18N.Setting.KPI.Rank.Amount = 'Total Amount';
+I18N.Setting.KPI.Rank.ShowHistory = 'Show Ranking History';
+I18N.Setting.KPI.Rank.UsageAmountRank = 'Ranking by Index Usage';
+I18N.Setting.KPI.Rank.RatioMonthSavingRank = 'Ranking by Monthly year-on-year saving';
+I18N.Setting.KPI.Rank.LastRank = 'Newest Ranking';
 
 I18N.Setting.KPI.Report = {};
-I18N.Setting.KPI.Report.Name = '报表';
-I18N.Setting.KPI.Report.Sheet = '模板Sheet';
-I18N.Setting.KPI.Report.ConfigTitle= '{0}-报表设置';
-I18N.Setting.KPI.Report.TitleHint= '输入报表名称';
-I18N.Setting.KPI.Report.TemplateManagement= '管理模板';
-I18N.Setting.KPI.Report.TemplateComment= '注：删除已引用的模板需先删除引用该模板的报表';
-I18N.Setting.KPI.Report.Data= '表格数据';
-I18N.Setting.KPI.Report.DataComment= '注：至少配置一组表格数据';
-I18N.Setting.KPI.Report.CalcData= '计算数据';
-I18N.Setting.KPI.Report.Hierarchy= '所属层级';
-I18N.Setting.KPI.Report.TimeRangeComment= '注：当前年为{0}年，只需配置当前年份对应的时间范围，其余年份会根据配置自动计算';
-I18N.Setting.KPI.Report.DuplicatedName = '已经存在名称为“{0}”的模板，请更改名称后重新上传。';
-I18N.Setting.KPI.Report.DeleteTemplateMessage = '模板“{0}”将被删除。';
-I18N.Setting.KPI.Report.StartCellHintText = '填写起始单元格';
+I18N.Setting.KPI.Report.Name = 'Report';
+I18N.Setting.KPI.Report.Sheet = 'Template Sheet';
+I18N.Setting.KPI.Report.ConfigTitle= '{0}-Report Setting';
+I18N.Setting.KPI.Report.TitleHint= 'Enter Report Name';
+I18N.Setting.KPI.Report.TemplateManagement= 'Manage Templates';
+I18N.Setting.KPI.Report.TemplateComment= 'Notice: Reports containing the template should be deleted before the template is deleted.';
+I18N.Setting.KPI.Report.Data= 'Report Data';
+I18N.Setting.KPI.Report.DataComment= 'Notice：At least one report data should be set.';
+I18N.Setting.KPI.Report.CalcData= 'Calculating Data';
+I18N.Setting.KPI.Report.Hierarchy= 'Hierarchy';
+I18N.Setting.KPI.Report.TimeRangeComment= 'Notice：Current year is year{0}. Please set the corresponding period for current year and the rest information for other years will be automatically calculated.’;
+I18N.Setting.KPI.Report.DuplicatedName = 'Template”{0}”already exists, please choose another name.';
+I18N.Setting.KPI.Report.DeleteTemplateMessage = 'Template”{0}” will be deleted.';
+I18N.Setting.KPI.Report.StartCellHintText = 'Please fill the start cell.';
 
 I18N.Setting.DataAnalysis = {};
-I18N.Setting.DataAnalysis.Scheme = '生成方案';
-I18N.Setting.DataAnalysis.To = '至';
-I18N.Setting.DataAnalysis.NotagRecommend = '点击“+数据点”按钮，选择要查看的数据点';
-I18N.Setting.DataAnalysis.SaveTip = '图表未保存，是否保存图表并离开？';
-I18N.Setting.DataAnalysis.LeaveTip = '图表为空，离开将直接删除该图表，是否离开？';
+I18N.Setting.DataAnalysis.Scheme = 'Create Energy Conservation Measures';
+I18N.Setting.DataAnalysis.To = 'to';
+I18N.Setting.DataAnalysis.NotagRecommend = 'Please click “+Data Point” to choose data points.';
+I18N.Setting.DataAnalysis.SaveTip = 'The chart has not been saved. Do you want to save the chart and quit? ';
+I18N.Setting.DataAnalysis.LeaveTip = 'The chart is empty and will be deleted if you quit. Continue to quit?';
 module.exports = I18N;
+
