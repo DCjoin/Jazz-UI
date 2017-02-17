@@ -222,6 +222,8 @@ class AnalysisPanel extends Component {
           if (timeRanges !== null && timeRanges.length !== 1) {
             let multiRelativeType = MultipleTimespanStore.getOriginalType();
             let relativeDateValue = this.state.relativeDate;
+            console.log(multiRelativeType);
+            console.log(relativeDateValue);
             if (multiRelativeType !== 'Customerize' && multiRelativeType === relativeDateValue) {
 
             } else {
@@ -368,6 +370,7 @@ class AnalysisPanel extends Component {
   }
 
   _onCheckWidgetUpdate(sureLevalCallback, cancelLevalCallback, doned) {
+    // console.log('_onCheckWidgetUpdate');
     if( doned ) {
       doned();
     }
@@ -407,6 +410,9 @@ class AnalysisPanel extends Component {
     else {
       var currentWidgetDto=Immutable.fromJS(this.getCurrentWidgetDto());
       var originalWidgetDto=DataAnalysisStore.getInitialWidgetDto();
+      // console.log(originalWidgetDto.toJS());
+      // console.log(currentWidgetDto.toJS());
+      // console.log(Immutable.is(currentWidgetDto,originalWidgetDto));
       if(originalWidgetDto===null || Immutable.is(currentWidgetDto,originalWidgetDto)){
         return sureLevalCallback()
       }
@@ -1242,14 +1248,17 @@ class AnalysisPanel extends Component {
   }
 
   routerWillLeave(nextLocation){
+    // console.log('routerWillLeave');
     // console.log(this.getCurrentWidgetDto());
     // console.log(DataAnalysisStore.getInitialWidgetDto().toJS());
     // console.log(Immutable.is(
     //   Immutable.fromJS(this.getCurrentWidgetDto()),
     //   DataAnalysisStore.getInitialWidgetDto()
     // ));
-    if( !this.state.energyData ||
-      Immutable.is(
+    if(this.props.isNew && AlarmTagStore.getSearchTagList().length===0){
+      return true
+    }
+    if(Immutable.is(
         Immutable.fromJS(this.getCurrentWidgetDto()),
         DataAnalysisStore.getInitialWidgetDto()
       )

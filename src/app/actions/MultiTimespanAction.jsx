@@ -15,9 +15,10 @@ let MultiTimespanAction = {
       endDate: endDate
     });
   },
-  addMultiTimespanData() {
+  addMultiTimespanData(start,end) {
     AppDispatcher.dispatch({
-      type: Action.ADD_MULTITIMESPAN_DATA
+      type: Action.ADD_MULTITIMESPAN_DATA,
+      start,end
     });
   },
   removeMultiTimespanData(compareIndex, confirm) {
