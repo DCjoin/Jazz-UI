@@ -1381,7 +1381,7 @@ class AnalysisPanel extends Component {
       subToolBar:{
         selectedChartType:this.state.selectedChartType,
         onSearchBtnItemTouchTap:this._onSearchBtnItemTouchTap,
-        hasTagData:!(this.state.energyData===null),
+        hasTagData:!(AlarmTagStore.getSearchTagList().length===0),
         timeRanges:this.state.timeRanges,
         step:this.state.step,
         onStepChange:this._handleEnergyStepChange,
