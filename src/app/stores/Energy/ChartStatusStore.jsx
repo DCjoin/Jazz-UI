@@ -150,7 +150,7 @@ let ChartStatusStore = assign({}, PrototypeStore, {
       }
     }
     let map = {};
-    _seriesStatus = _seriesStatus || [];
+    var seriesStatus = [];
     if (_seriesStatus && _seriesStatus.length > 0) {
       _seriesStatus.forEach((item, index) => {
         map[item.id] = item;
@@ -160,8 +160,8 @@ let ChartStatusStore = assign({}, PrototypeStore, {
             flag = true;
           }
         });
-        if (!flag) {
-          _seriesStatus.splice(index, 1);
+        if (flag) {
+          seriesStatus.push(_seriesStatus[index]);
         }
       });
     }
@@ -181,7 +181,7 @@ let ChartStatusStore = assign({}, PrototypeStore, {
         if (chartType === 'column' && item.stacking === 'normal') {
           chartType = 'stack';
         }
-        _seriesStatus.push({
+        seriesStatus.push({
           id: item.id,
           IsDisplay: item.visible,
           SeriesType: item.dType,
@@ -189,7 +189,7 @@ let ChartStatusStore = assign({}, PrototypeStore, {
         });
       }
     });
-
+    _seriesStatus=seriesStatus
   },
   getWidgetSaveStatus() {
     let status = [];
