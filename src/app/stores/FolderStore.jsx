@@ -339,7 +339,7 @@ var FolderStore = assign({}, PrototypeStore, {
 
     setSendStatus: function(sourceNode, userIds) {
       if (userIds.length === 0) {
-        _sendStatus = I18N.format(I18N.Folder.Send.Success, JazzCommon.GetArialStr(sourceNode.get('Name'), 20));
+        _sendStatus = I18N.format(sourceNode.get('IsNew') ? I18N.Folder.Share.Success : I18N.Folder.Send.Success, JazzCommon.GetArialStr(sourceNode.get('Name'), 20));
       } else {
         let userNames;
         let userList = UserStore.getUserStatus();
@@ -358,7 +358,7 @@ var FolderStore = assign({}, PrototypeStore, {
             }
           }
         });
-        _sendStatus = I18N.format(I18N.Folder.Send.Error, JazzCommon.GetArialStr(sourceNode.get('Name'), 10 - userNames.length), userNames);
+        _sendStatus = I18N.format(sourceNode.get('IsNew') ? I18N.Folder.Share.Error : I18N.Folder.Send.Error, JazzCommon.GetArialStr(sourceNode.get('Name'), 10 - userNames.length), userNames);
 
       }
 
