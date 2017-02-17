@@ -1372,8 +1372,8 @@ I18N.Folder.Send.Success = '{0}发送成功';
 I18N.Folder.Send.Error = '{0}发送失败，无法发送给用户：{1}。';
 
 I18N.Folder.Share = {};
-I18N.Folder.Share.Success = '{0}共享成功';
-I18N.Folder.Share.Error = '{0}共享失败，无法共享给用户：{1}。';
+I18N.Folder.Share.Success = '{0}分享成功';
+I18N.Folder.Share.Error = '{0}分享失败，无法共享给用户：{1}。';
 
 I18N.Folder.Drag = {};
 I18N.Folder.Drag.Error = '名称为“{0}”的{1}已存在，无法完成拖拽。';
