@@ -112,9 +112,11 @@ let MainApp = React.createClass({
           );
         }
       } else if( isAdmin ) {
-        return RoutePath.workday(assign({}, router.params, {
-          cusnum: CurrentUserCustomerStore.getAll().length
-        }));
+        if( router.params.cusnum === null || router.params.cusnum === undefined ) {
+          return RoutePath.workday(assign({}, router.params, {
+            cusnum: CurrentUserCustomerStore.getAll().length
+          }));
+        }
       }
       return false;
     },
