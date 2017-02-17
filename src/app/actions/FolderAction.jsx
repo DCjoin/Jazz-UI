@@ -196,7 +196,8 @@ let FolderAction = {
       error: function(err, res) {
         AppDispatcher.dispatch({
           type: Action.MOVE_ITEM_ERROR,
-          sourceNode: sourceNode
+          sourceNode: sourceNode,
+          errorCode: res.body.error.Code
         });
       },
     });

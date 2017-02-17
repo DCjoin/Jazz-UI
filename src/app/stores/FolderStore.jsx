@@ -16,6 +16,7 @@ let _folderTree = Immutable.fromJS(),
   _modifyNameErrorCode = null,
   _errorName = null,
   _errorType = null,
+  _errorCode = null,
   _selectedNode = null,
   _sendStatus = null,
   _shareStatus = null,
@@ -284,8 +285,9 @@ var FolderStore = assign({}, PrototypeStore, {
       }
       return error;
     },
-    setMoveItemError: function(node) {
+    setMoveItemError: function(node, errorCode) {
       _errorName = node.Name;
+      _errorCode = errorCode;
       if (node.Type == 6) {
         _errorType = I18N.Folder.FolderName;
       } else {
@@ -294,6 +296,10 @@ var FolderStore = assign({}, PrototypeStore, {
       _selectedNode = Immutable.fromJS(node);
     },
     getMoveItemError: function() {
+      let code = _errorCode && _errorCode.substr(7);
+      if( window.I18N.Message['M' + code] ) {
+        return I18N.format(window.I18N.Message['M' + code], _errorName, _errorType);
+      }
       return I18N.format(I18N.Folder.Drag.Error, _errorName, _errorType);
     },
     setSelectedNode: function(selectedNode) {
@@ -684,7 +690,7 @@ var FolderStore = assign({}, PrototypeStore, {
         FolderStore.emitSelectedNodeChange();
         break;
       case FolderAction.MOVE_ITEM_ERROR:
-        FolderStore.setMoveItemError(action.sourceNode);
+        FolderStore.setMoveItemError(action.sourceNode, action.errorCode);
         FolderStore.emitMoveItemErrorChange();
         FolderStore.emitSelectedNodeChange();
         break;

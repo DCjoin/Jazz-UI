@@ -1164,6 +1164,7 @@ I18N.Message.M05023 = '{0}{1}';
 I18N.Message.M05023_Sub0 = 'The following user ID have been deleted: {0}.';
 I18N.Message.M05023_Sub1 = 'Unable to share with these people: {0}.';
 I18N.Message.M05032 = 'Same room existed';
+I18N.Message.M05034 = '无法拖拽到子文件夹中';
 
 /******
 Tag Error Code, NOTE that for error of 06001, 06117,06152,06139,06154,06156, refresh is needed.
