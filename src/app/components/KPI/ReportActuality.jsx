@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import CircularProgress from 'material-ui/CircularProgress';
 import {find} from 'lodash/collection';
 
 import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
+import RoutePath from 'util/RoutePath.jsx';
 
 import ReportPreview from './ReportPreview.jsx';
 import ReportConfig from './Report/ReportConfig.jsx';
@@ -17,6 +18,9 @@ function getCustomerById(customerId) {
 }
 
 export default class ReportActuality extends Component {
+	static contextTypes = {
+		hierarchyId: PropTypes.string
+	};
 	constructor(props) {
 		super(props);
 
@@ -36,6 +40,11 @@ export default class ReportActuality extends Component {
 	}
 	componentWillUnmount() {
 		HierarchyStore.removeBuildingListListener(this._onChange);
+	}
+	componentWillReceiveProps(nextProps, nextContext) {
+		if(nextContext.hierarchyId !== nextProps.params.customerId*1) {
+			nextProps.router.push(RoutePath.Actuality(nextProps.params));
+		}
 	}
 	_onChange() {
 		this.setState({
