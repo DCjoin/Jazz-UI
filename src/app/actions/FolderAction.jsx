@@ -300,7 +300,7 @@ let FolderAction = {
     let originWidgetDto = widgetDto;
     Ajax.post('/Dashboard/SaveAsItem', {
       params: {
-        sourceTreeNode: sourceTreeNode,
+        sourceTreeNode: {...sourceTreeNode, ...{IsSenderCopy: false, SourceUserName: null}},
         desFolder: desFolder,
         newName: newName,
         widgetDto: widgetDto,
