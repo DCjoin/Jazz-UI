@@ -795,7 +795,7 @@ class AnalysisPanel extends Component {
         <MenuItem key={MenuAction.SaveAs} primaryText={I18N.Folder.Detail.WidgetMenu.Menu1} style={styles.label} disabled={buttonDisabled}/>
         <MenuItem key={MenuAction.Export} primaryText={I18N.Folder.Detail.WidgetMenu.Menu4} style={styles.label} disabled={buttonDisabled}/>
         <MenuItem key={MenuAction.Share} primaryText={I18N.Folder.Detail.WidgetMenu.Menu6} style={styles.label} disabled={buttonDisabled}/>
-        <MenuItem key={MenuAction.Delete} primaryText={I18N.Folder.Detail.WidgetMenu.Menu5} style={styles.label} disabled={buttonDisabled}/>
+        <MenuItem key={MenuAction.Delete} primaryText={I18N.Folder.Detail.WidgetMenu.Menu5} style={styles.label} disabled={this.props.isNew}/>
       </Menu>
     </Popover>
   </div>
@@ -1115,7 +1115,7 @@ class AnalysisPanel extends Component {
                                   cancelLevalCallback: null,
                                 },()=>{
                                   if(sureLevalCallback) {
-                                    sureLevalCallback();
+                                    sureLevalCallback(this.props.isNew);
                                   }
                                   this.setState({
                                     willLeave: false,
