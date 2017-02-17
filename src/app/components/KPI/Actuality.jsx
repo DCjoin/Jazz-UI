@@ -213,7 +213,7 @@ export default class Actuality extends Component {
 		return (<div className='jazz-actuality-content'>
 			{!kpiHide && <div className='jazz-actuality-item'>
 				<div className='jazz-actuality-item-title'>{prefixTitle + I18N.Kpi.KPIActual}</div>
-				{hasKPIEdit &&
+				{hasKPIEdit && !singleKPI &&
 		    	<IconButton iconClassName="fa icon-edit" onClick={() => {
 			      	// onRefresh(data.get('id'));
 			      	this.props.router.push(RoutePath.KPIGroupConfig(this.props.router.params));

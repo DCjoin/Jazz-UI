@@ -16,6 +16,7 @@ var Send = React.createClass({
     onFirstActionTouchTap: React.PropTypes.func,
     onSecondActionTouchTap: React.PropTypes.func,
     onDismiss: React.PropTypes.func,
+    isNew: React.PropTypes.bool,
   },
   contextTypes: {
     router: React.PropTypes.object,
@@ -91,7 +92,7 @@ var Send = React.createClass({
 
     let actions = [
       <FlatButton
-      label={I18N.Template.Send.Send}
+      label={this.props.isNew ? I18N.Template.Share.Share : I18N.Template.Send.Send}
       onTouchTap={this._onFirstActionTouchTap}
       disabled={this.state.btnDisabled}
       />,
@@ -102,7 +103,9 @@ var Send = React.createClass({
     ];
     let dialogProps = {
       ref: 'dialog',
-      title: I18N.format(I18N.Template.Send.Title, this.props.type),
+      title: I18N.format(
+        this.props.isNew ? I18N.Template.Share.Title : I18N.Template.Send.Title, 
+        this.props.type),
       actions: actions,
       modal: true,
       open: this.state.open,
@@ -113,9 +116,9 @@ var Send = React.createClass({
     };
     let content;
     if (this.state.isLoading) {
-      content = <CircularProgress  mode="indeterminate" size={1} />
+      content = <div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>
     } else {
-      content = (this.state.users != null) ? <UsersOperation users={this.state.users} type={I18N.Template.Send.Send}/> : null;
+      content = (this.state.users != null) ? <UsersOperation users={this.state.users} type={this.props.isNew ? I18N.Template.Share.User : I18N.Template.Send.Send}/> : null;
     }
 
     return (

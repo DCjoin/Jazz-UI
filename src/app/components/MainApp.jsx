@@ -29,6 +29,7 @@ import SelectCustomer from './SelectCustomer.jsx';
 import MainAction from 'actions/MainAction.jsx';
 import UserAction from 'actions/UserAction.jsx';
 import HierarchyAction from 'actions/HierarchyAction.jsx';
+import FolderAction from '../actions/FolderAction.jsx';
 
 import UOMStore from 'stores/UOMStore.jsx';
 import AllCommodityStore from 'stores/AllCommodityStore.jsx';
@@ -168,9 +169,16 @@ let MainApp = React.createClass({
   },
 
   _setHierarchyId: function(hierarchyId) {
-    this.setState({
-      hierarchyId
-    });
+    let callback = () => {
+      this.setState({
+        hierarchyId
+      });
+    };
+    let doned = false;
+    FolderAction.checkWidgetUpdate(callback, null, () => {doned = true});
+    if( !doned ) {
+      callback();
+    }
   },
 
   _renderTopSelectHierarchy: function() {

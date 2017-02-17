@@ -40,8 +40,14 @@ export default class Left extends Component {
 
 	    let {selectedNode} = this.props;
 	    if( isWidget(selectedNode) ) {
-	    	FolderAction.checkWidgetUpdate(() => {
-	    		this.props.didDrag(targetNode, sourceNode, parentNode, isPre, collapsedId)
+	    	FolderAction.checkWidgetUpdate((needDelete) => {
+	    		if( needDelete ) {
+	    			FolderAction.alwaysUncheckSameWidget();
+	    			FolderAction.deleteItem(selectedNode, true);
+	    			this.refs.foldertree && this.refs.foldertree._forceUpdate();
+	    		} else {
+	    			this.props.didDrag(targetNode, sourceNode, parentNode, isPre, collapsedId)
+	    		}
 	    	}, () => {
 	    		this.refs.foldertree && this.refs.foldertree._forceUpdate();
 	    	});

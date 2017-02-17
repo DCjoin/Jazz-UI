@@ -31,6 +31,7 @@ module.exports = {
     DISPLAY_DIALOG: null,
     SWTICH_WIDGET: null,
     CHECK_WIDGET_UPDATE: null,
+    ALWAYS_UNCHECK_SAME_WIDGET: null,
   })
 
 };
