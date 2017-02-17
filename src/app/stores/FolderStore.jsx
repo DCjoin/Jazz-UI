@@ -157,12 +157,17 @@ var FolderStore = assign({}, PrototypeStore, {
       var parent = destItem;
       var children;
       var _newNode = newNode;
+      var isNew = newNode.get('IsNew');
       if (parent.get('Children')) {
         children = parent.get('Children');
       } else {
         children = Immutable.List([]);
       }
-      parent = parent.set('Children', children.push(_newNode));
+      if( isNew ) {
+        parent = parent.set('Children', children.unshift(_newNode));
+      } else {
+        parent = parent.set('Children', children.push(_newNode));
+      }
       _parentId = parent.get('Id');
       _changedNode = parent;
       if (_newNode.get('Type') == 6) {
