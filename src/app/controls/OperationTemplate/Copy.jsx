@@ -176,7 +176,7 @@ var Copy = React.createClass({
           'able': !this.state.btnDisabled
         })}>
           <Dialog {...dialogProps}>
-            <CircularProgress  mode="indeterminate" size={1} />
+            <div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>
           </Dialog>
         </div>
       </div>

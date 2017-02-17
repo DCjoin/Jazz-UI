@@ -62,6 +62,7 @@ export default class DataAnalysis extends Component {
 		this._onSendStatusChange = this._onSendStatusChange.bind(this);
     this._onShareStatusChange = this._onShareStatusChange.bind(this);
     this._onDeleteNode = this._onDeleteNode.bind(this);
+    this._onCopyItemSuccess = this._onCopyItemSuccess.bind(this);
     this._didDrag = this._didDrag.bind(this);
 
 		this._onSelectNode = this._onSelectNode.bind(this);
@@ -80,7 +81,7 @@ export default class DataAnalysis extends Component {
     FolderStore.addDeleteItemSuccessListener(this._onDeleteNode);
     FolderStore.addMoveItemSuccessListener(this._onMoveItemSuccess);
     FolderStore.addModfiyReadingStatusListener(this._onSelectedNodeChange);
-    FolderStore.addCopyItemSuccessListener(this._onSelectedNodeChange);
+    FolderStore.addCopyItemSuccessListener(this._onCopyItemSuccess);
     FolderStore.addSelectedNodeListener(this._onSelectedNodeChange);
 
 		this.state = this._getInitialState();
@@ -112,7 +113,7 @@ export default class DataAnalysis extends Component {
     FolderStore.removeDeleteItemSuccessListener(this._onDeleteNode);
     FolderStore.removeMoveItemSuccessListener(this._onMoveItemSuccess);
     FolderStore.removeModfiyReadingStatusListener(this._onSelectedNodeChange);
-    FolderStore.removeCopyItemSuccessListener(this._onSelectedNodeChange);
+    FolderStore.removeCopyItemSuccessListener(this._onCopyItemSuccess);
     FolderStore.removeSelectedNodeListener(this._onSelectedNodeChange);
 	}
 
@@ -197,7 +198,12 @@ export default class DataAnalysis extends Component {
     let {widgetDto, selectedNode} = this.state;
     let callback = (widgetIsInit) => {
       if( widgetIsInit ) {
-        FolderAction.deleteItem(selectedNode, false);
+        FolderAction.deleteItem(selectedNode, selectedNode.get('Id') === node.get('Id'));
+        if( selectedNode.get('Id') === node.get('Id') ) {
+          FolderAction.alwaysUncheckSameWidget();
+          return;
+          //node = FolderStore.getSelectedNode();
+        }
       }
       FolderAction.setSelectedNode(node);
       if( node ) {
@@ -217,7 +223,7 @@ export default class DataAnalysis extends Component {
         this._changeNodeId(node.get('Id'));
       });
     };
-    if( selectedNode && isWidget(selectedNode) && selectedNode.get('Id') !== node.get('Id') ) {
+    if( selectedNode && isWidget(selectedNode) ) {
       FolderAction.checkWidgetUpdate(callback);
     } else {
       callback();
@@ -231,8 +237,13 @@ export default class DataAnalysis extends Component {
         selectedNode: FolderStore.getNodeById(getNodeId(this.props))
       });
     } else {
-      this._onSelectedNodeChange()
+      this._onSelectedNodeChange();
     }
+  }
+
+  _onCopyItemSuccess() {
+    FolderAction.alwaysUncheckSameWidget();
+    this._onSelectedNodeChange();
   }
 
   _didDrag(targetNode, sourceNode, parentNode, isPre, collapsedId) {

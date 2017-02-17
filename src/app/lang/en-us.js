@@ -1477,6 +1477,7 @@ I18N.Template.Delete.WidgetContent = 'Chart "{0}" will be deleted';
 I18N.Template.Share = {};
 I18N.Template.Share.Title = 'Share chart';
 I18N.Template.Share.Share = 'Share';
+I18N.Template.Share.User = 'Shared';
 I18N.Template.Share.Cancel = 'Quit';
 I18N.Template.User = {};
 I18N.Template.User.Alluser = 'All users';
