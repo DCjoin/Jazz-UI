@@ -181,6 +181,7 @@ export default class HistoryWindow extends Component {
 		super(props);
 		this._onAction = this._onAction.bind(this);
     this._onrelativeListChange = this._onrelativeListChange.bind(this);
+    this._addNewCompareItem = this._addNewCompareItem.bind(this);  
 
 	}
 
@@ -202,7 +203,9 @@ export default class HistoryWindow extends Component {
   }
 
   _addNewCompareItem() {
-    MultiTimespanAction.addMultiTimespanData();
+    let analysisPanel=this.props.analysisPanel;
+    let timeRange = analysisPanel.refs.dateTimeSelector.getDateTime();
+    MultiTimespanAction.addMultiTimespanData(timeRange.start, timeRange.end);
   }
 
   _removeCompareItem(compareIndex) {

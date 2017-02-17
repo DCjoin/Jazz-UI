@@ -428,7 +428,6 @@ let ChartComponentBox = React.createClass({
     this.refs.ignoreDialogWindow.dismiss();
   },
   render() {
-    console.log('render');
     let that = this;
     if (!this.props.energyData) {
       return null;
