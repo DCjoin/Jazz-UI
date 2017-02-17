@@ -9,6 +9,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import BasicAnalysisAction from 'actions/DataAnalysis/BasicAnalysisAction.jsx';
 import AlarmTagStore from 'stores/AlarmTagStore.jsx';
 import EnergyStore from 'stores/energy/EnergyStore.jsx';
+import ChartStatusStore from 'stores/energy/ChartStatusStore.jsx';
 // import {GatherInfo} from '../../../../../mockData/DataAnalysis.js';
 
 class ItemComponent extends Component{
@@ -294,7 +295,38 @@ export default class StatisticsDialog extends Component {
     let tagOptions = EnergyStore.getTagOpions(),
       paramsObj = EnergyStore.getParamsObj(),
       timeRanges = paramsObj.timeRanges;
-    BasicAnalysisAction.getWidgetGatherInfo(timeRanges,this.props.analysisPanel.state.step,tagOptions);
+    let seriesStatusArray = ChartStatusStore.getSeriesStatus();
+    let display_timeRanges=[],display_tagOptions=[];
+    var isMultiTime=this.props.analysisPanel.isMultiTime;
+    if(isMultiTime){
+      seriesStatusArray.forEach((series,index)=>{
+        if(series.IsDisplay){
+          display_timeRanges.push(timeRanges[index]);
+        }
+      })
+      display_tagOptions=tagOptions
+    }
+    else {
+      seriesStatusArray.forEach((series,index)=>{
+        if(series.IsDisplay){
+          display_tagOptions.push(tagOptions[index]);
+        }
+      })
+      display_timeRanges=timeRanges
+    }
+    if(display_timeRanges.length!==0 && display_tagOptions.length!==0){
+      BasicAnalysisAction.getWidgetGatherInfo(display_timeRanges,this.props.analysisPanel.state.step,display_tagOptions);
+    }
+    else {
+      this.setState({
+        gatherInfo:{
+          MaxGroup:null,
+          AvgGroup:null,
+          SumGroup:null
+        }
+      })
+    }
+
   }
 
   componentWillUnmount(){
