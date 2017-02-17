@@ -963,7 +963,7 @@ class AnalysisPanel extends Component {
       }
       else if(!!this.state.energyData){
         return(
-          <div style={{display:'flex',flex:1}}>
+          <div style={{display:'flex',flex:1,flexDirection:'column'}}>
             <ChartComponent ref="ChartComponent" AnalysisPanel={this}/>
             {this._renderRemark()}
           </div>
