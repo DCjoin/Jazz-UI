@@ -11,6 +11,7 @@ var SendView = React.createClass({
   propTypes: {
     onDismiss: React.PropTypes.func,
     sendNode:React.PropTypes.object,
+    isNew:React.PropTypes.bool,
   },
   _onSendItem:function(){
     this.props.onDismiss();
@@ -22,7 +23,8 @@ var SendView = React.createClass({
       userId:this.props.sendNode.get('UserId'),
       type:type,
       onFirstActionTouchTap:this._onSendItem,
-      onSecondActionTouchTap:this.props.onDismiss
+      onSecondActionTouchTap:this.props.onDismiss,
+      isNew: this.props.isNew
     };
 
     return(
