@@ -14,10 +14,11 @@ var SaveAsView = React.createClass({
     widgetDto: React.PropTypes.object,
   },
   _onCopyItem: function(destNode, newName) {
-    FolderAction.SaveAsItem(this.props.saveAsNode, destNode, newName, this.props.widgetDto, this.props.isNew);
+    FolderAction.SaveAsItem(this.props.saveAsNode.toJS(), destNode, newName, this.props.widgetDto, this.props.isNew);
     this.setState({
       loading: true
     });
+    this.props.onDismiss();
   },
   _onCopyItemError: function() {
     this.setState({
@@ -55,7 +56,7 @@ var SaveAsView = React.createClass({
       firstActionLabel: I18N.Folder.SaveAs.firstActionLabel, //复制 or 保存
       treeNode: FolderStore.getParent(this.props.saveAsNode),
       onFirstActionTouchTap: this._onCopyItem,
-      onDismiss: this.props.onDismiss,
+      onSecondActionTouchTap: this.props.onDismiss,
       errorText: this.state.errorText,
       loading: this.state.loading
     }
