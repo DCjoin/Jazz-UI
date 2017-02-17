@@ -11,8 +11,10 @@ let _widgetDto = null;
 let _selectedNode = null;
 let _loading = false;
 let _initPanelByWidgetDto = false;
+let _uncheckWidget = false;
 var WidgetStore = assign({},PrototypeStore,{
   convertWidgetDto(widgetDto, selectedNode){
+    _uncheckWidget = false;
     _loading = false;
     _widgetDto = widgetDto[0];
     if(_widgetDto && _widgetDto.ContentSyntax){
@@ -24,6 +26,12 @@ var WidgetStore = assign({},PrototypeStore,{
   startLoading(selectedNode){
     _selectedNode = selectedNode;
     _loading = true;
+  },
+  setUncheck() {
+    _uncheckWidget = true;
+  },
+  isUncheck() {
+    return _uncheckWidget;
   },
   getWidgetDto(){
     return _widgetDto;
@@ -57,6 +65,10 @@ WidgetStore.dispatchToken = PopAppDispatcher.register(function(action) {
         break;
       case Action.SET_WIDGET_INIT_STATE:
         WidgetStore.setInitState(action.state);
+        break;
+      case Action.ALWAYS_UNCHECK_SAME_WIDGET:
+        WidgetStore.setUncheck();
+        break;
     }
 });
 module.exports = WidgetStore;

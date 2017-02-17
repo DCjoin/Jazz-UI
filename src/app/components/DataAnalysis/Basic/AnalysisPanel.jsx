@@ -41,6 +41,7 @@ import {MenuAction} from 'constants/AnalysisConstants.jsx';
 import BasicAnalysisAction from 'actions/DataAnalysis/BasicAnalysisAction.jsx';
 import CommodityStore from 'stores/CommodityStore.jsx';
 import HierarchyStore from 'stores/HierarchyStore.jsx';
+import WidgetStore from 'stores/Energy/WidgetStore.jsx';
 import TagAction from 'actions/TagAction.jsx';
 import CommodityAction from 'actions/CommodityAction.jsx'
 
@@ -370,7 +371,7 @@ class AnalysisPanel extends Component {
     if( doned ) {
       doned();
     }
-    if(this.state.willLeave) {
+    if(this.state.willLeave || WidgetStore.isUncheck()) {
       sureLevalCallback();
       return;
     }
@@ -1255,12 +1256,12 @@ class AnalysisPanel extends Component {
     ) {
         return true;
     }
-    if( !this.state.willLeave ) {
+    if( !this.state.willLeave && !WidgetStore.isUncheck() ) {
       FolderAction.checkWidgetUpdate(() => {
         this.props.router.replace(nextLocation.pathname);
       });
     }
-    return this.state.willLeave;
+    return this.state.willLeave || WidgetStore.isUncheck();
       // console.log(nextLocation);
       // ntLocation=nextLocation;
       // if(!!this.state.energyData){

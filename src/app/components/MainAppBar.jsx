@@ -125,6 +125,8 @@ var MainAppBar = React.createClass({
       if( !this.props.disabledSelectCustomer ) {
         this.setState({
           showCustomerList: true
+        }, () => {
+          FolderAction.alwaysUncheckSameWidget();
         });
       }
     }, null, () => {doned = true});

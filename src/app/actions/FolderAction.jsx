@@ -340,6 +340,11 @@ let FolderAction = {
       type: Action.CHECK_WIDGET_UPDATE,
       done, cancel, doned
     });
+  },
+  alwaysUncheckSameWidget: function() {
+    AppDispatcher.dispatch({
+      type: Action.ALWAYS_UNCHECK_SAME_WIDGET,
+    });
   }
 };
 
