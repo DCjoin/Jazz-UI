@@ -197,7 +197,12 @@ export default class DataAnalysis extends Component {
     let {widgetDto, selectedNode} = this.state;
     let callback = (widgetIsInit) => {
       if( widgetIsInit ) {
-        FolderAction.deleteItem(selectedNode, false);
+        FolderAction.deleteItem(selectedNode, selectedNode.get('Id') === node.get('Id'));
+        if( selectedNode.get('Id') === node.get('Id') ) {
+          FolderAction.alwaysUncheckSameWidget();
+          return;
+          //node = FolderStore.getSelectedNode();
+        }
       }
       FolderAction.setSelectedNode(node);
       if( node ) {
@@ -217,7 +222,7 @@ export default class DataAnalysis extends Component {
         this._changeNodeId(node.get('Id'));
       });
     };
-    if( selectedNode && isWidget(selectedNode) && selectedNode.get('Id') !== node.get('Id') ) {
+    if( selectedNode && isWidget(selectedNode) ) {
       FolderAction.checkWidgetUpdate(callback);
     } else {
       callback();
