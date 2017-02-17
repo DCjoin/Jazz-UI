@@ -128,7 +128,7 @@ export default class StatisticsDialog extends Component {
       };
       content=SumGroup.map(sum=>{
         var {CommodityId,UomName,Items,GatherValue}=sum;
-        var commodity=CommonFuns.getCommodityById(CommodityId).Code;
+        var commodity=CommonFuns.getCommodityById(CommodityId).Comment;
         var title=(
           <div style={{height:'30px',backgroundColor:'#fbfbfb',display:'flex','alignItems':'center',fontSize:'14px'}}>
             {I18N.Common.Glossary.Commodity+":"+commodity+" "+I18N.Common.Glossary.UOM+':'+UomName}
