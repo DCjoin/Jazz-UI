@@ -280,7 +280,7 @@ export default class StatisticsDialog extends Component {
   getTitle(){
     var isMultiTime=this.props.analysisPanel.isMultiTime;
     // var isMultiTime=false;
-    if(isMultiTime){
+    if(!isMultiTime){
       var tagName=AlarmTagStore.getSearchTagList()[0].tagName;
       return I18N.EM.Tool.DataStatistics+' '+tagName
     }else {
@@ -334,8 +334,8 @@ export default class StatisticsDialog extends Component {
   }
 
   render(){
+    console.log(this.props.analysisPanel.isMultiTime);
     var title=this.getTitle();
-
     var content;
         if(this.state.gatherInfo===null){
           content=(
