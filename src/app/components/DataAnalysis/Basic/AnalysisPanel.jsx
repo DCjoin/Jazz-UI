@@ -517,7 +517,7 @@ class AnalysisPanel extends Component {
         FolderAction.updateWidgetDtos(widgetDto);
       }
   }
-  
+
   getCurrentWidgetDto(){
     let chartType = this.state.selectedChartType;
     let tagOptions = EnergyStore.getTagOpions();
@@ -764,7 +764,11 @@ class AnalysisPanel extends Component {
               break;
         case 2:
               //分享
-              this._handleSave(true);
+              if(!Immutable.is(
+                              Immutable.fromJS(this.getCurrentWidgetDto()),
+                              DataAnalysisStore.getInitialWidgetDto())){
+                                this._handleSave(true);}
+
               this.props.onOperationSelect(menuItem.key);
               break;
         case 3:
