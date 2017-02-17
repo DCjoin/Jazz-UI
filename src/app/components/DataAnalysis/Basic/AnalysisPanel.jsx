@@ -383,12 +383,18 @@ class AnalysisPanel extends Component {
     }
     if(this.props.isNew){
       if(!!this.state.energyData){
-        this.setState({
-          showLeaveDialog:false,
-          showSaveDialog:true,
-          sureLevalCallback,
-          cancelLevalCallback,
-        })
+        var currentWidgetDto=Immutable.fromJS(this.getCurrentWidgetDto());
+        var originalWidgetDto=DataAnalysisStore.getInitialWidgetDto();
+        if(originalWidgetDto===null || Immutable.is(currentWidgetDto,originalWidgetDto)){
+          return sureLevalCallback()
+        } else {          
+          this.setState({
+            showLeaveDialog:false,
+            showSaveDialog:true,
+            sureLevalCallback,
+            cancelLevalCallback,
+          })
+        }
       }else {
         //无tag 提示是否离开
         //有tag，提示是否保存 loading的时候

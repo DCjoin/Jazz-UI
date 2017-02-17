@@ -1163,6 +1163,7 @@ I18N.Message.M05023 = '{0}{1}';
 I18N.Message.M05023_Sub0 = '以下用户Id已被删除：{0}。';
 I18N.Message.M05023_Sub1 = '无法分享给这些人：{0}。';
 I18N.Message.M05032 = '该名称已存在';
+I18N.Message.M05034 = '无法拖拽到子文件夹中';
 
 /******
 Tag Error Code, NOTE that for error of 06001, 06117,06152,06139,06154,06156, refresh is needed.
