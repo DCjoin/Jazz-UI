@@ -242,7 +242,7 @@ export default class DataAnalysis extends Component {
   }
 
   _onCopyItemSuccess() {
-    FolderAction.alwaysUncheckSameWidget();
+    // FolderAction.alwaysUncheckSameWidget();
     this._onSelectedNodeChange();
   }
 
