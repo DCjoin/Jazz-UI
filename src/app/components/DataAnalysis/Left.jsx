@@ -39,6 +39,11 @@ export default class Left extends Component {
 	    let collapsedId = collapsedNodeId;
 
 	    let {selectedNode} = this.props;
+	    if( parentNode.get('Path').indexOf(sourceNode.get('Path')) === 0 ) {
+	    	FolderAction.dropError(sourceNode);
+	    	this.refs.foldertree && this.refs.foldertree._forceUpdate();
+	    	return;
+	    }
 	    if( isWidget(selectedNode) ) {
 	    	FolderAction.checkWidgetUpdate((needDelete) => {
 	    		if( needDelete ) {
