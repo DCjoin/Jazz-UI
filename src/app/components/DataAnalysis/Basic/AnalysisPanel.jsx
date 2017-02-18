@@ -385,7 +385,7 @@ class AnalysisPanel extends Component {
       if(!!this.state.energyData){
         var currentWidgetDto=Immutable.fromJS(this.getCurrentWidgetDto());
         var originalWidgetDto=DataAnalysisStore.getInitialWidgetDto();
-        if(originalWidgetDto===null || Immutable.is(currentWidgetDto,originalWidgetDto)){
+        if(Immutable.is(currentWidgetDto,originalWidgetDto)){
           return sureLevalCallback()
         } else {          
           this.setState({
