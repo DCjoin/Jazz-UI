@@ -164,8 +164,6 @@ class AnalysisPanel extends Component {
     timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
   } else {
     timeRanges = MultipleTimespanStore.getSubmitTimespans();
-    console.log('setFitStepAndGetData');
-    console.log(timeRanges);
     if (timeRanges === null) {
       timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
     }

@@ -9,8 +9,10 @@ import CircularProgress from 'material-ui/CircularProgress';
 import BasicAnalysisAction from 'actions/DataAnalysis/BasicAnalysisAction.jsx';
 import AlarmTagStore from 'stores/AlarmTagStore.jsx';
 import EnergyStore from 'stores/energy/EnergyStore.jsx';
+import ChartStatusStore from 'stores/energy/ChartStatusStore.jsx';
+import MultipleTimespanStore from 'stores/energy/MultipleTimespanStore.jsx';
 // import {GatherInfo} from '../../../../../mockData/DataAnalysis.js';
-
+var isMultiTime;
 class ItemComponent extends Component{
   render(){
     return(
@@ -98,7 +100,7 @@ export default class StatisticsDialog extends Component {
     })
   }
 
-  _renderSum(isMultiTime){
+  _renderSum(){
     var header={},content;
     var SumGroup=this.state.gatherInfo.SumGroup;
     if(SumGroup===null) return null;
@@ -169,7 +171,7 @@ export default class StatisticsDialog extends Component {
     )
   }
 
-  _renderAverage(isMultiTime){
+  _renderAverage(){
     var header={},content;
     var AvgGroup=this.state.gatherInfo.AvgGroup;
     if(AvgGroup===null) return null;
@@ -216,7 +218,7 @@ export default class StatisticsDialog extends Component {
     )
   }
 
-  _renderMax(isMultiTime){
+  _renderMax(){
     var header={},content;
     var MaxGroup=this.state.gatherInfo.MaxGroup;
     if(MaxGroup===null) return null;
@@ -265,19 +267,17 @@ export default class StatisticsDialog extends Component {
   }
 
   _renderContent(){
-    var isMultiTime=this.props.analysisPanel.isMultiTime;
     // var isMultiTime=false;
     return(
       <div style={{overflow:'auto'}}>
-        {this._renderSum(isMultiTime)}
-        {this._renderAverage(isMultiTime)}
-        {this._renderMax(isMultiTime)}
+        {this._renderSum()}
+        {this._renderAverage()}
+        {this._renderMax()}
       </div>
     )
   }
 
   getTitle(){
-    var isMultiTime=this.props.analysisPanel.isMultiTime;
     // var isMultiTime=false;
     if(isMultiTime){
       var tagName=AlarmTagStore.getSearchTagList()[0].tagName;
@@ -289,12 +289,48 @@ export default class StatisticsDialog extends Component {
     }
   }
 
+  componentWillMount(){
+    isMultiTime=MultipleTimespanStore.getSubmitTimespans()!==null;
+  }
+
   componentDidMount(){
     DataAnalysisStore.addChangeListener(this._onChange);
+
     let tagOptions = EnergyStore.getTagOpions(),
       paramsObj = EnergyStore.getParamsObj(),
       timeRanges = paramsObj.timeRanges;
-    BasicAnalysisAction.getWidgetGatherInfo(timeRanges,this.props.analysisPanel.state.step,tagOptions);
+    var seriesStatusArray = ChartStatusStore.getSeriesStatus();
+    var display_timeRanges=[],display_tagOptions=[];
+
+    if(isMultiTime){
+      seriesStatusArray.forEach((series,index)=>{
+        if(series.IsDisplay){
+          display_timeRanges.push(timeRanges[index]);
+        }
+      })
+      display_tagOptions=tagOptions
+    }
+    else {
+      seriesStatusArray.forEach((series,index)=>{
+        if(series.IsDisplay){
+          display_tagOptions.push(tagOptions[index]);
+        }
+      })
+      display_timeRanges=timeRanges
+    }
+    if(display_timeRanges.length!==0 && display_tagOptions.length!==0){
+      BasicAnalysisAction.getWidgetGatherInfo(display_timeRanges,this.props.analysisPanel.state.step,display_tagOptions);
+    }
+    else {
+      this.setState({
+        gatherInfo:{
+          MaxGroup:null,
+          AvgGroup:null,
+          SumGroup:null
+        }
+      })
+    }
+
   }
 
   componentWillUnmount(){
@@ -303,7 +339,6 @@ export default class StatisticsDialog extends Component {
 
   render(){
     var title=this.getTitle();
-
     var content;
         if(this.state.gatherInfo===null){
           content=(
