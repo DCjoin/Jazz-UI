@@ -346,7 +346,14 @@ let FolderAction = {
     AppDispatcher.dispatch({
       type: Action.ALWAYS_UNCHECK_SAME_WIDGET,
     });
-  }
+  },
+  dropError: function(sourceNode) {
+    AppDispatcher.dispatch({
+      sourceNode,
+      type: Action.MOVE_ITEM_ERROR,
+      errorCode: '050001205034'
+    });
+  },
 };
 
 module.exports = FolderAction;
