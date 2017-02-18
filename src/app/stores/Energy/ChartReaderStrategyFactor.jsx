@@ -534,7 +534,7 @@ let ChartReaderStrategyFactor = {
         }
         returndata.push({
           name: startStr + "<br/>" + endStr,
-          uid: timeRange.StartTime + timeRange.EndTime,
+          uid: timeRange.StartTime + timeRange.EndTime+'Index'+i,
           option: obj1,
           data: arr
         });
