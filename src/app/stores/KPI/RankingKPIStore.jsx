@@ -105,8 +105,8 @@ const RankingKPIStore = assign({}, PrototypeStore, {
   },
 
   getDate(date){
-    var j2d=CommonFuns.DataConverter.J2DNoTimezone;
-    return moment(j2d(date)).format(I18N.DateTimeFormat.IntervalFormat.Month)
+    // var j2d=CommonFuns.DataConverter.J2DNoTimezone;
+    return moment(new Date(date)).format(I18N.DateTimeFormat.IntervalFormat.Month)
   },
 
   dispose(){
