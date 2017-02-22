@@ -130,7 +130,7 @@ MeasuresItem.propTypes = {
   action:React.PropTypes.any,
 };
 
-MeasuresItem.defaultProps = {
-	hasCheckBox:true,
-  measure:Immutable.fromJS(measureSample)
-}
+// MeasuresItem.defaultProps = {
+// 	hasCheckBox:true,
+//   measure:Immutable.fromJS(measureSample)
+// }
