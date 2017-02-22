@@ -2124,5 +2124,14 @@ I18N.Setting.ECM = {};
 I18N.Setting.ECM.EstimatedAnnualCostSavings = '预计年节约成本';
 I18N.Setting.ECM.InvestmentAmount = '投资金额';
 I18N.Setting.ECM.PaybackPeriod = '投资回报期';
+I18N.Setting.ECM.NoECM = '未添加节能方案';
+I18N.Setting.ECM.EnergyProblem = '能效问题';
+I18N.Setting.ECM.AirConditioning = '空调';
+I18N.Setting.ECM.Boiler = '锅炉';
+I18N.Setting.ECM.StrongElectricity = '强电';
+I18N.Setting.ECM.WeakElectricity = '弱电';
+I18N.Setting.ECM.Drainage = '给排水';
+I18N.Setting.ECM.AirCompression = '空气压缩';
+I18N.Setting.ECM.Other = '其他';
 
 module.exports = I18N;
