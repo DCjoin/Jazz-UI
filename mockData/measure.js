@@ -11,7 +11,22 @@ module.exports = {
       "CreateUserId": 5,
       "CreateUserName": "sample string 6",
       "IsConsultant": true,
-      "CreateTime": "2017-02-21T08:26:11"
+      "CreateTime": "2017-02-21T08:26:11",
+      "ThumbnailUrl": "http://sejazz-test.images.energymost.com/EnergyWidgetVectorgraph_1000001@160w_80h.png",
+      "EnergyProblemImages": [
+        {
+          "Id": 1,
+          "EnergyProblemId": 1,
+          "Name": "sample string 2",
+          "ImageUrl": "sample string 3"
+        },
+        {
+          "Id": 1,
+          "EnergyProblemId": 1,
+          "Name": "sample string 2",
+          "ImageUrl": "sample string 3"
+        }
+      ]
     },
     EnergySolution:{
       "Id": 1,

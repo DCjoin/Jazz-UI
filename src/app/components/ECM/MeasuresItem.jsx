@@ -8,7 +8,8 @@ import {measureSample} from '../../../../mockData/measure.js';
 import Immutable from 'immutable';
 
 function getUrl(url) {
-	return "url(" + Config.ServeAddress + url+")";
+	return "url(" + url+")";
+	//return "url(" + Config.ServeAddress + url+")";
 }
 function validValue(value) {
 	return value?`${CommonFuns.getLabelData(value)} RMB`:'- RMB';
@@ -66,7 +67,7 @@ export default class MeasuresItem extends Component {
     }
 
     _renderContent(){
-      var {EnergySolution}=this.props.measure.toJS();
+      var {EnergySolution,EnergyProblem}=this.props.measure.toJS();
       var {ExpectedAnnualCostSaving,InvestmentAmount,period}=EnergySolution;
       let iconStyle = {
           fontSize: '16px'
@@ -84,7 +85,7 @@ export default class MeasuresItem extends Component {
       return(
         <div className="content">
           <div className="side">
-            <div className="image" style={{backgroundImage:"url(http://sejazz-test.images.energymost.com/EnergyWidgetVectorgraph_1000001@100w_150h.png)"}}></div>
+            <div className="image" style={{backgroundImage:getUrl(EnergyProblem.ThumbnailUrl)}}></div>
             <IconText icon={costIcon} label={I18N.Setting.ECM.EstimatedAnnualCostSavings} value={validValue(ExpectedAnnualCostSaving)}/>
             <IconText icon={sumIcon} label={I18N.Setting.ECM.InvestmentAmount} value={validValue(InvestmentAmount)}/>
             <IconText icon={periodIcon} label={I18N.Setting.ECM.PaybackPeriod} value={period || '-'}/>
