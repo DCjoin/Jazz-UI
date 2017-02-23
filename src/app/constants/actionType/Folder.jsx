@@ -32,6 +32,8 @@ module.exports = {
     SWTICH_WIDGET: null,
     CHECK_WIDGET_UPDATE: null,
     ALWAYS_UNCHECK_SAME_WIDGET: null,
+    GET_TAG_DATA_BY_NODEID_SUCCESS: null,
+    GET_TAG_DATA_BY_NODEID_ERROR: null,
   })
 
 };
