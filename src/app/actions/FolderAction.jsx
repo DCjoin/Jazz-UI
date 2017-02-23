@@ -354,6 +354,18 @@ let FolderAction = {
       errorCode: '050001205034'
     });
   },
+  getTagsDataByNodeId(nodeId) {
+
+    Ajax.get('/energy/gettagsdatabyid/' + nodeId, {
+      success: function(tagData) {
+        AppDispatcher.dispatch({
+          tagData,
+          nodeId,
+          type: Action.GET_TAG_DATA_BY_NODEID_SUCCESS
+        });
+      }
+    });
+  }
 };
 
 module.exports = FolderAction;

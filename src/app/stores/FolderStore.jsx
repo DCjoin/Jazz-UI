@@ -39,7 +39,8 @@ let FOLDER_TREE_EVENT = 'foldertree',
   SAVE_ALARM_WIDGET_SUCCESS_EVENT = 'savealarmwidgetsuccess',
   SAVE_ALARM_WIDGET_ERROR_EVENT = 'savealarmwidgeterror',
   DIALOG_EVENT = 'dialog',
-  CHECK_WIDGET_UPDATE_CHANGE_EVENT = 'check_widget_update_change_event';
+  CHECK_WIDGET_UPDATE_CHANGE_EVENT = 'check_widget_update_change_event',
+  SOLUTION_CHANGE_EVENT = 'solution_change_event';
 
 var FolderStore = assign({}, PrototypeStore, {
 
@@ -641,6 +642,16 @@ var FolderStore = assign({}, PrototypeStore, {
       this.removeListener(CHECK_WIDGET_UPDATE_CHANGE_EVENT, callback);
       this.dispose();
     },
+    emitSolutionChange: function(tagData, nodeId) {
+      this.emit(SOLUTION_CHANGE_EVENT, tagData, nodeId);
+    },
+    addSolutionChangeListener: function(callback) {
+      this.on(SOLUTION_CHANGE_EVENT, callback);
+    },
+    removeSolutionChangeListener: function(callback) {
+      this.removeListener(SOLUTION_CHANGE_EVENT, callback);
+      this.dispose();
+    },
 
   });
 
@@ -734,6 +745,12 @@ var FolderStore = assign({}, PrototypeStore, {
         break;
       case FolderAction.CHECK_WIDGET_UPDATE:
         FolderStore.emitCheckWidgetUpdateChange(action.done, action.cancel, action.doned);
+        break;
+      case FolderAction.GET_TAG_DATA_BY_NODEID_SUCCESS:
+        FolderStore.emitSolutionChange(Immutable.fromJS(action.tagData), action.nodeId);
+        break;
+      case FolderAction.GET_TAG_DATA_BY_NODEID_ERROR:
+        FolderStore.emitSolutionChange(action.error, action.nodeId);
         break;
     }
   });
