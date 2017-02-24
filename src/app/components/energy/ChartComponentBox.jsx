@@ -553,7 +553,7 @@ let ChartComponentBox = React.createClass({
       this.state.chartCmpStrategy.getLegendListFn(newConfig);
     }
 
-    if( this.props.config.animation === false ) {
+    if( this.props.config && this.props.config.animation === false ) {
       newConfig.plotOptions.series.animation = false;
     }
 
