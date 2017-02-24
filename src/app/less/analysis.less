@@ -129,3 +129,33 @@
     }
   }
 }
+
+.jazz-scheme-gallery {
+  display: flex;
+  align-items: center;
+
+  &-action {
+    width: 20px;
+    flex: none;
+  }
+
+  &-content {
+    border: 1px solid #000;
+    width: 100%;
+    &-header {
+      background-color: #000;
+      color: #fff;
+      display: flex;
+      position: relative;
+      justify-content: center;
+      align-items: center;
+      height: 30px;
+
+      &-delete {
+        position: absolute;
+        right: 10px;
+        top: 5px;
+      }
+    }
+  }
+}

@@ -1,15 +1,39 @@
 import React, { Component } from 'react';
+import Immutable from 'immutable';
 import { IconMenu, IconButton, MenuItem } from 'material-ui';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 import { nodeType } from 'constants/TreeConstants.jsx';
 import { MenuAction } from 'constants/AnalysisConstants.jsx';
 
+import GenerateSolutionButton from './GenerateSolutionButton.jsx';
+
 function isFolder(node) {
 	return node.get('Type') === nodeType.Folder;
 }
 function isBase(node) {
 	return node.get('Id') === -1;
+}
+
+function getChildrenWithoutRawData(node) {
+	if( node && node.get('Children') ) {
+		return node.get('Children').map(getChildrenWithoutRawData).filter(child => child && child.get('ChartType') !== 5)
+	}
+	if( node.get('ChartType') ) {
+		return node;
+	}
+	return null;
+}
+function flat(node, coll = []) {
+	if( node && node.get('Children') ) {
+		node.get('Children').map(function(child) {
+			flat(child, coll)
+		}).filter(child => child && child.get('ChartType') !== 5)
+	}
+	if( node.get('ChartType') ) {
+		coll.push(node);
+	}
+	return coll;
 }
 
 export default class FolderPanel extends Component {
@@ -38,7 +62,8 @@ export default class FolderPanel extends Component {
 	_renderHeader() {
 		let {node} = this.props,
 		action = null;
-		if(true) {
+
+		if(!isBase(node)) {
 			let iconStyle = {
 				fontSize: '12px',
 				color: '#464949',
@@ -50,7 +75,8 @@ export default class FolderPanel extends Component {
 				onItemTouchTap: this._onMenuSelect(node)
 		    };
 			action = (<div>
-				{!isBase(node) && this._renderMenu(node, iconMenuProps)}
+				<GenerateSolutionButton nodes={flat(node)} />
+				{this._renderMenu(node, iconMenuProps)}
 			</div>)
 		}
 		return (

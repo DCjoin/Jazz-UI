@@ -2,6 +2,9 @@ import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import {flowRight, curryRight} from 'lodash/function';
 import FontIcon from 'material-ui/FontIcon';
+import CircularProgress from 'material-ui/CircularProgress';
+
+import PrivilegeUtil from 'util/privilegeUtil.jsx';
 
 import Dialog from 'controls/NewDialog.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
@@ -10,12 +13,18 @@ import ViewableTextField from 'controls/ViewableTextField.jsx';
 import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
 
 import {ProblemMarkEnum} from 'constants/AnalysisConstants.jsx';
+import PermissionCode from 'constants/PermissionCode.jsx';
 
 import ChartBasicComponent from './ChartBasicComponent.jsx';
 
 import FolderAction from 'actions/FolderAction.jsx';
 import FolderStore from 'stores/FolderStore.jsx';
 import EnergyStore from 'stores/EnergyStore.jsx';
+import CurrentUserStore from 'stores/CurrentUserStore.jsx';
+
+function SolutionFull() {
+	return PrivilegeUtil.isFull(PermissionCode.SOLUTION_FULL, CurrentUserStore.getCurrentPrivilege());
+}
 
 function getChartTypeStr(data) {
   switch (data.get('ChartType')) {
@@ -65,7 +74,23 @@ function getProblemMarkMenuItem() {
 class Gallery extends Component {
 	render() {
 		let {names, selectedIdx, onLeft, onRight, onDelete, renderContent} = this.props;
-		return renderContent();
+		return (
+			<div className='jazz-scheme-gallery'>
+				<div className='jazz-scheme-gallery-action'>
+					{selectedIdx > 0 && <LinkButton onClick={onLeft} label={'《'}/>}
+				</div>
+				<div className='jazz-scheme-gallery-content'>
+					<div className='jazz-scheme-gallery-content-header'>
+						{`(${selectedIdx+1}/${names.length})${names[selectedIdx]}`}
+						{names.length > 1 && <LinkButton className='jazz-scheme-gallery-content-header-delete' label={I18N.Common.Button.Delete} onClick={onDelete}/>}
+					</div>
+					{renderContent()}
+				</div>
+				<div className='jazz-scheme-gallery-action'>
+					{selectedIdx < names.length - 1 && <LinkButton onClick={onRight} label={'》'}/>}
+				</div>
+			</div>
+		);
 	}
 }
 
@@ -183,18 +208,21 @@ class GenerateSolution extends Component {
 			SaveDesc,
 		} = this.state;
 		return {
-			EnergyProblem: {
-				HierarchyId: 100001,
-				Name: ProblemName,
-				EnergySys: ProblemMark,
-				Description: ProblemDesc,
-				Status: 1,
-				IsRead: 0,
-				IsConsultant: true,
-				EnergyProblemImages: nodes.map((node) => {return {
-					Name: node.get('Name'),
-					Content: svgStrings[getId(node)]
-				}}),
+			verified: ProblemName && ProblemMark && nodes.length === Object.keys(svgStrings).length,
+			data: {
+				EnergyProblem: {
+					HierarchyId: 100001,
+					Name: ProblemName,
+					EnergySys: ProblemMark,
+					Description: ProblemDesc,
+					Status: 1,
+					IsRead: 0,
+					IsConsultant: SolutionFull(),
+					EnergyProblemImages: nodes.map((node) => {return {
+						Name: node.get('Name'),
+						Content: svgStrings[getId(node)]
+					}})
+				},
 				EnergySolution: {
 					Name: SaveName,
 					ExpectedAnnualEnergySaving: SaveValue,
@@ -243,17 +271,17 @@ class GenerateSolution extends Component {
 		if( currentNode ) {
 			let svgString = svgStrings[getId(currentNode)];
 			if(svgStrings[getId(currentNode)]) {
-				return (<div dangerouslySetInnerHTML={{__html: svgString}} />);
+				return (<div style={{height: 400}} dangerouslySetInnerHTML={{__html: svgString}} />);
 			}			
 		}
-		return (<div>Loading</div>);
+		return (<div style={{height: 400}} className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>);
 	}
 
 	_renderHighChart(node) {
 		if(!node || !this.state.tagDatas[getId(node)] || this.state.svgStrings[getId(node)]) {
 			return null;
 		}
-		return (<div style={{position: 'relative', overflowX: 'hidden'}}><ChartBasicComponent 
+		return (<div style={{position: 'relative', overflowX: 'hidden', height: 400, width: 'calc(100% - 44px)'}}><ChartBasicComponent 
 						afterChartCreated={this._afterChartCreated}
 						ref='ChartBasicComponent'
 						key={getId(node)}
@@ -300,8 +328,11 @@ class GenerateSolution extends Component {
 
 	_renderSubmit() {
 		return (<FlatButton 
+			disabled={!this._getAPIDataFormat().verified}
 			label={I18N.Setting.DataAnalysis.SchemeSubmit}
 			onClick={() => {
+				let {data} = this._getAPIDataFormat();
+				FolderAction.createEnergySolution(data);
 				this.props.onRequestClose();
 			}}/>);
 	}
@@ -325,7 +356,7 @@ class GenerateSolution extends Component {
 				actions={[this._renderSubmit(), this._renderCancel()]}
 				contentStyle={{overflowY: 'auto'}}>
 				{this._renderEnergyProblem()}
-				<div style={{margin: '10px 0'}}>					
+				<div style={{margin: '10px 0'}}>		
 					<Gallery 
 						names={this.state.nodes.map(node => node.get('Name'))}
 						selectedIdx={this.state.idx}

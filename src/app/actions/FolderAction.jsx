@@ -365,6 +365,18 @@ let FolderAction = {
         });
       }
     });
+  },
+  createEnergySolution(params) {
+    Ajax.post('/energysolution/create', {
+      params,
+      success: function(data) {
+        alert('success');
+        console.log(data);
+      },
+      error: function() {
+        alert('error');
+      }
+    })
   }
 };
 
