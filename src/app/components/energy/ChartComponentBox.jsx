@@ -82,6 +82,7 @@ let defaultConfig = {
   },
   chart: {
     panning: false,
+    animation: true,
     backgroundColor: "#FBFBFB",
     plotBackgroundColor: null,
     plotBorderWidth: null,
@@ -514,9 +515,8 @@ let ChartComponentBox = React.createClass({
   _initChartObj() {
     var data = this.props.energyData.toJS();
     var cloneConfig = _.cloneDeep(defaultConfig);
-    var newConfig = assign({}, cloneConfig,
+    var newConfig = assign({}, cloneConfig, this.props.config || {}, 
       {
-        animation: true,
         title: {
           text: this.title,
           x: -75,
@@ -538,7 +538,9 @@ let ChartComponentBox = React.createClass({
 
     var realData = this.convertData(data.Data, newConfig);
     var timeRange = this.initRange(newConfig, realData);
-    this.initNavigatorData(newConfig, timeRange, data);
+    if( newConfig.navigator.enabled ) {
+      this.initNavigatorData(newConfig, timeRange, data);
+    }
 
     //多时间段，添加legend Title
     this.initLegendTitle(newConfig,realData);
@@ -549,6 +551,10 @@ let ChartComponentBox = React.createClass({
 
     if (this.state.chartCmpStrategy.getLegendListFn) {
       this.state.chartCmpStrategy.getLegendListFn(newConfig);
+    }
+
+    if( this.props.config.animation === false ) {
+      newConfig.plotOptions.series.animation = false;
     }
 
     this.initSeriesVisibility(newConfig.series);

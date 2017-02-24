@@ -304,6 +304,7 @@ export default class DataAnalysis extends Component {
 			if( isWidget(selectedNode) ) {
 				if( widgetLoaded(selectedNode) && this.state.widgetDto ) {
           content = React.cloneElement(this.props.children, {
+          	selectedNode,
             hierarchyId: this._getHierarchyId(this.context),
             isBuilding: !this._isCustomer(),
             chartTitle: selectedNode.get('Name'),

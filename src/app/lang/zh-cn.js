@@ -2115,6 +2115,25 @@ I18N.Setting.KPI.Report.StartCellHintText = '填写起始单元格';
 
 I18N.Setting.DataAnalysis = {};
 I18N.Setting.DataAnalysis.Scheme = '生成方案';
+I18N.Setting.DataAnalysis.SchemeSubmit = '生成';
+I18N.Setting.DataAnalysis.EnergyProblem = {};
+I18N.Setting.DataAnalysis.EnergyProblem.Title = '能效问题详情';
+I18N.Setting.DataAnalysis.EnergyProblem.Mark = '能源系统标识';
+I18N.Setting.DataAnalysis.EnergyProblem.MarkEnum = {
+  1: '空调',
+  2: '锅炉',
+  3: '强电',
+  4: '弱点',
+  5: '给排水',
+  6: '空气压缩',
+  20: '其他',
+};
+I18N.Setting.DataAnalysis.EnergyProblem.AddDesc = '添加能效问题描述';
+I18N.Setting.DataAnalysis.SaveScheme = {};
+I18N.Setting.DataAnalysis.SaveScheme.Title = '节能方案详情';
+I18N.Setting.DataAnalysis.SaveScheme.AddDesc = '添加节能方案';
+I18N.Setting.DataAnalysis.SaveScheme.TargetValue = '预计年节能量';
+I18N.Setting.DataAnalysis.SaveScheme.TargetCost = '预计年节约成本';
 I18N.Setting.DataAnalysis.To = '至';
 I18N.Setting.DataAnalysis.NotagRecommend = '点击“+数据点”按钮，选择要查看的数据点';
 I18N.Setting.DataAnalysis.SaveTip = '图表未保存，是否保存图表并离开？';

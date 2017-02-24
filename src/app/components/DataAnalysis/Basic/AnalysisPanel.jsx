@@ -37,6 +37,7 @@ import CalendarManager from '../../energy/CalendarManager.jsx';
 import DataAnalysisStore from 'stores/DataAnalysis/DataAnalysisStore.jsx';
 import CircularProgress from 'material-ui/CircularProgress';
 import ChartComponent from './ChartComponent.jsx';
+import GenerateSolutionButton from './GenerateSolutionButton.jsx';
 import {MenuAction} from 'constants/AnalysisConstants.jsx';
 import BasicAnalysisAction from 'actions/DataAnalysis/BasicAnalysisAction.jsx';
 import CommodityStore from 'stores/CommodityStore.jsx';
@@ -835,7 +836,7 @@ class AnalysisPanel extends Component {
           <FlatButton label={I18N.Common.Button.Save} disabled={!this.state.energyData} labelstyle={styles.label}
             icon={<FontIcon className="icon-save" style={styles.label}/>} style={styles.button}
             onClick={()=>{this._handleSave()}}/>
-          <FlatButton label={I18N.Setting.DataAnalysis.Scheme} labelstyle={styles.label} icon={<FontIcon className="icon-to-ecm" style={styles.label}/>} style={styles.button}/>
+          <GenerateSolutionButton nodes={[this.props.selectedNode]}/>
           {this._renderMoreOperation()}
       </div>
       </div>
@@ -1427,6 +1428,7 @@ class AnalysisPanel extends Component {
 }
 
 AnalysisPanel.propTypes = {
+  selectedNode:React.PropTypes.object,
 	hierarchyId:React.PropTypes.number,
   isBuilding:React.PropTypes.bool,
   chartTitle:React.PropTypes.string,
