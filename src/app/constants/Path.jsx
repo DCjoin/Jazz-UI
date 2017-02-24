@@ -49,5 +49,10 @@ module.exports = {
   },
   DataAnalysis:{
     getWidgetGatherInfo:'/Widget/GetWidgetGatherInfo'
+  },
+  ECM:{
+    getEnergysolution:'api/energysolution/{hierarchyId}/{status}/{smallSize}/{size}',
+    pushProblem:'api/energysolution/problem/push',
+    deleteProblem:'api/energysolution/problem/delete/{problemId}'
   }
 };

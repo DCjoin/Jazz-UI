@@ -24,27 +24,29 @@ export default class CustomTextField extends Component {
     }
   }
   render(){
-    var style=assign({},defaultStyle.style,this.props.style,
-                        {width:this.props.width})
+    var {style,width,multiLine,isNumber,value,regexFn,onChange}=this.props;
+    var newStyle=assign({},defaultStyle.style,style,{width:width})
     var prop={
       ref:'textfield',
-      style,
+      style:newStyle,
+      multiLine,
+      underlineFocusStyle:multiLine?{marginTop:'-50px'}:{},
       errorText:this.state.errorMessage,
-      value:this.props.isNumber?CommonFuns.toThousands(this.props.value):this.props.value,
+      value:isNumber?CommonFuns.toThousands(value):value,
       onChange:(ev,value)=>{
-        let realValue=this.props.isNumber?CommonFuns.thousandsToNormal(value):value;
-        if(this.props.regexFn){
+        let realValue=isNumber?CommonFuns.thousandsToNormal(value):value;
+        if(regexFn){
           this.setState({
             errorMessage:this.props.regexFn(realValue)
           })
         }
-        this.props.onChange(ev,realValue);
+        onChange(ev,realValue);
       },
       onBlur:()=>{this.setState({isView:true})},
     }
     if(this.state.isView){
       return <div className="jazz-customtextfield" onClick={()=>{this.setState({isView:false})}} >
-        {this.props.isNumber?CommonFuns.getLabelData(this.props.value*1):this.props.value}
+        {isNumber?CommonFuns.getLabelData(value*1):value}
       </div>
     }
     else {
@@ -60,4 +62,5 @@ CustomTextField.propTypes = {
   onChange:React.PropTypes.func,
   value:React.PropTypes.any,
   style:React.PropTypes.object,
+  multiLine:React.PropTypes.bool
 };
