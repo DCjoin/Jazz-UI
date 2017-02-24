@@ -100,6 +100,11 @@ const PermissionCode = function() {
 		FULL: 1313,
 	},
 	
+	SOLUTION_FULL: {
+		getLabel: () => I18N.Privilege.Role.SolutionFull,
+		FULL: 1321,
+	},
+	
 	BUILDING_LIST: {
 		getLabel: () => I18N.Privilege.Role.BuildingList,
 		FULL: 1319,

@@ -4,6 +4,8 @@ import {flowRight, curryRight} from 'lodash/function';
 import FontIcon from 'material-ui/FontIcon';
 import CircularProgress from 'material-ui/CircularProgress';
 
+import PrivilegeUtil from 'util/privilegeUtil.jsx';
+
 import Dialog from 'controls/NewDialog.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
 import LinkButton from 'controls/LinkButton.jsx';
@@ -11,12 +13,18 @@ import ViewableTextField from 'controls/ViewableTextField.jsx';
 import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
 
 import {ProblemMarkEnum} from 'constants/AnalysisConstants.jsx';
+import PermissionCode from 'constants/PermissionCode.jsx';
 
 import ChartBasicComponent from './ChartBasicComponent.jsx';
 
 import FolderAction from 'actions/FolderAction.jsx';
 import FolderStore from 'stores/FolderStore.jsx';
 import EnergyStore from 'stores/EnergyStore.jsx';
+import CurrentUserStore from 'stores/CurrentUserStore.jsx';
+
+function SolutionFull() {
+	return PrivilegeUtil.isFull(PermissionCode.SOLUTION_FULL, CurrentUserStore.getCurrentPrivilege());
+}
 
 function getChartTypeStr(data) {
   switch (data.get('ChartType')) {
@@ -69,7 +77,7 @@ class Gallery extends Component {
 		return (
 			<div className='jazz-scheme-gallery'>
 				<div className='jazz-scheme-gallery-action'>
-					{selectedIdx > 0 && <LinkButton label={'《'}/>}
+					{selectedIdx > 0 && <LinkButton onClick={onLeft} label={'《'}/>}
 				</div>
 				<div className='jazz-scheme-gallery-content'>
 					<div className='jazz-scheme-gallery-content-header'>
@@ -79,7 +87,7 @@ class Gallery extends Component {
 					{renderContent()}
 				</div>
 				<div className='jazz-scheme-gallery-action'>
-					{selectedIdx < names.length - 1 && <LinkButton label={'》'}/>}
+					{selectedIdx < names.length - 1 && <LinkButton onClick={onRight} label={'》'}/>}
 				</div>
 			</div>
 		);
@@ -200,18 +208,21 @@ class GenerateSolution extends Component {
 			SaveDesc,
 		} = this.state;
 		return {
-			EnergyProblem: {
-				HierarchyId: 100001,
-				Name: ProblemName,
-				EnergySys: ProblemMark,
-				Description: ProblemDesc,
-				Status: 1,
-				IsRead: 0,
-				IsConsultant: true,
-				EnergyProblemImages: nodes.map((node) => {return {
-					Name: node.get('Name'),
-					Content: svgStrings[getId(node)]
-				}}),
+			verified: ProblemName && ProblemMark && nodes.length === Object.keys(svgStrings).length,
+			data: {
+				EnergyProblem: {
+					HierarchyId: 100001,
+					Name: ProblemName,
+					EnergySys: ProblemMark,
+					Description: ProblemDesc,
+					Status: 1,
+					IsRead: 0,
+					IsConsultant: SolutionFull(),
+					EnergyProblemImages: nodes.map((node) => {return {
+						Name: node.get('Name'),
+						Content: svgStrings[getId(node)]
+					}})
+				},
 				EnergySolution: {
 					Name: SaveName,
 					ExpectedAnnualEnergySaving: SaveValue,
@@ -317,8 +328,11 @@ class GenerateSolution extends Component {
 
 	_renderSubmit() {
 		return (<FlatButton 
+			disabled={!this._getAPIDataFormat().verified}
 			label={I18N.Setting.DataAnalysis.SchemeSubmit}
 			onClick={() => {
+				let {data} = this._getAPIDataFormat();
+				FolderAction.createEnergySolution(data);
 				this.props.onRequestClose();
 			}}/>);
 	}
