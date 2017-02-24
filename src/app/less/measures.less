@@ -1,9 +1,10 @@
 .jazz-energy-conservation-measuresItem{
-  width:74%;
+  margin-top:15px;
+  margin-right: 15px;
   padding:15px 30px;
-  box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px;
+  box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 6px, inset rgba(0, 0, 0, 0.117647) 0px 1px 4px;
   &:hover{
-    border: 2px solid @schneiderBlue
+    border: 2px solid #86ccff
   }
   .name{
     border-bottom: 1px solid @schneiderGray;
@@ -26,10 +27,93 @@
 
     .image{
       width:160px;
-      height:180px;
+      height:80px;
       background-size:cover;
       background-repeat:no-repeat;
       background-position:center center
+    }
+  }
+}
+.jazz-ecm-mainpanel{
+  display: flex;
+  flex:1;
+  margin-top: -16px;
+  position: relative;
+  background-color: #ffffff;
+  &-content{
+    min-width: 1024px;
+    width: 74%;
+    margin: 0 auto;
+    display: flex;
+    align-items:  center;
+    flex-direction: column;
+  }
+}
+
+.jazz-ecm-tabs{
+        .f20;
+        color: @schneiderGray;
+        display: flex;
+        width: 260px;
+        min-width:260px;
+        text-align: center;
+        margin-top: 30px;
+        height:30px;
+        // justify-content: space-between;
+        &-tab {
+            .pointer;
+            width:130px;
+            box-sizing: border-box;
+            &.selected {
+                color:@schneiderBlack;
+                font-weight:bold;
+            }
+        }
+        >span:nth-of-type(2){
+          border-left: 1px solid @link-gray
+        }
+    }
+
+.jazz-ecm-notPush{
+  margin-top: 15px;
+  width: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  .action{
+    margin-left: 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  .content{
+    flex:1;
+    overflow-y: auto;
+    margin-bottom:15px;
+  }
+}
+.jazz-ecm-measure{
+  &-title{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height:30px;
+    border-bottom: 1px solid @schneiderGray;
+    padding-bottom: 10px
+  }
+  &-problem{
+    margin-top:15px;
+    .name{
+      font-size: 16px;
+      font-weight:bold
+    }
+    .row{
+      margin-top:15px;
+      .label{
+        font-size:12px;
+        color:#abafae
+      }
     }
   }
 }

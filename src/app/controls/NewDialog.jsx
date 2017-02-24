@@ -35,10 +35,10 @@ class DialogInline extends Component {
 			actionsContainerProps,
 			actions,
 			modal,
+			isOutsideClose
 		} = this.props,
 
 		close = modal ? null : <div className="dialog-close icon-close" onClick={::this.onClickAway}></div>;
-
 
 		return (
 			<div {...dialogProps}>
@@ -70,6 +70,7 @@ class NewDialog extends Component {
 			titleClassName,
 			titleStyle,
 			wrapperStyle,
+			isOutsideClose
 		} = this.props,
 
 		dialogWrapperProps = {
@@ -99,10 +100,10 @@ class NewDialog extends Component {
 			className: getOverlayClassName(overlayClassName),
 			style: overlayStyle,
 		},
-		dialogInlineProps = { dialogProps, contentProps, titleProps, actionsContainerProps, title, actions, modal, onRequestClose };
+		dialogInlineProps = { dialogProps, contentProps, titleProps, actionsContainerProps, title, actions,modal, onRequestClose,isOutsideClose};
 
 		let HighOrderDialogInline = DialogInline;
-		if( !modal ) {
+		if( !modal  && isOutsideClose) {
 			HighOrderDialogInline = ClickAwayListener(HighOrderDialogInline);
 		}
 
@@ -139,10 +140,12 @@ NewDialog.propTypes = {
 	style: PropTypes.object,
 	title: PropTypes.node,
 	titleClassName: PropTypes.string,
-	titleStyle: PropTypes.object
+	titleStyle: PropTypes.object,
+	isOutsideClose:PropTypes.bool
 };
 NewDialog.defaultProps = {
 	modal: true,
+	isOutsideClose:true
 };
 
 export default NewDialog;

@@ -2153,5 +2153,19 @@ I18N.Setting.ECM.WeakElectricity = '弱电';
 I18N.Setting.ECM.Drainage = '给排水';
 I18N.Setting.ECM.AirCompression = '空气压缩';
 I18N.Setting.ECM.Other = '其他';
+I18N.Setting.ECM.AlreadyPush = '已推送';
+I18N.Setting.ECM.NotPush = '未推送';
+I18N.Setting.ECM.PushAll = '批量推送';
+I18N.Setting.ECM.Push = '推送';
+I18N.Setting.ECM.PushContent = '推送节能方案{0}吗？';
+I18N.Setting.ECM.BatchPushContent = '批量推送节能方案{0}吗？';
+I18N.Setting.ECM.DeleteContent = '删除节能方案{0}吗？';
+I18N.Setting.ECM.PushSuccess = '节能方案已推送';
+I18N.Setting.ECM.Solution = '节能方案';
+I18N.Setting.ECM.ProblemDetail = '能效问题详情';
+I18N.Setting.ECM.InvestmentReturnCycle = {
+    ImmediateRecovery:'立即回收',
+    Other:'{0}年'
+};
 
 module.exports = I18N;

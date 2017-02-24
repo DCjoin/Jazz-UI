@@ -35,7 +35,7 @@ import Report from './components/report/Report.jsx';
 import DataAnalysis from './components/DataAnalysis';
 import AnalysisPanel from './components/DataAnalysis/Basic/AnalysisPanel.jsx';
 //for Test
-// import Report from './components/ECM/test.jsx';
+// import Report from './components/ECM/MainPanel.jsx';
 import Template from './components/report/Template.jsx';
 import { getCookie } from './util/Util.jsx';
 import RoutePath from './util/RoutePath.jsx';
