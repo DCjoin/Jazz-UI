@@ -12,7 +12,7 @@ function getUrl(url) {
 	//return "url(" + Config.ServeAddress + url+")";
 }
 function validValue(value) {
-	return value?`${CommonFuns.getLabelData(value)} RMB`:'- RMB';
+	return value!==null?`${CommonFuns.getLabelData(value)} RMB`:'- RMB';
 }
 
 class IconText extends Component{
@@ -43,7 +43,7 @@ export default class MeasuresItem extends Component {
 
     getName(){
       var {EnergyProblem,EnergySolution}=this.props.measure.toJS();
-      if(!MeasuresStore.IsSolutionDisable(EnergySolution)){
+      if(EnergySolution.Name){
         return <div>{EnergySolution.Name}</div>
       }
       else {
@@ -68,7 +68,8 @@ export default class MeasuresItem extends Component {
 
     _renderContent(){
       var {EnergySolution,EnergyProblem}=this.props.measure.toJS();
-      var {ExpectedAnnualCostSaving,InvestmentAmount,period}=EnergySolution;
+      var {ExpectedAnnualCostSaving,InvestmentAmount}=EnergySolution;
+			var InvestmentReturnCycle=MeasuresStore.getInvestmentReturnCycle(InvestmentAmount,ExpectedAnnualCostSaving);
       let iconStyle = {
           fontSize: '16px'
         },
@@ -88,7 +89,7 @@ export default class MeasuresItem extends Component {
             <div className="image" style={{backgroundImage:getUrl(EnergyProblem.ThumbnailUrl)}}></div>
             <IconText icon={costIcon} label={I18N.Setting.ECM.EstimatedAnnualCostSavings} value={validValue(ExpectedAnnualCostSaving)}/>
             <IconText icon={sumIcon} label={I18N.Setting.ECM.InvestmentAmount} value={validValue(InvestmentAmount)}/>
-            <IconText icon={periodIcon} label={I18N.Setting.ECM.PaybackPeriod} value={period || '-'}/>
+            <IconText icon={periodIcon} label={I18N.Setting.ECM.PaybackPeriod} value={InvestmentReturnCycle || '-'}/>
             <div style={{marginLeft:'30px'}}>{this.props.personInCharge}</div>
           </div>
           <div className="side">
@@ -103,7 +104,7 @@ export default class MeasuresItem extends Component {
       return(
         <div className="name">
           <div className="side">
-            {this.props.hasCheckBox && <Checkbox checked={this.props.isChecked} onCheck={this.props.onChecked} style={{width:'40px'}}/>}
+            {this.props.hasCheckBox && <Checkbox disabled={this.props.disabled} checked={this.props.isChecked} onCheck={this.props.onChecked} style={{width:'40px'}}/>}
             {this.getName()}
           </div>
           <div style={{fontSize:'16px'}}>{MeasuresStore.getEnergySys(EnergyProblem.EnergySys)}</div>
@@ -114,7 +115,7 @@ export default class MeasuresItem extends Component {
 	render() {
 
     return(
-      <div className="jazz-energy-conservation-measuresItem">
+      <div className="jazz-energy-conservation-measuresItem" onClick={this.props.onClick}>
         {this._renderName()}
         {this._renderContent()}
       </div>
@@ -127,11 +128,12 @@ MeasuresItem.propTypes = {
   hasCheckBox:React.PropTypes.bool,
   isChecked:React.PropTypes.bool,
   onChecked:React.PropTypes.func,
+	disabled:React.PropTypes.bool,
   personInCharge:React.PropTypes.object,
   action:React.PropTypes.any,
+	onClick:React.PropTypes.func,
 };
 
-// MeasuresItem.defaultProps = {
-// 	hasCheckBox:true,
-//   measure:Immutable.fromJS(measureSample)
-// }
+MeasuresItem.defaultProps = {
+	hasCheckBox:false
+}
