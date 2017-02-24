@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import classnames from "classnames";
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
-import MeasuresAction from '../../actions/ECM/MeasuresAction.jsx';
+import MeasuresAction from 'actions/ECM/MeasuresAction.jsx';
+import {Status} from '../../constants/actionType/Measures.jsx';
 import Checkbox from 'material-ui/Checkbox';
 import FontIcon from 'material-ui/FontIcon';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -12,6 +12,7 @@ import {Snackbar, CircularProgress} from 'material-ui';
 import {DIALOG_TYPE} from '../../constants/actionType/Measures.jsx';
 import Title from './MeasurePart/MeasureTitle.jsx';
 import Problem from './MeasurePart/Problem.jsx';
+import Solution from './MeasurePart/Solution.jsx';
 import {solutionList} from '../../../../mockData/measure.js';
 import Immutable from 'immutable';
 
@@ -28,12 +29,13 @@ export default class NotPushPanel extends Component {
   }
 
   state={
-    solutionList:null,//for test
+    solutionList:null,
     checkList:null,
     dialogType:null,
     handleIndex:null,
     snackbarText:null,
-    measureIndex:null
+    measureIndex:null,
+    measureShow:false
     }
 
   _onChanged(){
@@ -68,7 +70,7 @@ export default class NotPushPanel extends Component {
 
   _onMeasureItemClick(index){
     this.setState({
-      dialogType:DIALOG_TYPE.MEASURE,
+      measureShow:true,
       measureIndex:index
     })
   }
@@ -99,14 +101,16 @@ export default class NotPushPanel extends Component {
     return(
       <div style={{display:'inline-block'}}>
         <FlatButton disabled={this.state.checkList.getIn([index,'disabled'])} label={I18N.Setting.ECM.Push}
-                    onClick={()=>{
+                    onClick={(e)=>{
+                      e.stopPropagation();
                       this.setState({
                         dialogType:DIALOG_TYPE.PUSH,
                         handleIndex:index
                       })
                     }} labelstyle={styles.label} icon={<FontIcon className="icon-to-ecm" style={styles.label}/>}/>
         <FlatButton label={I18N.Common.Button.Delete}
-                    onClick={()=>{
+                    onClick={(e)=>{
+                      e.stopPropagation();
                       this.setState({
                         dialogType:DIALOG_TYPE.DELETE,
                         handleIndex:index
@@ -132,7 +136,7 @@ export default class NotPushPanel extends Component {
                       measure={solution}
                       hasCheckBox={true}
                       isChecked={this.state.checkList.getIn([index,'checked'])}
-                      onChecked={(ev,isChecked)=>{
+                      onChecked={(e,isChecked)=>{
                                   MeasuresAction.checkSolution(index,isChecked);
                                   }}
                       disabled={this.state.checkList.getIn([index,'disabled'])}
@@ -164,6 +168,7 @@ export default class NotPushPanel extends Component {
     return(
       <NewDialog
         open={true}
+        overlayStyle={{zIndex:'1000'}}
         actionsContainerStyle={styles.action}
         contentStyle={styles.content}
         actions={[
@@ -199,6 +204,7 @@ export default class NotPushPanel extends Component {
       <NewDialog
         open={true}
         actionsContainerStyle={styles.action}
+        overlayStyle={{zIndex:'1000'}}
         contentStyle={styles.content}
         actions={[
             <RaisedButton
@@ -220,7 +226,7 @@ export default class NotPushPanel extends Component {
     var onClose=()=>{
       //保存
       this.setState({
-        dialogType:null,
+        measureShow:false,
         measureIndex:null
       })
     };
@@ -235,7 +241,12 @@ export default class NotPushPanel extends Component {
        measure:this.state.solutionList.getIn([this.state.measureIndex]),
        canEdit:true,
        merge:this.merge,
-     }
+     },
+     solution:{
+       measure:this.state.solutionList.getIn([this.state.measureIndex]),
+       canEdit:true,
+       merge:this.merge,
+     },
    }
     return(
       <NewDialog
@@ -245,6 +256,7 @@ export default class NotPushPanel extends Component {
         onRequestClose={onClose}>
         <Title {...props.title}/>
         {this._renderOperation(this.state.measureIndex)}
+        <Solution {...props.solution}/>
         <Problem {...props.problem}/>
       </NewDialog>
     )
@@ -265,6 +277,7 @@ export default class NotPushPanel extends Component {
 
   componentDidMount(){
     MeasuresStore.addChangeListener(this._onChanged);
+    MeasuresAction.getGroupSettingsList(this.props.hierarchyId,Status.NotPush);
   }
 
   componentWillUnmount(){
@@ -281,9 +294,6 @@ export default class NotPushPanel extends Component {
       case DIALOG_TYPE.DELETE:
             dialog=this._renderDeleteDialog();
             break;
-      case DIALOG_TYPE.MEASURE:
-            dialog=this._renderMeasureDialog();
-            break;
       default:
 
     }
@@ -292,6 +302,7 @@ export default class NotPushPanel extends Component {
         {this._renderAction()}
         {this._renderList()}
         {dialog}
+        {this.state.measureShow && this._renderMeasureDialog()}
         <Snackbar ref='snackbar' open={!!this.state.snackbarText} onRequestClose={()=>{
             MeasuresAction.resetErrorText()
           }} message={this.state.snackbarText}/>
@@ -302,4 +313,5 @@ export default class NotPushPanel extends Component {
 }
 
   NotPushPanel.propTypes = {
+    hierarchyId:React.PropTypes.number,
   };

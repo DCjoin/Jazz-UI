@@ -21,6 +21,10 @@ export default class MainPanel extends Component {
     this._handlerSwitchTab=this._handlerSwitchTab.bind(this);
   }
 
+  static contextTypes = {
+      hierarchyId: React.PropTypes.string
+    };
+
   state={
     infoTabNo:isFull()?1:2
   }
@@ -30,7 +34,6 @@ export default class MainPanel extends Component {
     this.setState({
       infoTabNo: no
     });
-
   }
 
   _renderTabs(){
@@ -50,10 +53,10 @@ export default class MainPanel extends Component {
 
   _renderContent(){
     if(this.state.infoTabNo === 1){
-      return <NotPushPanel/>
+      return <NotPushPanel hierarchyId={this.context.hierarchyId}/>
     }
     else {
-      return <PushPanel/>
+      return <PushPanel hierarchyId={this.context.hierarchyId}/>
     }
   }
 

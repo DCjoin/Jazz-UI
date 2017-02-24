@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import TextField from '../../../controls/CustomTextField.jsx';
+import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
 
 export default class Problem extends Component {
 
@@ -12,26 +13,30 @@ export default class Problem extends Component {
       var {EnergyProblem}=measure.toJS();
       var props={
         name:{
+          key:'EnergyProblem'+EnergyProblem.Id+'_Name'+new Date(),
           isNumber:false,
           onChange:(ev,value)=>{
-                                if(value===''){value=null}
+                                if(value===''){value=EnergyProblem.Name}
                                 this.props.merge(['EnergyProblem','Name'],value)
                               },
           value:EnergyProblem.Name,
           style:{marginTop:'-5px'},
           width:'100%',
-          multiLine:true
+          multiLine:true,
+          displayFn:MeasuresStore.getDisplayText
         },
         description:{
+          key:'EnergyProblem'+EnergyProblem.Id+'_Description'+new Date(),
           isNumber:false,
           onChange:(ev,value)=>{
-                                if(value===''){value=null}
-                                this.props.merge(['EnergyProblem','Description'],value)
+                                if(value===''){value=EnergyProblem.Description}
+                                this.props.merge(['EnergyProblem','Description'],value);
                               },
           value:EnergyProblem.Description,
           style:{marginTop:'-5px'},
           width:'100%',
-          multiLine:true
+          multiLine:true,
+          displayFn:MeasuresStore.getDisplayText
         },
       };
       return(
@@ -43,13 +48,13 @@ export default class Problem extends Component {
             <div className="label">
               {I18N.Common.Glossary.Name}
             </div>
-            {canEdit?<TextField {...props.name}/>:EnergyProblem.Name}
+            {canEdit?<TextField {...props.name}/>:<div className="jazz-ecm-measure-viewabletext">{MeasuresStore.getDisplayText(EnergyProblem.Name)}</div>}
           </div>
           <div className="row">
             <div className="label">
               {I18N.Setting.UserManagement.Comment}
             </div>
-            {canEdit?<TextField {...props.description}/>:EnergyProblem.Name}
+            {canEdit?<TextField {...props.description}/>:<div className="jazz-ecm-measure-viewabletext">{MeasuresStore.getDisplayText(EnergyProblem.Description)}</div>}
           </div>
         </div>
       )

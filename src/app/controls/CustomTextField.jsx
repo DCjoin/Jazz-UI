@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import assign from "object-assign";
 import {TextField} from 'material-ui';
-import CommonFuns from 'util/Util.jsx'
+import CommonFuns from 'util/Util.jsx';
+import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
 
 const defaultStyle={
   style:{
@@ -15,7 +16,8 @@ export default class CustomTextField extends Component {
   }
   state={
     isView:true,
-    errorMessage:''
+    errorMessage:'',
+    value:this.props.value
   }
 
   componentDidUpdate(){
@@ -24,11 +26,13 @@ export default class CustomTextField extends Component {
     }
   }
   render(){
-    var {style,width,multiLine,isNumber,value,regexFn,onChange}=this.props;
+    var {style,width,multiLine,isNumber,regexFn,onChange,displayFn}=this.props;
+    var value=this.state.value;
     var newStyle=assign({},defaultStyle.style,style,{width:width})
     var prop={
       ref:'textfield',
       style:newStyle,
+      inputStyle:{marginTop:'-10px'},
       multiLine,
       underlineFocusStyle:multiLine?{marginTop:'-50px'}:{},
       errorText:this.state.errorMessage,
@@ -37,16 +41,22 @@ export default class CustomTextField extends Component {
         let realValue=isNumber?CommonFuns.thousandsToNormal(value):value;
         if(regexFn){
           this.setState({
-            errorMessage:this.props.regexFn(realValue)
+            errorMessage:regexFn(realValue)
           })
         }
-        onChange(ev,realValue);
+        this.setState({
+          errorMessage:regexFn?regexFn(realValue):null,
+          value:realValue
+        })
       },
-      onBlur:()=>{this.setState({isView:true})},
+      onBlur:()=>{
+        this.setState({isView:true});
+        onChange(null,this.state.value);
+      },
     }
     if(this.state.isView){
       return <div className="jazz-customtextfield" onClick={()=>{this.setState({isView:false})}} >
-        {isNumber?CommonFuns.getLabelData(value*1):value}
+        {isNumber?CommonFuns.getLabelData(value*1):displayFn(value)}
       </div>
     }
     else {
@@ -62,5 +72,10 @@ CustomTextField.propTypes = {
   onChange:React.PropTypes.func,
   value:React.PropTypes.any,
   style:React.PropTypes.object,
-  multiLine:React.PropTypes.bool
+  multiLine:React.PropTypes.bool,
+  displayFn:React.PropTypes.func
 };
+
+CustomTextField.defaultProps={
+  multiLine:false
+}

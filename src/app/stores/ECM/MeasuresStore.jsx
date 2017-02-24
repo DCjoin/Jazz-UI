@@ -7,6 +7,8 @@ import PrototypeStore from '../PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
 import _ from 'lodash';
+import CommonFuns from 'util/Util.jsx';
+import moment from 'moment';
 
 var _solutionList=null,
     _checkList=[],
@@ -27,7 +29,6 @@ const MeasuresStore = assign({}, PrototypeStore, {
         })
       })
     }
-    console.log(_checkList);
   },
   getSolutionList(){
     return _solutionList
@@ -105,7 +106,6 @@ const MeasuresStore = assign({}, PrototypeStore, {
     return energySys.find(item=>(item.get('value')===value)).get('label')
   },
   IsSolutionDisable(solution){
-    console.log(solution);
     return solution.Name===null || solution.ExpectedAnnualEnergySaving===null
               || solution.EnergySavingUnit===null || solution.ExpectedAnnualCostSaving===null || solution.Description===null
   },
@@ -115,7 +115,7 @@ const MeasuresStore = assign({}, PrototypeStore, {
     return abled && !abledAndunCheck
   },
   IsPushAllDisabled(){
-    return _.findIndex(_checkList,item=>item.checked)===_.findLastIndex(_checkList,item=>item.checked)
+    return _.findIndex(_checkList,item=>item.checked)===-1
   },
   IsAllCheckDisabled(){
     return !(Immutable.fromJS(_checkList).findIndex(item=>(!item.get('disabled')))>-1)
@@ -130,11 +130,56 @@ const MeasuresStore = assign({}, PrototypeStore, {
         return I18N.Setting.ECM.InvestmentReturnCycle.ImmediateRecovery
       }
       else {
-        return I18N.format(I18N.Setting.ECM.InvestmentReturnCycle.Other,cycle.toFixed(1)) 
+        return I18N.format(I18N.Setting.ECM.InvestmentReturnCycle.Other,cycle.toFixed(1))
       }
     }
   },
+  getDisplayText(text){
+    return text===null?'-':text
+  },
+  validateNumber(number){
+    //null
+    if(number===null) return true
+    //不合法字符
+    if(!CommonFuns.isNumeric(number)) return false
+    //小于0
+    if(number*1<0) return false
+    //一位小数
+    if((number+'').indexOf('.')>-1 && (number+'').length-(number+'').indexOf('.')!==2) return false
+    return true
+  },
+  isSolutionValid(timeType,time){
+    var now=moment(new Date());
+    var date=moment(time);
+    if(timeType===1 && date.month()===now.month() && date.year()===now.year()) return true
+    if(timeType===2){
+      var last3Month=now.add(-3,'M');
+      if(date.month()!==now.month() && last3Month.isBefore(date)) return true
+    }
+    if(timeType===3){
+      var last3Month=now.add(-3,'M');
+      if(date.isBefore(last3Month)) return true
+    }
+  },
+  getStatusText(status){
+    switch (status) {
+      case Status.ToBe:
+            return I18N.Setting.ECM.PushPanel.ToBe
+        break;
+      case Status.Being:
+            return I18N.Setting.ECM.PushPanel.Being
+          break;
+      case Status.Done:
+            return I18N.Setting.ECM.PushPanel.Done
+          break;
+      case Status.Canceled:
+            return I18N.Setting.ECM.PushPanel.Canceled
+          break;
+      default:
 
+    }
+
+  }
 });
 
 MeasuresStore.dispatchToken = AppDispatcher.register(function(action) {
