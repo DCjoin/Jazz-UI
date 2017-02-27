@@ -153,11 +153,11 @@ const MeasuresStore = assign({}, PrototypeStore, {
     var date=moment(time);
     if(timeType===1 && date.month()===now.month() && date.year()===now.year()) return true
     if(timeType===2){
-      var last3Month=now.add(-3,'M');
+      var last3Month=moment(new Date()).add(-3,'M');
       if(date.month()!==now.month() && last3Month.isBefore(date)) return true
     }
     if(timeType===3){
-      var last3Month=now.add(-3,'M');
+      var last3Month=moment(new Date()).add(-3,'M');
       if(date.isBefore(last3Month)) return true
     }
   },

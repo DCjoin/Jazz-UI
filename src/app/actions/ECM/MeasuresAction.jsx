@@ -27,11 +27,12 @@ const MeasuresAction = {
     })
   },
   pushProblem(ids){
+    var that=this;
     Ajax.post(Path.ECM.pushProblem,
       {
       params: ids,
       success: function(resBody) {
-        this.getGroupSettingsList();
+        that.getGroupSettingsList();
         AppDispatcher.dispatch({
           type: Action.PUSH_PROBLEM_SUCCESS
         });
@@ -42,10 +43,23 @@ const MeasuresAction = {
     });
   },
   deleteProblem(ids){
+    var that=this;
     Ajax.post(util.replacePathParams(Path.ECM.deleteProblem, ids[0]),
       {
       success: function(resBody) {
-        this.getGroupSettingsList();
+        that.getGroupSettingsList();
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
+  createSolution(dto){
+    var that=this;
+    Ajax.post(Path.ECM.createSolution,
+      {
+      success: function(resBody) {
+        that.getGroupSettingsList();
       },
       error: function(err, res) {
         console.log(err, res);

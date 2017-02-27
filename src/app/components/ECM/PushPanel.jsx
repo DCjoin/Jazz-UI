@@ -149,27 +149,29 @@ export default class PushPanel extends Component {
   }
 
   _renderMeasureDialog(){
+    var currentSolution=this.state.solutionList.getIn([this.state.measureIndex]);
     var onClose=()=>{
-      //保存
       this.setState({
         measureShow:false,
         measureIndex:null
+      },()=>{
+        MeasuresAction.createSolution(currentSolution.toJS);
       })
     };
    var props={
      title:{
-       measure:this.state.solutionList.getIn([this.state.measureIndex]),
+       measure:currentSolution,
        canNameEdit:true,
        canEnergySysEdit:true,
        merge:this.merge,
      },
      problem:{
-       measure:this.state.solutionList.getIn([this.state.measureIndex]),
+       measure:currentSolution,
        canEdit:true,
        merge:this.merge,
      },
      solution:{
-       measure:this.state.solutionList.getIn([this.state.measureIndex]),
+       measure:currentSolution,
        canEdit:true,
        merge:this.merge,
      },
@@ -193,16 +195,17 @@ export default class PushPanel extends Component {
     paths.unshift(this.state.measureIndex);
     MeasuresAction.merge(paths,value)
   }
-  componentWillMount(){
-  MeasuresStore.setSolutionList(solutionList,Status.ToBe);//for test
-  this.setState({
-    solutionList:Immutable.fromJS(solutionList),//for test
-  })
-  }
+  // componentWillMount(){
+  // MeasuresStore.setSolutionList(solutionList,Status.ToBe);//for test
+  // this.setState({
+  //   solutionList:Immutable.fromJS(solutionList),//for test
+  // })
+  // }
 
   componentDidMount(){
     MeasuresStore.addChangeListener(this._onChanged);
     MeasuresAction.getGroupSettingsList(this.props.hierarchyId,Status.ToBe);
+    // MeasuresAction.getGroupSettingsList(100001,Status.ToBe);
   }
 
   componentWillUnmount(){

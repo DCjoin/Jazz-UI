@@ -223,27 +223,29 @@ export default class NotPushPanel extends Component {
   }
 
   _renderMeasureDialog(){
+    var currentSolution=this.state.solutionList.getIn([this.state.measureIndex]);
     var onClose=()=>{
-      //保存
       this.setState({
         measureShow:false,
         measureIndex:null
-      })
+    },()=>{
+      MeasuresAction.createSolution(currentSolution.toJS);
+    })
     };
    var props={
      title:{
-       measure:this.state.solutionList.getIn([this.state.measureIndex]),
+       measure:currentSolution,
        canNameEdit:true,
        canEnergySysEdit:true,
        merge:this.merge,
      },
      problem:{
-       measure:this.state.solutionList.getIn([this.state.measureIndex]),
+       measure:currentSolution,
        canEdit:true,
        merge:this.merge,
      },
      solution:{
-       measure:this.state.solutionList.getIn([this.state.measureIndex]),
+       measure:currentSolution,
        canEdit:true,
        merge:this.merge,
      },
@@ -267,17 +269,18 @@ export default class NotPushPanel extends Component {
     MeasuresAction.merge(paths,value)
   }
 
-  componentWillMount(){
-    MeasuresStore.setSolutionList(solutionList,1);//for test
-    this.setState({
-      solutionList:Immutable.fromJS(solutionList),//for test
-      checkList:MeasuresStore.getCheckList()
-    })
-  }
+  // componentWillMount(){
+  //   MeasuresStore.setSolutionList(solutionList,1);//for test
+  //   this.setState({
+  //     solutionList:Immutable.fromJS(solutionList),//for test
+  //     checkList:MeasuresStore.getCheckList()
+  //   })
+  // }
 
   componentDidMount(){
     MeasuresStore.addChangeListener(this._onChanged);
     MeasuresAction.getGroupSettingsList(this.props.hierarchyId,Status.NotPush);
+    // MeasuresAction.getGroupSettingsList(100001,Status.NotPush);
   }
 
   componentWillUnmount(){
