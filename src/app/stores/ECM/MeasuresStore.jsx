@@ -179,7 +179,15 @@ const MeasuresStore = assign({}, PrototypeStore, {
 
     }
 
-  }
+  },
+  getValidParams(dto){
+    let {ExpectedAnnualEnergySaving,ExpectedAnnualCostSaving,InvestmentAmount}=dto.get('EnergySolution');
+    if(!this.validateNumber(ExpectedAnnualEnergySaving)) {dto=dto.setIn(['EnergySolution','ExpectedAnnualEnergySaving'],null)}
+    if(!this.validateNumber(ExpectedAnnualCostSaving)) {dto=dto.setIn(['EnergySolution','ExpectedAnnualCostSaving'],null)}
+    if(!this.validateNumber(InvestmentAmount)) {dto=dto.setIn(['EnergySolution','InvestmentAmount'],null)}
+
+    return dto
+  },
 });
 
 MeasuresStore.dispatchToken = AppDispatcher.register(function(action) {

@@ -10,8 +10,39 @@ import Title from './MeasurePart/MeasureTitle.jsx';
 import Problem from './MeasurePart/Problem.jsx';
 import Solution from './MeasurePart/Solution.jsx';
 import NewDialog from 'controls/NewDialog.jsx';
-import {solutionList} from '../../../../mockData/measure.js';
-import Immutable from 'immutable';
+import PermissionCode from 'constants/PermissionCode.jsx';
+import CurrentUserStore from 'stores/CurrentUserStore.jsx';
+import privilegeUtil from 'util/privilegeUtil.jsx';
+
+function privilegeWithPush( privilegeCheck ) {
+  // return true
+	return privilegeCheck(PermissionCode.SOLUTION_FULL, CurrentUserStore.getCurrentPrivilege());
+}
+//能源经理
+function PushIsFull() {
+	return privilegeWithPush(privilegeUtil.isFull.bind(privilegeUtil));
+}
+
+function privilegeWithPushAndNotPush( privilegeCheck ) {
+  // return true
+	return privilegeCheck(PermissionCode.SOLUTION_FULL, CurrentUserStore.getCurrentPrivilege());
+}
+  //顾问
+function PushAndNotPushIsFull() {
+	return privilegeWithPushAndNotPush(privilegeUtil.isFull.bind(privilegeUtil));
+}
+
+function currentUserId(){
+  return CurrentUserStore.getCurrentUser().Id
+}
+
+function IsUserSelf(userId){
+  return currentUserId===userId
+}
+
+function canEdit(userId){
+  PushAndNotPushIsFull() || (PushIsFull() && IsUserSelf(userId))
+}
 
 const status=[Status.ToBe,Status.Being,Status.Done,Status.Canceled];
 export default class PushPanel extends Component {
@@ -150,29 +181,31 @@ export default class PushPanel extends Component {
 
   _renderMeasureDialog(){
     var currentSolution=this.state.solutionList.getIn([this.state.measureIndex]);
+    var createUserId=this.state.solutionList.getIn([this.state.measureIndex,'EnergyProblem','CreateUserId']);
     var onClose=()=>{
       this.setState({
         measureShow:false,
         measureIndex:null
       },()=>{
+        //currentSolution=MeasuresStore.getValidParams(currentSolution);
         MeasuresAction.createSolution(currentSolution.toJS());
       })
     };
    var props={
      title:{
        measure:currentSolution,
-       canNameEdit:true,
-       canEnergySysEdit:true,
+       canNameEdit:canEdit(createUserId),
+       canEnergySysEdit:PushAndNotPushIsFull(),
        merge:this.merge,
      },
      problem:{
        measure:currentSolution,
-       canEdit:true,
+       canEdit:canEdit(createUserId),
        merge:this.merge,
      },
      solution:{
        measure:currentSolution,
-       canEdit:true,
+       canEdit:canEdit(createUserId),
        merge:this.merge,
      },
    }

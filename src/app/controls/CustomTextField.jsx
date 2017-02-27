@@ -56,7 +56,7 @@ export default class CustomTextField extends Component {
     }
     if(this.state.isView){
       return <div className="jazz-customtextfield" onClick={()=>{this.setState({isView:false})}} >
-        {isNumber?CommonFuns.getLabelData(value*1):displayFn(value)}
+        {isNumber?value===''?'-':displayFn(CommonFuns.getLabelData(value*1)):displayFn(value)}
       </div>
     }
     else {

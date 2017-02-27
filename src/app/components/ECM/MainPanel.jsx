@@ -4,10 +4,11 @@ import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
 import NotPushPanel from './NotPushPanel.jsx';
 import PushPanel from './PushPanel.jsx';
+import PermissionCode from 'constants/PermissionCode.jsx';
 
 function privilegeWithPushAndNotPush( privilegeCheck ) {
-  return true
-	//return privilegeCheck(PermissionCode.PUSH_AND_NOTPUSH, CurrentUserStore.getCurrentPrivilege());
+  // return true
+	return privilegeCheck(PermissionCode.SOLUTION_FULL, CurrentUserStore.getCurrentPrivilege());
 }
 
 function isFull() {

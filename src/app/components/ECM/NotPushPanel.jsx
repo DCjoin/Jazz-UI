@@ -229,6 +229,7 @@ export default class NotPushPanel extends Component {
         measureShow:false,
         measureIndex:null
     },()=>{
+      // currentSolution=MeasuresStore.getValidParams(currentSolution);
       MeasuresAction.createSolution(currentSolution.toJS());
     })
     };

@@ -57,6 +57,7 @@ export default class Solution extends Component {
           style:{marginTop:'-5px'},
           width:'50px',
           regexFn:(value)=>{
+            if(value===''){value=null}
             if(!MeasuresStore.validateNumber(value)){
               return I18N.Setting.ECM.NumberErrorText
             }
@@ -64,7 +65,10 @@ export default class Solution extends Component {
               return null
             }
           },
-          displayFn:MeasuresStore.getDisplayText
+          displayFn:(value)=>{
+            if(value===''){value=null}
+             return MeasuresStore.getDisplayText(value)
+          }
         },
         savingUnit:{
           key:'EnergySolution'+EnergySolution.Id+'_SavingUnit',
@@ -77,7 +81,10 @@ export default class Solution extends Component {
           style:{marginTop:'-5px'},
           width:'100%',
           multiLine:true,
-          displayFn:MeasuresStore.getDisplayText
+          displayFn:(value)=>{
+            if(value===''){value=null}
+             return MeasuresStore.getDisplayText(value)
+          }
         },
         cost:{
           key:'EnergySolution'+EnergySolution.Id+'_Cost',
@@ -90,6 +97,7 @@ export default class Solution extends Component {
           style:{marginTop:'-5px'},
           width:'50px',
           regexFn:(value)=>{
+            if(value===''){value=null}
             if(!MeasuresStore.validateNumber(value)){
               return I18N.Setting.ECM.NumberErrorText
             }
@@ -97,7 +105,10 @@ export default class Solution extends Component {
               return null
             }
           },
-          displayFn:MeasuresStore.getDisplayText
+          displayFn:(value)=>{
+            if(value===''){value=null}
+             return MeasuresStore.getDisplayText(value)
+          }
         },
         amount:{
           key:'EnergySolution'+EnergySolution.Id+'_Amount',
@@ -110,6 +121,7 @@ export default class Solution extends Component {
           style:{marginTop:'-5px'},
           width:'50px',
           regexFn:(value)=>{
+            if(value===''){value=null}
             if(!MeasuresStore.validateNumber(value)){
               return I18N.Setting.ECM.NumberErrorText
             }
@@ -117,7 +129,10 @@ export default class Solution extends Component {
               return null
             }
           },
-          displayFn:MeasuresStore.getDisplayText
+          displayFn:(value)=>{
+            if(value===''){value=null}
+             return MeasuresStore.getDisplayText(value)
+          }
         },
         description:{
           key:'EnergySolution'+EnergySolution.Id+'_Description',
@@ -130,7 +145,10 @@ export default class Solution extends Component {
           style:{marginTop:'-5px'},
           width:'100%',
           multiLine:true,
-          displayFn:MeasuresStore.getDisplayText
+          displayFn:(value)=>{
+                      if(value===''){value=null}
+                       return MeasuresStore.getDisplayText(value)
+                    }
         },
       };
       var InvestmentReturnCycle=MeasuresStore.getInvestmentReturnCycle(InvestmentAmount,ExpectedAnnualCostSaving);
@@ -140,7 +158,7 @@ export default class Solution extends Component {
             {I18N.Setting.ECM.SolutionDetail}
           </div>
           <div className="row">
-            <div className="jazz-ecm-measure-solution-iconrow">
+            <div className="jazz-ecm-measure-solution-iconrow" style={{justifyContent: 'space-between'}}>
               <IconLabelField {...props.savingIcon}>
                 <div className="jazz-ecm-measure-solution-iconrow">
                   {canEdit?<TextField {...props.saving}/>:MeasuresStore.getDisplayText(ExpectedAnnualEnergySaving)}
