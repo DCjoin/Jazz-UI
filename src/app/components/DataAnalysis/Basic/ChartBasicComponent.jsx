@@ -70,7 +70,8 @@ export default class ChartComponent extends Component {
       <div id={'chart_basic_component_' + Id} style={{
           flex: 1,
           position: 'absolute',
-          width: '100%',
+          width: 610,
+          height: 320,
           display: 'flex',
           opacity: 0,
           flexDirection: 'column',

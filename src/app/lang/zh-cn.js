@@ -46,6 +46,7 @@ I18N.MainMenu.DeviceTemplate = '台账模板';
 I18N.MainMenu.ParameterTemplate = '参数模板';
 
 I18N.MainMenu.KPI = '指标·报表';
+I18N.MainMenu.SaveSchemeTab = '节能方案';
 I18N.MainMenu.DataAnalysis = '数据分析';
 I18N.MainMenu.KPIActuality = '指标现状';
 I18N.MainMenu.KPIConfig = '指标现状配置';
@@ -1818,6 +1819,7 @@ I18N.Privilege.Role.BaselineConfiguration = '能耗分析基准值配置';
 I18N.Privilege.Role.IndexAndReport = '指标&报表';
 I18N.Privilege.Role.BasicDataAnalyse = '基本数据分析';
 I18N.Privilege.Role.SeniorDataAnalyse = '高级数据分析';
+I18N.Privilege.Role.PushSolution = '已推送方案';
 I18N.Privilege.Role.SolutionFull = '已推送+未推送方案';
 I18N.Privilege.Role.BuildingList = '项目列表';
 
