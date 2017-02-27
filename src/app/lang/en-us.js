@@ -46,6 +46,7 @@ I18N.MainMenu.DeviceTemplate = 'Ledger template ';
 I18N.MainMenu.ParameterTemplate = 'Parameter template';
 
 I18N.MainMenu.KPI = 'KPI · Report';
+I18N.MainMenu.SaveSchemeTab = '节能方案';
 I18N.MainMenu.DataAnalysis = 'Data Analysis';
 I18N.MainMenu.KPIActuality = 'KPI Actuality';
 I18N.MainMenu.KPIConfig = 'KPI Configuration';
@@ -1819,6 +1820,8 @@ I18N.Privilege.Role.BaselineConfiguration = 'Energy analysis and baseline settin
 I18N.Privilege.Role.IndexAndReport = 'Index & Report';
 I18N.Privilege.Role.BasicDataAnalyse = 'Basic Data Analysis';
 I18N.Privilege.Role.SeniorDataAnalyse = 'Senior Data Analysis';
+I18N.Privilege.Role.PushSolution = '已推送方案';
+I18N.Privilege.Role.SolutionFull = '已推送+未推送方案';
 I18N.Privilege.Role.BuildingList = 'Project List';
 
 I18N.Remark = {};
