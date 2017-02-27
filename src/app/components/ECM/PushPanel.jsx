@@ -143,7 +143,7 @@ export default class PushPanel extends Component {
       <div className="jazz-ecm-push-operation">
         <div>{`${I18N.Setting.ECM.PushPanel.Status}:${MeasuresStore.getStatusText(status[this.state.infoTabNo-1])}`}</div>
         <div>{`${I18N.Setting.CustomerManagement.Principal}：-`}</div>
-        <div>{`${I18N.Setting.ECM.PushPanel.CreateUser}：${user}`}</div>
+        <div>{`${I18N.Setting.ECM.PushPanel.CreateUser}：${user || '-'}`}</div>
       </div>
     )
   }
@@ -155,7 +155,7 @@ export default class PushPanel extends Component {
         measureShow:false,
         measureIndex:null
       },()=>{
-        MeasuresAction.createSolution(currentSolution.toJS);
+        MeasuresAction.createSolution(currentSolution.toJS());
       })
     };
    var props={

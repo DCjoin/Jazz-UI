@@ -170,11 +170,11 @@ var CurrentUserStore = assign({}, PrototypeStore, {
       );
     }
 
-    if ( this.permit(PermissionCode.SENIOR_DATA_ANALYSE.FULL) || 
+    if ( this.permit(PermissionCode.SENIOR_DATA_ANALYSE.FULL) ||
           this.permit(PermissionCode.PUSH_SOLUTION.READONLY) ) {
       menuItems.push(
         {
-          getPath: RoutePath.dataAnalysis,
+          getPath: RoutePath.ecm,
           title: I18N.MainMenu.SaveSchemeTab
         }
       );

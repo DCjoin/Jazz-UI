@@ -229,7 +229,7 @@ export default class NotPushPanel extends Component {
         measureShow:false,
         measureIndex:null
     },()=>{
-      MeasuresAction.createSolution(currentSolution.toJS);
+      MeasuresAction.createSolution(currentSolution.toJS());
     })
     };
    var props={

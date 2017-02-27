@@ -58,6 +58,7 @@ const MeasuresAction = {
     var that=this;
     Ajax.post(Path.ECM.createSolution,
       {
+      params: dto,
       success: function(resBody) {
         that.getGroupSettingsList();
       },
