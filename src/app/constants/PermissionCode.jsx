@@ -99,6 +99,12 @@ const PermissionCode = function() {
 		getLabel: () => I18N.Privilege.Role.SeniorDataAnalyse,
 		FULL: 1313,
 	},
+
+	PUSH_SOLUTION: {
+		READONLY: 1302,
+		FULL: 1303,
+		getLabel: () => I18N.Privilege.Role.PushSolution
+	},
 	
 	SOLUTION_FULL: {
 		getLabel: () => I18N.Privilege.Role.SolutionFull,
@@ -110,13 +116,8 @@ const PermissionCode = function() {
 		FULL: 1319,
 	},
 
-	PUSH_SOLUTION: {
-		READONLY: 1302,
-		FULL: 1303,
-	},
-
 	SOLUTION_LIBRARY: {
-		FULL: 1305,
+		FULL: 1305
 	},
 
 	SOLUTION_DISTRIBUTION: {

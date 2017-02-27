@@ -116,6 +116,9 @@ class GenerateSolution extends Component {
 		nodes: PropTypes.arrayOf(PropTypes.object),
 		onRequestClose: PropTypes.func,
 	};
+	static contextTypes = {
+		hierarchyId: PropTypes.string
+	};
 	constructor(props) {
 		super(props);
 
@@ -211,7 +214,7 @@ class GenerateSolution extends Component {
 			verified: ProblemName && ProblemMark && nodes.length === Object.keys(svgStrings).length,
 			data: {
 				EnergyProblem: {
-					HierarchyId: 100001,
+					HierarchyId: this.context.hierarchyId,
 					Name: ProblemName,
 					EnergySys: ProblemMark,
 					Description: ProblemDesc,
@@ -271,23 +274,25 @@ class GenerateSolution extends Component {
 		if( currentNode ) {
 			let svgString = svgStrings[getId(currentNode)];
 			if(svgStrings[getId(currentNode)]) {
-				return (<div style={{height: 400}} dangerouslySetInnerHTML={{__html: svgString}} />);
+				return (<div style={{height: 300, width: 600}} dangerouslySetInnerHTML={{__html: svgString}} />);
 			}			
 		}
-		return (<div style={{height: 400}} className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>);
+		return (<div style={{height: 300, width: 600}} className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>);
 	}
 
 	_renderHighChart(node) {
 		if(!node || !this.state.tagDatas[getId(node)] || this.state.svgStrings[getId(node)]) {
 			return null;
 		}
-		return (<div style={{position: 'relative', overflowX: 'hidden', height: 400, width: 'calc(100% - 44px)'}}><ChartBasicComponent 
+		return (<div style={{position: 'relative', overflowX: 'hidden', height: 300, width: 600}}>
+					<ChartBasicComponent 
 						afterChartCreated={this._afterChartCreated}
 						ref='ChartBasicComponent'
 						key={getId(node)}
 						node={node} 
 						tagData={this.state.tagDatas[getId(node)]}
-						chartType={getChartTypeStr(node)}/></div>);
+						chartType={getChartTypeStr(node)}/>
+				</div>);
 	}
 
 	_renderSaveScheme() {
@@ -395,7 +400,7 @@ export default class GenerateSolutionButton extends Component {
 		return (
 			<span>
 				<FlatButton 
-					disabled={false}
+					disabled={this.props.nodes.length === 0}
 					label={I18N.Setting.DataAnalysis.Scheme} 
 					labelstyle={styles.label} 
 					icon={

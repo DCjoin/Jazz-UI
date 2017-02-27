@@ -31,6 +31,8 @@ const PRIVILEGE_ADMIN = [
   PermissionCode.INDEX_AND_REPORT.FULL,
   PermissionCode.SENIOR_DATA_ANALYSE.FULL,
   PermissionCode.BUILDING_LIST.FULL,
+  PermissionCode.PUSH_SOLUTION.FULL,
+  PermissionCode.SOLUTION_FULL.FULL,
 ].map( code => '' + code );
 
 var CurrentUserStore = assign({}, PrototypeStore, {
@@ -164,6 +166,16 @@ var CurrentUserStore = assign({}, PrototypeStore, {
         {
           getPath: RoutePath.Actuality,
           title: I18N.MainMenu.KPI,
+        }
+      );
+    }
+
+    if ( this.permit(PermissionCode.SENIOR_DATA_ANALYSE.FULL) || 
+          this.permit(PermissionCode.PUSH_SOLUTION.READONLY) ) {
+      menuItems.push(
+        {
+          getPath: RoutePath.dataAnalysis,
+          title: I18N.MainMenu.SaveSchemeTab
         }
       );
     }
