@@ -51,8 +51,9 @@ module.exports = {
     getWidgetGatherInfo:'/Widget/GetWidgetGatherInfo'
   },
   ECM:{
-    getEnergysolution:'api/energysolution/{hierarchyId}/{status}/{smallSize}/{size}',
-    pushProblem:'api/energysolution/problem/push',
-    deleteProblem:'api/energysolution/problem/delete/{problemId}'
+    getEnergysolution:'/energysolution/{hierarchyId}/{status}/{smallSize}/{size}',
+    pushProblem:'/energysolution/problem/push',
+    deleteProblem:'/energysolution/problem/delete/{problemId}',
+    createSolution:'/energysolution/create'
   }
 };

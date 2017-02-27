@@ -2165,9 +2165,24 @@ I18N.Setting.ECM.DeleteContent = '删除节能方案{0}吗？';
 I18N.Setting.ECM.PushSuccess = '节能方案已推送';
 I18N.Setting.ECM.Solution = '节能方案';
 I18N.Setting.ECM.ProblemDetail = '能效问题详情';
-I18N.Setting.ECM.InvestmentReturnCycle = {
-    ImmediateRecovery:'立即回收',
-    Other:'{0}年'
-};
+I18N.Setting.ECM.SolutionDetail = '节能方案详情';
+I18N.Setting.ECM.ExpectedAnnualEnergySaving = '预计年节能量';
+I18N.Setting.ECM.ExpectedAnnualCostSaving = '预计年节约成本';
+I18N.Setting.ECM.InvestmentAmount = '投资金额';
+I18N.Setting.ECM.InvestmentReturn = '投资回报期';
+I18N.Setting.ECM.NumberErrorText = '请输入大于等于0，小数点后一位的数字';
+I18N.Setting.ECM.InvestmentReturnCycle ={};
+I18N.Setting.ECM.InvestmentReturnCycle.ImmediateRecovery='立即';
+I18N.Setting.ECM.InvestmentReturnCycle.Other='立即回收';
+I18N.Setting.ECM.PushPanel ={};
+I18N.Setting.ECM.PushPanel.ToBe='待分配';
+I18N.Setting.ECM.PushPanel.Being='进行中';
+I18N.Setting.ECM.PushPanel.Done='已执行';
+I18N.Setting.ECM.PushPanel.Canceled='已取消';
+I18N.Setting.ECM.PushPanel.ThisMonth='本月';
+I18N.Setting.ECM.PushPanel.Last3Month='近3个月';
+I18N.Setting.ECM.PushPanel.Earlier='更早';
+I18N.Setting.ECM.PushPanel.Status='状态';
+I18N.Setting.ECM.PushPanel.CreateUser='创建人';
 
 module.exports = I18N;

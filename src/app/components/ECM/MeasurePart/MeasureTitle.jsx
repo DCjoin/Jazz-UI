@@ -16,22 +16,22 @@ export default class MeasureTitle extends Component {
       return(
         <div style={{display:'flex',fontSize:'16px'}}>
           <span style={{marginRight:'15px'}}>{I18N.Setting.ECM.Solution}</span>
-            {canNameEdit?<TextField isNumber={false}
+            {canNameEdit?<TextField key={'EnergySolution_'+EnergySolution.Id+'_Name'}
+                                    isNumber={false}
                                     onChange={(ev,value)=>{
                                       if(value===''){value=null}
                                       this.props.merge(['EnergySolution','Name'],value)
                                     }}
                                     value={EnergySolution.Name}
-                                    style={{marginTop:'-5px'}}/>
-                        :EnergySolution.Name || '-'}
+                                    style={{marginTop:'-5px'}}
+                                    displayFn={MeasuresStore.getDisplayText}/>
+                                  :<div className="jazz-ecm-measure-viewabletext">{EnergySolution.Name || '-'}</div>}
               </div>
       )
     }
 
     _renderEnergySys(){
-      console.log(this.props.measure.toJS());
       var {EnergySys}=this.props.measure.get('EnergyProblem').toJS();
-      console.log(EnergySys);
       var energySysList=MeasuresStore.getAllEnergySys();
       return(
         <DropDownMenu style={{marginTop:'-10px',border:'1px solid #abafae',height:'30px',borderRadius:'20px'}}

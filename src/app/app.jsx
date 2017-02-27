@@ -34,8 +34,7 @@ import Mail from './components/mail/Mail.jsx';
 import Report from './components/report/Report.jsx';
 import DataAnalysis from './components/DataAnalysis';
 import AnalysisPanel from './components/DataAnalysis/Basic/AnalysisPanel.jsx';
-//for Test
-// import Report from './components/ECM/MainPanel.jsx';
+import ECM from './components/ECM/MainPanel.jsx';
 import Template from './components/report/Template.jsx';
 import { getCookie } from './util/Util.jsx';
 import RoutePath from './util/RoutePath.jsx';
@@ -197,6 +196,12 @@ ReactDom.render(<Router history={hashHistory} routes={{
             component: KPITemplate
           }]
       }, {
+        onEnter: () => {
+          document.title = I18N.MainMenu.SaveSchemeTab;
+        },
+        path: 'energy_conservation_measures',
+        component: ECM,
+      },{
         onEnter: () => {
           document.title = I18N.MainMenu.DataAnalysis;
         },

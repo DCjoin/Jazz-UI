@@ -16,6 +16,7 @@ export default {
 	KPIRankConfig: p => `/${p.lang}/${p.customerId}/actuality/config/rankconfig`,
 	KPITemplate:p => `/${p.lang}/${p.customerId}/actuality/template`,
 	dataAnalysis:p => `/${p.lang}/${p.customerId}/data_analysis`,
+	ecm:p => `/${p.lang}/${p.customerId}/energy_conservation_measures`,
 	setting: p => `/${p.lang}/${p.customerId}/setting`,
 	alarm: p => `/${p.lang}/${p.customerId}/alarm`,
 	map: p => `/${p.lang}/${p.customerId}/map`,
