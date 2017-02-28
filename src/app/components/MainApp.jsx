@@ -248,7 +248,9 @@ let MainApp = React.createClass({
             return item.title === I18N.MainMenu.Map
           });
         } 
-        if( customerId == hierarchyId || !PrivilegeUtil.canView(PermissionCode.PUSH_SOLUTION, CurrentUserStore.getCurrentPrivilege()) ) {
+        if( customerId == hierarchyId || 
+          ( !PrivilegeUtil.canView(PermissionCode.PUSH_SOLUTION, CurrentUserStore.getCurrentPrivilege()) 
+              && !PrivilegeUtil.isFull(PermissionCode.SOLUTION_FULL, CurrentUserStore.getCurrentPrivilege()) ) ) {
           remove(menuItems, (item) => {
             return item.title === I18N.MainMenu.SaveSchemeTab
           });          
