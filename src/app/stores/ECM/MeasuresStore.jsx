@@ -25,7 +25,7 @@ const MeasuresStore = assign({}, PrototypeStore, {
       _solutionList.forEach(solution=>{
         _checkList.push({
           checked:false,
-          disabled:this.IsSolutionDisable(solution.get('EnergySolution').toJS())
+          // disabled:this.IsSolutionDisable(solution.get('EnergySolution').toJS())
         })
       })
     }
@@ -121,7 +121,7 @@ const MeasuresStore = assign({}, PrototypeStore, {
     return !(Immutable.fromJS(_checkList).findIndex(item=>(!item.get('disabled')))>-1)
   },
   getInvestmentReturnCycle(amount,cost){
-    if(cost===null || cost*1===0){
+    if(cost===null || cost*1===0 || amount===null){
       return null
     }
     else {
@@ -130,7 +130,7 @@ const MeasuresStore = assign({}, PrototypeStore, {
         return I18N.Setting.ECM.InvestmentReturnCycle.ImmediateRecovery
       }
       else {
-        return I18N.format(I18N.Setting.ECM.InvestmentReturnCycle.Other,cycle.toFixed(1))
+        return I18N.format(I18N.Setting.ECM.InvestmentReturnCycle.Other,parseFloat(cycle.toFixed(1)))
       }
     }
   },

@@ -42,7 +42,7 @@ function IsUserSelf(userId){
 }
 
 function canEdit(userId){
-  PushAndNotPushIsFull() || (PushIsFull() && IsUserSelf(userId))
+  return PushAndNotPushIsFull() || (PushIsFull() && IsUserSelf(userId))
 }
 
 const status=[Status.ToBe,Status.Being,Status.Done,Status.Canceled];
@@ -67,7 +67,7 @@ export default class PushPanel extends Component {
 
   _onChanged(){
     this.setState({
-      solutionList:MeasuresStore.getSolutionList()
+      solutionList:MeasuresStore.getSolutionList(),
     })
   }
 
@@ -158,6 +158,9 @@ export default class PushPanel extends Component {
        </div>
       )
     }
+    else if(this.state.solutionList.size===0){
+      return null
+    }
     else {
       return(
         <div className="content">
@@ -222,7 +225,8 @@ export default class PushPanel extends Component {
         open={this.state.measureShow}
         modal={false}
         isOutsideClose={false}
-        onRequestClose={onClose}>
+        onRequestClose={onClose}
+        contentStyle={{overflowY: 'auto'}}>
         <Title {...props.title}/>
         {this._renderOperation()}
         <Solution {...props.solution}/>
@@ -264,7 +268,7 @@ export default class PushPanel extends Component {
       <div className="jazz-ecm-push">
         {this._renderTab()}
         {this._renderList()}
-        {this.state.solutionList!==null && this._renderMeasureDialog()}
+        {this.state.solutionList!==null && this.state.solutionList.size!==0 && this._renderMeasureDialog()}
       </div>
     )
   }

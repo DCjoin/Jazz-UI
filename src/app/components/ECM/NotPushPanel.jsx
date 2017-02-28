@@ -77,17 +77,22 @@ export default class NotPushPanel extends Component {
   }
 
   _renderAction(){
-    return(
-      <div className="action">
-        <Checkbox disabled={MeasuresStore.IsAllCheckDisabled()} checked={MeasuresStore.getAllSelectedStatus()} onCheck={this._onAllCheck} label={I18N.Tag.SelectAll} style={{width:'100px'}}/>
-        <RaisedButton label={I18N.Setting.ECM.PushAll} disabled={MeasuresStore.IsPushAllDisabled()} onClick={()=>{
-            this.setState({
-              dialogType:DIALOG_TYPE.BATCH_PUSH,
-              handleIndex:'Batch'
-            })
-          }} />
-      </div>
-    )
+    if(this.state.solutionList===null || this.state.solutionList.size===0){
+      return null
+    }else {
+      return(
+        <div className="action">
+          <Checkbox disabled={MeasuresStore.IsAllCheckDisabled()} checked={MeasuresStore.getAllSelectedStatus()} onCheck={this._onAllCheck} label={I18N.Tag.SelectAll} style={{width:'100px'}}/>
+          <RaisedButton label={I18N.Setting.ECM.PushAll} disabled={MeasuresStore.IsPushAllDisabled()} onClick={()=>{
+              this.setState({
+                dialogType:DIALOG_TYPE.BATCH_PUSH,
+                handleIndex:'Batch'
+              })
+            }} />
+        </div>
+      )
+    }
+
   }
 
   _renderOperation(index){
@@ -100,8 +105,8 @@ export default class NotPushPanel extends Component {
       }
     };
     return(
-      <div style={{display:'inline-block'}}>
-        <FlatButton disabled={this.state.checkList.getIn([index,'disabled'])} label={I18N.Setting.ECM.Push}
+      <div style={{display:'inline-block'}} onClick={(e)=>{e.stopPropagation()}}>
+        <FlatButton disabled={MeasuresStore.IsSolutionDisable(this.state.solutionList.getIn([index,'EnergySolution']).toJS())} label={I18N.Setting.ECM.Push}
                     onClick={(e)=>{
                       e.stopPropagation();
                       this.setState({
@@ -116,7 +121,7 @@ export default class NotPushPanel extends Component {
                         dialogType:DIALOG_TYPE.DELETE,
                         handleIndex:index
                       })
-                    }} labelstyle={styles.label} icon={<FontIcon className="icon-to-ecm" style={styles.label}/>} style={styles.button}/>
+                    }} labelstyle={styles.label} icon={<FontIcon className="icon-delete" style={styles.label}/>} style={styles.button}/>
       </div>
     )
   }
@@ -128,6 +133,8 @@ export default class NotPushPanel extends Component {
          <CircularProgress  mode="indeterminate" size={80} />
        </div>
       )
+    }else if(this.state.solutionList.size===0){
+      return null
     }
     else {
       return(
@@ -140,7 +147,7 @@ export default class NotPushPanel extends Component {
                       onChecked={(e,isChecked)=>{
                                   MeasuresAction.checkSolution(index,isChecked);
                                   }}
-                      disabled={this.state.checkList.getIn([index,'disabled'])}
+                      disabled={MeasuresStore.IsSolutionDisable(solution.get('EnergySolution').toJS())}
                       personInCharge={null}
                       action={this._renderOperation(index)}
                       onClick={()=>{this._onMeasureItemClick(index)}}/>
@@ -264,7 +271,8 @@ export default class NotPushPanel extends Component {
         open={this.state.measureShow}
         modal={false}
         isOutsideClose={false}
-        onRequestClose={onClose}>
+        onRequestClose={onClose}
+        contentStyle={{overflowY: 'auto'}}>
         <Title {...props.title}/>
         {this._renderOperation(this.state.measureIndex)}
         <Solution {...props.solution}/>
@@ -321,7 +329,7 @@ export default class NotPushPanel extends Component {
         {this._renderAction()}
         {this._renderList()}
         {dialog}
-        {this.state.solutionList!==null && this._renderMeasureDialog()}
+        {this.state.solutionList!==null && this.state.solutionList.size!==0 && this._renderMeasureDialog()}
         <Snackbar ref='snackbar' open={!!this.state.snackbarText} onRequestClose={()=>{
             MeasuresAction.resetErrorText()
           }} message={this.state.snackbarText}/>
