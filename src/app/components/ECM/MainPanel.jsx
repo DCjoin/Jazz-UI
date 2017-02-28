@@ -17,14 +17,15 @@ function isFull() {
 
 
 export default class MainPanel extends Component {
-  constructor(props) {
-    super(props);
-    this._handlerSwitchTab=this._handlerSwitchTab.bind(this);
-  }
 
   static contextTypes = {
       hierarchyId: React.PropTypes.string
     };
+
+  constructor(props) {
+    super(props);
+    this._handlerSwitchTab=this._handlerSwitchTab.bind(this);
+  }
 
   state={
     infoTabNo:isFull()?1:2
