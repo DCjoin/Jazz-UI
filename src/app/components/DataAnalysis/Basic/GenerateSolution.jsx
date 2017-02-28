@@ -25,6 +25,9 @@ import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 function SolutionFull() {
 	return PrivilegeUtil.isFull(PermissionCode.SOLUTION_FULL, CurrentUserStore.getCurrentPrivilege());
 }
+function PushFull() {
+	return PrivilegeUtil.isFull(PermissionCode.PUSH_SOLUTION, CurrentUserStore.getCurrentPrivilege());
+}
 
 function getChartTypeStr(data) {
   switch (data.get('ChartType')) {
@@ -416,7 +419,7 @@ export class GenerateSolution extends Component {
 export class GenerateSolutionButton extends Component {
 	static propTypes = {
 		nodes: PropTypes.arrayOf(PropTypes.object).isRequired,
-		preAction: PropTypes.object
+		preAction: PropTypes.object,
 	};
 	constructor(props) {
 		super(props);
@@ -425,7 +428,7 @@ export class GenerateSolutionButton extends Component {
 		};
 	}
 	render() {
-		if( !SolutionFull() ) {
+		if( !PushFull() ) {
 			return null;
 		}
 	    let {nodes, preAction, onOpen, disabled} = this.props,
@@ -449,7 +452,7 @@ export class GenerateSolutionButton extends Component {
 					onClick={() => {
 						onOpen({
 							nodes,
-							preAction
+							preAction,
 						});
 					}}
 					style={styles.button}/>

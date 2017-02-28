@@ -10,9 +10,11 @@ export default class ChartComponent extends Component {
   static propTypes = {
     node: PropTypes.object,
     tagData: PropTypes.object,
+    yaxisConfig: PropTypes.object,
   }
   constructor(props) {
      super(props);
+     this.getYaxisConfig = this.getYaxisConfig.bind(this);
   }
 
   getEnergyRawDataFn(timeRanges, step, tagOptions, relativeDate, pageNum, pageSize){
@@ -20,7 +22,7 @@ export default class ChartComponent extends Component {
   }
 
   getYaxisConfig(){
-    return {}
+    return this.props.yaxisConfig || {}
   }
 
   render(){
