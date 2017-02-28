@@ -39,11 +39,11 @@ export default class CustomTextField extends Component {
       value:isNumber?CommonFuns.toThousands(value):value,
       onChange:(ev,value)=>{
         let realValue=isNumber?CommonFuns.thousandsToNormal(value):value;
-        if(regexFn){
-          this.setState({
-            errorMessage:regexFn(realValue)
-          })
-        }
+        // if(regexFn){
+        //   this.setState({
+        //     errorMessage:regexFn(realValue)
+        //   })
+        // }
         this.setState({
           errorMessage:regexFn?regexFn(realValue):null,
           value:realValue
