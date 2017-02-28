@@ -55,7 +55,7 @@ let Highstock = React.createClass({
           renderTo: ReactDom.findDOMNode(this.refs.jazz_energy_view)
         })
       });
-
+      console.log(options);
     that._paper = new Highcharts.StockChart(options);
     this.bindChartObjEvents();
 
