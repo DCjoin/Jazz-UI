@@ -6,7 +6,7 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import { nodeType } from 'constants/TreeConstants.jsx';
 import { MenuAction } from 'constants/AnalysisConstants.jsx';
 
-import GenerateSolutionButton from './GenerateSolutionButton.jsx';
+import {GenerateSolutionButton} from './GenerateSolution.jsx';
 
 function isFolder(node) {
 	return node.get('Type') === nodeType.Folder;
@@ -75,7 +75,7 @@ export default class FolderPanel extends Component {
 				onItemTouchTap: this._onMenuSelect(node)
 		    };
 			action = (<div>
-				<GenerateSolutionButton nodes={flat(node)} />
+				{this.props.isBuilding && <GenerateSolutionButton onOpen={this.props.onOpenGenerateSolution} nodes={flat(node)} />}
 				{this._renderMenu(node, iconMenuProps)}
 			</div>)
 		}

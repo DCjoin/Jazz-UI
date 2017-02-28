@@ -77,7 +77,7 @@ class Gallery extends Component {
 		return (
 			<div className='jazz-scheme-gallery'>
 				<div className='jazz-scheme-gallery-action'>
-					{selectedIdx > 0 && <LinkButton onClick={onLeft} label={'《'}/>}
+					{selectedIdx > 0 && <LinkButton iconName={'icon-arrow-left'} onClick={onLeft}/>}
 				</div>
 				<div className='jazz-scheme-gallery-content'>
 					<div className='jazz-scheme-gallery-content-header'>
@@ -87,7 +87,7 @@ class Gallery extends Component {
 					{renderContent()}
 				</div>
 				<div className='jazz-scheme-gallery-action'>
-					{selectedIdx < names.length - 1 && <LinkButton onClick={onRight} label={'》'}/>}
+					{selectedIdx < names.length - 1 && <LinkButton iconName={'icon-arrow-right'} onClick={onRight}/>}
 				</div>
 			</div>
 		);
@@ -111,7 +111,7 @@ class OnceHidePanel extends Component {
 }
 
 
-class GenerateSolution extends Component {
+export class GenerateSolution extends Component {
 	static propTypes = {
 		nodes: PropTypes.arrayOf(PropTypes.object),
 		onRequestClose: PropTypes.func,
@@ -134,7 +134,8 @@ class GenerateSolution extends Component {
 			SaveValue: '',
 			SaveUnit: '',
 			SaveCost: '',
-			SaveDesc: ''
+			SaveDesc: '',
+			showDelete: false,
 		};
 		this._onChange = this._onChange.bind(this);
 		this._afterChartCreated = this._afterChartCreated.bind(this);
@@ -143,13 +144,31 @@ class GenerateSolution extends Component {
 		this._onDelete = this._onDelete.bind(this);
 		this._renderHighChart = this._renderHighChart.bind(this);
 		this._renderChart = this._renderChart.bind(this);
+		this._getTagsDataByNode = this._getTagsDataByNode.bind(this);
 
-		getTagsDataByNode(props);
+		if(props.preAction && typeof props.preAction.action === 'function') {
+			let {action, addListener} = props.preAction;
+			if( addListener && typeof addListener === 'function' ) {
+				addListener(this._getTagsDataByNode);
+			}
+			if( action() ) {
+				getTagsDataByNode(props);
+			}
+		} else {
+			getTagsDataByNode(props);
+		}
 
 		FolderStore.addSolutionChangeListener(this._onChange);
 	}
 	componentWillUnmount() {
 		FolderStore.removeSolutionChangeListener(this._onChange);
+		if(this.props.preAction && typeof this.props.preAction.removeListener === 'function') {
+			this.props.preAction.removeListener(this._getTagsDataByNode);
+		}
+	}
+
+	_getTagsDataByNode() {
+		getTagsDataByNode(this.props);
 	}
 
 	_onChange(tagData, nodeId) {
@@ -190,9 +209,10 @@ class GenerateSolution extends Component {
 
 	_onDelete() {
 		this._setStateValue('nodes')(this.state.nodes.filter((node, idx) => idx !== this.state.idx));
-		if( idx >= this.state.nodes.length ) {
+		if( this.state.idx >= this.state.nodes.length - 1 ) {
 			this._setStateValue('idx')(this.state.idx - 1);
 		}
+		this.setState({showDelete: false});
 	}
 
 	_getAPIDataFormat() {
@@ -350,6 +370,16 @@ class GenerateSolution extends Component {
 			}}/>);
 	}
 
+	_renderDeleteDialog() {
+		let {showDelete, idx, nodes} = this.state;
+		return (<Dialog open={showDelete} actions={[
+					(<FlatButton label={I18N.Common.Button.Delete} onClick={this._onDelete} primary={true}/>),
+					(<FlatButton label={I18N.Common.Button.Cancel2} onClick={()=>{this.setState({showDelete: false})}}/>)
+				]}>
+				{I18N.Setting.DataAnalysis.SaveScheme.DeleteChart.replace(/{\w*}/, nodes[idx].get('Name'))}
+			</Dialog>);
+	}
+
 	render() {
 		let names = this.state.nodes.map(function (node) {
 			return node.get('Name');
@@ -367,20 +397,26 @@ class GenerateSolution extends Component {
 						selectedIdx={this.state.idx}
 						onLeft={this._setIdx(this.state.idx - 1)}
 						onRight={this._setIdx(this.state.idx + 1)}
-						onDelete={this._onDelete}
+						onDelete={() => {
+							this.setState({
+								showDelete: true
+							});
+						}}
 						renderContent={this._renderChart}/>
 				</div>
 				{this._renderSaveScheme()}
 				{this.state.nodes.map(this._renderHighChart)}
+				{this._renderDeleteDialog()}
 			</Dialog>
 		);
 	}
 }
 
 
-export default class GenerateSolutionButton extends Component {
+export class GenerateSolutionButton extends Component {
 	static propTypes = {
-		nodes: PropTypes.arrayOf(PropTypes.object),
+		nodes: PropTypes.arrayOf(PropTypes.object).isRequired,
+		preAction: PropTypes.object
 	};
 	constructor(props) {
 		super(props);
@@ -389,7 +425,11 @@ export default class GenerateSolutionButton extends Component {
 		};
 	}
 	render() {
-	    let styles={
+		if( !SolutionFull() ) {
+			return null;
+		}
+	    let {nodes, preAction, onOpen, disabled} = this.props,
+	    styles={
 	      button:{
 	        marginRight:'10px'
 	      },
@@ -400,19 +440,19 @@ export default class GenerateSolutionButton extends Component {
 		return (
 			<span>
 				<FlatButton 
-					disabled={this.props.nodes.length === 0}
+					disabled={disabled || nodes.length === 0}
 					label={I18N.Setting.DataAnalysis.Scheme} 
 					labelstyle={styles.label} 
 					icon={
 						<FontIcon className="icon-to-ecm" style={styles.label}/>
 					}
 					onClick={() => {
-						this.setState({open: true});
+						onOpen({
+							nodes,
+							preAction
+						});
 					}}
 					style={styles.button}/>
-				{this.state.open && <GenerateSolution nodes={this.props.nodes} onRequestClose={() => {
-					this.setState({open: false});
-				}}/>}
 			</span>
 		);
 	}

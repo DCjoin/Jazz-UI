@@ -5,7 +5,7 @@ import Immutable from 'immutable';
 import { nodeType } from 'constants/TreeConstants.jsx';
 import PermissionCode from 'constants/PermissionCode.jsx';
 import { MenuAction } from 'constants/AnalysisConstants.jsx';
-import privilegeUtil from 'util/privilegeUtil.jsx';
+import PrivilegeUtil from 'util/privilegeUtil.jsx';
 import RoutePath from 'util/RoutePath.jsx';
 import util from 'util/Util.jsx';
 
@@ -16,6 +16,7 @@ import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
 import Left from './Left.jsx';
 import FolderPanel from './Basic/FolderPanel.jsx';
 import AnalysisPanel from './Basic/AnalysisPanel.jsx';
+import {GenerateSolution} from './Basic/GenerateSolution.jsx';
 
 // import CopyView from '../folder/operationView/CopyView.jsx';
 import DeleteView from '../folder/operationView/DeleteView.jsx';
@@ -45,6 +46,10 @@ function getNodeId(props) {
 	return +props.params.nodeId;
 }
 
+function SolutionFull() {
+	return PrivilegeUtil.isFull(PermissionCode.SOLUTION_FULL, CurrentUserStore.getCurrentPrivilege());
+}
+
 export default class DataAnalysis extends Component {
 
 	static contextTypes = {
@@ -69,6 +74,8 @@ export default class DataAnalysis extends Component {
 		this._createFolderOrWidget = this._createFolderOrWidget.bind(this);
 		this._onOperationSelect = this._onOperationSelect.bind(this);
 		this._onDialogDismiss = this._onDialogDismiss.bind(this);
+		this._onOpenGenerateSolution = this._onOpenGenerateSolution.bind(this);
+		this._onShowSolutionSnakBar = this._onShowSolutionSnakBar.bind(this);
 
 		FolderStore.addFolderTreeListener(this._onFolderTreeLoad);
 		WidgetStore.addChangeListener(this._handleWidgetSelectChange);
@@ -83,6 +90,7 @@ export default class DataAnalysis extends Component {
     FolderStore.addModfiyReadingStatusListener(this._onSelectedNodeChange);
     FolderStore.addCopyItemSuccessListener(this._onCopyItemSuccess);
     FolderStore.addSelectedNodeListener(this._onSelectedNodeChange);
+    FolderStore.addSolutionCreatedListener(this._onShowSolutionSnakBar);
 
 		this.state = this._getInitialState();
 
@@ -115,6 +123,7 @@ export default class DataAnalysis extends Component {
     FolderStore.removeModfiyReadingStatusListener(this._onSelectedNodeChange);
     FolderStore.removeCopyItemSuccessListener(this._onCopyItemSuccess);
     FolderStore.removeSelectedNodeListener(this._onSelectedNodeChange);
+    FolderStore.removeSolutionCreatedListener(this._onShowSolutionSnakBar);
 	}
 
 	_getInitialState() {
@@ -125,6 +134,7 @@ export default class DataAnalysis extends Component {
 			errorText: null,
 			dialogType: null,
 			dialogData: null,
+			generateSolutionDialogObj: null,
 		};
 	}
 
@@ -191,6 +201,11 @@ export default class DataAnalysis extends Component {
   _onShareStatusChange() {
     this.setState({
       errorText: FolderStore.getShareStatus()
+    });
+  }
+  _onShowSolutionSnakBar() {
+    this.setState({
+      showSolutionTip: true
     });
   }
 
@@ -289,6 +304,14 @@ export default class DataAnalysis extends Component {
 		});
 	}
 
+	_onOpenGenerateSolution(data) {
+		this.setState({
+			generateSolutionDialogObj: {...{
+				open: true
+			}, ...data}
+		});
+	}
+
 	_setErrorText(errorText) {
 		this.setState({
 			errorText
@@ -312,18 +335,13 @@ export default class DataAnalysis extends Component {
             onOperationSelect: this._onOperationSelect,
             widgetDto: this.state.widgetDto.toJS(),
             isNew: !this.state.widgetDto.get('ChartType'),
+			onOpenGenerateSolution: this._onOpenGenerateSolution,
           });
-					// content = (<AnalysisPanel 
-					// 			hierarchyId={this._getHierarchyId(this.context)}
-					// 			isBuilding={!this._isCustomer()}
-					// 			chartTitle={selectedNode.get('Name')}
-					// 			sourceUserName={selectedNode.get('SourceUserName')}
-					// 			onOperationSelect={this._onOperationSelect}
-					// 			widgetDto={this.state.widgetDto.toJS()} 
-					// 			IsNew={false}/>);
 				}
 			} else {
 				content = (<FolderPanel 
+            		isBuilding={!this._isCustomer()}
+					onOpenGenerateSolution={this._onOpenGenerateSolution}
 					node={selectedNode}
 					onSelectNode={this._onSelectNode}
 					onOperationSelect={this._onOperationSelect}/>);
@@ -336,7 +354,7 @@ export default class DataAnalysis extends Component {
 	}
 
 	_renderDialog() {
-		let {dialogType, dialogData, selectedNode} = this.state,
+		let {generateSolutionDialogObj, dialogType, dialogData, selectedNode} = this.state,
 		dialog;
 		switch (dialogType) {
 			// case MenuAction.Copy:
@@ -362,6 +380,17 @@ export default class DataAnalysis extends Component {
 				dialog = <SaveAsView isNew={true} onDismiss={this._onDialogDismiss} saveAsNode={selectedNode} widgetDto={dialogData}/>;
 				break;
 		}
+		if(generateSolutionDialogObj && generateSolutionDialogObj.open) {
+			let {open, preAction, nodes} = generateSolutionDialogObj;
+			if(open) {
+				dialog = (<GenerateSolution 
+					nodes={nodes} 
+					preAction={preAction}
+					onRequestClose={() => {
+						this.setState({generateSolutionDialogObj: null});
+					}}/>);
+			}
+		}
 		return dialog;
 	}
 
@@ -384,6 +413,17 @@ export default class DataAnalysis extends Component {
 				{this._renderContent()}
 				{this._renderDialog()}
 				<Snackbar ref='snackbar' open={!!this.state.errorText} onRequestClose={this._setErrorText.bind(this, null)} message={this.state.errorText}/>
+				<Snackbar ref='snackbar' 
+					open={this.state.showSolutionTip} 
+					onRequestClose={() => {
+						this.setState({showSolutionTip: false})
+					}} 
+					message={SolutionFull() ? I18N.Setting.DataAnalysis.SaveScheme.FullTip : I18N.Setting.DataAnalysis.SaveScheme.PushTip} 
+					action={I18N.Setting.DataAnalysis.SaveScheme.TipAction} 
+					onActionTouchTap={() => {
+						util.openTab();
+					}}
+				/>
 			</div>
 		);
 	}

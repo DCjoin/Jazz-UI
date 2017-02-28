@@ -7,6 +7,7 @@ import { LeftNav, CircularProgress } from 'material-ui';
 import assign from 'object-assign';
 import {remove} from 'lodash/array';
 import {find} from 'lodash/collection';
+import querystring from 'querystring';
 
 import { viewState } from 'constants/MainAppStatus.jsx';
 import PermissionCode from 'constants/PermissionCode.jsx';
@@ -139,17 +140,19 @@ let MainApp = React.createClass({
   },
 
   _dataReady: function() {
-    let {customerId} = this.props.params;
+    let {router, params} = this.props,
+    {customerId} = params;
     if( MainApp.prepareShow(customerId) ) {
-      let defaultReplace = MainApp.needDefaultReplace(this.props.router);
-      if(defaultReplace && !this.props.router.isActive(defaultReplace)) {
-        this.props.router.replace(defaultReplace);
+      let defaultReplace = MainApp.needDefaultReplace(router);
+      if(defaultReplace && !router.isActive(defaultReplace)) {
+        router.replace(defaultReplace);
       } else {
         this.forceUpdate();
       }
 
-      if( customerId ) {
+      if( customerId && !this.state.hierarchyId ) {
         let WholeCustomer = getCustomerPrivilageById( customerId ) && getCustomerPrivilageById( customerId ).get('WholeCustomer');
+        let initHierarchyId = router.location.query.init_hierarchy_id;
         if( WholeCustomer ) {     
           this.setState({
             hierarchyId: customerId * 1
@@ -158,7 +161,20 @@ let MainApp = React.createClass({
           this.setState({
             hierarchyId: HierarchyStore.getBuildingList()[0].Id
           });
-        }        
+        }
+        if( initHierarchyId ) {
+          let {pathname, query} = router.location,
+          search = '';
+          delete query.init_hierarchy_id;
+          if(Object.keys(query).length > 0) {
+            search = '?' + querystring.stringify(query);
+          }
+          this.setState({
+            hierarchyId: initHierarchyId * 1
+          }, () => {
+            router.push(pathname + search );
+          });
+        }
       }
     }
   },
@@ -227,6 +243,11 @@ let MainApp = React.createClass({
           remove(menuItems, (item) => {
             return item.title === I18N.MainMenu.Map
           });
+        } 
+        if( customerId == hierarchyId || !PrivilegeUtil.canView(PermissionCode.PUSH_SOLUTION, CurrentUserStore.getCurrentPrivilege()) ) {
+          remove(menuItems, (item) => {
+            return item.title === I18N.MainMenu.SaveSchemeTab
+          });          
         }
         return (
           <div className='jazz-main'>

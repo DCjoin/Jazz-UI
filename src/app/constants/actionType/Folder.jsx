@@ -34,6 +34,7 @@ module.exports = {
     ALWAYS_UNCHECK_SAME_WIDGET: null,
     GET_TAG_DATA_BY_NODEID_SUCCESS: null,
     GET_TAG_DATA_BY_NODEID_ERROR: null,
+    CREATE_ENERGY_SOLUTION_SUCCESS: null,
   })
 
 };
