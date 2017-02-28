@@ -51,6 +51,7 @@ export default class Solution extends Component {
           isNumber:true,
           onChange:(ev,value)=>{
                                 if(value===''){value=null}
+                                if(!MeasuresStore.validateNumber(value)){value=ExpectedAnnualEnergySaving}
                                 this.props.merge(['EnergySolution','ExpectedAnnualEnergySaving'],value)
                               },
           value:ExpectedAnnualEnergySaving,
@@ -65,7 +66,7 @@ export default class Solution extends Component {
               return null
             }
           },
-          displayFn:(value)=>{
+        displayFn:(value)=>{
             if(value===''){value=null}
              return MeasuresStore.getDisplayText(value)
           }
@@ -91,6 +92,7 @@ export default class Solution extends Component {
           isNumber:true,
           onChange:(ev,value)=>{
                                 if(value===''){value=null}
+                                if(!MeasuresStore.validateNumber(value)){value=ExpectedAnnualCostSaving}
                                 this.props.merge(['EnergySolution','ExpectedAnnualCostSaving'],value)
                               },
           value:ExpectedAnnualCostSaving,
@@ -115,6 +117,7 @@ export default class Solution extends Component {
           isNumber:true,
           onChange:(ev,value)=>{
                                 if(value===''){value=null}
+                                if(!MeasuresStore.validateNumber(value)){value=InvestmentAmount}
                                 this.props.merge(['EnergySolution','InvestmentAmount'],value)
                               },
           value:InvestmentAmount,
