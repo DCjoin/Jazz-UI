@@ -13,9 +13,9 @@ import {DIALOG_TYPE} from '../../constants/actionType/Measures.jsx';
 import Title from './MeasurePart/MeasureTitle.jsx';
 import Problem from './MeasurePart/Problem.jsx';
 import Solution from './MeasurePart/Solution.jsx';
+import SolutionGallery from './MeasurePart/SolutionGallery.jsx';
 import {solutionList} from '../../../../mockData/measure.js';
 import Immutable from 'immutable';
-import {Gallery} from 'components/DataAnalysis/Basic/GenerateSolution.jsx';
 
 export default class NotPushPanel extends Component {
   constructor(props) {
@@ -252,19 +252,10 @@ export default class NotPushPanel extends Component {
        merge:this.merge,
      },
      gallery: {
-      names: [],
-      selectedIdx: 0,
-      onLeft: () => {
-
-      },
-      onRight: () => {
-
-      },
-      onDelete: () => {
-
-      },
-      renderContent: () => {
-        return (<div style={{height: 300}}>123</div>)
+      measure:currentSolution,
+      onDelete: (idx) => {
+        let imagesPath = ['EnergyProblem','EnergyProblemImages'];
+        this.merge(imagesPath, currentSolution.getIn(imagesPath).delete(idx));
       }
      }
    }
@@ -278,7 +269,7 @@ export default class NotPushPanel extends Component {
         {this._renderOperation(this.state.measureIndex)}
         <Solution {...props.solution}/>
         <Problem {...props.problem}/>
-        <Gallery {...props.gallery}/>
+        <SolutionGallery {...props.gallery}/>
       </NewDialog>
     )
   }

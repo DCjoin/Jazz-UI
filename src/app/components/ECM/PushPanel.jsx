@@ -9,11 +9,11 @@ import {CircularProgress} from 'material-ui';
 import Title from './MeasurePart/MeasureTitle.jsx';
 import Problem from './MeasurePart/Problem.jsx';
 import Solution from './MeasurePart/Solution.jsx';
+import SolutionGallery from './MeasurePart/SolutionGallery.jsx';
 import NewDialog from 'controls/NewDialog.jsx';
 import PermissionCode from 'constants/PermissionCode.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
-import {Gallery} from 'components/DataAnalysis/Basic/GenerateSolution.jsx';
 
 function privilegeWithPush( privilegeCheck ) {
   // return true
@@ -209,6 +209,13 @@ export default class PushPanel extends Component {
        canEdit:canEdit(createUserId),
        merge:this.merge,
      },
+     gallery: {
+      measure:currentSolution,
+      onDelete: (idx) => {
+        let imagesPath = ['EnergyProblem','EnergyProblemImages'];
+        this.merge(imagesPath, currentSolution.getIn(imagesPath).delete(idx));
+      }
+     },
    }
     return(
       <NewDialog
@@ -220,6 +227,7 @@ export default class PushPanel extends Component {
         {this._renderOperation()}
         <Solution {...props.solution}/>
         <Problem {...props.problem}/>
+        <SolutionGallery {...props.gallery}/>
         <div className="jazz-ecm-push-operation">{I18N.Remark.Label}</div>
       </NewDialog>
     )
