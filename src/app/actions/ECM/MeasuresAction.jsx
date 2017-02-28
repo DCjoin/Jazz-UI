@@ -54,9 +54,9 @@ const MeasuresAction = {
       }
     });
   },
-  createSolution(dto){
+  updateSolution(dto){
     var that=this;
-    Ajax.post(Path.ECM.createSolution,
+    Ajax.post(Path.ECM.updateSolution,
       {
       params: dto,
       success: function(resBody) {

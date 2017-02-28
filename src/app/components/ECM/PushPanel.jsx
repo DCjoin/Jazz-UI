@@ -188,7 +188,7 @@ export default class PushPanel extends Component {
         measureIndex:null
       },()=>{
         //currentSolution=MeasuresStore.getValidParams(currentSolution);
-        MeasuresAction.createSolution(currentSolution.toJS());
+        MeasuresAction.updateSolution(currentSolution.toJS());
       })
     };
    var props={
@@ -211,7 +211,7 @@ export default class PushPanel extends Component {
    }
     return(
       <NewDialog
-        open={true}
+        open={this.state.measureShow}
         modal={false}
         isOutsideClose={false}
         onRequestClose={onClose}>
@@ -250,7 +250,7 @@ export default class PushPanel extends Component {
       <div className="jazz-ecm-push">
         {this._renderTab()}
         {this._renderList()}
-        {this.state.measureShow && this._renderMeasureDialog()}
+        {this.state.solutionList!==null && this._renderMeasureDialog()}
       </div>
     )
   }
