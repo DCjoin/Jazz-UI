@@ -370,12 +370,10 @@ let FolderAction = {
     Ajax.post('/energysolution/create', {
       params,
       success: function(data) {
-        alert('success');
-        console.log(data);
+        AppDispatcher.dispatch({
+          type: Action.CREATE_ENERGY_SOLUTION_SUCCESS
+        });
       },
-      error: function() {
-        alert('error');
-      }
     })
   }
 };
