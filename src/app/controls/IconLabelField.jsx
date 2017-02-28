@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import FontIcon from 'material-ui/FontIcon';
 
 const style={
   label:{
@@ -12,13 +11,16 @@ export default class IconLabelField extends Component {
     super(props);
   }
   render(){
-    <div style={{display:'flex',flexDirection:'row'}}>
-      {this.props.icon}
-      <div>
-        <div style={style.label}>{this.props.label}</div>
-        {this.props.children}
+    return(
+      <div style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
+        {this.props.icon}
+        <div style={{marginLeft:'10px'}}>
+          <div style={style.label}>{this.props.label}</div>
+          {this.props.children}
+        </div>
       </div>
-    </div>
+    )
+
   }
 }
 

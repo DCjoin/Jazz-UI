@@ -18,7 +18,7 @@ function validValue(value) {
 class IconText extends Component{
   render(){
     return(
-      <div style={{marginLeft:'30px'}}>
+      <div style={{marginLeft:'50px'}}>
         <div style={{display:'flex',flexDirection:'row'}}>
           {this.props.icon}
           <div style={{fontSize:'12px',marginLeft:'5px'}}>{this.props.label}</div>
@@ -90,7 +90,7 @@ export default class MeasuresItem extends Component {
             <IconText icon={costIcon} label={I18N.Setting.ECM.EstimatedAnnualCostSavings} value={validValue(ExpectedAnnualCostSaving)}/>
             <IconText icon={sumIcon} label={I18N.Setting.ECM.InvestmentAmount} value={validValue(InvestmentAmount)}/>
             <IconText icon={periodIcon} label={I18N.Setting.ECM.PaybackPeriod} value={InvestmentReturnCycle || '-'}/>
-            <div style={{marginLeft:'30px'}}>{this.props.personInCharge}</div>
+            <div style={{marginLeft:'100px'}}>{this.props.personInCharge}</div>
           </div>
           <div className="side">
             {this.props.action}
@@ -104,7 +104,12 @@ export default class MeasuresItem extends Component {
       return(
         <div className="name">
           <div className="side">
-            {this.props.hasCheckBox && <Checkbox disabled={this.props.disabled} checked={this.props.isChecked} onCheck={this.props.onChecked} style={{width:'40px'}}/>}
+            {this.props.hasCheckBox && <Checkbox disabled={this.props.disabled} checked={this.props.isChecked}
+																									onCheck={this.props.onChecked}
+																									style={{width:'40px'}}
+																									onClick={(e)=>{
+																										e.stopPropagation();
+																									}}/>}
             {this.getName()}
           </div>
           <div style={{fontSize:'16px'}}>{MeasuresStore.getEnergySys(EnergyProblem.EnergySys)}</div>
@@ -113,7 +118,6 @@ export default class MeasuresItem extends Component {
     }
 
 	render() {
-
     return(
       <div className="jazz-energy-conservation-measuresItem" onClick={this.props.onClick}>
         {this._renderName()}
@@ -135,5 +139,6 @@ MeasuresItem.propTypes = {
 };
 
 MeasuresItem.defaultProps = {
-	hasCheckBox:false
+	hasCheckBox:false,
+	disabled:false
 }
