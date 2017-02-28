@@ -249,6 +249,11 @@ export default class PushPanel extends Component {
     MeasuresAction.getGroupSettingsList(this.props.hierarchyId,Status.ToBe);
     // MeasuresAction.getGroupSettingsList(100001,Status.ToBe);
   }
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.hierarchyId !== this.props.hierarchyId) {
+      MeasuresAction.getGroupSettingsList(nextProps.hierarchyId,Status.ToBe);
+    }
+  }
 
   componentWillUnmount(){
     MeasuresStore.removeChangeListener(this._onChanged);
