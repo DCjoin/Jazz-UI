@@ -40,7 +40,8 @@ let FOLDER_TREE_EVENT = 'foldertree',
   SAVE_ALARM_WIDGET_ERROR_EVENT = 'savealarmwidgeterror',
   DIALOG_EVENT = 'dialog',
   CHECK_WIDGET_UPDATE_CHANGE_EVENT = 'check_widget_update_change_event',
-  SOLUTION_CHANGE_EVENT = 'solution_change_event';
+  SOLUTION_CHANGE_EVENT = 'solution_change_event',
+  SOLUTION_CREATED_EVENT = 'solution_created_event';
 
 var FolderStore = assign({}, PrototypeStore, {
 
@@ -652,6 +653,16 @@ var FolderStore = assign({}, PrototypeStore, {
       this.removeListener(SOLUTION_CHANGE_EVENT, callback);
       this.dispose();
     },
+    emitSolutionCreated: function() {
+      this.emit(SOLUTION_CREATED_EVENT);
+    },
+    addSolutionCreatedListener: function(callback) {
+      this.on(SOLUTION_CREATED_EVENT, callback);
+    },
+    removeSolutionCreatedListener: function(callback) {
+      this.removeListener(SOLUTION_CREATED_EVENT, callback);
+      this.dispose();
+    },
 
   });
 
@@ -751,6 +762,9 @@ var FolderStore = assign({}, PrototypeStore, {
         break;
       case FolderAction.GET_TAG_DATA_BY_NODEID_ERROR:
         FolderStore.emitSolutionChange(action.error, action.nodeId);
+        break;
+      case FolderAction.CREATE_ENERGY_SOLUTION_SUCCESS:
+        FolderStore.emitSolutionCreated();
         break;
     }
   });

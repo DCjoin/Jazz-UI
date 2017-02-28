@@ -37,7 +37,7 @@ import CalendarManager from '../../energy/CalendarManager.jsx';
 import DataAnalysisStore from 'stores/DataAnalysis/DataAnalysisStore.jsx';
 import CircularProgress from 'material-ui/CircularProgress';
 import ChartComponent from './ChartComponent.jsx';
-import GenerateSolutionButton from './GenerateSolutionButton.jsx';
+import {GenerateSolutionButton} from './GenerateSolution.jsx';
 import {MenuAction} from 'constants/AnalysisConstants.jsx';
 import BasicAnalysisAction from 'actions/DataAnalysis/BasicAnalysisAction.jsx';
 import CommodityStore from 'stores/CommodityStore.jsx';
@@ -85,6 +85,7 @@ class AnalysisPanel extends Component {
     this.getCurrentWidgetDto  = this.getCurrentWidgetDto.bind(this);
     this.getRemarck  = this.getRemarck.bind(this);
     this._onDialogChanged  = this._onDialogChanged.bind(this);
+    this._handleSave  = this._handleSave.bind(this);
 
   }
 
@@ -836,7 +837,22 @@ class AnalysisPanel extends Component {
           <FlatButton label={I18N.Common.Button.Save} disabled={!this.state.energyData} labelstyle={styles.label}
             icon={<FontIcon className="icon-save" style={styles.label}/>} style={styles.button}
             onClick={()=>{this._handleSave()}}/>
-          <GenerateSolutionButton nodes={[this.props.selectedNode]}/>
+          {this.props.isBuilding && <GenerateSolutionButton preAction={{
+              action: () => {
+                if(!Immutable.is(
+                      Immutable.fromJS(this.getCurrentWidgetDto()),
+                      DataAnalysisStore.getInitialWidgetDto())){
+                    this._handleSave(true);
+                } else {
+                  return true;
+                }
+              },
+              addListener: FolderStore.addSelectedNodeListener.bind(FolderStore),
+              removeListener: FolderStore.removeSelectedNodeListener.bind(FolderStore),
+            }} 
+            onOpen={this.props.onOpenGenerateSolution} 
+            nodes={[this.props.selectedNode]}
+            disabled={!this.state.energyData || this.state.selectedChartType === 'rawdata'}/>}
           {this._renderMoreOperation()}
       </div>
       </div>

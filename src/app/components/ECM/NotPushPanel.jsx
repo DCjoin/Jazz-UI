@@ -13,6 +13,7 @@ import {DIALOG_TYPE} from '../../constants/actionType/Measures.jsx';
 import Title from './MeasurePart/MeasureTitle.jsx';
 import Problem from './MeasurePart/Problem.jsx';
 import Solution from './MeasurePart/Solution.jsx';
+import SolutionGallery from './MeasurePart/SolutionGallery.jsx';
 import {solutionList} from '../../../../mockData/measure.js';
 import Immutable from 'immutable';
 
@@ -250,6 +251,13 @@ export default class NotPushPanel extends Component {
        canEdit:true,
        merge:this.merge,
      },
+     gallery: {
+      measure:currentSolution,
+      onDelete: (idx) => {
+        let imagesPath = ['EnergyProblem','EnergyProblemImages'];
+        this.merge(imagesPath, currentSolution.getIn(imagesPath).delete(idx));
+      }
+     }
    }
     return(
       <NewDialog
@@ -261,6 +269,7 @@ export default class NotPushPanel extends Component {
         {this._renderOperation(this.state.measureIndex)}
         <Solution {...props.solution}/>
         <Problem {...props.problem}/>
+        <SolutionGallery {...props.gallery}/>
       </NewDialog>
     )
   }
@@ -282,6 +291,12 @@ export default class NotPushPanel extends Component {
     MeasuresStore.addChangeListener(this._onChanged);
     MeasuresAction.getGroupSettingsList(this.props.hierarchyId,Status.NotPush);
     // MeasuresAction.getGroupSettingsList(100001,Status.NotPush);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.hierarchyId !== this.props.hierarchyId) {
+      MeasuresAction.getGroupSettingsList(nextProps.hierarchyId,Status.NotPush);
+    }
   }
 
   componentWillUnmount(){
