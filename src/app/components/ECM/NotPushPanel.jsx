@@ -15,6 +15,7 @@ import Problem from './MeasurePart/Problem.jsx';
 import Solution from './MeasurePart/Solution.jsx';
 import {solutionList} from '../../../../mockData/measure.js';
 import Immutable from 'immutable';
+import {Gallery} from 'components/DataAnalysis/Basic/GenerateSolution.jsx';
 
 export default class NotPushPanel extends Component {
   constructor(props) {
@@ -250,6 +251,22 @@ export default class NotPushPanel extends Component {
        canEdit:true,
        merge:this.merge,
      },
+     gallery: {
+      names: [],
+      selectedIdx: 0,
+      onLeft: () => {
+
+      },
+      onRight: () => {
+
+      },
+      onDelete: () => {
+
+      },
+      renderContent: () => {
+        return (<div style={{height: 300}}>123</div>)
+      }
+     }
    }
     return(
       <NewDialog
@@ -261,6 +278,7 @@ export default class NotPushPanel extends Component {
         {this._renderOperation(this.state.measureIndex)}
         <Solution {...props.solution}/>
         <Problem {...props.problem}/>
+        <Gallery {...props.gallery}/>
       </NewDialog>
     )
   }

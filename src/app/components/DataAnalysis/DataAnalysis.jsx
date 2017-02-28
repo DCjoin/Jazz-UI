@@ -421,7 +421,7 @@ export default class DataAnalysis extends Component {
 					message={SolutionFull() ? I18N.Setting.DataAnalysis.SaveScheme.FullTip : I18N.Setting.DataAnalysis.SaveScheme.PushTip} 
 					action={I18N.Setting.DataAnalysis.SaveScheme.TipAction} 
 					onActionTouchTap={() => {
-						util.openTab();
+						util.openTab(RoutePath.ecm(this.props.params)+'?init_hierarchy_id='+this.context.hierarchyId);
 					}}
 				/>
 			</div>

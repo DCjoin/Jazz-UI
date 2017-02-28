@@ -13,6 +13,7 @@ import NewDialog from 'controls/NewDialog.jsx';
 import PermissionCode from 'constants/PermissionCode.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
+import {Gallery} from 'components/DataAnalysis/Basic/GenerateSolution.jsx';
 
 function privilegeWithPush( privilegeCheck ) {
   // return true

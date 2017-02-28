@@ -71,7 +71,7 @@ function getProblemMarkMenuItem() {
 	}}));
 }
 
-class Gallery extends Component {
+export class Gallery extends Component {
 	render() {
 		let {names, selectedIdx, onLeft, onRight, onDelete, renderContent} = this.props;
 		return (
