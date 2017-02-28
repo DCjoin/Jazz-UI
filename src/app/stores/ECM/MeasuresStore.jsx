@@ -25,7 +25,7 @@ const MeasuresStore = assign({}, PrototypeStore, {
       _solutionList.forEach(solution=>{
         _checkList.push({
           checked:false,
-          // disabled:this.IsSolutionDisable(solution.get('EnergySolution').toJS())
+          disabled:this.IsSolutionDisable(solution.get('EnergySolution').toJS())
         })
       })
     }
@@ -53,6 +53,11 @@ const MeasuresStore = assign({}, PrototypeStore, {
   },
   merge(paths,value){
     _solutionList=_solutionList.setIn(paths,value);
+    if(_checkList.length!==0){
+      _solutionList.forEach((solution,index)=>{
+        _checkList[index].disabled=this.IsSolutionDisable(solution.get('EnergySolution').toJS())
+      })
+    }
   },
   getText(){
     return _text
@@ -80,7 +85,7 @@ const MeasuresStore = assign({}, PrototypeStore, {
           if(names===null){
             return names=name;
           }else {
-            names+= name;
+            names+= '、'+name;
           }
         }
       })
