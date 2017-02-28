@@ -231,7 +231,7 @@ export default class NotPushPanel extends Component {
         measureIndex:null
     },()=>{
       // currentSolution=MeasuresStore.getValidParams(currentSolution);
-      MeasuresAction.createSolution(currentSolution.toJS());
+      MeasuresAction.updateSolution(currentSolution.toJS());
     })
     };
    var props={
@@ -270,7 +270,7 @@ export default class NotPushPanel extends Component {
    }
     return(
       <NewDialog
-        open={true}
+        open={this.state.measureShow}
         modal={false}
         isOutsideClose={false}
         onRequestClose={onClose}>
@@ -324,7 +324,7 @@ export default class NotPushPanel extends Component {
         {this._renderAction()}
         {this._renderList()}
         {dialog}
-        {this.state.measureShow && this._renderMeasureDialog()}
+        {this.state.solutionList!==null && this._renderMeasureDialog()}
         <Snackbar ref='snackbar' open={!!this.state.snackbarText} onRequestClose={()=>{
             MeasuresAction.resetErrorText()
           }} message={this.state.snackbarText}/>

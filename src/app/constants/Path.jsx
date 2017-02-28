@@ -54,6 +54,6 @@ module.exports = {
     getEnergysolution:'/energysolution/{hierarchyId}/{status}/{smallSize}/{size}',
     pushProblem:'/energysolution/problem/push',
     deleteProblem:'/energysolution/problem/delete/{problemId}',
-    createSolution:'/energysolution/create'
+    updateSolution:'/energysolution/update'
   }
 };
