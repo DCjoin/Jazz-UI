@@ -47,10 +47,11 @@ export default class Solution extends Component {
           label:I18N.Setting.ECM.InvestmentReturn,
         },
         saving:{
-          key:'EnergySolution'+EnergySolution.Id+'_Saving',
+          key:'EnergySolution'+EnergySolution.Id+'_Saving'+new Date(),
           isNumber:true,
           onChange:(ev,value)=>{
                                 if(value===''){value=null}
+                                if(!MeasuresStore.validateNumber(value)){value=ExpectedAnnualEnergySaving}
                                 this.props.merge(['EnergySolution','ExpectedAnnualEnergySaving'],value)
                               },
           value:ExpectedAnnualEnergySaving,
@@ -65,7 +66,7 @@ export default class Solution extends Component {
               return null
             }
           },
-          displayFn:(value)=>{
+        displayFn:(value)=>{
             if(value===''){value=null}
              return MeasuresStore.getDisplayText(value)
           }
@@ -87,10 +88,11 @@ export default class Solution extends Component {
           }
         },
         cost:{
-          key:'EnergySolution'+EnergySolution.Id+'_Cost',
+          key:'EnergySolution'+EnergySolution.Id+'_Cost'+new Date(),
           isNumber:true,
           onChange:(ev,value)=>{
                                 if(value===''){value=null}
+                                if(!MeasuresStore.validateNumber(value)){value=ExpectedAnnualCostSaving}
                                 this.props.merge(['EnergySolution','ExpectedAnnualCostSaving'],value)
                               },
           value:ExpectedAnnualCostSaving,
@@ -111,10 +113,11 @@ export default class Solution extends Component {
           }
         },
         amount:{
-          key:'EnergySolution'+EnergySolution.Id+'_Amount',
+          key:'EnergySolution'+EnergySolution.Id+'_Amount'+new Date(),
           isNumber:true,
           onChange:(ev,value)=>{
                                 if(value===''){value=null}
+                                if(!MeasuresStore.validateNumber(value)){value=InvestmentAmount}
                                 this.props.merge(['EnergySolution','InvestmentAmount'],value)
                               },
           value:InvestmentAmount,
