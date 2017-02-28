@@ -293,6 +293,12 @@ export default class NotPushPanel extends Component {
     // MeasuresAction.getGroupSettingsList(100001,Status.NotPush);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.hierarchyId !== this.props.hierarchyId) {
+      MeasuresAction.getGroupSettingsList(nextProps.hierarchyId,Status.NotPush);
+    }
+  }
+
   componentWillUnmount(){
     MeasuresStore.removeChangeListener(this._onChanged);
   }

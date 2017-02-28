@@ -172,7 +172,7 @@ let MainApp = React.createClass({
           this.setState({
             hierarchyId: initHierarchyId * 1
           }, () => {
-            router.push(pathname + search );
+            // router.push(pathname + search );
           });
         }
       }
@@ -190,6 +190,10 @@ let MainApp = React.createClass({
     let callback = () => {
       this.setState({
         hierarchyId
+      }, () => {
+        let {pathname, query} = this.props.router.location;
+        query.init_hierarchy_id = hierarchyId;
+        this.props.router.push(pathname + '?' + querystring.stringify(query) );
       });
     };
     let doned = false;
