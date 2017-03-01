@@ -53,6 +53,11 @@ const MeasuresStore = assign({}, PrototypeStore, {
   },
   merge(paths,value){
     _solutionList=_solutionList.setIn(paths,value);
+    if(_checkList.length!==0){
+      _solutionList.forEach((solution,index)=>{
+        _checkList[index].disabled=this.IsSolutionDisable(solution.get('EnergySolution').toJS())
+      })
+    }
   },
   getText(){
     return _text
@@ -80,7 +85,7 @@ const MeasuresStore = assign({}, PrototypeStore, {
           if(names===null){
             return names=name;
           }else {
-            names+= name;
+            names+= '、'+name;
           }
         }
       })
@@ -121,7 +126,7 @@ const MeasuresStore = assign({}, PrototypeStore, {
     return !(Immutable.fromJS(_checkList).findIndex(item=>(!item.get('disabled')))>-1)
   },
   getInvestmentReturnCycle(amount,cost){
-    if(cost===null || cost*1===0){
+    if(cost===null || cost*1===0 || amount===null){
       return null
     }
     else {
@@ -130,7 +135,7 @@ const MeasuresStore = assign({}, PrototypeStore, {
         return I18N.Setting.ECM.InvestmentReturnCycle.ImmediateRecovery
       }
       else {
-        return I18N.format(I18N.Setting.ECM.InvestmentReturnCycle.Other,cycle.toFixed(1))
+        return I18N.format(I18N.Setting.ECM.InvestmentReturnCycle.Other,parseFloat(cycle.toFixed(1)))
       }
     }
   },

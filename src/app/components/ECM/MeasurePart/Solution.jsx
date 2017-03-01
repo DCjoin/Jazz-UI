@@ -28,29 +28,30 @@ export default class Solution extends Component {
       var props={
         savingIcon:{
           key:'EnergySolution'+EnergySolution.Id+'_SavingIcon',
-          icon:<FontIcon className="icon-line" iconStyle ={iconStyle} style = {style} />,
+          icon:<FontIcon className="icon-energy_saving" iconStyle ={iconStyle} style = {style} />,
           label:I18N.Setting.ECM.ExpectedAnnualEnergySaving,
         },
         costIcon:{
           key:'EnergySolution'+EnergySolution.Id+'_CostIcon',
-          icon:<FontIcon className="icon-line" iconStyle ={iconStyle} style = {style} />,
+          icon:<FontIcon className="icon-cost_saving" iconStyle ={iconStyle} style = {style} />,
           label:I18N.Setting.ECM.ExpectedAnnualCostSaving,
         },
         amountIcon:{
           key:'EnergySolution'+EnergySolution.Id+'_AmountIcon',
-          icon:<FontIcon className="icon-line" iconStyle ={iconStyle} style = {style} />,
+          icon:<FontIcon className="icon-investment" iconStyle ={iconStyle} style = {style} />,
           label:I18N.Setting.ECM.InvestmentAmount,
         },
         cycleIcon:{
           key:'EnergySolution'+EnergySolution.Id+'_CycleIcon',
-          icon:<FontIcon className="icon-line" iconStyle ={iconStyle} style = {style} />,
+          icon:<FontIcon className="icon-roi" iconStyle ={iconStyle} style = {style} />,
           label:I18N.Setting.ECM.InvestmentReturn,
         },
         saving:{
-          key:'EnergySolution'+EnergySolution.Id+'_Saving',
+          key:'EnergySolution'+EnergySolution.Id+'_Saving'+new Date(),
           isNumber:true,
           onChange:(ev,value)=>{
                                 if(value===''){value=null}
+                                if(!MeasuresStore.validateNumber(value)){value=ExpectedAnnualEnergySaving}
                                 this.props.merge(['EnergySolution','ExpectedAnnualEnergySaving'],value)
                               },
           value:ExpectedAnnualEnergySaving,
@@ -65,7 +66,7 @@ export default class Solution extends Component {
               return null
             }
           },
-          displayFn:(value)=>{
+        displayFn:(value)=>{
             if(value===''){value=null}
              return MeasuresStore.getDisplayText(value)
           }
@@ -87,10 +88,11 @@ export default class Solution extends Component {
           }
         },
         cost:{
-          key:'EnergySolution'+EnergySolution.Id+'_Cost',
+          key:'EnergySolution'+EnergySolution.Id+'_Cost'+new Date(),
           isNumber:true,
           onChange:(ev,value)=>{
                                 if(value===''){value=null}
+                                if(!MeasuresStore.validateNumber(value)){value=ExpectedAnnualCostSaving}
                                 this.props.merge(['EnergySolution','ExpectedAnnualCostSaving'],value)
                               },
           value:ExpectedAnnualCostSaving,
@@ -111,10 +113,11 @@ export default class Solution extends Component {
           }
         },
         amount:{
-          key:'EnergySolution'+EnergySolution.Id+'_Amount',
+          key:'EnergySolution'+EnergySolution.Id+'_Amount'+new Date(),
           isNumber:true,
           onChange:(ev,value)=>{
                                 if(value===''){value=null}
+                                if(!MeasuresStore.validateNumber(value)){value=InvestmentAmount}
                                 this.props.merge(['EnergySolution','InvestmentAmount'],value)
                               },
           value:InvestmentAmount,

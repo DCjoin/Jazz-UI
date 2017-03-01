@@ -43,7 +43,7 @@ export default class MeasuresItem extends Component {
 
     getName(){
       var {EnergyProblem,EnergySolution}=this.props.measure.toJS();
-      if(EnergySolution.Name){
+      if(EnergySolution.Name!==null){
         return <div>{EnergySolution.Name}</div>
       }
       else {
@@ -59,7 +59,7 @@ export default class MeasuresItem extends Component {
 						marginRight:'5px'
           };
         return <div style={{display:"flex",flexDirection:'row',alignItems:'center',marginTop:'-3px'}}>
-                <FontIcon className="icon-line" color="red" iconStyle ={iconStyle} style = {style} />
+                <FontIcon className="icon-no_ecm" color="red" iconStyle ={iconStyle} style = {style} />
                 <div style={{color:'red'}}>{I18N.Setting.ECM.NoECM}</div>
                 <div style={{color:'#abafae',marginLeft:'5px',fontSize:'14px'}}>{`(${I18N.Setting.ECM.EnergyProblem}:${EnergyProblem.Name})`}</div>
               </div>
@@ -80,9 +80,9 @@ export default class MeasuresItem extends Component {
           fontSize: '18px',
           marginTop:'-5px'
         };
-      var costIcon=<FontIcon className="icon-line" iconStyle ={iconStyle} style = {style} />,
-          sumIcon=<FontIcon className="icon-line" iconStyle ={iconStyle} style = {style} />,
-          periodIcon=<FontIcon className="icon-line" iconStyle ={iconStyle} style = {style} />;
+      var costIcon=<FontIcon className="icon-cost_saving" iconStyle ={iconStyle} style = {style} />,
+          sumIcon=<FontIcon className="icon-investment" iconStyle ={iconStyle} style = {style} />,
+          periodIcon=<FontIcon className="icon-roi" iconStyle ={iconStyle} style = {style} />;
       return(
         <div className="content">
           <div className="side">
