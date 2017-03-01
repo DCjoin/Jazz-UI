@@ -12,8 +12,6 @@ function getUrl(url) {
 	//return "url(" + Config.ServeAddress + url+")";
 }
 function validValue(value) {
-	console.log(value);
-	console.log(CommonFuns.getLabelData(value));
 	return value!==null?`${CommonFuns.getLabelData(value*1)} RMB`:'- RMB';
 }
 
