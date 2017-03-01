@@ -559,7 +559,11 @@ let ChartComponentBox = React.createClass({
 
     this.initSeriesVisibility(newConfig.series);
 
-    ChartStatusStore.assignStatus(newConfig);
+    if(this.props.assignStatus && typeof this.props.assignStatus === 'function') {
+      newConfig = this.props.assignStatus(newConfig);
+    } else {
+      ChartStatusStore.assignStatus(newConfig);
+    }
 
     newConfig.tooltipSidePosition = true;
     if (this.props.chartTooltipHasTotal) {

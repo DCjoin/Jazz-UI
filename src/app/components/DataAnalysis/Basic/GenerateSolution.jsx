@@ -174,10 +174,21 @@ export class GenerateSolution extends Component {
 		getTagsDataByNode(this.props);
 	}
 
-	_onChange(tagData, nodeId) {
+	_onChange(data, nodeId) {
+		let tagData = data.get('EnergyViewData'),
+		widgetStatus = data.get('WidgetStatus'),
+		widgetSeriesArray = data.get('WidgetSeriesArray');
 		this.setState({
+			widgetStatus,
+			widgetSeriesArray,
 			tagDatas: {...this.state.tagDatas, ...{
 				[nodeId]: tagData
+			}},
+			widgetStatuss: {...this.state.widgetStatuss, ...{
+				[nodeId]: widgetStatus
+			}},
+			widgetSeriesArrays: {...this.state.widgetSeriesArrays, ...{
+				[nodeId]: widgetSeriesArray
 			}}
 		});
 	}
@@ -307,13 +318,17 @@ export class GenerateSolution extends Component {
 		if(!node || !this.state.tagDatas[getId(node)] || this.state.svgStrings[getId(node)]) {
 			return null;
 		}
+		let nodeId = getId(node),
+		{tagDatas, widgetStatuss, widgetSeriesArrays} = this.state;
 		return (<div style={{position: 'relative', overflowX: 'hidden', height: 300, width: 600}}>
 					<ChartBasicComponent 
 						afterChartCreated={this._afterChartCreated}
 						ref='ChartBasicComponent'
-						key={getId(node)}
-						node={node} 
-						tagData={this.state.tagDatas[getId(node)]}
+						key={nodeId}
+						node={node}
+						tagData={tagDatas[nodeId]}
+						widgetStatus={widgetStatuss[nodeId]}
+						widgetSeriesArray={widgetSeriesArrays[nodeId]}
 						chartType={getChartTypeStr(node)}/>
 				</div>);
 	}

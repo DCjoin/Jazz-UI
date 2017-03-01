@@ -6,6 +6,82 @@ import ChartComponentBox from 'components/energy/ChartComponentBox.jsx';
 
 import MixedChartReader from 'stores/MixedChartReader.jsx';
 
+import ChartReaderStrategyFactor from 'stores/Energy/ChartReaderStrategyFactor.jsx';
+
+function assignStatus(config, _seriesStatus) {
+  let newConfig = {...config};
+  let chartTypeMap = {
+    1: 'line',
+    2: 'column',
+    4: 'stack',
+    8: 'pie'
+  };
+  let series = newConfig.series;
+  if (series && series[0]) {
+    if (series[0].type === 'pie') {
+      series = series[0].data;
+    }
+  }
+  let map = {};
+  // var seriesStatus = [];
+  if (_seriesStatus && _seriesStatus.length > 0) {
+    _seriesStatus.forEach((item, index) => {
+      map[item.id] = item;
+      // var flag = false;
+      // series.forEach((series_item) => {
+      //   if (series_item.id == item.id) {
+      //     flag = true;
+      //   }
+      // });
+      // if (flag) {
+      //   seriesStatus.push(_seriesStatus[index]);
+      // }
+    });
+  }
+
+  series.forEach((item, index) => {
+    if (item.id && map[item.id]) {
+      item.visible = map[item.id].IsDisplay;
+      if (map[item.id].ChartType === '4' || map[item.id].ChartType === 4) {
+        item.type = 'column';
+        item.stacking = 'normal';
+      } else {
+        item.type = chartTypeMap[map[item.id].ChartType];
+        item.stacking = undefined;
+      }
+    } else if (item.id) {
+      // let chartType = item.type;
+      // if (chartType === 'column' && item.stacking === 'normal') {
+      //   chartType = 'stack';
+      // }
+      // seriesStatus.push({
+      //   id: item.id,
+      //   IsDisplay: item.visible,
+      //   SeriesType: item.dType,
+      //   ChartType: me.getNumByChartType(chartType)
+      // });
+    }
+  });
+  // _seriesStatus=seriesStatus;
+  return newConfig;
+}
+
+function getStrategyByChartType(chartType) {
+  switch (chartType) {
+    case 'line':
+    case 'column':
+    case 'stack':
+      return 'EnergyTrendReader';
+      break;
+    case 'pie':
+      return 'EnergyPieReader'
+      break;
+    case 'rawdata': 
+    return 'EnergyRawGridReader'
+      break;
+  }
+}
+
 export default class ChartComponent extends Component {
   static propTypes = {
     node: PropTypes.object,
@@ -26,14 +102,16 @@ export default class ChartComponent extends Component {
   }
 
   render(){
-    let {node, tagData, chartType} = this.props,
+    let {node, tagData, chartType, widgetStatus, widgetSeriesArray} = this.props,
     target = tagData.getIn(['TargetEnergyData', 0, 'Target']),
     timeSpan = target.get('TimeSpan'),
     startTime = timeSpan.get('StartTime'),
     endTime = timeSpan.get('EndTime'),
     step = target.get('Step'),
 
-    energy = Immutable.fromJS(MixedChartReader.convert(tagData.toJS(), {
+    strategy = ChartReaderStrategyFactor.getStrategyByBizChartType( getStrategyByChartType(chartType) ),
+
+    energy = Immutable.fromJS(strategy.convert(tagData.toJS(), {
       start: startTime,
       end: endTime,
       step,
@@ -66,7 +144,10 @@ export default class ChartComponent extends Component {
           enabled: false
         },
       },
-      afterChartCreated: () => { this.props.afterChartCreated(Id) }
+      afterChartCreated: () => { this.props.afterChartCreated(Id) },
+      assignStatus: (config) => {
+        return assignStatus(config, widgetStatus);
+      }
     };
     return (
       <div id={'chart_basic_component_' + Id} style={{
