@@ -72,7 +72,8 @@ server.register(
 		{register: require("./kpi.js")},
 		{register: require("./orgnization.js")},
 		{register: require("./file.js")},
-		{register: require("./rank.js")},
+    {register: require("./rank.js")},
+		{register: require("./analysis.js")},
 	],function () {
     server.start(function() {
         console.log('Server started at: ' + server.info.uri);
@@ -86,7 +87,7 @@ server.route([{
     proxy: {
       passThrough: true,
         // uri: 'http://sp1.test30.energymost.com/webapihost/{path}',
-        uri: 'http://sp1.dev.energymost.com/webapihost/{path}',
+        uri: 'http://sp1.test35.energymost.com/webapihost/{path}',
         onResponse: function (err, res, request, reply, settings, ttl) {
             return reply(res);
         }
@@ -98,7 +99,7 @@ server.route([{
   handler: {
     proxy: {
     	passThrough: true,
-        uri: 'http://sp1.test30.energymost.com/webapihost/{path}',
+        uri: 'http://sp1.test35.energymost.com/webapihost/{path}',
         // uri: 'http://sp1.dev.energymost.com/webapihost/{path}',
         onResponse: function (err, res, request, reply, settings, ttl) {
             return reply(res);

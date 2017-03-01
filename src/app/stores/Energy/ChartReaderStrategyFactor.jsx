@@ -463,7 +463,7 @@ let ChartReaderStrategyFactor = {
           }
         }
 
-        if (step === 2 || step === 3 || step === 4 || step === 5) {
+        if ((step === 2 || step === 3 || step === 4 || step === 5) && data.NavigatorData) {
           var navData = data.NavigatorData.EnergyData;
           if (!navData) return;
           var standardStart;
