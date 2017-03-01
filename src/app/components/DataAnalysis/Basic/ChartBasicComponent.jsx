@@ -1,12 +1,59 @@
 'use strict';
 import React, { Component, PropTypes }  from "react";
 import Immutable from 'immutable';
+import Util from 'util/Util.jsx';
 
 import ChartComponentBox from 'components/energy/ChartComponentBox.jsx';
+import CalendarManager from 'components/energy/CalendarManager.jsx';
 
-import MixedChartReader from 'stores/MixedChartReader.jsx';
+import MultipleTimespanStore from 'stores/energy/MultipleTimespanStore.jsx';
 
-import ChartReaderStrategyFactor from 'stores/Energy/ChartReaderStrategyFactor.jsx';
+import ChartReaderStrategyFactor from 'stores/energy/ChartReaderStrategyFactor.jsx';
+
+function getIdByTarget(target, _bizType, _energyType, _submitParams, i) {
+  if (_bizType === 'Energy' && _energyType === 'Energy') {
+    if (_submitParams.viewOption.TimeRanges.length > 1) {
+      return 'Id' + target.TimeSpan.StartTime + target.TimeSpan.EndTime + 'Index' + i + 'Type' + undefined;
+    } else {
+      return 'Id' + target.TargetId + 'Type' + target.Type;
+    }
+  } else if (_bizType === 'Unit' && _energyType === 'Energy') {
+    return 'Id' + target.TargetId + 'Type' + target.Type;
+  } else if ((_bizType === 'Energy' || _bizType === 'Unit') && _energyType === 'Cost') {
+    return 'Id' + target.CommodityId + 'Type' + target.Type;
+  } else if ((_bizType === 'Energy' || _bizType === 'Unit') && _energyType === 'Carbon') {
+    return 'Id' + target.CommodityId + 'Type' + target.Type;
+  }
+  return '1';
+};
+
+function getSeriesStatus(TargetEnergyData, WidgetSeriesArray, _bizType, _energyType, _submitParams) {
+  let _seriesStatus = [];
+  if (!TargetEnergyData) {
+    return;
+  } else {
+    if (WidgetSeriesArray && WidgetSeriesArray.length > 0) {
+      let widgetSeriesArr = WidgetSeriesArray;
+      let seriesLength = widgetSeriesArr.length;
+      let targetEnergyData = TargetEnergyData;
+      for (let i = 0, len = targetEnergyData.length; i < len; i++) {
+        let target = targetEnergyData[i].Target;
+        let status = {
+          id: getIdByTarget(target, _bizType, _energyType, _submitParams, i)
+        };
+        if (i < seriesLength) { //如果有对应的状态，则保存；如果没有，则统一在assignStatus方法中添加状态
+          let serie = widgetSeriesArr[i];
+          status.ChartType = serie.ChartType;
+          status.IsDisplay = serie.IsDisplay;
+          status.SeriesType = serie.SeriesType;
+
+          _seriesStatus.push(status);
+        }
+      }
+    }
+  }
+  return _seriesStatus;
+}
 
 function assignStatus(config, _seriesStatus) {
   let newConfig = {...config};
@@ -82,11 +129,13 @@ function getStrategyByChartType(chartType) {
   }
 }
 
-export default class ChartComponent extends Component {
+export default class ChartBasicComponent extends Component {
   static propTypes = {
     node: PropTypes.object,
     tagData: PropTypes.object,
-    yaxisConfig: PropTypes.object,
+    chartType: PropTypes.string,
+    widgetSeriesArray: PropTypes.object,
+    widgetStatus: PropTypes.object,
   }
   constructor(props) {
      super(props);
@@ -98,29 +147,66 @@ export default class ChartComponent extends Component {
   }
 
   getYaxisConfig(){
-    return this.props.yaxisConfig || {}
+    let widgetStatus = this.props.widgetStatus;
+    return widgetStatus ? Util.getYaxisConfig(JSON.parse(this.props.widgetStatus)) : {};
   }
 
   render(){
-    let {node, tagData, chartType, widgetStatus, widgetSeriesArray} = this.props,
+    let {node, tagData, chartType, widgetStatus, widgetSeriesArray, contentSyntax} = this.props,
     target = tagData.getIn(['TargetEnergyData', 0, 'Target']),
     timeSpan = target.get('TimeSpan'),
     startTime = timeSpan.get('StartTime'),
     endTime = timeSpan.get('EndTime'),
     step = target.get('Step'),
 
-    strategy = ChartReaderStrategyFactor.getStrategyByBizChartType( getStrategyByChartType(chartType) ),
+    strategy = ChartReaderStrategyFactor.getStrategyByBizChartType( getStrategyByChartType(chartType) );
 
-    energy = Immutable.fromJS(strategy.convert(tagData.toJS(), {
+    let timeRanges = [timeSpan.toJS()]/* || [
+      {"StartTime":"2015-12-31T16:00:00","EndTime":"2016-12-31T16:00:00"},
+      {"StartTime":"2014-12-31T16:00:00","EndTime":"2015-12-31T16:00:00"}
+    ]*/;
+    if( contentSyntax ) {
+      let syntaxObj = JSON.parse(contentSyntax);
+      if( syntaxObj && syntaxObj.viewOption && syntaxObj.viewOption.TimeRanges ) {
+        let TimeRanges = syntaxObj.viewOption.TimeRanges;
+        if( TimeRanges.length > 1 ) {
+          MultipleTimespanStore.initDataByWidgetTimeRanges(timeRanges);
+          timeRanges = MultipleTimespanStore.getSubmitTimespans(TimeRanges);
+        }
+      }
+    }
+    let plotBands = null;
+    let wss = JSON.parse(widgetStatus);
+    if( wss && wss.length > 0 ) {
+      let calcType = "";
+      for (var i = 0, len = wss.length; i < len; i++) {
+        if (wss[i].WidgetStatusKey === "calendar") {
+          if (wss[i].WidgetStatusValue === "hc") {
+            calcType = "hc";
+            break;
+          } else if (wss[i].WidgetStatusValue === "work") {
+            calcType = "work";
+            break;
+          }
+        }
+      }
+      plotBands = CalendarManager.convertData(
+        CalendarManager.getTimeRange(step, calcType, tagData.get('Calendars').toJS() )
+      );
+    }
+
+
+    let energy = Immutable.fromJS(strategy.convertFn(tagData.toJS(), {
       start: startTime,
       end: endTime,
       step,
-      timeRanges: [timeSpan.toJS()],
-    }));
+      timeRanges: timeRanges,
+    }, {readerStrategy:strategy}));
 
     energy = energy.set('Data', energy.get('Data').map( (data) => {
       return data.set('enableDelete', false);
-    } ) )
+    } ) );
+
 
     let {ChartType, Id} = node.toJS(),
     chartCmpObj = {
@@ -131,7 +217,7 @@ export default class ChartComponent extends Component {
       energyData: energy,
       energyRawData: tagData.toJS(),
       getYaxisConfig:this.getYaxisConfig,
-      timeRanges:[timeSpan.toJS()],
+      timeRanges:timeRanges,
       startTime,
       endTime,
       step,
@@ -144,9 +230,14 @@ export default class ChartComponent extends Component {
           enabled: false
         },
       },
+      plotBands: plotBands,
       afterChartCreated: () => { this.props.afterChartCreated(Id) },
       assignStatus: (config) => {
-        return assignStatus(config, widgetStatus);
+        return assignStatus(config, getSeriesStatus(
+                  tagData.get('TargetEnergyData').toJS(),
+                  widgetSeriesArray.toJS(), 'Energy', 'Energy', 
+                  { viewOption: {TimeRanges:timeRanges}}
+                ));
       }
     };
     return (

@@ -565,6 +565,10 @@ let ChartComponentBox = React.createClass({
       ChartStatusStore.assignStatus(newConfig);
     }
 
+    if(this.props.plotBands) {
+      newConfig.xAxis.plotBands = this.props.plotBands;
+    }
+
     newConfig.tooltipSidePosition = true;
     if (this.props.chartTooltipHasTotal) {
       newConfig.chartTooltipHasTotal = true;

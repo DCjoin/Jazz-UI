@@ -19,7 +19,7 @@ import ChartBasicComponent from './ChartBasicComponent.jsx';
 
 import FolderAction from 'actions/FolderAction.jsx';
 import FolderStore from 'stores/FolderStore.jsx';
-import EnergyStore from 'stores/EnergyStore.jsx';
+import EnergyStore from 'stores/Energy/EnergyStore.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 
 function SolutionFull() {
@@ -30,18 +30,37 @@ function PushFull() {
 }
 
 function getChartTypeStr(data) {
-  switch (data.get('ChartType')) {
-    case 'line':
-    case 'column':
-    case 'stack':
-      EnergyStore.initReaderStrategy('EnergyTrendReader');
-      break;
-    case 'pie':
-      EnergyStore.initReaderStrategy('EnergyPieReader');
-      break;
-    case 'rawdata': EnergyStore.initReaderStrategy('EnergyRawGridReader');
-      break;
-  }
+	let chartType = 'line';
+	switch (data.get('ChartType')) {
+		case 1:
+			chartType = 'line';
+			break;
+		case 2:
+			chartType = 'column';
+			break;
+		case 3:
+			chartType = 'stack';
+			break;
+		case 4:
+			chartType = 'pie';
+			break;
+		case 5:
+			chartType = 'rawdata';
+			break;
+	}
+	// switch (chartType) {
+	// 	case 'line':
+	// 	case 'column':
+	// 	case 'stack':
+	// 		EnergyStore.initReaderStrategy('EnergyTrendReader');
+	// 		break;
+	// 	case 'pie':
+	// 		EnergyStore.initReaderStrategy('EnergyPieReader');
+	// 		break;
+	// 	case 'rawdata': EnergyStore.initReaderStrategy('EnergyRawGridReader');
+	// 		break;
+	// }
+	return chartType;
 }
 
 function getFromImmu(key) {
@@ -177,6 +196,7 @@ export class GenerateSolution extends Component {
 	_onChange(data, nodeId) {
 		let tagData = data.get('EnergyViewData'),
 		widgetStatus = data.get('WidgetStatus'),
+		contentSyntax = data.get('ContentSyntax'),
 		widgetSeriesArray = data.get('WidgetSeriesArray');
 		this.setState({
 			widgetStatus,
@@ -189,6 +209,9 @@ export class GenerateSolution extends Component {
 			}},
 			widgetSeriesArrays: {...this.state.widgetSeriesArrays, ...{
 				[nodeId]: widgetSeriesArray
+			}},
+			contentSyntaxs: {...this.state.contentSyntaxs, ...{
+				[nodeId]: contentSyntax
 			}}
 		});
 	}
@@ -319,7 +342,7 @@ export class GenerateSolution extends Component {
 			return null;
 		}
 		let nodeId = getId(node),
-		{tagDatas, widgetStatuss, widgetSeriesArrays} = this.state;
+		{tagDatas, widgetStatuss, widgetSeriesArrays, contentSyntaxs} = this.state;
 		return (<div style={{position: 'relative', overflowX: 'hidden', height: 300, width: 600}}>
 					<ChartBasicComponent 
 						afterChartCreated={this._afterChartCreated}
@@ -329,6 +352,7 @@ export class GenerateSolution extends Component {
 						tagData={tagDatas[nodeId]}
 						widgetStatus={widgetStatuss[nodeId]}
 						widgetSeriesArray={widgetSeriesArrays[nodeId]}
+						contentSyntax={contentSyntaxs[nodeId]}
 						chartType={getChartTypeStr(node)}/>
 				</div>);
 	}
