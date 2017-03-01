@@ -276,7 +276,7 @@ export default class NotPushPanel extends Component {
         modal={false}
         isOutsideClose={false}
         onRequestClose={onClose}
-        contentStyle={{overflowY: 'auto',paddingRight:'5px'}}>
+        contentStyle={{overflowY: 'auto',paddingRight:'5px',display:'block'}}>
         <Title {...props.title}/>
         {this._renderOperation(this.state.measureIndex)}
         <Solution {...props.solution}/>
