@@ -428,7 +428,7 @@ export class GenerateSolutionButton extends Component {
 		};
 	}
 	render() {
-		if( !PushFull() ) {
+		if( !PushFull() && !SolutionFull() ) {
 			return null;
 		}
 	    let {nodes, preAction, onOpen, disabled} = this.props,
