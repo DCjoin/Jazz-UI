@@ -53,7 +53,9 @@ export default class NotPushPanel extends Component {
 
   _onPush(){
     var ids=MeasuresStore.getIds(this.state.handleIndex);
-    MeasuresAction.pushProblem(ids);
+    MeasuresAction.updateSolution(this.state.solutionList.getIn([this.state.handleIndex]).toJS(),()=>{
+      MeasuresAction.pushProblem(ids);
+    })
     this.setState({
       dialogType:null,
       handleIndex:null
@@ -109,10 +111,12 @@ export default class NotPushPanel extends Component {
         <FlatButton disabled={MeasuresStore.IsSolutionDisable(this.state.solutionList.getIn([index,'EnergySolution']).toJS())} label={I18N.Setting.ECM.Push}
                     onClick={(e)=>{
                       e.stopPropagation();
-                      this.setState({
-                        dialogType:DIALOG_TYPE.PUSH,
-                        handleIndex:index
-                      })
+                        this.setState({
+                          dialogType:DIALOG_TYPE.PUSH,
+                          handleIndex:index
+                        })
+
+
                     }} labelstyle={styles.label} icon={<FontIcon className="icon-to-ecm" style={styles.label}/>}/>
         <FlatButton label={I18N.Common.Button.Delete}
                     onClick={(e)=>{
