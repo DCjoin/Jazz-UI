@@ -28,22 +28,22 @@ export default class Solution extends Component {
       var props={
         savingIcon:{
           key:'EnergySolution'+EnergySolution.Id+'_SavingIcon',
-          icon:<FontIcon className="icon-line" iconStyle ={iconStyle} style = {style} />,
+          icon:<FontIcon className="icon-energy_saving" iconStyle ={iconStyle} style = {style} />,
           label:I18N.Setting.ECM.ExpectedAnnualEnergySaving,
         },
         costIcon:{
           key:'EnergySolution'+EnergySolution.Id+'_CostIcon',
-          icon:<FontIcon className="icon-line" iconStyle ={iconStyle} style = {style} />,
+          icon:<FontIcon className="icon-cost_saving" iconStyle ={iconStyle} style = {style} />,
           label:I18N.Setting.ECM.ExpectedAnnualCostSaving,
         },
         amountIcon:{
           key:'EnergySolution'+EnergySolution.Id+'_AmountIcon',
-          icon:<FontIcon className="icon-line" iconStyle ={iconStyle} style = {style} />,
+          icon:<FontIcon className="icon-investment" iconStyle ={iconStyle} style = {style} />,
           label:I18N.Setting.ECM.InvestmentAmount,
         },
         cycleIcon:{
           key:'EnergySolution'+EnergySolution.Id+'_CycleIcon',
-          icon:<FontIcon className="icon-line" iconStyle ={iconStyle} style = {style} />,
+          icon:<FontIcon className="icon-roi" iconStyle ={iconStyle} style = {style} />,
           label:I18N.Setting.ECM.InvestmentReturn,
         },
         saving:{
