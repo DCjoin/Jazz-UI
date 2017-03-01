@@ -14,8 +14,8 @@ export default class MeasureTitle extends Component {
       var {canNameEdit,measure}=this.props;
       var {EnergySolution}=measure.toJS();
       return(
-        <div style={{display:'flex',fontSize:'16px'}}>
-          <span style={{marginRight:'15px'}}>{I18N.Setting.ECM.Solution}</span>
+        <div style={{display:'flex',fontSize:'16px',alignItems:'center'}}>
+          <span style={{marginRight:'15px',minWidth:'80px'}}>{I18N.Setting.ECM.Solution}</span>
             {canNameEdit?<TextField key={'EnergySolution_'+EnergySolution.Id+'_Name'}
                                     isNumber={false}
                                     onChange={(ev,value)=>{
