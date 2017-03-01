@@ -17,7 +17,7 @@ import privilegeUtil from 'util/privilegeUtil.jsx';
 
 function privilegeWithPush( privilegeCheck ) {
   // return true
-	return privilegeCheck(PermissionCode.SOLUTION_FULL, CurrentUserStore.getCurrentPrivilege());
+	return privilegeCheck(PermissionCode.PUSH_SOLUTION, CurrentUserStore.getCurrentPrivilege());
 }
 //能源经理
 function PushIsFull() {
@@ -38,7 +38,7 @@ function currentUserId(){
 }
 
 function IsUserSelf(userId){
-  return currentUserId===userId
+  return currentUserId()===userId
 }
 
 function canEdit(userId){
