@@ -43,7 +43,7 @@ export default class MeasuresItem extends Component {
 
     getName(){
       var {EnergyProblem,EnergySolution}=this.props.measure.toJS();
-      if(EnergySolution.Name){
+      if(EnergySolution.Name!==null){
         return <div>{EnergySolution.Name}</div>
       }
       else {
