@@ -60,7 +60,7 @@ export default class MeasureTitle extends Component {
         <div className="jazz-ecm-measure-title">
           {this._renderName()}
           {canEnergySysEdit?this._renderEnergySys()
-                           :<div style={{fontSize:'16px'}}>{MeasuresStore.getEnergySys(EnergyProblem.EnergySys)}</div>}
+                           :<div style={{fontSize:'16px',minWidth:'40px'}}>{MeasuresStore.getEnergySys(EnergyProblem.EnergySys)}</div>}
         </div>
       )
     }

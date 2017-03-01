@@ -199,7 +199,7 @@ export default class PushPanel extends Component {
      title:{
        measure:currentSolution,
        canNameEdit:canEdit(createUserId),
-       canEnergySysEdit:PushAndNotPushIsFull(),
+       canEnergySysEdit:canEdit(createUserId),
        merge:this.merge,
      },
      problem:{
