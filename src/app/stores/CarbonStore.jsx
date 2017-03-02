@@ -6,8 +6,8 @@ import assign from 'object-assign';
 import Immutable from 'immutable';
 import CommonFuns from './../util/Util.jsx';
 import ActionTypes from './../constants/actionType/Carbon.jsx';
-import ChartReaderStrategyFactor from './energy/ChartReaderStrategyFactor.jsx';
-import ChartStatusStore from './energy/ChartStatusStore.jsx';
+import ChartReaderStrategyFactor from './Energy/ChartReaderStrategyFactor.jsx';
+import ChartStatusStore from './Energy/ChartStatusStore.jsx';
 
 let _isLoading = false,
   _carbonData = null,

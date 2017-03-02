@@ -8,9 +8,9 @@ import CommonFuns from 'util/Util.jsx';
 import CircularProgress from 'material-ui/CircularProgress';
 import BasicAnalysisAction from 'actions/DataAnalysis/BasicAnalysisAction.jsx';
 import AlarmTagStore from 'stores/AlarmTagStore.jsx';
-import EnergyStore from 'stores/energy/EnergyStore.jsx';
-import ChartStatusStore from 'stores/energy/ChartStatusStore.jsx';
-import MultipleTimespanStore from 'stores/energy/MultipleTimespanStore.jsx';
+import EnergyStore from 'stores/Energy/EnergyStore.jsx';
+import ChartStatusStore from 'stores/Energy/ChartStatusStore.jsx';
+import MultipleTimespanStore from 'stores/Energy/MultipleTimespanStore.jsx';
 // import {GatherInfo} from '../../../../../mockData/DataAnalysis.js';
 var isMultiTime;
 class ItemComponent extends Component{

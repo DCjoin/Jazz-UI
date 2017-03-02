@@ -2,12 +2,12 @@
 
 import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import PrototypeStore from './PrototypeStore.jsx';
-import ChartStatusStore from './energy/ChartStatusStore.jsx';
+import ChartStatusStore from './Energy/ChartStatusStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
 import { Action } from '../constants/actionType/Energy.jsx';
 import CommonFuns from '../util/Util.jsx';
-import ChartReaderStrategyFactor from './energy/ChartReaderStrategyFactor.jsx';
+import ChartReaderStrategyFactor from './Energy/ChartReaderStrategyFactor.jsx';
 
 const COST_DATA_LOADING_EVENT = 'costdataloading',
   COST_DATA_LOADED_EVENT = 'costdatachanged',

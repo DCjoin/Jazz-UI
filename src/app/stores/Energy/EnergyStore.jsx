@@ -2,7 +2,7 @@
 
 import AppDispatcher from '../../dispatcher/AppDispatcher.jsx';
 import PrototypeStore from '../PrototypeStore.jsx';
-import ChartStatusStore from '../energy/ChartStatusStore.jsx';
+import ChartStatusStore from '../Energy/ChartStatusStore.jsx';
 import assign from 'object-assign';
 import _ from 'lodash';
 import Immutable from 'immutable';

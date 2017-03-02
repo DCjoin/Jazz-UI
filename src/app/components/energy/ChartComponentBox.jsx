@@ -12,7 +12,7 @@ import EnergyCommentFactory from './EnergyCommentFactory.jsx';
 import AlarmAction from '../../actions/AlarmAction.jsx';
 import { dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon } from '../../util/Util.jsx';
 import ChartCmpStrategyFactor from './ChartCmpStrategyFactor.jsx';
-import ChartStatusStore from '../../stores/energy/ChartStatusStore.jsx';
+import ChartStatusStore from '../../stores/Energy/ChartStatusStore.jsx';
 import ChartStatusAction from '../../actions/ChartStatusAction.jsx';
 import CurrentUserStore from '../../stores/CurrentUserStore.jsx';
 import { getCookie } from '../../util/Util.jsx';
