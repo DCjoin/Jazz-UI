@@ -226,6 +226,7 @@ export default class PushPanel extends Component {
         modal={false}
         isOutsideClose={false}
         onRequestClose={onClose}
+        titleStyle={{margin:'0 24px'}}
         contentStyle={{overflowY: 'auto',paddingRight:'5px',display:'block'}}>
         <Title {...props.title}/>
         {this._renderOperation()}
