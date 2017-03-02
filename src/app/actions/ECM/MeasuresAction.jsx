@@ -54,13 +54,14 @@ const MeasuresAction = {
       }
     });
   },
-  updateSolution(dto){
+  updateSolution(dto,callback){
     var that=this;
     Ajax.post(Path.ECM.updateSolution,
       {
       params: dto,
       success: function(resBody) {
-        that.getGroupSettingsList();
+        if(callback) callback()
+        else that.getGroupSettingsList();
       },
       error: function(err, res) {
         console.log(err, res);

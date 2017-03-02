@@ -199,7 +199,7 @@ export default class PushPanel extends Component {
      title:{
        measure:currentSolution,
        canNameEdit:canEdit(createUserId),
-       canEnergySysEdit:PushAndNotPushIsFull(),
+       canEnergySysEdit:canEdit(createUserId),
        merge:this.merge,
      },
      problem:{
@@ -226,7 +226,7 @@ export default class PushPanel extends Component {
         modal={false}
         isOutsideClose={false}
         onRequestClose={onClose}
-        contentStyle={{overflowY: 'auto',paddingRight:'5px'}}>
+        contentStyle={{overflowY: 'auto',paddingRight:'5px',display:'block'}}>
         <Title {...props.title}/>
         {this._renderOperation()}
         <Solution {...props.solution}/>
@@ -241,17 +241,10 @@ export default class PushPanel extends Component {
     paths.unshift(this.state.measureIndex);
     MeasuresAction.merge(paths,value)
   }
-  // componentWillMount(){
-  // MeasuresStore.setSolutionList(solutionList,Status.ToBe);//for test
-  // this.setState({
-  //   solutionList:Immutable.fromJS(solutionList),//for test
-  // })
-  // }
 
   componentDidMount(){
     MeasuresStore.addChangeListener(this._onChanged);
     MeasuresAction.getGroupSettingsList(this.props.hierarchyId,Status.ToBe);
-    // MeasuresAction.getGroupSettingsList(100001,Status.ToBe);
   }
   componentWillReceiveProps(nextProps) {
     if(nextProps.hierarchyId !== this.props.hierarchyId) {

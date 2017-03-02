@@ -12,7 +12,7 @@ function getUrl(url) {
 	//return "url(" + Config.ServeAddress + url+")";
 }
 function validValue(value) {
-	return value!==null?`${CommonFuns.getLabelData(value)} RMB`:'- RMB';
+	return value!==null?`${CommonFuns.getLabelData(value*1)} RMB`:'- RMB';
 }
 
 class IconText extends Component{
