@@ -6,6 +6,23 @@ import NotPushPanel from './NotPushPanel.jsx';
 import PushPanel from './PushPanel.jsx';
 import PermissionCode from 'constants/PermissionCode.jsx';
 
+function getFirstMenuPathFunc(menu) {
+  let firstMenu = menu[0];
+  if( !firstMenu ) {
+    return function() {
+      console.err('No has any menu');
+    }
+  }
+  if(firstMenu.children && firstMenu.children.length > 0) {
+    let firstChild = firstMenu.children[0];
+    if(firstChild.list && firstChild.list.length > 0) {
+      return firstChild.list[0].getPath;
+    }
+  }
+  return  firstMenu.getPath;
+}
+
+
 function privilegeWithPushAndNotPush( privilegeCheck ) {
   // return true
 	return privilegeCheck(PermissionCode.SOLUTION_FULL, CurrentUserStore.getCurrentPrivilege());
@@ -22,13 +39,21 @@ export default class MainPanel extends Component {
       hierarchyId: React.PropTypes.string
     };
 
-  constructor(props) {
+  constructor(props, ctx) {
     super(props);
     this._handlerSwitchTab=this._handlerSwitchTab.bind(this);
   }
 
   state={
     infoTabNo:isFull()?1:2
+  }
+
+  componentWillReceiveProps(nextProps, nextCtx) {
+    if( this.context.hierarchyId && nextCtx.hierarchyId === nextProps.params.customerId * 1 ) {
+      nextProps.router.push(
+        getFirstMenuPathFunc(CurrentUserStore.getMainMenuItems())(nextProps.params)
+      )
+    }
   }
 
   _handlerSwitchTab(event) {
