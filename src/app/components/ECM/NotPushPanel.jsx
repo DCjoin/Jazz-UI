@@ -169,8 +169,7 @@ export default class NotPushPanel extends Component {
   _renderPushDialog(){
     var styles={
       content:{
-        height:'100px',
-        padding:'0 30px',
+        padding:'30px',
         display:'flex',
         justifyContent:'center'
       },
@@ -199,15 +198,14 @@ export default class NotPushPanel extends Component {
                               handleIndex:null
                               })}} />
           ]}
-      >{content}</NewDialog>
+      ><div className="jazz-ecm-measure-viewabletext">{content}</div></NewDialog>
     )
   }
 
   _renderDeleteDialog(){
     var styles={
       content:{
-        height:'100px',
-        padding:'0 30px',
+        padding:'30px',
         display:'flex',
         justifyContent:'center'
       },
@@ -234,7 +232,7 @@ export default class NotPushPanel extends Component {
                               handleIndex:null
                               })}} />
           ]}
-      >{content}</NewDialog>
+      ><div className="jazz-ecm-measure-viewabletext">{content}</div></NewDialog>
     )
   }
 
