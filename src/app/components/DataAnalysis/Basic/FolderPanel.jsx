@@ -28,9 +28,9 @@ function flat(node, coll = []) {
 	if( node && node.get('Children') ) {
 		node.get('Children').map(function(child) {
 			flat(child, coll)
-		}).filter(child => child && child.get('ChartType') !== 5)
+		})
 	}
-	if( node.get('ChartType') ) {
+	if( node.get('ChartType') && node.get('ChartType') !== 5 ) {
 		coll.push(node);
 	}
 	return coll;

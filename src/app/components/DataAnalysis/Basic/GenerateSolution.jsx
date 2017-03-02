@@ -217,11 +217,18 @@ export class GenerateSolution extends Component {
 	}
 
 	_afterChartCreated(nodeId) {
-		this.setState({
-			svgStrings: {...this.state.svgStrings, ...{
-				[nodeId]: ReactDOM.findDOMNode(this).querySelector('#chart_basic_component_' + nodeId).querySelector('svg').outerHTML
-			}}
-		});
+		let svgString,
+		parent = ReactDOM.findDOMNode(this).querySelector('#chart_basic_component_' + nodeId);
+		if(parent && parent.querySelector('svg')) {
+			svgString = new XMLSerializer().serializeToString(parent.querySelector('svg'));
+		}
+		if( svgString ) {
+			this.setState({
+				svgStrings: {...this.state.svgStrings, ...{
+					[nodeId]: svgString
+				}}
+			});			
+		}
 	}
 
 	_setStateValue(name) {
