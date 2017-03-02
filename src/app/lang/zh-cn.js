@@ -2126,7 +2126,7 @@ I18N.Setting.DataAnalysis.EnergyProblem.MarkEnum = {
   1: '空调',
   2: '锅炉',
   3: '强电',
-  4: '弱点',
+  4: '弱电',
   5: '给排水',
   6: '空气压缩',
   20: '其他',
