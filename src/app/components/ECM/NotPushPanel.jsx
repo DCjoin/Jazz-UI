@@ -53,9 +53,15 @@ export default class NotPushPanel extends Component {
 
   _onPush(){
     var ids=MeasuresStore.getIds(this.state.handleIndex);
-    MeasuresAction.updateSolution(this.state.solutionList.getIn([this.state.handleIndex]).toJS(),()=>{
+    if(this.state.handleIndex!=='Batch'){
+      MeasuresAction.updateSolution(this.state.solutionList.getIn([this.state.handleIndex]).toJS(),()=>{
+        MeasuresAction.pushProblem(ids);
+      })
+    }
+    else {
       MeasuresAction.pushProblem(ids);
-    })
+    }
+
     this.setState({
       dialogType:null,
       handleIndex:null,
