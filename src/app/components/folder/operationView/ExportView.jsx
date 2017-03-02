@@ -1,7 +1,7 @@
 'use strict';
 import React from "react";
 import { Navigation, State } from 'react-router';
-import ExportChartStore from '../../../stores/energy/ExportChartStore.jsx';
+import ExportChartStore from '../../../stores/Energy/ExportChartStore.jsx';
 import ExportChartAction from '../../../actions/ExportChartAction.jsx';
 
 var ExportView = React.createClass({

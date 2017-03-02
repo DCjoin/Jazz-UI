@@ -6,9 +6,9 @@ import Util from 'util/Util.jsx';
 import ChartComponentBox from 'components/energy/ChartComponentBox.jsx';
 import CalendarManager from 'components/energy/CalendarManager.jsx';
 
-import MultipleTimespanStore from 'stores/energy/MultipleTimespanStore.jsx';
+import MultipleTimespanStore from 'stores/Energy/MultipleTimespanStore.jsx';
 
-import ChartReaderStrategyFactor from 'stores/energy/ChartReaderStrategyFactor.jsx';
+import ChartReaderStrategyFactor from 'stores/Energy/ChartReaderStrategyFactor.jsx';
 
 function getIdByTarget(target, _bizType, _energyType, _submitParams, i) {
   if (_bizType === 'Energy' && _energyType === 'Energy') {
@@ -123,7 +123,7 @@ function getStrategyByChartType(chartType) {
     case 'pie':
       return 'EnergyPieReader'
       break;
-    case 'rawdata': 
+    case 'rawdata':
     return 'EnergyRawGridReader'
       break;
   }
@@ -235,7 +235,7 @@ export default class ChartBasicComponent extends Component {
       assignStatus: (config) => {
         return assignStatus(config, getSeriesStatus(
                   tagData.get('TargetEnergyData').toJS(),
-                  widgetSeriesArray.toJS(), 'Energy', 'Energy', 
+                  widgetSeriesArray.toJS(), 'Energy', 'Energy',
                   { viewOption: {TimeRanges:timeRanges}}
                 ));
       }

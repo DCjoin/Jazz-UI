@@ -6,7 +6,7 @@ import Immutable from 'immutable';
 import { List, updater, update, Map } from 'immutable';
 import Regex from '../../../constants/Regex.jsx';
 import CarbonAction from '../../../actions/energyConversion/CarbonAction.jsx';
-import CarbonStore from '../../../stores/energyConversion/CarbonStore.jsx';
+import CarbonStore from '../../../stores/EnergyConversion/CarbonStore.jsx';
 import Panel from '../../../controls/MainContentPanel.jsx';
 import ViewableTextField from '../../../controls/ViewableTextField.jsx';
 import ViewableDropDownMenu from '../../../controls/ViewableDropDownMenu.jsx';

@@ -5,7 +5,7 @@ import AppDispatcher from '../../dispatcher/AppDispatcher.jsx';
 import { Action } from 'constants/actionType/DataAnalysis.jsx';
 import PrototypeStore from '../PrototypeStore.jsx';
 import assign from 'object-assign';
-import EnergyStore from 'stores/energy/EnergyStore.jsx';
+import EnergyStore from 'stores/Energy/EnergyStore.jsx';
 import CommonFuns from 'util/Util.jsx';
 import Immutable from 'immutable';
 
@@ -70,7 +70,7 @@ const DataAnalysisStore = assign({}, PrototypeStore, {
   },
   dispose(){
     _gatherInfo=null;
-    _widgetDto=null;
+    // _widgetDto=null;
   }
 
 });

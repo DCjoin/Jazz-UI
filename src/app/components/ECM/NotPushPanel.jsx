@@ -58,7 +58,9 @@ export default class NotPushPanel extends Component {
     })
     this.setState({
       dialogType:null,
-      handleIndex:null
+      handleIndex:null,
+      measureShow:false,
+      measureIndex:null,
     })
   }
 
@@ -67,7 +69,9 @@ export default class NotPushPanel extends Component {
     MeasuresAction.deleteProblem(ids);
     this.setState({
       dialogType:null,
-      handleIndex:null
+      handleIndex:null,
+      measureShow:false,
+      measureIndex:null,
     })
   }
 

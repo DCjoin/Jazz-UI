@@ -2,7 +2,7 @@
 
 import React from 'react';
 import ReactDom from 'react-dom';
-import ExportChartStore from '../../stores/energy/ExportChartStore.jsx';
+import ExportChartStore from '../../stores/Energy/ExportChartStore.jsx';
 
 let ExportChart = React.createClass({
   propTypes:{

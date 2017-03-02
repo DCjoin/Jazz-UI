@@ -1,7 +1,7 @@
 'use strict';
 import React from "react";
 import { Table, TableHeader, TableBody, TableRow, TableHeaderColumn, TableRowColumn, TableFooter } from 'material-ui';
-import EnergyStore from '../../stores/energy/EnergyStore.jsx';
+import EnergyStore from '../../stores/Energy/EnergyStore.jsx';
 import { getUomById, getCommodityById } from '../../util/Util.jsx';
 import Pagination from '../../controls/paging/Pagination.jsx';
 

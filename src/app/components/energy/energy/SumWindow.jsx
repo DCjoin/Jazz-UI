@@ -4,7 +4,7 @@ import {Dialog, FlatButton, Table, TableHeader, TableBody, TableRow, TableHeader
 import NewDialog from '../../../controls/NewDialog.jsx';
 import classSet from 'classnames';
 import CommonFuns from '../../../util/Util.jsx';
-import EnergyStore from '../../../stores/energy/EnergyStore.jsx';
+import EnergyStore from '../../../stores/Energy/EnergyStore.jsx';
 import Immutable from 'immutable';
 let {dateAdd} = CommonFuns;
 
