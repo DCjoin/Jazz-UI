@@ -1,12 +1,12 @@
 'use strict';
 import React, { Component }  from "react";
 import AlarmTagStore from 'stores/AlarmTagStore.jsx';
-import EnergyStore from 'stores/energy/EnergyStore.jsx';
+import EnergyStore from 'stores/Energy/EnergyStore.jsx';
 import MultiTimespanAction from 'actions/MultiTimespanAction.jsx';
 import AlarmTagAction from 'actions/AlarmTagAction.jsx';
 import ChartComponentBox from '../../energy/ChartComponentBox.jsx';
 import {dateAdd} from 'util/Util.jsx';
-import MultipleTimespanStore from 'stores/energy/MultipleTimespanStore.jsx';
+import MultipleTimespanStore from 'stores/Energy/MultipleTimespanStore.jsx';
 import EnergyAction from 'actions/EnergyAction.jsx';
 import GridComponent from '../../energy/GridComponent.jsx';
 

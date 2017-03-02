@@ -8,8 +8,8 @@ import Immutable from 'immutable';
 import { dateType } from '../constants/AlarmConstants.jsx';
 import { Action } from '../constants/actionType/Energy.jsx';
 import CommonFuns from '../util/Util.jsx';
-import ChartStatusStore from './energy/ChartStatusStore.jsx';
-import ChartReaderStrategyFactor from './energy/ChartReaderStrategyFactor.jsx';
+import ChartStatusStore from './Energy/ChartStatusStore.jsx';
+import ChartReaderStrategyFactor from './Energy/ChartReaderStrategyFactor.jsx';
 
 const RATIO_DATA_LOADING_EVENT = 'ratiodataloadingevent',
   RATIO_DATA_LOADED_EVENT = 'ratiodataloadedevent',

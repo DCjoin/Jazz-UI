@@ -5,7 +5,7 @@ import ReactDom from 'react-dom';
 import classnames from "classnames";
 import Item from '../../../controls/SelectableItem.jsx';
 import SelectablePanel from '../../../controls/SelectablePanel.jsx';
-import TariffStore from '../../../stores/energyConversion/TariffStore.jsx';
+import TariffStore from '../../../stores/EnergyConversion/TariffStore.jsx';
 import { formStatus } from '../../../constants/FormStatus.jsx';
 
 var tem_items = [];

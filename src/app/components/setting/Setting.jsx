@@ -23,7 +23,7 @@ import TagStore from '../../stores/TagStore.jsx';
 
 import LeftPanel from '../folder/FolderLeftPanel.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
-import WidgetStore from '../../stores/energy/WidgetStore.jsx';
+import WidgetStore from '../../stores/Energy/WidgetStore.jsx';
 import FolderDetailPanel from '../folder/FolderDetailPanel.jsx';
 import CopyView from '../folder/operationView/CopyView.jsx';
 import DeleteView from '../folder/operationView/DeleteView.jsx';
@@ -33,7 +33,7 @@ import SaveAsView from '../folder/operationView/SaveAsView.jsx';
 import ExportView from '../folder/operationView/ExportView.jsx';
 import ExportChartAction from '../../actions/ExportChartAction.jsx';
 import ChartStatusAction from '../../actions/ChartStatusAction.jsx';
-import ExportChartStore from '../../stores/energy/ExportChartStore.jsx';
+import ExportChartStore from '../../stores/Energy/ExportChartStore.jsx';
 import OrigamiPanel from '../../controls/OrigamiPanel.jsx';
 import Dialog from '../../controls/OperationTemplate/BlankDialog.jsx';
 

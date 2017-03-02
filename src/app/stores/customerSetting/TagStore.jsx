@@ -7,7 +7,7 @@ import Immutable from 'immutable';
 import moment from 'moment';
 import CommonFuns from '../../util/Util.jsx';
 import { Action } from '../../constants/actionType/customerSetting/Tag.jsx';
-import ChartReaderStrategyFactor from '../energy/ChartReaderStrategyFactor.jsx';
+import ChartReaderStrategyFactor from '../Energy/ChartReaderStrategyFactor.jsx';
 let {DataConverter} = CommonFuns;
 let j2d = DataConverter.JsonToDateTime,
   d2j = DataConverter.DatetimeToJson;

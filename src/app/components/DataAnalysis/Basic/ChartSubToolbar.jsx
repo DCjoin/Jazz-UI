@@ -7,7 +7,7 @@ import StepSelector from '../../energy/StepSelector.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
 import ButtonMenu from 'controls/CustomButtonMenu.jsx';
 import TagStore from 'stores/TagStore.jsx';
-// import EnergyStore from 'stores/energy/EnergyStore.jsx';
+// import EnergyStore from 'stores/Energy/EnergyStore.jsx';
 import CalendarManager from '../../energy/CalendarManager.jsx';
 import DataAnalysisStore from 'stores/DataAnalysis/DataAnalysisStore.jsx';
 import ExtendableMenuItem from 'controls/ExtendableMenuItem.jsx';

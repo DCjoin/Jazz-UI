@@ -53,10 +53,14 @@ export default class NotPushPanel extends Component {
 
   _onPush(){
     var ids=MeasuresStore.getIds(this.state.handleIndex);
-    MeasuresAction.pushProblem(ids);
+    MeasuresAction.updateSolution(this.state.solutionList.getIn([this.state.handleIndex]).toJS(),()=>{
+      MeasuresAction.pushProblem(ids);
+    })
     this.setState({
       dialogType:null,
-      handleIndex:null
+      handleIndex:null,
+      measureShow:false,
+      measureIndex:null,
     })
   }
 
@@ -65,7 +69,9 @@ export default class NotPushPanel extends Component {
     MeasuresAction.deleteProblem(ids);
     this.setState({
       dialogType:null,
-      handleIndex:null
+      handleIndex:null,
+      measureShow:false,
+      measureIndex:null,
     })
   }
 
@@ -109,10 +115,12 @@ export default class NotPushPanel extends Component {
         <FlatButton disabled={MeasuresStore.IsSolutionDisable(this.state.solutionList.getIn([index,'EnergySolution']).toJS())} label={I18N.Setting.ECM.Push}
                     onClick={(e)=>{
                       e.stopPropagation();
-                      this.setState({
-                        dialogType:DIALOG_TYPE.PUSH,
-                        handleIndex:index
-                      })
+                        this.setState({
+                          dialogType:DIALOG_TYPE.PUSH,
+                          handleIndex:index
+                        })
+
+
                     }} labelstyle={styles.label} icon={<FontIcon className="icon-to-ecm" style={styles.label}/>}/>
         <FlatButton label={I18N.Common.Button.Delete}
                     onClick={(e)=>{
@@ -161,8 +169,7 @@ export default class NotPushPanel extends Component {
   _renderPushDialog(){
     var styles={
       content:{
-        height:'100px',
-        padding:'0 30px',
+        padding:'30px',
         display:'flex',
         justifyContent:'center'
       },
@@ -191,15 +198,14 @@ export default class NotPushPanel extends Component {
                               handleIndex:null
                               })}} />
           ]}
-      >{content}</NewDialog>
+      ><div className="jazz-ecm-measure-viewabletext">{content}</div></NewDialog>
     )
   }
 
   _renderDeleteDialog(){
     var styles={
       content:{
-        height:'100px',
-        padding:'0 30px',
+        padding:'30px',
         display:'flex',
         justifyContent:'center'
       },
@@ -226,7 +232,7 @@ export default class NotPushPanel extends Component {
                               handleIndex:null
                               })}} />
           ]}
-      >{content}</NewDialog>
+      ><div className="jazz-ecm-measure-viewabletext">{content}</div></NewDialog>
     )
   }
 
@@ -272,7 +278,8 @@ export default class NotPushPanel extends Component {
         modal={false}
         isOutsideClose={false}
         onRequestClose={onClose}
-        contentStyle={{overflowY: 'auto',paddingRight:'5px'}}>
+        titleStyle={{margin:'0 24px'}}
+        contentStyle={{overflowY: 'auto',paddingRight:'5px',display:'block'}}>
         <Title {...props.title}/>
         {this._renderOperation(this.state.measureIndex)}
         <Solution {...props.solution}/>

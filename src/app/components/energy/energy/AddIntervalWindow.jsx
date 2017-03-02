@@ -3,7 +3,7 @@ import {Dialog, DropDownMenu, FlatButton, IconButton} from 'material-ui';
 import MenuItem from 'material-ui/MenuItem';
 import NewDialog from '../../../controls/NewDialog.jsx';
 import classSet from 'classnames';
-import MultipleTimespanStore from '../../../stores/energy/MultipleTimespanStore.jsx';
+import MultipleTimespanStore from '../../../stores/Energy/MultipleTimespanStore.jsx';
 import DateTimeSelector from '../../../controls/DateTimeSelector.jsx';
 import LinkButton from '../../../controls/LinkButton.jsx';
 import MultiTimespanAction from '../../../actions/MultiTimespanAction.jsx';

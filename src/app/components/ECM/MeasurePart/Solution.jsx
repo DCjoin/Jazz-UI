@@ -80,8 +80,7 @@ export default class Solution extends Component {
                               },
           value:EnergySavingUnit,
           style:{marginTop:'-5px'},
-          width:'100%',
-          multiLine:true,
+          width:'75px',
           displayFn:(value)=>{
             if(value===''){value=null}
              return MeasuresStore.getDisplayText(value)

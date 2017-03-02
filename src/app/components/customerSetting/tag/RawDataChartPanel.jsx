@@ -10,7 +10,7 @@ import ChartCmpStrategyFactor from '../../energy/ChartCmpStrategyFactor.jsx';
 import TagAction from '../../../actions/customerSetting/TagAction.jsx';
 import TagStore from '../../../stores/customerSetting/TagStore.jsx';
 import { dateFormat, isNumber } from '../../../util/Util.jsx';
-import ChartStatusStore from '../../../stores/energy/ChartStatusStore.jsx';
+import ChartStatusStore from '../../../stores/Energy/ChartStatusStore.jsx';
 let yAxisOffset = 70;
 let _chartObj = null;
 var dataLabelFormatter = function(format) {
