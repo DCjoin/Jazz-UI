@@ -2098,7 +2098,7 @@ let CommonFuns = {
         let secondValue = value.split('.')[1] || '0000';
         secondValue = secondValue.substring(0, 4 - firstValue.length + 1);
         value = firstValue + ((secondValue * 1) ? '.' + secondValue : '');
-        if( value.replace('.', '').replace('-', '').length > 4 ) {
+        if( value.replace('.', '').replace('-', '').length > 4 && secondValue.length > 0 ) {
           value = (1*value).toFixed(secondValue.length - 1) * 1;
         }
         break;
