@@ -46,7 +46,7 @@ I18N.MainMenu.DeviceTemplate = 'Ledger template ';
 I18N.MainMenu.ParameterTemplate = 'Parameter template';
 
 I18N.MainMenu.KPI = 'KPI · Report';
-I18N.MainMenu.SaveSchemeTab = '节能方案';
+I18N.MainMenu.SaveSchemeTab = 'Energy Saving Scheme';
 I18N.MainMenu.DataAnalysis = 'Data Analysis';
 I18N.MainMenu.KPIActuality = 'KPI Actuality';
 I18N.MainMenu.KPIConfig = 'KPI Configuration';
@@ -885,7 +885,7 @@ I18N.Setting.CustomerManagement.EditAdministrator = 'Edit maintainer';
 I18N.Setting.CustomerManagement.Title = 'Title';
 I18N.Setting.CustomerManagement.DeleteTitle = 'Delete customer';
 I18N.Setting.CustomerManagement.DeleteContent = 'Customer "{0}" will be deleted';
-I18N.Setting.CustomerManagement.CodeError = 'Don\'t support #|$<>\',"?\\*“<:/';
+I18N.Setting.CustomerManagement.CodeError = 'Don\'t support #|$<>\',"?\\*\"<:/';
 
 I18N.Setting.UserManagement = {};
 I18N.Setting.UserManagement.UserManagement = 'User management';
@@ -1165,7 +1165,7 @@ I18N.Message.M05023 = '{0}{1}';
 I18N.Message.M05023_Sub0 = 'The following user ID have been deleted: {0}.';
 I18N.Message.M05023_Sub1 = 'Unable to share with these people: {0}.';
 I18N.Message.M05032 = 'Same room existed';
-I18N.Message.M05034 = '无法拖拽到子文件夹中';
+I18N.Message.M05034 = 'Unable to drag into sub-folders';
 
 /******
 Tag Error Code, NOTE that for error of 06001, 06117,06152,06139,06154,06156, refresh is needed.
@@ -1351,7 +1351,7 @@ I18N.Folder.FolderName = 'Folder';
 I18N.Folder.WidgetName = 'Chart';
 I18N.Folder.DataAnalysisWidget = 'Chart Analysis';
 I18N.Folder.WidgetSaveSuccess = 'The chart has been saved successfully.';
-I18N.Folder.EmptyFolder = 'This folder is empty. Please click the “+Folder/+Chart Analysis” icon on the left to create new ones.';
+I18N.Folder.EmptyFolder = 'This folder is empty. Please click the \"+Folder/+Chart Analysis\" icon on the left to create new ones.';
 
 I18N.Folder.SaveNameError = {};
 I18N.Folder.SaveNameError.E032 = '{1} named "{0}" already exists. Please choose another name.';
@@ -1737,7 +1737,7 @@ I18N.Platform.ServiceProvider.NormalStatus = 'Normal';
 I18N.Platform.ServiceProvider.PauseStatus = 'Pause';
 I18N.Platform.ServiceProvider.OperationTime = 'Operation time';
 I18N.Platform.ServiceProvider.Status = 'Status';
-I18N.Platform.ServiceProvider.DeleteContent = 'Delete SP “{0}”，All public data, customer data and associate data will be deleted.';
+I18N.Platform.ServiceProvider.DeleteContent = 'Delete SP \"{0}\"，All public data, customer data and associate data will be deleted.';
 
 I18N.Platform.ServiceProvider.SendEmail = 'Send mail';
 I18N.Platform.ServiceProvider.ResetDefault = 'Reset to Default';
@@ -1754,15 +1754,15 @@ I18N.Platform.ServiceProvider.AddImage = 'Upload';
 I18N.Platform.ServiceProvider.UpdateImage = 'Re-Upload ';
 I18N.Platform.ServiceProvider.SPInfo = 'Service Provider Information';
 I18N.Platform.ServiceProvider.Customer = 'Set Logo';
-I18N.Platform.ServiceProvider.AddInfo = 'Logo has not been set, please click “edit” to set logo.';
+I18N.Platform.ServiceProvider.AddInfo = 'Logo has not been set, please click \"edit\" to set logo.';
 I18N.Platform.ServiceProvider.Tips = 'Please fill out the blanks below to set logo, service provider name, background pictures and other customized information ';
-I18N.Platform.ServiceProvider.FullName = 'Service Provider’s Full Name';
+I18N.Platform.ServiceProvider.FullName = 'Service Provider\'s Full Name';
 I18N.Platform.ServiceProvider.FullNameEtc = '（Eg. Schneider Electric China Co., Ltd.）';
-I18N.Platform.ServiceProvider.Abbreviation = 'Service Provider’s Abbreviation';
+I18N.Platform.ServiceProvider.Abbreviation = 'Service Provider\'s Abbreviation';
 I18N.Platform.ServiceProvider.AbbreviationEtc = '（Eg. SE）';
 I18N.Platform.ServiceProvider.About = '"About the Service Provider"web link';
 I18N.Platform.ServiceProvider.AboutUrlError = 'Please enter the link';
-I18N.Platform.ServiceProvider.Logo = '"Service Provider’s LOGO';
+I18N.Platform.ServiceProvider.Logo = '"Service Provider\'s LOGO';
 I18N.Platform.ServiceProvider.Background = 'Homepage Background Picture';
 I18N.Platform.ServiceProvider.SPName = 'Name';
 I18N.Platform.ServiceProvider.SPID = 'ID';
@@ -1820,8 +1820,8 @@ I18N.Privilege.Role.BaselineConfiguration = 'Energy analysis and baseline settin
 I18N.Privilege.Role.IndexAndReport = 'Index & Report';
 I18N.Privilege.Role.BasicDataAnalyse = 'Basic Data Analysis';
 I18N.Privilege.Role.SeniorDataAnalyse = 'Senior Data Analysis';
-I18N.Privilege.Role.PushSolution = '已推送方案';
-I18N.Privilege.Role.SolutionFull = '已推送+未推送方案';
+I18N.Privilege.Role.PushSolution = 'Pushed Solutions';
+I18N.Privilege.Role.SolutionFull = 'All Solutions';
 I18N.Privilege.Role.BuildingList = 'Project List';
 
 I18N.Remark = {};
@@ -1837,8 +1837,8 @@ I18N.Setting.Role.Function = 'Role';
 I18N.Setting.Role.Type = 'Type';
 I18N.Setting.Role.Name = 'Name';
 I18N.Setting.Role.Privilege = 'Privilege';
-I18N.Setting.Role.ErrorTitle = 'Can not delete role “{0}”';
-I18N.Setting.Role.ErrorContent = 'Role can not be deleted because “{0}???is referred by some users。Please delete users then try again.';
+I18N.Setting.Role.ErrorTitle = 'Can not delete role \"{0}\"';
+I18N.Setting.Role.ErrorContent = 'Role can not be deleted because \"{0}???is referred by some users。Please delete users then try again.';
 I18N.Setting.Role.DeleteTitle = 'Delete role ';
 I18N.Setting.Role.DeleteContent = 'Role "{0}" will be deleted';
 
@@ -1846,7 +1846,7 @@ I18N.Setting.Role.DeleteContent = 'Role "{0}" will be deleted';
 I18N.Setting.CarbonFactor = {};
 I18N.Setting.CarbonFactor.Title = 'Conversion factor';
 I18N.Setting.CarbonFactor.DeleteTitle = 'Delete conversion factor';
-I18N.Setting.CarbonFactor.DeleteContent = 'Conversion factor “{0}” will be deleted';
+I18N.Setting.CarbonFactor.DeleteContent = 'Conversion factor \"{0}\" will be deleted';
 I18N.Setting.CarbonFactor.Source = 'Conversion object';
 I18N.Setting.CarbonFactor.Target = 'Conversion target';
 I18N.Setting.CarbonFactor.EffectiveYear = 'Effective date';
@@ -1952,7 +1952,7 @@ I18N.Setting.Building.MapTip3 = 'Map cannot locate the address';
 I18N.Setting.Hierarchy = {};
 I18N.Setting.Hierarchy.DeleteTitle = 'Delete {0}';
 I18N.Setting.Hierarchy.CannotDeleteTitle = 'Cannot delete {0} "{1}"';
-I18N.Setting.Hierarchy.DeleteContent = 'Delete {0} “{1}”，all tags belong to {2} will be deleted';
+I18N.Setting.Hierarchy.DeleteContent = 'Delete {0} \"{1}\"，all tags belong to {2} will be deleted';
 I18N.Setting.Hierarchy.AddTagInfo = 'Click add button to add tags';
 
 I18N.Setting.Cost = {};
@@ -2058,7 +2058,7 @@ I18N.Setting.KPI.Group.GroupConfig.SelectTag='Quote Actual Data Point';
 I18N.Setting.KPI.Group.GroupConfig.SelectTagForPrediction='Select Subitem Data Points';
 I18N.Setting.KPI.Group.BuildingConfig.Title='Step Three：Set Building Index';
 I18N.Setting.KPI.Group.BuildingConfig.SumTitle='Sum Value of Building Quota Index ({0})';
-I18N.Setting.KPI.Group.BuildingConfig.Name='Building’s Name';
+I18N.Setting.KPI.Group.BuildingConfig.Name='Building\'s Name';
 I18N.Setting.KPI.Group.BuildingConfig.Value='{0}Index Value ({1})';
 I18N.Setting.KPI.Group.BuildingConfig.Tag='Quote Data Points';
 I18N.Setting.KPI.Group.BuildingConfig.Operation='Operation';
@@ -2071,7 +2071,7 @@ I18N.Setting.KPI.Group.MonthConfig.AnnualTotal='Total Annual Target({0})';
 I18N.Setting.KPI.Group.MonthConfig.MonthValueSum='Sum Value of Monthly target({0})';
 I18N.Setting.KPI.GroupList = {};
 I18N.Setting.KPI.GroupList.Header = 'Index Setting';
-I18N.Setting.KPI.GroupList.DeleteTitle = 'Delete the Index“{0}”';
+I18N.Setting.KPI.GroupList.DeleteTitle = 'Delete the Index\"{0}\"';
 I18N.Setting.KPI.GroupList.DeleteComment = 'All related charts will be deleted, continue?';
 
 I18N.Setting.KPI.Group.Ranking = {};
@@ -2113,82 +2113,81 @@ I18N.Setting.KPI.Report.DataComment= 'Notice：At least one report data should b
 I18N.Setting.KPI.Report.CalcData= 'Calculating Data';
 I18N.Setting.KPI.Report.Hierarchy= 'Hierarchy';
 I18N.Setting.KPI.Report.TimeRangeComment= 'Notice：Current year is year{0}. Please set the corresponding period for current year and the rest information for other years will be automatically calculated.';
-I18N.Setting.KPI.Report.DuplicatedName = 'Template”{0}”already exists, please choose another name.';
-I18N.Setting.KPI.Report.DeleteTemplateMessage = 'Template”{0}” will be deleted.';
+I18N.Setting.KPI.Report.DuplicatedName = 'Template\"{0}\"already exists, please choose another name.';
+I18N.Setting.KPI.Report.DeleteTemplateMessage = 'Template\"{0}\" will be deleted.';
 I18N.Setting.KPI.Report.StartCellHintText = 'Please fill the start cell.';
 
 I18N.Setting.DataAnalysis = {};
-I18N.Setting.DataAnalysis.Scheme = '生成方案';
-I18N.Setting.DataAnalysis.SchemeSubmit = '生成';
+I18N.Setting.DataAnalysis.Scheme = 'Create Scheme';
+I18N.Setting.DataAnalysis.SchemeSubmit = 'Create';
 I18N.Setting.DataAnalysis.EnergyProblem = {};
-I18N.Setting.DataAnalysis.EnergyProblem.Title = '能效问题详情';
-I18N.Setting.DataAnalysis.EnergyProblem.Mark = '能源系统标识';
+I18N.Setting.DataAnalysis.EnergyProblem.Title = 'Energy Problems';
+I18N.Setting.DataAnalysis.EnergyProblem.Mark = 'Energy System Mark';
 I18N.Setting.DataAnalysis.EnergyProblem.MarkEnum = {
-  1: '空调',
-  2: '锅炉',
-  3: '强电',
-  4: '弱点',
-  5: '给排水',
-  6: '空气压缩',
-  20: '其他',
+  1: 'Air Conditioner',
+  2: 'Boiler',
+  3: 'Strong Electric Power',
+  4: 'Weak Electric Power',
+  5: 'Water Supply and Drainage',
+  6: 'Air Compression',
+  20: 'Others',
 };
-I18N.Setting.DataAnalysis.EnergyProblem.AddDesc = '添加能效问题描述';
+I18N.Setting.DataAnalysis.EnergyProblem.AddDesc = 'Add Problem Description';
 I18N.Setting.DataAnalysis.SaveScheme = {};
-I18N.Setting.DataAnalysis.SaveScheme.Title = '节能方案详情';
-I18N.Setting.DataAnalysis.SaveScheme.AddDesc = '添加节能方案';
-I18N.Setting.DataAnalysis.SaveScheme.TargetValue = '预计年节能量';
-I18N.Setting.DataAnalysis.SaveScheme.TargetCost = '预计年节约成本';
-I18N.Setting.DataAnalysis.SaveScheme.DeleteChart = '删除图标"{0}"吗？';
-I18N.Setting.DataAnalysis.SaveScheme.PushTip = '节能方案已生成';
-I18N.Setting.DataAnalysis.SaveScheme.FullTip = '节能方案已保存至未推送';
-I18N.Setting.DataAnalysis.SaveScheme.TipAction = '点击查看';
-I18N.Setting.DataAnalysis.To = '至';
-I18N.Setting.DataAnalysis.NotagRecommend = '点击“+数据点”按钮，选择要查看的数据点';
-I18N.Setting.DataAnalysis.SaveTip = '图表未保存，是否保存图表并离开？';
-I18N.Setting.DataAnalysis.LeaveTip = '图表为空，离开将直接删除该图表，是否离开？';
+I18N.Setting.DataAnalysis.SaveScheme.Title = 'Details of Saving Schemes';
+I18N.Setting.DataAnalysis.SaveScheme.AddDesc = 'Add Saving Schemes';
+I18N.Setting.DataAnalysis.SaveScheme.TargetValue = 'Estimate Annual Saving Volume';
+I18N.Setting.DataAnalysis.SaveScheme.TargetCost = 'Estimate Annual Saving Cost';
+I18N.Setting.DataAnalysis.SaveScheme.DeleteChart = 'Confirm to delete\"{0}\"？';
+I18N.Setting.DataAnalysis.SaveScheme.PushTip = 'Saving Scheme Successfully Created';
+I18N.Setting.DataAnalysis.SaveScheme.FullTip = 'Saving Scheme Successfully Saved in the Draft';
+I18N.Setting.DataAnalysis.SaveScheme.TipAction = 'Click to View';
+I18N.Setting.DataAnalysis.To = 'to';
+I18N.Setting.DataAnalysis.NotagRecommend = 'Click the \"+data point\"，and choose to view data points';
+I18N.Setting.DataAnalysis.SaveTip = 'Chart not saved，save and quit？';
+I18N.Setting.DataAnalysis.LeaveTip = 'Empty chart will be deleted if you quit，confirm to quit？';
 
 I18N.Setting.ECM = {};
-I18N.Setting.ECM.EstimatedAnnualCostSavings = '预计年节约成本';
-I18N.Setting.ECM.InvestmentAmount = '投资金额';
-I18N.Setting.ECM.PaybackPeriod = '投资回报期';
-I18N.Setting.ECM.NoECM = '未添加节能方案';
-I18N.Setting.ECM.EnergyProblem = '能效问题';
-I18N.Setting.ECM.AirConditioning = '空调';
-I18N.Setting.ECM.Boiler = '锅炉';
-I18N.Setting.ECM.StrongElectricity = '强电';
-I18N.Setting.ECM.WeakElectricity = '弱电';
-I18N.Setting.ECM.Drainage = '给排水';
-I18N.Setting.ECM.AirCompression = '空气压缩';
-I18N.Setting.ECM.Other = '其他';
-I18N.Setting.ECM.AlreadyPush = '已推送';
-I18N.Setting.ECM.NotPush = '未推送';
-I18N.Setting.ECM.PushAll = '批量推送';
-I18N.Setting.ECM.Push = '推送';
-I18N.Setting.ECM.PushContent = '推送节能方案{0}吗？';
-I18N.Setting.ECM.BatchPushContent = '批量推送节能方案{0}吗？';
-I18N.Setting.ECM.DeleteContent = '删除节能方案{0}吗？';
-I18N.Setting.ECM.PushSuccess = '节能方案已推送';
-I18N.Setting.ECM.Solution = '节能方案';
-I18N.Setting.ECM.ProblemDetail = '能效问题详情';
-I18N.Setting.ECM.SolutionDetail = '节能方案详情';
-I18N.Setting.ECM.ExpectedAnnualEnergySaving = '预计年节能量';
-I18N.Setting.ECM.ExpectedAnnualCostSaving = '预计年节约成本';
-I18N.Setting.ECM.InvestmentAmount = '投资金额';
-I18N.Setting.ECM.InvestmentReturn = '投资回报期';
-I18N.Setting.ECM.NumberErrorText = '请输入大于等于0，小数点后一位的数字';
+I18N.Setting.ECM.EstimatedAnnualCostSavings = 'Estimated Annual Cost Savings';
+I18N.Setting.ECM.InvestmentAmount = 'Investment Amount';
+I18N.Setting.ECM.PaybackPeriod = 'Payback Period';
+I18N.Setting.ECM.NoECM = 'No Added Energy Saving Scheme';
+I18N.Setting.ECM.EnergyProblem = 'Energy Problems';
+I18N.Setting.ECM.AirConditioning = 'Air Conditioner';
+I18N.Setting.ECM.Boiler = 'Boiler';
+I18N.Setting.ECM.StrongElectricity = 'Strong Electricity';
+I18N.Setting.ECM.WeakElectricity = 'Weak Electricity';
+I18N.Setting.ECM.Drainage = 'Water Supply and Drainage';
+I18N.Setting.ECM.AirCompression = 'Air Compression';
+I18N.Setting.ECM.Other = 'Others';
+I18N.Setting.ECM.AlreadyPush = 'Already Pushed';
+I18N.Setting.ECM.NotPush = 'Not Pushed Yet';
+I18N.Setting.ECM.PushAll = 'Batch Push';
+I18N.Setting.ECM.Push = 'Push';
+I18N.Setting.ECM.PushContent = 'Confirm to push energy saving scheme{0}？';
+I18N.Setting.ECM.BatchPushContent ='Confirm to batch push energy saving schemes{0}？';
+I18N.Setting.ECM.DeleteContent = 'Confirm to delete energy saving scheme{0}？';
+I18N.Setting.ECM.PushSuccess = 'Scheme successfully pushed';
+I18N.Setting.ECM.Solution = 'Energy Saving Scheme';
+I18N.Setting.ECM.ProblemDetail = 'Energy Problem Details';
+I18N.Setting.ECM.SolutionDetail = 'Energy Saving Scheme Details';
+I18N.Setting.ECM.ExpectedAnnualEnergySaving = 'Expected Annual Energy Saving';
+I18N.Setting.ECM.ExpectedAnnualCostSaving = 'Expected Annual Cost Saving';
+I18N.Setting.ECM.InvestmentAmount = 'Investment Amount';
+I18N.Setting.ECM.InvestmentReturn = 'Payback Period';
+I18N.Setting.ECM.NumberErrorText = 'The number should be more than or equal to 0, with at most 1 digit after the decimal point';
 I18N.Setting.ECM.InvestmentReturnCycle ={};
-I18N.Setting.ECM.InvestmentReturnCycle.ImmediateRecovery='立即';
-I18N.Setting.ECM.InvestmentReturnCycle.Other='{0}年';
+I18N.Setting.ECM.InvestmentReturnCycle.ImmediateRecovery='Immediate';
+I18N.Setting.ECM.InvestmentReturnCycle.Other='{0}year(s)';
 I18N.Setting.ECM.PushPanel ={};
-I18N.Setting.ECM.PushPanel.ToBe='待分配';
-I18N.Setting.ECM.PushPanel.Being='进行中';
-I18N.Setting.ECM.PushPanel.Done='已执行';
-I18N.Setting.ECM.PushPanel.Canceled='已取消';
-I18N.Setting.ECM.PushPanel.ThisMonth='本月';
-I18N.Setting.ECM.PushPanel.Last3Month='近3个月';
-I18N.Setting.ECM.PushPanel.Earlier='更早';
-I18N.Setting.ECM.PushPanel.Status='状态';
-I18N.Setting.ECM.PushPanel.CreateUser='创建人';
+I18N.Setting.ECM.PushPanel.ToBe='To Be Assigned';
+I18N.Setting.ECM.PushPanel.Being='Processing';
+I18N.Setting.ECM.PushPanel.Done='Done';
+I18N.Setting.ECM.PushPanel.Canceled= 'Canceled';
+I18N.Setting.ECM.PushPanel.ThisMonth= 'This Month';
+I18N.Setting.ECM.PushPanel.Last3Month= 'Last 3 Months';
+I18N.Setting.ECM.PushPanel.Earlier= 'Earlier';
+I18N.Setting.ECM.PushPanel.Status='Status';
+I18N.Setting.ECM.PushPanel.CreateUser='Created By';
 
 module.exports = I18N;
-
