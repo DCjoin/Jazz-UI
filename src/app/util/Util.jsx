@@ -2099,7 +2099,7 @@ let CommonFuns = {
         secondValue = secondValue.substring(0, 4 - firstValue.length + 1);
         value = firstValue + ((secondValue * 1) ? '.' + secondValue : '');
         if( value.replace('.', '').replace('-', '').length > 4 && secondValue.length > 0 ) {
-          value = (1*value).toFixed(secondValue.length - 1) * 1;
+          value = toFixed(value, secondValue.length - 1) * 1
         }
         break;
       }
@@ -2158,5 +2158,12 @@ let CommonFuns = {
     document.body.removeChild(link);
   }
 };
+
+function toFixed(num, s) {
+  var times = Math.pow(10, s)
+  var des = num * times + 0.5
+  des = parseInt(des, 10) / times
+  return des + ''
+}
 
 module.exports = CommonFuns;

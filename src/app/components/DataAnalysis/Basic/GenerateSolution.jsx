@@ -4,6 +4,7 @@ import {flowRight, curryRight} from 'lodash/function';
 import FontIcon from 'material-ui/FontIcon';
 import CircularProgress from 'material-ui/CircularProgress';
 
+import Util from 'util/Util.jsx';
 import PrivilegeUtil from 'util/privilegeUtil.jsx';
 
 import Dialog from 'controls/NewDialog.jsx';
@@ -21,6 +22,7 @@ import FolderAction from 'actions/FolderAction.jsx';
 import FolderStore from 'stores/FolderStore.jsx';
 import EnergyStore from 'stores/Energy/EnergyStore.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
+import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
 
 function SolutionFull() {
 	return PrivilegeUtil.isFull(PermissionCode.SOLUTION_FULL, CurrentUserStore.getCurrentPrivilege());
@@ -234,7 +236,7 @@ export class GenerateSolution extends Component {
 	_setStateValue(name) {
 		return (value) => {
 			this.setState({
-				[name]: value
+				[name]: name === 'SaveValue' || name === 'SaveCost' ? Util.thousandsToNormal(value) : value
 			});
 		}
 	}
@@ -375,9 +377,18 @@ export class GenerateSolution extends Component {
 							defaultValue={SaveName}
 							didChanged={this._setStateValue('SaveName')}/>
 					</div>
-					<div>
+					<div style={{display:'flex'}}>
 						<ViewableTextField title={I18N.Setting.DataAnalysis.SaveScheme.TargetValue}
-							defaultValue={SaveValue}
+							defaultValue={Util.toThousands(SaveValue)}
+							regexFn={(value)=>{
+								if(value===''){value=null}
+								if(!MeasuresStore.validateNumber(value)){
+									return I18N.Setting.ECM.NumberErrorText
+								}
+								else {
+									return null
+								}
+							}}
 							didChanged={this._setStateValue('SaveValue')}
 							style={{width: 155, marginRight: 20}}/>
 						<ViewableTextField title={I18N.Common.Glossary.UOM}
@@ -385,10 +396,19 @@ export class GenerateSolution extends Component {
 							didChanged={this._setStateValue('SaveUnit')}
 							style={{width: 80, marginRight: 20}}/>
 						<ViewableTextField title={I18N.Setting.DataAnalysis.SaveScheme.TargetCost}
-							defaultValue={SaveCost}
+							defaultValue={Util.toThousands(SaveCost)}
 							didChanged={this._setStateValue('SaveCost')}
+							regexFn={(value)=>{
+								if(value===''){value=null}
+								if(!MeasuresStore.validateNumber(value)){
+									return I18N.Setting.ECM.NumberErrorText
+								}
+								else {
+									return null
+								}
+							}}
 							style={{width: 155, marginRight: 20}}/>
-						RMB
+						<div style={{marginTop: 40}}>RMB</div>
 					</div>
 					<div>
 						<ViewableTextField title={I18N.Setting.UserManagement.Comment}
