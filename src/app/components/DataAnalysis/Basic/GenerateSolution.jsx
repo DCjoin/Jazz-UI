@@ -304,7 +304,7 @@ export class GenerateSolution extends Component {
 
 	_renderEnergyProblem() {
 		let {ProblemName, ProblemMark, ProblemDesc} = this.state;
-		return (<div>
+		return (<div style={{flex: 'none'}}>
 			<div><b>{I18N.Setting.DataAnalysis.EnergyProblem.Title}</b></div>
 			<ViewableTextField title={I18N.Common.Glossary.Name}
 				defaultValue={ProblemName}
@@ -368,7 +368,7 @@ export class GenerateSolution extends Component {
 		let {SaveName, SaveValue, SaveUnit, SaveCost, SaveDesc} = this.state;
 		return (
 			<OnceHidePanel label={I18N.Setting.DataAnalysis.SaveScheme.AddDesc}>
-				<div>
+				<div style={{flex: 'none'}}>
 					<b>{I18N.Setting.DataAnalysis.SaveScheme.Title}</b>
 					<div>
 						<ViewableTextField title={I18N.Common.Glossary.Name}
@@ -440,7 +440,7 @@ export class GenerateSolution extends Component {
 				actions={[this._renderSubmit(), this._renderCancel()]}
 				contentStyle={{overflowY: 'auto'}}>
 				{this._renderEnergyProblem()}
-				<div style={{margin: '10px 0'}}>		
+				<div style={{margin: '10px 0', flex: 'none'}}>		
 					<Gallery 
 						names={this.state.nodes.map(node => node.get('Name'))}
 						selectedIdx={this.state.idx}
