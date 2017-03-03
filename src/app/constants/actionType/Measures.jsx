@@ -9,8 +9,8 @@ module.exports = {
     RESET_SNACKBAR_TEXT:null,
     MERGE_MEASURE:null
   }),
-  ThumbnailSize:'160w_80h',
-  DetailSize:'600w_300h',
+  ThumbnailSize:'w_160,h_80',
+  DetailSize:'w_600,h_300',
   Status:{
     NotPush:1,
     ToBe:2,
