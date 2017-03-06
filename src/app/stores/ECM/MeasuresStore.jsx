@@ -25,7 +25,7 @@ const MeasuresStore = assign({}, PrototypeStore, {
       _solutionList.forEach(solution=>{
         _checkList.push({
           checked:false,
-          disabled:this.IsSolutionDisable(solution.get('EnergySolution').toJS())
+          disabled:this.IsSolutionDisable(solution.toJS())
         })
       })
     }
@@ -55,7 +55,7 @@ const MeasuresStore = assign({}, PrototypeStore, {
     _solutionList=_solutionList.setIn(paths,value);
     if(_checkList.length!==0){
       _solutionList.forEach((solution,index)=>{
-        _checkList[index].disabled=this.IsSolutionDisable(solution.get('EnergySolution').toJS())
+        _checkList[index].disabled=this.IsSolutionDisable(solution.toJS())
       })
     }
   },
@@ -110,9 +110,11 @@ const MeasuresStore = assign({}, PrototypeStore, {
     var energySys=Immutable.fromJS(this.getAllEnergySys())
     return energySys.find(item=>(item.get('value')===value)).get('label')
   },
-  IsSolutionDisable(solution){
-    return solution.Name===null || solution.ExpectedAnnualEnergySaving===null
-              || solution.EnergySavingUnit===null || solution.ExpectedAnnualCostSaving===null || solution.Description===null
+  IsSolutionDisable(measure){
+    var {EnergySolution,EnergyProblem}=measure;
+    return EnergySolution.Name===null || EnergySolution.ExpectedAnnualEnergySaving===null
+              || EnergySolution.EnergySavingUnit===null || EnergySolution.ExpectedAnnualCostSaving===null || EnergySolution.Description===null
+              || EnergyProblem.Name===null || EnergyProblem.Description===null
   },
   getAllSelectedStatus(){
     var abledAndunCheck=Immutable.fromJS(_checkList).findIndex(item=>(!item.get('disabled') && !item.get('checked')))>-1;
