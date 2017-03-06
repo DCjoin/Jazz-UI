@@ -381,6 +381,7 @@ export class GenerateSolution extends Component {
 						<ViewableTextField title={I18N.Setting.DataAnalysis.SaveScheme.TargetValue}
 							defaultValue={Util.toThousands(SaveValue)}
 							regexFn={(value)=>{
+								value = Util.thousandsToNormal(value);
 								if(value===''){value=null}
 								if(!MeasuresStore.validateNumber(value)){
 									return I18N.Setting.ECM.NumberErrorText
@@ -399,6 +400,7 @@ export class GenerateSolution extends Component {
 							defaultValue={Util.toThousands(SaveCost)}
 							didChanged={this._setStateValue('SaveCost')}
 							regexFn={(value)=>{
+								value = Util.thousandsToNormal(value);
 								if(value===''){value=null}
 								if(!MeasuresStore.validateNumber(value)){
 									return I18N.Setting.ECM.NumberErrorText
