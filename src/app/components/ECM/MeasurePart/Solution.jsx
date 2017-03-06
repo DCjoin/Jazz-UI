@@ -137,7 +137,7 @@ export default class Solution extends Component {
           }
         },
         description:{
-          key:'EnergySolution'+EnergySolution.Id+'_Description',
+          key:'EnergySolution'+EnergySolution.Id+'_Description'+new Date(),
           isNumber:false,
           onChange:(ev,value)=>{
                                 if(value===''){value=null}
