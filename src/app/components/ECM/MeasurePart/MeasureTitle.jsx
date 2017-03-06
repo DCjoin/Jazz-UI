@@ -24,7 +24,10 @@ export default class MeasureTitle extends Component {
                                     }}
                                     value={EnergySolution.Name}
                                     style={{marginTop:'-5px'}}
-                                    displayFn={MeasuresStore.getDisplayText}/>
+                                    displayFn={(value)=>{
+                                                if(value===''){value=null}
+                                                 return MeasuresStore.getDisplayText(value)
+                                              }}/>
                                   :<div className="jazz-ecm-measure-viewabletext">{EnergySolution.Name || '-'}</div>}
               </div>
       )
