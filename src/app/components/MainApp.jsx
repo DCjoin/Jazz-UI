@@ -105,7 +105,7 @@ let MainApp = React.createClass({
       }
       let isAdmin = LoginStore.checkHasSpAdmin();
       if( CurrentUserCustomerStore.getAll().length === 1 ) {
-        if( !isAdmin ) {
+        if( !isAdmin && CurrentUserStore.getMainMenuItems().map(menu => menu.getPath(router.params)).indexOf(router.getCurrentLocation().pathname) === -1 ) {
           return getFirstMenuPathFunc(CurrentUserStore.getMainMenuItems())(
             assign({}, router.params, {
               customerId: CurrentUserCustomerStore.getAll()[0].Id
