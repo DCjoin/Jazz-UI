@@ -55,8 +55,17 @@ export default class CustomTextField extends Component {
       },
     }
     if(this.state.isView){
+      var v = value;
+      if (this.props.multiLine && v!==null) {
+        var arr = v.split('\n');
+        if (arr.length > 1) {
+          v = arr.map(item => {
+            return <div>{item}</div>;
+            });
+          }
+        }
       return <div className="jazz-customtextfield" onClick={()=>{this.setState({isView:false})}} >
-        {isNumber?value==='' || value===null?'-':displayFn(CommonFuns.getLabelData(value*1)):displayFn(value)}
+        {isNumber?value==='' || value===null?'-':displayFn(CommonFuns.getLabelData(value*1)):this.props.multiLine?v:displayFn(v)}
       </div>
     }
     else {
