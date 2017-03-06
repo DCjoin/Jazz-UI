@@ -118,7 +118,7 @@ export default class NotPushPanel extends Component {
     };
     return(
       <div style={{display:'inline-block'}} onClick={(e)=>{e.stopPropagation()}}>
-        <FlatButton disabled={MeasuresStore.IsSolutionDisable(this.state.solutionList.getIn([index,'EnergySolution']).toJS())} label={I18N.Setting.ECM.Push}
+        <FlatButton disabled={MeasuresStore.IsSolutionDisable(this.state.solutionList.getIn([index]).toJS())} label={I18N.Setting.ECM.Push}
                     onClick={(e)=>{
                       e.stopPropagation();
                         this.setState({
@@ -161,7 +161,7 @@ export default class NotPushPanel extends Component {
                       onChecked={(e,isChecked)=>{
                                   MeasuresAction.checkSolution(index,isChecked);
                                   }}
-                      disabled={MeasuresStore.IsSolutionDisable(solution.get('EnergySolution').toJS())}
+                      disabled={MeasuresStore.IsSolutionDisable(solution.toJS())}
                       personInCharge={null}
                       action={this._renderOperation(index)}
                       onClick={()=>{this._onMeasureItemClick(index)}}/>
