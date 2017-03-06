@@ -190,9 +190,11 @@ export default class ChartBasicComponent extends Component {
           }
         }
       }
-      plotBands = CalendarManager.convertData(
-        CalendarManager.getTimeRange(step, calcType, tagData.get('Calendars').toJS() )
-      );
+      if(tagData.get('Calendars')) {
+        plotBands = CalendarManager.convertData(
+          CalendarManager.getTimeRange(step, calcType, tagData.get('Calendars').toJS() )
+        );        
+      }
     }
 
 

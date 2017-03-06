@@ -93,7 +93,7 @@ export default class MainPanel extends Component {
       <div className="jazz-ecm-mainpanel">
         <div className="jazz-ecm-mainpanel-content">
           {isFull() && this._renderTabs()}
-          {this._renderContent()}
+          {this.context.hierarchyId && this._renderContent()}
         </div>
       </div>
     )

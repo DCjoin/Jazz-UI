@@ -184,6 +184,9 @@ let MainApp = React.createClass({
 
   _getCustomerId: function(customerId) {
     HierarchyAction.getBuildingListByCustomerId(customerId);
+    this.setState({
+      hierarchyId: null
+    });
   },
 
   _setHierarchyId: function(hierarchyId) {
