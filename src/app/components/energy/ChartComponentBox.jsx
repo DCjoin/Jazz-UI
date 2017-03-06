@@ -581,8 +581,10 @@ let ChartComponentBox = React.createClass({
     if(this.props.chartType === "pie"){
       if(realData[0].data.length>1 && realData[0].data[0].name.indexOf('<br/>')>-1){
         var nodeOptions = AlarmTagStore.getSearchTagList();
-        newConfig.legend.title={
-          text:JazzCommon.GetArialStr(nodeOptions[0].tagName,23),
+        if(nodeOptions[0]) {
+          newConfig.legend.title={
+            text:JazzCommon.GetArialStr(nodeOptions[0].tagName,23),
+          }          
         }
       }
       else {
@@ -592,8 +594,10 @@ let ChartComponentBox = React.createClass({
     else {
       if(realData.length>1 && realData[0].name.indexOf('<br/>')>-1){
         var nodeOptions = AlarmTagStore.getSearchTagList();
-        newConfig.legend.title={
-          text:JazzCommon.GetArialStr(nodeOptions[0].tagName,23),
+        if(nodeOptions[0]) {
+          newConfig.legend.title={
+            text:JazzCommon.GetArialStr(nodeOptions[0].tagName,23),
+          }
         }
       }
       else {
