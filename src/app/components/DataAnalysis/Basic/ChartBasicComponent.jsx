@@ -170,8 +170,8 @@ export default class ChartBasicComponent extends Component {
       if( syntaxObj && syntaxObj.viewOption && syntaxObj.viewOption.TimeRanges ) {
         let TimeRanges = syntaxObj.viewOption.TimeRanges;
         if( TimeRanges.length > 1 ) {
-          MultipleTimespanStore.initDataByWidgetTimeRanges(timeRanges);
-          timeRanges = MultipleTimespanStore.getSubmitTimespans(TimeRanges);
+          MultipleTimespanStore.initDataByWidgetTimeRanges(TimeRanges);
+          timeRanges = MultipleTimespanStore.getSubmitTimespans();
         }
       }
     }
