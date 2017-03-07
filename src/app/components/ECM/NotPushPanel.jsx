@@ -16,7 +16,6 @@ import Solution from './MeasurePart/Solution.jsx';
 import SolutionGallery from './MeasurePart/SolutionGallery.jsx';
 import {solutionList} from '../../../../mockData/measure.js';
 import Immutable from 'immutable';
-
 export default class NotPushPanel extends Component {
   constructor(props) {
     super(props);
