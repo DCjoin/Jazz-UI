@@ -107,6 +107,12 @@ let CurrentUserAction = {
       }
     });
   },
+  setBubble(type,flag){
+    AppDispatcher.dispatch({
+      type: Action.SET_BUBBLE_FLAG,
+      bubbletype:type,flag
+    });
+  }
 };
 
 module.exports = CurrentUserAction;

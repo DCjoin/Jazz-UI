@@ -11,12 +11,14 @@ import PermissionCode from '../constants/PermissionCode.jsx';
 
 let _currentUser = null,
   _error = null,
-  _currentPrivilege = null;
+  _currentPrivilege = null,
+  _ecmHasBubble=false;
 let CURRENT_USER_EVENT = 'currentuser',
   PASSWORD_ERROR_EVENT = 'passworderror',
   PASSWORD_SUCCESS_EVENT = 'passwordsuccess',
   CURRENT_PRIVILEGE_EVENT = 'currentprivilege';
 
+let {bubbleType}=CurrentUser;
 const PRIVILEGE_ADMIN = [
   PermissionCode.MAP_VIEW.READONLY,
   PermissionCode.ENERGY_MANAGE.FULL,
@@ -157,6 +159,22 @@ var CurrentUserStore = assign({}, PrototypeStore, {
   return this.getCurrentPrivilege().indexOf(code+'')>-1;
 
   },
+  //未读标志
+  setEcmBubble:function(has){
+    _ecmHasBubble=has
+  },
+  getEcmBubble:function(){
+    return _ecmHasBubble;
+  },
+  setBubble(type,flag){
+    switch (type) {
+      case bubbleType.ECM:
+           this.setEcmBubble(flag)
+        break;
+      default:
+
+    }
+  },
   getMainMenuItems: function() {
     var menuItems = [];
     if (!this.getCurrentPrivilege()) return
@@ -175,6 +193,7 @@ var CurrentUserStore = assign({}, PrototypeStore, {
       menuItems.push(
         {
           getPath: RoutePath.ecm,
+          hasBubble:this.getEcmBubble(),
           title: I18N.MainMenu.SaveSchemeTab
         }
       );
@@ -390,6 +409,11 @@ CurrentUserStore.dispatchToken = AppDispatcher.register(function(action) {
       _currentUser = null;
       _currentPrivilege = null;
       _error = null;
+      break;
+    //已读未读修改
+    case CurrentUserAction.SET_BUBBLE_FLAG:
+      CurrentUserStore.setBubble(action.bubbletype,action.flag);
+      CurrentUserStore.emitCurrentUserChange();
       break;
   }
 });
