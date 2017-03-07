@@ -4,20 +4,20 @@ import React from "react";
 import classnames from "classnames";
 import moment from "moment";
 import { CircularProgress, Checkbox } from 'material-ui';
-import Regex from '../../constants/Regex.jsx';
-import CustomerAction from '../../actions/CustomerAction.jsx';
-import CustomerStore from '../../stores/CustomerStore.jsx';
-import Panel from '../../controls/MainContentPanel.jsx';
-import ViewableTextField from '../../controls/ViewableTextField.jsx';
-import ViewableDatePicker from '../../controls/ViewableDatePicker.jsx';
-import { formStatus } from '../../constants/FormStatus.jsx';
-import { dataStatus } from '../../constants/DataStatus.jsx';
-import FormBottomBar from '../../controls/FormBottomBar.jsx';
-import NewDialog from '../../controls/NewDialog.jsx';
-import FlatButton from '../../controls/FlatButton.jsx';
+import Regex from 'constants/Regex.jsx';
+import { formStatus } from 'constants/FormStatus.jsx';
+import { dataStatus } from 'constants/DataStatus.jsx';
+import CustomerAction from 'actions/CustomerAction.jsx';
+import CustomerStore from 'stores/CustomerStore.jsx';
+import Panel from 'controls/MainContentPanel.jsx';
+import ViewableTextField from 'controls/ViewableTextField.jsx';
+import ViewableDatePicker from 'controls/ViewableDatePicker.jsx';
+import FormBottomBar from 'controls/FormBottomBar.jsx';
+import NewDialog from 'controls/NewDialog.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
+import ImageUpload from 'controls/ImageUpload.jsx';
 import AdminList from './AdminList.jsx';
-import ImageUpload from '../../controls/ImageUpload.jsx';
-import CommonFuns from '../../util/Util.jsx';
+import CommonFuns from 'util/Util.jsx';
 
 var CustomerDetail = React.createClass({
 

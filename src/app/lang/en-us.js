@@ -1928,6 +1928,9 @@ I18N.Setting.VEEMonitorRule.AddTagInfo = 'Click add button to add tags';
 I18N.Setting.VEEMonitorRule.AddTag = 'Add tags';
 I18N.Setting.VEEMonitorRule.AddingTagsInfo = 'Click items to add';
 I18N.Setting.VEEMonitorRule.TagList = 'Tag list';
+I18N.Setting.VEEManualScan = 'Manual scan';
+I18N.Setting.VEEScan = 'Scan';
+I18N.Setting.VEEManualScanTime = 'Scaning time'
 
 I18N.Setting.Organization = {};
 I18N.Setting.Organization.AssociateTag = 'Associate';

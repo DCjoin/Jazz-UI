@@ -192,6 +192,16 @@ let VEEAction = {
     });
   },
 
+  manualScan: function(from, to, ruleId) {
+    Ajax.post('/vee/manualscan', {
+      params: {
+        From: from,
+        To: to,
+        RuleId: ruleId,
+      }
+    });
+  }
+
 };
 
 module.exports = VEEAction;
