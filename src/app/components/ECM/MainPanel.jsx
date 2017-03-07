@@ -88,12 +88,11 @@ export default class MainPanel extends Component {
   }
 
   render(){
-
     return(
       <div className="jazz-ecm-mainpanel">
         <div className="jazz-ecm-mainpanel-content">
           {isFull() && this._renderTabs()}
-          {this.context.hierarchyId && this._renderContent()}
+          {this.context.hierarchyId && this.context.hierarchyId!==this.props.params.customerId*1 && this._renderContent()}
         </div>
       </div>
     )

@@ -169,14 +169,14 @@ export default class ChartBasicComponent extends Component {
       let syntaxObj = JSON.parse(contentSyntax);
       if( syntaxObj && syntaxObj.viewOption && syntaxObj.viewOption.TimeRanges ) {
         let TimeRanges = syntaxObj.viewOption.TimeRanges;
-        // if( TimeRanges.length > 1 ) {
+//         if( TimeRanges.length > 1 ) {
           MultipleTimespanStore.initDataByWidgetTimeRanges(TimeRanges);
           timeRanges = MultipleTimespanStore.getSubmitTimespans();
-        // }
+          startTime = timeRanges[0].StartTime;
+          endTime = timeRanges[0].EndTime;
+//         }
       }
     }
-    startTime = timeRanges[0].StartTime;
-    endTime = timeRanges[0].EndTime;
     let plotBands = null;
     let wss = JSON.parse(widgetStatus);
     if( wss && wss.length > 0 ) {
