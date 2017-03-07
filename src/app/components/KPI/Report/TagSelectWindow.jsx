@@ -331,7 +331,21 @@ let TagSelectWindow = React.createClass({
     }}>{I18N.EM.Report.SelectedTag}</div><div className='jazz-report-taglist-container-right'>
       {rightTagListHeader}
       <div className='jazz-report-taglist'>
-          <TagList tagList={this.state.selectedTagList} isLoading={this.state.isRightLoading}  disabled={this.props.disabled} leftPanel={false} onTagItemUnselected={this._onTagItemUnselected}></TagList>
+          <TagList 
+            tagList={this.state.selectedTagList} 
+            isLoading={this.state.isRightLoading}  
+            disabled={this.props.disabled} 
+            leftPanel={false} 
+            onTagItemUnselected={this._onTagItemUnselected}
+            onChangeOrder={(fromIdx, toIdx) => {
+              let newSelectedTagList = this.state.selectedTagList.splice(
+                fromIdx > toIdx ? toIdx : toIdx + 1, 0, 
+                this.state.selectedTagList.get(fromIdx));
+              this.setState({
+                selectedTagList: newSelectedTagList.delete(fromIdx > toIdx ? fromIdx + 1 : fromIdx)
+              });
+              
+            }}/>
         </div></div></div>;
 
     return (

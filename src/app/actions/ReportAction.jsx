@@ -157,7 +157,9 @@ let ReportAction = {
       success: function(tagData) {
         AppDispatcher.dispatch({
           type: Action.GET_SELECTED_REPORT_TAG_DATA_SUCCESS,
-          tagData: tagData
+          tagData: ids ? {...tagData, ...{
+                            Data: ids.map(id => tagData.filter(data => data.Id === id)[0])
+                          }} : tagData
         });
       },
       error: function(err, res) {
