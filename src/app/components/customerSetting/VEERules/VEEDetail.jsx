@@ -17,6 +17,8 @@ import FormBottomBar from 'controls/FormBottomBar.jsx';
 import Dialog from 'controls/NewDialog.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
 
+import VEEStore from 'stores/customerSetting/VEEStore.jsx';
+
 import RuleBasic from './RuleBasic.jsx';
 import MonitorTag from './MonitorTag.jsx';
 
@@ -160,7 +162,21 @@ var VEEDetail = React.createClass({
     return {
       dialogStatus: false,
       showManualScanDialog: false,
+      hasTags: false,
     };
+  },
+  componentDidMount: function() {
+    VEEStore.addTagChangeListener(this._onChange);
+  },
+  componentWillUnmount: function() {
+    VEEStore.removeTagChangeListener(this._onChange);
+  },
+  _onChange: function() {
+    if( !this.state.hasTags && VEEStore.getTagList() && VEEStore.getTagList().size > 0 ) {
+      this.setState({
+        hasTags: true
+      });
+    }
   },
   _update: function() {
     this.forceUpdate();
@@ -290,7 +306,7 @@ var VEEDetail = React.createClass({
       editBtnProps = {
         label: I18N.Common.Button.Add
       }
-      customButton = (<FlatButton 
+      customButton = this.state.hasTags && (<FlatButton 
         onClick={() => {
           this.setState({showManualScanDialog: true});
         }}
