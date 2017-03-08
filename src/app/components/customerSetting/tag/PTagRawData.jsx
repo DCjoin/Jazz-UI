@@ -264,6 +264,8 @@ let PTagRawData = React.createClass({
         cursor: 'pointer',
         color: '#767a7a'
       };
+    var autoRepairBtn = <FlatButton key={'autoRepairBtn'} label={I18N.Setting.VEEMonitorRule.AutoRepair}
+    style={pauseBtnStyle} labelStyle={labelStyle}/>;
     var pauseBtn = <FlatButton label={I18N.Setting.Tag.PTagRawData.PauseMonitor}
     style={pauseBtnStyle} labelStyle={labelStyle} onClick={this._onPauseDialogShow}/>;
 
@@ -286,6 +288,7 @@ let PTagRawData = React.createClass({
       endTime={this.state.endTime}  _onDateSelectorChanged={this._onDateSelectorChanged}/>
         </div>
         <div className='rightside'>
+          {autoRepairBtn}
           {rollbackBtn}
           {this.state.veeTagStatus.size === 0 ? null : pauseBtn}
            <FontIcon className='icon-taglist-fold' style={listBtnStyle} ref="listBtn" onClick={this._onSwitchListView}/>

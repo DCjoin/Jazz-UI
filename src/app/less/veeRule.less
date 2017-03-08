@@ -200,3 +200,27 @@ flex-direction: column;
   max-width: 184px;
 
 }
+
+.manual-scan {
+  &-title {
+    
+  }
+  &-input {
+    display: flex;
+    align-items: center;
+    &-time {
+      top: 3px;
+      position: relative;
+      margin-left: 10px;
+      margin-right: 20px;
+    }
+    & .datepicker-popup {
+      position: fixed;
+      z-index: 2;
+    }
+  }
+  &-error {
+    color: @warningRed;
+    height: 20px;
+  }
+}

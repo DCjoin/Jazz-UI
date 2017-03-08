@@ -130,6 +130,10 @@ module.exports = function(options) {
           loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader")
         },
         {
+          test: /\.css$/,
+          loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+        },
+        {
           test: /\.(png|jpg|gif)$/,
           loader: 'file-loader?name=[name].[ext]'
         },

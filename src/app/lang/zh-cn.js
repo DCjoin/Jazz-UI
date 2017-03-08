@@ -1927,6 +1927,10 @@ I18N.Setting.VEEMonitorRule.AddTagInfo = '点击添加按钮，选择监测数�
 I18N.Setting.VEEMonitorRule.AddTag = '添加数据点';
 I18N.Setting.VEEMonitorRule.AddingTagsInfo = '在列表中点击数据点进行添加';
 I18N.Setting.VEEMonitorRule.TagList = '数据点列表';
+I18N.Setting.VEEManualScan = '触发扫描';
+I18N.Setting.VEEScan = '扫描';
+I18N.Setting.VEEManualScanTime = '扫描时间段';
+I18N.Setting.VEEManualScanError = '结束时间不能早于开始时间';
 
 I18N.Setting.Organization = {};
 I18N.Setting.Organization.AssociateTag = '关联数据点';

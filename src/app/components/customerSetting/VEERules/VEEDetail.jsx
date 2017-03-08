@@ -1,19 +1,146 @@
 'use strict';
 
-import React from "react";
+import React, {Component, PropTypes} from "react";
 import classnames from "classnames";
 import { Toggle } from 'material-ui';
 import { isFunction } from "lodash/lang";
-import Panel from '../../../controls/MainContentPanel.jsx';
-import ViewableTextField from '../../../controls/ViewableTextField.jsx';
-import ViewableTextFieldUtil from '../../../controls/ViewableTextFieldUtil.jsx';
-import { formStatus } from '../../../constants/FormStatus.jsx';
-import FormBottomBar from '../../../controls/FormBottomBar.jsx';
-import Dialog from '../../../controls/NewDialog.jsx';
-import FlatButton from '../../../controls/FlatButton.jsx';
+import moment from 'moment';
+
+import { formStatus } from 'constants/FormStatus.jsx';
+import Regex from 'constants/Regex.jsx';
+
+import Panel from 'controls/MainContentPanel.jsx';
+import ViewableTextField from 'controls/ViewableTextField.jsx';
+import ViewableDatePicker from 'controls/ViewableDatePicker.jsx';
+import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
+import FormBottomBar from 'controls/FormBottomBar.jsx';
+import Dialog from 'controls/NewDialog.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
+
+import VEEStore from 'stores/customerSetting/VEEStore.jsx';
+
 import RuleBasic from './RuleBasic.jsx';
 import MonitorTag from './MonitorTag.jsx';
-import Regex from '../../../constants/Regex.jsx';
+
+
+function getDateTimeItems() {
+  var step = 30,
+    dataList = [],
+    v = 0,
+    i = 0;
+
+  while (v <= 1440) {
+    var h = Math.floor(v / 60),
+      m = v % 60,
+      text = ((h < 10) ? '0' : '') + h + ':' + ((m < 10) ? '0' : '') + m;
+
+    dataList[i] = {
+      payload: text,
+      text,
+    };
+    v += step;
+    i++;
+  }
+  return dataList;
+};
+
+class ScanDialog extends Component {
+  static propTypes = {
+    open: PropTypes.bool.isRequired,
+    onClose: PropTypes.func.isRequired,
+    onScan: PropTypes.func.isRequired,
+  };
+  constructor(props) {
+    super(props);
+    this.state = this._getInitialState(props);
+  }
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.open) {
+      this.setState(this._getInitialState(nextProps));
+    }
+  }
+  _getInitialState(props) {
+    let today = moment().format('YYYY-MM-DD');
+    return {
+      startDate: today,
+      startTime: '00:00',
+      endDate: today,
+      endTime: '24:00',
+    }
+  }
+  _setState(name) {
+    return (val) => {
+      this.setState({
+        [name]: val
+      });
+    }
+  }
+  render() {
+    let {startDate, endDate, startTime, endTime} = this.state,
+    errorMessage = moment(startDate + ' ' + startTime) < moment(endDate + ' ' + endTime) ? null
+                    : I18N.Setting.VEEManualScanError,
+    props = {
+      startDateProps: {
+        key: 'startDate',
+        value: startDate,
+        width: 100,
+        onChange: this._setState('startDate'),
+      },
+      startTimeProps: {
+        key: 'startTime',
+        dataItems: getDateTimeItems(),
+        defaultValue: startTime,
+        style: {width: 100},
+        didChanged: this._setState('startTime'),
+      },
+      endDateProps: {
+        key: 'endDate',
+        value: endDate,
+        width: 100,
+        onChange: this._setState('endDate'),
+      },
+     endTimeProps: {
+        key: 'endTime',
+        dataItems: getDateTimeItems(),
+        defaultValue:endTime,
+        style: {width: 100},
+        didChanged: this._setState('endTime'),
+      },
+    };
+    return (<Dialog 
+      actions={[
+        (<FlatButton 
+          disabled={errorMessage}
+          label={I18N.Setting.VEEScan}
+          onClick={() => {
+            this.props.onClose();
+            this.props.onScan(
+              moment(startDate + ' ' + startTime).subtract(1, 'seconds').format('YYYY-MM-DD hh:mm:ss'),
+              moment(endDate + ' ' + endTime).subtract(1, 'seconds').format('YYYY-MM-DD hh:mm:ss'),
+            );
+          }}
+        />),
+        (<FlatButton 
+          label={I18N.Common.Button.Cancel}
+          onClick={this.props.onClose}
+        />)
+      ]}
+      open={this.props.open} 
+      title={I18N.Setting.VEEManualScan}>
+      <div className='manual-scan-title'>{I18N.Setting.VEEManualScanTime}</div>
+      <div className='manual-scan-input'>
+        <ViewableDatePicker {...props.startDateProps}/>
+        <div className='manual-scan-input-time'><ViewableDropDownMenu {...props.startTimeProps}/></div>
+        <div>{I18N.Setting.DataAnalysis.To}</div>
+        <ViewableDatePicker {...props.endDateProps}/>
+        <div className='manual-scan-input-time'><ViewableDropDownMenu {...props.endTimeProps}/></div>
+      </div>
+      <div className='manual-scan-error'>{errorMessage}</div>
+    </Dialog>
+    );
+  }
+}
+
 
 var VEEDetail = React.createClass({
 
@@ -29,12 +156,27 @@ var VEEDetail = React.createClass({
     toggleList: React.PropTypes.func,
     closedList: React.PropTypes.bool,
     merge: React.PropTypes.func,
+    onManualScan: React.PropTypes.func.isRequired,
   },
-  //mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
   getInitialState: function() {
     return {
-      dialogStatus: false
+      dialogStatus: false,
+      showManualScanDialog: false,
+      hasTags: false,
     };
+  },
+  componentDidMount: function() {
+    VEEStore.addTagChangeListener(this._onChange);
+  },
+  componentWillUnmount: function() {
+    VEEStore.removeTagChangeListener(this._onChange);
+  },
+  _onChange: function() {
+    if( !this.state.hasTags && VEEStore.getTagList() && VEEStore.getTagList().size > 0 ) {
+      this.setState({
+        hasTags: true
+      });
+    }
   },
   _update: function() {
     this.forceUpdate();
@@ -149,7 +291,7 @@ var VEEDetail = React.createClass({
     var disabledSaveButton = false,
       {rule} = this.props,
       that = this,
-      editBtnProps;
+      editBtnProps, customButton;
     if (this.props.infoTab) {
       if (!rule.get('Name') || rule.get('Name').length > 200
         || (!rule.get('CheckNegative') && !rule.get('CheckNull') && !rule.get('CheckZero'))
@@ -164,6 +306,12 @@ var VEEDetail = React.createClass({
       editBtnProps = {
         label: I18N.Common.Button.Add
       }
+      customButton = this.state.hasTags && (<FlatButton 
+        onClick={() => {
+          this.setState({showManualScanDialog: true});
+        }}
+        style={{height: 56}} 
+        label={I18N.Setting.VEEManualScan}/>);
       if (this.refs.jazz_vee_tag) {
         let tags = this.refs.jazz_vee_tag._handlerSave();
         if (tags.size === 0) {
@@ -189,7 +337,8 @@ var VEEDetail = React.createClass({
         //that._clearErrorText();
         that.props.setEditStatus()
       }}
-      editBtnProps={editBtnProps}/>
+      editBtnProps={editBtnProps}
+      customButton={customButton}/>
 
       )
   },
@@ -243,6 +392,14 @@ var VEEDetail = React.createClass({
       {footer}
     </Panel>
     {that._renderDialog()}
+    <ScanDialog 
+      open={this.state.showManualScanDialog} 
+      onClose={() => {
+        this.setState({showManualScanDialog: false});
+      }}
+      onScan={(from, to) => {
+        this.props.onManualScan(from, to, this.props.rule.get('Id'));
+      }}/>
   </div>
       )
   },
