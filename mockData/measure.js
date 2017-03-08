@@ -26,7 +26,15 @@ module.exports = {
           "Name": "sample string 2",
           "ImageUrl": "sample string 3"
         }
-      ]
+      ],
+      "Supervisor": {
+        "Id": 1,
+        "HierarchyId": 1,
+        "Name": "sample string 2",
+        "PhoneNumber": "sample string 3",
+        "EnergySys": 1,
+        "CreateTime": "2017-03-07T06:10:08"
+      }
     },
     EnergySolution:{
       "Id": 1,
