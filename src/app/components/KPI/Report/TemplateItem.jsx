@@ -22,6 +22,11 @@ let TemplateItem = React.createClass({
       this.props.showDeleteDialog(this.props.id, this.props.name);
     }
   },
+  _showReplaceDialog() {
+    if (this.props.showReplaceDialog) {
+      this.props.showReplaceDialog(this.props.id, this.props.name);
+    }
+  },
   _showDeleteButton(value) {
     this.setState({
       showDeleteButton: true
@@ -48,7 +53,9 @@ let TemplateItem = React.createClass({
           <FlatButton label={I18N.Common.Button.Delete} onClick={me._showDeleteDialog} rippleColor={'transparent'}></FlatButton>
         </div>;
       } else {
-        deleteButton = <div className="jazz-template-item-left-action"><div className='jazz-template-item-text'>{I18N.EM.Report.Reference}</div></div>;
+        deleteButton = <div className="jazz-template-item-left-action">
+          <FlatButton label={I18N.EM.Report.Replace} onClick={me._showReplaceDialog} rippleColor={'transparent'}></FlatButton>
+        </div>;
       }
     }
     return (

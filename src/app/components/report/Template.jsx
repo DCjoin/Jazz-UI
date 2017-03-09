@@ -2,7 +2,7 @@
 import React from "react";
 import ReactDom from 'react-dom';
 import CommonFuns from '../../util/Util.jsx';
-import { CircularProgress, FlatButton, FontIcon, DropDownMenu, Dialog } from 'material-ui';
+import { CircularProgress, FlatButton, FontIcon, DropDownMenu} from 'material-ui';
 import NewDialog from '../../controls/NewDialog.jsx';
 import MenuItem from 'material-ui/MenuItem';
 import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
@@ -95,10 +95,12 @@ var Template = React.createClass({
         var errorCode = obj.UploadResponse.ErrorCode,
           errorMessage;
         if (errorCode === -1) {
-          errorMessage = I18N.EM.Report.DuplicatedName;
+          errorMessage = I18N.format(I18N.EM.Report.DuplicatedName,fileName);
         }
         if (errorMessage) {
-          CommonFuns.popupErrorMessage(errorMessage, '', true);
+          me.setState({
+            errorMsg:errorMessage
+          });
         }
       }
     };
@@ -139,6 +141,59 @@ var Template = React.createClass({
       fileName: fileName,
       showUploadDialog: true
     });
+  },
+  _renderErrorMsg(){
+    var that = this;
+    if( new RegExp(
+        I18N.EM.Report.DuplicatedName.replace(/{\w}/, '(.)*')
+      ).test(this.state.errorMsg)
+    ) {
+      return (
+        <NewDialog open={true} title={I18N.EM.Report.UploadNewTemplate} actions={[
+          (<FlatButton label={I18N.EM.Report.Upload} onClick={() => {
+            let createElement = window.Highcharts.createElement,
+              discardElement = window.Highcharts.discardElement;
+                let iframe = createElement('iframe', null, {
+                  display: 'none'
+                }, document.body);
+
+                let form = createElement('form', {
+                  method: 'post',
+                  action: 'TagImportExcel.aspx?Type=ReportTemplate',
+                  target: '_self',
+                  enctype: 'multipart/form-data',
+                  name: 'inputForm'
+                }, {
+                  display: 'none'
+                }, iframe.contentDocument.body);
+
+                let input = ReactDom.findDOMNode(this.refs.fileInput);
+                form.appendChild(input);
+                let replaceInput = createElement('input', {
+                  type: 'hidden',
+                  name: 'IsReplace',
+                  value: true
+                }, null, form);
+                form.appendChild(replaceInput);
+
+                form.submit();
+                discardElement(form);
+
+            this.setState({
+              errorMsg: null,
+            });
+          }}/>),
+          (<FlatButton label={I18N.Common.Button.Cancel2} onClick={() => {
+            this.setState({
+              errorMsg: null,
+            });
+          }}/>),
+        ]}>
+        {this.state.errorMsg}
+        </NewDialog>
+      );
+    }
+    return null;
   },
   _renderUploadDialog() {
     if (!this.state.showUploadDialog) {
@@ -203,7 +258,7 @@ var Template = React.createClass({
     var templateContent = (this.state.isLoading ? <div style={{
       textAlign: 'center',
       marginTop: '400px'
-    }}><CircularProgress  mode="indeterminate" size={80} /></div> : <TemplateList ref='templateList' templateList={this.state.templateList} onlyRead={this.state.onlyRead}></TemplateList>);
+    }}><CircularProgress  mode="indeterminate" size={80} /></div> : <TemplateList ref='templateList' templateList={this.state.templateList} onlyRead={this.state.onlyRead} sortBy={this.state.sortBy} customerId={this.context.currentRoute.params.customerId}></TemplateList>);
     var uploadDom = (this.state.onlyRead ? null : <div className="jazz-template-action">
       <div className='jazz-template-upload-button'>
         <label ref="fileInputLabel" className="jazz-template-upload-label" htmlFor="fileInput">
@@ -236,6 +291,7 @@ var Template = React.createClass({
 
       </div>
         {uploadDialog}
+        {this._renderErrorMsg()}
       </div>
       );
   }
