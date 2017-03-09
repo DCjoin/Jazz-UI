@@ -11,6 +11,7 @@ import Dialog from '../../../controls/NewDialog.jsx';
 import ChartPanel from './RawDataChartPanel.jsx';
 import FlatButton from '../../../controls/FlatButton.jsx';
 import Immutable from 'immutable';
+import moment from 'moment';
 let {dateAdd} = CommonFuns;
 let PTagRawData = React.createClass({
   propTypes: {
@@ -265,7 +266,13 @@ let PTagRawData = React.createClass({
         color: '#767a7a'
       };
     var autoRepairBtn = <FlatButton key={'autoRepairBtn'} label={I18N.Setting.VEEMonitorRule.AutoRepair}
-    style={pauseBtnStyle} labelStyle={labelStyle}/>;
+    style={pauseBtnStyle} labelStyle={labelStyle} onClick={() => {
+      TagAction.manualScanTag(
+        this.props.selectedTag.get('Id'), 
+        moment(this.state.start).format('YYYY-MM-DDTHH:mm:ss'), 
+        moment(this.state.end).format('YYYY-MM-DDTHH:mm:ss'),
+      )
+    }}/>;
     var pauseBtn = <FlatButton label={I18N.Setting.Tag.PTagRawData.PauseMonitor}
     style={pauseBtnStyle} labelStyle={labelStyle} onClick={this._onPauseDialogShow}/>;
 

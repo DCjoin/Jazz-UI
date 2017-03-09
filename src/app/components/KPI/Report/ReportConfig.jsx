@@ -169,7 +169,7 @@ export default class ReportConfig extends Component {
           var errorCode = obj.UploadResponse.ErrorCode,
             errorMessage=null;
           if (errorCode === -1) {
-            errorMessage = I18N.format(I18N.Setting.KPI.Report.DuplicatedName,fileName);
+            errorMessage = I18N.format(I18N.EM.Report.DuplicatedName,fileName);
           }
 					me.setState({
 						showUploadDialog: false,
@@ -546,26 +546,77 @@ export default class ReportConfig extends Component {
 
 	_renderErrorMsg(){
 		var that = this;
-		var onClose = ()=> {
-			if(this.state.errorMsg===I18N.EM.Report.WrongExcelFile){
-				this.refs.fileInput.value='';
-			}
-			that.setState({
-				errorMsg: null,
-			});
-		};
-		if (this.state.errorMsg!==null) {
-			return (<Dialog
-				ref = "_dialog"
-				title={I18N.Platform.ServiceProvider.ErrorNotice}
-				modal={false}
-				open={!!this.state.errorMsg}
-				onRequestClose={onClose}
-				>
+		if( new RegExp(
+				I18N.EM.Report.DuplicatedName.replace(/{\w}/, '(.)*')
+			).test(this.state.errorMsg)
+		) {
+			return (
+				<Dialog open={true} title={I18N.EM.Report.UploadNewTemplate} actions={[
+					(<FlatButton label={I18N.EM.Report.Upload} onClick={() => {
+
+						let createElement = window.Highcharts.createElement,
+						  discardElement = window.Highcharts.discardElement;
+					      let iframe = createElement('iframe', null, {
+					        display: 'none'
+					      }, document.body);
+
+					      let form = createElement('form', {
+					        method: 'post',
+					        action: 'TagImportExcel.aspx?Type=ReportTemplate',
+					        target: '_self',
+					        enctype: 'multipart/form-data',
+					        name: 'inputForm'
+					      }, {
+					        display: 'none'
+					      }, iframe.contentDocument.body);
+
+					      let input = ReactDom.findDOMNode(this.refs.fileInput);
+					      form.appendChild(input);
+					      let replaceInput = createElement('input', {
+					        type: 'hidden',
+					        name: 'IsReplace',
+					        value: true
+					      }, null, form);
+					      form.appendChild(replaceInput);
+
+					      form.submit();
+					      discardElement(form);
+
+						this.setState({
+							errorMsg: null,
+						});
+					}}/>),
+					(<FlatButton label={I18N.Common.Button.Cancel2} onClick={() => {
+						this.setState({
+							errorMsg: null,
+						});
+					}}/>),
+				]}>
 				{this.state.errorMsg}
-			</Dialog>);
+				</Dialog>
+			);
 		} else {
-			return null;
+			var onClose = ()=> {
+				if(this.state.errorMsg===I18N.EM.Report.WrongExcelFile){
+					this.refs.fileInput.value='';
+				}
+				that.setState({
+					errorMsg: null,
+				});
+			};
+			if (this.state.errorMsg!==null) {
+				return (<Dialog
+					ref = "_dialog"
+					title={I18N.Platform.ServiceProvider.ErrorNotice}
+					modal={false}
+					open={!!this.state.errorMsg}
+					onRequestClose={onClose}
+					>
+					{this.state.errorMsg}
+				</Dialog>);
+			} else {
+				return null;
+			}
 		}
 	}
 
