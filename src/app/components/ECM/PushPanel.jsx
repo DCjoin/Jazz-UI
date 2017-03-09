@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import classnames from "classnames";
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
 import MeasuresAction from 'actions/ECM/MeasuresAction.jsx';
-import {Status} from '../../constants/actionType/Measures.jsx';
+import {Status} from 'constants/actionType/Measures.jsx';
 import {DataConverter} from 'util/Util.jsx';
 import MeasuresItem from './MeasuresItem.jsx';
 import {Snackbar,CircularProgress} from 'material-ui';
@@ -138,14 +138,12 @@ export default class PushPanel extends Component {
   }
 
   _renderTab(){
-    var unRead=this.state.unRead;
+    var unRead;
     if(PushAndNotPushIsFull()){
       //顾问
-      unRead.unshift(false);
-      unRead.pop(false)
+      unRead=[false,this.state.unRead[0],false]
     }else {
-      unRead.unshift(unRead[0]);
-      unRead[1]=false;
+      unRead=[this.state.unRead[0],false,this.state.unRead[1]];
     }
     return(
       <div className="jazz-ecm-push-tabs">

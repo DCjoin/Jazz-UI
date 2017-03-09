@@ -205,7 +205,7 @@ var MainMenu = React.createClass({
             if (item.bubbleProps && item.bubbleProps.number) {
               redBubble = <div className="jazz-mainmenu-main-bubble"><BubbleIcon {...item.bubbleProps}/></div>;
             }else {
-              redBubble = <div className="jazz-mainmenu-main-bubble"><BubbleIcon/></div>
+              redBubble = <div className="jazz-mainmenu-main-bubble"><BubbleIcon style={{width:'5px',height:'5px'}}/></div>
             }
           }
           if(item.title){
