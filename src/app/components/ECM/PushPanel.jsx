@@ -5,7 +5,7 @@ import MeasuresAction from 'actions/ECM/MeasuresAction.jsx';
 import {Status} from '../../constants/actionType/Measures.jsx';
 import {DataConverter} from 'util/Util.jsx';
 import MeasuresItem from './MeasuresItem.jsx';
-import {CircularProgress} from 'material-ui';
+import {Snackbar,CircularProgress} from 'material-ui';
 import Title from './MeasurePart/MeasureTitle.jsx';
 import Problem from './MeasurePart/Problem.jsx';
 import Solution from './MeasurePart/Solution.jsx';
@@ -14,6 +14,7 @@ import NewDialog from 'controls/NewDialog.jsx';
 import PermissionCode from 'constants/PermissionCode.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
+import Supervisor from './MeasurePart/Supervisor.jsx';
 
 function privilegeWithPush( privilegeCheck ) {
   // return true
@@ -62,12 +63,16 @@ export default class PushPanel extends Component {
     solutionList:null,
     infoTabNo:1,
     measureIndex:null,
-    measureShow:false
+    measureShow:false,
+    supervisorList:null,
+    snackbarText:null,
   }
 
   _onChanged(){
     this.setState({
       solutionList:MeasuresStore.getSolutionList(),
+      supervisorList:MeasuresStore.getSupervisor(),
+      snackbarText:MeasuresStore.getText()
     })
   }
 
@@ -113,12 +118,12 @@ export default class PushPanel extends Component {
     )
   }
 
-  _renderPersonInCharge(){
+  _renderPersonInCharge(problem){
     return(
-      <div>
-        <div style={{fontSize:'12px'}}>{I18N.Setting.CustomerManagement.Principal}</div>
-        <div style={{marginTop:'5px'}}>-</div>
-      </div>
+      <Supervisor person={problem.get('Supervisor')} supervisorList={this.state.supervisorList}
+                  onSuperviorClick={(id)=>{
+                    MeasuresAction.assignSupervisor(problem.get('Id'),id)
+                  }}/>
     )
   }
 
@@ -134,7 +139,7 @@ export default class PushPanel extends Component {
                 <MeasuresItem
                   measure={solution}
                   hasCheckBox={false}
-                  personInCharge={this._renderPersonInCharge()}
+                  personInCharge={this._renderPersonInCharge(solution.get('EnergyProblem'))}
                   onClick={()=>{this._onMeasureItemClick(index)}}/>
         )
       }
@@ -246,6 +251,10 @@ export default class PushPanel extends Component {
   componentDidMount(){
     MeasuresStore.addChangeListener(this._onChanged);
     MeasuresAction.getGroupSettingsList(this.props.hierarchyId,Status.ToBe);
+  //  if(PushIsFull()){
+      MeasuresAction.getSupervisor(this.props.hierarchyId);
+  //  }
+
   }
   componentWillReceiveProps(nextProps) {
     if(nextProps.hierarchyId !== this.props.hierarchyId) {
@@ -263,6 +272,9 @@ export default class PushPanel extends Component {
         {this._renderTab()}
         {this._renderList()}
         {this.state.solutionList!==null && this.state.solutionList.size!==0 && this._renderMeasureDialog()}
+        <Snackbar ref='snackbar' open={!!this.state.snackbarText} onRequestClose={()=>{
+            MeasuresAction.resetErrorText()
+          }} message={this.state.snackbarText}/>
       </div>
     )
   }

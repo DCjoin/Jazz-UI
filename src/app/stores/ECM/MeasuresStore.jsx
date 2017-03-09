@@ -12,7 +12,8 @@ import moment from 'moment';
 
 var _solutionList=null,
     _checkList=[],
-    _text=null;
+    _text=null,
+    _supervisors=null;
 const MeasuresStore = assign({}, PrototypeStore, {
   init(){
     _solutionList=null;
@@ -195,6 +196,12 @@ const MeasuresStore = assign({}, PrototypeStore, {
 
     return dto
   },
+  setSupervisor(data){
+    _supervisors=Immutable.fromJS(data);
+  },
+  getSupervisor(){
+    return _supervisors
+  }
 });
 
 MeasuresStore.dispatchToken = AppDispatcher.register(function(action) {
@@ -217,6 +224,14 @@ MeasuresStore.dispatchToken = AppDispatcher.register(function(action) {
         break;
     case Action.MERGE_MEASURE:
         MeasuresStore.merge(action.paths,action.value);
+        MeasuresStore.emitChange()
+        break;
+    case Action.GET_SUPERVISOR_SUCCESS:
+        MeasuresStore.setSupervisor(action.data);
+        MeasuresStore.emitChange()
+        break;
+    case Action.ASSIGN_SUPERVISOR_SUCCESS:
+        MeasuresStore.initText(I18N.Setting.ECM.AssignSuperviorSuccess);
         MeasuresStore.emitChange()
         break;
       default:

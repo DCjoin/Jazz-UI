@@ -2196,5 +2196,15 @@ I18N.Setting.ECM.PushPanel.Last3Month='近3个月';
 I18N.Setting.ECM.PushPanel.Earlier='更早';
 I18N.Setting.ECM.PushPanel.Status='状态';
 I18N.Setting.ECM.PushPanel.CreateUser='创建人';
+I18N.Setting.ECM.SelectSupervior='选择负责人';
+I18N.Setting.ECM.AddSupervior='添加负责人';
+I18N.Setting.ECM.InputSuperviorNameHintText='输入负责人姓名';
+I18N.Setting.ECM.InputSuperviorTeleHintText='输入负责人手机';
+I18N.Setting.ECM.TelephoneErrorMsg='请输入正确的手机号';
+I18N.Setting.ECM.SysTitle='能效标识系统';
+I18N.Setting.ECM.SaveAndAssign='保存并分配';
+I18N.Setting.ECM.SuperviorInfo='负责人信息';
+I18N.Setting.ECM.NoSupervior='暂无负责人';
+I18N.Setting.ECM.AssignSuperviorSuccess='工程师和咨询顾问将收到分配短信，节能方案进行中';
 
 module.exports = I18N;

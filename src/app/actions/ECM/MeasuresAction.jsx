@@ -78,7 +78,48 @@ const MeasuresAction = {
       type: Action.MERGE_MEASURE,
       paths,value
     });
-  }
+  },
+  getSupervisor(hierarchyId=_hierarchyId){
+    Ajax.get(util.replacePathParams(Path.ECM.getSupervisor, hierarchyId), {
+      success: (res) => {
+        AppDispatcher.dispatch({
+          type: Action.GET_SUPERVISOR_SUCCESS,
+          data: res,
+        })
+      }
+    } );
+  },
+  saveSupervisor(dto,callback){
+    if(!dto.hierarchyId){
+      dto.hierarchyId=_hierarchyId
+    }
+    Ajax.post(Path.ECM.saveSupervisor,
+      {
+      params: dto,
+      success: function(resBody) {
+        if(callback) callback(resBody)
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
+  assignSupervisor(problemId,supervisorId){
+    var that=this;
+    Ajax.post(util.replacePathParams(Path.ECM.assignSupervisor, problemId,supervisorId),
+      {
+      success: function(resBody) {
+        AppDispatcher.dispatch({
+          type: Action.ASSIGN_SUPERVISOR_SUCCESS
+        })
+        that.getGroupSettingsList();
+        that.getSupervisor();
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
 }
 
 export default MeasuresAction;
