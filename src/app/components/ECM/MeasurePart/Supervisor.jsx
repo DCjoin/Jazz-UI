@@ -9,8 +9,6 @@ import Immutable from 'immutable';
 import FlatButton from 'controls/FlatButton.jsx';
 import Regex from 'constants/Regex.jsx';
 import ViewableTextField from 'controls/ViewableTextField.jsx';
-import DropDownMenu from 'material-ui/DropDownMenu';
-import MenuItem from 'material-ui/MenuItem';
 import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
 import _ from 'lodash';
 import NewDialog from 'controls/NewDialog.jsx';
@@ -293,7 +291,7 @@ export default class Supervisor extends Component {
     var classname=this.props.usedInDetail?"indetail":null;
     return(
       <div className={classname}>
-        <div className="label">{I18N.Setting.CustomerManagement.Principal}</div>
+        <div className="labelitem">{I18N.Setting.CustomerManagement.Principal}</div>
         {this.props.usedInDetail && ':'}
         <SupervisorDropDownMenu {...this.props}/>
       </div>
@@ -304,7 +302,7 @@ export default class Supervisor extends Component {
     var classname=this.props.usedInDetail?"indetail":null;
     return(
       <div className={classname}>
-        <div className="label">{I18N.Setting.CustomerManagement.Principal}</div>
+        <div className="labelitem">{I18N.Setting.CustomerManagement.Principal}</div>
         {this.props.usedInDetail && ':'}
         <div>{this.props.person===null?'-':`${this.props.person.get('Name')} ${this.props.person.get('PhoneNumber')}`}</div>
       </div>
@@ -326,9 +324,4 @@ Supervisor.propTypes={
   usedInDetail:PropTypes.bool,
   onSuperviorClick:PropTypes.func,
   supervisorList:PropTypes.array
-}
-
-Supervisor.defaultProps = {
-  canEdit:true,
-  usedInDetail:false
 }

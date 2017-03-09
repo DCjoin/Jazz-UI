@@ -104,22 +104,94 @@ const MeasuresAction = {
       }
     });
   },
-  assignSupervisor(problemId,supervisorId){
+  assignSupervisor(problemId,supervisorId,callback){
     var that=this;
     Ajax.post(util.replacePathParams(Path.ECM.assignSupervisor, problemId,supervisorId),
       {
       success: function(resBody) {
         AppDispatcher.dispatch({
           type: Action.ASSIGN_SUPERVISOR_SUCCESS
-        })
-        that.getGroupSettingsList();
+        });
         that.getSupervisor();
+        if(callback) callback()
       },
       error: function(err, res) {
         console.log(err, res);
       }
     });
   },
+  getActivecounts(hierarchyId,callback){
+    Ajax.get(util.replacePathParams(Path.ECM.activecounts, hierarchyId), {
+      success: (res) => {
+        AppDispatcher.dispatch({
+          type: Action.GET_ACTIVE_COUNTS,
+          data: res,
+        });
+        if(callback) callback()
+      }
+    } );
+  },
+  getContainsunread(hierarchyId,statusArr,callback){
+    Ajax.post(util.replacePathParams(Path.ECM.containsunread, hierarchyId),
+      {
+      params: statusArr,
+      success: function(res) {
+        AppDispatcher.dispatch({
+          type: Action.GET_CONTAINS_UNREAD,
+          data:res
+        });
+        if(callback) callback()
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
+  readProblem(problemId){
+    Ajax.post(util.replacePathParams(Path.ECM.readProblem, problemId),
+      {
+      success: function(res) {
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
+  getRemarkList(problemId){
+    Ajax.get(util.replacePathParams(Path.ECM.remarkList, problemId), {
+      success: (res) => {
+        AppDispatcher.dispatch({
+          type: Action.GET_REMARK_LIST_SUCCESS,
+          data: res,
+        });
+      }
+    } );
+  },
+  addRemark(problemId,dto){
+    var me=this;
+    Ajax.post(util.replacePathParams(Path.ECM.addRemark),
+      {
+      params: dto,
+      success: function(res) {
+        me.getRemarkList(problemId)
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
+  deleteRemark(problemId,remarkId){
+    var me=this;
+    Ajax.post(util.replacePathParams(Path.ECM.deleteRemark, remarkId),
+      {
+      success: function(res) {
+        me.getRemarkList(problemId)
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  }
 }
 
 export default MeasuresAction;

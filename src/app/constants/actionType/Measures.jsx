@@ -9,7 +9,12 @@ module.exports = {
     RESET_SNACKBAR_TEXT:null,
     MERGE_MEASURE:null,
     GET_SUPERVISOR_SUCCESS:null,
-    ASSIGN_SUPERVISOR_SUCCESS:null
+    ASSIGN_SUPERVISOR_SUCCESS:null,
+    GET_ACTIVE_COUNTS:null,
+    GET_CONTAINS_UNREAD:null,
+    GET_REMARK_LIST_SUCCESS:null,
+    ADD_REMARK:null,
+    DELETE_REMARK:null
   }),
   ThumbnailSize:'w_160,h_80',
   DetailSize:'w_600,h_300',
