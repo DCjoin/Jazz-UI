@@ -211,7 +211,7 @@ class SupervisorDropDownMenu extends Component{
             anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
             targetOrigin={{horizontal: 'left', vertical: 'top'}}
             onRequestClose={handleRequestClose}
-            style={{overflowY: 'auto',maxWidth:'220px',maxHeight:'500px',padding:'15px',overflowX:'hidden'}}
+            style={{overflowY: 'auto',maxWidth:'230px',maxHeight:'500px',padding:'15px',overflowX:'hidden'}}
           >
           {
             this.props.supervisorList===null

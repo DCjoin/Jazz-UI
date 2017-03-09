@@ -268,14 +268,18 @@ export default class PushPanel extends Component {
               label={I18N.Common.Button.Confirm}
               onClick={()=>{
                 var currentSolution=this.state.solutionList.getIn([this.state.measureIndex]);
-                currentSolution=currentSolution.setIn(['EnergyProblem','Status'],this.state.toBeStatus);
+                var st=this.state.toBeStatus;
+                currentSolution=currentSolution.setIn(['EnergyProblem','Status'],st);
                 this.setState({
                   measureShow:false,
                   measureIndex:null,
                   toBeStatus:null
                 },()=>{
-                  //currentSolution=MeasuresStore.getValidParams(currentSolution);
+                  if(this.state.infoTabNo===4){
+                    currentSolution=currentSolution.setIn(['EnergyProblem','Supervisor'],null)
+                  }
                   MeasuresAction.updateSolution(currentSolution.toJS(),()=>{
+                    MeasuresAction.setSnackBarText(st);
                     this.refresh(status[this.state.infoTabNo-1])
                   });
                 })

@@ -191,6 +191,13 @@ const MeasuresAction = {
         console.log(err, res);
       }
     });
+  },
+  setSnackBarText(status){
+    AppDispatcher.dispatch({
+      type: Action.SET_SNACKBAR_TEXT,
+      data: status,
+    });
+
   }
 }
 
