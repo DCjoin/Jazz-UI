@@ -264,10 +264,12 @@ var ReportRightPanel = React.createClass({
         var errorCode = obj.UploadResponse.ErrorCode,
           errorMessage;
         if (errorCode === -1) {
-          errorMessage = I18N.EM.Report.DuplicatedName;
+          errorMessage = I18N.format(I18N.EM.Report.DuplicatedName,fileName);
         }
         if (errorMessage) {
-          CommonFuns.popupErrorMessage(errorMessage, '', true);
+          me.setState({
+            errorMsg:errorMessage
+          });
         }
       }
     };
@@ -308,6 +310,59 @@ var ReportRightPanel = React.createClass({
       fileName: fileName,
       showUploadDialog: true
     });
+  },
+  _renderErrorMsg(){
+    var that = this;
+    if( new RegExp(
+        I18N.EM.Report.DuplicatedName.replace(/{\w}/, '(.)*')
+      ).test(this.state.errorMsg)
+    ) {
+      return (
+        <Dialog open={true} title={I18N.EM.Report.UploadNewTemplate} actions={[
+          (<FlatButton label={I18N.EM.Report.Upload} onClick={() => {
+            let createElement = window.Highcharts.createElement,
+              discardElement = window.Highcharts.discardElement;
+                let iframe = createElement('iframe', null, {
+                  display: 'none'
+                }, document.body);
+
+                let form = createElement('form', {
+                  method: 'post',
+                  action: 'TagImportExcel.aspx?Type=ReportTemplate',
+                  target: '_self',
+                  enctype: 'multipart/form-data',
+                  name: 'inputForm'
+                }, {
+                  display: 'none'
+                }, iframe.contentDocument.body);
+
+                let input = ReactDom.findDOMNode(this.refs.fileInput);
+                form.appendChild(input);
+                let replaceInput = createElement('input', {
+                  type: 'hidden',
+                  name: 'IsReplace',
+                  value: true
+                }, null, form);
+                form.appendChild(replaceInput);
+
+                form.submit();
+                discardElement(form);
+
+            this.setState({
+              errorMsg: null,
+            });
+          }}/>),
+          (<FlatButton label={I18N.Common.Button.Cancel2} onClick={() => {
+            this.setState({
+              errorMsg: null,
+            });
+          }}/>),
+        ]}>
+        {this.state.errorMsg}
+        </Dialog>
+      );
+    }
+    return null;
   },
   _renderUploadDialog() {
     if (!this.state.showUploadDialog) {
@@ -705,6 +760,7 @@ var ReportRightPanel = React.createClass({
           </div>
           {deleteDialog}
           {uploadDialog}
+          {this._renderErrorMsg()}
         </div>
       );
     }

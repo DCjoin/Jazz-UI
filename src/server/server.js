@@ -73,7 +73,8 @@ server.register(
 		{register: require("./orgnization.js")},
 		{register: require("./file.js")},
     {register: require("./rank.js")},
-		{register: require("./analysis.js")},
+    {register: require("./analysis.js")},
+		{register: require("./template.js")},
 	],function () {
     server.start(function() {
         console.log('Server started at: ' + server.info.uri);
