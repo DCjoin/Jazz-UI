@@ -13,7 +13,10 @@ import moment from 'moment';
 var _solutionList=null,
     _checkList=[],
     _text=null,
-    _supervisors=null;
+    _supervisors=null,
+    _activeCounts=[],
+    _unRead=[],
+    _remarkList=null;
 const MeasuresStore = assign({}, PrototypeStore, {
   init(){
     _solutionList=null;
@@ -201,6 +204,24 @@ const MeasuresStore = assign({}, PrototypeStore, {
   },
   getSupervisor(){
     return _supervisors
+  },
+  setActiveCounts(data){
+    _activeCounts=data
+  },
+  getActiveCounts(){
+    return _activeCounts
+  },
+  setUnread(data){
+    _unRead=data
+  },
+  getUnread(){
+    return _unRead
+  },
+  setRemarkList(data){
+    _remarkList=Immutable.fromJS(data)
+  },
+  getRemarkList(){
+    return _remarkList
   }
 });
 
@@ -234,7 +255,17 @@ MeasuresStore.dispatchToken = AppDispatcher.register(function(action) {
         MeasuresStore.initText(I18N.Setting.ECM.AssignSuperviorSuccess);
         MeasuresStore.emitChange()
         break;
+    case Action.GET_ACTIVE_COUNTS:
+        MeasuresStore.setActiveCounts(action.data);
+        break;
+    case Action.GET_CONTAINS_UNREAD:
+        MeasuresStore.setUnread(action.data);
+          break;
       default:
+    case Action.GET_REMARK_LIST_SUCCESS:
+        MeasuresStore.setRemarkList(action.data);
+        MeasuresStore.emitChange()
+        break;
     }
   });
 

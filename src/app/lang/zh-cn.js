@@ -2202,5 +2202,7 @@ I18N.Setting.ECM.SaveAndAssign='保存并分配';
 I18N.Setting.ECM.SuperviorInfo='负责人信息';
 I18N.Setting.ECM.NoSupervior='暂无负责人';
 I18N.Setting.ECM.AssignSuperviorSuccess='工程师和咨询顾问将收到分配短信，节能方案进行中';
-
+I18N.Setting.ECM.StatusToBe='恢复节能方案{0}至待分配吗？';
+I18N.Setting.ECM.StatusToDone='确定节能方案{0}已执行吗？';
+I18N.Setting.ECM.StatusToCancel='确定取消节能方案{0}吗？';
 module.exports = I18N;
