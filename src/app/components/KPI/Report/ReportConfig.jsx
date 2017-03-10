@@ -577,7 +577,16 @@ export default class ReportConfig extends Component {
 					        name: 'IsReplace',
 					        value: true
 					      }, null, form);
-					      form.appendChild(replaceInput);
+					      let customerInput = createElement('input', {
+					        type: 'hidden',
+					        name: 'CustomerId',
+					        value: parseInt(customerId)
+					      }, null, form);
+					      let activeInput = createElement('input', {
+					        type: 'hidden',
+					        name: 'IsActive',
+					        value: 1
+					      }, null, form);
 
 					      form.submit();
 					      discardElement(form);
