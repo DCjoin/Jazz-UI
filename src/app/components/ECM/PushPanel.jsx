@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDom from 'react-dom';
 import classnames from "classnames";
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
 import MeasuresAction from 'actions/ECM/MeasuresAction.jsx';
@@ -20,6 +21,7 @@ import StatusCmp from './MeasurePart/Status.jsx';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'controls/FlatButton.jsx';
 import Remark from './MeasurePart/Remark.jsx';
+import DisappareItem from './MeasurePart/DisappareItem.jsx';
 
 function privilegeWithPush( privilegeCheck ) {
   // return true
@@ -85,8 +87,11 @@ export default class PushPanel extends Component {
     snackbarText:null,
     activeCounts:[],
     unRead:[],
-    toBeStatus:null
+    toBeStatus:null,
+    statusDialogShow:false
   }
+
+  _afterAnimation=()=>{}
 
   _onChanged(){
     this.setState({
@@ -124,7 +129,8 @@ export default class PushPanel extends Component {
   _onStatusChange(value){
     if(value!==this.state.solutionList.getIn([this.state.measureIndex,'EnergyProblem','Status'])){
       this.setState({
-        toBeStatus:value
+        toBeStatus:value,
+        statusDialogShow:true
       })
     }
 
@@ -154,30 +160,47 @@ export default class PushPanel extends Component {
         <span className={classnames({
               "jazz-ecm-push-tabs-tab": true,
               "selected": this.state.infoTabNo === 1
-            })} data-tab-index="1" onClick={this._handlerSwitchTab.bind(this,1)}>{this._renderTabTitle(I18N.Setting.ECM.PushPanel.ToBe,unRead[0],this.state.activeCounts[0])}</span>
+            })} ref="tobe" data-tab-index="1" onClick={this._handlerSwitchTab.bind(this,1)}>{this._renderTabTitle(I18N.Setting.ECM.PushPanel.ToBe,unRead[0],this.state.activeCounts[0])}</span>
         <span className={classnames({
                 "jazz-ecm-push-tabs-tab": true,
                 "selected": this.state.infoTabNo === 2
-              })} data-tab-index="2" onClick={this._handlerSwitchTab.bind(this,2)}>{this._renderTabTitle(I18N.Setting.ECM.PushPanel.Being,unRead[1],this.state.activeCounts[1])}</span>
+              })} ref="being" data-tab-index="2" onClick={this._handlerSwitchTab.bind(this,2)}>{this._renderTabTitle(I18N.Setting.ECM.PushPanel.Being,unRead[1],this.state.activeCounts[1])}</span>
         <span className={classnames({
                 "jazz-ecm-push-tabs-tab": true,
                 "selected": this.state.infoTabNo === 3
-              })} data-tab-index="3" onClick={this._handlerSwitchTab.bind(this,3)}>{this._renderTabTitle(I18N.Setting.ECM.PushPanel.Done,unRead[2],this.state.activeCounts[2])}</span>
+              })} ref="done" data-tab-index="3" onClick={this._handlerSwitchTab.bind(this,3)}>{this._renderTabTitle(I18N.Setting.ECM.PushPanel.Done,unRead[2],this.state.activeCounts[2])}</span>
         <span className={classnames({
                 "jazz-ecm-push-tabs-tab": true,
                 "selected": this.state.infoTabNo === 4
-              })} data-tab-index="4" onClick={this._handlerSwitchTab.bind(this,4)}>{I18N.Setting.ECM.PushPanel.Canceled}</span>
+              })} ref="canceled" data-tab-index="4" onClick={this._handlerSwitchTab.bind(this,4)}>{this._renderTabTitle(I18N.Setting.ECM.PushPanel.Canceled,false,null)}</span>
       </div>
     )
   }
 
-  _renderPersonInCharge(problem,indetail=false){
+  _renderPersonInCharge(problem,indetail=false,index){
     return(
       <Supervisor person={problem.get('Supervisor')} supervisorList={this.state.supervisorList}
                   onSuperviorClick={(id)=>{
-                    MeasuresAction.assignSupervisor(problem.get('Id'),id,()=>{
-                      this.refresh(status[this.state.infoTabNo-1])
-                    })
+                    MeasuresAction.assignSupervisor(problem.get('Id'),id);
+                    this._afterAnimation=()=>{
+                      this.setState({
+                        measureIndex:null,
+                        solutionList:null
+                      },()=>{
+                        this.refresh(status[this.state.infoTabNo-1]);
+                      })
+
+
+                    }
+                    if(this.state.measureIndex===null){
+                      this.setState({
+                        measureIndex:index
+                      })
+                    }else {
+                      this.setState({
+                          measureShow:false
+                      })
+                    }
                   }}
                   usedInDetail={indetail}
                   canEdit={canEditSupervisor(this.state.infoTabNo)}/>
@@ -192,14 +215,22 @@ export default class PushPanel extends Component {
     this.state.solutionList.forEach((solution,index)=>{
       var time=DataConverter.JsonToDateTime(solution.getIn(['EnergyProblem','CreateTime']));
       if(MeasuresStore.isSolutionValid(type,time)){
-        List.push(
-                <MeasuresItem
-                  measure={solution}
-                  hasCheckBox={false}
-                  personInCharge={this._renderPersonInCharge(solution.get('EnergyProblem'))}
-                  onClick={()=>{this._onMeasureItemClick(index)}}
-                  displayUnread={displayUnread(this.state.infoTabNo)}/>
-        )
+        var prop={
+          measure:solution,
+          hasCheckBox:false,
+          personInCharge:this._renderPersonInCharge(solution.get('EnergyProblem'),false,index),
+          onClick:()=>{this._onMeasureItemClick(index)},
+          displayUnread:displayUnread(this.state.infoTabNo)
+        }
+        if(this.state.measureShow===false && this.state.measureIndex!==null && index===this.state.measureIndex){
+          List.push(
+            <DisappareItem {...this.getProps()} onEnd={()=>{this._afterAnimation()}}><MeasuresItem {...prop}/></DisappareItem>
+          )
+        }
+        else {
+          List.push(<MeasuresItem {...prop}/>)
+        }
+
       }
     })
 
@@ -226,7 +257,7 @@ export default class PushPanel extends Component {
     }
     else {
       return(
-        <div className="content">
+        <div ref='content' className="content">
           {this._renderListByTimeType(1)}
           {this._renderListByTimeType(2)}
           {this._renderListByTimeType(3)}
@@ -272,20 +303,29 @@ export default class PushPanel extends Component {
               label={I18N.Common.Button.Confirm}
               onClick={()=>{
                 var currentSolution=this.state.solutionList.getIn([this.state.measureIndex]);
-                var st=this.state.toBeStatus;
-                currentSolution=currentSolution.setIn(['EnergyProblem','Status'],st);
+
+                currentSolution=currentSolution.setIn(['EnergyProblem','Status'],this.state.toBeStatus);
                 this.setState({
                   measureShow:false,
-                  measureIndex:null,
-                  toBeStatus:null
+                  statusDialogShow:false
                 },()=>{
                   if(this.state.infoTabNo===4){
                     currentSolution=currentSolution.setIn(['EnergyProblem','Supervisor'],null)
                   }
-                  MeasuresAction.updateSolution(currentSolution.toJS(),()=>{
+                  MeasuresAction.updateSolution(currentSolution.toJS());
+                  this._afterAnimation=()=>{
+                      var st=this.state.toBeStatus;
                     MeasuresAction.setSnackBarText(st);
-                    this.refresh(status[this.state.infoTabNo-1])
-                  });
+                    this.setState({
+                      measureIndex:null,
+                      toBeStatus:null,
+                      solutionList:null
+                    },()=>{
+                      this.refresh(status[this.state.infoTabNo-1]);
+                    })
+
+
+                  }
                 })
 
               }} />,
@@ -293,7 +333,8 @@ export default class PushPanel extends Component {
             <FlatButton
               label={I18N.Common.Button.Cancel2}
               onClick={() => {this.setState({
-                              toBeStatus: null
+                              toBeStatus: null,
+                              statusDialogShow:false
                               })}} />
           ]}
       ><div className="jazz-ecm-measure-viewabletext">{content}</div></NewDialog>
@@ -391,6 +432,36 @@ export default class PushPanel extends Component {
     })
   }
 
+  getProps(){
+    var btn,destX,destY;
+      switch (this.state.toBeStatus) {
+        case Status.ToBe:
+          btn=ReactDom.findDOMNode(this.refs.tobe)
+          break;
+        case Status.Done:
+          btn=ReactDom.findDOMNode(this.refs.done)
+          break;
+        case Status.Canceled:
+          btn=ReactDom.findDOMNode(this.refs.canceled)
+          break;
+        case null:
+            if(this.state.infoTabNo===1){
+              btn=ReactDom.findDOMNode(this.refs.being)
+            }
+            break;
+        default:
+
+      }
+    if(btn){
+      destX=btn.getBoundingClientRect().left+60,
+      destY=btn.getBoundingClientRect().top;
+    }
+  var width=ReactDom.findDOMNode(this.refs.content).clientWidth;
+  return{
+    destX,destY,width
+  }
+  }
+
   componentDidMount(){
     MeasuresStore.addChangeListener(this._onChanged);
     this.refresh(Status.ToBe);
@@ -416,7 +487,7 @@ export default class PushPanel extends Component {
         {this._renderTab()}
         {this._renderList()}
         {this.state.solutionList!==null && this.state.solutionList.size!==0 && this._renderMeasureDialog()}
-        {this.state.toBeStatus!==null && this._renderStatusDialog()}
+        {this.state.statusDialogShow && this._renderStatusDialog()}
         <Snackbar ref='snackbar' open={!!this.state.snackbarText} onRequestClose={()=>{
             MeasuresAction.resetErrorText()
           }} message={this.state.snackbarText}/>

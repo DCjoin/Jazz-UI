@@ -61,7 +61,7 @@ const MeasuresAction = {
       params: dto,
       success: function(resBody) {
         if(callback) callback()
-        else that.getGroupSettingsList();
+        // else that.getGroupSettingsList();
       },
       error: function(err, res) {
         console.log(err, res);
