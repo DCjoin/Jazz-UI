@@ -82,7 +82,7 @@ let TemplateList = React.createClass({
       <FlatButton
       labelPosition="before"
       label={I18N.EM.Report.Replace}>
-        <input type='file' onChange={this._replaceTemplate} ref='fileInput' style={{
+        <input type='file' onChange={this._replaceTemplate} name='templateFile' ref='fileInput' style={{
           cursor: 'pointer',
           position: 'absolute',
           top: 0,

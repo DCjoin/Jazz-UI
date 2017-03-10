@@ -1,17 +1,18 @@
 'use strict';
 import React from "react";
 import ReactDom from 'react-dom';
-import CommonFuns from '../../util/Util.jsx';
-import { CircularProgress, FlatButton, FontIcon, DropDownMenu} from 'material-ui';
-import NewDialog from '../../controls/NewDialog.jsx';
+import CommonFuns from 'util/Util.jsx';
+import { CircularProgress, FlatButton, FontIcon, DropDownMenu, RaisedButton} from 'material-ui';
+import NewDialog from 'controls/NewDialog.jsx';
 import MenuItem from 'material-ui/MenuItem';
-import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
+import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
+import UploadForm from 'controls/UploadForm.jsx';
 import classSet from 'classnames';
-import ReportAction from '../../actions/ReportAction.jsx';
+import ReportAction from 'actions/ReportAction.jsx';
 import TemplateList from './TemplateList.jsx';
-import ReportStore from '../../stores/ReportStore.jsx';
-import CurrentUserStore from '../../stores/CurrentUserStore.jsx';
-import PermissionCode from '../../constants/PermissionCode.jsx';
+import ReportStore from 'stores/ReportStore.jsx';
+import CurrentUserStore from 'stores/CurrentUserStore.jsx';
+import PermissionCode from 'constants/PermissionCode.jsx';
 
 
 var Template = React.createClass({
@@ -62,6 +63,46 @@ var Template = React.createClass({
     }
     return onlyRead;
   },
+  _onUploadDone(iframe) {
+    var json = iframe.contentDocument.body.innerHTML;
+    var obj = JSON.parse(json);
+    if (obj.success === true) {
+      ReportAction.getTemplateListByCustomerId(parseInt(me.context.currentRoute.params.customerId), me.state.sortBy, 'asc');
+      this.setState({
+        showUploadDialog: false
+      });
+    } else {
+      var errorCode = obj.UploadResponse.ErrorCode,
+      errorMessage=null;
+      if (errorCode === -1) {
+        errorMessage = I18N.format(I18N.EM.Report.DuplicatedName, this.state.fileName);
+      }
+      this.setState({
+        showUploadDialog: false,
+        fileName: '',
+        errorMsg:errorMessage
+      });
+    }
+  },
+  _onChangeFile(event) {
+      var file = event.target.files[0];
+      if(!file) return;
+      var fileName = file.name;
+
+      if (!CommonFuns.endsWith(fileName.toLowerCase(), '.xlsx') && 
+        !CommonFuns.endsWith(fileName.toLowerCase(), '.xls')) {
+      this.setState({
+        errorMsg:I18N.EM.Report.WrongExcelFile
+      })
+        return;
+      }
+      this.refs.upload_tempalte.upload();
+      this.setState({
+        fileName,
+        showUploadDialog: true
+      });
+  },
+  /*
   _handleFileSelect(event) {
     var me = this;
     var file = event.target.files[0];
@@ -142,6 +183,7 @@ var Template = React.createClass({
       showUploadDialog: true
     });
   },
+  */
   _renderErrorMsg(){
     var that = this;
     if( new RegExp(
@@ -151,48 +193,15 @@ var Template = React.createClass({
       return (
         <NewDialog open={true} title={I18N.EM.Report.UploadNewTemplate} actions={[
           (<FlatButton label={I18N.EM.Report.Upload} onClick={() => {
-            let createElement = window.Highcharts.createElement,
-              discardElement = window.Highcharts.discardElement;
-                let iframe = createElement('iframe', null, {
-                  display: 'none'
-                }, document.body);
-
-                let form = createElement('form', {
-                  method: 'post',
-                  action: 'TagImportExcel.aspx?Type=ReportTemplate',
-                  target: '_self',
-                  enctype: 'multipart/form-data',
-                  name: 'inputForm'
-                }, {
-                  display: 'none'
-                }, iframe.contentDocument.body);
-
-                let input = ReactDom.findDOMNode(this.refs.fileInput);
-                form.appendChild(input);
-                let replaceInput = createElement('input', {
-                  type: 'hidden',
-                  name: 'IsReplace',
-                  value: true
-                }, null, form);
-                let customerInput = createElement('input', {
-                  type: 'hidden',
-                  name: 'CustomerId',
-                  value: parseInt(this.context.currentRoute.params.customerId)
-                }, null, form);
-                let activeInput = createElement('input', {
-                  type: 'hidden',
-                  name: 'IsActive',
-                  value: 1
-                }, null, form);
-
-                form.submit();
-                discardElement(form);
-
+            this.refs.upload_tempalte.upload({IsReplace: true});
             this.setState({
               errorMsg: null,
+            }, () => {
+              this.refs.upload_tempalte.reset();
             });
           }}/>),
           (<FlatButton label={I18N.Common.Button.Cancel2} onClick={() => {
+            this.refs.upload_tempalte.reset();
             this.setState({
               errorMsg: null,
             });
@@ -281,7 +290,22 @@ var Template = React.createClass({
         <div className='jazz-template-topbar'>
           <div className="jazz-template-header">
             <div className="jazz-template-topbar-left">
-              {uploadDom}
+              {/*uploadDom*/}
+              <div style={{marginRight: 10}}>
+                <RaisedButton labelPosition="before" label={I18N.EM.Report.UploadTemplate}>
+                  <UploadForm 
+                    ref={'upload_tempalte'}
+                    action={'TagImportExcel.aspx?Type=ReportTemplate'} 
+                    fileName={'templateFile'}
+                    enctype={'multipart/form-data'}
+                    method={'post'}
+                    onload={this._onUploadDone}
+                    onChangeFile={this._onChangeFile}>
+                    <input type="hidden" name='CustomerId' value={parseInt(this.context.currentRoute.params.customerId)}/>
+                    <input type="hidden" name='IsActive' value={true}/>
+                  </UploadForm>
+                </RaisedButton>
+              </div>
               <div className="jazz-template-action">
                 <div className="jazz-template-sort">
                   <DropDownMenu labelStyle={{lineHeight: '40px',fontSize:'14px'}} onChange={this._onSortChange} value={this.state.sortBy}>{sortItems}</DropDownMenu>

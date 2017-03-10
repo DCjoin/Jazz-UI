@@ -292,8 +292,10 @@ let TagAction = {
   manualScanTag: function(tagId, startTime, endTime) {
     Ajax.get(
       util.replacePathParams(
-        'vee/manualscantag/{tagId}/{startTime}/{endTime}', 
-        tagId, startTime, endTime), {}
+        '/vee/manualscantag/{tagId}', 
+        tagId), {
+        params: {startTime, endTime}
+      }
     );
   }
 };

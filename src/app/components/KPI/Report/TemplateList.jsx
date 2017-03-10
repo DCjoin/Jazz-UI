@@ -81,7 +81,7 @@ let TemplateList = React.createClass({
       <FlatButton
       labelPosition="before"
       label={I18N.EM.Report.Replace}>
-        <input type='file' onChange={this._replaceTemplate} ref='fileInput' style={{
+        <input type='file' onChange={this._replaceTemplate} name='templateFile' ref='fileInput' style={{
           cursor: 'pointer',
           position: 'absolute',
           top: 0,
@@ -152,7 +152,7 @@ let TemplateList = React.createClass({
       display: 'none'
     }, iframe.contentDocument.body);
 
-    let input = document.getElementById('fileInput');
+    let input = this.refs.fileInput;
     form.appendChild(input);
     let replaceInput = createElement('input', {
       type: 'hidden',
