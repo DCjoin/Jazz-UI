@@ -5,6 +5,9 @@ import privilegeUtil from 'util/privilegeUtil.jsx';
 import NotPushPanel from './NotPushPanel.jsx';
 import PushPanel from './PushPanel.jsx';
 import PermissionCode from 'constants/PermissionCode.jsx';
+import BubbleIcon from '../BubbleIcon.jsx';
+import MeasuresAction from 'actions/ECM/MeasuresAction.jsx';
+import {Status} from 'constants/actionType/Measures.jsx';
 
 function getFirstMenuPathFunc(menu) {
   let firstMenu = menu[0];
@@ -32,7 +35,6 @@ function isFull() {
 	return privilegeWithPushAndNotPush(privilegeUtil.isFull.bind(privilegeUtil));
 }
 
-
 export default class MainPanel extends Component {
 
   static contextTypes = {
@@ -45,22 +47,40 @@ export default class MainPanel extends Component {
   }
 
   state={
-    infoTabNo:isFull()?1:2
+    infoTabNo:isFull()?1:2,
+    unRead:false
+  }
+
+  _onUnReadChanged(){
+    this.setState({
+      unRead:CurrentUserStore.getEcmBubble()
+    })
   }
 
   componentWillReceiveProps(nextProps, nextCtx) {
+    console.log('componentWillReceiveProps');
     if( this.context.hierarchyId && nextCtx.hierarchyId === nextProps.params.customerId * 1 ) {
+      this.getUnreadFlag();
       nextProps.router.push(
         getFirstMenuPathFunc(CurrentUserStore.getMainMenuItems())(nextProps.params)
       )
     }
   }
 
-  _handlerSwitchTab(event) {
-    let no = parseInt(event.target.getAttribute("data-tab-index"));
+  _handlerSwitchTab(no) {
     this.setState({
       infoTabNo: no
     });
+  }
+
+  _renderAlreadyPushTitle(){
+    return (
+      <div className="jazz-ecm-tab-title" style={{marginLeft:'30px'}}>
+        {I18N.Setting.ECM.AlreadyPush}
+        {this.state.unRead?<BubbleIcon style={{width:'5px',height:'5px'}}/>:null}
+      </div>
+    )
+
   }
 
   _renderTabs(){
@@ -69,11 +89,11 @@ export default class MainPanel extends Component {
         <span className={classnames({
               "jazz-ecm-tabs-tab": true,
               "selected": this.state.infoTabNo === 1
-            })} data-tab-index="1" onClick={this._handlerSwitchTab}>{I18N.Setting.ECM.NotPush}</span>
+            })} data-tab-index="1" onClick={this._handlerSwitchTab.bind(this,1)}>{I18N.Setting.ECM.NotPush}</span>
         <span className={classnames({
                 "jazz-ecm-tabs-tab": true,
                 "selected": this.state.infoTabNo === 2
-              })} data-tab-index="2" onClick={this._handlerSwitchTab}>{I18N.Setting.ECM.AlreadyPush}</span>
+              })} data-tab-index="2" onClick={this._handlerSwitchTab.bind(this,2)}>{this._renderAlreadyPushTitle()}</span>
       </div>
     )
   }
@@ -85,6 +105,26 @@ export default class MainPanel extends Component {
     else {
       return <PushPanel hierarchyId={this.context.hierarchyId}/>
     }
+  }
+
+  getUnreadFlag(){
+    var statusArr=[];
+    if(isFull()){
+      statusArr=[Status.Being]
+    }else {
+      statusArr=[Status.ToBe,Status.Done]
+    }
+      MeasuresAction.getContainsunread(this.context.hierarchyId,statusArr);
+  }
+
+  componentDidMount(){
+    console.log('componentDidMount');
+    CurrentUserStore.addCurrentUserListener(this._onUnReadChanged.bind(this));
+    this.getUnreadFlag();
+  }
+
+  componentWillUnmount(){
+    CurrentUserStore.removeCurrentUserListener(this._onUnReadChanged());
   }
 
   render(){

@@ -5,9 +5,11 @@ import Immutable from 'immutable';
 import { List, updater, update, Map } from 'immutable';
 
 import CurrentUser from '../constants/actionType/CurrentUser.jsx';
+import Measures from '../constants/actionType/Measures.jsx';
 import LoginActionType from '../constants/actionType/Login.jsx';
 import RoutePath from '../util/RoutePath.jsx';
 import PermissionCode from '../constants/PermissionCode.jsx';
+import _ from 'lodash';
 
 let _currentUser = null,
   _error = null,
@@ -160,20 +162,11 @@ var CurrentUserStore = assign({}, PrototypeStore, {
 
   },
   //未读标志
-  setEcmBubble:function(has){
-    _ecmHasBubble=has
+  setEcmBubble:function(data){
+    _ecmHasBubble=_.indexOf(data,true)>-1;
   },
   getEcmBubble:function(){
     return _ecmHasBubble;
-  },
-  setBubble(type,flag){
-    switch (type) {
-      case bubbleType.ECM:
-           this.setEcmBubble(flag)
-        break;
-      default:
-
-    }
   },
   getMainMenuItems: function() {
     var menuItems = [];
@@ -384,7 +377,8 @@ var CurrentUserStore = assign({}, PrototypeStore, {
 
 });
 
-var CurrentUserAction = CurrentUser.Action;
+var CurrentUserAction = CurrentUser.Action,
+    MeasuresAction=Measures.Action;
 
 CurrentUserStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
@@ -411,8 +405,8 @@ CurrentUserStore.dispatchToken = AppDispatcher.register(function(action) {
       _error = null;
       break;
     //已读未读修改
-    case CurrentUserAction.SET_BUBBLE_FLAG:
-      CurrentUserStore.setBubble(action.bubbletype,action.flag);
+    case MeasuresAction.GET_CONTAINS_UNREAD:
+      CurrentUserStore.setEcmBubble(action.data);
       CurrentUserStore.emitCurrentUserChange();
       break;
   }
