@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDom from 'react-dom';
-import { CircularProgress} from 'material-ui';
+import { CircularProgress, RaisedButton} from 'material-ui';
 import Dialog from 'controls/NewDialog.jsx';
 import TitleComponent from 'controls/TitleComponent.jsx';
 import Immutable from 'immutable';
@@ -9,6 +9,7 @@ import ReportStore from 'stores/KPI/ReportStore.jsx';
 import ViewableTextField from 'controls/ViewableTextField.jsx';
 import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
+import UploadForm from 'controls/UploadForm.jsx';
 import CommonFuns from 'util/Util.jsx';
 import RoutePath from 'util/RoutePath.jsx';
 import LinkButton from 'controls/LinkButton.jsx';
@@ -38,6 +39,8 @@ export default class ReportConfig extends Component {
 		this._saveReport = this._saveReport.bind(this);
 		this._onSave = this._onSave.bind(this);
 		this._onErrorHandle = this._onErrorHandle.bind(this);
+		this._onChangeFile = this._onChangeFile.bind(this);
+		this._onUploadDone = this._onUploadDone.bind(this);
 	}
 
 	state={
@@ -131,6 +134,51 @@ export default class ReportConfig extends Component {
     document.body.appendChild(iframe);
     }
 
+  _onUploadDone(iframe) {
+	var json = iframe.contentDocument.body.innerHTML;
+	var obj = JSON.parse(json);
+	var reportItem = this.state.reportItem;
+	if (obj.success === true) {
+		reportItem = reportItem.set('templateId', obj.TemplateId);
+		ReportAction.getTemplateListByCustomerId(this.context.currentRoute.params.customerId, 'Name', 'asc');
+		this.setState({
+          	reportItem: reportItem,
+			saveDisabled: !this._isValid(),
+			showUploadDialog: false
+		},()=>{
+			this._updateReportItem(reportItem,Immutable.fromJS(obj.SheetList))
+		});
+	} else {
+		var errorCode = obj.UploadResponse.ErrorCode,
+		errorMessage=null;
+		if (errorCode === -1) {
+			errorMessage = I18N.format(I18N.EM.Report.DuplicatedName, this.state.fileName);
+		}
+		this.setState({
+			showUploadDialog: false,
+			fileName: '',
+			errorMsg:errorMessage
+		});
+	}
+  }
+  _onChangeFile(event) {
+      var file = event.target.files[0];
+			if(!file) return;
+      var fileName = file.name;
+
+      if (!CommonFuns.endsWith(fileName.toLowerCase(), '.xlsx') && 
+      	!CommonFuns.endsWith(fileName.toLowerCase(), '.xls')) {
+			this.setState({
+				errorMsg:I18N.EM.Report.WrongExcelFile
+			})
+        return;
+      }
+      this.refs.upload_tempalte.upload();
+      this.setState({
+      	fileName,
+        showUploadDialog: true
+      });
+  }/*
   _handleFileSelect(event) {
       var me = this;
       var file = event.target.files[0];
@@ -219,7 +267,7 @@ export default class ReportConfig extends Component {
         showUploadDialog: true
       });
     }
-
+*/
   newReportItem(){
     return Immutable.fromJS({
       id: 0,
@@ -461,7 +509,20 @@ export default class ReportConfig extends Component {
           <ViewableDropDownMenu  {...templateEditProps}/>
           {downloadButton}
           </div>
-          {uploadButton}
+          {/*uploadButton*/}
+          <RaisedButton labelPosition="before" label={I18N.EM.Report.UploadTemplate}>
+          	<UploadForm 
+          		ref={'upload_tempalte'}
+          		action={'TagImportExcel.aspx?Type=ReportTemplate'} 
+          		fileName={'templateFile'}
+				enctype={'multipart/form-data'}
+				method={'post'}
+				onload={this._onUploadDone}
+				onChangeFile={this._onChangeFile}>
+          		<input type="hidden" name='CustomerId' value={parseInt(customerId)}/>
+          		<input type="hidden" name='IsActive' value={true}/>
+          	</UploadForm>
+          </RaisedButton>
         </div>
 
       )
@@ -553,49 +614,15 @@ export default class ReportConfig extends Component {
 			return (
 				<Dialog open={true} title={I18N.EM.Report.UploadNewTemplate} actions={[
 					(<FlatButton label={I18N.EM.Report.Upload} onClick={() => {
-
-						let createElement = window.Highcharts.createElement,
-						  discardElement = window.Highcharts.discardElement;
-					      let iframe = createElement('iframe', null, {
-					        display: 'none'
-					      }, document.body);
-
-					      let form = createElement('form', {
-					        method: 'post',
-					        action: 'TagImportExcel.aspx?Type=ReportTemplate',
-					        target: '_self',
-					        enctype: 'multipart/form-data',
-					        name: 'inputForm'
-					      }, {
-					        display: 'none'
-					      }, iframe.contentDocument.body);
-
-					      let input = ReactDom.findDOMNode(this.refs.fileInput);
-					      form.appendChild(input);
-					      let replaceInput = createElement('input', {
-					        type: 'hidden',
-					        name: 'IsReplace',
-					        value: true
-					      }, null, form);
-					      let customerInput = createElement('input', {
-					        type: 'hidden',
-					        name: 'CustomerId',
-					        value: parseInt(customerId)
-					      }, null, form);
-					      let activeInput = createElement('input', {
-					        type: 'hidden',
-					        name: 'IsActive',
-					        value: 1
-					      }, null, form);
-
-					      form.submit();
-					      discardElement(form);
-
+						this.refs.upload_tempalte.upload({IsReplace: true});
 						this.setState({
 							errorMsg: null,
+						}, () => {
+							this.refs.upload_tempalte.reset();
 						});
 					}}/>),
 					(<FlatButton label={I18N.Common.Button.Cancel2} onClick={() => {
+						this.refs.upload_tempalte.reset();
 						this.setState({
 							errorMsg: null,
 						});
