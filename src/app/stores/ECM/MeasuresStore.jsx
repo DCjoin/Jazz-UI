@@ -222,6 +222,21 @@ const MeasuresStore = assign({}, PrototypeStore, {
   },
   getRemarkList(){
     return _remarkList
+  },
+  setSnackBarText(status){
+    switch (status) {
+      case Status.ToBe:
+          this.initText(I18N.Setting.ECM.StatusToBeText)
+        break;
+      case Status.Done:
+          this.initText(I18N.Setting.ECM.StatusToDoneText)
+          break;
+        case Status.Canceled:
+            this.initText(I18N.Setting.ECM.StatusToCancelText)
+          break;
+      default:
+
+    }
   }
 });
 
@@ -264,6 +279,10 @@ MeasuresStore.dispatchToken = AppDispatcher.register(function(action) {
       default:
     case Action.GET_REMARK_LIST_SUCCESS:
         MeasuresStore.setRemarkList(action.data);
+        MeasuresStore.emitChange()
+        break;
+    case Action.SET_SNACKBAR_TEXT:
+        MeasuresStore.setSnackBarText(action.data);
         MeasuresStore.emitChange()
         break;
     }

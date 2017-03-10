@@ -14,7 +14,8 @@ module.exports = {
     GET_CONTAINS_UNREAD:null,
     GET_REMARK_LIST_SUCCESS:null,
     ADD_REMARK:null,
-    DELETE_REMARK:null
+    DELETE_REMARK:null,
+    SET_SNACKBAR_TEXT:null
   }),
   ThumbnailSize:'w_160,h_80',
   DetailSize:'w_600,h_300',

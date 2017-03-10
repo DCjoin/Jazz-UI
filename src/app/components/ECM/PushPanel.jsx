@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import classnames from "classnames";
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
 import MeasuresAction from 'actions/ECM/MeasuresAction.jsx';
-import {Status} from '../../constants/actionType/Measures.jsx';
+import {Status} from 'constants/actionType/Measures.jsx';
 import {DataConverter} from 'util/Util.jsx';
 import MeasuresItem from './MeasuresItem.jsx';
 import {Snackbar,CircularProgress} from 'material-ui';
@@ -57,6 +57,10 @@ function displayUnread(infoTabNo){
 
 function canEditSupervisor(infoTabNo){
   return PushIsFull() && (infoTabNo===1 || (infoTabNo===2))
+}
+
+function canEditStatus(infoTabNo){
+  return PushAndNotPushIsFull() && (infoTabNo!==3)
 }
 
 const status=[Status.ToBe,Status.Being,Status.Done,Status.Canceled];
@@ -138,14 +142,12 @@ export default class PushPanel extends Component {
   }
 
   _renderTab(){
-    var unRead=this.state.unRead;
+    var unRead;
     if(PushAndNotPushIsFull()){
       //顾问
-      unRead.unshift(false);
-      unRead.pop(false)
+      unRead=[false,this.state.unRead[0],false]
     }else {
-      unRead.unshift(unRead[0]);
-      unRead[1]=false;
+      unRead=[this.state.unRead[0],false,this.state.unRead[1]];
     }
     return(
       <div className="jazz-ecm-push-tabs">
@@ -270,14 +272,18 @@ export default class PushPanel extends Component {
               label={I18N.Common.Button.Confirm}
               onClick={()=>{
                 var currentSolution=this.state.solutionList.getIn([this.state.measureIndex]);
-                currentSolution=currentSolution.setIn(['EnergyProblem','Status'],this.state.toBeStatus);
+                var st=this.state.toBeStatus;
+                currentSolution=currentSolution.setIn(['EnergyProblem','Status'],st);
                 this.setState({
                   measureShow:false,
                   measureIndex:null,
                   toBeStatus:null
                 },()=>{
-                  //currentSolution=MeasuresStore.getValidParams(currentSolution);
+                  if(this.state.infoTabNo===4){
+                    currentSolution=currentSolution.setIn(['EnergyProblem','Supervisor'],null)
+                  }
                   MeasuresAction.updateSolution(currentSolution.toJS(),()=>{
+                    MeasuresAction.setSnackBarText(st);
                     this.refresh(status[this.state.infoTabNo-1])
                   });
                 })
@@ -300,7 +306,7 @@ export default class PushPanel extends Component {
         status=problem.get('Status');
     return(
       <div className="jazz-ecm-push-operation">
-        <StatusCmp status={status} canEdit={PushAndNotPushIsFull()} onChange={this._onStatusChange.bind(this)}/>
+        <StatusCmp status={status} canEdit={canEditStatus(this.state.infoTabNo)} onChange={this._onStatusChange.bind(this)}/>
         {this._renderPersonInCharge(problem,true)}
         <div>{`${I18N.Setting.ECM.PushPanel.CreateUser}：${user || '-'}`}</div>
       </div>

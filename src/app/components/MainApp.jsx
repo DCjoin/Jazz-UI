@@ -39,6 +39,9 @@ import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import CurrentUserCustomerStore from 'stores/CurrentUserCustomerStore.jsx';
 import HierarchyStore from 'stores/HierarchyStore.jsx';
 import LoginStore from 'stores/LoginStore.jsx';
+import MeasuresAction from 'actions/ECM/MeasuresAction.jsx';
+import privilegeUtil from 'util/privilegeUtil.jsx';
+import {Status} from 'constants/actionType/Measures.jsx';
 
 function getFirstMenuPathFunc(menu) {
   let firstMenu = menu[0];
@@ -85,13 +88,27 @@ function getCustomerPrivilageById(customerId) {
   return UserStore.getUserCustomers().find(customer => customer.get('CustomerId') === customerId * 1 );
 }
 
+function privilegeWithPushAndNotPush( privilegeCheck ) {
+  // return true
+	return privilegeCheck(PermissionCode.SOLUTION_FULL, CurrentUserStore.getCurrentPrivilege());
+}
+  //顾问
+function PushAndNotPushIsFull() {
+	return privilegeWithPushAndNotPush(privilegeUtil.isFull.bind(privilegeUtil));
+}
+
+function privilegeWithECM(){
+  return CurrentUserStore.permit(PermissionCode.SENIOR_DATA_ANALYSE.FULL) ||
+        CurrentUserStore.permit(PermissionCode.PUSH_SOLUTION.READONLY)
+}
+
 let MainApp = React.createClass({
   statics: {
     prepareShow: (customerId) => {
-      return UOMStore.getUoms() && 
-        AllCommodityStore.getAllCommodities() && 
-        CurrentUserCustomerStore.getAll() && 
-        CurrentUserStore.getCurrentPrivilege() && 
+      return UOMStore.getUoms() &&
+        AllCommodityStore.getAllCommodities() &&
+        CurrentUserCustomerStore.getAll() &&
+        CurrentUserStore.getCurrentPrivilege() &&
         CurrentUserStore.getCurrentUser() &&
         UserStore.getUserCustomers() &&
         ( !customerId || HierarchyStore.getBuildingList() );
@@ -138,7 +155,17 @@ let MainApp = React.createClass({
     window.allCommodities = AllCommodityStore.getAllCommodities();
     this._onChange();
   },
-
+  _getECMUnread(){
+    if(this.state.hierarchyId && privilegeWithECM()){
+      var statusArr=[];
+      if(PushAndNotPushIsFull()){
+        statusArr=[Status.Being]
+      }else {
+        statusArr=[Status.ToBe,Status.Done]
+      }
+      MeasuresAction.getContainsunread(this.state.hierarchyId,statusArr);
+    }
+  },
   _dataReady: function() {
     let {router, params} = this.props,
     {customerId} = params;
@@ -153,13 +180,17 @@ let MainApp = React.createClass({
       if( customerId && !this.state.hierarchyId ) {
         let WholeCustomer = getCustomerPrivilageById( customerId ) && getCustomerPrivilageById( customerId ).get('WholeCustomer');
         let initHierarchyId = router.location.query.init_hierarchy_id;
-        if( WholeCustomer ) {     
+        if( WholeCustomer ) {
           this.setState({
             hierarchyId: customerId * 1
+          },()=>{
+            this._getECMUnread()
           });
         } else {
           this.setState({
             hierarchyId: HierarchyStore.getBuildingList()[0].Id
+          },()=>{
+            this._getECMUnread()
           });
         }
         if( initHierarchyId ) {
@@ -173,6 +204,7 @@ let MainApp = React.createClass({
             hierarchyId: initHierarchyId * 1
           }, () => {
             // router.push(pathname + search );
+            this._getECMUnread()
           });
         }
       }
@@ -197,6 +229,7 @@ let MainApp = React.createClass({
         let {pathname, query} = this.props.router.location;
         query.init_hierarchy_id = hierarchyId;
         this.props.router.push(pathname + '?' + querystring.stringify(query) );
+        this._getECMUnread()
       });
     };
     let doned = false;
@@ -231,7 +264,7 @@ let MainApp = React.createClass({
               display: 'none',
             }}
             didChanged={this._setHierarchyId}
-            disabled={!HierarchyStore.getBuildingList() 
+            disabled={!HierarchyStore.getBuildingList()
               || HierarchyStore.getBuildingList().length === 0
               || +customerId !== HierarchyStore.getBuildingList()[0].CustomerId}
             textField={'Name'}
@@ -250,13 +283,13 @@ let MainApp = React.createClass({
           remove(menuItems, (item) => {
             return item.title === I18N.MainMenu.Map
           });
-        } 
-        if( !hierarchyId || customerId == hierarchyId || 
-          ( !PrivilegeUtil.canView(PermissionCode.PUSH_SOLUTION, CurrentUserStore.getCurrentPrivilege()) 
+        }
+        if( !hierarchyId || customerId == hierarchyId ||
+          ( !PrivilegeUtil.canView(PermissionCode.PUSH_SOLUTION, CurrentUserStore.getCurrentPrivilege())
               && !PrivilegeUtil.isFull(PermissionCode.SOLUTION_FULL, CurrentUserStore.getCurrentPrivilege()) ) ) {
           remove(menuItems, (item) => {
             return item.title === I18N.MainMenu.SaveSchemeTab
-          });          
+          });
         }
         return (
           <div className='jazz-main'>
