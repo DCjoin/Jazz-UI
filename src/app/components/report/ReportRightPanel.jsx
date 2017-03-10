@@ -343,7 +343,16 @@ var ReportRightPanel = React.createClass({
                   name: 'IsReplace',
                   value: true
                 }, null, form);
-                form.appendChild(replaceInput);
+                let customerInput = createElement('input', {
+                  type: 'hidden',
+                  name: 'CustomerId',
+                  value: parseInt(this.context.currentRoute.params.customerId)
+                }, null, form);
+                let activeInput = createElement('input', {
+                  type: 'hidden',
+                  name: 'IsActive',
+                  value: 1
+                }, null, form);
 
                 form.submit();
                 discardElement(form);
