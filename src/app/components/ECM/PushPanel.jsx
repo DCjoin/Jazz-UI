@@ -59,6 +59,10 @@ function canEditSupervisor(infoTabNo){
   return PushIsFull() && (infoTabNo===1 || (infoTabNo===2))
 }
 
+function canEditStatus(infoTabNo){
+  return PushAndNotPushIsFull() && (infoTabNo!==3)
+}
+
 const status=[Status.ToBe,Status.Being,Status.Done,Status.Canceled];
 export default class PushPanel extends Component {
 
@@ -302,7 +306,7 @@ export default class PushPanel extends Component {
         status=problem.get('Status');
     return(
       <div className="jazz-ecm-push-operation">
-        <StatusCmp status={status} canEdit={PushAndNotPushIsFull()} onChange={this._onStatusChange.bind(this)}/>
+        <StatusCmp status={status} canEdit={canEditStatus(this.state.infoTabNo)} onChange={this._onStatusChange.bind(this)}/>
         {this._renderPersonInCharge(problem,true)}
         <div>{`${I18N.Setting.ECM.PushPanel.CreateUser}：${user || '-'}`}</div>
       </div>
