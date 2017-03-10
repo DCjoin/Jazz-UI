@@ -165,8 +165,16 @@ let TemplateList = React.createClass({
       name: 'Id',
       value: me.state.id
     }, null, form);
-    form.appendChild(replaceInput);
-    form.appendChild(replaceIdInput);
+    let customerInput = createElement('input', {
+      type: 'hidden',
+      name: 'CustomerId',
+      value: parseInt(me.props.customerId)
+    }, null, form);
+    let activeInput = createElement('input', {
+      type: 'hidden',
+      name: 'IsActive',
+      value: 1
+    }, null, form);
 
     form.submit();
     discardElement(form);
