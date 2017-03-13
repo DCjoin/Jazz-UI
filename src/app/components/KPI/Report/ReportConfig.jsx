@@ -32,7 +32,7 @@ export default class ReportConfig extends Component {
 		this._onTemplateOpen = this._onTemplateOpen.bind(this);
 		this._onExistTemplateChange = this._onExistTemplateChange.bind(this);
 		this._downloadTemplate = this._downloadTemplate.bind(this);
-		this._handleFileSelect = this._handleFileSelect.bind(this);
+		// this._handleFileSelect = this._handleFileSelect.bind(this);
 		this._addReportData = this._addReportData.bind(this);
 		this._deleteReportData = this._deleteReportData.bind(this);
 		this._updateReportData = this._updateReportData.bind(this);
