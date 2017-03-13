@@ -206,6 +206,10 @@ export default class NotPushPanel extends Component {
                   dialogType:null,
                   measureShow:false,
                   measureIndex:null,
+                },()=>{
+                  if(this.state.handleIndex==='Batch'){
+                    this._onPush()
+                  }
                 })
               }} />,
 
