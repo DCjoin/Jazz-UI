@@ -141,7 +141,7 @@ export default class PushPanel extends Component {
       <div className="jazz-ecm-tab-title">
         {status}
         {unread?<BubbleIcon style={{width:'5px',height:'5px'}}/>:null}
-        <div style={{marginLeft:'5px'}}>{count}</div>
+        {count!==0?<div style={{marginLeft:'5px'}}>{count}</div>:null}
       </div>
     )
 
