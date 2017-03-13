@@ -47,7 +47,7 @@ function getFirstMenuPathFunc(menu) {
   let firstMenu = menu[0];
   if( !firstMenu ) {
     return function() {
-      console.err('No has any menu');
+      console.error('No has any menu');
     }
   }
   if(firstMenu.children && firstMenu.children.length > 0) {
@@ -122,7 +122,7 @@ let MainApp = React.createClass({
       }
       let isAdmin = LoginStore.checkHasSpAdmin();
       if( CurrentUserCustomerStore.getAll().length === 1 ) {
-        if( !isAdmin && CurrentUserStore.getMainMenuItems().map(menu => menu.getPath(router.params)).indexOf(router.getCurrentLocation().pathname) === -1 ) {
+        if( !isAdmin && CurrentUserStore.getMainMenuItems().map(menu => getFirstMenuPathFunc([menu])(router.params)).indexOf(router.getCurrentLocation().pathname) === -1 ) {
           return getFirstMenuPathFunc(CurrentUserStore.getMainMenuItems())(
             assign({}, router.params, {
               customerId: CurrentUserCustomerStore.getAll()[0].Id
