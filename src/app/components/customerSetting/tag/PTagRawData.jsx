@@ -269,8 +269,8 @@ let PTagRawData = React.createClass({
     style={pauseBtnStyle} labelStyle={labelStyle} onClick={() => {
       TagAction.manualScanTag(
         this.props.selectedTag.get('Id'), 
-        moment(this.state.start).format('YYYY-MM-DDTHH:mm:ss'), 
-        moment(this.state.end).format('YYYY-MM-DDTHH:mm:ss'),
+        moment(this.state.start).subtract(8, 'hours').format('YYYY-MM-DDTHH:mm:ss'), 
+        moment(this.state.end).subtract(8, 'hours').format('YYYY-MM-DDTHH:mm:ss'),
       )
     }}/>;
     var pauseBtn = <FlatButton label={I18N.Setting.Tag.PTagRawData.PauseMonitor}

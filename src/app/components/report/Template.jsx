@@ -67,7 +67,7 @@ var Template = React.createClass({
     var json = iframe.contentDocument.body.innerHTML;
     var obj = JSON.parse(json);
     if (obj.success === true) {
-      ReportAction.getTemplateListByCustomerId(parseInt(me.context.currentRoute.params.customerId), me.state.sortBy, 'asc');
+      ReportAction.getTemplateListByCustomerId(parseInt(this.context.currentRoute.params.customerId), this.state.sortBy, 'asc');
       this.setState({
         showUploadDialog: false
       });

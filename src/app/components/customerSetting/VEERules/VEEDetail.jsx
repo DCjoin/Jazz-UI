@@ -115,8 +115,8 @@ class ScanDialog extends Component {
           onClick={() => {
             this.props.onClose();
             this.props.onScan(
-              moment(startDate + ' ' + startTime).subtract(1, 'seconds').format('YYYY-MM-DD hh:mm:ss'),
-              moment(endDate + ' ' + endTime).subtract(1, 'seconds').format('YYYY-MM-DD hh:mm:ss'),
+              moment(startDate + ' ' + startTime).subtract(8, 'hours').format('YYYY-MM-DD HH:mm:ss'),
+              moment(endDate + ' ' + endTime).subtract(8, 'hours').format('YYYY-MM-DD HH:mm:ss'),
             );
           }}
         />),
