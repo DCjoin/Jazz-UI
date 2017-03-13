@@ -418,16 +418,16 @@ export default class PushPanel extends Component {
     MeasuresAction.merge(paths,value)
   }
 
-  refresh(status){
+  refresh(status,hierarchyId=this.props.hierarchyId){
     var statusArr=[];
     if(PushAndNotPushIsFull()){
       statusArr=[Status.Being]
     }else {
       statusArr=[Status.ToBe,Status.Done]
     }
-    MeasuresAction.getActivecounts(this.props.hierarchyId,()=>{
-      MeasuresAction.getContainsunread(this.props.hierarchyId,statusArr,()=>{
-        MeasuresAction.getGroupSettingsList(this.props.hierarchyId,status);
+    MeasuresAction.getActivecounts(hierarchyId,()=>{
+      MeasuresAction.getContainsunread(hierarchyId,statusArr,()=>{
+        MeasuresAction.getGroupSettingsList(hierarchyId,status);
       })
     })
   }
@@ -473,7 +473,7 @@ export default class PushPanel extends Component {
   }
   componentWillReceiveProps(nextProps) {
     if(nextProps.hierarchyId !== this.props.hierarchyId) {
-      MeasuresAction.getGroupSettingsList(nextProps.hierarchyId,Status.ToBe);
+      this.refresh(Status.ToBe,nextProps.hierarchyId);
     }
   }
 
