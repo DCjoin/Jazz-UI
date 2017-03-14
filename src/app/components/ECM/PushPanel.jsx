@@ -190,6 +190,15 @@ export default class PushPanel extends Component {
                         this.refresh(status[this.state.infoTabNo-1]);
                       })
                     }
+                    if(this.state.infoTabNo===2){
+                      this.setState({
+                        measureIndex:null,
+                        solutionList:null,
+                        measureShow:false
+                      },()=>{
+                        this.refresh(status[this.state.infoTabNo-1]);
+                      })
+                    }else
                     if(this.state.measureIndex===null){
                       this.setState({
                         measureIndex:index
@@ -473,6 +482,9 @@ export default class PushPanel extends Component {
   componentWillReceiveProps(nextProps) {
     if(nextProps.hierarchyId !== this.props.hierarchyId) {
       this.refresh(Status.ToBe,nextProps.hierarchyId);
+      if(PushIsFull()){
+         MeasuresAction.getSupervisor(nextProps.hierarchyId);
+      }
     }
   }
 
