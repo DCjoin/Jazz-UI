@@ -189,8 +189,6 @@ export default class PushPanel extends Component {
                       },()=>{
                         this.refresh(status[this.state.infoTabNo-1]);
                       })
-
-
                     }
                     if(this.state.measureIndex===null){
                       this.setState({

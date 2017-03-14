@@ -75,7 +75,7 @@ class RemarkItem extends Component{
   render(){
     var j2d=DataConverter.JsonToDateTime;
     let {Remark,CreateUserName,CreateUserId,CreateTime}=this.props.remark.toJS();
-    var info=`${moment(j2d(CreateTime)).format('YYYY-MM-DD hh:mm')} ${CreateUserName}`;
+    var info=`${moment(j2d(CreateTime)).format('YYYY-MM-DD HH:mm')} ${CreateUserName}`;
     return(
       <div className="remarkItem">
         <div className="text">{this.displayText(Remark)}</div>
