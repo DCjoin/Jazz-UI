@@ -4,6 +4,7 @@ import ReactDom from 'react-dom';
 import CommonFuns from 'util/Util.jsx';
 import { CircularProgress, RaisedButton} from 'material-ui';
 import NewDialog from 'controls/NewDialog.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
 import UploadForm from 'controls/UploadForm.jsx';
 import ReportAction from 'actions/KPI/ReportAction.jsx';
 import TemplateList from './TemplateList.jsx';
@@ -56,7 +57,7 @@ var Template = React.createClass({
     var json = iframe.contentDocument.body.innerHTML;
     var obj = JSON.parse(json);
     if (obj.success === true) {
-      ReportAction.getTemplateListByCustomerId(parseInt(me.context.currentRoute.params.customerId), me.state.sortBy, 'asc');
+      ReportAction.getTemplateListByCustomerId(parseInt(this.context.currentRoute.params.customerId), this.state.sortBy, 'asc');
       this.setState({
         showUploadDialog: false
       });
@@ -189,7 +190,7 @@ var Template = React.createClass({
       ).test(this.state.errorMsg)
     ) {
       return (
-        <Dialog open={true} title={I18N.EM.Report.UploadNewTemplate} actions={[
+        <NewDialog open={true} title={I18N.EM.Report.UploadNewTemplate} actions={[
           (<FlatButton label={I18N.EM.Report.Upload} onClick={() => {
             this.refs.upload_tempalte.upload({IsReplace: true});
             this.setState({
@@ -206,7 +207,7 @@ var Template = React.createClass({
           }}/>),
         ]}>
         {this.state.errorMsg}
-        </Dialog>
+        </NewDialog>
       );
     } else {
       var onClose = ()=> {
@@ -218,7 +219,7 @@ var Template = React.createClass({
         });
       };
       if (this.state.errorMsg!==null) {
-        return (<Dialog
+        return (<NewDialog
           ref = "_dialog"
           title={I18N.Platform.ServiceProvider.ErrorNotice}
           modal={false}
@@ -226,7 +227,7 @@ var Template = React.createClass({
           onRequestClose={onClose}
           >
           {this.state.errorMsg}
-        </Dialog>);
+        </NewDialog>);
       } else {
         return null;
       }

@@ -7,6 +7,7 @@ import FlatButton from 'controls/FlatButton.jsx';
 import TemplateItem from './TemplateItem.jsx';
 import ReportAction from 'actions/KPI/ReportAction.jsx';
 import ReportStore from 'stores/KPI/ReportStore.jsx';
+import util from 'util/Util.jsx';
 
 
 let TemplateList = React.createClass({
@@ -42,12 +43,12 @@ let TemplateList = React.createClass({
     if (!this.state.showUploadDialog) {
       return null;
     }
-    return (<Dialog
+    return (<NewDialog
       ref="uploadDialog"
       openImmediately={true}
       modal={true}>
         {I18N.format(I18N.EM.Report.UploadingTemplate, this.state.fileName)}
-      </Dialog>);
+      </NewDialog>);
   },
   _renderDeleteDialog() {
     if (!this.state.showDeleteDialog) {
