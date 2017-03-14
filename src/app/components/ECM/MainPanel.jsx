@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import classnames from "classnames";
+import ReactDom from 'react-dom';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
 import NotPushPanel from './NotPushPanel.jsx';
@@ -58,7 +59,6 @@ export default class MainPanel extends Component {
   }
 
   componentWillReceiveProps(nextProps, nextCtx) {
-    console.log('componentWillReceiveProps');
     if( this.context.hierarchyId && nextCtx.hierarchyId === nextProps.params.customerId * 1 ) {
       this.getUnreadFlag();
       nextProps.router.push(
@@ -93,14 +93,19 @@ export default class MainPanel extends Component {
         <span className={classnames({
                 "jazz-ecm-tabs-tab": true,
                 "selected": this.state.infoTabNo === 2
-              })} data-tab-index="2" onClick={this._handlerSwitchTab.bind(this,2)}>{this._renderAlreadyPushTitle()}</span>
+              })} data-tab-index="2" ref='push' onClick={this._handlerSwitchTab.bind(this,2)}>{this._renderAlreadyPushTitle()}</span>
       </div>
     )
   }
 
   _renderContent(){
     if(this.state.infoTabNo === 1){
-      return <NotPushPanel hierarchyId={this.context.hierarchyId}/>
+      var btn=ReactDom.findDOMNode(this.refs.push),destX,destY;
+      if(btn){
+        destX=btn.getBoundingClientRect().left+60,
+        destY=btn.getBoundingClientRect().top;
+      }
+      return <NotPushPanel hierarchyId={this.context.hierarchyId} generatePositon={{destX,destY}}/>
     }
     else {
       return <PushPanel hierarchyId={this.context.hierarchyId}/>
@@ -118,7 +123,6 @@ export default class MainPanel extends Component {
   }
 
   componentDidMount(){
-    console.log('componentDidMount');
     CurrentUserStore.addCurrentUserListener(this._onUnReadChanged.bind(this));
     this.getUnreadFlag();
   }

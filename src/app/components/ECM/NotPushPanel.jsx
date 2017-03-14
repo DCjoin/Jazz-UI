@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDom from 'react-dom';
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
 import MeasuresAction from 'actions/ECM/MeasuresAction.jsx';
 import {Status} from '../../constants/actionType/Measures.jsx';
@@ -14,8 +15,7 @@ import Title from './MeasurePart/MeasureTitle.jsx';
 import Problem from './MeasurePart/Problem.jsx';
 import Solution from './MeasurePart/Solution.jsx';
 import SolutionGallery from './MeasurePart/SolutionGallery.jsx';
-import {solutionList} from '../../../../mockData/measure.js';
-import Immutable from 'immutable';
+import DisappareItem from './MeasurePart/DisappareItem.jsx';
 export default class NotPushPanel extends Component {
   constructor(props) {
     super(props);
@@ -60,14 +60,12 @@ export default class NotPushPanel extends Component {
     else {
       MeasuresAction.pushProblem(ids);
     }
-
     this.setState({
-      dialogType:null,
       handleIndex:null,
-      measureShow:false,
-      measureIndex:null,
+      solutionList:null
     })
   }
+
 
   _onDelete(){
     var ids=MeasuresStore.getIds(this.state.handleIndex);
@@ -86,6 +84,7 @@ export default class NotPushPanel extends Component {
       measureIndex:index
     })
   }
+
 
   _renderAction(){
     if(this.state.solutionList===null || this.state.solutionList.size===0){
@@ -151,20 +150,28 @@ export default class NotPushPanel extends Component {
     }
     else {
       return(
-        <div className="content">
-          {this.state.solutionList.map((solution,index)=>(
-                    <MeasuresItem
-                      measure={solution}
-                      hasCheckBox={true}
-                      isChecked={this.state.checkList.getIn([index,'checked'])}
-                      onChecked={(e,isChecked)=>{
-                                  MeasuresAction.checkSolution(index,isChecked);
-                                  }}
-                      disabled={MeasuresStore.IsSolutionDisable(solution.toJS())}
-                      personInCharge={null}
-                      action={this._renderOperation(index)}
-                      onClick={()=>{this._onMeasureItemClick(index)}}/>
-                  ))}
+        <div ref="content" className="content">
+          {this.state.solutionList.map((solution,index)=>{
+            var prop={
+              measure:solution,
+              hasCheckBox:true,
+              isChecked:this.state.checkList.getIn([index,'checked']),
+              onChecked:(e,isChecked)=>{
+                          MeasuresAction.checkSolution(index,isChecked);
+                        },
+              disabled:MeasuresStore.IsSolutionDisable(solution.toJS()),
+              personInCharge:null,
+              action:this._renderOperation(index),
+              onClick:()=>{this._onMeasureItemClick(index)}
+            };
+            if(this.state.dialogType===null && this.state.handleIndex!==null && index===this.state.handleIndex){
+              return <DisappareItem {...this.getProps()} onEnd={this._onPush}><MeasuresItem {...prop}/></DisappareItem>
+            }
+            else {
+              return <MeasuresItem {...prop}/>
+            }
+          }
+                  )}
         </div>
 
       )
@@ -194,7 +201,17 @@ export default class NotPushPanel extends Component {
         actions={[
             <RaisedButton
               label={I18N.Setting.ECM.Push}
-              onClick={this._onPush} />,
+              onClick={()=>{
+                this.setState({
+                  dialogType:null,
+                  measureShow:false,
+                  measureIndex:null,
+                },()=>{
+                  if(this.state.handleIndex==='Batch'){
+                    this._onPush()
+                  }
+                })
+              }} />,
 
             <FlatButton
               label={I18N.Common.Button.Cancel2}
@@ -249,7 +266,9 @@ export default class NotPushPanel extends Component {
         measureIndex:null
     },()=>{
       // currentSolution=MeasuresStore.getValidParams(currentSolution);
-      MeasuresAction.updateSolution(currentSolution.toJS());
+      MeasuresAction.updateSolution(currentSolution.toJS(),()=>{
+        MeasuresAction.getGroupSettingsList(this.props.hierarchyId,Status.NotPush)
+      });
     })
     };
    var props={
@@ -292,6 +311,14 @@ export default class NotPushPanel extends Component {
         <SolutionGallery {...props.gallery}/>
       </NewDialog>
     )
+  }
+
+  getProps(){
+  var {destX,destY}=this.props.generatePositon,
+      width=ReactDom.findDOMNode(this.refs.content).clientWidth;
+  return{
+    destX,destY,width
+  }
   }
 
   merge(paths,value){
@@ -353,4 +380,5 @@ export default class NotPushPanel extends Component {
 
   NotPushPanel.propTypes = {
     hierarchyId:React.PropTypes.number,
+    generatePositon:React.PropTypes.Object,
   };
