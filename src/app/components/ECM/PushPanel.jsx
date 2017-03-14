@@ -207,7 +207,7 @@ export default class PushPanel extends Component {
     )
   }
 
-  _renderListByTimeType(type){
+  _renderListByTimeType(type,displayLabel){
     var label=type===1?I18N.Setting.ECM.PushPanel.ThisMonth
               :type===2?I18N.Setting.ECM.PushPanel.Last3Month
               :I18N.Setting.ECM.PushPanel.Earlier;
@@ -239,7 +239,7 @@ export default class PushPanel extends Component {
     }
     return(
       <div className='row'>
-        <div className="label">{label}</div>
+        {displayLabel?<div className="label">{label}</div>:null}
         {List}
       </div>
     )
@@ -258,9 +258,9 @@ export default class PushPanel extends Component {
     else {
       return(
         <div ref='content' className="content">
-          {this._renderListByTimeType(1)}
-          {this._renderListByTimeType(2)}
-          {this._renderListByTimeType(3)}
+          {this._renderListByTimeType(1,this.state.infoTabNo===1)}
+          {this._renderListByTimeType(2,this.state.infoTabNo===1)}
+          {this._renderListByTimeType(3,this.state.infoTabNo===1)}
         </div>
       )
     }
