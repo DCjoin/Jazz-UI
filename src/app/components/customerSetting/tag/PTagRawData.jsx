@@ -72,6 +72,9 @@ let PTagRawData = React.createClass({
       veeTagStatus: TagStore.getTagStatus(),
     })
   },
+  _onUpdate: function() {
+    this._getTagsData(this.props, true);
+  },
   _onSwitchRawDataView: function() {
     var rawDataStatus = this.state.isRawData,
       that = this;
@@ -370,6 +373,7 @@ let PTagRawData = React.createClass({
   },
   componentDidMount: function() {
     TagStore.addTagDatasChangeListener(this._onChanged);
+    TagStore.addTagDatasUpdateListener(this._onUpdate);
     this._getTagsData(this.props, true);
   },
 
@@ -399,6 +403,7 @@ let PTagRawData = React.createClass({
   },
   componentWillUnmount: function() {
     TagStore.removeTagDatasChangeListener(this._onChanged);
+    TagStore.removeTagDatasUpdateListener(this._onUpdate);
   },
   render: function() {
 

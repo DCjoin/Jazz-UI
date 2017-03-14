@@ -294,7 +294,15 @@ let TagAction = {
       util.replacePathParams(
         '/vee/manualscantag/{tagId}', 
         tagId), {
-        params: {startTime, endTime}
+        params: {startTime, endTime},
+        success: function() {
+          AppDispatcher.dispatch({
+            type: Action.MANUAL_SCAN_TAG_SUCCESS,
+          });
+        },
+        error: function(err, res) {
+          console.log(res);
+        }
       }
     );
   }
