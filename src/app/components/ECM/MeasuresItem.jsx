@@ -4,8 +4,6 @@ import Checkbox from 'material-ui/Checkbox';
 import FontIcon from 'material-ui/FontIcon';
 import CommonFuns from 'util/util.jsx';
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
-import {measureSample} from '../../../../mockData/measure.js';
-import Immutable from 'immutable';
 import BubbleIcon from '../BubbleIcon.jsx';
 function getUrl(url) {
 	return "url(" + url+")";
@@ -120,7 +118,7 @@ export default class MeasuresItem extends Component {
 	render() {
     return(
 			<div className="jazz-complex-measuresItem">
-				{this.props.displayUnread && !this.props.measure.getIn(['EnergyProblem','IsRead']) && <BubbleIcon style={{width:'5px',height:'5px',marginRight:'10px'}}/>}
+				{this.props.displayUnread && !this.props.measure.getIn(['EnergyProblem','IsRead'])?<BubbleIcon style={{width:'5px',height:'5px'}}/>:<div style={{marginRight:'5px'}}/>}
 				<div className="jazz-energy-conservation-measuresItem" onClick={this.props.onClick}>
 					{this._renderName()}
 					{this._renderContent()}
