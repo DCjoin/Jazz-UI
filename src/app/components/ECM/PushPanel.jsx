@@ -61,8 +61,8 @@ function canEditSupervisor(infoTabNo){
   return PushIsFull() && (infoTabNo===1 || (infoTabNo===2))
 }
 
-function canEditStatus(infoTabNo){
-  return PushAndNotPushIsFull() && (infoTabNo!==3)
+function canEditStatus(userId,infoTabNo){
+  return canEdit(userId) && (infoTabNo!==3)
 }
 
 const status=[Status.ToBe,Status.Being,Status.Done,Status.Canceled];
@@ -189,9 +189,16 @@ export default class PushPanel extends Component {
                       },()=>{
                         this.refresh(status[this.state.infoTabNo-1]);
                       })
-
-
                     }
+                    if(this.state.infoTabNo===2){
+                      this.setState({
+                        measureIndex:null,
+                        solutionList:null,
+                        measureShow:false
+                      },()=>{
+                        this.refresh(status[this.state.infoTabNo-1]);
+                      })
+                    }else
                     if(this.state.measureIndex===null){
                       this.setState({
                         measureIndex:index
@@ -207,7 +214,7 @@ export default class PushPanel extends Component {
     )
   }
 
-  _renderListByTimeType(type){
+  _renderListByTimeType(type,displayLabel){
     var label=type===1?I18N.Setting.ECM.PushPanel.ThisMonth
               :type===2?I18N.Setting.ECM.PushPanel.Last3Month
               :I18N.Setting.ECM.PushPanel.Earlier;
@@ -239,7 +246,7 @@ export default class PushPanel extends Component {
     }
     return(
       <div className='row'>
-        <div className="label">{label}</div>
+        {displayLabel?<div className="label">{label}</div>:null}
         {List}
       </div>
     )
@@ -258,9 +265,9 @@ export default class PushPanel extends Component {
     else {
       return(
         <div ref='content' className="content">
-          {this._renderListByTimeType(1)}
-          {this._renderListByTimeType(2)}
-          {this._renderListByTimeType(3)}
+          {this._renderListByTimeType(1,this.state.infoTabNo===1)}
+          {this._renderListByTimeType(2,this.state.infoTabNo===1)}
+          {this._renderListByTimeType(3,this.state.infoTabNo===1)}
         </div>
       )
     }
@@ -344,10 +351,11 @@ export default class PushPanel extends Component {
   _renderOperation(){
     var problem=this.state.solutionList.getIn([this.state.measureIndex,'EnergyProblem']),
         user=problem.get('CreateUserName'),
-        status=problem.get('Status');
+        status=problem.get('Status'),
+        createUserId=problem.get('CreateUserId');
     return(
       <div className="jazz-ecm-push-operation">
-        <StatusCmp status={status} canEdit={canEditStatus(this.state.infoTabNo)} onChange={this._onStatusChange.bind(this)}/>
+        <StatusCmp status={status} canEdit={canEditStatus(createUserId,this.state.infoTabNo)} onChange={this._onStatusChange.bind(this)}/>
         {this._renderPersonInCharge(problem,true)}
         <div>{`${I18N.Setting.ECM.PushPanel.CreateUser}：${user || '-'}`}</div>
       </div>
@@ -474,6 +482,9 @@ export default class PushPanel extends Component {
   componentWillReceiveProps(nextProps) {
     if(nextProps.hierarchyId !== this.props.hierarchyId) {
       this.refresh(Status.ToBe,nextProps.hierarchyId);
+      if(PushIsFull()){
+         MeasuresAction.getSupervisor(nextProps.hierarchyId);
+      }
     }
   }
 
