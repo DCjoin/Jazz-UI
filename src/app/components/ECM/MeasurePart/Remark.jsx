@@ -37,6 +37,7 @@ class AddRemark extends Component{
         <ViewableTextField {...prop}/>
         <div>
           <RaisedButton
+            style={{border:'1px solid #ececec'}}
             label={I18N.Common.Button.Save}
             onClick={()=>{this.props.onSave(this.state.value)}} />
           <FlatButton
@@ -74,7 +75,7 @@ class RemarkItem extends Component{
   render(){
     var j2d=DataConverter.JsonToDateTime;
     let {Remark,CreateUserName,CreateUserId,CreateTime}=this.props.remark.toJS();
-    var info=`${moment(j2d(CreateTime)).format('YYYY-MM-DD hh:mm')} ${CreateUserName}`;
+    var info=`${moment(j2d(CreateTime)).format('YYYY-MM-DD HH:mm')} ${CreateUserName}`;
     return(
       <div className="remarkItem">
         <div className="text">{this.displayText(Remark)}</div>
@@ -152,7 +153,7 @@ export default class Remark extends Component {
           <div className="measure-remark">
             <div className="title">
               <div className="name">{I18N.Remark.Label}</div>
-              {this.props.canEdit && <div className={classNames({'addBtn': true,'active':!this.state.addRemark})} onClick={this._onAdd.bind(this)}>{I18N.Common.Button.Add}</div>}  
+              {this.props.canEdit && <div className={classNames({'addBtn': true,'active':!this.state.addRemark})} onClick={this._onAdd.bind(this)}>{I18N.Common.Button.Add}</div>}
             </div>
             {this.state.addRemark && <AddRemark onSave={this._onSave.bind(this)} onCancel={this._onCancel.bind(this)}/>}
             {this.state.remarkList.map(remark=>(

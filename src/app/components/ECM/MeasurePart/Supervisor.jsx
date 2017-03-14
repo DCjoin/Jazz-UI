@@ -157,12 +157,11 @@ class SupervisorDropDownMenu extends Component{
   state={
     operationMenuOpen:false,
     anchorEl:null,
-    person:this.props.person,
     editDialogShow:false
   }
 
   render(){
-    var {person}=this.state;
+    var {person}=this.props;
     var me=this;
 
     var styles={
@@ -195,13 +194,10 @@ class SupervisorDropDownMenu extends Component{
 
     var handleMenuItemClick= (person)=>{
       handleRequestClose();
-      this.setState({
-        person:Immutable.fromJS(person)
-      });
       this.props.onSuperviorClick(person.Id);
     };
 
-    var label=this.state.person?`${person.get('Name')} ${person.get('PhoneNumber')}`:I18N.Setting.ECM.SelectSupervior;
+    var label=person?`${person.get('Name')} ${person.get('PhoneNumber')}`:I18N.Setting.ECM.SelectSupervior;
     return(
       <div>
         <FlatButton label={label} labelPosition="before" labelStyle={styles.label} style={styles.btnStyle} icon={<FontIcon className="icon-arrow-down" style={styles.label}/>} onClick={handleTouchTap}/>
@@ -234,7 +230,7 @@ class SupervisorDropDownMenu extends Component{
                                             list.push(
                                               <div className={classNames({
                                             'person-item': true,
-                                            'selected':me.props.person && me.props.person.get('Id')===Id
+                                            'selected':person && person.get('Id')===Id
                                           })} onClick={()=>{handleMenuItemClick(supervisor)}}>
                                                 <div className="name">{`${Name} ${PhoneNumber}`}</div>
                                                 <div className="edit" onClick={(e)=>{
