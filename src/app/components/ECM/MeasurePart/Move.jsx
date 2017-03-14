@@ -6,7 +6,6 @@ const leavingSpringConfig = {stiffness: 60, damping: 15};
 const Move = React.createClass({
   render() {
     var {destX,destY,originX,originY}=this.props;
-
     const defaultStyle={
       x: destX,
       y: destY,
@@ -21,7 +20,7 @@ const Move = React.createClass({
         {interpolatingStyle  => {
           var {x,y}=interpolatingStyle;
           return(
-            <FontIcon className="icon-to-ecm" style = {{
+            <FontIcon key={`${x}_${y}`} className="icon-to-ecm" style = {{
                 position:'fixed',
                 transform:`translate3d(${originX+destX-x}px, ${originY+destY-y}px, 0) rotateY(180deg)`,
                 WebkitTransform: `translate3d(${originX+destX-x}px, ${originY+destY-y}px, 0) rotateY(180deg)`,
