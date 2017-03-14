@@ -1733,7 +1733,7 @@ let CommonFuns = {
 
       //if the data sequence does not contain such a time, insert one
       while ((keyTime - 0) < endTime) {
-        var timeJson = '/Date(' + (keyTime - 0) + ')/',
+        var timeJson = data.NavigatorData ? '/Date(' + (keyTime - 0) + ')/' : moment(keyTime).subtract(8, 'hours').format('YYYY-MM-DDTHH:mm:ss'),
           exists = hashtable[i][timeJson];
 
         if (!exists)
