@@ -288,6 +288,16 @@ let TagAction = {
       }
     });
   },
+
+  manualScanTag: function(tagId, startTime, endTime) {
+    Ajax.get(
+      util.replacePathParams(
+        '/vee/manualscantag/{tagId}', 
+        tagId), {
+        params: {startTime, endTime}
+      }
+    );
+  }
 };
 
 module.exports = TagAction;

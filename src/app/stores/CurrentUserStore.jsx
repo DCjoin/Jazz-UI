@@ -5,18 +5,22 @@ import Immutable from 'immutable';
 import { List, updater, update, Map } from 'immutable';
 
 import CurrentUser from '../constants/actionType/CurrentUser.jsx';
+import Measures from '../constants/actionType/Measures.jsx';
 import LoginActionType from '../constants/actionType/Login.jsx';
 import RoutePath from '../util/RoutePath.jsx';
 import PermissionCode from '../constants/PermissionCode.jsx';
+import _ from 'lodash';
 
 let _currentUser = null,
   _error = null,
-  _currentPrivilege = null;
+  _currentPrivilege = null,
+  _ecmHasBubble=false;
 let CURRENT_USER_EVENT = 'currentuser',
   PASSWORD_ERROR_EVENT = 'passworderror',
   PASSWORD_SUCCESS_EVENT = 'passwordsuccess',
   CURRENT_PRIVILEGE_EVENT = 'currentprivilege';
 
+let {bubbleType}=CurrentUser;
 const PRIVILEGE_ADMIN = [
   PermissionCode.MAP_VIEW.READONLY,
   PermissionCode.ENERGY_MANAGE.FULL,
@@ -157,6 +161,13 @@ var CurrentUserStore = assign({}, PrototypeStore, {
   return this.getCurrentPrivilege().indexOf(code+'')>-1;
 
   },
+  //未读标志
+  setEcmBubble:function(data){
+    _ecmHasBubble=_.indexOf(data,true)>-1;
+  },
+  getEcmBubble:function(){
+    return _ecmHasBubble;
+  },
   getMainMenuItems: function() {
     var menuItems = [];
     if (!this.getCurrentPrivilege()) return
@@ -175,6 +186,7 @@ var CurrentUserStore = assign({}, PrototypeStore, {
       menuItems.push(
         {
           getPath: RoutePath.ecm,
+          hasBubble:this.getEcmBubble(),
           title: I18N.MainMenu.SaveSchemeTab
         }
       );
@@ -365,7 +377,8 @@ var CurrentUserStore = assign({}, PrototypeStore, {
 
 });
 
-var CurrentUserAction = CurrentUser.Action;
+var CurrentUserAction = CurrentUser.Action,
+    MeasuresAction=Measures.Action;
 
 CurrentUserStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
@@ -390,6 +403,11 @@ CurrentUserStore.dispatchToken = AppDispatcher.register(function(action) {
       _currentUser = null;
       _currentPrivilege = null;
       _error = null;
+      break;
+    //已读未读修改
+    case MeasuresAction.GET_CONTAINS_UNREAD:
+      CurrentUserStore.setEcmBubble(action.data);
+      CurrentUserStore.emitCurrentUserChange();
       break;
   }
 });

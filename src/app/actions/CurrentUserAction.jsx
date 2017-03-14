@@ -106,7 +106,7 @@ let CurrentUserAction = {
         });
       }
     });
-  },
+  }
 };
 
 module.exports = CurrentUserAction;

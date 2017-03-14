@@ -4,7 +4,7 @@ export default {
   // ServeAddress: "http://sp0117.test33.energymost.com/webapihost",
 
   // ServeAddress: "http://10.177.202.14/webapihost",
-  ServeAddress: "http://sp1.test35.energymost.com/webapihost",
+  ServeAddress: "http://sp1.test36.energymost.com/webapihost",
   // ServeAddress: "http://sp1.dev.energymost.com/webapihost",
   // ServeAddress: "http://localhost:8080",
   APIBasePath: "/API",

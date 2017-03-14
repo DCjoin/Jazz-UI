@@ -5,6 +5,7 @@ import { CircularProgress, FontIcon, SelectField, TextField, RadioButton} from '
 import classSet from 'classnames';
 import CommonFuns from '../../util/Util.jsx';
 import FlatButton from '../../controls/FlatButton.jsx';
+import UploadForm from 'controls/UploadForm.jsx';
 import ViewableTextField from '../../controls/ViewableTextField.jsx';
 import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
 import ReportAction from '../../actions/ReportAction.jsx';
@@ -224,6 +225,56 @@ var ReportRightPanel = React.createClass({
       }).toJS();
     }
   },
+  _onUploadDone(iframe) {
+    var json = iframe.contentDocument.body.innerHTML;
+    var obj = JSON.parse(json);
+    var reportItem = this.state.reportItem;
+    if (obj.success === true) {
+      reportItem = reportItem.set('templateId', obj.TemplateId);
+      ReportAction.getTemplateListByCustomerId(this.context.currentRoute.params.customerId, this.state.sortBy, 'asc');
+      this.setState({
+        reportItem: reportItem,
+        sheetNames: Immutable.fromJS(obj.SheetList),
+        showUploadDialog: false
+      },()=>{
+        this._updateReportItem(reportItem,Immutable.fromJS(obj.SheetList))
+      });
+    } else {
+      this.setState({
+        showUploadDialog: false,
+        fileName: ''
+      });
+      var errorCode = obj.UploadResponse.ErrorCode,
+        errorMessage;
+      if (errorCode === -1) {
+        errorMessage = I18N.format(I18N.EM.Report.DuplicatedName,fileName);
+      }
+      if (errorMessage) {
+        this.setState({
+          errorMsg:errorMessage
+        });
+      }
+    }
+  },
+  _onChangeFile(event) {
+      var file = event.target.files[0];
+      if(!file) return;
+      var fileName = file.name;
+
+      if (!CommonFuns.endsWith(fileName.toLowerCase(), '.xlsx') && 
+        !CommonFuns.endsWith(fileName.toLowerCase(), '.xls')) {
+      this.setState({
+        errorMsg:I18N.EM.Report.WrongExcelFile
+      })
+        return;
+      }
+      this.refs.upload_tempalte.upload();
+      this.setState({
+        fileName,
+        showUploadDialog: true
+      });
+  },
+  /*
   _handleFileSelect(event) {
     var me = this;
     var file = event.target.files[0];
@@ -264,10 +315,12 @@ var ReportRightPanel = React.createClass({
         var errorCode = obj.UploadResponse.ErrorCode,
           errorMessage;
         if (errorCode === -1) {
-          errorMessage = I18N.EM.Report.DuplicatedName;
+          errorMessage = I18N.format(I18N.EM.Report.DuplicatedName,fileName);
         }
         if (errorMessage) {
-          CommonFuns.popupErrorMessage(errorMessage, '', true);
+          me.setState({
+            errorMsg:errorMessage
+          });
         }
       }
     };
@@ -308,6 +361,36 @@ var ReportRightPanel = React.createClass({
       fileName: fileName,
       showUploadDialog: true
     });
+  },
+  */
+  _renderErrorMsg(){
+    var that = this;
+    if( new RegExp(
+        I18N.EM.Report.DuplicatedName.replace(/{\w}/, '(.)*')
+      ).test(this.state.errorMsg)
+    ) {
+      return (
+        <Dialog open={true} title={I18N.EM.Report.UploadNewTemplate} actions={[
+          (<FlatButton label={I18N.EM.Report.Upload} onClick={() => {
+            this.refs.upload_tempalte.upload({IsReplace: true});
+            this.setState({
+              errorMsg: null,
+            }, () => {
+              this.refs.upload_tempalte.reset();
+            });
+          }}/>),
+          (<FlatButton label={I18N.Common.Button.Cancel2} onClick={() => {
+            this.refs.upload_tempalte.reset();
+            this.setState({
+              errorMsg: null,
+            });
+          }}/>),
+        ]}>
+        {this.state.errorMsg}
+        </Dialog>
+      );
+    }
+    return null;
   },
   _renderUploadDialog() {
     if (!this.state.showUploadDialog) {
@@ -641,7 +724,21 @@ var ReportRightPanel = React.createClass({
               <RadioButton onCheck={me._onTemplateTypeChange} style={{
             width: '250px'
           }} checked={me.state.checkedValue === "newTemplate"} value="newTemplate" label={I18N.EM.Report.UploadTemplate}/>
-              {uploadButton}
+              
+              {/*uploadButton*/}
+              <RaisedButton labelPosition="before" label={I18N.EM.Report.UploadTemplate}>
+                <UploadForm 
+                  ref={'upload_tempalte'}
+                  action={'TagImportExcel.aspx?Type=ReportTemplate'} 
+                  fileName={'templateFile'}
+                  enctype={'multipart/form-data'}
+                  method={'post'}
+                  onload={this._onUploadDone}
+                  onChangeFile={this._onChangeFile}>
+                  <input type="hidden" name='CustomerId' value={parseInt(this.context.currentRoute.params.customerId)}/>
+                  <input type="hidden" name='IsActive' value={true}/>
+                </UploadForm>
+              </RaisedButton>
             </div>
           </div>
         );
@@ -705,6 +802,7 @@ var ReportRightPanel = React.createClass({
           </div>
           {deleteDialog}
           {uploadDialog}
+          {this._renderErrorMsg()}
         </div>
       );
     }

@@ -12,7 +12,11 @@ import moment from 'moment';
 
 var _solutionList=null,
     _checkList=[],
-    _text=null;
+    _text=null,
+    _supervisors=null,
+    _activeCounts=[],
+    _unRead=[],
+    _remarkList=null;
 const MeasuresStore = assign({}, PrototypeStore, {
   init(){
     _solutionList=null;
@@ -195,6 +199,45 @@ const MeasuresStore = assign({}, PrototypeStore, {
 
     return dto
   },
+  setSupervisor(data){
+    _supervisors=Immutable.fromJS(data);
+  },
+  getSupervisor(){
+    return _supervisors
+  },
+  setActiveCounts(data){
+    _activeCounts=data
+  },
+  getActiveCounts(){
+    return _activeCounts
+  },
+  setUnread(data){
+    _unRead=data
+  },
+  getUnread(){
+    return _unRead
+  },
+  setRemarkList(data){
+    _remarkList=Immutable.fromJS(data)
+  },
+  getRemarkList(){
+    return _remarkList
+  },
+  setSnackBarText(status){
+    switch (status) {
+      case Status.ToBe:
+          this.initText(I18N.Setting.ECM.StatusToBeText)
+        break;
+      case Status.Done:
+          this.initText(I18N.Setting.ECM.StatusToDoneText)
+          break;
+        case Status.Canceled:
+            this.initText(I18N.Setting.ECM.StatusToCancelText)
+          break;
+      default:
+
+    }
+  }
 });
 
 MeasuresStore.dispatchToken = AppDispatcher.register(function(action) {
@@ -219,7 +262,29 @@ MeasuresStore.dispatchToken = AppDispatcher.register(function(action) {
         MeasuresStore.merge(action.paths,action.value);
         MeasuresStore.emitChange()
         break;
+    case Action.GET_SUPERVISOR_SUCCESS:
+        MeasuresStore.setSupervisor(action.data);
+        MeasuresStore.emitChange()
+        break;
+    case Action.ASSIGN_SUPERVISOR_SUCCESS:
+        MeasuresStore.initText(I18N.Setting.ECM.AssignSuperviorSuccess);
+        MeasuresStore.emitChange()
+        break;
+    case Action.GET_ACTIVE_COUNTS:
+        MeasuresStore.setActiveCounts(action.data);
+        break;
+    case Action.GET_CONTAINS_UNREAD:
+        MeasuresStore.setUnread(action.data);
+          break;
       default:
+    case Action.GET_REMARK_LIST_SUCCESS:
+        MeasuresStore.setRemarkList(action.data);
+        MeasuresStore.emitChange()
+        break;
+    case Action.SET_SNACKBAR_TEXT:
+        MeasuresStore.setSnackBarText(action.data);
+        MeasuresStore.emitChange()
+        break;
     }
   });
 

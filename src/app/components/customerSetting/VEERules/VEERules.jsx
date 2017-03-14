@@ -266,7 +266,8 @@ var VEERules = React.createClass({
         handlerSwitchTab: this._switchTab,
         toggleList: this._toggleList,
         closedList: this.state.closedList,
-        merge: this._handlerMerge
+        merge: this._handlerMerge,
+        onManualScan: VEEAction.manualScan
       };
     let list = (!this.state.closedList) ? <div style={{
       display: 'flex'

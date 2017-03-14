@@ -6,7 +6,7 @@ import CommonFuns from 'util/util.jsx';
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
 import {measureSample} from '../../../../mockData/measure.js';
 import Immutable from 'immutable';
-
+import BubbleIcon from '../BubbleIcon.jsx';
 function getUrl(url) {
 	return "url(" + url+")";
 	//return "url(" + Config.ServeAddress + url+")";
@@ -119,10 +119,14 @@ export default class MeasuresItem extends Component {
 
 	render() {
     return(
-      <div className="jazz-energy-conservation-measuresItem" onClick={this.props.onClick}>
-        {this._renderName()}
-        {this._renderContent()}
-      </div>
+			<div className="jazz-complex-measuresItem">
+				{this.props.displayUnread && !this.props.measure.getIn(['EnergyProblem','IsRead']) && <BubbleIcon style={{width:'5px',height:'5px',marginRight:'10px'}}/>}
+				<div className="jazz-energy-conservation-measuresItem" onClick={this.props.onClick}>
+					{this._renderName()}
+					{this._renderContent()}
+				</div>
+			</div>
+
     )
 
   }
@@ -136,6 +140,7 @@ MeasuresItem.propTypes = {
   personInCharge:React.PropTypes.object,
   action:React.PropTypes.any,
 	onClick:React.PropTypes.func,
+	displayUnread:React.PropTypes.bool
 };
 
 MeasuresItem.defaultProps = {

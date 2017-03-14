@@ -54,6 +54,15 @@ module.exports = {
     getEnergysolution:'/energysolution/{hierarchyId}/{status}/{smallSize}/{size}',
     pushProblem:'/energysolution/problem/push',
     deleteProblem:'/energysolution/problem/delete/{problemId}',
-    updateSolution:'/energysolution/update'
+    updateSolution:'/energysolution/update',
+    getSupervisor:'/energysolution/supervisor/{hierarchyId}',
+    saveSupervisor:'/energysolution/supervisor',
+    assignSupervisor:'/energysolution/problem/supervisor/assignation/{problemId}/{supervisorId}',
+    activecounts:'/energysolution/problem/activecounts/{hierarchyId}',
+    containsunread:'/energysolution/problem/containsunread/{hierarchyId}',
+    readProblem:'/energysolution/problem/read/{problemId}',
+    remarkList:'/energysolution/problem/remark/{problemId}',
+    addRemark:'/energysolution/problem/remark',
+    deleteRemark:'/energysolution/problem/remark/delete/{remarkId}'
   }
 };

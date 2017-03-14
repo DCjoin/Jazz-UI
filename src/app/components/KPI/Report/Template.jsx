@@ -2,8 +2,9 @@
 import React from "react";
 import ReactDom from 'react-dom';
 import CommonFuns from 'util/Util.jsx';
-import { CircularProgress} from 'material-ui';
+import { CircularProgress, RaisedButton} from 'material-ui';
 import NewDialog from 'controls/NewDialog.jsx';
+import UploadForm from 'controls/UploadForm.jsx';
 import ReportAction from 'actions/KPI/ReportAction.jsx';
 import TemplateList from './TemplateList.jsx';
 import ReportStore from 'stores/KPI/ReportStore.jsx';
@@ -50,6 +51,47 @@ var Template = React.createClass({
     }
     return onlyRead;
   },
+
+  _onUploadDone(iframe) {
+    var json = iframe.contentDocument.body.innerHTML;
+    var obj = JSON.parse(json);
+    if (obj.success === true) {
+      ReportAction.getTemplateListByCustomerId(parseInt(me.context.currentRoute.params.customerId), me.state.sortBy, 'asc');
+      this.setState({
+        showUploadDialog: false
+      });
+    } else {
+      var errorCode = obj.UploadResponse.ErrorCode,
+      errorMessage=null;
+      if (errorCode === -1) {
+        errorMessage = I18N.format(I18N.EM.Report.DuplicatedName, this.state.fileName);
+      }
+      this.setState({
+        showUploadDialog: false,
+        fileName: '',
+        errorMsg:errorMessage
+      });
+    }
+  },
+  _onChangeFile(event) {
+      var file = event.target.files[0];
+      if(!file) return;
+      var fileName = file.name;
+
+      if (!CommonFuns.endsWith(fileName.toLowerCase(), '.xlsx') && 
+        !CommonFuns.endsWith(fileName.toLowerCase(), '.xls')) {
+      this.setState({
+        errorMsg:I18N.EM.Report.WrongExcelFile
+      })
+        return;
+      }
+      this.refs.upload_tempalte.upload();
+      this.setState({
+        fileName,
+        showUploadDialog: true
+      });
+  },
+  /*
   _handleFileSelect(event) {
     var me = this;
     var file = event.target.files[0];
@@ -81,7 +123,7 @@ var Template = React.createClass({
         var errorCode = obj.UploadResponse.ErrorCode,
           errorMessage=null;
         if (errorCode === -1) {
-          errorMessage = I18N.format(I18N.Setting.KPI.Report.DuplicatedName,fileName);
+          errorMessage = I18N.format(I18N.EM.Report.DuplicatedName,fileName);
         }
         me.setState({
           showUploadDialog: false,
@@ -128,6 +170,7 @@ var Template = React.createClass({
       showUploadDialog: true
     });
   },
+  */
   _renderUploadDialog() {
     if (!this.state.showUploadDialog) {
       return null;
@@ -141,26 +184,52 @@ var Template = React.createClass({
   },
   _renderErrorMsg(){
     var that = this;
-    var onClose = ()=> {
-      if(this.state.errorMsg===I18N.EM.Report.WrongExcelFile){
-        this.refs.fileInput.value='';
-      }
-      that.setState({
-        errorMsg: null,
-      });
-    };
-    if (this.state.errorMsg!==null) {
-      return (<NewDialog
-        ref = "_dialog"
-        title={I18N.Platform.ServiceProvider.ErrorNotice}
-        modal={false}
-        open={!!this.state.errorMsg}
-        onRequestClose={onClose}
-        >
+    if( new RegExp(
+        I18N.EM.Report.DuplicatedName.replace(/{\w}/, '(.)*')
+      ).test(this.state.errorMsg)
+    ) {
+      return (
+        <Dialog open={true} title={I18N.EM.Report.UploadNewTemplate} actions={[
+          (<FlatButton label={I18N.EM.Report.Upload} onClick={() => {
+            this.refs.upload_tempalte.upload({IsReplace: true});
+            this.setState({
+              errorMsg: null,
+            }, () => {
+              this.refs.upload_tempalte.reset();
+            });
+          }}/>),
+          (<FlatButton label={I18N.Common.Button.Cancel2} onClick={() => {
+            this.refs.upload_tempalte.reset();
+            this.setState({
+              errorMsg: null,
+            });
+          }}/>),
+        ]}>
         {this.state.errorMsg}
-      </NewDialog>);
+        </Dialog>
+      );
     } else {
-      return null;
+      var onClose = ()=> {
+        if(this.state.errorMsg===I18N.EM.Report.WrongExcelFile){
+          this.refs.fileInput.value='';
+        }
+        that.setState({
+          errorMsg: null,
+        });
+      };
+      if (this.state.errorMsg!==null) {
+        return (<Dialog
+          ref = "_dialog"
+          title={I18N.Platform.ServiceProvider.ErrorNotice}
+          modal={false}
+          open={!!this.state.errorMsg}
+          onRequestClose={onClose}
+          >
+          {this.state.errorMsg}
+        </Dialog>);
+      } else {
+        return null;
+      }
     }
   },
   componentWillMount: function() {
@@ -200,7 +269,7 @@ var Template = React.createClass({
     var templateContent = (this.state.isLoading ? <div style={{
       textAlign: 'center',
       marginTop: '400px'
-    }}><CircularProgress  mode="indeterminate" size={80} /></div> : <TemplateList ref='templateList' templateList={this.state.templateList} onlyRead={this.state.onlyRead}></TemplateList>);
+    }}><CircularProgress  mode="indeterminate" size={80} /></div> : <TemplateList ref='templateList' templateList={this.state.templateList} onlyRead={this.state.onlyRead} sortBy={this.state.sortBy} customerId={this.context.currentRoute.params.customerId}></TemplateList>);
     var uploadDom = (this.state.onlyRead ? null : <div className="jazz-template-action">
       <div className='jazz-template-upload-button'>
         <label ref="fileInputLabel" className="jazz-template-upload-label" htmlFor="fileInput">
@@ -217,7 +286,22 @@ var Template = React.createClass({
               {I18N.MainMenu.Template}
             </div>
             <div className="jazz-template-topbar-right">
-              {uploadDom}
+              {/*uploadDom*/}
+              <div style={{marginRight: 10}}>
+                <RaisedButton labelPosition="before" label={I18N.EM.Report.UploadTemplate}>
+                  <UploadForm 
+                    ref={'upload_tempalte'}
+                    action={'TagImportExcel.aspx?Type=ReportTemplate'} 
+                    fileName={'templateFile'}
+                    enctype={'multipart/form-data'}
+                    method={'post'}
+                    onload={this._onUploadDone}
+                    onChangeFile={this._onChangeFile}>
+                    <input type="hidden" name='CustomerId' value={parseInt(this.context.currentRoute.params.customerId)}/>
+                    <input type="hidden" name='IsActive' value={true}/>
+                  </UploadForm>
+                </RaisedButton>
+              </div>
             </div>
           </div>
         </div>

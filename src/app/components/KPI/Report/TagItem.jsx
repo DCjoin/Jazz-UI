@@ -44,13 +44,13 @@ let TagItem = React.createClass({
       if (!me.props.disabled) {
         deleteButton = <div className="jazz-kpi-tag-deleteBtn"><FontIcon className="icon-clean" hoverColor='#6b6b6b' color="#939796" onClick={me._onTagItemUnselected} style={cleanIconStyle}></FontIcon></div>;
       }
-      displayIndex = <div>{me.props.index + 1}</div>;
+      displayIndex = <div>{(me.props.index < 9 ? '0' : '') + (me.props.index + 1)}</div>;
       let name=ReportStore.getHierarchyName(this.props.tag);
       hierarchyName=<div title={name}>{name}</div>
     }
 
     return (
-      <div className={classNames(
+      <div data-idx={me.props.index} className={classNames(
         {
           'jazz-report-tag-item-left': me.props.leftPanel,
           'jazz-report-tag-item-right': !me.props.leftPanel

@@ -11,6 +11,7 @@ import Dialog from '../../../controls/NewDialog.jsx';
 import ChartPanel from './RawDataChartPanel.jsx';
 import FlatButton from '../../../controls/FlatButton.jsx';
 import Immutable from 'immutable';
+import moment from 'moment';
 let {dateAdd} = CommonFuns;
 let PTagRawData = React.createClass({
   propTypes: {
@@ -264,6 +265,14 @@ let PTagRawData = React.createClass({
         cursor: 'pointer',
         color: '#767a7a'
       };
+    var autoRepairBtn = <FlatButton key={'autoRepairBtn'} label={I18N.Setting.VEEMonitorRule.AutoRepair}
+    style={pauseBtnStyle} labelStyle={labelStyle} onClick={() => {
+      TagAction.manualScanTag(
+        this.props.selectedTag.get('Id'), 
+        moment(this.state.start).subtract(8, 'hours').format('YYYY-MM-DDTHH:mm:ss'), 
+        moment(this.state.end).subtract(8, 'hours').format('YYYY-MM-DDTHH:mm:ss'),
+      )
+    }}/>;
     var pauseBtn = <FlatButton label={I18N.Setting.Tag.PTagRawData.PauseMonitor}
     style={pauseBtnStyle} labelStyle={labelStyle} onClick={this._onPauseDialogShow}/>;
 
@@ -286,6 +295,7 @@ let PTagRawData = React.createClass({
       endTime={this.state.endTime}  _onDateSelectorChanged={this._onDateSelectorChanged}/>
         </div>
         <div className='rightside'>
+          {autoRepairBtn}
           {rollbackBtn}
           {this.state.veeTagStatus.size === 0 ? null : pauseBtn}
            <FontIcon className='icon-taglist-fold' style={listBtnStyle} ref="listBtn" onClick={this._onSwitchListView}/>

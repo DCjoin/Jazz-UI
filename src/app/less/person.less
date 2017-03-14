@@ -1,0 +1,71 @@
+.person{
+  margin-top:-5px;
+  .indetail{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  .labelitem{
+      font-size: 12px;
+  }
+}
+
+.person-item{
+  display: flex;
+  flex-direction: row;
+  width:200px;
+  height:30px;
+  justify-content:space-between;
+  align-items: center;
+  color:black;
+  &-sys{
+    display: flex;
+    flex-direction: row;
+    width:200px;
+    height:30px;
+    justify-content:space-between;
+    align-items: center;
+    color: @schneiderGray;
+    font-size: 12px;
+  }
+  &.selected{
+    background-color: @hoverGray;
+  }
+  .name{
+    font-size: 12px;
+  }
+  .edit{
+    min-width: 40px;
+    font-size: 12px;
+    text-decoration:underline;
+    display: none;
+    &:hover{
+      color: @schneiderBlue;
+      cursor: pointer;
+    }
+  }
+  &:hover{
+    cursor: pointer;
+    background-color: @hoverGray;
+    .edit{
+      display: block;
+    }
+  }
+}
+.add{
+  font-size: 14px;
+  text-decoration:underline;
+  line-height:40px;
+  &:hover{
+    color: @schneiderBlue;
+    cursor: pointer;
+  }
+}
+.supervisor-window{
+  >ul{
+    list-style-type: none;
+    >li{
+      margin-top:10px
+    }
+  }
+}

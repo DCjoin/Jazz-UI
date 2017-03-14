@@ -1,8 +1,14 @@
 'use strict';
 
 import React from 'react';
+import ReactDom from 'react-dom';
 import { CircularProgress} from 'material-ui';
 import TagItem from './TagItem.jsx';
+import dragula from 'react-dragula';
+import 'react-dragula/dist/dragula.min.css';
+
+let _drake = null,
+_cancelDrop = false;
 
 let TagList = React.createClass({
   getInitialState: function() {
@@ -37,7 +43,31 @@ let TagList = React.createClass({
     this.props.onTagItemUnselected(id);
   },
 
-  componentDidMount: function() {},
+  componentDidUpdate: function(prevProps) {
+    if( !this.props.leftPanel ) {
+      if( prevProps.isLoading && !this.props.isLoading ) {        
+        var container = ReactDom.findDOMNode(this).querySelector('#dragula_container');
+        if( container ) {
+          _drake = dragula([container], {revertOnSpill: true});
+          _drake.on('dragend', (el) => {
+            if( _cancelDrop ) {
+              _cancelDrop = false;
+            } else {
+              let toIdx = 0,
+              fromIdx = el.dataset['idx'];
+              if(el.previousElementSibling) {
+                toIdx = el.previousElementSibling.dataset['idx'];
+              }
+              this.props.onChangeOrder(fromIdx*1, toIdx*1);
+            }
+          });
+          _drake.on('cancel', () => {
+            _cancelDrop = true;
+          });
+        }
+      }
+    }
+  },
   componentWillUnmount: function() {},
   render() {
     let me = this;
@@ -49,6 +79,7 @@ let TagList = React.createClass({
     if (tagList && tagList.size !== 0) {
       tagItems = tagList.map(function(item, i) {
         let props = {
+          key: item.get('Id'),
           id: item.get('Id'),
           name: item.get('Name'),
           code: item.get('Code'),
@@ -74,7 +105,7 @@ let TagList = React.createClass({
             <CircularProgress  mode="indeterminate" size={80} />
           </div>;
     } else {
-      displayDom = <div>
+      displayDom = <div id='dragula_container'>
           {tagItems}
         </div>;
     }
