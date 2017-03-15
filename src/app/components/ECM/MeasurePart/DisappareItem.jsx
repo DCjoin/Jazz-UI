@@ -27,10 +27,10 @@ export default class DisappareItem extends Component {
 
   _getMoveProps(){
     return{
-      destX:this.props.destX-this.state.x,
-      destY:this.props.destY-this.state.y,
-      originX:this.props.width/2,
-      originY:90,
+      destX:this.props.destX,
+      destY:this.props.destY,
+      originX:this.state.x+this.props.width/2,
+      originY:this.state.y+90,
       onEnd:this.props.onEnd
     }
   }
