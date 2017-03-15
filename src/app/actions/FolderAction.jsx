@@ -7,6 +7,8 @@ import Immutable from 'immutable';
 let FolderAction = {
   getFolderTreeByHierarchyId(hierarchyId, isNew = false) {
     Ajax.post('/Dashboard/GetWdigetFolderTreeByHierarchyId', {
+      tag: 'GetWdigetFolderTreeByHierarchyId',
+      avoidDuplicate: true,
       params: {
         hierarchyId,
         isNew

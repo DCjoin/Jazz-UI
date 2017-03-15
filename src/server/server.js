@@ -88,7 +88,7 @@ server.route([{
     proxy: {
       passThrough: true,
         // uri: 'http://sp1.test30.energymost.com/webapihost/{path}',
-        uri: 'http://sp1.test35.energymost.com/webapihost/{path}',
+        uri: 'http://sp1.test36.energymost.com/webapihost/{path}',
         onResponse: function (err, res, request, reply, settings, ttl) {
             return reply(res);
         }
@@ -100,7 +100,7 @@ server.route([{
   handler: {
     proxy: {
     	passThrough: true,
-        uri: 'http://sp1.test35.energymost.com/webapihost/{path}',
+        uri: 'http://sp1.test36.energymost.com/webapihost/{path}',
         // uri: 'http://sp1.dev.energymost.com/webapihost/{path}',
         onResponse: function (err, res, request, reply, settings, ttl) {
             return reply(res);
