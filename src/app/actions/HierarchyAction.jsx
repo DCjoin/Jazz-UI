@@ -39,6 +39,7 @@ let HierarchyAction = {
     Ajax.get(util.replacePathParams(Path.Hierarchy.GetBuildingList, customerId), {
       params: {customerId},
       tag: 'getBuildingListByCustomerId',
+      avoidDuplicate: true,
       success: function(buildingList) {
 
         AppDispatcher.dispatch({

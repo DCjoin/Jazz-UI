@@ -10,6 +10,8 @@ const MeasuresAction = {
     _hierarchyId=hierarchyId;
     _status=status;
     Ajax.get( util.replacePathParams(Path.ECM.getEnergysolution, hierarchyId,status,ThumbnailSize,DetailSize), {
+      tag: 'getGroupSettingsList',
+      avoidDuplicate: true,
       success: (res) => {
         AppDispatcher.dispatch({
           type: Action.GET_ENERGY_SOLUTION_SUCCESS,
