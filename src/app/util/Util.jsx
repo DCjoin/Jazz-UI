@@ -1736,7 +1736,7 @@ let CommonFuns = {
         var timeJson = '/Date(' + (keyTime - 0) + ')/',
           exists = hashtable[i][timeJson];
 
-        if (!exists)
+        if (!exists && data.NavigatorData)
           energy.splice(index, 0, {
             DataQuality: null,
             DataValue: null,
