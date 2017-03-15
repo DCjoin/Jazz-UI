@@ -106,13 +106,14 @@ const MeasuresAction = {
       }
     });
   },
-  assignSupervisor(problemId,supervisorId,callback){
+  assignSupervisor(problemId,supervisorId,IsConsultant,callback){
     var that=this;
     Ajax.post(util.replacePathParams(Path.ECM.assignSupervisor, problemId,supervisorId),
       {
       success: function(resBody) {
         AppDispatcher.dispatch({
-          type: Action.ASSIGN_SUPERVISOR_SUCCESS
+          type: Action.ASSIGN_SUPERVISOR_SUCCESS,
+          IsConsultant
         });
         that.getSupervisor();
         if(callback) callback()

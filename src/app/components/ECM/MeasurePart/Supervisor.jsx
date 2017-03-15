@@ -194,7 +194,10 @@ class SupervisorDropDownMenu extends Component{
 
     var handleMenuItemClick= (person)=>{
       handleRequestClose();
-      this.props.onSuperviorClick(person.Id);
+      if(this.props.person.get('Id')!==person.Id){
+        this.props.onSuperviorClick(person.Id);
+      }
+
     };
 
     var label=person?`${person.get('Name')} ${person.get('PhoneNumber')}`:I18N.Setting.ECM.SelectSupervior;

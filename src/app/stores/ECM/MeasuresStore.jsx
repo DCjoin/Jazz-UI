@@ -267,7 +267,8 @@ MeasuresStore.dispatchToken = AppDispatcher.register(function(action) {
         MeasuresStore.emitChange()
         break;
     case Action.ASSIGN_SUPERVISOR_SUCCESS:
-        MeasuresStore.initText(I18N.Setting.ECM.AssignSuperviorSuccess);
+        let text=action.IsConsultant?I18N.Setting.ECM.AndConsultant:'';
+        MeasuresStore.initText(I18N.format(I18N.Setting.ECM.AssignSuperviorSuccess,text));
         MeasuresStore.emitChange()
         break;
     case Action.GET_ACTIVE_COUNTS:
