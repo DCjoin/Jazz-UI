@@ -102,7 +102,7 @@ export default class MainPanel extends Component {
     if(this.state.infoTabNo === 1){
       var btn=ReactDom.findDOMNode(this.refs.push),destX,destY;
       if(btn){
-        destX=btn.getBoundingClientRect().left+60,
+        destX=btn.getBoundingClientRect().left+100,
         destY=btn.getBoundingClientRect().top;
       }
       return <NotPushPanel hierarchyId={this.context.hierarchyId} generatePositon={{destX,destY}}/>
