@@ -34,7 +34,7 @@ let ChartStatusStore = assign({}, PrototypeStore, {
         for (let i = 0, len = targetEnergyData.length; i < len; i++) {
           let target = targetEnergyData[i].Target;
           let status = {
-            id: me.getIdByTarget(target)
+            id: me.getIdByTarget(target,i)
           };
           if (i < seriesLength) { //如果有对应的状态，则保存；如果没有，则统一在assignStatus方法中添加状态
             let serie = widgetSeriesArr[i];
@@ -87,10 +87,10 @@ let ChartStatusStore = assign({}, PrototypeStore, {
   getSeriesStatus() {
     return _seriesStatus;
   },
-  getIdByTarget(target) {
+  getIdByTarget(target,index) {
     if (_bizType === 'Energy' && _energyType === 'Energy') {
       if (_submitParams.viewOption.TimeRanges.length > 1) {
-        return 'Id' + target.TimeSpan.StartTime + target.TimeSpan.EndTime + 'Type' + undefined;
+        return 'Id' + target.TimeSpan.StartTime + target.TimeSpan.EndTime +'Index'+index+'Type' + undefined;
       } else {
         return 'Id' + target.TargetId + 'Type' + target.Type;
       }
