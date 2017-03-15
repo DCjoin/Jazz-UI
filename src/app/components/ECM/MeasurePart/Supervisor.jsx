@@ -194,7 +194,7 @@ class SupervisorDropDownMenu extends Component{
 
     var handleMenuItemClick= (person)=>{
       handleRequestClose();
-      if(this.props.person.get('Id')!==person.Id){
+      if(this.props.person===null || this.props.person.get('Id')!==person.Id){
         this.props.onSuperviorClick(person.Id);
       }
 

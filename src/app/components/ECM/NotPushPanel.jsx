@@ -16,6 +16,7 @@ import Problem from './MeasurePart/Problem.jsx';
 import Solution from './MeasurePart/Solution.jsx';
 import SolutionGallery from './MeasurePart/SolutionGallery.jsx';
 import DisappareItem from './MeasurePart/DisappareItem.jsx';
+
 export default class NotPushPanel extends Component {
   constructor(props) {
     super(props);

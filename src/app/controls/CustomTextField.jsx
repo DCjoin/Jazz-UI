@@ -78,7 +78,7 @@ export default class CustomTextField extends Component {
 }
 
 CustomTextField.propTypes = {
-  width:React.PropTypes.number,
+  width:React.PropTypes.any,
   isNumber:React.PropTypes.bool,
   regexFn:React.PropTypes.func,
   onChange:React.PropTypes.func,
