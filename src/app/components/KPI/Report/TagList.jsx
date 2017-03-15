@@ -5,10 +5,34 @@ import ReactDom from 'react-dom';
 import { CircularProgress} from 'material-ui';
 import TagItem from './TagItem.jsx';
 import dragula from 'react-dragula';
-import 'react-dragula/dist/dragula.min.css';
+// import 'react-dragula/dist/dragula.min.css';
 
 let _drake = null,
 _cancelDrop = false;
+
+let handleWheel = function (e) {
+  var content = document.getElementById('dragula_container');
+  var container = content.parentElement.parentElement;
+  if(container && content){
+    var maxTop = content.clientHeight - container.clientHeight;
+    var minTop = 0;
+    if(e.deltaY > 0){
+      // scroll up
+      if(container.scrollTop >= maxTop){
+        container.scrollTop = maxTop
+      } else {
+        container.scrollTop += 100;
+      }
+    } else if(e.deltaY < 0){
+      // scroll down
+      if(container.scrollTop <= minTop){
+        container.scrollTop = minTop;
+      } else {
+        container.scrollTop -= 100;
+      }
+    }
+  }
+}
 
 let TagList = React.createClass({
   getInitialState: function() {
@@ -64,11 +88,21 @@ let TagList = React.createClass({
           _drake.on('cancel', () => {
             _cancelDrop = true;
           });
+          _drake.on('drag', (el, source) => {
+            setTimeout(() => {
+              let mirror = document.querySelector('.jazz-report-tag-item-right.gu-mirror');
+              mirror.addEventListener('mousewheel', handleWheel);
+            }, 0)
+          });
+
+          // document.getElementById('dragula_container').addEventListener('mousewheel', handleWheel);
         }
       }
     }
   },
-  componentWillUnmount: function() {},
+  componentWillUnmount: function() {
+    // document.getElementById('dragula_container').removeEventListener('mousewheel', handleWheel);
+  },
   render() {
     let me = this;
     if (me.props.isLoading === null) {
@@ -105,7 +139,7 @@ let TagList = React.createClass({
             <CircularProgress  mode="indeterminate" size={80} />
           </div>;
     } else {
-      displayDom = <div id='dragula_container'>
+      displayDom = <div id={this.props.leftPanel ? '' : 'dragula_container'}>
           {tagItems}
         </div>;
     }

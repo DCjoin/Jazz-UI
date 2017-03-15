@@ -30,7 +30,6 @@ var _generatorRequest = function( url, type, params ) {
 var _ajax = function(url, options) {
 
 	options = options || {};
-
   options.avoidDuplicate && options.tag && _abort(options.tag);
 
 	var realUrl = Config.ServeAddress + Config.APIBasePath + url,
