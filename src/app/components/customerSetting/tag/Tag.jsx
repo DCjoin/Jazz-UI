@@ -507,13 +507,10 @@ let Tag = React.createClass({
     };
     this.setState({
       selectedIndex: null,
-      selectedTag: Immutable.fromJS(tag)
-    }, () => {
-      this.setState({
-        formStatus: formStatus.ADD,
-        showBasic: true,
-        enableSave: false
-      });
+      selectedTag: Immutable.fromJS(tag),
+      formStatus: formStatus.ADD,
+      showBasic: true,
+      enableSave: false
     });
   },
 
