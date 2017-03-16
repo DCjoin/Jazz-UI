@@ -210,7 +210,8 @@ export default class PushPanel extends Component {
                     }
                   }}
                   usedInDetail={indetail}
-                  canEdit={canEditSupervisor(this.state.infoTabNo)}/>
+                  canEdit={canEditSupervisor(this.state.infoTabNo)}
+                  energySys={problem.get('EnergySys')}/>
     )
   }
 
