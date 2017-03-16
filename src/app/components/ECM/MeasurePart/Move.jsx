@@ -22,8 +22,10 @@ const Move = React.createClass({
           return(
             <FontIcon key={`${x}_${y}`} className="icon-to-ecm" style = {{
                 position:'fixed',
-                transform:`translate3d(${originX+destX-x}px, ${originY+destY-y}px, 0) rotateY(180deg)`,
-                WebkitTransform: `translate3d(${originX+destX-x}px, ${originY+destY-y}px, 0) rotateY(180deg)`,
+                left:originX+destX-x,
+                top:originY+destY-y,
+                transform:'rotateY(180deg)',
+                WebkitTransform: 'rotateY(180deg)',
               }} />)
         }}
       </Motion>

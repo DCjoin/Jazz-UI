@@ -181,7 +181,7 @@ export default class PushPanel extends Component {
     return(
       <Supervisor person={problem.get('Supervisor')} supervisorList={this.state.supervisorList}
                   onSuperviorClick={(id)=>{
-                    MeasuresAction.assignSupervisor(problem.get('Id'),id);
+                    MeasuresAction.assignSupervisor(problem.get('Id'),id,problem.get('IsConsultant'));
                     this._afterAnimation=()=>{
                       this.setState({
                         measureIndex:null,
