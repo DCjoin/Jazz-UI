@@ -125,6 +125,8 @@ const MeasuresAction = {
   },
   getActivecounts(hierarchyId,callback){
     Ajax.get(util.replacePathParams(Path.ECM.activecounts, hierarchyId), {
+      tag: 'getGroupSettingsList',
+      avoidDuplicate: true,
       success: (res) => {
         AppDispatcher.dispatch({
           type: Action.GET_ACTIVE_COUNTS,
@@ -138,6 +140,8 @@ const MeasuresAction = {
     Ajax.post(util.replacePathParams(Path.ECM.containsunread, hierarchyId),
       {
       params: statusArr,
+      tag: 'getGroupSettingsList',
+      avoidDuplicate: true,
       success: function(res) {
         AppDispatcher.dispatch({
           type: Action.GET_CONTAINS_UNREAD,
@@ -201,6 +205,12 @@ const MeasuresAction = {
       data: status,
     });
 
+  },
+  cleanSolutionList() {
+    AppDispatcher.dispatch({
+      type: Action.GET_ENERGY_SOLUTION_SUCCESS,
+      data: null,
+    })
   }
 }
 
