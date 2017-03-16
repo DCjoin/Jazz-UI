@@ -94,7 +94,7 @@ class SupervisorDialog extends Component{
       didChanged: (value)=>{this._onChanged('PhoneNumber',value)},
       title: I18N.Setting.UserManagement.Telephone,
       hintText:I18N.Setting.ECM.InputSuperviorTeleHintText,
-      regex: Regex.TelephoneRule,
+      regex: Regex.MobilePhoneRule,
       errorMessage: I18N.Setting.ECM.TelephoneErrorMsg,
     };
     var phoneNumber = (
