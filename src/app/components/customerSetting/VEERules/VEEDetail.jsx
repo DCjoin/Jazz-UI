@@ -24,7 +24,7 @@ import MonitorTag from './MonitorTag.jsx';
 
 
 function getDateTimeItems() {
-  var step = 30,
+  var step = 60,
     dataList = [],
     v = 0,
     i = 0;
