@@ -247,7 +247,8 @@ var TagStore = assign({}, PrototypeStore, {
     if (currentItem.DataValue !== null) {
       preItem = this.getPreviousItem(preIndex, dataArray, differenceData);
       if (preItem) {
-        var differenceValue = (currentItem.DataValue * accuracy - preItem.DataValue * accuracy) / accuracy;
+
+        var differenceValue = (parseInt(currentItem.DataValue * accuracy) - parseInt(preItem.DataValue * accuracy)) / accuracy;
         // if (differenceValue >= 0) {
         difItem.DataValue = differenceValue;
       //}
