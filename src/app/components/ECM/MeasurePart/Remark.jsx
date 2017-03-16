@@ -39,6 +39,7 @@ class AddRemark extends Component{
           <RaisedButton
             style={{border:'1px solid #ececec'}}
             label={I18N.Common.Button.Save}
+            disabled={this.state.value===''}
             onClick={()=>{this.props.onSave(this.state.value)}} />
           <FlatButton
             label={I18N.Common.Button.Cancel2}
