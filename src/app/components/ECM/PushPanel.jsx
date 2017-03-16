@@ -433,6 +433,7 @@ export default class PushPanel extends Component {
     }else {
       statusArr=[Status.ToBe,Status.Done]
     }
+    MeasuresAction.cleanSolutionList();
     MeasuresAction.getActivecounts(hierarchyId,()=>{
       MeasuresAction.getContainsunread(hierarchyId,statusArr,()=>{
         MeasuresAction.getGroupSettingsList(hierarchyId,status);
