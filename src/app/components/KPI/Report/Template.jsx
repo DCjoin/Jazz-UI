@@ -289,7 +289,7 @@ var Template = React.createClass({
             <div className="jazz-template-topbar-right">
               {/*uploadDom*/}
               <div style={{marginRight: 10}}>
-                <RaisedButton labelPosition="before" label={I18N.EM.Report.UploadTemplate}>
+                <RaisedButton labelPosition="before" containerElement="label" label={I18N.EM.Report.UploadTemplate}>
                   <UploadForm 
                     ref={'upload_tempalte'}
                     action={'TagImportExcel.aspx?Type=ReportTemplate'} 

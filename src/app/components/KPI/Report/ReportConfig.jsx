@@ -510,7 +510,7 @@ export default class ReportConfig extends Component {
           {downloadButton}
           </div>
           {/*uploadButton*/}
-          <RaisedButton labelPosition="before" label={I18N.EM.Report.UploadTemplate}>
+          <RaisedButton containerElement="label" labelPosition="before" label={I18N.EM.Report.UploadTemplate}>
           	<UploadForm 
           		ref={'upload_tempalte'}
           		action={'TagImportExcel.aspx?Type=ReportTemplate'} 

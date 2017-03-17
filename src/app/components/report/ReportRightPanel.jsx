@@ -1,7 +1,7 @@
 'use strict';
 import React from "react";
 import ReactDom from 'react-dom';
-import { CircularProgress, FontIcon, SelectField, TextField, RadioButton} from 'material-ui';
+import { CircularProgress, FontIcon, SelectField, TextField, RadioButton, RaisedButton} from 'material-ui';
 import classSet from 'classnames';
 import CommonFuns from '../../util/Util.jsx';
 import FlatButton from '../../controls/FlatButton.jsx';
@@ -240,15 +240,15 @@ var ReportRightPanel = React.createClass({
         this._updateReportItem(reportItem,Immutable.fromJS(obj.SheetList))
       });
     } else {
+      var errorCode = obj.UploadResponse.ErrorCode,
+        errorMessage;
+      if (errorCode === -1) {
+        errorMessage = I18N.format(I18N.EM.Report.DuplicatedName,this.state.fileName);
+      }
       this.setState({
         showUploadDialog: false,
         fileName: ''
       });
-      var errorCode = obj.UploadResponse.ErrorCode,
-        errorMessage;
-      if (errorCode === -1) {
-        errorMessage = I18N.format(I18N.EM.Report.DuplicatedName,fileName);
-      }
       if (errorMessage) {
         this.setState({
           errorMsg:errorMessage
@@ -726,7 +726,7 @@ var ReportRightPanel = React.createClass({
           }} checked={me.state.checkedValue === "newTemplate"} value="newTemplate" label={I18N.EM.Report.UploadTemplate}/>
               
               {/*uploadButton*/}
-              <RaisedButton labelPosition="before" label={I18N.EM.Report.UploadTemplate}>
+              <RaisedButton labelPosition="before" containerElement="label" label={I18N.EM.Report.UploadTemplate}>
                 <UploadForm 
                   ref={'upload_tempalte'}
                   action={'TagImportExcel.aspx?Type=ReportTemplate'} 
