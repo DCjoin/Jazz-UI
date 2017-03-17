@@ -1364,7 +1364,7 @@ let CommonFuns = {
         date = new Date(date.setMinutes(0));
         if (date.getHours() === 0) {
           let newDate = Momment(date);
-          newDate = newDate.add(-1, 'minutes');
+          newDate = newDate.add(-1, 'hours');
           //date = newDate._d;
           str = newDate.format(ft.Full24Hour);
         } else {
