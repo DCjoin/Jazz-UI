@@ -112,7 +112,7 @@ let RawDataList = React.createClass({
   _onScroll: function() {
     var el = ReactDom.findDOMNode(this.refs.list),
       head = ReactDom.findDOMNode(this.refs.header);
-    var scrollIndex = parseInt(el.scrollTop / 41);
+    var scrollIndex = parseInt(el.scrollTop / 40);
     //set scrollTop to scroll el.scrollTop=500
     head.innerText = dateItem[scrollIndex];
   },
