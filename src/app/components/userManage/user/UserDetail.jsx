@@ -286,7 +286,11 @@ var UserDetail = React.createClass({
 
 
         <div className="pop-user-detail-content-item pop-user-detail-user-type">
-          { isSuperAdmin && <div className="info-title">{I18N.Platform.User.Role}</div> }
+          { isSuperAdmin && <div className="info-title" style={{
+            fontSize: 14,
+            color: '#abafae',
+            marginBottom: -20,
+          }}>{I18N.Platform.User.Role}</div> }
           <div className="info-value">
             { isSuperAdmin ?
         <div style={{marginTop: 26}}>{I18N.Platform.User.ServerManager}</div>
