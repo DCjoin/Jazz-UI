@@ -94,7 +94,7 @@ class SupervisorDialog extends Component{
       didChanged: (value)=>{this._onChanged('PhoneNumber',value)},
       title: I18N.Setting.UserManagement.Telephone,
       hintText:I18N.Setting.ECM.InputSuperviorTeleHintText,
-      regex: Regex.TelephoneRule,
+      regex: Regex.MobilePhoneRule,
       errorMessage: I18N.Setting.ECM.TelephoneErrorMsg,
     };
     var phoneNumber = (
@@ -281,18 +281,23 @@ class SupervisorDropDownMenu extends Component{
 SupervisorDropDownMenu.propTypes={
   person:PropTypes.object,
   onSuperviorClick:PropTypes.func,
-  superviorList:PropTypes.array
+  supervisorList:PropTypes.array
 }
 
 export default class Supervisor extends Component {
 
   _renderEditContent(){
     var classname=this.props.usedInDetail?"indetail":null;
+    var prop={
+      person:this.props.person,
+      onSuperviorClick:this.props.onSuperviorClick,
+      supervisorList:MeasuresStore.getSupervisorListByEnergySys(this.props.supervisorList,this.props.energySys)
+    }
     return(
       <div className={classname}>
         <div className="labelitem">{I18N.Setting.CustomerManagement.Principal}</div>
         {this.props.usedInDetail && ':'}
-        <SupervisorDropDownMenu {...this.props}/>
+        <SupervisorDropDownMenu {...prop}/>
       </div>
     )
   }
@@ -322,5 +327,6 @@ Supervisor.propTypes={
   canEdit:PropTypes.bool,
   usedInDetail:PropTypes.bool,
   onSuperviorClick:PropTypes.func,
-  supervisorList:PropTypes.array
+  supervisorList:PropTypes.array,
+  energySys:PropTypes.number
 }

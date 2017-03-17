@@ -237,7 +237,12 @@ const MeasuresStore = assign({}, PrototypeStore, {
       default:
 
     }
-  }
+  },
+  getSupervisorListByEnergySys(list,energySys){
+    var list1=list.filter(item=>(item.get('EnergySys')===energySys)),
+        list2=list.filter(item=>(item.get('EnergySys')!==energySys));
+        return list1.concat(list2)
+  },
 });
 
 MeasuresStore.dispatchToken = AppDispatcher.register(function(action) {

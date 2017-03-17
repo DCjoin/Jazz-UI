@@ -181,7 +181,15 @@ export default class PushPanel extends Component {
     return(
       <Supervisor person={problem.get('Supervisor')} supervisorList={this.state.supervisorList}
                   onSuperviorClick={(id)=>{
-                    MeasuresAction.assignSupervisor(problem.get('Id'),id,problem.get('IsConsultant'));
+                    if(indetail){
+                      var currentSolution=this.state.solutionList.getIn([this.state.measureIndex]);
+                      MeasuresAction.updateSolution(currentSolution.toJS(),()=>{
+                          MeasuresAction.assignSupervisor(problem.get('Id'),id,problem.get('IsConsultant'));
+                      })
+                    }else {
+                      MeasuresAction.assignSupervisor(problem.get('Id'),id,problem.get('IsConsultant'));
+                    }
+
                     this._afterAnimation=()=>{
                       this.setState({
                         measureIndex:null,
@@ -210,7 +218,8 @@ export default class PushPanel extends Component {
                     }
                   }}
                   usedInDetail={indetail}
-                  canEdit={canEditSupervisor(this.state.infoTabNo)}/>
+                  canEdit={canEditSupervisor(this.state.infoTabNo)}
+                  energySys={problem.get('EnergySys')}/>
     )
   }
 
