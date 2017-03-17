@@ -17,9 +17,12 @@ export default class UploadForm extends Component {
 			} )
 		}
 		let iframe = document.createElement('iframe');
-		iframe.style = {
+		iframe.setAttribute('style', {
 			display: 'none'
-		};
+		})
+		// iframe.style = {
+		// 	display: 'none'
+		// };
 		iframe.name = 'UPLOAD_IFRAME';
 
 		document.body.appendChild(iframe);

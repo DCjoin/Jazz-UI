@@ -92,7 +92,7 @@
     "immutable": "3.7.2",
     "keymirror": "0.1.1",
     "lodash": "3.10.1",
-    "material-ui": "0.16.5",
+    "material-ui": "0.17.1",
     "moment": "2.10.6",
     "numeral": "1.5.3",
     "object-assign": "2.0.0",

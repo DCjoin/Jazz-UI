@@ -950,7 +950,7 @@ babel-runtime@^5.0.0:
   dependencies:
     core-js "^1.0.0"
 
-babel-runtime@^6.0.2, babel-runtime@^6.11.6, babel-runtime@^6.18.0, babel-runtime@^6.2.0, babel-runtime@^6.20.0, babel-runtime@^6.22.0:
+babel-runtime@^6.0.2, babel-runtime@^6.18.0, babel-runtime@^6.2.0, babel-runtime@^6.20.0, babel-runtime@^6.22.0:
   version "6.23.0"
   resolved "https://registry.npmjs.org/babel-runtime/-/babel-runtime-6.23.0.tgz#0a9489f144de70efb3ce4300accdb329e2fc543b"
   dependencies:
@@ -3504,11 +3504,11 @@ map-obj@^1.0.0, map-obj@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npmjs.org/map-obj/-/map-obj-1.0.1.tgz#d933ceb9205d82bdcf4886f6742bdc2b4dea146d"
 
-material-ui@0.16.5:
-  version "0.16.5"
-  resolved "https://registry.npmjs.org/material-ui/-/material-ui-0.16.5.tgz#bb8661aac7cac8cb223a3e76f4f57ee18a4aefc1"
+material-ui@0.17.1:
+  version "0.17.1"
+  resolved "https://registry.npmjs.org/material-ui/-/material-ui-0.17.1.tgz#37f9b9c073afa1603b8fb900d620b41699663176"
   dependencies:
-    babel-runtime "^6.11.6"
+    babel-runtime "^6.18.0"
     inline-style-prefixer "^2.0.1"
     keycode "^2.1.1"
     lodash.merge "^4.6.0"
@@ -3516,7 +3516,7 @@ material-ui@0.16.5:
     react-addons-create-fragment "^15.0.0"
     react-addons-transition-group "^15.0.0"
     react-event-listener "^0.4.0"
-    recompose "^0.20.2"
+    recompose "^0.22.0"
     simple-assign "^0.1.0"
     warning "^3.0.0"
 
@@ -4411,14 +4411,14 @@ recast@^0.11.17:
     private "~0.1.5"
     source-map "~0.5.0"
 
-recompose@^0.20.2:
-  version "0.20.2"
-  resolved "https://registry.npmjs.org/recompose/-/recompose-0.20.2.tgz#113d6ac7e29ca664cfffec16b681ddddf15250bc"
+recompose@^0.22.0:
+  version "0.22.0"
+  resolved "https://registry.npmjs.org/recompose/-/recompose-0.22.0.tgz#f099d18385882ca41d9eec891718dadddc3204ef"
   dependencies:
     change-emitter "^0.1.2"
     fbjs "^0.8.1"
     hoist-non-react-statics "^1.0.0"
-    symbol-observable "^0.2.4"
+    symbol-observable "^1.0.4"
 
 redent@^1.0.0:
   version "1.0.0"
@@ -5039,9 +5039,9 @@ swap-case@^1.1.0:
     lower-case "^1.1.1"
     upper-case "^1.1.1"
 
-symbol-observable@^0.2.4:
-  version "0.2.4"
-  resolved "https://registry.npmjs.org/symbol-observable/-/symbol-observable-0.2.4.tgz#95a83db26186d6af7e7a18dbd9760a2f86d08f40"
+symbol-observable@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.npmjs.org/symbol-observable/-/symbol-observable-1.0.4.tgz#29bf615d4aa7121bdd898b22d4b3f9bc4e2aa03d"
 
 tapable@^0.1.8, tapable@~0.1.8:
   version "0.1.10"
