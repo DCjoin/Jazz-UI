@@ -37,13 +37,13 @@ export default class DisappareItem extends Component {
 
   render(){
     let iconStyle = {
-        fontSize: '40px'
+        fontSize: '30px'
       },
       style = {
         padding: '0px',
-        height: '40px',
-        width: '40px',
-        fontSize: '40px',
+        height: '30px',
+        width: '30px',
+        fontSize: '30px',
         top:'90px',
         left:`${this.props.width/2}px`,
         position:'absolute'

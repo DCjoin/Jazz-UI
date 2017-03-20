@@ -2,7 +2,7 @@ import React from 'react';
 import {Motion, spring} from 'react-motion';
 import FontIcon from 'material-ui/FontIcon';
 
-const leavingSpringConfig = {stiffness: 60, damping: 15};
+const leavingSpringConfig = {stiffness: 90, damping: 15};
 const Move = React.createClass({
   render() {
     var {destX,destY,originX,originY}=this.props;
