@@ -126,7 +126,6 @@ const MeasuresAction = {
   getActivecounts(hierarchyId,callback){
     Ajax.get(util.replacePathParams(Path.ECM.activecounts, hierarchyId), {
       tag: 'getGroupSettingsList',
-      avoidDuplicate: true,
       success: (res) => {
         AppDispatcher.dispatch({
           type: Action.GET_ACTIVE_COUNTS,
@@ -141,7 +140,6 @@ const MeasuresAction = {
       {
       params: statusArr,
       tag: 'getGroupSettingsList',
-      avoidDuplicate: true,
       success: function(res) {
         AppDispatcher.dispatch({
           type: Action.GET_CONTAINS_UNREAD,
