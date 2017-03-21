@@ -6,6 +6,7 @@ import Regex from '../../../constants/Regex.jsx';
 import ViewableTextField from '../../../controls/ViewableTextField.jsx';
 import ViewableDropDownMenu from '../../../controls/ViewableDropDownMenu.jsx';
 import ComAndUom from '../ComAndUom.jsx';
+import ViewableEnergyLabel from './ViewableEnergyLabel.jsx';
 
 var PTagBasic = React.createClass({
   propTypes: {
@@ -72,7 +73,7 @@ var PTagBasic = React.createClass({
     var me = this;
     var isView = this.props.isViewStatus;
     var selectedTag = this.props.selectedTag,
-      {Code, MeterCode, ChannelId, CalculationStep, CalculationType, Slope, Offset, IsAccumulated, Comment} = selectedTag.toJS();
+      {Code, MeterCode, ChannelId, CalculationStep, CalculationType, Slope, Offset, IsAccumulated, Comment,EnergyTagId } = selectedTag.toJS();
     var codeProps = {
         ref: 'code',
         isViewStatus: isView,
@@ -207,6 +208,18 @@ var PTagBasic = React.createClass({
             path: "Comment"
           });
         }
+      },
+      energyTagIdProps={
+        ref: 'energyTagId',
+        isViewStatus: isView,
+        value:EnergyTagId || -1,
+        onItemTouchTap:id=>{
+          if(id===-1) id=null;
+          me.props.mergeTag({
+            value:id,
+            path: "EnergyTagId"
+          });
+        }
       };
     var slope = !Slope && isView ? null : (<div className="pop-customer-detail-content-left-item">
         <ViewableTextField {...slopeProps}/>
@@ -238,6 +251,9 @@ var PTagBasic = React.createClass({
           </div>
           <div className="pop-customer-detail-content-left-item">
             <ViewableDropDownMenu {...calculationTypeProps}/>
+          </div>
+          <div className="pop-customer-detail-content-left-item">
+            <ViewableEnergyLabel {...energyTagIdProps}/>
           </div>
           {slope}
           {offset}

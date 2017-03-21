@@ -503,7 +503,8 @@ let Tag = React.createClass({
       AreaDimensionName: " ",
       HierarchyName: " ",
       DimensionName: " ",
-      TagModifyMode: 0
+      TagModifyMode: 0,
+      EnergyTagId:null
     };
     this.setState({
       selectedIndex: null,

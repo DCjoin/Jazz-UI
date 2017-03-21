@@ -5,6 +5,7 @@ import Regex from '../../../constants/Regex.jsx';
 import ViewableTextField from '../../../controls/ViewableTextField.jsx';
 import ViewableDropDownMenu from '../../../controls/ViewableDropDownMenu.jsx';
 import ComAndUom from '../ComAndUom.jsx';
+import ViewableEnergyLabel from './ViewableEnergyLabel.jsx';
 
 var VTagBasic = React.createClass({
   propTypes: {
@@ -76,7 +77,7 @@ var VTagBasic = React.createClass({
     var me = this;
     var isView = this.props.isViewStatus;
     var selectedTag = this.props.selectedTag,
-      {Code, CalculationStep, CalculationType, Comment} = selectedTag.toJS();
+      {Code, CalculationStep, CalculationType, Comment,EnergyTagId} = selectedTag.toJS();
     var codeProps = {
         ref: 'code',
         isViewStatus: isView,
@@ -132,6 +133,18 @@ var VTagBasic = React.createClass({
             path: "Comment"
           });
         }
+      },
+      energyTagIdProps={
+        ref: 'energyTagId',
+        isViewStatus: isView,
+        value:EnergyTagId || -1,
+        onItemTouchTap:id=>{
+          if(id===-1) id=null;
+          me.props.mergeTag({
+            value:id,
+            path: "EnergyTagId"
+          });
+        }
       };
     var comment = !Comment && isView ? null : (<div className="pop-customer-detail-content-left-item">
         <ViewableTextField {...commentProps}/>
@@ -148,6 +161,9 @@ var VTagBasic = React.createClass({
           </div>
           <div className="pop-customer-detail-content-left-item">
             <ViewableDropDownMenu {...calculationTypeProps}/>
+          </div>
+          <div className="pop-customer-detail-content-left-item">
+            <ViewableEnergyLabel {...energyTagIdProps}/>
           </div>
           {comment}
         </div>

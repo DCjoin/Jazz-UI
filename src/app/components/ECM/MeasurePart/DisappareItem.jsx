@@ -41,12 +41,16 @@ export default class DisappareItem extends Component {
       },
       style = {
         padding: '0px',
-        height: '30px',
-        width: '30px',
+        height: '70px',
+        width: '70px',
         fontSize: '30px',
         top:'90px',
         left:`${this.props.width/2}px`,
-        position:'absolute'
+        position:'absolute',
+        backgroundColor:'white',
+        display:'flex',
+        justifyContent:'center',
+        alignItems:'center'
       };
     return(
       <div className="disappareitem">
@@ -60,7 +64,7 @@ export default class DisappareItem extends Component {
                   this.setState({ecmIconShow:true})
                 }}/>
         </div>}
-        {this.state.ecmIconShow && <FontIcon className="icon-to-ecm" iconStyle ={iconStyle} style = {style} />}
+        {true && <FontIcon className="icon-to-ecm" iconStyle ={iconStyle} style = {style} />}
         {this.state.disappare && this.state.x &&  this.state.y &&<Move {...this._getMoveProps()}/>}
       </div>
     )
