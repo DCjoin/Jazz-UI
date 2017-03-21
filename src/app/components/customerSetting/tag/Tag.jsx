@@ -504,7 +504,7 @@ let Tag = React.createClass({
       HierarchyName: " ",
       DimensionName: " ",
       TagModifyMode: 0,
-      EnergyTagId:null
+      EnergyLabelId:null
     };
     this.setState({
       selectedIndex: null,

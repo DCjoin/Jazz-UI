@@ -77,7 +77,7 @@ var VTagBasic = React.createClass({
     var me = this;
     var isView = this.props.isViewStatus;
     var selectedTag = this.props.selectedTag,
-      {Code, CalculationStep, CalculationType, Comment,EnergyTagId} = selectedTag.toJS();
+      {Code, CalculationStep, CalculationType, Comment,EnergyLabelId} = selectedTag.toJS();
     var codeProps = {
         ref: 'code',
         isViewStatus: isView,
@@ -134,15 +134,15 @@ var VTagBasic = React.createClass({
           });
         }
       },
-      energyTagIdProps={
-        ref: 'energyTagId',
+      energyLabelIdProps={
+        ref: 'energyLabelId',
         isViewStatus: isView,
-        value:EnergyTagId || -1,
+        value:EnergyLabelId || -1,
         onItemTouchTap:id=>{
           if(id===-1) id=null;
           me.props.mergeTag({
             value:id,
-            path: "EnergyTagId"
+            path: "EnergyLabelId"
           });
         }
       };
@@ -163,7 +163,7 @@ var VTagBasic = React.createClass({
             <ViewableDropDownMenu {...calculationTypeProps}/>
           </div>
           <div className="pop-customer-detail-content-left-item">
-            <ViewableEnergyLabel {...energyTagIdProps}/>
+            <ViewableEnergyLabel {...energyLabelIdProps}/>
           </div>
           {comment}
         </div>

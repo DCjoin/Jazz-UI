@@ -73,6 +73,8 @@ import Hierarchy from './components/hierarchySetting/Hierarchy.jsx';
 import HierarchyLog from './components/hierarchySetting/importLog/HierarchyLog.jsx';
 // var theme = new ThemeManager();
 import './less/main.less';
+
+import Diagnose from './components/Diagnose/Diagnose.jsx';
 let {Route, DefaultRoute, Redirect, RouteHandler, Link, Navigation, State} = Router;
 
 
@@ -202,6 +204,12 @@ ReactDom.render(<Router history={hashHistory} routes={{
         },
         path: 'energy_conservation_measures',
         component: ECM,
+      },{
+        onEnter: () => {
+          document.title = I18N.MainMenu.SmartDiagnose;
+        },
+        path: 'smartDiagnose',
+        component: Diagnose,
       },{
         onEnter: () => {
           document.title = I18N.MainMenu.DataAnalysis;

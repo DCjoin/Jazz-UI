@@ -47,6 +47,7 @@ I18N.MainMenu.ParameterTemplate = '参数模板';
 
 I18N.MainMenu.KPI = '指标·报表';
 I18N.MainMenu.SaveSchemeTab = '节能方案';
+I18N.MainMenu.SmartDiagnose = '智能诊断';
 I18N.MainMenu.DataAnalysis = '数据分析';
 I18N.MainMenu.KPIActuality = '指标现状';
 I18N.MainMenu.KPIConfig = '指标现状配置';
@@ -2233,6 +2234,8 @@ I18N.Setting.Diagnose.ParkingFan='停车场排风机';
 I18N.Setting.Diagnose.ElectricTracing='电伴热';
 I18N.Setting.Diagnose.DomesticWater='生活用水';
 I18N.Setting.Diagnose.TransformerPowerFactor='变压器功率因数';
+I18N.Setting.Diagnose.TransformerLoadRate='变压器负载率';
+I18N.Setting.Diagnose.Demand='需量';
 I18N.Setting.Diagnose.WaterChillingUnit='冷水机组';
 I18N.Setting.Diagnose.WaterChillingUnitCOP='冷水机组COP';
 I18N.Setting.Diagnose.FreshAirUnit='新风机组';

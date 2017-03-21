@@ -21,6 +21,8 @@ const DiagnoseStore = assign({}, PrototypeStore, {
         {value:I18N.Setting.Diagnose.ElectricTracing,Id:EnergyLabel.ElectricTracing},
         {value:I18N.Setting.Diagnose.TransformerPowerFactor,Id:EnergyLabel.TransformerPowerFactor},
         {value:I18N.Setting.Diagnose.DomesticWater,Id:EnergyLabel.DomesticWater},
+        {value:I18N.Setting.Diagnose.TransformerLoadRate,Id:EnergyLabel.TransformerLoadRate},
+        {value:I18N.Setting.Diagnose.Demand,Id:EnergyLabel.Demand},
       ],
       HVAC:[
         {value:I18N.Setting.Diagnose.WaterChillingUnit,Id:EnergyLabel.WaterChillingUnit},

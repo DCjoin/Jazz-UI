@@ -15,6 +15,8 @@ module.exports = {
         ElectricTracing:108,
         TransformerPowerFactor:109,
         DomesticWater:110,
+        TransformerLoadRate:111,
+        Demand:112,
         WaterChillingUnit:201,
         WaterChillingUnitCOP:202,
         FreshAirUnit:203,
