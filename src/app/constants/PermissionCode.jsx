@@ -92,17 +92,17 @@ const PermissionCode = function() {
 
 	BASIC_SMART_DIACRISIS: {
 		getLabel: () => I18N.Privilege.Role.BasicSmartDiacrisis,
-		READONLY: 1234,
-		FULL: 1234,
+		READONLY: 1316,
+		FULL: 1317,
 	},
 	SENIOR_SMART_DIACRISIS: {
 		getLabel: () => I18N.Privilege.Role.SeniorSmartDiacrisis,
-		READONLY: 1234,
-		FULL: 1234,
+		READONLY: 1318,
+		FULL: 1319,
 	},
 	SMART_DIACRISIS_LIST: {
 		getLabel: () => I18N.Privilege.Role.SmartDiacrisisList,
-		FULL: 1234,
+		FULL: 1321,
 	},
 
 	BASIC_DATA_ANALYSE: {
