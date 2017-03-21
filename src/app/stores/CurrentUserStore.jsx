@@ -37,6 +37,9 @@ const PRIVILEGE_ADMIN = [
   PermissionCode.BUILDING_LIST.FULL,
   PermissionCode.PUSH_SOLUTION.FULL,
   PermissionCode.SOLUTION_FULL.FULL,
+  PermissionCode.BASIC_SMART_DIACRISIS.FULL,
+  PermissionCode.SENIOR_SMART_DIACRISIS.FULL,
+  PermissionCode.SMART_DIACRISIS_LIST.FULL,
 ].map( code => '' + code );
 
 var CurrentUserStore = assign({}, PrototypeStore, {
