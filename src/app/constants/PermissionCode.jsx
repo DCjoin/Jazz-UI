@@ -90,6 +90,21 @@ const PermissionCode = function() {
 		FULL: 1301,
 	},
 
+	BASIC_SMART_DIACRISIS: {
+		getLabel: () => I18N.Privilege.Role.BasicSmartDiacrisis,
+		READONLY: 1234,
+		FULL: 1234,
+	},
+	SENIOR_SMART_DIACRISIS: {
+		getLabel: () => I18N.Privilege.Role.SeniorSmartDiacrisis,
+		READONLY: 1234,
+		FULL: 1234,
+	},
+	SMART_DIACRISIS_LIST: {
+		getLabel: () => I18N.Privilege.Role.SmartDiacrisisList,
+		FULL: 1234,
+	},
+
 	BASIC_DATA_ANALYSE: {
 		getLabel: () => I18N.Privilege.Role.BasicDataAnalyse,
 		FULL: 1313,

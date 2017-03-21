@@ -236,7 +236,7 @@ export default class ChartBasicComponent extends Component {
         },
       },
       plotBands: plotBands,
-      afterChartCreated: () => { this.props.afterChartCreated(Id) },
+      afterChartCreated: () => { Util.isFunction(this.props.afterChartCreated) && this.props.afterChartCreated(Id) },
       assignStatus: (config) => {
         return assignStatus(config, getSeriesStatus(
                   tagData.get('TargetEnergyData').toJS(),
