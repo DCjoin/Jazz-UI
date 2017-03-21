@@ -28,15 +28,15 @@ const FadeOut = React.createClass({
       height: 0,
     },
       style={
-        width: spring(this.props.width-10,{stiffness: 50, damping: 26,precision:1}),
-        height: spring(170,{stiffness: 50, damping: 26,precision:1}),
+        width: spring(this.props.width-30,{stiffness: 150, damping: 26,precision:1}),
+        height: spring(150,{stiffness: 150, damping: 26,precision:1}),
       }
     ;
     return (
       <Motion defaultStyle={defaultStyle} style={style} onRest={()=>{this.props.onEnd()}}>
         {interpolatingStyle  => {
           var {width,height}=interpolatingStyle;
-          if((Math.abs(width-this.props.width)<=1 || Math.abs(height-170)<=1) && !isOver){
+          if((Math.abs(width-this.props.width+30)<=1 || Math.abs(height-150)<=1) && !isOver){
               isOver=true;
               this.props.onEcmIconShow();
           }

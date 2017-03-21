@@ -45,6 +45,8 @@ export default class MainPanel extends Component {
   constructor(props, ctx) {
     super(props);
     this._handlerSwitchTab=this._handlerSwitchTab.bind(this);
+    this._onUnReadChanged=this._onUnReadChanged.bind(this);
+
   }
 
   state={
@@ -123,12 +125,12 @@ export default class MainPanel extends Component {
   }
 
   componentDidMount(){
-    CurrentUserStore.addCurrentUserListener(this._onUnReadChanged.bind(this));
+    CurrentUserStore.addCurrentUserListener(this._onUnReadChanged);
     this.getUnreadFlag();
   }
 
   componentWillUnmount(){
-    CurrentUserStore.removeCurrentUserListener(this._onUnReadChanged());
+    CurrentUserStore.removeCurrentUserListener(this._onUnReadChanged);
   }
 
   render(){
