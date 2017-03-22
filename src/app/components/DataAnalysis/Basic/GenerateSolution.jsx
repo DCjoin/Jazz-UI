@@ -353,16 +353,28 @@ export class GenerateSolution extends Component {
 		let nodeId = getId(node),
 		{tagDatas, widgetStatuss, widgetSeriesArrays, contentSyntaxs} = this.state;
 		return (<div style={{position: 'relative', overflowX: 'hidden', height: 300, width: 600}}>
-					<ChartBasicComponent 
-						afterChartCreated={this._afterChartCreated}
-						ref='ChartBasicComponent'
-						key={nodeId}
-						node={node}
-						tagData={tagDatas[nodeId]}
-						widgetStatus={widgetStatuss[nodeId]}
-						widgetSeriesArray={widgetSeriesArrays[nodeId]}
-						contentSyntax={contentSyntaxs[nodeId]}
-						chartType={getChartTypeStr(node)}/>
+			      <div id={'chart_basic_component_' + nodeId} style={{
+			          flex: 1,
+			          position: 'absolute',
+			          width: 610,
+			          height: 320,
+			          display: 'flex',
+			          opacity: 0,
+			          flexDirection: 'column',
+			          marginBottom: '0px',
+			          marginLeft: '9px'
+			        }}>
+						<ChartBasicComponent 
+							afterChartCreated={this._afterChartCreated}
+							ref='ChartBasicComponent'
+							key={nodeId}
+							node={node}
+							tagData={tagDatas[nodeId]}
+							widgetStatus={widgetStatuss[nodeId]}
+							widgetSeriesArray={widgetSeriesArrays[nodeId]}
+							contentSyntax={contentSyntaxs[nodeId]}
+							chartType={getChartTypeStr(node)}/>
+					</div>
 				</div>);
 	}
 

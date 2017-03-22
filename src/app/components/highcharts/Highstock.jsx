@@ -8,6 +8,14 @@ let assign = require('object-assign');
 
 let Highcharts = window.Highcharts;
 
+// Add null symbol
+Highcharts.SVGRenderer.prototype.symbols.null = function (x, y, w, h) {
+    return [];
+};
+if (Highcharts.VMLRenderer) {
+    Highcharts.VMLRenderer.prototype.symbols.null = Highcharts.SVGRenderer.prototype.symbols.cross;
+}
+
 let _paper = null;
 
 let Highstock = React.createClass({

@@ -500,7 +500,7 @@ module.exports = {
             {
                 "Id": 111369,
                 "WidgetId": 2133791,
-                "IsDisplay": false,
+                "IsDisplay": true,
                 "ChartType": "1",
                 "SeriesType": null
             }
