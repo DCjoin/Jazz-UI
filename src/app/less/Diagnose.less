@@ -13,3 +13,64 @@
     flex-flow: row wrap;
   }
 }
+.diagnose-label-list{
+  width:21%;
+  height:100%;
+  background-color: #ffffff;
+  display: flex;
+  .tabs{
+    min-height: 32px;
+    height: 32px;
+    display: flex;
+    font-size: 16px;
+    background-color:  @bgcGray;
+    color: @schneiderGray;
+    width: 100%;
+    .tab{
+      flex:1;
+      text-align: center;
+      vertical-align: middle;
+      line-height: 32px;
+      &:hover{
+        cursor: pointer;
+      }
+    }
+    .selected{
+      background-color: #ffffff;
+      color: @schneiderBlue;
+      // -webkit-transition: width 1s ease-in-out;
+      // -moz-transition: width 1s ease-in-out;
+      // -o-transition: width 1s ease-in-out;
+    }
+    .content{
+      flex:1;
+      .itemTitle{
+        height:40px;
+        font-weight: bold;
+        font-size: 14px;
+      }
+    }
+  }
+}
+.diagnose-label-node{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: rgb(53, 64, 82) !important;
+  .addBtn{
+    display: none;
+  }
+  .count{
+    color:red
+  }
+  &.selected {
+    background-color: #2d3645 !important;
+  }
+  &:hover {
+    background-color: #2d3645 !important;
+    color:#d9d9da !important;
+      .addBtn{
+        display: block;
+      }
+  }
+}

@@ -2255,5 +2255,8 @@ I18N.Setting.Diagnose.IndoorTemperature='室内温度';
 I18N.Setting.Diagnose.DistrictTemperature='公区温度';
 I18N.Setting.Diagnose.OutdoorTemperature='室外温度';
 I18N.Setting.Diagnose.IndoorAndOutdoorTemperatureDifference='室内外温差';
+I18N.Setting.Diagnose.Basic='基本';
+I18N.Setting.Diagnose.Senior='高级';
+I18N.Setting.Diagnose.Diagnose='诊断';
 
 module.exports = I18N;

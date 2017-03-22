@@ -14,9 +14,9 @@ module.exports = {
         ParkingFan:107,
         ElectricTracing:108,
         TransformerPowerFactor:109,
-        DomesticWater:110,
-        TransformerLoadRate:111,
-        Demand:112,
+        DomesticWater:112,
+        TransformerLoadRate:110,
+        Demand:111,
         WaterChillingUnit:201,
         WaterChillingUnitCOP:202,
         FreshAirUnit:203,
@@ -36,6 +36,14 @@ module.exports = {
         DistrictTemperature:304,
         OutdoorTemperature:305,
         IndoorAndOutdoorTemperatureDifference:306
+    },
+    Type:{
+      Item:1,
+      Label:2,
+      Problem:3
+    },
+    DiagnoseStatus:{
+      Suspend:1
     }
 
 };
