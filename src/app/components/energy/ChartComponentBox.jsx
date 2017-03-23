@@ -15,7 +15,7 @@ import ChartCmpStrategyFactor from './ChartCmpStrategyFactor.jsx';
 import ChartStatusStore from '../../stores/Energy/ChartStatusStore.jsx';
 import ChartStatusAction from '../../actions/ChartStatusAction.jsx';
 import CurrentUserStore from '../../stores/CurrentUserStore.jsx';
-import { getCookie } from '../../util/Util.jsx';
+import { getCookie, isFunction } from '../../util/Util.jsx';
 import PermissionCode from '../../constants/PermissionCode.jsx';
 import AlarmTagStore from 'stores/AlarmTagStore.jsx';
 
@@ -572,6 +572,10 @@ let ChartComponentBox = React.createClass({
     newConfig.tooltipSidePosition = true;
     if (this.props.chartTooltipHasTotal) {
       newConfig.chartTooltipHasTotal = true;
+    }
+
+    if( isFunction(this.props.postNewConfig) ) {
+      this.props.postNewConfig(newConfig);
     }
 
     return newConfig;
