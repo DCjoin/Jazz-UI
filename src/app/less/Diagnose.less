@@ -1,0 +1,68 @@
+.viewable-energy-label{
+  display: flex;
+  width:438px;
+  border-bottom: 1px solid rgb(224, 224, 224);
+  padding:5px 0;
+  justify-content: space-between;
+  color: rgb(118, 122, 122);
+  &:hover{
+    cursor: pointer;
+  }
+  .list{
+    display: flex;
+    flex-flow: row wrap;
+  }
+}
+.diagnose-label-list{
+  width:21%;
+  height:100%;
+  background-color: #191919;
+  display: flex;
+  flex-direction: column;
+  overflow-y:auto;
+  .label-group{
+    border-bottom: 1px solid #ffffff;
+    .item{
+      height:41px;
+      min-height: 41px;
+      color:#ffffff;
+      padding:0 15px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      .side{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+      .addBtn{
+        display: none;
+      }
+      &.selected {
+        background-color: #0CAD04 !important;
+      }
+      &:hover {
+        background-color: #0CAD04 !important;
+        color:#d9d9da !important;
+        .addBtn{
+            display: block;
+          }
+      }
+      .text{
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+    }
+    .canSelect{
+      &:hover{
+        cursor: pointer;
+      }
+    }
+  }
+
+}
+.diagnose-panel{
+  display: flex;
+  flex:1
+}

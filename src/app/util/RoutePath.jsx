@@ -17,6 +17,7 @@ export default {
 	KPITemplate:p => `/${p.lang}/${p.customerId}/actuality/template`,
 	dataAnalysis:p => `/${p.lang}/${p.customerId}/data_analysis`,
 	ecm:p => `/${p.lang}/${p.customerId}/energy_conservation_measures`,
+	smartDiagnose:p=>`/${p.lang}/${p.customerId}/smartDiagnose`,
 	setting: p => `/${p.lang}/${p.customerId}/setting`,
 	alarm: p => `/${p.lang}/${p.customerId}/alarm`,
 	map: p => `/${p.lang}/${p.customerId}/map`,

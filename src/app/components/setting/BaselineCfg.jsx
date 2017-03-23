@@ -209,6 +209,9 @@ let BaselineCfg = React.createClass({
     };
 
     var tabsProps = {
+      inkBarStyle:{
+        backgroundColor:'red'
+      },
         tabItemContainerStyle: {
           backgroundColor: 'transparent',
           // borderBottom: '1px solid #e4e7e6',

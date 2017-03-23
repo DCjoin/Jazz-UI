@@ -7,7 +7,8 @@ var BubbleIcon = React.createClass({
 
     propTypes: {
         number:React.PropTypes.number,
-        style:React.PropTypes.object
+        style:React.PropTypes.object,
+        numberStyle:React.PropTypes.object,
     },
 
     getDefaultProps: function() {
@@ -27,7 +28,7 @@ var BubbleIcon = React.createClass({
           className += "lg";
         }
         return (
-            <div style={styles} className={className}><span>{n}</span></div>
+            <div style={styles} className={className}><span style={this.props.numberStyle}>{n}</span></div>
         );
     }
 });

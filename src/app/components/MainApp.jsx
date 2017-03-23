@@ -291,6 +291,11 @@ let MainApp = React.createClass({
             return item.title === I18N.MainMenu.SaveSchemeTab
           });
         }
+        if(!hierarchyId || customerId == hierarchyId){
+          remove(menuItems, (item) => {
+            return item.title === I18N.MainMenu.SmartDiagnose
+          });
+        }
         return (
           <div className='jazz-main'>
             <MainAppBar
