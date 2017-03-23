@@ -339,8 +339,6 @@ export default class PushPanel extends Component {
                     },()=>{
                       this.refresh(status[this.state.infoTabNo-1]);
                     })
-
-
                   }
                 })
 

@@ -195,6 +195,19 @@ var CurrentUserStore = assign({}, PrototypeStore, {
       );
     }
 
+    if ( this.permit(PermissionCode.BASIC_SMART_DIACRISIS.FULL) || this.permit(PermissionCode.BASIC_SMART_DIACRISIS.READONLY)
+          || this.permit(PermissionCode.SENIOR_SMART_DIACRISIS.READONLY)  || this.permit(PermissionCode.SENIOR_SMART_DIACRISIS.FULL)
+        || this.permit(PermissionCode.SMART_DIACRISIS_LIST.FULL)) {
+      menuItems.push(
+        {
+          getPath: RoutePath.smartDiagnose,
+          //hasBubble:this.getEcmBubble(),
+          title:I18N.MainMenu.SmartDiagnose
+        }
+      );
+    }
+
+
     if ( this.permit(PermissionCode.BASIC_DATA_ANALYSE.FULL) || this.permit(PermissionCode.SENIOR_DATA_ANALYSE.FULL) ) {
       menuItems.push(
         {

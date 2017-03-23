@@ -64,5 +64,9 @@ module.exports = {
     remarkList:'/energysolution/problem/remark/{problemId}',
     addRemark:'/energysolution/problem/remark',
     deleteRemark:'/energysolution/problem/remark/delete/{remarkId}'
+  },
+  Diagnose:{
+    diagnosislist:'/diagnose/diagnosislist',
+    getdiagnosestatic:'api/diagnose/getdiagnosestatic/{hierarchId}'
   }
 };
