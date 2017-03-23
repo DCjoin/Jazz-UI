@@ -3,17 +3,43 @@ import classnames from "classnames";
 import {Tabs, Tab, CircularProgress} from 'material-ui';
 import {labellist} from '../../../../mockData/diagnose.js';
 import Immutable from 'immutable';
+import LabelItem from './LabelItem.jsx';
+import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
+import DiagnoseStore from 'stores/DiagnoseStore.jsx';
 
 export default class LabelList extends Component {
 
+  static contextTypes = {
+        hierarchyId: React.PropTypes.string
+      };
+
   constructor(props, ctx) {
     super(props);
+    this._onItemTouchTap = this._onItemTouchTap.bind(this);
+    this._onChanged = this._onChanged.bind(this);
 
   }
 
   state={
     infoTabNo:1,
-    list:Immutable.fromJS(labellist)
+    list:Immutable.fromJS(labellist),
+    selectedNode:Immutable.fromJS({})
+  }
+
+  _getList(){
+    DiagnoseAction.getDiagnosisList(this.context.hierarchyId,this.state.infoTabNo,this.props.isFromProbem?2:1)
+  }
+
+  _onChanged(){
+      this.setState({
+        list:DiagnoseStore.getDiagnosisList()
+      })
+  }
+
+  _onItemTouchTap(data){
+    this.setState({
+      selectedNode:data
+    })
   }
 
   _renderTabs(){
@@ -21,6 +47,9 @@ export default class LabelList extends Component {
       inkBarStyle:{
         height:'3px',
         backgroundColor:'#0CAD04'
+      },
+      tabItemContainerStyle:{
+        backgroundColor:'#191919',
       },
       style:{
         width:'100%'
@@ -34,7 +63,7 @@ export default class LabelList extends Component {
       label:I18N.Setting.Diagnose.Basic,
       style:{
         color:this.state.infoTabNo===1?'#0CAD04':'#ffffff',
-        backgroundColor:this.state.infoTabNo===2?'rgba(255,255,255,0.17);':'#191919',
+        backgroundColor:this.state.infoTabNo===2?'rgba(255,255,255,0.17)':'#191919',
       }
     },
     tab2Prop={
@@ -43,7 +72,7 @@ export default class LabelList extends Component {
       label:I18N.Setting.Diagnose.Senior,
       style:{
         color:this.state.infoTabNo===2?'#0CAD04':'#ffffff',
-        backgroundColor:this.state.infoTabNo===1?'rgba(255,255,255,0.17);':'#191919',
+        backgroundColor:this.state.infoTabNo===1?'rgba(255,255,255,0.17)':'#191919',
       }
     };
     return(
@@ -56,18 +85,42 @@ export default class LabelList extends Component {
 
   _renderList(){
     return this.state.list.map(item=>(
-      <div className="content">
-        <div className="itemTitle"></div>
-      </div>
+      <LabelItem nodeData={item}
+                        selectedNode={this.state.selectedNode}
+                        isFromProbem={this.props.isFromProbem}
+                        onAdd={this.props.onAdd}
+                        onItemTouchTap={this._onItemTouchTap}/>
     ))
   }
 
-  render(){
-
-    return(
-      <div className="diagnose-label-list">
-        {this._renderTabs()}
-      </div>
-    )
+  componentDidMount(){
+    DiagnoseStore.addChangeListener(this._onChanged);
+    this._getList();
   }
+
+  componentWillUnmount(){
+    DiagnoseStore.removeChangeListener(this._onChanged);
+  }
+
+  render(){
+    if(this.state.list===null){
+      return (
+        <div className="flex-center">
+         <CircularProgress  mode="indeterminate" size={80} />
+       </div>
+      )
+    }else {
+      return(
+        <div className="diagnose-label-list">
+          {this._renderTabs()}
+          {this._renderList()}
+        </div>
+      )
+    }
+
+  }
+}
+
+LabelList.propTypes={
+  isFromProbem:React.PropTypes.bool,
 }

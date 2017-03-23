@@ -16,61 +16,53 @@
 .diagnose-label-list{
   width:21%;
   height:100%;
-  background-color: #ffffff;
+  background-color: #191919;
   display: flex;
-  .tabs{
-    min-height: 32px;
-    height: 32px;
-    display: flex;
-    font-size: 16px;
-    background-color:  @bgcGray;
-    color: @schneiderGray;
-    width: 100%;
-    .tab{
-      flex:1;
-      text-align: center;
-      vertical-align: middle;
-      line-height: 32px;
+  flex-direction: column;
+  overflow-y:auto;
+  .label-group{
+    border-bottom: 1px solid #ffffff;
+    .item{
+      height:41px;
+      min-height: 41px;
+      color:#ffffff;
+      padding:0 15px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      .side{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+      .addBtn{
+        display: none;
+      }
+      &.selected {
+        background-color: #0CAD04 !important;
+      }
+      &:hover {
+        background-color: #0CAD04 !important;
+        color:#d9d9da !important;
+        .addBtn{
+            display: block;
+          }
+      }
+      .text{
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+    }
+    .canSelect{
       &:hover{
         cursor: pointer;
       }
     }
-    .selected{
-      background-color: #ffffff;
-      color: @schneiderBlue;
-      // -webkit-transition: width 1s ease-in-out;
-      // -moz-transition: width 1s ease-in-out;
-      // -o-transition: width 1s ease-in-out;
-    }
-    .content{
-      flex:1;
-      .itemTitle{
-        height:40px;
-        font-weight: bold;
-        font-size: 14px;
-      }
-    }
   }
+
 }
-.diagnose-label-node{
+.diagnose-panel{
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  background-color: rgb(53, 64, 82) !important;
-  .addBtn{
-    display: none;
-  }
-  .count{
-    color:red
-  }
-  &.selected {
-    background-color: #2d3645 !important;
-  }
-  &:hover {
-    background-color: #2d3645 !important;
-    color:#d9d9da !important;
-      .addBtn{
-        display: block;
-      }
-  }
+  flex:1
 }

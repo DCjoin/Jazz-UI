@@ -2,7 +2,7 @@ import keyMirror from 'keymirror';
 
 module.exports = {
   Action:keyMirror({
-    LOAD_DIM_NODE:null
+    GET_DIAGNOSIS_LIST:null
   }),
     EnergyLabel:{
         OfficeLighting:101,
@@ -44,6 +44,23 @@ module.exports = {
     },
     DiagnoseStatus:{
       Suspend:1
+    },
+    ItemType:{
+      Basic:{
+        NonRunTime:11,
+        DeviceEfficiency:12,
+        NonEssentialOperation:13,
+        IndoorEnvironmental:14,
+        DemandOptimization:15
+      },
+      Senior:{
+        RunTime:21,
+        NonRunTime:22,
+        DeviceEfficiency:23,
+        NonEssentialOperation:24,
+        IndoorEnvironmental:25,
+        OperationOptimization:26
+      }
     }
 
 };

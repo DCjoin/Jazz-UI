@@ -6,8 +6,8 @@ export default class Diagnose extends Component {
 render(){
 
   return(
-    <div>
-      <LabelList/>
+    <div className="diagnose-panel">
+      <LabelList isFromProbem={false}/>
     </div>
   )
 }

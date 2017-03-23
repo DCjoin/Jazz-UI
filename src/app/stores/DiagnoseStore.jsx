@@ -7,7 +7,15 @@ import PrototypeStore from './PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
 
+const _diagnoseList=null;
+
 const DiagnoseStore = assign({}, PrototypeStore, {
+  setDiagnoseList(data){
+    _diagnoseList=Immutable.fromJS(data);
+  },
+  getDiagnosisList(){
+    return _diagnoseList;
+  },
   getAllLabel(){
     return Immutable.fromJS({
       LightingPower:[
@@ -67,8 +75,8 @@ const DiagnoseStore = assign({}, PrototypeStore, {
 
 DiagnoseStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
-    case Action.GET_ENERGY_SOLUTION_SUCCESS:
-        DiagnoseStore.setSolutionList(action.data,action.status);
+    case Action.GET_DIAGNOSIS_LIST:
+        DiagnoseStore.setDiagnoseList(action.data);
         DiagnoseStore.emitChange()
         break;
       }
