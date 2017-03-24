@@ -14,13 +14,13 @@ import _ from 'lodash';
 let _currentUser = null,
   _error = null,
   _currentPrivilege = null,
-  _ecmHasBubble=false;
+  _ecmHasBubble=false,
+  _diagnoseHasBubble=false;
 let CURRENT_USER_EVENT = 'currentuser',
   PASSWORD_ERROR_EVENT = 'passworderror',
   PASSWORD_SUCCESS_EVENT = 'passwordsuccess',
   CURRENT_PRIVILEGE_EVENT = 'currentprivilege';
 
-let {bubbleType}=CurrentUser;
 const PRIVILEGE_ADMIN = [
   PermissionCode.MAP_VIEW.READONLY,
   PermissionCode.ENERGY_MANAGE.FULL,
@@ -171,6 +171,13 @@ var CurrentUserStore = assign({}, PrototypeStore, {
   getEcmBubble:function(){
     return _ecmHasBubble;
   },
+  //诊断问题标志
+  setDiagnoseubble:function(data){
+    _diagnoseHasBubble=data['1'] || data['2'];
+  },
+  getDiagnoseBubble:function(){
+    return _diagnoseHasBubble;
+  },
   getMainMenuItems: function() {
     var menuItems = [];
     if (!this.getCurrentPrivilege()) return
@@ -201,7 +208,7 @@ var CurrentUserStore = assign({}, PrototypeStore, {
       menuItems.push(
         {
           getPath: RoutePath.smartDiagnose,
-          //hasBubble:this.getEcmBubble(),
+          hasBubble:this.getDiagnoseBubble(),
           title:I18N.MainMenu.SmartDiagnose
         }
       );

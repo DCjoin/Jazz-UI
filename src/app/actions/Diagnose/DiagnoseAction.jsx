@@ -5,13 +5,14 @@ import Path from 'constants/Path.jsx';
 import util from 'util/Util.jsx';
 
 const DiagnoseAction = {
-  getDiagnosisList(HierarchyId,GradeType,DiagnoseListType){
+  getDiagnosisList(HierarchyId,GradeType,DiagnoseListType,callback){
     Ajax.post(Path.Diagnose.diagnosislist,
       {
       params: {HierarchyId,GradeType,DiagnoseListType},
       tag: 'getDiagnosisList',
       avoidDuplicate: true,
       success: function(res) {
+        if(callback) callback();
         AppDispatcher.dispatch({
           type: Action.GET_DIAGNOSIS_LIST,
           data:res
@@ -21,6 +22,18 @@ const DiagnoseAction = {
         console.log(err, res);
       }
     });
+  },
+  getDiagnoseStatic(hierarchyId){
+    Ajax.get(util.replacePathParams(Path.Diagnose.getdiagnosestatic, hierarchyId), {
+      tag: 'getGroupSettingsList',
+      avoidDuplicate: true,
+      success: (res) => {
+        AppDispatcher.dispatch({
+          type: Action.GET_DIAGNOSIS_STATIC,
+          data: res,
+        })
+      }
+    } );
   },
 }
 
