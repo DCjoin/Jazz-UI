@@ -14042,7 +14042,7 @@ end
 				})
 				.add(item.legendGroup)
 				.on('mouseover', function(evt) {
-					if (!series.visible || series.lockLegend || listlength == 1) {
+					if (!series.visible || series.lockLegend || series.options.lockLegend || listlength == 1) {
 						stopPropagation(evt);
 						return;
 					}
@@ -14103,7 +14103,7 @@ end
 					}
 					stopPropagation(evt);
 				}).on('click', function(evt) {
-					if (!series.visible || listlength == 1) {
+					if (!series.visible || listlength == 1 || series.options.lockLegend) {
 						stopPropagation(evt);
 						return;
 					}
@@ -19539,6 +19539,8 @@ end
 				pointAttr;
 
 			state = state || NORMAL_STATE; // empty string
+			debugger;
+			console.log(state);
 			pointAttr = point.pointAttr[state] || series.pointAttr[state];
 
 			if (
@@ -19562,6 +19564,7 @@ end
 			// apply hover styles to the existing point
 			if (point.graphic) {
 				radius = markerOptions && point.graphic.symbolName && pointAttr.r;
+				console.log(pointAttr);
 				point.graphic.attr(merge(
 					pointAttr,
 					radius ? { // new symbol attributes (#507, #612)

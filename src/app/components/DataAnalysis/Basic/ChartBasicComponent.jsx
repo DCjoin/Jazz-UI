@@ -131,7 +131,6 @@ function getStrategyByChartType(chartType) {
 
 export default class ChartBasicComponent extends Component {
   static propTypes = {
-    node: PropTypes.object,
     tagData: PropTypes.object,
     chartType: PropTypes.string,
     widgetSeriesArray: PropTypes.object,
@@ -152,7 +151,7 @@ export default class ChartBasicComponent extends Component {
   }
 
   render(){
-    let {node, tagData, chartType, widgetStatus, widgetSeriesArray, contentSyntax} = this.props,
+    let {tagData, chartType, widgetStatus, widgetSeriesArray, contentSyntax, postNewConfig} = this.props,
     target = tagData.getIn(['TargetEnergyData', 0, 'Target']),
     timeSpan = target.get('TimeSpan'),
     startTime = timeSpan.get('StartTime'),
@@ -212,9 +211,7 @@ export default class ChartBasicComponent extends Component {
       return data.set('enableDelete', false);
     } ) );
 
-
-    let {ChartType, Id} = node.toJS(),
-    chartCmpObj = {
+    let chartCmpObj = {
       ref: 'chart',
       bizType: 'Energy',
       energyType: 'Energy',
@@ -243,22 +240,11 @@ export default class ChartBasicComponent extends Component {
                   widgetSeriesArray.toJS(), 'Energy', 'Energy',
                   { viewOption: {TimeRanges:timeRanges}}
                 ));
-      }
+      },
+      postNewConfig
     };
     return (
-      <div id={'chart_basic_component_' + Id} style={{
-          flex: 1,
-          position: 'absolute',
-          width: 610,
-          height: 320,
-          display: 'flex',
-          opacity: 0,
-          flexDirection: 'column',
-          marginBottom: '0px',
-          marginLeft: '9px'
-        }}>
          <ChartComponentBox {...chartCmpObj}/>
-       </div>
     );
   }
 }
