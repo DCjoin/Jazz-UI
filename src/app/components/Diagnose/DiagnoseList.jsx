@@ -7,6 +7,7 @@ import { FontIcon, IconButton, IconMenu,MenuItem} from 'material-ui';
 import privilegeUtil from 'util/privilegeUtil.jsx';
 import PermissionCode from 'constants/PermissionCode.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
+import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
 
 function privilegeWithSmartDiagnoseList( privilegeCheck ) {
   //  return false
@@ -38,7 +39,11 @@ export default class DiagnoseList extends Component {
   	}
 
   _onDelete(){
-
+		this.setState({
+										dialogType: null
+									},()=>{
+										DiagnoseAction.deletediagnose(this.props.selectedNode.get('Id'))
+									})
 	}
 
 	_onResume(){

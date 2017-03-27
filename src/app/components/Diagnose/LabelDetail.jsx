@@ -23,7 +23,7 @@ export default class LabelDetail extends Component {
   }
 
   render(){
-    var text=DiagnoseStore.getContentText(this.props.isFromProbem);
+    var text=DiagnoseStore.getContentText(this.props.isFromProbem,this.props.selectedNode);
     var content;
 
 		if(!isFull()){

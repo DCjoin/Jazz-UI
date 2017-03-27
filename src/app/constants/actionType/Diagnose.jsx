@@ -3,7 +3,8 @@ import keyMirror from 'keymirror';
 module.exports = {
   Action:keyMirror({
     GET_DIAGNOSIS_LIST:null,
-    GET_DIAGNOSIS_STATIC:null
+    GET_DIAGNOSIS_STATIC:null,
+    GET_DIAGNOSIS_BY_ID:null
   }),
     EnergyLabel:{
         OfficeLighting:101,

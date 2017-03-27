@@ -8,7 +8,8 @@ import assign from 'object-assign';
 import Immutable from 'immutable';
 
 var _diagnoseList=null,
-    _diagnoseStatic=null;
+    _diagnoseStatic=null,
+    _currentDiagnose=null;
 
 const DiagnoseStore = assign({}, PrototypeStore, {
   setDiagnoseList(data){
@@ -22,6 +23,12 @@ const DiagnoseStore = assign({}, PrototypeStore, {
   },
   getDiagnoseStatic(){
     return _diagnoseStatic
+  },
+  setDiagnose(data){
+    _currentDiagnose=data
+  },
+  getDiagnose(){
+    return _currentDiagnose
   },
   getAllLabel(){
     return Immutable.fromJS({
@@ -86,7 +93,7 @@ const DiagnoseStore = assign({}, PrototypeStore, {
       return isFromProbem?I18N.Setting.Diagnose.HasNoProblem:I18N.Setting.Diagnose.HasNoList
     }
     else {
-      if(selectedNode.size===0){
+      if(selectedNode===null){
         return isFromProbem?I18N.Setting.Diagnose.SelectProblemTip:I18N.Setting.Diagnose.SelectListTip
       }
     }
@@ -106,6 +113,11 @@ DiagnoseStore.dispatchToken = AppDispatcher.register(function(action) {
         DiagnoseStore.setDiagnoseStatic(action.data);
         DiagnoseStore.emitChange()
         break;
+    case Action.GET_DIAGNOSIS_BY_ID:
+          DiagnoseStore.setDiagnose(action.data);
+          DiagnoseStore.emitChange()
+          break;
+
       }
     })
 

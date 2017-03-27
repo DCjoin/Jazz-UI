@@ -8,6 +8,7 @@ import PermissionCode from 'constants/PermissionCode.jsx';
 import BubbleIcon from '../BubbleIcon.jsx';
 import Immutable from 'immutable';
 import LabelDetail from './LabelDetail.jsx';
+import DiagnoseStore from 'stores/DiagnoseStore.jsx';
 
 function getFirstMenuPathFunc(menu) {
   let firstMenu = menu[0];
@@ -45,14 +46,22 @@ export default class Diagnose extends Component {
         this._onHasProblem = this._onHasProblem.bind(this);
         this._onItemTouchTap = this._onItemTouchTap.bind(this);
         this.getBasicOrSenior = this.getBasicOrSenior.bind(this);
+        this._onChanged = this._onChanged.bind(this);
 
     }
 
   state={
         infoTabNo:1,
-        hasProblem:true,
+        hasProblem:false,
         selectedNode:Immutable.fromJS({}),
+        nodeDetail:null
     }
+
+  _onChanged(){
+    this.setState({
+      nodeDetail:DiagnoseStore.getDiagnose()
+    })
+  }
 
   _onHasProblem(){
     this.setState({
@@ -69,6 +78,8 @@ export default class Diagnose extends Component {
   _onItemTouchTap(data){
     this.setState({
       selectedNode:data
+    },()=>{
+      DiagnoseAction.getDiagnose(data.get("Id"));
     })
   }
 
@@ -106,6 +117,7 @@ export default class Diagnose extends Component {
 
   componentDidMount(){
     CurrentUserStore.addCurrentUserListener(this._onHasProblem);
+    DiagnoseStore.addChangeListener(this._onChanged);
     this.getProblem();
   }
 
@@ -120,6 +132,7 @@ export default class Diagnose extends Component {
 
   componentWillUnmount(){
     CurrentUserStore.removeCurrentUserListener(this._onHasProblem);
+    DiagnoseStore.removeChangeListener(this._onChanged);
   }
 
 render(){
@@ -129,7 +142,7 @@ render(){
       {this._renderTab()}
       <div className="content">
         <LabelList ref='list' isFromProbem={this.state.infoTabNo===1} selectedNode={this.state.selectedNode} onItemTouchTap={this._onItemTouchTap}/>
-        <LabelDetail isFromProbem={this.state.infoTabNo===1} selectedNode={this.state.selectedNode} isBasic={this.getBasicOrSenior()}/>
+        <LabelDetail isFromProbem={this.state.infoTabNo===1} selectedNode={this.state.nodeDetail} isBasic={this.getBasicOrSenior()}/>
     </div>
     </div>
   )
