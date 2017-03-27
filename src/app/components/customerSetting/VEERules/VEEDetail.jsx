@@ -9,6 +9,8 @@ import moment from 'moment';
 import { formStatus } from 'constants/FormStatus.jsx';
 import Regex from 'constants/Regex.jsx';
 
+import {getDateTimeItemsByStep} from 'util/Util.jsx';
+
 import Panel from 'controls/MainContentPanel.jsx';
 import ViewableTextField from 'controls/ViewableTextField.jsx';
 import ViewableDatePicker from 'controls/ViewableDatePicker.jsx';
@@ -22,27 +24,6 @@ import VEEStore from 'stores/customerSetting/VEEStore.jsx';
 import RuleBasic from './RuleBasic.jsx';
 import MonitorTag from './MonitorTag.jsx';
 
-
-function getDateTimeItems() {
-  var step = 60,
-    dataList = [],
-    v = 0,
-    i = 0;
-
-  while (v <= 1440) {
-    var h = Math.floor(v / 60),
-      m = v % 60,
-      text = ((h < 10) ? '0' : '') + h + ':' + ((m < 10) ? '0' : '') + m;
-
-    dataList[i] = {
-      payload: text,
-      text,
-    };
-    v += step;
-    i++;
-  }
-  return dataList;
-};
 
 class ScanDialog extends Component {
   static propTypes = {
@@ -88,7 +69,7 @@ class ScanDialog extends Component {
       },
       startTimeProps: {
         key: 'startTime',
-        dataItems: getDateTimeItems(),
+        dataItems: getDateTimeItemsByStep(60),
         defaultValue: startTime,
         style: {width: 100},
         didChanged: this._setState('startTime'),
@@ -101,7 +82,7 @@ class ScanDialog extends Component {
       },
      endTimeProps: {
         key: 'endTime',
-        dataItems: getDateTimeItems(),
+        dataItems: getDateTimeItemsByStep(60),
         defaultValue:endTime,
         style: {width: 100},
         didChanged: this._setState('endTime'),
