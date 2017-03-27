@@ -9,7 +9,4 @@ module.exports = {
     RESET_USER_LIST: null,
     SET_BUBBLE_FLAG:null,
   }),
-  bubbleType:keyMirror({
-    ECM: null,
-  })
 };

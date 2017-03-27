@@ -7,7 +7,9 @@ import PrototypeStore from './PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
 
-let _diagnoseList=null;
+var _diagnoseList=null,
+    _diagnoseStatic=null,
+    _currentDiagnose=null;
 
 const DiagnoseStore = assign({}, PrototypeStore, {
   setDiagnoseList(data){
@@ -15,6 +17,18 @@ const DiagnoseStore = assign({}, PrototypeStore, {
   },
   getDiagnosisList(){
     return _diagnoseList;
+  },
+  setDiagnoseStatic(data){
+    _diagnoseStatic=data
+  },
+  getDiagnoseStatic(){
+    return _diagnoseStatic
+  },
+  setDiagnose(data){
+    _currentDiagnose=data
+  },
+  getDiagnose(){
+    return _currentDiagnose
   },
   getAllLabel(){
     return Immutable.fromJS({
@@ -68,6 +82,22 @@ const DiagnoseStore = assign({}, PrototypeStore, {
       }
     })
     return label
+  },
+  getContentText(isFromProbem,selectedNode){
+    if(_diagnoseList===null) return null
+    var hasProblem=false;
+    _diagnoseList.forEach(item=>{
+      if(item.get('Children').findIndex(child=>child.get('ChildrenCount')!==0)>-1) hasProblem=true
+    })
+    if(hasProblem===false){
+      return isFromProbem?I18N.Setting.Diagnose.HasNoProblem:I18N.Setting.Diagnose.HasNoList
+    }
+    else {
+      if(selectedNode===null){
+        return isFromProbem?I18N.Setting.Diagnose.SelectProblemTip:I18N.Setting.Diagnose.SelectListTip
+      }
+    }
+    return null
   }
 
 
@@ -79,6 +109,15 @@ DiagnoseStore.dispatchToken = AppDispatcher.register(function(action) {
         DiagnoseStore.setDiagnoseList(action.data);
         DiagnoseStore.emitChange()
         break;
+    case Action.GET_DIAGNOSIS_STATIC:
+        DiagnoseStore.setDiagnoseStatic(action.data);
+        DiagnoseStore.emitChange()
+        break;
+    case Action.GET_DIAGNOSIS_BY_ID:
+          DiagnoseStore.setDiagnose(action.data);
+          DiagnoseStore.emitChange()
+          break;
+
       }
     })
 

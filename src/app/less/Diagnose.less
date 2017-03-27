@@ -60,11 +60,75 @@
       }
     }
   }
-
+}
+.diagnose-tab{
+  font-size: 16px !important;
+  .icon-lighten{
+    font-size: 5px !important;
+    margin-left:40px
+  }
+  >div>div{
+    height:55px !important
+  }
 }
 .diagnose-panel{
   display: flex;
-  flex:1
+  flex:1;
+  flex-direction: column;
+  align-items: center;
+  padding:0 12px;
+  .content{
+    flex:1;
+    display: flex;
+    width: 100%
+  }
+  .titleTabs{
+    display: flex;
+    height:49px;
+    align-items: center;
+    .tab{
+      font-size: 16px;
+      width: 74px;
+      text-align: center;
+      &:hover{
+        cursor: pointer;
+      }
+    }
+    .selected{
+      color:#0CAD04;
+      border-bottom: 1px solid #0CAD04;
+    }
+  }
+  .detail-content{
+    flex:1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    .content{
+      flex:1;
+      display: flex;
+      flex-direction: column;
+      &-head{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        .side{
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+        }
+        .text{
+          color:#202622;
+          font-size: 16px;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+      }
+    }
+  }
+
 }
 
 .diagnose-overlay {
