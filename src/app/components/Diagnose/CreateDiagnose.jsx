@@ -15,6 +15,8 @@ import classnames from 'classnames';
 
 import TimeGranularity from 'constants/TimeGranularity.jsx';
 
+import ReduxDecorator from '../../decorator/ReduxDecorator.jsx';
+
 import {getDateTimeItemsByStep} from 'util/Util.jsx';
 
 import LinkButton from 'controls/LinkButton.jsx';
@@ -214,8 +216,8 @@ function ChartPreview({StartTime, EndTime, onChangeStartTime, onChangeEndTime, S
 			</div>
 		</div>
 		{chartData ? 
-		(<DiagnoseChart data={chartData}/>):
-		(<div className='flex-center'>{'在左侧选择数据点'}</div>)
+		(<div style={{margin: 20, marginTop: 0}}><DiagnoseChart data={chartData}/></div>):
+		(<div className='flex-center'>{loading ? <CircularProgress  mode="indeterminate" size={80} /> : '在左侧选择数据点'}</div>)
 		}
 	</section>)
 }
@@ -282,6 +284,7 @@ class CreateStep1 extends Component {
 			onChangeEndTime,
 			Step,
 			onUpdateStep,
+			chartData,
 			Timeranges, 
 			onAddDateRange, 
 			onDeleteDateRange,
@@ -297,7 +300,8 @@ class CreateStep1 extends Component {
 						EndTime={EndTime}
 						onChangeEndTime={onChangeEndTime}
 						Step={Step}
-						onUpdateStep={onUpdateStep}/>
+						onUpdateStep={onUpdateStep}
+						chartData={chartData}/>
 				</div>
 				<DiagnoseRange 
 					Step={Step}
@@ -331,8 +335,21 @@ class CreateStep3 extends Component {
 	}
 }
 
+let loading = true;
+@ReduxDecorator
+class CreateDiagnose extends Component {
+	static getStores() {
+		return [DiagnoseStore];
+	};
 
-export default class CreateDiagnose extends Component {
+	static calculateState(prevState) {
+		loading = false;
+		return {
+			diagnoseTags: (prevState && prevState.diagnoseTags) || DiagnoseStore.getTagsList(),
+			chartData: DiagnoseStore.getChartData(),
+		};
+	};
+
 	constructor(props) {
 		super(props);
 		this._onChange = this._onChange.bind(this);
@@ -340,36 +357,26 @@ export default class CreateDiagnose extends Component {
 		this._onSaveRenew = this._onSaveRenew.bind(this);
 		this._onCheckDiagnose = this._onCheckDiagnose.bind(this);
 
-		// DiagnoseStore.addChangeListener(this._onChange);
-
 		this.state = {
 			step: 0,
 			diagnoseTags: null,
+			cahrtData: null,
 			filterObj: getDefaultFilter()
 		};
 
-		setTimeout(() => {
-			this.setState({
-				diagnoseTags: MockData.tags.map( tag => tag.set('checked', false) ),
-			});
-		}, 1000);
-		// DiagnoseAction.getTagsList();
-	}
-	componentWillUnmount() {
-		DiagnoseStore.removeChangeListener(this._onChange);
-	}
-	_onChange() {
-		// this.setState({
-		// 	diagnoseTags: DiagnoseStore.getTags()
-		// });
+		DiagnoseAction.getTagsList();
 	}
 	_getChartData() {
+		loading = true;
 		let {step, filterObj} = this.state;
 		if( step === 0 ) {
-			// DiagnoseAction.getChartData();
+			DiagnoseAction.getChartData(filterObj);
 		} else if( step === 1 ) {
 			// DiagnoseAction.getChartData();
 		}
+		this.setState({
+			chartData: null
+		});
 	}
 	_setStep(step) {
 		return () => {
@@ -394,6 +401,7 @@ export default class CreateDiagnose extends Component {
 		this.setState({
 			diagnoseTags: this.state.diagnoseTags.setIn([idx, 'checked'], val)
 		});
+		this._getChartData();
 	}
 	_onSaveBack() {
 		
@@ -402,11 +410,8 @@ export default class CreateDiagnose extends Component {
 		this._setStep(0)();
 	}
 	_renderContent() {
-		let {step, diagnoseTags, filterObj} = this.state,
-		{TagIds, Timeranges, Step, StartTime, EndTime} = filterObj.toJS(),
-		_setFilterObjThenUpdataChart = () => {
-
-		};
+		let {step, diagnoseTags, chartData, filterObj} = this.state,
+		{TagIds, Timeranges, Step, StartTime, EndTime} = filterObj.toJS();
 		if( step === 0 ) {
 			return (<CreateStep1 
 						diagnoseTags={diagnoseTags}
@@ -423,6 +428,7 @@ export default class CreateDiagnose extends Component {
 						onUpdateStep={(val) => {
 							this._setFilterObjThenUpdataChart('Step', val);
 						}}
+						chartData={chartData}
 						Timeranges={Timeranges}
 						onUpdateDateRange={(idx, type, startOrEnd, val) => {
 							this._setFilterObjThenUpdataChart(['Timeranges', idx, type], 
@@ -501,78 +507,4 @@ export default class CreateDiagnose extends Component {
 		);
 	}
 }
-
-const MockData = {
-	tags: Immutable.fromJS([
-		{
-			Id: 1,
-			Name: 'TagName1TagName1TagName1TagName1TagName1TagName1TagName1',
-			diagonseing: false,
-		},
-		{
-			Id: 2,
-			Name: 'TagName2TagName2TagName2TagName2TagName2TagName2TagName2TagName2',
-			diagonseing: true,
-		},
-		{
-			Id: 3,
-			Name: 'TagName3',
-			diagonseing: false,
-		},
-		{
-			Id: 4,
-			Name: 'TagName4',
-			diagonseing: true,
-		},
-		{
-			Id: 5,
-			Name: 'TagName5',
-			diagonseing: true,
-		},
-		{
-			Id: 6,
-			Name: 'TagName6',
-			diagonseing: false,
-		},
-		{
-			Id: 7,
-			Name: 'TagName7',
-			diagonseing: false,
-		},
-		{
-			Id: 8,
-			Name: 'TagName8',
-			diagonseing: false,
-		},
-		{
-			Id: 9,
-			Name: 'TagName9',
-			diagonseing: false,
-		},
-		{
-			Id: 10,
-			Name: 'TagName10',
-			diagonseing: false,
-		},
-		{
-			Id: 11,
-			Name: 'TagName11',
-			diagonseing: false,
-		},
-		{
-			Id: 12,
-			Name: 'TagName12',
-			diagonseing: false,
-		},
-		{
-			Id: 13,
-			Name: 'TagName13',
-			diagonseing: false,
-		},
-		{
-			Id: 14,
-			Name: 'TagName14',
-			diagonseing: false,
-		},
-	])
-}
+export default CreateDiagnose;
