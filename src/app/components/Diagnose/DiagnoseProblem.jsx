@@ -7,6 +7,7 @@ import privilegeUtil from 'util/privilegeUtil.jsx';
 import PermissionCode from 'constants/PermissionCode.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import DateTimeSelector from 'controls/DateTimeSelector.jsx';
+import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
 
 function privilegeWithBasicSmartDiagnose( privilegeCheck ) {
   //  return true
@@ -57,7 +58,7 @@ export default class DiagnoseProblem extends Component {
   _onDateSelectorChanged(){
 
   }
-  
+
 	_renderIconMenu(){
 		var IconButtonElement = <IconButton iconClassName="icon-arrow-down" iconStyle={{
 			fontSize: '16px'

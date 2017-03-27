@@ -35,8 +35,8 @@ export default class LabelList extends Component {
 
   state={
     infoTabNo:1,
-    list:Immutable.fromJS(labellist),
-    static:problemStatic
+    list:null,
+    static:null
   }
 
   _getList(){

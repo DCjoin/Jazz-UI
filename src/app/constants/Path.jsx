@@ -67,6 +67,8 @@ module.exports = {
   },
   Diagnose:{
     diagnosislist:'/diagnose/diagnosislist',
-    getdiagnosestatic:'api/diagnose/getdiagnosestatic/{hierarchId}'
+    getdiagnosestatic:'/diagnose/getdiagnosestatic/{hierarchId}',
+    getDiagnose:'/diagnose/get/{diagnoseId}',
+    deletediagnose:'/diagnose/deletediagnose/{diagnoseId}'
   }
 };
