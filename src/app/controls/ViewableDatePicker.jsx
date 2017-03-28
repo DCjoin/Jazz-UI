@@ -132,6 +132,7 @@ class DatePicker extends React.Component {
     return (
       <div >
         <TextField
+        disabled={this.props.disabled}
         className="jazz-month-picker-noempty"
         style={style}
         // errorStyle={{position:'absolute',bottom:"-10px"}}

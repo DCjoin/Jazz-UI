@@ -9,7 +9,9 @@ import Immutable from 'immutable';
 
 var _diagnoseList=null,
     _diagnoseStatic=null,
-    _currentDiagnose=null;
+    _currentDiagnose=null,
+    _tagsList=null,
+    _chartData=null;
 
 const DiagnoseStore = assign({}, PrototypeStore, {
   setDiagnoseList(data){
@@ -29,6 +31,18 @@ const DiagnoseStore = assign({}, PrototypeStore, {
   },
   getDiagnose(){
     return _currentDiagnose
+  },
+  setTagsList(data){
+    _tagsList=Immutable.fromJS(data);
+  },
+  getTagsList(){
+    return _tagsList;
+  },
+  setChartData(data){
+    _chartData=Immutable.fromJS(data);
+  },
+  getChartData(){
+    return _chartData;
   },
   getAllLabel(){
     return Immutable.fromJS({
@@ -117,8 +131,15 @@ DiagnoseStore.dispatchToken = AppDispatcher.register(function(action) {
           DiagnoseStore.setDiagnose(action.data);
           DiagnoseStore.emitChange()
           break;
-
-      }
-    })
+    case Action.GET_TAGS_LIST:
+          DiagnoseStore.setTagsList(action.data);
+          DiagnoseStore.emitChange()
+          break;
+    case Action.GET_CHART_DATA:
+          DiagnoseStore.setChartData(action.data);
+          DiagnoseStore.emitChange()
+          break;
+  }
+})
 
 export default DiagnoseStore;
