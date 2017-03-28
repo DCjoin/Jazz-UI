@@ -29,7 +29,7 @@ export default class LabelDetail extends Component {
 		if(!isFull()){
       text=I18N.Setting.Diagnose.NoPrivilege
     }
-		if(text){
+		if(text!==''){
       content=<div className="flex-center">
                {text}
              </div>
