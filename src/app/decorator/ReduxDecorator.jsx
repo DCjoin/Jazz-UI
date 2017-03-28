@@ -39,7 +39,7 @@ function ReduxDecorator(Base) {
 
 			this._onChange = this._onChange.bind(this);
 
-			this.state = Base.calculateState(undefined, props, context);
+			this.state = {...this.state, ...Base.calculateState(undefined, props, context)};
 			addListeners(Base.getStores()).map(actionWithListener(this._onChange));
 		};
 
@@ -63,8 +63,8 @@ function ReduxDecorator(Base) {
 
 		_onChange() {
 			let {state, props, context} = this;
-			if( !util.shallowEqual(state, Base.calculateState(undefined, props, context)) ) {
-				this.setState(Base.calculateState(undefined, props, context));
+			if( !util.shallowEqual(state, Base.calculateState(state, props, context)) ) {
+				this.setState(Base.calculateState(state, props, context));
 			}
 		}
 

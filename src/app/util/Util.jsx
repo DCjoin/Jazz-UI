@@ -2156,7 +2156,28 @@ let CommonFuns = {
     link.dispatchEvent(event);
 
     document.body.removeChild(link);
-  }
+  },
+  // Select menu items
+  getDateTimeItemsByStep(step) {
+    let dataList = [],
+      v = 0,
+      i = 0;
+
+    while (v <= 1440) {
+      var h = Math.floor(v / 60),
+        m = v % 60,
+        text = ((h < 10) ? '0' : '') + h + ':' + ((m < 10) ? '0' : '') + m;
+
+      dataList[i] = {
+        payload: text,
+        text,
+      };
+      v += step;
+      i++;
+    }
+    return dataList;
+  },
+
 };
 
 function toFixed(num, s) {

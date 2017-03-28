@@ -131,7 +131,7 @@
 
 }
 
-.diagonse-overlay {
+.diagnose-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -142,6 +142,8 @@
   display: flex;
   flex-direction: column;
   padding: 10px 40px;
+  overflow-x: hidden;
+  overflow-y: auto; 
 
   &-header {
     flex: none;
@@ -152,14 +154,95 @@
   }
 }
 
-.diagonse-create-stepper {
+.diagnose-create-stepper {
   margin-top: 20px;
   height: 48px;
   background-color: #fff;
 }
-.diagonse-create-section {
+.diagnose-create-section {
   margin-top: 20px;
 }
-.diagonse-create-footer {
+.diagnose-create-footer {
   margin-top: 20px;
+  margin-bottom: 40px;
+}
+.diagnose-create-tag-list {
+  display: flex;
+  flex-direction: column;
+  width: 280px;
+  height: 554px;
+  background-color: #fff;
+
+  &-title {
+    flex: none;
+    padding: 10px 20px;
+    border-bottom: 1px solid #000;
+  }
+  &-content {
+    list-style: none;
+    overflow-x: hidden;
+    overflow-y: auto; 
+    margin-bottom: 10px;
+  }
+  &-item {
+    padding: 5px 10px;
+    position: relative;
+  }
+}
+
+.diagnose-create-content {
+  margin-top: 20px;
+}
+
+.diagnose-create-checkbox-label {
+  position: absolute;
+  top: 0px;
+  left: 40px;
+  padding: 7px 0;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  width: calc(~'100% - 50px');
+
+  &-name {
+
+  }
+  &-tip {
+    margin-left: 5px;
+    border: 1px red solid;
+    border-radius: 2px;
+    color: red; 
+    padding: 0 2px;
+    flex: none;
+  }
+}
+.diagnose-create-chart-preview {
+  background-color: #fff;
+  flex: 1;
+  margin-left: 20px;  
+  display: flex;
+  flex-direction: column;
+  & .datepicker-popup {
+    position: absolute;
+  }
+}
+.diagnose-create-chart-action {
+  display: flex;
+  margin: 10px 20px;
+  justify-content: space-between;
+}
+.diagnose-create-chart-filter {
+  display: flex;
+}
+.diagnose-range {
+  margin-top: 20px;
+  background-color: #fff;
+  &-title {
+    padding: 10px 20px;
+    border-bottom: 1px solid;
+  }
+  &-content {
+    padding: 20px;
+    display: flex;
+  }
 }

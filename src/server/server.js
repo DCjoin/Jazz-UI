@@ -74,7 +74,8 @@ server.register(
 		{register: require("./file.js")},
     {register: require("./rank.js")},
     {register: require("./analysis.js")},
-		{register: require("./template.js")},
+    {register: require("./template.js")},
+		{register: require("./diagnose.js")},
 	],function () {
     server.start(function() {
         console.log('Server started at: ' + server.info.uri);

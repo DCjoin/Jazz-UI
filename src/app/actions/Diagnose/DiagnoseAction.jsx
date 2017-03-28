@@ -58,6 +58,26 @@ const DiagnoseAction = {
       }
     } );
   },
+  getTagsList() {
+    Ajax.get('/diagnose/tags/list', {
+      success: (res) => {
+        AppDispatcher.dispatch({
+          type: Action.GET_TAGS_LIST,
+          data: res,
+        })
+      }
+    });    
+  },
+  getChartData() {
+    Ajax.post('/diagnose/chart/data', {
+      success: (res) => {
+        AppDispatcher.dispatch({
+          type: Action.GET_CHART_DATA,
+          data: res,
+        })
+      }
+    });    
+  }
 }
 
 export default DiagnoseAction;

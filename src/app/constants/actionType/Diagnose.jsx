@@ -4,7 +4,9 @@ module.exports = {
   Action:keyMirror({
     GET_DIAGNOSIS_LIST:null,
     GET_DIAGNOSIS_STATIC:null,
-    GET_DIAGNOSIS_BY_ID:null
+    GET_DIAGNOSIS_BY_ID:null,
+    GET_TAGS_LIST:null,
+    GET_CHART_DATA:null,
   }),
     EnergyLabel:{
         OfficeLighting:101,

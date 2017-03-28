@@ -19539,8 +19539,6 @@ end
 				pointAttr;
 
 			state = state || NORMAL_STATE; // empty string
-			debugger;
-			console.log(state);
 			pointAttr = point.pointAttr[state] || series.pointAttr[state];
 
 			if (
