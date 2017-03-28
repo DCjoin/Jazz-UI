@@ -26,7 +26,7 @@ export default class LabelDetail extends Component {
     var text=DiagnoseStore.getContentText(this.props.isFromProbem,this.props.selectedNode);
     var content;
 
-		if(!isFull()){
+		if(this.props.isFromProbem && !this.props.isBasic && !isFull()){
       text=I18N.Setting.Diagnose.NoPrivilege
     }
 		if(text!==''){

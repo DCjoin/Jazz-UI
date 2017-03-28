@@ -72,7 +72,7 @@ class Group extends Component{
                                   "selected":data.get('Id')===this.props.selectedNode.get('Id'),
                                   'canSelect':true
                                 })}
-           style={{marginLeft:'21px'}} onClick={()=>{this.props.onItemTouchTap(data)}}>
+           style={{paddingLeft:'30px'}} onClick={()=>{this.props.onItemTouchTap(data)}}>
         <div className="text">{data.get('Name')}</div>
         {data.get('Status')===DiagnoseStatus.Suspend && <FontIcon className="icon-more" style={{fontSize:'14px',marginLeft:'15px'}}/>}
       </div>

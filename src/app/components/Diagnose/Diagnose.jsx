@@ -31,9 +31,29 @@ function privilegeWithSmartDiagnoseList( privilegeCheck ) {
 	return privilegeCheck(PermissionCode.SMART_DIACRISIS_LIST, CurrentUserStore.getCurrentPrivilege());
 }
 
-function isFull() {
+function isListFull() {
 	return privilegeWithSmartDiagnoseList(privilegeUtil.isFull.bind(privilegeUtil));
 }
+
+function privilegeWithBasicSmartDiagnose( privilegeCheck ) {
+  //  return true
+	return privilegeCheck(PermissionCode.BASIC_SMART_DIACRISIS, CurrentUserStore.getCurrentPrivilege());
+}
+
+function isBasicFull() {
+	return privilegeWithBasicSmartDiagnose(privilegeUtil.isFull.bind(privilegeUtil));
+}
+
+function isBasicView() {
+	return privilegeWithBasicSmartDiagnose(privilegeUtil.isView.bind(privilegeUtil));
+}
+
+function isBasicNoPrivilege() {
+	return !(isBasicView() || isBasicFull())
+}
+
+
+
 
 export default class Diagnose extends Component {
 
@@ -45,16 +65,17 @@ export default class Diagnose extends Component {
         super(props);
         this._onHasProblem = this._onHasProblem.bind(this);
         this._onItemTouchTap = this._onItemTouchTap.bind(this);
-        this.getBasicOrSenior = this.getBasicOrSenior.bind(this);
+        this._onBasicTabSwitch = this._onBasicTabSwitch.bind(this);
         this._onChanged = this._onChanged.bind(this);
 
     }
 
   state={
-        infoTabNo:1,
+        infoTabNo:isBasicNoPrivilege()?2:1,
         hasProblem:false,
         selectedNode:Immutable.fromJS({}),
-        nodeDetail:null
+        nodeDetail:null,
+        isBasic:true
     }
 
   _onChanged(){
@@ -71,7 +92,8 @@ export default class Diagnose extends Component {
 
   _switchTab(no){
     this.setState({
-      infoTabNo:no
+      infoTabNo:no,
+      nodeDetail:null
     })
   }
 
@@ -83,8 +105,14 @@ export default class Diagnose extends Component {
     })
   }
 
+  _onBasicTabSwitch(no){
+      this.setState({
+        isBasic:no===1
+      })
+    }
+
   _renderTab(){
-    if(isFull()){
+    if(isListFull() && !isBasicNoPrivilege()){
       return(
         <div className="titleTabs">
           <div className={classnames({"tab":true,'selected':this.state.infoTabNo===1})} onClick={this._switchTab.bind(this,1)} style={{display:'flex'}}>
@@ -105,14 +133,11 @@ export default class Diagnose extends Component {
 
 
   getProblem(){
-    DiagnoseAction.getDiagnoseStatic(this.context.hierarchyId)
-  }
-
-  getBasicOrSenior(){
-      if(this.refs.list){
-        return this.refs.list.IsBasic()
-      }
-      return true
+    this.setState({
+      nodeDetail:null
+    },()=>{
+      DiagnoseAction.getDiagnoseStatic(this.context.hierarchyId)
+    })
   }
 
   componentDidMount(){
@@ -141,8 +166,8 @@ render(){
     <div className="diagnose-panel">
       {this._renderTab()}
       <div className="content">
-        <LabelList ref='list' isFromProbem={this.state.infoTabNo===1} selectedNode={this.state.selectedNode} onItemTouchTap={this._onItemTouchTap}/>
-        <LabelDetail isFromProbem={this.state.infoTabNo===1} selectedNode={this.state.nodeDetail} isBasic={this.getBasicOrSenior()}/>
+        <LabelList ref='list' isFromProbem={this.state.infoTabNo===1} selectedNode={this.state.selectedNode} onItemTouchTap={this._onItemTouchTap} onTabSwitch={this._onBasicTabSwitch}/>
+        <LabelDetail isFromProbem={this.state.infoTabNo===1} selectedNode={this.state.nodeDetail} isBasic={this.state.isBasic}/>
     </div>
     </div>
   )
