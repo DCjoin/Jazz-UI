@@ -111,7 +111,7 @@ const DiagnoseStore = assign({}, PrototypeStore, {
         return isFromProbem?I18N.Setting.Diagnose.SelectProblemTip:I18N.Setting.Diagnose.SelectListTip
       }
     }
-    return null
+    return ''
   }
 
 

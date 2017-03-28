@@ -28,8 +28,6 @@ const DiagnoseAction = {
   },
   getDiagnoseStatic(hierarchyId){
     Ajax.get(util.replacePathParams(Path.Diagnose.getdiagnosestatic, hierarchyId), {
-      tag: 'getDiagnosisList',
-      avoidDuplicate: true,
       success: (res) => {
         AppDispatcher.dispatch({
           type: Action.GET_DIAGNOSIS_STATIC,
@@ -66,7 +64,7 @@ const DiagnoseAction = {
           data: res,
         })
       }
-    });    
+    });
   },
   getChartData() {
     Ajax.post('/diagnose/chart/data', {
@@ -76,7 +74,7 @@ const DiagnoseAction = {
           data: res,
         })
       }
-    });    
+    });
   }
 }
 
