@@ -203,7 +203,6 @@ var CurrentUserStore = assign({}, PrototypeStore, {
     }
 
     if ( this.permit(PermissionCode.BASIC_SMART_DIACRISIS.FULL) || this.permit(PermissionCode.BASIC_SMART_DIACRISIS.READONLY)
-          || this.permit(PermissionCode.SENIOR_SMART_DIACRISIS.READONLY)  || this.permit(PermissionCode.SENIOR_SMART_DIACRISIS.FULL)
         || this.permit(PermissionCode.SMART_DIACRISIS_LIST.FULL)) {
       menuItems.push(
         {
