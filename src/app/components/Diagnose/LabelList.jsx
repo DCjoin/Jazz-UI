@@ -99,7 +99,7 @@ export default class LabelList extends Component {
       key:2,
       value:2,
       label:I18N.Setting.Diagnose.Senior,
-      icon:this.state.static && this.state.static['1'] && problemIcon,
+      icon:this.state.static && this.state.static['2'] && problemIcon,
       className:'diagnose-tab',
       style:{
         height:'55px',
