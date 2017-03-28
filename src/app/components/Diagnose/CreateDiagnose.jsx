@@ -201,27 +201,41 @@ function TagList({tags, onCheck}) {
 	</section>)
 }
 
-function ChartPreview({StartTime, EndTime, onChangeStartTime, onChangeEndTime, Step, onUpdateStep, chartData}) {
+/**
+chartData: API返回图表数据
+chartDataLoading: 图表数据请求中
+Step: 步长(TimeGranularity)
+onUpdateStep: 更新步长
+StartTime: 开始时间(YYYY-MM-DDThh:mm:ss)
+EndTime: 结束时间(YYYY-MM-DDThh:mm:ss)
+onChangeStartTime: 修改开始时间 :: String(YYYY-MM-DDThh:mm:ss) -> ?
+onChangeEndTime: 修改结束时间 :: String(YYYY-MM-DDThh:mm:ss) -> ?
+**/
+function ChartPreview({chartData, chartDataLoading, onUpdateStep, Step, ...other}) {
 	return (<section className='diagnose-create-chart-preview'>
 		<hgroup className='diagnose-range-title'>{'图表预览'}</hgroup>
 		<div className='diagnose-create-chart-action'>
 			<ChartDateFilter 
 				disabled={!chartData}
-				StartTime={StartTime} 
-				onChangeStartTime={onChangeStartTime} 
-				EndTime={EndTime}
-				onChangeEndTime={onChangeEndTime}/>
+				{...other}/>
 			<div className='jazz-energy-step'>
 				{getStepItems().map((item => <StepItem {...item} disabled={!chartData} selected={item.step === Step} onStepChange={onUpdateStep}/>))}
 			</div>
 		</div>
-		{chartData ? 
-		(<div style={{margin: 20, marginTop: 0}}><DiagnoseChart data={chartData}/></div>):
-		(<div className='flex-center'>{loading ? <CircularProgress  mode="indeterminate" size={80} /> : '在左侧选择数据点'}</div>)
-		}
+		{chartDataLoading ? <div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div> :
+		(chartData ?  <div style={{margin: 20, marginTop: 0}}><DiagnoseChart data={chartData}/></div> :
+		<div className='flex-center'>{'在左侧选择数据点'}</div>)}
 	</section>)
 }
 
+/**
+Step: 步长(TimeGranularity)
+onUpdateStep: 更新步长
+Timeranges: 诊断时间范围[{StartTime: YYYY-MM-DD, EndTime: YYYY-MM-DD}]
+onAddDateRange: 添加诊断时间范围
+onDeleteDateRange: 删除诊断时间范围 :: Number(idx) ->
+onUpdateDateRange: 修改诊断时间范围 :: idx, type, first/end, String(YYYY-MM-DDThh:mm:ss) -> ?
+**/
 export function DiagnoseRange({
 	Step,
 	onUpdateStep,
@@ -272,7 +286,24 @@ export function DiagnoseRange({
 	</section>);
 }
 
+/**
+diagnoseTags: tags列表
+onCheckDiagnose: 点击tags事件
 
+chartData: API返回图表数据
+chartDataLoading: 图表数据请求中
+Step: 步长(TimeGranularity)
+onUpdateStep: 更新步长
+StartTime: 开始时间(YYYY-MM-DDThh:mm:ss)
+EndTime: 结束时间(YYYY-MM-DDThh:mm:ss)
+onChangeStartTime: 修改开始时间 :: String(YYYY-MM-DDThh:mm:ss) -> ?
+onChangeEndTime: 修改结束时间 :: String(YYYY-MM-DDThh:mm:ss) -> ?
+
+Timeranges: 诊断时间范围[{StartTime: YYYY-MM-DD, EndTime: YYYY-MM-DD}]
+onAddDateRange: 添加诊断时间范围
+onDeleteDateRange: 删除诊断时间范围 :: Number(idx) ->
+onUpdateDateRange: 修改诊断时间范围 :: idx, type, first/end, String(YYYY-MM-DDThh:mm:ss) -> ?
+**/
 class CreateStep1 extends Component {
 	render() {
 		let { 
@@ -285,6 +316,7 @@ class CreateStep1 extends Component {
 			Step,
 			onUpdateStep,
 			chartData,
+			chartDataLoading,
 			Timeranges, 
 			onAddDateRange, 
 			onDeleteDateRange,
@@ -301,7 +333,8 @@ class CreateStep1 extends Component {
 						onChangeEndTime={onChangeEndTime}
 						Step={Step}
 						onUpdateStep={onUpdateStep}
-						chartData={chartData}/>
+						chartData={chartData}
+						chartDataLoading={chartDataLoading}/>
 				</div>
 				<DiagnoseRange 
 					Step={Step}
@@ -335,7 +368,6 @@ class CreateStep3 extends Component {
 	}
 }
 
-let loading = true;
 @ReduxDecorator
 class CreateDiagnose extends Component {
 	static getStores() {
@@ -343,10 +375,10 @@ class CreateDiagnose extends Component {
 	};
 
 	static calculateState(prevState) {
-		loading = false;
 		return {
 			diagnoseTags: (prevState && prevState.diagnoseTags) || DiagnoseStore.getTagsList(),
 			chartData: DiagnoseStore.getChartData(),
+			chartDataLoading: DiagnoseStore.isLoading(),
 		};
 	};
 
@@ -367,7 +399,6 @@ class CreateDiagnose extends Component {
 		DiagnoseAction.getTagsList();
 	}
 	_getChartData() {
-		loading = true;
 		let {step, filterObj} = this.state;
 		if( step === 0 ) {
 			DiagnoseAction.getChartData(filterObj);
@@ -400,8 +431,7 @@ class CreateDiagnose extends Component {
 	_onCheckDiagnose(idx, val) {
 		this.setState({
 			diagnoseTags: this.state.diagnoseTags.setIn([idx, 'checked'], val)
-		});
-		this._getChartData();
+		}, this._getChartData);
 	}
 	_onSaveBack() {
 		
@@ -410,7 +440,7 @@ class CreateDiagnose extends Component {
 		this._setStep(0)();
 	}
 	_renderContent() {
-		let {step, diagnoseTags, chartData, filterObj} = this.state,
+		let {step, diagnoseTags, chartData, chartDataLoading, filterObj} = this.state,
 		{TagIds, Timeranges, Step, StartTime, EndTime} = filterObj.toJS();
 		if( step === 0 ) {
 			return (<CreateStep1 
@@ -429,6 +459,7 @@ class CreateDiagnose extends Component {
 							this._setFilterObjThenUpdataChart('Step', val);
 						}}
 						chartData={chartData}
+						chartDataLoading={chartDataLoading}
 						Timeranges={Timeranges}
 						onUpdateDateRange={(idx, type, startOrEnd, val) => {
 							this._setFilterObjThenUpdataChart(['Timeranges', idx, type], 

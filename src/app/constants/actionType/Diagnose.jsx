@@ -7,6 +7,7 @@ module.exports = {
     GET_DIAGNOSIS_BY_ID:null,
     GET_TAGS_LIST:null,
     GET_CHART_DATA:null,
+    GET_CHART_DATAING:null,
   }),
     EnergyLabel:{
         OfficeLighting:101,
