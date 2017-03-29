@@ -39,17 +39,24 @@ export default class LabelList extends Component {
     static:null
   }
 
-  _getList(){
-    DiagnoseAction.getDiagnosisList(this.context.hierarchyId,this.state.infoTabNo,this.props.isFromProbem?2:1,
-                    ()=>{
-                      if(this.props.isFromProbem) DiagnoseAction.getDiagnoseStatic(this.context.hierarchyId)
-                    })
+  _getList(hierarchyId,isFromProbem=this.props.isFromProbem){
+		this.setState({
+			infoTabNo:1,
+	    list:null,
+	    static:null
+		},()=>{
+			DiagnoseAction.getDiagnosisList(hierarchyId,this.state.infoTabNo,isFromProbem?2:1,
+											()=>{
+												if(isFromProbem) DiagnoseAction.getDiagnoseStatic(hierarchyId)
+											})
+		})
+
   }
 
   _onChanged(){
       this.setState({
         list:DiagnoseStore.getDiagnosisList(),
-        static:DiagnoseStore.getDiagnoseStatic()
+        static:this.props.isFromProbem && DiagnoseStore.getDiagnoseStatic()
       })
   }
 
@@ -74,12 +81,13 @@ export default class LabelList extends Component {
 					selectedNode:null
         },()=>{
           if(no===1 || isFull()){
-            this._getList()
+            this._getList(this.context.hierarchyId)
           }else {
             this.setState({
               list:Immutable.fromJS([])
             })
           }
+					this.props.onTabSwitch(no)
         })
       }
     },
@@ -99,7 +107,7 @@ export default class LabelList extends Component {
       key:2,
       value:2,
       label:I18N.Setting.Diagnose.Senior,
-      icon:this.state.static && this.state.static['1'] && problemIcon,
+      icon:this.state.static && this.state.static['2'] && problemIcon,
       className:'diagnose-tab',
       style:{
         height:'55px',
@@ -125,14 +133,19 @@ export default class LabelList extends Component {
     ))
   }
 
-	IsBasic(){
-			return this.state.infoTabNo===1
-	}
-
   componentDidMount(){
     DiagnoseStore.addChangeListener(this._onChanged);
-    this._getList();
+    this._getList(this.context.hierarchyId);
   }
+
+	componentWillReceiveProps(nextProps,nextCtx) {
+		if(nextCtx.hierarchyId !== this.context.hierarchyId) {
+			this._getList(nextCtx.hierarchyId);
+		}
+		if(nextProps.isFromProbem!==this.props.isFromProbem){
+			this._getList(nextCtx.hierarchyId,nextProps.isFromProbem);
+		}
+	}
 
   componentWillUnmount(){
     DiagnoseStore.removeChangeListener(this._onChanged);
@@ -162,4 +175,5 @@ LabelList.propTypes={
   isFromProbem:React.PropTypes.bool,
   selectedNode:React.PropTypes.object,
   onItemTouchTap:React.PropTypes.func,
+	onTabSwitch:React.PropTypes.func,
 }
