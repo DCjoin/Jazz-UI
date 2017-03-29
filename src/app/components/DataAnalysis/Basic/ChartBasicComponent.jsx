@@ -177,7 +177,7 @@ export default class ChartBasicComponent extends Component {
       }
     }
     let plotBands = null;
-    let wss = JSON.parse(widgetStatus);
+    let wss = widgetStatus && JSON.parse(widgetStatus);
     if( wss && wss.length > 0 ) {
       let calcType = "";
       for (var i = 0, len = wss.length; i < len; i++) {
@@ -235,11 +235,12 @@ export default class ChartBasicComponent extends Component {
       plotBands: plotBands,
       afterChartCreated: () => { Util.isFunction(this.props.afterChartCreated) && this.props.afterChartCreated(Id) },
       assignStatus: (config) => {
-        return assignStatus(config, getSeriesStatus(
+        return widgetSeriesArray ? 
+                assignStatus(config, getSeriesStatus(
                   tagData.get('TargetEnergyData').toJS(),
                   widgetSeriesArray.toJS(), 'Energy', 'Energy',
                   { viewOption: {TimeRanges:timeRanges}}
-                ));
+                )) : config;
       },
       postNewConfig
     };

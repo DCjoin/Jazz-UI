@@ -2158,7 +2158,33 @@ let CommonFuns = {
     document.body.removeChild(link);
   },
   // Select menu items
+  getDateTimeItemsByStepForVal(step) {
+    let dataList = [],
+      v = 0,
+      i = 0;
+
+    while (v <= 1440) {
+      var h = Math.floor(v / 60),
+        m = v % 60,
+        text = ((h < 10) ? '0' : '') + h + ':' + ((m < 10) ? '0' : '') + m;
+
+      dataList[i] = {
+        payload: v,
+        text,
+      };
+      v += step;
+      i++;
+    }
+    return dataList;
+  },
+  // Select menu items
   getDateTimeItemsByStep(step) {
+    return CommonFuns.getDateTimeItemsByStepForVal(step).map(({text, payload}) => {
+      return {
+        payload: text,
+        text,
+      }
+    });
     let dataList = [],
       v = 0,
       i = 0;

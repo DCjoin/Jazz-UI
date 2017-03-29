@@ -171,9 +171,9 @@
 .diagnose-create-tag-list {
   display: flex;
   flex-direction: column;
-  width: 280px;
-  height: 554px;
   background-color: #fff;
+  width: 21%;
+  flex: none;
 
   &-title {
     flex: none;
@@ -221,17 +221,20 @@
 .diagnose-create-chart-preview {
   background-color: #fff;
   flex: 1;
-  margin-left: 20px;
   display: flex;
   flex-direction: column;
+  width: 78%;
+  flex: none;
   & .datepicker-popup {
     position: absolute;
   }
 }
 .diagnose-create-chart-action {
   display: flex;
+  flex: none;
   margin: 10px 20px;
   justify-content: space-between;
+  align-items: center;
 }
 .diagnose-create-chart-filter {
   display: flex;
@@ -247,4 +250,62 @@
     padding: 20px;
     display: flex;
   }
+  &-time {
+    margin-left: 10px;
+    margin-top: -14px;
+  }
+}
+
+.diagnose-create-step {
+  display: flex;
+  justify-content: space-between;
+  height: 463px;
+  margin-top: 20px;
+  flex: none;
+}
+
+.diagnose-condition {
+  margin-left: 20px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  width: 21%;
+  flex: none;
+
+  & > hgroup {
+    padding: 20px;
+    border-bottom: 1px solid #000;
+  }
+
+  &-content {
+    flex: 1;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-left: 15px;
+  }
+
+  &-run-time {
+    border-bottom: 1px solid #000;
+    padding: 10px 0;
+  }
+
+  &-model-a {
+    margin-top: 20px;
+
+  }
+}
+
+.diagnose-create-chart {
+  margin: 20px;
+  margin-top: 0px;
+  display: flex;
+  flex: 1;
+}
+
+.diagnose-create-chart-preview-step2 {
+  background-color: #fff;
+  width: 78%;
+  flex: none;
+  display: flex;
+  flex-direction: column;
 }
