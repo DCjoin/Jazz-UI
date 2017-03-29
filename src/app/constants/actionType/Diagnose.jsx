@@ -66,6 +66,11 @@ module.exports = {
         IndoorEnvironmental:25,
         OperationOptimization:26
       }
+    },
+    DiagnoseModel: {
+        A: 1,
+        B: 2,
+        C: 3,
     }
 
 };

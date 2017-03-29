@@ -14,6 +14,8 @@ exports.register = function(server, options, next){
     path: '/API/diagnose/chart/data',
     handler: function (request, reply){
       setTimeout(function() {
+        analysisData.getChartDataById.Result.DiagnoseEnergyViewData = analysisData.getChartDataById.Result.EnergyViewData;
+        analysisData.getChartDataById.Result.TriggerValue = 180;
         reply(analysisData.getChartDataById).type("application/json");
       }, 1000);
     }
