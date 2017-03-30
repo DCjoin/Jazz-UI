@@ -141,7 +141,7 @@ export default class EditDiagnose extends Component {
           <IconButton iconClassName='icon-close' onTouchTap={this._onClose}/>
         </header>
         {content}
-        <FlatButton label={I18N.Setting.Diagnose.SaveAndExit} style={{float:'right'}} disabled={this._validate()} onTouchTap={}/>
+        <FlatButton label={I18N.Setting.Diagnose.SaveAndExit} style={{float:'right'}} disabled={this._validate()} onTouchTap={()=>{}}/>
       </div>
     )
   }

@@ -69,7 +69,6 @@ export default class Diagnose extends Component {
         this._onHasProblem = this._onHasProblem.bind(this);
         this._onItemTouchTap = this._onItemTouchTap.bind(this);
         this._onBasicTabSwitch = this._onBasicTabSwitch.bind(this);
-        this._onChanged = this._onChanged.bind(this);
     }
 
   state={
@@ -138,7 +137,6 @@ export default class Diagnose extends Component {
 
   componentDidMount(){
     CurrentUserStore.addCurrentUserListener(this._onHasProblem);
-    DiagnoseStore.addChangeListener(this._onChanged);
     this.getProblem();
   }
 
@@ -153,7 +151,6 @@ export default class Diagnose extends Component {
 
   componentWillUnmount(){
     CurrentUserStore.removeCurrentUserListener(this._onHasProblem);
-    DiagnoseStore.removeChangeListener(this._onChanged);
   }
 
 render(){

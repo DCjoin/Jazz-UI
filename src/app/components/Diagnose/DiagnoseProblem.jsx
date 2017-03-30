@@ -3,7 +3,7 @@ import FlatButton from 'controls/FlatButton.jsx';
 import NewDialog from 'controls/NewDialog.jsx';
 import RaisedButton from 'material-ui/RaisedButton';
 import { IconButton, IconMenu,MenuItem,CircularProgress} from 'material-ui';
-import {dateAdd,DataConverter} from '../../../util/Util.jsx';
+import {dateAdd,DataConverter} from 'util/Util.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
 import PermissionCode from 'constants/PermissionCode.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
@@ -11,7 +11,7 @@ import DateTimeSelector from 'controls/DateTimeSelector.jsx';
 import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
 import DiagnoseStore from 'stores/DiagnoseStore.jsx';
 import DiagnoseChart from './DiagnoseChart.jsx';
-import {DiagnoseStatus} from '../../constants/actionType/Diagnose.jsx';
+import {DiagnoseStatus} from 'constants/actionType/Diagnose.jsx';
 
 function privilegeWithBasicSmartDiagnose( privilegeCheck ) {
   //  return true
