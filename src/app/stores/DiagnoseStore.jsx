@@ -3,16 +3,20 @@
 
 import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import { Action,EnergyLabel} from '../constants/actionType/Diagnose.jsx';
+import Hierarchy from '../constants/actionType/hierarchySetting/Hierarchy.jsx';
 import PrototypeStore from './PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
+
+var HierarchyAction=Hierarchy.Action;
 
 var _diagnoseList=null,
     _diagnoseStatic=null,
     _currentDiagnose=null,
     _tagsList=null,
+    _chartData=null,
     _chartDataLoading=false,
-    _chartData=null;
+    _calendar=null;
 
 const DiagnoseStore = assign({}, PrototypeStore, {
   setDiagnoseList(data){
@@ -119,6 +123,13 @@ const DiagnoseStore = assign({}, PrototypeStore, {
       }
     }
     return ''
+  },
+  setCalendar(calendar){
+    _calendar=calendar;
+  },
+  hasCalendar(){
+    if(_calendar===null) return null
+    return !(_calendar.CalendarItemGroups[0].CalendarItems===null)
   }
 
 
@@ -145,6 +156,10 @@ DiagnoseStore.dispatchToken = AppDispatcher.register(function(action) {
     case Action.GET_CHART_DATA:
           DiagnoseStore.setLoading(false);
           DiagnoseStore.setChartData(action.data);
+          DiagnoseStore.emitChange()
+          break;
+    case HierarchyAction.GET_CALENDAR_FOR_HIERARCHY:
+          DiagnoseStore.setCalendar(action.calendar);
           DiagnoseStore.emitChange()
           break;
     case Action.GET_CHART_DATAING:

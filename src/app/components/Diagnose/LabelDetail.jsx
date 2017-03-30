@@ -49,4 +49,6 @@ LabelDetail.propTypes={
   isFromProbem:React.PropTypes.bool,
   selectedNode:React.PropTypes.object,
 	isBasic:React.PropTypes.bool,
+	addLabel:React.PropTypes.object,
+	formStatus:React.PropTypes.any,
 }
