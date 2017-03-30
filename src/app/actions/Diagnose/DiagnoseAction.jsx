@@ -67,6 +67,9 @@ const DiagnoseAction = {
     });
   },
   getChartData() {
+    AppDispatcher.dispatch({
+      type: Action.GET_CHART_DATAING,
+    })
     Ajax.post('/diagnose/chart/data', {
       success: (res) => {
         AppDispatcher.dispatch({

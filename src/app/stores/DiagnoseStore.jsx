@@ -15,6 +15,7 @@ var _diagnoseList=null,
     _currentDiagnose=null,
     _tagsList=null,
     _chartData=null,
+    _chartDataLoading=false,
     _calendar=null;
 
 const DiagnoseStore = assign({}, PrototypeStore, {
@@ -41,6 +42,12 @@ const DiagnoseStore = assign({}, PrototypeStore, {
   },
   getTagsList(){
     return _tagsList;
+  },
+  setLoading(data){
+    _chartDataLoading = data;
+  },
+  isLoading() {
+    return _chartDataLoading;
   },
   setChartData(data){
     _chartData=Immutable.fromJS(data);
@@ -147,11 +154,16 @@ DiagnoseStore.dispatchToken = AppDispatcher.register(function(action) {
           DiagnoseStore.emitChange()
           break;
     case Action.GET_CHART_DATA:
+          DiagnoseStore.setLoading(false);
           DiagnoseStore.setChartData(action.data);
           DiagnoseStore.emitChange()
           break;
     case HierarchyAction.GET_CALENDAR_FOR_HIERARCHY:
           DiagnoseStore.setCalendar(action.calendar);
+          DiagnoseStore.emitChange()
+          break;
+    case Action.GET_CHART_DATAING:
+          DiagnoseStore.setLoading(true);
           DiagnoseStore.emitChange()
           break;
   }

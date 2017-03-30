@@ -72,9 +72,9 @@ function getCalendarTypeByWidgetStatus(wss) {
 }
 
 function getCalenderTypeByData(data) {
-	let step = data.getIn(['EnergyViewData', 'TargetEnergyData', 0, 'Target', 'Step']), 
+	let step = data.getIn(['DiagnoseEnergyViewData', 'TargetEnergyData', 0, 'Target', 'Step']), 
 	calcType = getCalendarTypeByWidgetStatus(JSON.parse(data.get('WidgetStatus'))),
-	range = data.get('EnergyViewData').get('Calendars') ? data.get('EnergyViewData').get('Calendars').toJS(): [],
+	range = data.get('DiagnoseEnergyViewData').get('Calendars') ? data.get('DiagnoseEnergyViewData').get('Calendars').toJS(): [],
 	checkCalendarTypeFilter = val => 
 		range && range.filter(item => item.CalendarType === val).length > 0 
 		? 0 
@@ -131,16 +131,13 @@ function postNewConfig(triggerVal, focusBGC, newConfig) {
 }
 
 export default function DiagnoseChart(props) {
-	let {data, triggerVal} = props,
+	let {data} = props,
 
 	chartProps = {
 		chartType: CHART_TYPE,
-		tagData: data.get('EnergyViewData'),
-		widgetStatus: data.get('WidgetStatus'),
-		widgetSeriesArray: data.get('WidgetSeriesArray'),
-		contentSyntax: data.get('ContentSyntax'),
+		tagData: data.get('DiagnoseEnergyViewData'),
 		postNewConfig: curry(postNewConfig)(
-			triggerVal,
+			data.get('TriggerValue'),
 			flowRight( getColorByCalenderType, getCalenderTypeByData )(data), 
 		),
 	};
