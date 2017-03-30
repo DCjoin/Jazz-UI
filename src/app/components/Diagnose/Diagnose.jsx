@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import classnames from "classnames";
+import {CircularProgress} from 'material-ui';
 import LabelList from './LabelList.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
@@ -9,6 +10,8 @@ import BubbleIcon from '../BubbleIcon.jsx';
 import Immutable from 'immutable';
 import LabelDetail from './LabelDetail.jsx';
 import DiagnoseStore from 'stores/DiagnoseStore.jsx';
+import {formStatus} from 'constants/FormStatus.jsx';
+
 
 function getFirstMenuPathFunc(menu) {
   let firstMenu = menu[0];
@@ -67,7 +70,6 @@ export default class Diagnose extends Component {
         this._onItemTouchTap = this._onItemTouchTap.bind(this);
         this._onBasicTabSwitch = this._onBasicTabSwitch.bind(this);
         this._onChanged = this._onChanged.bind(this);
-
     }
 
   state={
@@ -75,7 +77,10 @@ export default class Diagnose extends Component {
         hasProblem:false,
         selectedNode:Immutable.fromJS({}),
         nodeDetail:null,
-        isBasic:true
+        isBasic:true,
+        formStatus:formStatus.VIEW,
+        addLabel:null,
+
     }
 
   _onChanged(){
@@ -166,9 +171,16 @@ render(){
     <div className="diagnose-panel">
       {this._renderTab()}
       <div className="content">
-        <LabelList ref='list' isFromProbem={this.state.infoTabNo===1} selectedNode={this.state.selectedNode} onItemTouchTap={this._onItemTouchTap} onTabSwitch={this._onBasicTabSwitch}/>
-        <LabelDetail isFromProbem={this.state.infoTabNo===1} selectedNode={this.state.nodeDetail} isBasic={this.state.isBasic}/>
-    </div>
+          <LabelList ref='list' isFromProbem={this.state.infoTabNo===1} selectedNode={this.state.selectedNode}
+            onItemTouchTap={this._onItemTouchTap} onTabSwitch={this._onBasicTabSwitch}
+            onAdd={(label)=>{this.setState({
+              formStatus:formStatus.ADD,
+              addLabel:label
+            })}}/>
+          <LabelDetail isFromProbem={this.state.infoTabNo===1} selectedNode={this.state.nodeDetail}
+                       isBasic={this.state.isBasic} formStatus={this.state.formStatus} addLabel={this.state.addLabel}
+                       />
+      </div>
     </div>
   )
 }

@@ -9,6 +9,8 @@ import FontIcon from 'material-ui/FontIcon';
 import privilegeUtil from 'util/privilegeUtil.jsx';
 import PermissionCode from 'constants/PermissionCode.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
+import HierarchyAction from '../../actions/hierarchySetting/HierarchyAction.jsx';
+import NewDialog from 'controls/NewDialog.jsx';
 
 function privilegeWithSeniorSmartDiagnose( privilegeCheck ) {
   //  return false
@@ -36,14 +38,15 @@ export default class LabelList extends Component {
   state={
     infoTabNo:1,
     list:null,
-    static:null
+    static:null,
+		hasCalendar:null,
+		dialogShow:false
   }
 
   _getList(hierarchyId,isFromProbem=this.props.isFromProbem){
 		this.setState({
-			infoTabNo:1,
 	    list:null,
-	    static:null
+	    static:null,
 		},()=>{
 			DiagnoseAction.getDiagnosisList(hierarchyId,this.state.infoTabNo,isFromProbem?2:1,
 											()=>{
@@ -56,9 +59,21 @@ export default class LabelList extends Component {
   _onChanged(){
       this.setState({
         list:DiagnoseStore.getDiagnosisList(),
-        static:this.props.isFromProbem && DiagnoseStore.getDiagnoseStatic()
+        static:this.props.isFromProbem && DiagnoseStore.getDiagnoseStatic(),
+				hasCalendar:DiagnoseStore.hasCalendar(),
       })
   }
+
+	_onAdd(data){
+		if(!this.state.hasCalendar && data.get('DiagnoseModel')!==3){
+			this.setState({
+				dialogShow:true
+			})
+		}
+		else {
+			this.props.onAdd(data)
+		}
+	}
 
   _renderTabs(){
     var problemIcon=<FontIcon className="icon-lighten"/>;
@@ -80,7 +95,7 @@ export default class LabelList extends Component {
           list:null,
 					selectedNode:null
         },()=>{
-          if(no===1 || isFull()){
+          if(this.state.infoTabNo===1 || isFull()){
             this._getList(this.context.hierarchyId)
           }else {
             this.setState({
@@ -128,22 +143,59 @@ export default class LabelList extends Component {
       <LabelItem nodeData={item}
                         selectedNode={this.props.selectedNode}
                         isFromProbem={this.props.isFromProbem}
-                        onAdd={this.props.onAdd}
+                        onAdd={this._onAdd}
                         onItemTouchTap={this.props.onItemTouchTap}/>
     ))
   }
 
+	_renderDialog(){
+		var onClose=()=>{
+			this.setState({
+				dialogShow:false
+			})
+		}
+		return(
+			<NewDialog
+			        open={this.state.dialogShow}
+			        modal={false}
+			        isOutsideClose={false}
+			        onRequestClose={onClose}
+			        titleStyle={{margin:'0 24px'}}
+			        contentStyle={{overflowY: 'auto',paddingRight:'5px',display:'block'}}>
+							{I18N.Setting.Diagnose.HasNoCalendar}
+			      </NewDialog>
+		)
+	}
+
+	getCalendar(hierarchyId){
+		this.setState({
+			hasCalendar:null
+		},()=>{
+			HierarchyAction.getCalendar(hierarchyId)
+		}
+	)
+	}
+
   componentDidMount(){
     DiagnoseStore.addChangeListener(this._onChanged);
-    this._getList(this.context.hierarchyId);
+
+		if(this.context.hierarchyId){
+			this._getList(this.context.hierarchyId);
+			this.getCalendar(this.context.hierarchyId);
+		}
   }
 
 	componentWillReceiveProps(nextProps,nextCtx) {
 		if(nextCtx.hierarchyId !== this.context.hierarchyId) {
 			this._getList(nextCtx.hierarchyId);
+			this.getCalendar(nextCtx.hierarchyId);
 		}
 		if(nextProps.isFromProbem!==this.props.isFromProbem){
-			this._getList(nextCtx.hierarchyId,nextProps.isFromProbem);
+			this.setState({
+				infoTabNo:1
+			},()=>{
+				this._getList(nextCtx.hierarchyId,nextProps.isFromProbem);
+			})
 		}
 	}
 
@@ -152,22 +204,21 @@ export default class LabelList extends Component {
   }
 
   render(){
-    if(this.state.list===null){
+    if(this.state.list===null || this.state.hasCalendar===null){
       return (
         <div className="diagnose-label-list flex-center" style={{flex:'none'}}>
          <CircularProgress  mode="indeterminate" size={80} />
        </div>
       )
     }else {
-      var problemIcon=<FontIcon className="icon-lighten" style={{marginLeft:'10px',fontSize:'5px'}}/>;
       return(
         <div className="diagnose-label-list">
           {this._renderTabs()}
           {this._renderList()}
+					{this.state.dialogShow && this._renderDialog()}
         </div>
       )
     }
-
   }
 }
 
@@ -176,4 +227,5 @@ LabelList.propTypes={
   selectedNode:React.PropTypes.object,
   onItemTouchTap:React.PropTypes.func,
 	onTabSwitch:React.PropTypes.func,
+	onAdd:React.PropTypes.func,
 }

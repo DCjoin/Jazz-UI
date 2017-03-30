@@ -134,7 +134,8 @@ export default class LabelItem extends Component {
                 selectedNode={this.props.selectedNode}
                 isFromProbem={this.props.isFromProbem}
                 onAdd={this.props.onAdd}
-                onItemTouchTap={this.props.onItemTouchTap}/>
+                onItemTouchTap={this.props.onItemTouchTap}
+                onFormStatusChanged={this.props.onFormStatusChanged}/>
             ))
   }
 
