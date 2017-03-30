@@ -75,19 +75,12 @@ export default class Diagnose extends Component {
   state={
         infoTabNo:isBasicNoPrivilege()?2:1,
         hasProblem:false,
-        selectedNode:Immutable.fromJS({}),
-        nodeDetail:null,
+        selectedNode:null,
         isBasic:true,
         formStatus:formStatus.VIEW,
         addLabel:null,
 
     }
-
-  _onChanged(){
-    this.setState({
-      nodeDetail:DiagnoseStore.getDiagnose()
-    })
-  }
 
   _onHasProblem(){
     this.setState({
@@ -98,15 +91,13 @@ export default class Diagnose extends Component {
   _switchTab(no){
     this.setState({
       infoTabNo:no,
-      nodeDetail:null
+      selectedNode:null
     })
   }
 
   _onItemTouchTap(data){
     this.setState({
       selectedNode:data
-    },()=>{
-      DiagnoseAction.getDiagnose(data.get("Id"));
     })
   }
 
@@ -177,7 +168,7 @@ render(){
               formStatus:formStatus.ADD,
               addLabel:label
             })}}/>
-          <LabelDetail isFromProbem={this.state.infoTabNo===1} selectedNode={this.state.nodeDetail}
+          <LabelDetail isFromProbem={this.state.infoTabNo===1} selectedNode={this.state.selectedNode}
                        isBasic={this.state.isBasic} formStatus={this.state.formStatus} addLabel={this.state.addLabel}
                        />
       </div>

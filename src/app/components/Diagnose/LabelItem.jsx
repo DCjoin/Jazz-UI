@@ -69,7 +69,7 @@ class Group extends Component{
     return this.props.nodeData.get('Children').map(data=>(
       <div className={classnames({
                                   "item":true,
-                                  "selected":data.get('Id')===this.props.selectedNode.get('Id'),
+                                  "selected":this.props.selectedNode?data.get('Id')===this.props.selectedNode.get('Id'):false,
                                   'canSelect':true
                                 })}
            style={{paddingLeft:'30px'}} onClick={()=>{this.props.onItemTouchTap(data)}}>

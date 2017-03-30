@@ -69,6 +69,11 @@ module.exports = {
     diagnosislist:'/diagnose/diagnosislist',
     getdiagnosestatic:'/diagnose/getdiagnosestatic/{hierarchId}',
     getDiagnose:'/diagnose/get/{diagnoseId}',
-    deletediagnose:'/diagnose/deletediagnose/{diagnoseId}'
+    deletediagnose:'/diagnose/deletediagnose/{diagnoseId}',
+    getdiagnosedata:'/diagnose/getdiagnosedata/{diagnoseId}',
+    getproblemdata:'/diagnose/getproblemdata/{diagnoseId}?{startTime}&{endTime}',
+    pauseorrecoverdiagnose:'/diagnose/pauseorrecoverdiagnose/{diagnoseId}/{status}',
+    ignorediagnose:'/diagnose/ignorediagnose/{diagnoseId}',
+    previewchart:'/diagnose/previewchart'
   }
 };
