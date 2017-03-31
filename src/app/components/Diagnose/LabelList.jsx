@@ -31,6 +31,7 @@ export default class LabelList extends Component {
   constructor(props, ctx) {
     super(props)
 
+    this._onAdd = this._onAdd.bind(this);
     this._onChanged = this._onChanged.bind(this);
 
   }

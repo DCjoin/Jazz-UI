@@ -111,12 +111,18 @@ export default class LabelItem extends Component {
     }}>
         <div className={classnames({
       "icon-folder": Id === ItemType.Basic.NonRunTime || Id === ItemType.Senior.NonRunTime,
-      "icon-chart": Id === ItemType.Basic.DeviceEfficiency || Id === ItemType.Senior.DeviceEfficiency,
-      "icon-chart": Id === ItemType.Basic.NonEssentialOperation || Id === ItemType.Senior.NonEssentialOperation,
-      "icon-chart": Id === ItemType.Basic.IndoorEnvironmental || Id === ItemType.Senior.IndoorEnvironmental,
-      "icon-chart": Id === ItemType.Senior.RunTime,
-      "icon-chart": Id === ItemType.Basic.DemandOptimization,
-      "icon-chart": Id === ItemType.Senior.OperationOptimization,
+      "icon-chart": [ItemType.Basic.DeviceEfficiency, ItemType.Senior.DeviceEfficiency,
+                    ItemType.Basic.NonEssentialOperation, ItemType.Senior.NonEssentialOperation,
+                    ItemType.Basic.IndoorEnvironmental, ItemType.Senior.IndoorEnvironmental,
+                    ItemType.Senior.RunTime, 
+                    ItemType.Basic.DemandOptimization, 
+                    ItemType.Senior.OperationOptimization].reduce((result, type) => result || Id === type, false)
+      // "icon-chart": Id === ItemType.Basic.DeviceEfficiency || Id === ItemType.Senior.DeviceEfficiency,
+      // "icon-chart": Id === ItemType.Basic.NonEssentialOperation || Id === ItemType.Senior.NonEssentialOperation,
+      // "icon-chart": Id === ItemType.Basic.IndoorEnvironmental || Id === ItemType.Senior.IndoorEnvironmental,
+      // "icon-chart": Id === ItemType.Senior.RunTime,
+      // "icon-chart": Id === ItemType.Basic.DemandOptimization,
+      // "icon-chart": Id === ItemType.Senior.OperationOptimization,
     })}/>
       </div>
     );
