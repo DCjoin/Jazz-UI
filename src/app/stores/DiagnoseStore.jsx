@@ -84,6 +84,7 @@ const DiagnoseStore = assign({}, PrototypeStore, {
         {value:I18N.Setting.Diagnose.CoolingRange,Id:EnergyLabel.CoolingRange},
         {value:I18N.Setting.Diagnose.ChilledWaterPump,Id:EnergyLabel.ChilledWaterPump},
         {value:I18N.Setting.Diagnose.CoolingPump,Id:EnergyLabel.CoolingPump},
+        {value:I18N.Setting.Diagnose.CoolingTower,Id:EnergyLabel.CoolingTower},
       ],
       EnvironmentalParameters:[
         {value:I18N.Setting.Diagnose.IndoorCO2,Id:EnergyLabel.IndoorCO2},
