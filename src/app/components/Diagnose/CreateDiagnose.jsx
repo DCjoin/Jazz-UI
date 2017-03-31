@@ -20,7 +20,7 @@ import {DIAGNOSE_MODEL} from 'constants/actionType/Diagnose.jsx';
 
 import ReduxDecorator from '../../decorator/ReduxDecorator.jsx';
 
-import {getDateTimeItemsByStepForVal, getDateTimeItemsByStep} from 'util/Util.jsx';
+import {isEmptyStr, getDateTimeItemsByStepForVal, getDateTimeItemsByStep} from 'util/Util.jsx';
 
 import LinkButton from 'controls/LinkButton.jsx';
 import ViewableTextField from 'controls/ViewableTextField.jsx';
@@ -279,14 +279,14 @@ function ChartPreview({chartData, chartDataLoading, onUpdateStep, SHHtep, ...oth
 	</section>)
 }
 
-function ChartPreviewStep2({chartData, chartDataLoading, getChartData, ...other}) {
+function ChartPreviewStep2({chartData, chartDataLoading, getChartData, disabledPreview, ...other}) {
 	return (<section className='diagnose-create-chart-preview-step2'>
 		<hgroup className='diagnose-range-title'>{'图表预览'}</hgroup>
 		<div className='diagnose-create-chart-action'>
 			<ChartDateFilter 
 				disabled={!chartData}
 				{...other}/>
-			<RaisedButton label={'预览'} onClick={getChartData}/>
+			<RaisedButton label={'预览'} disabled={disabledPreview} onClick={getChartData}/>
 		</div>
 		{chartDataLoading ? <div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div> :
 		(chartData ?  <div className='diagnose-create-chart'><DiagnoseChart data={chartData}/></div> :
@@ -647,11 +647,13 @@ export class CreateStep2 extends Component {
 			ToleranceRatio, 
 			HistoryStartTime,
 			HistoryEndTime,
+			disabledPreview,
 			...other,
 		} = this.props;
 		return (
 			<section className='diagnose-create-step'>
 				<ChartPreviewStep2 {...other}
+					disabledPreview={disabledPreview}
 					onChangeStartTime={onUpdateFilterObj('StartTime')}
 					onChangeEndTime={onUpdateFilterObj('EndTime')}
 				/>
@@ -739,6 +741,10 @@ class CreateDiagnose extends Component {
 			filterObj: getDefaultFilter()
 		};
 
+		this._getTagList(props, ctx);
+
+	}
+	_getTagList(props, ctx) {		
 		DiagnoseAction.getDiagnoseTag(
 			ctx.hierarchyId,
 			props.EnergyLabel.get('Id') || 101,
@@ -748,7 +754,7 @@ class CreateDiagnose extends Component {
 	}
 	_getChartData() {
 		let {step, filterObj, diagnoseTags} = this.state;
-		if( step === 0 ) {
+		if( step === 0 && diagnoseTags && diagnoseTags.filter( tag => tag.get('checked') ).size > 0 ) {
 			DiagnoseAction.getChartDataStep1({
 				tagIds: diagnoseTags
 						.filter( tag => tag.get('checked') )
@@ -784,9 +790,27 @@ class CreateDiagnose extends Component {
 			chartData: null
 		});
 	}
+	_step2NeedRequire() {
+		let {filterObj} = this.state,
+		DiagnoseModel = this.props.EnergyLabel.get('DiagnoseModel');
+		if( DiagnoseModel === DIAGNOSE_MODEL.A ) {
+			return isEmptyStr( filterObj.get('TriggerValue') );
+		} else if(DiagnoseModel === DIAGNOSE_MODEL.B) {
+			if( filterObj.get('TriggerType') === TRIGGER_TYPE.FixedValue ) {
+				return isEmptyStr( filterObj.get('TriggerValue') ) || 
+						isEmptyStr( filterObj.get('ToleranceRatio') );
+			}
+			if( filterObj.get('TriggerType') === TRIGGER_TYPE.HistoryValue ) {
+				return isEmptyStr( filterObj.get('ToleranceRatio') );
+				
+			}
+		} else if(DiagnoseModel === DIAGNOSE_MODEL.C) {
+
+		}
+	}
 	_setStep(step) {
 		return () => {
-			this.setState({step}, state => state.step === 0 && this._getChartData());
+			this.setState({step}, () => this.state.step === 0 && this._getChartData());
 		}
 	}
 	_setFilterObj(paths, val, callback) {
@@ -812,7 +836,11 @@ class CreateDiagnose extends Component {
 		
 	}
 	_onSaveRenew() {
-		this._setStep(0)();
+		this.setState({
+			diagnoseTags: null,
+		}, DiagnoseAction.clearCreate);
+			this._getTagList(this.props, this.context);
+			this._setStep(0)();
 	}
 	_onClose() {
 		DiagnoseAction.clearCreate();
@@ -878,6 +906,7 @@ class CreateDiagnose extends Component {
 						onUpdateFilterObj={paths => 
 							val => this._setFilterObj(paths, val)
 						}
+						disabledPreview={this._step2NeedRequire()}
 
 						StartTime={StartTime}						
 						EndTime={EndTime}
@@ -899,22 +928,26 @@ class CreateDiagnose extends Component {
 		return null;
 	}
 	_getFooterButton() {
-		let {step, diagnoseTags} = this.state,
+		let {step, diagnoseTags, filterObj} = this.state,
+		checkedTags = diagnoseTags && diagnoseTags.filter(tag => tag.get('checked')),
+		needAddNames = !checkedTags || 
+						checkedTags.map(tag => tag.get('DiagnoseName')).toJS()
+						.reduce((result, val) => result || isEmptyStr(val), false),
 		buttons = [];
 		switch (step) {
 			case 0:
-				buttons.push(<Right><NextButton disabled={!diagnoseTags || diagnoseTags.filter(tag => tag.get('checked')).size === 0} onClick={this._setStep(1)}/></Right>);
+				buttons.push(<Right><NextButton disabled={!checkedTags || checkedTags.size === 0} onClick={this._setStep(1)}/></Right>);
 				break;
 			case 1:
 				buttons.push(<Left><PrevButton onClick={this._setStep(0)}/></Left>);
-				buttons.push(<Right><NextButton onClick={this._setStep(2)}/></Right>);
+				buttons.push(<Right><NextButton disabled={this._step2NeedRequire()} onClick={this._setStep(2)}/></Right>);
 				break;
 			case 2:
 				buttons.push(<Left><PrevButton onClick={this._setStep(1)}/></Left>);
 				buttons.push(
 					<Right>
-						<RaisedButton onClick={this._onSaveBack} label={'保存并返回诊断列表'}/>
-						<RaisedButton onClick={this._onSaveRenew} label={'保存并继续添加'} style={{marginLeft: 10}} primary={true}/>
+						<RaisedButton disabled={needAddNames} onClick={this._onSaveBack} label={'保存并返回诊断列表'}/>
+						<RaisedButton disabled={needAddNames} onClick={this._onSaveRenew} label={'保存并继续添加'} style={{marginLeft: 10}} primary={true}/>
 					</Right>
 				);
 				break;

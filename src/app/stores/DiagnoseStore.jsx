@@ -167,6 +167,11 @@ DiagnoseStore.dispatchToken = AppDispatcher.register(function(action) {
           DiagnoseStore.setLoading(true);
           DiagnoseStore.emitChange()
           break;
+    case Action.CLEAR_CREATE_DATA:
+          DiagnoseStore.setChartData(null);
+          DiagnoseStore.setTagsList(null);
+          DiagnoseStore.emitChange()
+          break;
   }
 })
 

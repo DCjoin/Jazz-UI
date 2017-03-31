@@ -104,7 +104,7 @@ const DiagnoseAction = {
   },
   clearCreate() {
     AppDispatcher.dispatch({
-      type: Action.GET_CHART_DATA,
+      type: Action.CLEAR_CREATE_DATA,
       data: null,
     });    
   }
