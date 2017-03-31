@@ -72,9 +72,9 @@ function getCalendarTypeByWidgetStatus(wss) {
 }
 
 function getCalenderTypeByData(data) {
-	let step = data.getIn(['DiagnoseEnergyViewData', 'TargetEnergyData', 0, 'Target', 'Step']), 
-	calcType = getCalendarTypeByWidgetStatus(JSON.parse(data.get('WidgetStatus'))),
-	range = data.get('DiagnoseEnergyViewData').get('Calendars') ? data.get('DiagnoseEnergyViewData').get('Calendars').toJS(): [],
+	let step = data.getIn(['EnergyViewData', 'TargetEnergyData', 0, 'Target', 'Step']), 
+	calcType = data.get('WidgetStatus') && getCalendarTypeByWidgetStatus(JSON.parse(data.get('WidgetStatus'))),
+	range = data.get('EnergyViewData').get('Calendars') ? data.get('EnergyViewData').get('Calendars').toJS(): [],
 	checkCalendarTypeFilter = val => 
 		range && range.filter(item => item.CalendarType === val).length > 0 
 		? 0 
@@ -135,7 +135,7 @@ export default function DiagnoseChart(props) {
 
 	chartProps = {
 		chartType: CHART_TYPE,
-		tagData: data.get('DiagnoseEnergyViewData'),
+		tagData: data.get('EnergyViewData'),
 		postNewConfig: curry(postNewConfig)(
 			data.get('TriggerValue'),
 			flowRight( getColorByCalenderType, getCalenderTypeByData )(data), 

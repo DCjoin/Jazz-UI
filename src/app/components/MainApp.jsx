@@ -180,19 +180,15 @@ let MainApp = React.createClass({
       if( customerId && !this.state.hierarchyId ) {
         let WholeCustomer = getCustomerPrivilageById( customerId ) && getCustomerPrivilageById( customerId ).get('WholeCustomer');
         let initHierarchyId = router.location.query.init_hierarchy_id;
-        if( WholeCustomer ) {
-          this.setState({
-            hierarchyId: customerId * 1
-          },()=>{
-            this._getECMUnread()
-          });
-        } else {
-          this.setState({
-            hierarchyId: HierarchyStore.getBuildingList()[0].Id
-          },()=>{
-            this._getECMUnread()
-          });
+        let hierarchyId = customerId;
+        if(HierarchyStore.getBuildingList()[0]) {
+          hierarchyId = HierarchyStore.getBuildingList()[0].Id
         }
+        this.setState({
+          hierarchyId
+        },()=>{
+          this._getECMUnread()
+        });
         if( initHierarchyId ) {
           let {pathname, query} = router.location,
           search = '';

@@ -16,7 +16,7 @@ import classnames from 'classnames';
 import { curry } from 'lodash/function';
 
 import TimeGranularity from 'constants/TimeGranularity.jsx';
-import {DiagnoseModel} from 'constants/actionType/Diagnose.jsx';
+import {DIAGNOSE_MODEL} from 'constants/actionType/Diagnose.jsx';
 
 import ReduxDecorator from '../../decorator/ReduxDecorator.jsx';
 
@@ -34,7 +34,7 @@ import DiagnoseAction from 'actions/diagnose/DiagnoseAction.jsx';
 import DiagnoseChart from './DiagnoseChart.jsx';
 
 const SEPARTOR = '-';
-const DATA_FORMAT = 'YYYY-MM-DD';
+const DATE_FORMAT = 'YYYY-MM-DD';
 const CALENDAR_ITEM_TYPE = {
 	WorkDay: 0,
 	Holiday: 1,
@@ -99,8 +99,8 @@ function getDefaultFilter() {
 		Step: TimeGranularity.Minite,
 		Timeranges: [
 			{
-				StartTime: getFirstDateByThisYear(DATA_FORMAT),
-				EndTime: getEndDateByThisYear(DATA_FORMAT)
+				StartTime: getFirstDateByThisYear(DATE_FORMAT),
+				EndTime: getEndDateByThisYear(DATE_FORMAT)
 			}
 		],
 		WorkTimes: [{
@@ -112,10 +112,10 @@ function getDefaultFilter() {
 			StartTime: 600,
 			EndTime: 840,
 		}],
-		TriggerValue: '',
+		TriggerValue: null,
 		ConditionType: CONDITION_TYPE.Smaller,
 		TriggerType: TRIGGER_TYPE.FixedValue,
-		ToleranceRatio: '',
+		ToleranceRatio: null,
 		HistoryStartTime: '2017-02-20T00:00:00',
 		HistoryEndTime: '2017-03-21T00:00:00',
 	});
@@ -126,10 +126,10 @@ function formatDataRangeLabel(date) {
 }
 
 function getFirstDateByThisYear(formatStr) {
-	return new Date(moment().startOf('year').format(formatStr))
+	return moment().startOf('year').format(formatStr)
 }
 function getEndDateByThisYear(formatStr) {
-	return new Date(moment().endOf('year').format(formatStr))
+	return moment().endOf('year').format(formatStr)
 }
 
 function Left(props) {
@@ -143,6 +143,17 @@ function PrevButton(props) {
 }
 function NextButton(props) {
 	return (<RaisedButton {...props} label={'下一步'}  primary={true}/>);
+}
+function utcFormat(dateStr) {
+	return moment(dateStr).subtract(8, 'hours').format(DATE_FORMAT + 'THH:mm:ss');
+}
+function updateUtcFormatFilter(filterObj, paths) {
+	return paths.reduce(
+		(computedFilterObj, path,) => computedFilterObj.set(
+								path, 
+								utcFormat( computedFilterObj.get(path) )
+							), 
+		filterObj);
 }
 
 function AdditiveComp({
@@ -179,7 +190,7 @@ function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime
 		<ViewableDatePicker
 			disabled={disabled}
     		width={100}
-			value={moment(StartTime).format(DATA_FORMAT)}
+			value={StartTime.split('T')[0]}
 			onChange={(val) => {
 				onChangeStartTime(val + 'T' + StartTime.split('T')[1]);
 			}}/>
@@ -189,13 +200,13 @@ function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime
 			defaultValue={StartTime.split('T')[1].split(':').slice(0, 2).join(':')} 
 			dataItems={getDateTimeItemsByStep(60)}
 			didChanged={(val) => {
-				onChangeStartTime(moment(StartTime).format(DATA_FORMAT) + 'T' + val + ':00');
+				onChangeStartTime(moment(StartTime).format(DATE_FORMAT) + 'T' + val + ':00');
 			}}/>
 		<div style={{margin: '0 10px', alignSelf: 'center'}}>{'至'}</div>
 		<ViewableDatePicker
 			disabled={disabled}
     		width={100}
-			value={moment(EndTime).format(DATA_FORMAT)}
+			value={EndTime.split('T')[0]}
 			onChange={(val) => {
 				onChangeEndTime(val + 'T' + EndTime.split('T')[1]);
 			}}/>
@@ -205,7 +216,7 @@ function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime
 			defaultValue={EndTime.split('T')[1].split(':').slice(0, 2).join(':')} 
 			dataItems={getDateTimeItemsByStep(60)}
 			didChanged={(val) => {
-				onChangeEndTime(moment(EndTime).format(DATA_FORMAT) + 'T' + val + ':00');
+				onChangeEndTime(moment(EndTime).format(DATE_FORMAT) + 'T' + val + ':00');
 			}}/>
 	</section>)
 }
@@ -213,6 +224,7 @@ function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime
 function TagList({tags, onCheck}) {
 	let content = (<section className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></section>);
 	if( tags ) {
+		console.log(tags.toJS());
 		content = (
 			<ul className='diagnose-create-tag-list-content'>
 				{tags.map( (tag, i) => 
@@ -224,7 +236,7 @@ function TagList({tags, onCheck}) {
 						<div className='diagnose-create-checkbox-label-name hiddenEllipsis'>
 							{tag.get('Name')}
 						</div>
-						{tag.get('diagonseing') && 
+						{tag.get('Status') !== 0 && 
 						<div className='diagnose-create-checkbox-label-tip'>
 							{'诊断中'}
 						</div>}
@@ -245,12 +257,12 @@ chartData: API返回图表数据
 chartDataLoading: 图表数据请求中
 Step: 步长(TimeGranularity)
 onUpdateStep: 更新步长
-StartTime: 开始时间(YYYY-MM-DDThh:mm:ss)
-EndTime: 结束时间(YYYY-MM-DDThh:mm:ss)
-onChangeStartTime: 修改开始时间 :: String(YYYY-MM-DDThh:mm:ss) -> ?
-onChangeEndTime: 修改结束时间 :: String(YYYY-MM-DDThh:mm:ss) -> ?
+StartTime: 开始时间(YYYY-MM-DDTHH:mm:ss)
+EndTime: 结束时间(YYYY-MM-DDTHH:mm:ss)
+onChangeStartTime: 修改开始时间 :: String(YYYY-MM-DDTHH:mm:ss) -> ?
+onChangeEndTime: 修改结束时间 :: String(YYYY-MM-DDTHH:mm:ss) -> ?
 **/
-function ChartPreview({chartData, chartDataLoading, onUpdateStep, Step, ...other}) {
+function ChartPreview({chartData, chartDataLoading, onUpdateStep, SHHtep, ...other}) {
 	return (<section className='diagnose-create-chart-preview'>
 		<hgroup className='diagnose-range-title'>{'图表预览'}</hgroup>
 		<div className='diagnose-create-chart-action'>
@@ -289,7 +301,7 @@ onUpdateStep: 更新步长
 Timeranges: 诊断时间范围[{StartTime: YYYY-MM-DD, EndTime: YYYY-MM-DD}]
 onAddDateRange: 添加诊断时间范围
 onDeleteDateRange: 删除诊断时间范围 :: Number(idx) ->
-onUpdateDateRange: 修改诊断时间范围 :: idx, type, first/end, String(YYYY-MM-DDThh:mm:ss) -> ?
+onUpdateDateRange: 修改诊断时间范围 :: idx, type, first/end, String(YYYY-MM-DDTHH:mm:ss) -> ?
 **/
 export function DiagnoseRange({
 	Step,
@@ -323,16 +335,16 @@ export function DiagnoseRange({
 					<div key={idx} style={{display: 'flex', alignItems: 'center'}}>
 					<MonthDayItem 
 						isViewStatus={false}
-						month={data.StartTime.getMonth() + 1}
-						day={data.StartTime.getDate()}
+						month={new Date(data.StartTime).getMonth() + 1}
+						day={new Date(data.StartTime).getDate()}
 						onMonthDayItemChange={(type, val) => {
 							onUpdateDateRange(idx, 'StartTime', type, val);
 						}}/>
 					至
 					<MonthDayItem
 						isViewStatus={false}
-						month={data.EndTime.getMonth() + 1}
-						day={data.EndTime.getDate()}
+						month={new Date(data.EndTime).getMonth() + 1}
+						day={new Date(data.EndTime).getDate()}
 						onMonthDayItemChange={(type, val) => {
 							onUpdateDateRange(idx, 'EndTime', type, val);
 						}}/>
@@ -474,7 +486,7 @@ function ModelBCondition({
 
 function DiagnoseCondition({
 	onChangeWorkTime,
-	diagnoseType,
+	DiagnoseModel,
 	WorkTimes,
 
 	...other
@@ -537,8 +549,8 @@ function DiagnoseCondition({
 					holidayRuningTimes[idx][type] = val;
 					onChangeWorkTime(workRuningTimes.concat(holidayRuningTimes));
 				}}/>
-			{diagnoseType === DiagnoseModel.A || <ModelACondition {...other}/>}
-			{diagnoseType === DiagnoseModel.B || <ModelBCondition {...other}/>}
+			{DiagnoseModel === DIAGNOSE_MODEL.A && <ModelACondition {...other}/>}
+			{DiagnoseModel === DIAGNOSE_MODEL.B && <ModelBCondition {...other}/>}
 		</div>
 	</section>);
 }
@@ -552,15 +564,15 @@ chartData: API返回图表数据
 chartDataLoading: 图表数据请求中
 Step: 步长(TimeGranularity)
 onUpdateStep: 更新步长
-StartTime: 开始时间(YYYY-MM-DDThh:mm:ss)
-EndTime: 结束时间(YYYY-MM-DDThh:mm:ss)
-onChangeStartTime: 修改开始时间 :: String(YYYY-MM-DDThh:mm:ss) -> ?
-onChangeEndTime: 修改结束时间 :: String(YYYY-MM-DDThh:mm:ss) -> ?
+StartTime: 开始时间(YYYY-MM-DDTHH:mm:ss)
+EndTime: 结束时间(YYYY-MM-DDTHH:mm:ss)
+onChangeStartTime: 修改开始时间 :: String(YYYY-MM-DDTHH:mm:ss) -> ?
+onChangeEndTime: 修改结束时间 :: String(YYYY-MM-DDTHH:mm:ss) -> ?
 
 Timeranges: 诊断时间范围[{StartTime: YYYY-MM-DD, EndTime: YYYY-MM-DD}]
 onAddDateRange: 添加诊断时间范围
 onDeleteDateRange: 删除诊断时间范围 :: Number(idx) ->
-onUpdateDateRange: 修改诊断时间范围 :: idx, type, first/end, String(YYYY-MM-DDThh:mm:ss) -> ?
+onUpdateDateRange: 修改诊断时间范围 :: idx, type, first/end, String(YYYY-MM-DDTHH:mm:ss) -> ?
 **/
 class CreateStep1 extends Component {
 	render() {
@@ -608,7 +620,7 @@ class CreateStep1 extends Component {
 
 /**
 onUpdateFilterObj,
-diagnoseType,
+DiagnoseModel,
 WorkTimes,
 TriggerValue,
 ConditionType,
@@ -627,7 +639,7 @@ export class CreateStep2 extends Component {
 	render() {
 		let {
 			onUpdateFilterObj,
-			diagnoseType,
+			DiagnoseModel,
 			WorkTimes,
 			TriggerValue,
 			ConditionType,
@@ -644,7 +656,7 @@ export class CreateStep2 extends Component {
 					onChangeEndTime={onUpdateFilterObj('EndTime')}
 				/>
 				<DiagnoseCondition 
-					diagnoseType={diagnoseType}
+					DiagnoseModel={DiagnoseModel}
 					WorkTimes={WorkTimes} 
 					onChangeWorkTime={onUpdateFilterObj('WorkTimes')}
 
@@ -695,8 +707,12 @@ class CreateDiagnose extends Component {
 		};
 	};
 
-	constructor(props) {
-		super(props);
+	static contextTypes = {
+		hierarchyId: React.PropTypes.string
+	};
+
+	constructor(props, ctx) {
+		super(props, ctx);
 		this._setFilterObj = this._setFilterObj.bind(this);
 		this._onChange = this._onChange.bind(this);
 		this._onSaveBack = this._onSaveBack.bind(this);
@@ -711,14 +727,46 @@ class CreateDiagnose extends Component {
 			filterObj: getDefaultFilter()
 		};
 
-		DiagnoseAction.getTagsList();
+		DiagnoseAction.getDiagnoseTag(
+			ctx.hierarchyId,
+			props.EnergyLabel.get('Id') || 101,
+			props.DiagnoseItemId || 11,
+			1
+		);
 	}
 	_getChartData() {
-		let {step, filterObj} = this.state;
+		let {step, filterObj, diagnoseTags} = this.state;
 		if( step === 0 ) {
-			DiagnoseAction.getChartData(filterObj);
+			DiagnoseAction.getChartDataStep1({
+				tagIds: diagnoseTags
+						.filter( tag => tag.get('checked') )
+						.map( tag => tag.get('Id') )
+						.toJS(),
+				viewOption: {
+					DataUsageType: 1,
+					IncludeNavigatorData: false,
+					Step: filterObj.get('Step'),
+					TimeRanges: [{
+						StartTime: utcFormat(filterObj.get('StartTime')),
+						EndTime: utcFormat(filterObj.get('EndTime')),
+					}]
+				}
+			});
 		} else if( step === 1 ) {
-			DiagnoseAction.getChartData(filterObj);
+			DiagnoseAction.getChartData({
+			...updateUtcFormatFilter(filterObj,
+				['EndTime', 'StartTime', 'HistoryEndTime', 'HistoryStartTime']
+			).toJS(), 
+			...{
+				HierarchyId: this.context.hierarchyId,
+				DiagnoseItemId: this.props.DiagnoseItemId,
+				EnergyLabelId: this.props.EnergyLabel.get('Id'),
+				DiagnoseModel: this.props.EnergyLabel.get('DiagnoseModel'),
+				TagIds: diagnoseTags
+						.filter( tag => tag.get('checked') )
+						.map( tag => tag.get('Id') )
+						.toJS(),
+			}});
 		}
 		this.setState({
 			chartData: null
@@ -729,7 +777,7 @@ class CreateDiagnose extends Component {
 			this.setState({step});
 		}
 	}
-	_setFilterObj(paths, val) {
+	_setFilterObj(paths, val, callback) {
 		let filterObj = this.state.filterObj,
 		immuVal = Immutable.fromJS(val);
 		if(paths instanceof Array) {
@@ -737,11 +785,11 @@ class CreateDiagnose extends Component {
 		} else {
 			filterObj = filterObj.set(paths, immuVal);
 		}
-		this.setState({filterObj});
+		this.setState({filterObj}, callback);
 	}
 	_setFilterObjThenUpdataChart(paths, val) {
-		this._setFilterObj(paths, val);
-		this._getChartData();
+		this._setFilterObj(paths, val, this._getChartData);
+		// this._getChartData();
 	}
 	_onCheckDiagnose(idx, val) {
 		this.setState({
@@ -755,7 +803,7 @@ class CreateDiagnose extends Component {
 		this._setStep(0)();
 	}
 	_renderContent() {
-		let {diagnoseType} = this.props,
+		let DiagnoseModel = this.props.EnergyLabel.get('DiagnoseModel'),
 		{step, diagnoseTags, chartData, chartDataLoading, filterObj} = this.state,
 		{
 			TagIds, 
@@ -797,8 +845,8 @@ class CreateDiagnose extends Component {
 						}}
 						onAddDateRange={() => {
 							Timeranges.push({
-								StartTime: getFirstDateByThisYear(DATA_FORMAT), 
-								EndTime: getEndDateByThisYear(DATA_FORMAT)});
+								StartTime: getFirstDateByThisYear(DATE_FORMAT), 
+								EndTime: getEndDateByThisYear(DATE_FORMAT)});
 							this._setFilterObjThenUpdataChart('Timeranges', Timeranges);
 						}}
 						onDeleteDateRange={(idx) => {
@@ -807,11 +855,13 @@ class CreateDiagnose extends Component {
 						}}/>);
 		} else if( step === 1 ) {
 			return (<CreateStep2 
-						diagnoseType={diagnoseType}
+						DiagnoseModel={DiagnoseModel}
 						chartData={chartData}
 						chartDataLoading={chartDataLoading}
 
-						onUpdateFilterObj={curry(this._setFilterObj)}
+						onUpdateFilterObj={paths => 
+							val => this._setFilterObj(paths, val)
+						}
 
 						StartTime={StartTime}						
 						EndTime={EndTime}
@@ -864,7 +914,9 @@ class CreateDiagnose extends Component {
 							{['基本', '室内环境异常', '公区温度'].join(SEPARTOR)}
 						</span>
 					</div>
-					<IconButton iconClassName='icon-close' />
+					<IconButton iconClassName='icon-close' onClick={() => {
+						this.props.onClose();
+					}}/>
 				</header>
 				<nav className='diagnose-create-stepper'>
 			        <Stepper activeStep={step}>
@@ -886,6 +938,9 @@ class CreateDiagnose extends Component {
 	}
 }
 CreateDiagnose.propTypes = {
-	diagnoseType: PropTypes.number,
+	EnergyLabel: PropTypes.number,
+	DiagnoseItemId: PropTypes.number,
+	onClose: PropTypes.func,
+	onSave: PropTypes.func,
 }
 export default CreateDiagnose;

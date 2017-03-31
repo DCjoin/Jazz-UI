@@ -67,7 +67,7 @@ module.exports = {
         OperationOptimization:26
       }
     },
-    DiagnoseModel: {
+    DIAGNOSE_MODEL: {
         A: 1,
         B: 2,
         C: 3,

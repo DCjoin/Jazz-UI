@@ -9,6 +9,7 @@ import PermissionCode from 'constants/PermissionCode.jsx';
 import BubbleIcon from '../BubbleIcon.jsx';
 import Immutable from 'immutable';
 import LabelDetail from './LabelDetail.jsx';
+import CreateDiagnose from './CreateDiagnose.jsx';
 import DiagnoseStore from 'stores/DiagnoseStore.jsx';
 import {formStatus} from 'constants/FormStatus.jsx';
 
@@ -181,6 +182,13 @@ render(){
                        isBasic={this.state.isBasic} formStatus={this.state.formStatus} addLabel={this.state.addLabel}
                        />
       </div>
+      {this.state.formStatus === formStatus.ADD && 
+      <CreateDiagnose EnergyLabel={this.state.addLabel} onClose={() => {
+        this.setState({
+          formStatus:formStatus.VIEW,
+          addLabel: null,
+        });
+      }}/>}
     </div>
   )
 }

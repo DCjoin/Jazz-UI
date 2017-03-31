@@ -56,8 +56,14 @@ const DiagnoseAction = {
       }
     } );
   },
-  getTagsList() {
-    Ajax.get('/diagnose/tags/list', {
+  getDiagnoseTag(HierarchyId, EnergyLabelId, DiagnoseItemId, LabelType) {
+    Ajax.post(Path.Diagnose.getDiagnoseTag, {
+      params: {
+        HierarchyId, 
+        EnergyLabelId, 
+        DiagnoseItemId, 
+        LabelType,
+      },
       success: (res) => {
         AppDispatcher.dispatch({
           type: Action.GET_TAGS_LIST,
@@ -66,11 +72,28 @@ const DiagnoseAction = {
       }
     });
   },
-  getChartData() {
+  getChartDataStep1(params) {
     AppDispatcher.dispatch({
       type: Action.GET_CHART_DATAING,
     })
-    Ajax.post('/diagnose/chart/data', {
+    Ajax.post('/Energy/GetTagsData', {
+      params,
+      success: (res) => {
+        AppDispatcher.dispatch({
+          type: Action.GET_CHART_DATA,
+          data: {
+            EnergyViewData: res
+          },
+        })
+      }
+    });
+  },
+  getChartData(params) {
+    AppDispatcher.dispatch({
+      type: Action.GET_CHART_DATAING,
+    })
+    Ajax.post('/diagnose/previewchart', {
+      params,
       success: (res) => {
         AppDispatcher.dispatch({
           type: Action.GET_CHART_DATA,
