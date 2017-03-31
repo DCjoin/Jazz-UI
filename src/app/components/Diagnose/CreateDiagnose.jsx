@@ -683,14 +683,26 @@ export class CreateStep2 extends Component {
 	}
 }
 
-class CreateStep3 extends Component {
-	render() {
-		return (
-			<section>
-				step3
-			</section>
-		);
-	}
+function CreateStep3({
+	diagnoseTags,
+	onUpdateDiagnoseTags,
+}) {
+	return (
+		<section>
+			<hgroup>{'诊断名称'}</hgroup>
+			{diagnoseTags.map((tag, idx) => 
+			tag.get('checked') ?
+			<ViewableTextField
+			title={'诊断名称'}
+			hintText={'请输入诊断名称'}
+			defaultValue={tag.get('DiagnoseName')}
+			didChanged={(val) => {
+				onUpdateDiagnoseTags(diagnoseTags.setIn([idx, 'DiagnoseName'], val));
+			}}/>
+			: null
+			).toJS()}
+		</section>
+	);
 }
 
 @ReduxDecorator
@@ -774,7 +786,7 @@ class CreateDiagnose extends Component {
 	}
 	_setStep(step) {
 		return () => {
-			this.setState({step});
+			this.setState({step}, state => state.step === 0 && this._getChartData());
 		}
 	}
 	_setFilterObj(paths, val, callback) {
@@ -801,6 +813,10 @@ class CreateDiagnose extends Component {
 	}
 	_onSaveRenew() {
 		this._setStep(0)();
+	}
+	_onClose() {
+		DiagnoseAction.clearCreate();
+		this.props.onClose();
 	}
 	_renderContent() {
 		let DiagnoseModel = this.props.EnergyLabel.get('DiagnoseModel'),
@@ -876,7 +892,9 @@ class CreateDiagnose extends Component {
 						
 						/>);
 		} else if( step === 2 ) {
-			return (<CreateStep3 />);
+			return (<CreateStep3 diagnoseTags={diagnoseTags} onUpdateDiagnoseTags={(diagnoseTags) => {
+				this.setState({diagnoseTags});
+			}}/>);
 		}
 		return null;
 	}
@@ -914,9 +932,7 @@ class CreateDiagnose extends Component {
 							{['基本', '室内环境异常', '公区温度'].join(SEPARTOR)}
 						</span>
 					</div>
-					<IconButton iconClassName='icon-close' onClick={() => {
-						this.props.onClose();
-					}}/>
+					<IconButton iconClassName='icon-close' onClick={this._onClose}/>
 				</header>
 				<nav className='diagnose-create-stepper'>
 			        <Stepper activeStep={step}>

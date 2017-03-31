@@ -101,6 +101,12 @@ const DiagnoseAction = {
         })
       }
     });
+  },
+  clearCreate() {
+    AppDispatcher.dispatch({
+      type: Action.GET_CHART_DATA,
+      data: null,
+    });    
   }
 }
 
