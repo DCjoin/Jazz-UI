@@ -8,6 +8,8 @@ import PrototypeStore from './PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
 
+const CREATE_DIAGNOSE_EVENT = 'create_diagnose_event';
+
 var HierarchyAction=Hierarchy.Action;
 
 var _diagnoseList=null,
@@ -131,9 +133,19 @@ const DiagnoseStore = assign({}, PrototypeStore, {
   hasCalendar(){
     if(_calendar===null) return null
     return !(_calendar.CalendarItemGroups[0].CalendarItems===null)
-  }
+  },
 
 
+  emitCreatedDiagnose: function(isClose) {
+    this.emit(CREATE_DIAGNOSE_EVENT, isClose);
+  },
+  addCreatedDiagnoseListener: function(callback) {
+    this.on(CREATE_DIAGNOSE_EVENT, callback);
+  },
+  removeCreatedDiagnoseListener: function(callback) {
+    this.removeListener(CREATE_DIAGNOSE_EVENT, callback);
+    this.dispose();
+  },
 })
 
 DiagnoseStore.dispatchToken = AppDispatcher.register(function(action) {
@@ -171,6 +183,9 @@ DiagnoseStore.dispatchToken = AppDispatcher.register(function(action) {
           DiagnoseStore.setChartData(null);
           DiagnoseStore.setTagsList(null);
           DiagnoseStore.emitChange()
+          break;
+    case Action.CREATE_DIAGNOSE:
+          DiagnoseStore.emitCreatedDiagnose(action.isClose)
           break;
   }
 })

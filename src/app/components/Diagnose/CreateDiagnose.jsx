@@ -692,7 +692,7 @@ function CreateStep3({
 	return (
 		<section>
 			<hgroup>{'诊断名称'}</hgroup>
-			{diagnoseTags.map((tag, idx) => 
+			{diagnoseTags && diagnoseTags.map((tag, idx) => 
 			tag.get('checked') ?
 			<ViewableTextField
 			title={'诊断名称'}
@@ -733,6 +733,8 @@ class CreateDiagnose extends Component {
 		this._onSaveRenew = this._onSaveRenew.bind(this);
 		this._onCheckDiagnose = this._onCheckDiagnose.bind(this);
 		this._getChartData = this._getChartData.bind(this);
+		this._onCreated = this._onCreated.bind(this);
+		this._onClose = this._onClose.bind(this);
 
 		this.state = {
 			step: 0,
@@ -743,11 +745,16 @@ class CreateDiagnose extends Component {
 
 		this._getTagList(props, ctx);
 
+		DiagnoseStore.addCreatedDiagnoseListener(this._onCreated);
+
+	}
+	componentWillUnmount(){
+		DiagnoseStore.removeCreatedDiagnoseListener(this._onCreated);
 	}
 	_getTagList(props, ctx) {		
 		DiagnoseAction.getDiagnoseTag(
 			ctx.hierarchyId,
-			props.EnergyLabel.get('Id') || 101,
+			props.EnergyLabel.get('Id'),
 			props.DiagnoseItemId || 11,
 			1
 		);
@@ -777,7 +784,7 @@ class CreateDiagnose extends Component {
 			).toJS(), 
 			...{
 				HierarchyId: this.context.hierarchyId,
-				DiagnoseItemId: this.props.DiagnoseItemId,
+				DiagnoseItemId: this.props.DiagnoseItemId || 11,
 				EnergyLabelId: this.props.EnergyLabel.get('Id'),
 				DiagnoseModel: this.props.EnergyLabel.get('DiagnoseModel'),
 				TagIds: diagnoseTags
@@ -827,24 +834,51 @@ class CreateDiagnose extends Component {
 		this._setFilterObj(paths, val, this._getChartData);
 		// this._getChartData();
 	}
+	_createDiagnose(isClose) {
+		let {filterObj, diagnoseTags} = this.state,
+		checkedTags = diagnoseTags.filter( tag => tag.get('checked') );
+		DiagnoseAction.createDiagnose({
+			...updateUtcFormatFilter(filterObj,
+				['EndTime', 'StartTime', 'HistoryEndTime', 'HistoryStartTime']
+			).toJS(), 
+			...{
+				HierarchyId: this.context.hierarchyId,
+				DiagnoseItemId: this.props.DiagnoseItemId || 11,
+				EnergyLabelId: this.props.EnergyLabel.get('Id'),
+				DiagnoseModel: this.props.EnergyLabel.get('DiagnoseModel'),
+				TagIds: checkedTags.map( tag => tag.get('Id') ).toJS(),
+				Names: checkedTags.map( tag => tag.get('DiagnoseName') ).toJS(),
+			}
+		}, isClose);		
+	}
 	_onCheckDiagnose(idx, val) {
 		this.setState({
 			diagnoseTags: this.state.diagnoseTags.setIn([idx, 'checked'], val)
 		}, this._getChartData);
 	}
 	_onSaveBack() {
-		
+		this._createDiagnose(true);
 	}
 	_onSaveRenew() {
+		this._createDiagnose(false);		
+	}
+	_onRenew() {
 		this.setState({
 			diagnoseTags: null,
 		}, DiagnoseAction.clearCreate);
-			this._getTagList(this.props, this.context);
-			this._setStep(0)();
+		this._getTagList(this.props, this.context);
+		this._setStep(0)();
 	}
 	_onClose() {
 		DiagnoseAction.clearCreate();
 		this.props.onClose();
+	}
+	_onCreated(isClose) {
+		if( isClose ) {
+			this._onClose();
+		} else {
+			this._onRenew();
+		}
 	}
 	_renderContent() {
 		let DiagnoseModel = this.props.EnergyLabel.get('DiagnoseModel'),
