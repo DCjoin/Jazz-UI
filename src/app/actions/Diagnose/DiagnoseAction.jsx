@@ -104,9 +104,20 @@ const DiagnoseAction = {
   },
   clearCreate() {
     AppDispatcher.dispatch({
-      type: Action.GET_CHART_DATA,
+      type: Action.CLEAR_CREATE_DATA,
       data: null,
     });    
+  },
+  createDiagnose(params, isClose) {
+    Ajax.post('/diagnose/adddiagnose', {
+      params,
+      success: (res) => {
+        AppDispatcher.dispatch({
+          type: Action.CREATE_DIAGNOSE,
+          isClose,
+        })
+      }
+    });
   }
 }
 

@@ -8,6 +8,8 @@ module.exports = {
     GET_TAGS_LIST:null,
     GET_CHART_DATA:null,
     GET_CHART_DATAING:null,
+    CLEAR_CREATE_DATA:null,
+    CREATE_DIAGNOSE:null,
   }),
     EnergyLabel:{
         OfficeLighting:101,
