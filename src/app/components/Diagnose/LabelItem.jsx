@@ -110,7 +110,7 @@ export default class LabelItem extends Component {
       color: '#ffffff'
     }}>
         <div className={classnames({
-      "icon-folder": Id === ItemType.Basic.NonRunTime || Id === ItemType.Senior.NonRunTime,
+      "icon-chart": Id === ItemType.Basic.NonRunTime || Id === ItemType.Senior.NonRunTime,
       "icon-chart": Id === ItemType.Basic.DeviceEfficiency || Id === ItemType.Senior.DeviceEfficiency,
       "icon-chart": Id === ItemType.Basic.NonEssentialOperation || Id === ItemType.Senior.NonEssentialOperation,
       "icon-chart": Id === ItemType.Basic.IndoorEnvironmental || Id === ItemType.Senior.IndoorEnvironmental,
