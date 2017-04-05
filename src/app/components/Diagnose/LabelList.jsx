@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {Tabs, Tab, CircularProgress} from 'material-ui';
-import {labellist,problemStatic} from '../../../../mockData/diagnose.js';
 import Immutable from 'immutable';
 import LabelItem from './LabelItem.jsx';
 import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
@@ -93,8 +92,7 @@ export default class LabelList extends Component {
       onChange:(no)=>{
         this.setState({
           infoTabNo:no,
-          list:null,
-					selectedNode:null
+          list:null
         },()=>{
           if(this.state.infoTabNo===1 || isFull()){
             this._getList(this.context.hierarchyId)

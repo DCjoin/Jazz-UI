@@ -69,7 +69,7 @@ class Group extends Component{
     return this.props.nodeData.get('Children').map(data=>(
       <div className={classnames({
                                   "item":true,
-                                  "selected":data.get('Id')===this.props.selectedNode.get('Id'),
+                                  "selected":this.props.selectedNode?data.get('Id')===this.props.selectedNode.get('Id'):false,
                                   'canSelect':true
                                 })}
            style={{paddingLeft:'30px'}} onClick={()=>{this.props.onItemTouchTap(data)}}>
@@ -110,12 +110,12 @@ export default class LabelItem extends Component {
       color: '#ffffff'
     }}>
         <div className={classnames({
-      "icon-folder": Id === ItemType.Basic.NonRunTime || Id === ItemType.Senior.NonRunTime,
-      "icon-chart": [ItemType.Basic.DeviceEfficiency, ItemType.Senior.DeviceEfficiency,
+      //"icon-folder": Id === ItemType.Basic.NonRunTime || Id === ItemType.Senior.NonRunTime,
+      "icon-chart": [ItemType.Basic.NonRunTime,ItemType.Senior.NonRunTime,ItemType.Basic.DeviceEfficiency, ItemType.Senior.DeviceEfficiency,
                     ItemType.Basic.NonEssentialOperation, ItemType.Senior.NonEssentialOperation,
                     ItemType.Basic.IndoorEnvironmental, ItemType.Senior.IndoorEnvironmental,
-                    ItemType.Senior.RunTime, 
-                    ItemType.Basic.DemandOptimization, 
+                    ItemType.Senior.RunTime,
+                    ItemType.Basic.DemandOptimization,
                     ItemType.Senior.OperationOptimization].reduce((result, type) => result || Id === type, false)
       // "icon-chart": Id === ItemType.Basic.DeviceEfficiency || Id === ItemType.Senior.DeviceEfficiency,
       // "icon-chart": Id === ItemType.Basic.NonEssentialOperation || Id === ItemType.Senior.NonEssentialOperation,

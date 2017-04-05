@@ -70,26 +70,18 @@ export default class Diagnose extends Component {
         this._onHasProblem = this._onHasProblem.bind(this);
         this._onItemTouchTap = this._onItemTouchTap.bind(this);
         this._onBasicTabSwitch = this._onBasicTabSwitch.bind(this);
-        this._onChanged = this._onChanged.bind(this);
         this._onCreated = this._onCreated.bind(this);
     }
 
   state={
         infoTabNo:isBasicNoPrivilege()?2:1,
         hasProblem:false,
-        selectedNode:Immutable.fromJS({}),
-        nodeDetail:null,
+        selectedNode:null,
         isBasic:true,
         formStatus:formStatus.VIEW,
         addLabel:null,
         createSuccessMeg: false,
     }
-
-  _onChanged(){
-    this.setState({
-      nodeDetail:DiagnoseStore.getDiagnose()
-    })
-  }
 
   _onHasProblem(){
     this.setState({
@@ -107,15 +99,13 @@ export default class Diagnose extends Component {
   _switchTab(no){
     this.setState({
       infoTabNo:no,
-      nodeDetail:null
+      selectedNode:null
     })
   }
 
   _onItemTouchTap(data){
     this.setState({
       selectedNode:data
-    },()=>{
-      DiagnoseAction.getDiagnose(data.get("Id"));
     })
   }
 
@@ -156,7 +146,6 @@ export default class Diagnose extends Component {
 
   componentDidMount(){
     CurrentUserStore.addCurrentUserListener(this._onHasProblem);
-    DiagnoseStore.addChangeListener(this._onChanged);
     DiagnoseStore.addCreatedDiagnoseListener(this._onCreated);
     this.getProblem();
   }
@@ -172,7 +161,6 @@ export default class Diagnose extends Component {
 
   componentWillUnmount(){
     CurrentUserStore.removeCurrentUserListener(this._onHasProblem);
-    DiagnoseStore.removeChangeListener(this._onChanged);
     DiagnoseStore.removeCreatedDiagnoseListener(this._onCreated);
   }
 
@@ -188,11 +176,11 @@ render(){
               formStatus:formStatus.ADD,
               addLabel:label
             })}}/>
-          <LabelDetail isFromProbem={this.state.infoTabNo===1} selectedNode={this.state.nodeDetail}
+          <LabelDetail isFromProbem={this.state.infoTabNo===1} selectedNode={this.state.selectedNode}
                        isBasic={this.state.isBasic} formStatus={this.state.formStatus} addLabel={this.state.addLabel}
                        />
       </div>
-      {this.state.formStatus === formStatus.ADD && 
+      {this.state.formStatus === formStatus.ADD &&
       <CreateDiagnose EnergyLabel={this.state.addLabel} onClose={() => {
         this.setState({
           formStatus:formStatus.VIEW,
