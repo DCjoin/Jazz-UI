@@ -6,6 +6,7 @@ import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
 import DiagnoseStore from 'stores/DiagnoseStore.jsx';
 import {DiagnoseRange,CreateStep2} from './CreateDiagnose.jsx';
 import Immutable from 'immutable';
+import NewDialog from 'controls/NewDialog.jsx';
 
 function getFirstDateByThisYear(formatStr) {
 	return new Date(moment().startOf('year').format(formatStr))
@@ -22,12 +23,12 @@ export default class EditDiagnose extends Component {
 
   constructor(props, ctx) {
           super(props);
-          this._onTitleMenuSelect = this._onTitleMenuSelect.bind(this);
           this._onChanged = this._onChanged.bind(this);
       }
 
   state={
-          diagnoseData:null
+          diagnoseData:null,
+					errorShow:false
       }
 
   _onChanged(){
@@ -37,9 +38,17 @@ export default class EditDiagnose extends Component {
     })
   }
 
-  _onClose(){
 
-  }
+	_onUpdate(isSuccess){
+		if(isSuccess){
+			this.props.onClose()
+		}
+		else {
+			this.setState({
+				errorShow:true
+			})
+		}
+	}
 
   _merge(paths,value){
     let diagnoseData = this.state.diagnoseData,
@@ -57,6 +66,27 @@ export default class EditDiagnose extends Component {
     if(Name==='' || Name===null || WorkTimes.length===0) return true
     return false
   }
+
+	_renderErrorDialog() {
+		var that = this;
+		var onClose = function() {
+			that.setState({
+				errorShow: false,
+			});
+		};
+
+			return (
+				 <NewDialog
+			        open={this.state.errorShow}
+			        modal={false}
+			        isOutsideClose={false}
+			        onRequestClose={onClose}
+			        titleStyle={{margin:'0 24px'}}
+			        contentStyle={{overflowY: 'auto',paddingRight:'5px',display:'block'}}>
+							{I18N.Setting.Diagnose.SaveErrorMsg}
+						</NewDialog>)
+
+	}
 
   _renderRange(){
     var {Step,Timeranges}=this.state.diagnoseData.toJS()
@@ -96,7 +126,7 @@ export default class EditDiagnose extends Component {
         this.setState({
           chartData:null
         },()=>{
-          me.getPreviewchart(this.state.diagnoseData)
+          me.getPreviewchart(this.state.diagnoseData.toJS())
         })
       },
       onUpdateFilterObj:curry(this._merge)
@@ -113,37 +143,54 @@ export default class EditDiagnose extends Component {
     )
   }
   getPreviewchart(dto){
-    DiagnoseAction.previewchart(dto.toJS())
+    DiagnoseAction.previewchart(dto)
   }
 
   componentDidMount(){
     DiagnoseStore.addChangeListener(this._onChanged);
-    DiagnoseAction.getDiagnose(this.props.selectedNode.get('Id'),()=>{
-      this.getPreviewchart(DiagnoseStore.getDiagnose())
+		DiagnoseStore.addUpdateDiagnoseListener(this._onUpdate);
+    DiagnoseAction.getDiagnose(this.props.selectedNode.get('Id'),(dto)=>{
+      this.getPreviewchart(dto)
     });
   }
 
   componentWillUnmount(){
     DiagnoseStore.removeChangeListener(this._onChanged);
+		DiagnoseStore.removeUpdateDiagnoseListener(this._onUpdate);
   }
 
   render(){
-    var content=this.state.diagnoseData===null?<div className="flex-center" style={{flex:'none'}}>
-                                                  <CircularProgress  mode="indeterminate" size={80} />
-                                                 </div>:this._renderContent()
-    return(
-      <div className='diagnose-overlay'>
-        <header className='diagnose-overlay-header'>
-          <div>
-            <span>{I18N.Setting.Diagnose.EditDiagnose}</span>
-            <span><TextField value={this.state.diagnoseData.get('Name')} onChange={(event)=>{this._merge('Name',event.target.value)}}/></span>
-          </div>
-          <IconButton iconClassName='icon-close' onTouchTap={this._onClose}/>
-        </header>
-        {content}
-        <FlatButton label={I18N.Setting.Diagnose.SaveAndExit} style={{float:'right'}} disabled={this._validate()} onTouchTap={()=>{}}/>
-      </div>
-    )
+	  if(this.state.diagnoseData===null){
+			return(
+				<div className='diagnose-overlay'>
+					<header className='diagnose-overlay-header'>
+						<div/>
+						<IconButton iconClassName='icon-close' onTouchTap={this.props.onClose}/>
+					</header>
+					<div className="flex-center">
+			                                                  <CircularProgress  mode="indeterminate" size={80} />
+			                                                 </div>
+				</div>
+			)
+		}else {
+			return(
+				<div className='diagnose-overlay'>
+					<header className='diagnose-overlay-header'>
+						<div>
+							<span>{I18N.Setting.Diagnose.EditDiagnose}</span>
+							<span><TextField value={this.state.diagnoseData.get('Name')} onChange={(event)=>{this._merge('Name',event.target.value)}}/></span>
+						</div>
+						<IconButton iconClassName='icon-close' onTouchTap={this.props.onClose}/>
+					</header>
+					{this._renderContent()}
+					<FlatButton label={I18N.Setting.Diagnose.SaveAndExit} style={{float:'right'}} disabled={this._validate()} onTouchTap={()=>{
+							DiagnoseAction.updateDiagnose(this.state.diagnoseData.toJS())
+						}}/>
+					{this.state.errorShow && this._renderErrorDialog()}
+				</div>
+			)
+		}
+
   }
 
 

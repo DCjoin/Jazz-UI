@@ -8,7 +8,8 @@ import PrototypeStore from './PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
 
-const CREATE_DIAGNOSE_EVENT = 'create_diagnose_event';
+const CREATE_DIAGNOSE_EVENT = 'create_diagnose_event',
+UPDATE_DIAGNOSE_EVENT='update_diagnose_event';
 
 var HierarchyAction=Hierarchy.Action;
 
@@ -148,6 +149,27 @@ const DiagnoseStore = assign({}, PrototypeStore, {
   getPreviewChartData(){
     return _previewChartData
   },
+  findDiagnoseById(id){
+    if(_diagnoseList===null) return null
+    var temp=null;
+    _diagnoseList.forEach(diagnose=>{
+      diagnose.get('Children').forEach(child=>{
+        if(child.get('Children') && temp===null) {
+          temp=child.get('Children').find(item=>(item.get('Id')===id)) || null
+        }
+      })
+
+    })
+    return temp
+  },
+  findItemIdByLabel(labelId){
+    if(_diagnoseList===null) return null
+    var itemId=null;
+    _diagnoseList.forEach(diagnose=>{
+      if(diagnose.findIndex(item=>(item.get('Id')===labelId))>-1) itemId=diagnose.get('Id')
+    })
+    return itemId
+    },
   emitCreatedDiagnose: function(isClose) {
     this.emit(CREATE_DIAGNOSE_EVENT, isClose);
   },
@@ -156,6 +178,16 @@ const DiagnoseStore = assign({}, PrototypeStore, {
   },
   removeCreatedDiagnoseListener: function(callback) {
     this.removeListener(CREATE_DIAGNOSE_EVENT, callback);
+    this.dispose();
+  },
+  emitUpdateDiagnose: function(args) {
+    this.emit(UPDATE_DIAGNOSE_EVENT, args);
+  },
+  addUpdateDiagnoseListener: function(callback) {
+    this.on(UPDATE_DIAGNOSE_EVENT, callback);
+  },
+  removeUpdateDiagnoseListener: function(callback) {
+    this.removeListener(UPDATE_DIAGNOSE_EVENT, callback);
     this.dispose();
   }
 })
@@ -207,6 +239,12 @@ DiagnoseStore.dispatchToken = AppDispatcher.register(function(action) {
     case Action.CREATE_DIAGNOSE:
           DiagnoseStore.emitCreatedDiagnose(action.isClose)
           break;
+    case Action.UPDATE_DIAGNOSE_SUCCESS:
+          DiagnoseStore.emitUpdateDiagnose(true)
+         break;
+    case Action.UPDATE_DIAGNOSE_ERROR:
+          DiagnoseStore.emitUpdateDiagnose(false)
+         break;
   }
 })
 
