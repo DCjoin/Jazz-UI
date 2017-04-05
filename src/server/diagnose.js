@@ -4,6 +4,7 @@ var fs = require('fs');
 var util = require('./util.js');
 var analysisData = require('../../mockData/DataAnalysis.js');
 var diagnose = require('../../mockData/diagnose.js');
+var Path = require('../../src/app/constants/Path.jsx');
 
 var sleep = util.sleep;
 
@@ -20,8 +21,8 @@ exports.register = function(server, options, next){
       }, 1000);
     }
   }, {
-    method: 'get',
-    path: '/API/diagnose/tags/list',
+    method: 'post',
+    path: Path.Diagnose.getDiagnoseTag,
     handler: function (request, reply){
       setTimeout(function() {
         reply({"error": { "Code": "0", "Messages": null },Result: diagnose.tagList}).type("application/json");

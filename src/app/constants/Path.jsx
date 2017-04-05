@@ -74,6 +74,7 @@ module.exports = {
     getproblemdata:'/diagnose/getproblemdata/{diagnoseId}?{startTime}&{endTime}',
     pauseorrecoverdiagnose:'/diagnose/pauseorrecoverdiagnose/{diagnoseId}/{status}',
     ignorediagnose:'/diagnose/ignorediagnose/{diagnoseId}',
-    previewchart:'/diagnose/previewchart'
+    previewchart:'/diagnose/previewchart',
+    getDiagnoseTag: '/diagnose/getdiagnosetag',
   }
 };

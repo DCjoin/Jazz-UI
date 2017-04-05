@@ -57,8 +57,14 @@ const DiagnoseAction = {
       }
     } );
   },
-  getTagsList() {
-    Ajax.get('/diagnose/tags/list', {
+  getDiagnoseTag(HierarchyId, EnergyLabelId, DiagnoseItemId, LabelType) {
+    Ajax.post(Path.Diagnose.getDiagnoseTag, {
+      params: {
+        HierarchyId,
+        EnergyLabelId,
+        DiagnoseItemId,
+        LabelType,
+      },
       success: (res) => {
         AppDispatcher.dispatch({
           type: Action.GET_TAGS_LIST,
@@ -67,11 +73,28 @@ const DiagnoseAction = {
       }
     });
   },
-  getChartData() {
+  getChartDataStep1(params) {
     AppDispatcher.dispatch({
       type: Action.GET_CHART_DATAING,
     })
-    Ajax.post('/diagnose/chart/data', {
+    Ajax.post('/Energy/GetTagsData', {
+      params,
+      success: (res) => {
+        AppDispatcher.dispatch({
+          type: Action.GET_CHART_DATA,
+          data: {
+            EnergyViewData: res
+          },
+        })
+      }
+    });
+  },
+  getChartData(params) {
+    AppDispatcher.dispatch({
+      type: Action.GET_CHART_DATAING,
+    })
+    Ajax.post('/diagnose/previewchart', {
+      params,
       success: (res) => {
         AppDispatcher.dispatch({
           type: Action.GET_CHART_DATA,
@@ -123,6 +146,23 @@ const DiagnoseAction = {
         AppDispatcher.dispatch({
           type: Action.GET_PREVIEW_CHART_DATA,
           data: res,
+        })
+      }
+    });
+  },
+  clearCreate() {
+    AppDispatcher.dispatch({
+      type: Action.CLEAR_CREATE_DATA,
+      data: null,
+    });
+  },
+  createDiagnose(params, isClose) {
+    Ajax.post('/diagnose/adddiagnose', {
+      params,
+      success: (res) => {
+        AppDispatcher.dispatch({
+          type: Action.CREATE_DIAGNOSE,
+          isClose,
         })
       }
     });

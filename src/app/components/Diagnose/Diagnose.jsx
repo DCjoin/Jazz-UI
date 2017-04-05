@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classnames from "classnames";
-import {CircularProgress} from 'material-ui';
+import {CircularProgress, Snackbar} from 'material-ui';
 import LabelList from './LabelList.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
@@ -9,6 +9,7 @@ import PermissionCode from 'constants/PermissionCode.jsx';
 import BubbleIcon from '../BubbleIcon.jsx';
 import Immutable from 'immutable';
 import LabelDetail from './LabelDetail.jsx';
+import CreateDiagnose from './CreateDiagnose.jsx';
 import DiagnoseStore from 'stores/DiagnoseStore.jsx';
 import {formStatus} from 'constants/FormStatus.jsx';
 
@@ -69,6 +70,7 @@ export default class Diagnose extends Component {
         this._onHasProblem = this._onHasProblem.bind(this);
         this._onItemTouchTap = this._onItemTouchTap.bind(this);
         this._onBasicTabSwitch = this._onBasicTabSwitch.bind(this);
+        this._onCreated = this._onCreated.bind(this);
     }
 
   state={
@@ -78,13 +80,20 @@ export default class Diagnose extends Component {
         isBasic:true,
         formStatus:formStatus.VIEW,
         addLabel:null,
-
+        createSuccessMeg: false,
     }
 
   _onHasProblem(){
     this.setState({
       hasProblem:CurrentUserStore.getDiagnoseBubble()
     })
+  }
+
+  _onCreated(isClose) {
+    this.setState({
+      createSuccessMeg: isClose
+    });
+    // DiagnoseAction.getDiagnoseStatic(this.context.hierarchyId);
   }
 
   _switchTab(no){
@@ -137,6 +146,7 @@ export default class Diagnose extends Component {
 
   componentDidMount(){
     CurrentUserStore.addCurrentUserListener(this._onHasProblem);
+    DiagnoseStore.addCreatedDiagnoseListener(this._onCreated);
     this.getProblem();
   }
 
@@ -151,6 +161,7 @@ export default class Diagnose extends Component {
 
   componentWillUnmount(){
     CurrentUserStore.removeCurrentUserListener(this._onHasProblem);
+    DiagnoseStore.removeCreatedDiagnoseListener(this._onCreated);
   }
 
 render(){
@@ -169,6 +180,16 @@ render(){
                        isBasic={this.state.isBasic} formStatus={this.state.formStatus} addLabel={this.state.addLabel}
                        />
       </div>
+      {this.state.formStatus === formStatus.ADD &&
+      <CreateDiagnose EnergyLabel={this.state.addLabel} onClose={() => {
+        this.setState({
+          formStatus:formStatus.VIEW,
+          addLabel: null,
+        });
+      }}/>}
+      <Snackbar message={'诊断已创建'}
+          open={this.state.createSuccessMeg}
+          onRequestClose={() => {this.setState({createSuccessMeg: false})}}/>
     </div>
   )
 }

@@ -8,6 +8,8 @@ import PrototypeStore from './PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
 
+const CREATE_DIAGNOSE_EVENT = 'create_diagnose_event';
+
 var HierarchyAction=Hierarchy.Action;
 
 var _diagnoseList=null,
@@ -86,6 +88,7 @@ const DiagnoseStore = assign({}, PrototypeStore, {
         {value:I18N.Setting.Diagnose.CoolingRange,Id:EnergyLabel.CoolingRange},
         {value:I18N.Setting.Diagnose.ChilledWaterPump,Id:EnergyLabel.ChilledWaterPump},
         {value:I18N.Setting.Diagnose.CoolingPump,Id:EnergyLabel.CoolingPump},
+        {value:I18N.Setting.Diagnose.CoolingTower,Id:EnergyLabel.CoolingTower},
       ],
       EnvironmentalParameters:[
         {value:I18N.Setting.Diagnose.IndoorCO2,Id:EnergyLabel.IndoorCO2},
@@ -145,6 +148,16 @@ const DiagnoseStore = assign({}, PrototypeStore, {
   getPreviewChartData(){
     return _previewChartData
   },
+  emitCreatedDiagnose: function(isClose) {
+    this.emit(CREATE_DIAGNOSE_EVENT, isClose);
+  },
+  addCreatedDiagnoseListener: function(callback) {
+    this.on(CREATE_DIAGNOSE_EVENT, callback);
+  },
+  removeCreatedDiagnoseListener: function(callback) {
+    this.removeListener(CREATE_DIAGNOSE_EVENT, callback);
+    this.dispose();
+  }
 })
 
 DiagnoseStore.dispatchToken = AppDispatcher.register(function(action) {
@@ -185,6 +198,14 @@ DiagnoseStore.dispatchToken = AppDispatcher.register(function(action) {
     case Action.GET_PREVIEW_CHART_DATA:
           DiagnoseStore.setPreviewChartData(action.data);
           DiagnoseStore.emitChange()
+          break;
+    case Action.CLEAR_CREATE_DATA:
+          DiagnoseStore.setChartData(null);
+          DiagnoseStore.setTagsList(null);
+          DiagnoseStore.emitChange()
+          break;
+    case Action.CREATE_DIAGNOSE:
+          DiagnoseStore.emitCreatedDiagnose(action.isClose)
           break;
   }
 })
