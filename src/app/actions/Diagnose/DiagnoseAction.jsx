@@ -36,11 +36,12 @@ const DiagnoseAction = {
       }
     } );
   },
-  getDiagnose(diagnoseId){
+  getDiagnose(diagnoseId,callback){
     Ajax.get(util.replacePathParams(Path.Diagnose.getDiagnose, diagnoseId), {
       tag: 'getDiagnosis',
       avoidDuplicate: true,
       success: (res) => {
+        if(callback) callback()
         AppDispatcher.dispatch({
           type: Action.GET_DIAGNOSIS_BY_ID,
           data: res,
@@ -59,9 +60,9 @@ const DiagnoseAction = {
   getDiagnoseTag(HierarchyId, EnergyLabelId, DiagnoseItemId, LabelType) {
     Ajax.post(Path.Diagnose.getDiagnoseTag, {
       params: {
-        HierarchyId, 
-        EnergyLabelId, 
-        DiagnoseItemId, 
+        HierarchyId,
+        EnergyLabelId,
+        DiagnoseItemId,
         LabelType,
       },
       success: (res) => {
@@ -102,11 +103,58 @@ const DiagnoseAction = {
       }
     });
   },
+  getdiagnosedata(diagnoseId){
+    Ajax.get(util.replacePathParams(Path.Diagnose.getdiagnosedata, diagnoseId), {
+      success: (res) => {
+        AppDispatcher.dispatch({
+          type: Action.GET_DIAGNOSE_CHART_DATA_SUCCESS,
+          data: res,
+        })
+      }
+    } );
+  },
+  getproblemdata(diagnoseId,startTime,endTime){
+    Ajax.get(util.replacePathParams(Path.Diagnose.getdiagnosedata, diagnoseId,
+                                    `startTime=${startTime || null}`,`endTime=${endTime || null}`), {
+      success: (res) => {
+        AppDispatcher.dispatch({
+          type: Action.GET_DIAGNOSE_CHART_DATA_SUCCESS,
+          data: res,
+        })
+      }
+    } );
+  },
+  ignorediagnose(diagnoseId){
+    var me=this;
+    Ajax.get(util.replacePathParams(Path.Diagnose.ignorediagnose, diagnoseId), {
+      success: (res) => {
+        me.getDiagnosisList();
+      }
+    } );
+  },
+  pauseorrecoverdiagnose(diagnoseId,status){
+    var me=this;
+    Ajax.get(util.replacePathParams(Path.Diagnose.pauseorrecoverdiagnose, diagnoseId,status), {
+      success: (res) => {
+        me.getDiagnosisList();
+      }
+    } );
+  },
+  previewchart(dto){
+    Ajax.post(Path.Diagnose.previewchart, {
+      success: (res) => {
+        AppDispatcher.dispatch({
+          type: Action.GET_PREVIEW_CHART_DATA,
+          data: res,
+        })
+      }
+    });
+  },
   clearCreate() {
     AppDispatcher.dispatch({
       type: Action.CLEAR_CREATE_DATA,
       data: null,
-    });    
+    });
   },
   createDiagnose(params, isClose) {
     Ajax.post('/diagnose/adddiagnose', {

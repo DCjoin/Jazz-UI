@@ -3,11 +3,13 @@ import {DiagnoseStatus} from '../../constants/actionType/Diagnose.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
 import NewDialog from 'controls/NewDialog.jsx';
 import RaisedButton from 'material-ui/RaisedButton';
-import { FontIcon, IconButton, IconMenu,MenuItem} from 'material-ui';
+import { FontIcon, IconButton, IconMenu,MenuItem,CircularProgress} from 'material-ui';
 import privilegeUtil from 'util/privilegeUtil.jsx';
 import PermissionCode from 'constants/PermissionCode.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
+import DiagnoseStore from 'stores/DiagnoseStore.jsx';
+import DiagnoseChart from './DiagnoseChart.jsx';
 
 function privilegeWithSmartDiagnoseList( privilegeCheck ) {
   //  return false
@@ -25,12 +27,21 @@ export default class DiagnoseList extends Component {
   constructor(props, ctx) {
   				super(props);
   				this._onTitleMenuSelect = this._onTitleMenuSelect.bind(this);
+					this._onChanged = this._onChanged.bind(this);
+
 
   		}
 
   state={
-  				dialogType:null
+  				dialogType:null,
+					chartData:null
   		}
+
+	_onChanged(){
+		this.setState({
+			chartData:DiagnoseStore.getDiagnoseChartData()
+		})
+	}
 
   _onTitleMenuSelect(e, item) {
   				this.setState({
@@ -47,7 +58,11 @@ export default class DiagnoseList extends Component {
 	}
 
 	_onResume(){
-
+		this.setState({
+			dialogType: null
+		},()=>{
+			DiagnoseAction.pauseorrecoverdiagnose(this.props.selectedNode.get('Id'),DiagnoseStatus.Normal);
+		})
 	}
 
 	_renderIconMenu(){
@@ -142,6 +157,15 @@ export default class DiagnoseList extends Component {
       )
     }
 
+	componentDidMount(){
+		DiagnoseStore.addChangeListener(this._onChanged);
+		DiagnoseAction.getdiagnosedata(this.props.selectedNode.get('Id'));
+
+	}
+
+	componentWillUnmount(){
+		DiagnoseStore.removeChangeListener(this._onChanged);
+	}
 
   render(){
     var {Status,Name}=this.props.selectedNode.toJS();
@@ -167,6 +191,12 @@ export default class DiagnoseList extends Component {
           </div>
           {isFull() && this._renderIconMenu()}
         </div>
+				<div className="content-chart">
+					{this.state.chartData?<DiagnoseChart data={this.state.chartData}/>
+															 :<div className="flex-center" style={{flex:'none'}}>
+         						 							<CircularProgress  mode="indeterminate" size={80} />
+       													</div>}
+				</div>
         {dialog}
       </div>
     )

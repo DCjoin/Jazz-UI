@@ -8,6 +8,9 @@ module.exports = {
     GET_TAGS_LIST:null,
     GET_CHART_DATA:null,
     GET_CHART_DATAING:null,
+    GET_DIAGNOSE_CHART_DATA_SUCCESS:null,
+    GET_DIAGNOSE_DATA_SUCCESS:null,
+    GET_PREVIEW_CHART_DATA:null,
     CLEAR_CREATE_DATA:null,
     CREATE_DIAGNOSE:null,
   }),
@@ -50,6 +53,7 @@ module.exports = {
       Problem:3
     },
     DiagnoseStatus:{
+      Normal:0,
       Suspend:1
     },
     ItemType:{
@@ -73,6 +77,5 @@ module.exports = {
         A: 1,
         B: 2,
         C: 3,
-    }
-
+    },
 };

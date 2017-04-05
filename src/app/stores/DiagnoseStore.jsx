@@ -18,7 +18,9 @@ var _diagnoseList=null,
     _tagsList=null,
     _chartData=null,
     _chartDataLoading=false,
-    _calendar=null;
+    _calendar=null,
+    _diagnoseChartData=null,
+    _previewChartData=null;
 
 const DiagnoseStore = assign({}, PrototypeStore, {
   setDiagnoseList(data){
@@ -134,8 +136,18 @@ const DiagnoseStore = assign({}, PrototypeStore, {
     if(_calendar===null) return null
     return !(_calendar.CalendarItemGroups[0].CalendarItems===null)
   },
-
-
+  setDiagnoseChartData(data){
+    _diagnoseChartData=Immutable.fromJS(data)
+  },
+  getDiagnoseChartData(){
+    return _diagnoseChartData
+  },
+  setPreviewChartData(data){
+    _previewChartData=Immutable.fromJS(data)
+  },
+  getPreviewChartData(){
+    return _previewChartData
+  },
   emitCreatedDiagnose: function(isClose) {
     this.emit(CREATE_DIAGNOSE_EVENT, isClose);
   },
@@ -145,7 +157,7 @@ const DiagnoseStore = assign({}, PrototypeStore, {
   removeCreatedDiagnoseListener: function(callback) {
     this.removeListener(CREATE_DIAGNOSE_EVENT, callback);
     this.dispose();
-  },
+  }
 })
 
 DiagnoseStore.dispatchToken = AppDispatcher.register(function(action) {
@@ -177,6 +189,14 @@ DiagnoseStore.dispatchToken = AppDispatcher.register(function(action) {
           break;
     case Action.GET_CHART_DATAING:
           DiagnoseStore.setLoading(true);
+          DiagnoseStore.emitChange()
+          break;
+    case Action.GET_DIAGNOSE_CHART_DATA_SUCCESS:
+          DiagnoseStore.setDiagnoseChartData(action.data);
+          DiagnoseStore.emitChange()
+          break;
+    case Action.GET_PREVIEW_CHART_DATA:
+          DiagnoseStore.setPreviewChartData(action.data);
           DiagnoseStore.emitChange()
           break;
     case Action.CLEAR_CREATE_DATA:
