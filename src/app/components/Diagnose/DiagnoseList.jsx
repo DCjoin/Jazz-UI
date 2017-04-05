@@ -44,9 +44,13 @@ export default class DiagnoseList extends Component {
 	}
 
   _onTitleMenuSelect(e, item) {
-  				this.setState({
+  		this.setState({
   			dialogType:item.key
-  		})
+  		},()=>{
+        if(item.key==='Edit'){
+          this.props.onEdit(this.props.selectedNode)
+        }
+      })
   	}
 
   _onDelete(){
@@ -160,8 +164,13 @@ export default class DiagnoseList extends Component {
 	componentDidMount(){
 		DiagnoseStore.addChangeListener(this._onChanged);
 		DiagnoseAction.getdiagnosedata(this.props.selectedNode.get('Id'));
-
 	}
+
+  componentWillReceiveProps(nextProps){
+    if(this.props.selectedNode.get('Id')!==nextProps.selectedNode.get('Id')){
+      DiagnoseAction.getdiagnosedata(nextProps.selectedNode.get('Id'));
+    }
+  }
 
 	componentWillUnmount(){
 		DiagnoseStore.removeChangeListener(this._onChanged);
@@ -205,4 +214,5 @@ export default class DiagnoseList extends Component {
 
 DiagnoseList.propTypes={
   selectedNode:React.PropTypes.object,
+  onEdit:React.PropTypes.func,
 }

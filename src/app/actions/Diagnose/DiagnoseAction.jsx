@@ -41,7 +41,7 @@ const DiagnoseAction = {
       tag: 'getDiagnosis',
       avoidDuplicate: true,
       success: (res) => {
-        if(callback) callback()
+        if(callback) callback(res)
         AppDispatcher.dispatch({
           type: Action.GET_DIAGNOSIS_BY_ID,
           data: res,
@@ -140,8 +140,9 @@ const DiagnoseAction = {
       }
     } );
   },
-  previewchart(dto){
+  previewchart(params){
     Ajax.post(Path.Diagnose.previewchart, {
+      params,
       success: (res) => {
         AppDispatcher.dispatch({
           type: Action.GET_PREVIEW_CHART_DATA,
@@ -157,16 +158,35 @@ const DiagnoseAction = {
     });
   },
   createDiagnose(params, isClose) {
+    var that=this;
     Ajax.post('/diagnose/adddiagnose', {
       params,
       success: (res) => {
+        that.getDiagnosisList();
         AppDispatcher.dispatch({
           type: Action.CREATE_DIAGNOSE,
           isClose,
         })
       }
     });
-  }
+  },
+  updateDiagnose(params) {
+    var that=this;
+    Ajax.post(Path.Diagnose.updateDiagnose, {
+      params,
+      success: () => {
+        that.getDiagnosisList();
+        AppDispatcher.dispatch({
+          type: Action.UPDATE_DIAGNOSE_SUCCESS,
+        })
+      },
+      error: function(err, res) {
+        AppDispatcher.dispatch({
+          type: Action.UPDATE_DIAGNOSE_ERROR,
+        })
+      }
+    });
+  },
 }
 
 export default DiagnoseAction;

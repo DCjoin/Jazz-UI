@@ -89,7 +89,11 @@ export default class DiagnoseProblem extends Component {
   _onTitleMenuSelect(e, item) {
   		this.setState({
   			dialogType:item.key
-  		})
+  		},()=>{
+        if(item.key==='Edit'){
+          this.props.onEdit(this.props.selectedNode)
+        }
+      })
   	}
 
   _onIgnore(){
@@ -292,4 +296,5 @@ export default class DiagnoseProblem extends Component {
 DiagnoseProblem.propTypes={
   selectedNode:React.PropTypes.object,
   isBasic:React.PropTypes.bool,
+  onEdit:React.PropTypes.func,
 }

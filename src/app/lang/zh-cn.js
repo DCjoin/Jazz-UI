@@ -2276,5 +2276,6 @@ I18N.Setting.Diagnose.SuspendDiagnoseProblem='暂停问题"{0}"吗？';
 I18N.Setting.Diagnose.HasNoCalendar='未配置日历属性';
 I18N.Setting.Diagnose.EditDiagnose='编辑诊断';
 I18N.Setting.Diagnose.SaveAndExit='保存并退出';
+I18N.Setting.Diagnose.SaveErrorMsg='该诊断已存在，请修改名称后再保存。';
 
 module.exports = I18N;

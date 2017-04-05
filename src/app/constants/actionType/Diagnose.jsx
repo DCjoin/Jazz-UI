@@ -13,6 +13,8 @@ module.exports = {
     GET_PREVIEW_CHART_DATA:null,
     CLEAR_CREATE_DATA:null,
     CREATE_DIAGNOSE:null,
+    UPDATE_DIAGNOSE_SUCCESS:null,
+    UPDATE_DIAGNOSE_ERROR:null,
   }),
     EnergyLabel:{
         OfficeLighting:101,
