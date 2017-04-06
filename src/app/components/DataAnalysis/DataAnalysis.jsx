@@ -16,7 +16,7 @@ import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
 import Left from './Left.jsx';
 import FolderPanel from './Basic/FolderPanel.jsx';
 import AnalysisPanel from './Basic/AnalysisPanel.jsx';
-import {GenerateSolution} from './Basic/GenerateSolution.jsx';
+import AnalysisGenerateSolution from './Basic/AnalysisGenerateSolution.jsx';
 
 // import CopyView from '../folder/operationView/CopyView.jsx';
 import DeleteView from '../folder/operationView/DeleteView.jsx';
@@ -97,7 +97,7 @@ export default class DataAnalysis extends Component {
     if(this._getHierarchyId(this.context)) {
 		  this._loadInitData(this.props, this.context);
     }
-		
+
 	}
 
 	componentWillReceiveProps(nextProps, nextContext) {
@@ -109,7 +109,7 @@ export default class DataAnalysis extends Component {
       }
 		}
 	}
-	componentWillUnmount() {		
+	componentWillUnmount() {
 		FolderStore.removeFolderTreeListener(this._onFolderTreeLoad);
 		WidgetStore.removeChangeListener(this._handleWidgetSelectChange);
 		FolderStore.removeCreateFolderOrWidgetListener(this._onSelectedNodeChange);
@@ -184,11 +184,11 @@ export default class DataAnalysis extends Component {
     });
   }
   _onMoveItemSuccess() {
-    this._loadInitData(this.props, this.context); 
+    this._loadInitData(this.props, this.context);
     this._onSelectedNodeChange();
   }
   _onMoveItemError() {
-    this._loadInitData(this.props, this.context); 
+    this._loadInitData(this.props, this.context);
     this.setState({
       errorText: FolderStore.getMoveItemError(),
     });
@@ -282,10 +282,10 @@ export default class DataAnalysis extends Component {
 	_createFolderOrWidget(formatStr, nodeType, widgetType) {
 		let {selectedNode} = this.state;
 		FolderAction.createWidgetOrFolder(
-			selectedNode, 
-			FolderStore.getDefaultName(formatStr, selectedNode, nodeType, true), 
-			nodeType, 
-			this.props.params.customerId*1, 
+			selectedNode,
+			FolderStore.getDefaultName(formatStr, selectedNode, nodeType, true),
+			nodeType,
+			this.props.params.customerId*1,
 			widgetType,
 			this._getHierarchyId(this.context), true);
 	}
@@ -339,7 +339,7 @@ export default class DataAnalysis extends Component {
           });
 				}
 			} else {
-				content = (<FolderPanel 
+				content = (<FolderPanel
             		isBuilding={!this._isCustomer()}
 					onOpenGenerateSolution={this._onOpenGenerateSolution}
 					node={selectedNode}
@@ -383,8 +383,8 @@ export default class DataAnalysis extends Component {
 		if(generateSolutionDialogObj && generateSolutionDialogObj.open) {
 			let {open, preAction, nodes} = generateSolutionDialogObj;
 			if(open) {
-				dialog = (<GenerateSolution 
-					nodes={nodes} 
+				dialog = (<AnalysisGenerateSolution
+					nodes={nodes}
 					preAction={preAction}
 					onRequestClose={() => {
 						this.setState({generateSolutionDialogObj: null});
@@ -403,7 +403,7 @@ export default class DataAnalysis extends Component {
 		}
 		return (
 			<div style={{display: 'flex', flex: 1}}>
-				<Left 
+				<Left
 					tree={this.state.treeList}
 					selectedNode={this.state.selectedNode}
 					onSelectNode={this._onSelectNode}
@@ -413,13 +413,13 @@ export default class DataAnalysis extends Component {
 				{this._renderContent()}
 				{this._renderDialog()}
 				<Snackbar ref='snackbar' open={!!this.state.errorText} onRequestClose={this._setErrorText.bind(this, null)} message={this.state.errorText}/>
-				<Snackbar ref='snackbar' 
-					open={this.state.showSolutionTip} 
+				<Snackbar ref='snackbar'
+					open={this.state.showSolutionTip}
 					onRequestClose={() => {
 						this.setState({showSolutionTip: false})
-					}} 
-					message={SolutionFull() ? I18N.Setting.DataAnalysis.SaveScheme.FullTip : I18N.Setting.DataAnalysis.SaveScheme.PushTip} 
-					action={I18N.Setting.DataAnalysis.SaveScheme.TipAction} 
+					}}
+					message={SolutionFull() ? I18N.Setting.DataAnalysis.SaveScheme.FullTip : I18N.Setting.DataAnalysis.SaveScheme.PushTip}
+					action={I18N.Setting.DataAnalysis.SaveScheme.TipAction}
 					onActionTouchTap={() => {
 						util.openTab(RoutePath.ecm(this.props.params)+'?init_hierarchy_id='+this.context.hierarchyId);
 					}}

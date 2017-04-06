@@ -28,8 +28,8 @@ export default class DiagnoseList extends Component {
   				super(props);
   				this._onTitleMenuSelect = this._onTitleMenuSelect.bind(this);
 					this._onChanged = this._onChanged.bind(this);
-
-
+          this._onDelete = this._onDelete.bind(this);
+          this._onResume = this._onResume.bind(this);
   		}
 
   state={

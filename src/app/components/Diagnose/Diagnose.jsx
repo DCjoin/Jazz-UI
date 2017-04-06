@@ -72,6 +72,7 @@ export default class Diagnose extends Component {
         this._onItemTouchTap = this._onItemTouchTap.bind(this);
         this._onBasicTabSwitch = this._onBasicTabSwitch.bind(this);
         this._onCreated = this._onCreated.bind(this);
+        this._onRemove=this._onRemove.bind(this);
     }
 
   state={
@@ -116,6 +117,11 @@ export default class Diagnose extends Component {
       })
     }
 
+  _onRemove(id){
+    this.setState({
+      selectedId:id
+    })
+  }
   _renderTab(){
     if(isListFull() && !isBasicNoPrivilege()){
       return(
@@ -148,6 +154,7 @@ export default class Diagnose extends Component {
   componentDidMount(){
     CurrentUserStore.addCurrentUserListener(this._onHasProblem);
     DiagnoseStore.addCreatedDiagnoseListener(this._onCreated);
+    DiagnoseStore.addRemoveDiagnoseListener(this._onRemove);
     this.getProblem();
   }
 
@@ -163,6 +170,7 @@ export default class Diagnose extends Component {
   componentWillUnmount(){
     CurrentUserStore.removeCurrentUserListener(this._onHasProblem);
     DiagnoseStore.removeCreatedDiagnoseListener(this._onCreated);
+    DiagnoseStore.removeRemoveDiagnoseListener(this._onRemove);
   }
 
 render(){

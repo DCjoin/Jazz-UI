@@ -15,6 +15,7 @@ module.exports = {
     CREATE_DIAGNOSE:null,
     UPDATE_DIAGNOSE_SUCCESS:null,
     UPDATE_DIAGNOSE_ERROR:null,
+    REMOVE_DIAGNOSE_SUCCESS:null
   }),
     EnergyLabel:{
         OfficeLighting:101,
