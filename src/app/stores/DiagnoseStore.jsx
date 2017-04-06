@@ -9,7 +9,8 @@ import assign from 'object-assign';
 import Immutable from 'immutable';
 
 const CREATE_DIAGNOSE_EVENT = 'create_diagnose_event',
-UPDATE_DIAGNOSE_EVENT='update_diagnose_event';
+      UPDATE_DIAGNOSE_EVENT='update_diagnose_event',
+      REMOVE_DIAGNOSE_EVENT='remove_diagnose_event';
 
 var HierarchyAction=Hierarchy.Action;
 
@@ -166,10 +167,26 @@ const DiagnoseStore = assign({}, PrototypeStore, {
     if(_diagnoseList===null) return null
     var itemId=null;
     _diagnoseList.forEach(diagnose=>{
-      if(diagnose.findIndex(item=>(item.get('Id')===labelId))>-1) itemId=diagnose.get('Id')
+      if(diagnose.get('Children').findIndex(item=>(item.get('Id')===labelId))>-1) itemId=diagnose.get('Id')
     })
     return itemId
     },
+  getNextId(diagnoseId){
+    var id=null;
+    _diagnoseList.forEach(diagnose=>{
+      diagnose.get('Children').forEach(child=>{
+        if(child.get('Children') && id===null) {
+          var index=child.get('Children').find(item=>(item.get('Id')===diagnoseId));
+          if(index>-1){
+            if(index===0) id=null
+              else if(index===child.get('Children').size-1) id=child.getIn(['Children',child.get('Children').size-2,'Id'])
+              else id=child.getIn(['Children',index+1,'Id'])
+          }
+        }
+      })
+    })
+    return id
+  },
   emitCreatedDiagnose: function(isClose) {
     this.emit(CREATE_DIAGNOSE_EVENT, isClose);
   },
@@ -188,6 +205,16 @@ const DiagnoseStore = assign({}, PrototypeStore, {
   },
   removeUpdateDiagnoseListener: function(callback) {
     this.removeListener(UPDATE_DIAGNOSE_EVENT, callback);
+    this.dispose();
+  },
+  emitRemoveDiagnose: function(args) {
+    this.emit(REMOVE_DIAGNOSE_EVENT, args);
+  },
+  addRemoveDiagnoseListener: function(callback) {
+    this.on(REMOVE_DIAGNOSE_EVENT, callback);
+  },
+  removeRemoveDiagnoseListener: function(callback) {
+    this.removeListener(REMOVE_DIAGNOSE_EVENT, callback);
     this.dispose();
   }
 })
@@ -244,6 +271,9 @@ DiagnoseStore.dispatchToken = AppDispatcher.register(function(action) {
          break;
     case Action.UPDATE_DIAGNOSE_ERROR:
           DiagnoseStore.emitUpdateDiagnose(false)
+         break;
+    case Action.REMOVE_DIAGNOSE_SUCCESS:
+          DiagnoseStore.emitRemoveDiagnose(DiagnoseStore.getNextId(action.data))
          break;
   }
 })

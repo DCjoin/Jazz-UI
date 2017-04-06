@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import FlatButton from 'controls/FlatButton.jsx';
 import NewDialog from 'controls/NewDialog.jsx';
 import RaisedButton from 'material-ui/RaisedButton';
-import { IconButton, IconMenu,MenuItem,CircularProgress} from 'material-ui';
+import { IconButton, IconMenu,MenuItem,CircularProgress,Snackbar} from 'material-ui';
 import {dateAdd,DataConverter} from 'util/Util.jsx';
-import privilegeUtil from 'util/privilegeUtil.jsx';
+import PrivilegeUtil from 'util/privilegeUtil.jsx';
 import PermissionCode from 'constants/PermissionCode.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import DateTimeSelector from 'controls/DateTimeSelector.jsx';
@@ -12,6 +12,18 @@ import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
 import DiagnoseStore from 'stores/DiagnoseStore.jsx';
 import DiagnoseChart from './DiagnoseChart.jsx';
 import {DiagnoseStatus} from 'constants/actionType/Diagnose.jsx';
+import {GenerateSolutionButton,GenerateSolution} from '../DataAnalysis/Basic/GenerateSolution.jsx';
+import FolderStore from 'stores/FolderStore.jsx';
+import util from 'util/Util.jsx';
+import RoutePath from 'util/RoutePath.jsx';
+
+function getFromImmu(key) {
+	return function(immuObj) {
+		return immuObj.get(key);
+	}
+};
+
+const getId = getFromImmu('Id');
 
 function privilegeWithBasicSmartDiagnose( privilegeCheck ) {
   //  return true
@@ -19,7 +31,7 @@ function privilegeWithBasicSmartDiagnose( privilegeCheck ) {
 }
 
 function isBasicFull() {
-	return privilegeWithBasicSmartDiagnose(privilegeUtil.isFull.bind(privilegeUtil));
+	return privilegeWithBasicSmartDiagnose(PrivilegeUtil.isFull.bind(PrivilegeUtil));
 }
 
 function privilegeWithSeniorSmartDiagnose( privilegeCheck ) {
@@ -28,17 +40,23 @@ function privilegeWithSeniorSmartDiagnose( privilegeCheck ) {
 }
 
 function isSeniorFull() {
-	return privilegeWithSeniorSmartDiagnose(privilegeUtil.isFull.bind(privilegeUtil));
+	return privilegeWithSeniorSmartDiagnose(PrivilegeUtil.isFull.bind(PrivilegeUtil));
 }
 
+function SolutionFull() {
+	return PrivilegeUtil.isFull(PermissionCode.SOLUTION_FULL, CurrentUserStore.getCurrentPrivilege());
+}
 
 export default class DiagnoseProblem extends Component {
 
+  static contextTypes = {
+		hierarchyId: PropTypes.string
+	};
 
   constructor(props, ctx) {
   				super(props);
   				this._onTitleMenuSelect = this._onTitleMenuSelect.bind(this);
-
+          this._onShowSolutionSnakBar = this._onShowSolutionSnakBar.bind(this);
   		}
 
   state={
@@ -47,7 +65,8 @@ export default class DiagnoseProblem extends Component {
 					startDate: null,
 					endDate: null,
 					startTime: null,
-					endTime: null
+					endTime: null,
+          solutionShow:false
   		}
 
 	_initDate(){
@@ -78,6 +97,18 @@ export default class DiagnoseProblem extends Component {
 		}
 		else return{}
 	}
+
+  _onSolutionShow(){
+    this.setState({
+      solutionShow:true
+    })
+  }
+
+  _onShowSolutionSnakBar() {
+    this.setState({
+      showSolutionTip: true
+    });
+  }
 
 	_onChanged(){
 		this.setState({
@@ -238,17 +269,31 @@ export default class DiagnoseProblem extends Component {
       )
     }
 
+    _renderChart(node,afterChartCreated){
+      let nodeId = getId(node);
+      return(
+        <DiagnoseChart
+          afterChartCreated={afterChartCreated}
+          ref='ChartBasicComponent'
+          key={nodeId}
+          data={this.state.chartData}
+          afterChartCreated={afterChartCreated}/>
+      )
+    }
+
 		getProblem(start,end){
 			DiagnoseAction.getproblemdata(this.props.selectedNode.get('Id'),start,end);
 		}
 
 		componentDidMount(){
 			DiagnoseStore.addChangeListener(this._onChanged);
+      FolderStore.addSolutionCreatedListener(this._onShowSolutionSnakBar);
 			this.getProblem();
 		}
 
 		componentWillUnmount(){
 			DiagnoseStore.removeChangeListener(this._onChanged);
+      FolderStore.removeSolutionCreatedListener(this._onShowSolutionSnakBar);
 		}
 
 
@@ -273,6 +318,7 @@ export default class DiagnoseProblem extends Component {
         <div className="content-head">
             <div className="text">{Name}</div>
           {isFull && <div className="side">
+                      <GenerateSolutionButton onOpen={this._onSolutionShow.bind(this)} disabled={this.state.chartData===null}/>
                       {this._renderIconMenu()}
                       </div>}
         </div>
@@ -287,7 +333,25 @@ export default class DiagnoseProblem extends Component {
 																:<div className="flex-center" style={{flex:'none'}}>
 																		 <CircularProgress  mode="indeterminate" size={80} />
 																	 </div>}
+          {this.state.solutionShow && <GenerateSolution
+  					nodes={[this.state.selectedNode]}
+  					onRequestClose={() => {
+  						this.setState({solutionShow: false});
+  					}}
+            renderChartCmp={this._renderChart}
+            />}
         {dialog}
+        <Snackbar ref='snackbar'
+					open={this.state.showSolutionTip}
+					onRequestClose={() => {
+						this.setState({showSolutionTip: false})
+					}}
+					message={SolutionFull() ? I18N.Setting.DataAnalysis.SaveScheme.FullTip : I18N.Setting.DataAnalysis.SaveScheme.PushTip}
+					action={I18N.Setting.DataAnalysis.SaveScheme.TipAction}
+					onActionTouchTap={() => {
+						util.openTab(RoutePath.ecm(this.props.params)+'?init_hierarchy_id='+this.context.hierarchyId);
+					}}
+				/>
       </div>
     )
   }

@@ -54,6 +54,10 @@ const DiagnoseAction = {
     Ajax.get(util.replacePathParams(Path.Diagnose.deletediagnose, diagnoseId), {
       success: (res) => {
         me.getDiagnosisList();
+        AppDispatcher.dispatch({
+          type: Action.REMOVE_DIAGNOSE_SUCCESS,
+          data:diagnoseId
+        })
       }
     } );
   },
@@ -129,6 +133,10 @@ const DiagnoseAction = {
     Ajax.get(util.replacePathParams(Path.Diagnose.ignorediagnose, diagnoseId), {
       success: (res) => {
         me.getDiagnosisList();
+        AppDispatcher.dispatch({
+          type: Action.REMOVE_DIAGNOSE_SUCCESS,
+          data:diagnoseId
+        })
       }
     } );
   },

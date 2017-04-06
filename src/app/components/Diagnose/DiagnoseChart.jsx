@@ -44,7 +44,7 @@ function mapSeriesDataWithMax(compare, serie) {
               }
             }
           }
-          
+
         }
         return data;
       })
@@ -72,12 +72,12 @@ function getCalendarTypeByWidgetStatus(wss) {
 }
 
 function getCalenderTypeByData(data) {
-	let step = data.getIn(['EnergyViewData', 'TargetEnergyData', 0, 'Target', 'Step']), 
+	let step = data.getIn(['EnergyViewData', 'TargetEnergyData', 0, 'Target', 'Step']),
 	calcType = data.get('WidgetStatus') && getCalendarTypeByWidgetStatus(JSON.parse(data.get('WidgetStatus'))),
 	range = data.get('EnergyViewData').get('Calendars') ? data.get('EnergyViewData').get('Calendars').toJS(): [],
-	checkCalendarTypeFilter = val => 
-		range && range.filter(item => item.CalendarType === val).length > 0 
-		? 0 
+	checkCalendarTypeFilter = val =>
+		range && range.filter(item => item.CalendarType === val).length > 0
+		? 0
 		: val;
 
 	if( calcType === 'hc' ) {
@@ -104,7 +104,7 @@ function postNewConfig(triggerVal, focusBGC, newConfig) {
       lockLegend: true,
       enableDelete: false,
       name: '非运行时间',
-      color: focusBGC, 
+      color: focusBGC,
       lineWidth: 12,
       marker: {
           symbol: 'null',
@@ -114,7 +114,7 @@ function postNewConfig(triggerVal, focusBGC, newConfig) {
       lockLegend: true,
       enableDelete: false,
       name: '触发值',
-      color: ALARM_COLOR, 
+      color: ALARM_COLOR,
       lineWidth: 2,
       dashStyle: 'shortdash',
       marker: {
@@ -131,15 +131,16 @@ function postNewConfig(triggerVal, focusBGC, newConfig) {
 }
 
 export default function DiagnoseChart(props) {
-	let {data} = props,
+	let {data,afterChartCreated} = props,
 
 	chartProps = {
 		chartType: CHART_TYPE,
 		tagData: data.get('EnergyViewData'),
 		postNewConfig: curry(postNewConfig)(
 			data.get('TriggerValue'),
-			flowRight( getColorByCalenderType, getCalenderTypeByData )(data), 
+			flowRight( getColorByCalenderType, getCalenderTypeByData )(data),
 		),
+    afterChartCreated:afterChartCreated
 	};
 
 	return (
