@@ -31,39 +31,7 @@ function PushFull() {
 	return PrivilegeUtil.isFull(PermissionCode.PUSH_SOLUTION, CurrentUserStore.getCurrentPrivilege());
 }
 
-function getChartTypeStr(data) {
-	let chartType = 'line';
-	switch (data.get('ChartType')) {
-		case 1:
-			chartType = 'line';
-			break;
-		case 2:
-			chartType = 'column';
-			break;
-		case 3:
-			chartType = 'stack';
-			break;
-		case 4:
-			chartType = 'pie';
-			break;
-		case 5:
-			chartType = 'rawdata';
-			break;
-	}
-	// switch (chartType) {
-	// 	case 'line':
-	// 	case 'column':
-	// 	case 'stack':
-	// 		EnergyStore.initReaderStrategy('EnergyTrendReader');
-	// 		break;
-	// 	case 'pie':
-	// 		EnergyStore.initReaderStrategy('EnergyPieReader');
-	// 		break;
-	// 	case 'rawdata': EnergyStore.initReaderStrategy('EnergyRawGridReader');
-	// 		break;
-	// }
-	return chartType;
-}
+
 
 function getFromImmu(key) {
 	return function(immuObj) {
@@ -80,9 +48,9 @@ function getValByObj(obj) {
 const getId = getFromImmu('Id');
 const getName = getFromImmu('Name');
 
-function getTagsDataByNode(props) {
-	props.nodes.map(flowRight(FolderAction.getTagsDataByNodeId, getId));
-}
+// function getTagsDataByNode(props) {
+// 	props.nodes.map(flowRight(FolderAction.getTagsDataByNodeId, getId));
+// }
 
 function getProblemMarkMenuItem() {
 	return [{
@@ -139,6 +107,7 @@ export class GenerateSolution extends Component {
 	static propTypes = {
 		nodes: PropTypes.arrayOf(PropTypes.object),
 		onRequestClose: PropTypes.func,
+		renderChartCmp: PropTypes.func
 	};
 	static contextTypes = {
 		hierarchyId: PropTypes.string
@@ -149,7 +118,7 @@ export class GenerateSolution extends Component {
 		this.state = {
 			idx: 0,
 			nodes: props.nodes,
-			tagDatas: {},
+			//tagDatas: {},
 			svgStrings: {},
 			ProblemName: null,
 			ProblemMark: 0,
@@ -161,62 +130,62 @@ export class GenerateSolution extends Component {
 			SaveDesc: null,
 			showDelete: false,
 		};
-		this._onChange = this._onChange.bind(this);
+		//this._onChange = this._onChange.bind(this);
 		this._afterChartCreated = this._afterChartCreated.bind(this);
 		this._setStateValue = this._setStateValue.bind(this);
 		this._setIdx = this._setIdx.bind(this);
 		this._onDelete = this._onDelete.bind(this);
 		this._renderHighChart = this._renderHighChart.bind(this);
 		this._renderChart = this._renderChart.bind(this);
-		this._getTagsDataByNode = this._getTagsDataByNode.bind(this);
+		//this._getTagsDataByNode = this._getTagsDataByNode.bind(this);
 
-		if(props.preAction && typeof props.preAction.action === 'function') {
-			let {action, addListener} = props.preAction;
-			if( addListener && typeof addListener === 'function' ) {
-				addListener(this._getTagsDataByNode);
-			}
-			if( action() ) {
-				getTagsDataByNode(props);
-			}
-		} else {
-			getTagsDataByNode(props);
-		}
+		// if(props.preAction && typeof props.preAction.action === 'function') {
+		// 	let {action, addListener} = props.preAction;
+		// 	if( addListener && typeof addListener === 'function' ) {
+		// 		addListener(this._getTagsDataByNode);
+		// 	}
+		// 	if( action() ) {
+		// 		getTagsDataByNode(props);
+		// 	}
+		// } else {
+		// 	getTagsDataByNode(props);
+		// }
+		//
+		// FolderStore.addSolutionChangeListener(this._onChange);
+	}
+	// componentWillUnmount() {
+	// 	FolderStore.removeSolutionChangeListener(this._onChange);
+	// 	if(this.props.preAction && typeof this.props.preAction.removeListener === 'function') {
+	// 		this.props.preAction.removeListener(this._getTagsDataByNode);
+	// 	}
+	// }
 
-		FolderStore.addSolutionChangeListener(this._onChange);
-	}
-	componentWillUnmount() {
-		FolderStore.removeSolutionChangeListener(this._onChange);
-		if(this.props.preAction && typeof this.props.preAction.removeListener === 'function') {
-			this.props.preAction.removeListener(this._getTagsDataByNode);
-		}
-	}
+	// _getTagsDataByNode() {
+	// 	getTagsDataByNode(this.props);
+	// }
 
-	_getTagsDataByNode() {
-		getTagsDataByNode(this.props);
-	}
-
-	_onChange(data, nodeId) {
-		let tagData = data.get('EnergyViewData'),
-		widgetStatus = data.get('WidgetStatus'),
-		contentSyntax = data.get('ContentSyntax'),
-		widgetSeriesArray = data.get('WidgetSeriesArray');
-		this.setState({
-			widgetStatus,
-			widgetSeriesArray,
-			tagDatas: {...this.state.tagDatas, ...{
-				[nodeId]: tagData
-			}},
-			widgetStatuss: {...this.state.widgetStatuss, ...{
-				[nodeId]: widgetStatus
-			}},
-			widgetSeriesArrays: {...this.state.widgetSeriesArrays, ...{
-				[nodeId]: widgetSeriesArray
-			}},
-			contentSyntaxs: {...this.state.contentSyntaxs, ...{
-				[nodeId]: contentSyntax
-			}}
-		});
-	}
+	// _onChange(data, nodeId) {
+	// 	let tagData = data.get('EnergyViewData'),
+	// 	widgetStatus = data.get('WidgetStatus'),
+	// 	contentSyntax = data.get('ContentSyntax'),
+	// 	widgetSeriesArray = data.get('WidgetSeriesArray');
+	// 	this.setState({
+	// 		widgetStatus,
+	// 		widgetSeriesArray,
+	// 		tagDatas: {...this.state.tagDatas, ...{
+	// 			[nodeId]: tagData
+	// 		}},
+	// 		widgetStatuss: {...this.state.widgetStatuss, ...{
+	// 			[nodeId]: widgetStatus
+	// 		}},
+	// 		widgetSeriesArrays: {...this.state.widgetSeriesArrays, ...{
+	// 			[nodeId]: widgetSeriesArray
+	// 		}},
+	// 		contentSyntaxs: {...this.state.contentSyntaxs, ...{
+	// 			[nodeId]: contentSyntax
+	// 		}}
+	// 	});
+	// }
 
 	_afterChartCreated(nodeId) {
 		let svgString,
@@ -229,7 +198,7 @@ export class GenerateSolution extends Component {
 				svgStrings: {...this.state.svgStrings, ...{
 					[nodeId]: svgString
 				}}
-			});			
+			});
 		}
 	}
 
@@ -263,9 +232,7 @@ export class GenerateSolution extends Component {
 
 	_getAPIDataFormat() {
 		let {
-			idx,
 			nodes,
-			tagDatas,
 			svgStrings,
 			ProblemName,
 			ProblemMark,
@@ -325,7 +292,7 @@ export class GenerateSolution extends Component {
 					defaultValue={ProblemMark}
 					didChanged={this._setStateValue('ProblemMark')}/>
 			</div>
-			<OnceHidePanel label={I18N.Setting.DataAnalysis.EnergyProblem.AddDesc}>				
+			<OnceHidePanel label={I18N.Setting.DataAnalysis.EnergyProblem.AddDesc}>
 				<ViewableTextField title={I18N.Setting.UserManagement.Comment}
 					multiLine={true}
 					defaultValue={ProblemDesc}
@@ -341,17 +308,16 @@ export class GenerateSolution extends Component {
 			let svgString = svgStrings[getId(currentNode)];
 			if(svgStrings[getId(currentNode)]) {
 				return (<div style={{height: 300, width: 600}} dangerouslySetInnerHTML={{__html: svgString}} />);
-			}			
+			}
 		}
 		return (<div style={{height: 300, width: 600}} className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>);
 	}
 
 	_renderHighChart(node) {
-		if(!node || !this.state.tagDatas[getId(node)] || this.state.svgStrings[getId(node)]) {
+		if(!node || this.props.renderChartCmp(node)===null || this.state.svgStrings[getId(node)]) {
 			return null;
 		}
-		let nodeId = getId(node),
-		{tagDatas, widgetStatuss, widgetSeriesArrays, contentSyntaxs} = this.state;
+		let nodeId = getId(node);
 		return (<div style={{position: 'relative', overflowX: 'hidden', height: 300, width: 600}}>
 			      <div id={'chart_basic_component_' + nodeId} style={{
 			          flex: 1,
@@ -364,16 +330,7 @@ export class GenerateSolution extends Component {
 			          marginBottom: '0px',
 			          marginLeft: '9px'
 			        }}>
-						<ChartBasicComponent 
-							afterChartCreated={this._afterChartCreated}
-							ref='ChartBasicComponent'
-							key={nodeId}
-							node={node}
-							tagData={tagDatas[nodeId]}
-							widgetStatus={widgetStatuss[nodeId]}
-							widgetSeriesArray={widgetSeriesArrays[nodeId]}
-							contentSyntax={contentSyntaxs[nodeId]}
-							chartType={getChartTypeStr(node)}/>
+							{this.props.renderChartCmp(node,this._afterChartCreated)}
 					</div>
 				</div>);
 	}
@@ -435,7 +392,7 @@ export class GenerateSolution extends Component {
 	}
 
 	_renderSubmit() {
-		return (<FlatButton 
+		return (<FlatButton
 			disabled={!this._getAPIDataFormat().verified}
 			label={I18N.Setting.DataAnalysis.SchemeSubmit}
 			onClick={() => {
@@ -446,7 +403,7 @@ export class GenerateSolution extends Component {
 	}
 
 	_renderCancel() {
-		return (<FlatButton 
+		return (<FlatButton
 			label={I18N.Common.Button.Cancel2}
 			onClick={() => {
 				this.props.onRequestClose();
@@ -468,14 +425,14 @@ export class GenerateSolution extends Component {
 			return node.get('Name');
 		});
 		return (
-			<Dialog 
-				open={true} 
-				title={I18N.Setting.DataAnalysis.Scheme} 
+			<Dialog
+				open={true}
+				title={I18N.Setting.DataAnalysis.Scheme}
 				actions={[this._renderSubmit(), this._renderCancel()]}
 				contentStyle={{overflowY: 'auto'}}>
 				{this._renderEnergyProblem()}
-				<div style={{margin: '10px 0', flex: 'none'}}>		
-					<Gallery 
+				<div style={{margin: '10px 0', flex: 'none'}}>
+					<Gallery
 						names={this.state.nodes.map(node => node.get('Name'))}
 						selectedIdx={this.state.idx}
 						onLeft={this._setIdx(this.state.idx - 1)}
@@ -498,7 +455,7 @@ export class GenerateSolution extends Component {
 
 export class GenerateSolutionButton extends Component {
 	static propTypes = {
-		nodes: PropTypes.arrayOf(PropTypes.object).isRequired,
+		nodes: PropTypes.arrayOf(PropTypes.object),
 		preAction: PropTypes.object,
 	};
 	constructor(props) {
@@ -522,10 +479,10 @@ export class GenerateSolutionButton extends Component {
 	    };
 		return (
 			<span>
-				<FlatButton 
-					disabled={disabled || nodes.length === 0}
-					label={I18N.Setting.DataAnalysis.Scheme} 
-					labelstyle={styles.label} 
+				<FlatButton
+					disabled={disabled}
+					label={I18N.Setting.DataAnalysis.Scheme}
+					labelstyle={styles.label}
 					icon={
 						<FontIcon className="icon-to-ecm" style={styles.label}/>
 					}
@@ -540,4 +497,3 @@ export class GenerateSolutionButton extends Component {
 		);
 	}
 }
-

@@ -95,12 +95,13 @@ function postNewConfig(data, newConfig) {
 }
 
 export default function DiagnoseChart(props) {
-	let {data} = props,
+	let {data,afterChartCreated} = props,
 
 	chartProps = {
 		chartType: CHART_TYPE,
 		tagData: data.get('EnergyViewData'),
 		postNewConfig: curry(postNewConfig)(data),
+		afterChartCreated,
 	};
 
 	return (

@@ -75,7 +75,7 @@ export default class FolderPanel extends Component {
 				onItemTouchTap: this._onMenuSelect(node)
 		    };
 			action = (<div>
-				{this.props.isBuilding && <GenerateSolutionButton onOpen={this.props.onOpenGenerateSolution} nodes={flat(node)} />}
+				{this.props.isBuilding && <GenerateSolutionButton onOpen={this.props.onOpenGenerateSolution} nodes={flat(node)} disabled={flat(node).length===0}/>}
 				{this._renderMenu(node, iconMenuProps)}
 			</div>)
 		}
@@ -129,7 +129,7 @@ export default class FolderPanel extends Component {
 			targetOrigin:{horizontal: 'left', vertical: 'top'},
 			onItemTouchTap: this._onMenuSelect(child)
 	    };
-		return (<li className='jazz-folder-detail-item'>		
+		return (<li className='jazz-folder-detail-item'>
 	        <div className='title' title={child.get('Name')}>
 	          <div className='name'>
 	            {child.get('Name')}

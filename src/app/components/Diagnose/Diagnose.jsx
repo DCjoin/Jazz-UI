@@ -12,6 +12,7 @@ import LabelDetail from './LabelDetail.jsx';
 import CreateDiagnose from './CreateDiagnose.jsx';
 import DiagnoseStore from 'stores/DiagnoseStore.jsx';
 import {formStatus} from 'constants/FormStatus.jsx';
+import EditDiagnose from './EditDiagnose.jsx';
 
 
 function getFirstMenuPathFunc(menu) {
@@ -71,12 +72,13 @@ export default class Diagnose extends Component {
         this._onItemTouchTap = this._onItemTouchTap.bind(this);
         this._onBasicTabSwitch = this._onBasicTabSwitch.bind(this);
         this._onCreated = this._onCreated.bind(this);
+        this._onRemove=this._onRemove.bind(this);
     }
 
   state={
         infoTabNo:isBasicNoPrivilege()?2:1,
         hasProblem:false,
-        selectedNode:null,
+        selectedId:null,
         isBasic:true,
         formStatus:formStatus.VIEW,
         addLabel:null,
@@ -99,13 +101,13 @@ export default class Diagnose extends Component {
   _switchTab(no){
     this.setState({
       infoTabNo:no,
-      selectedNode:null
+      selectedId:null
     })
   }
 
   _onItemTouchTap(data){
     this.setState({
-      selectedNode:data
+      selectedId:data.get('Id')
     })
   }
 
@@ -115,6 +117,11 @@ export default class Diagnose extends Component {
       })
     }
 
+  _onRemove(id){
+    this.setState({
+      selectedId:id
+    })
+  }
   _renderTab(){
     if(isListFull() && !isBasicNoPrivilege()){
       return(
@@ -130,7 +137,7 @@ export default class Diagnose extends Component {
       )
     }
     else {
-      return<div style={{marginTop:'30px'}}/>
+      return <div style={{marginTop:'30px'}}/>
     }
 
   }
@@ -147,6 +154,7 @@ export default class Diagnose extends Component {
   componentDidMount(){
     CurrentUserStore.addCurrentUserListener(this._onHasProblem);
     DiagnoseStore.addCreatedDiagnoseListener(this._onCreated);
+    DiagnoseStore.addRemoveDiagnoseListener(this._onRemove);
     this.getProblem();
   }
 
@@ -162,26 +170,39 @@ export default class Diagnose extends Component {
   componentWillUnmount(){
     CurrentUserStore.removeCurrentUserListener(this._onHasProblem);
     DiagnoseStore.removeCreatedDiagnoseListener(this._onCreated);
+    DiagnoseStore.removeRemoveDiagnoseListener(this._onRemove);
   }
 
 render(){
-
   return(
     <div className="diagnose-panel">
       {this._renderTab()}
       <div className="content">
-          <LabelList ref='list' isFromProbem={this.state.infoTabNo===1} selectedNode={this.state.selectedNode}
+          <LabelList ref='list' isFromProbem={this.state.infoTabNo===1} selectedNode={DiagnoseStore.findDiagnoseById(this.state.selectedId)}
             onItemTouchTap={this._onItemTouchTap} onTabSwitch={this._onBasicTabSwitch}
             onAdd={(label)=>{this.setState({
               formStatus:formStatus.ADD,
               addLabel:label
             })}}/>
-          <LabelDetail isFromProbem={this.state.infoTabNo===1} selectedNode={this.state.selectedNode}
+          <LabelDetail isFromProbem={this.state.infoTabNo===1} selectedNode={DiagnoseStore.findDiagnoseById(this.state.selectedId)}
                        isBasic={this.state.isBasic} formStatus={this.state.formStatus} addLabel={this.state.addLabel}
+                       onEdit={(label)=>{this.setState({
+                         formStatus:formStatus.EDIT,
+                         addLabel:label
+                       })}}
                        />
       </div>
       {this.state.formStatus === formStatus.ADD &&
-      <CreateDiagnose EnergyLabel={this.state.addLabel} onClose={() => {
+      <CreateDiagnose EnergyLabel={this.state.addLabel} DiagnoseItemId ={DiagnoseStore.findItemIdByLabel(this.state.addLabel.get('Id'))}
+        onClose={(id) => {
+        this.setState({
+          formStatus:formStatus.VIEW,
+          addLabel: null,
+          selectedId:id?id:this.state.selectedId
+        });
+      }}/>}
+      {this.state.formStatus === formStatus.EDIT &&
+      <EditDiagnose selectedNode={this.state.addLabel} onClose={() => {
         this.setState({
           formStatus:formStatus.VIEW,
           addLabel: null,

@@ -18,8 +18,8 @@ function isFull() {
 export default class LabelDetail extends Component {
 
   _renderContent(){
-		return this.props.isFromProbem?<DiagnoseProblem selectedNode={this.props.selectedNode} isBasic={this.props.isBasic}/>
-																	:<DiagnoseList selectedNode={this.props.selectedNode}/>;
+		return this.props.isFromProbem?<DiagnoseProblem selectedNode={this.props.selectedNode} isBasic={this.props.isBasic} onEdit={this.props.onEdit}/>
+																	:<DiagnoseList selectedNode={this.props.selectedNode} onEdit={this.props.onEdit}/>;
   }
 
   render(){
@@ -51,4 +51,5 @@ LabelDetail.propTypes={
 	isBasic:React.PropTypes.bool,
 	addLabel:React.PropTypes.object,
 	formStatus:React.PropTypes.any,
+  onEdit:React.PropTypes.func
 }
