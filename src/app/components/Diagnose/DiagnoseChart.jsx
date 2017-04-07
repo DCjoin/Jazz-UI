@@ -6,115 +6,54 @@ import {isNumber, isEmptyStr} from 'util/Util.jsx';
 
 import ChartBasicComponent from 'components/DataAnalysis/Basic/ChartBasicComponent.jsx'
 
-const ALARM_COLOR = 'red';
+const ALARM_COLOR = '#ff4b00';
+const PLOT_BACKGROUND_COLOR = '#ecfaf8';
 const CHART_TYPE = 'line';
+const TRIGGER_DATA_QUALITY = 10;
+const CALENDAR_TYPE_WORKTIME = 2;
+const CALENDAR_TYPE_NO_WORKTIME = 3;
 
-function mapSeriesDataWithMax(compare, serie) {
+function mapSeriesDataWithMax(isTriggerVal, serie, serieIdx) {
   return {...serie, ...{
+    enableHide: false,
     data: serie.data.map(
-      data => {
-        if( compare(data[1])) {
+      (data, dataIdx) => {
+        if( isTriggerVal(serieIdx, dataIdx) ) {
           return {
             x: data[0],
             y: data[1],
-            fillColor: ALARM_COLOR,
             color: ALARM_COLOR,
-            segmentColor: ALARM_COLOR,
-                hover: {
-                  marker: {
-                    fillColor: ALARM_COLOR
-                  }
-                },
-              states: {
-                hover: {
-                  marker: {
-                    fillColor: ALARM_COLOR
-                  }
-                }
-              },
             marker: {
-              color: ALARM_COLOR,
-              fillColor: ALARM_COLOR,
               states: {
                 hover: {
-                  marker: {
-                    fillColor: ALARM_COLOR
-                  }
+                  fillColor: ALARM_COLOR,
                 }
               }
             }
-          }
-
+          }          
         }
         return data;
       })
   }}
 }
 
-const CALENDER_BGC = new Map([
-	[1, '#eaeaea'],
-	[3, '#eaeaea'],
-	[4, '#fcf0e4'],
-	[5, '#e3f0ff']
-]);
-
-function getColorByCalenderType(calcType) {
-	return CALENDER_BGC.get(calcType);
-}
-
-function getCalendarTypeByWidgetStatus(wss) {
-	if(wss && wss.length > 0) {
-		if (wss[i].WidgetStatusKey === "calendar") {
-		  	return wss[i].WidgetStatusValue
-		}
-	}
-	return '';
-}
-
-function getCalenderTypeByData(data) {
-	let step = data.getIn(['EnergyViewData', 'TargetEnergyData', 0, 'Target', 'Step']),
-	calcType = data.get('WidgetStatus') && getCalendarTypeByWidgetStatus(JSON.parse(data.get('WidgetStatus'))),
-	range = data.get('EnergyViewData').get('Calendars') ? data.get('EnergyViewData').get('Calendars').toJS(): [],
-	checkCalendarTypeFilter = val =>
-		range && range.filter(item => item.CalendarType === val).length > 0
-		? 0
-		: val;
-
-	if( calcType === 'hc' ) {
-		if( step !== 4 ) {
-			return checkCalendarTypeFilter(4) || checkCalendarTypeFilter(5);
-		}
-	} else if(calcType === 'work') {
-		if( step === 0 || step === 1 ) {
-			return checkCalendarTypeFilter(3);
-		}
-		if( step === 2 ) {
-			return checkCalendarTypeFilter(1);
-		}
-	}
-	return 0;
-}
-
-
-function postNewConfig(triggerVal, focusBGC, newConfig) {
+function postNewConfig(data, newConfig) {
+  let triggerVal = data.get('TriggerValue'),
+  Calendars = data.getIn(['EnergyViewData', 'Calendars']);
   newConfig.series = newConfig.series.map(
-    curry(mapSeriesDataWithMax)(currentVal => currentVal > triggerVal)
+    curry(mapSeriesDataWithMax)((serieIdx, dataIdx) => data.getIn([
+      'EnergyViewData', 
+      'TargetEnergyData', 
+      serieIdx,
+      'EnergyData',
+      dataIdx, 
+      'DataQuality']) === TRIGGER_DATA_QUALITY)
   );
-  !isEmptyStr(focusBGC) && newConfig.series.unshift({
-      lockLegend: true,
-      enableDelete: false,
-      name: '非运行时间',
-      color: focusBGC,
-      lineWidth: 12,
-      marker: {
-          symbol: 'null',
-      }
-  });
   isNumber(triggerVal) && newConfig.series.push({
       lockLegend: true,
       enableDelete: false,
       name: '触发值',
-      color: ALARM_COLOR,
+      color: ALARM_COLOR, 
       lineWidth: 2,
       dashStyle: 'shortdash',
       marker: {
@@ -127,7 +66,32 @@ function postNewConfig(triggerVal, focusBGC, newConfig) {
     zIndex: 5,
     width: 2,
     value: triggerVal
-  }]
+  }];
+  if( Calendars && Calendars.size > 0 ) {
+    let {CalendarType, CalendarTimeRanges} = Calendars.get(0).toJS();
+    if( CalendarType === CALENDAR_TYPE_WORKTIME || CalendarType === CALENDAR_TYPE_NO_WORKTIME 
+      && CalendarTimeRanges && CalendarTimeRanges.length > 0 ) {
+
+      newConfig.series.unshift({
+          lockLegend: true,
+          enableDelete: false,
+          name: CalendarType === CALENDAR_TYPE_WORKTIME ? '运行时间' : '非运行时间',
+          color: PLOT_BACKGROUND_COLOR, 
+          lineWidth: 12,
+          marker: {
+              symbol: 'null',
+          }
+      });
+      newConfig.xAxis.plotBands = CalendarTimeRanges.map(({StartTime, EndTime}) => {
+        return {
+          color: PLOT_BACKGROUND_COLOR,
+          from: new Date(StartTime).valueOf(),
+          to: new Date(EndTime).valueOf()        
+        }
+      });
+
+    }
+  }
 }
 
 export default function DiagnoseChart(props) {
@@ -136,11 +100,8 @@ export default function DiagnoseChart(props) {
 	chartProps = {
 		chartType: CHART_TYPE,
 		tagData: data.get('EnergyViewData'),
-		postNewConfig: curry(postNewConfig)(
-			data.get('TriggerValue'),
-			flowRight( getColorByCalenderType, getCalenderTypeByData )(data),
-		),
-    afterChartCreated:afterChartCreated
+		postNewConfig: curry(postNewConfig)(data),
+		afterChartCreated,
 	};
 
 	return (

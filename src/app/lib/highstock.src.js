@@ -19562,7 +19562,6 @@ end
 			// apply hover styles to the existing point
 			if (point.graphic) {
 				radius = markerOptions && point.graphic.symbolName && pointAttr.r;
-				console.log(pointAttr);
 				point.graphic.attr(merge(
 					pointAttr,
 					radius ? { // new symbol attributes (#507, #612)
