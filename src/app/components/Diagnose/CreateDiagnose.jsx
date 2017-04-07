@@ -10,6 +10,8 @@ import FontIcon from 'material-ui/FontIcon';
 import Checkbox from 'material-ui/Checkbox';
 import CircularProgress from 'material-ui/CircularProgress';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
+import ActionVisibility from 'material-ui/svg-icons/action/visibility';
+import ActionVisibilityOff from 'material-ui/svg-icons/action/visibility-off';
 import moment from 'moment';
 import Immutable from 'immutable';
 import classnames from 'classnames';
@@ -19,6 +21,7 @@ import TimeGranularity from 'constants/TimeGranularity.jsx';
 import {DIAGNOSE_MODEL} from 'constants/actionType/Diagnose.jsx';
 
 import ReduxDecorator from '../../decorator/ReduxDecorator.jsx';
+import NewAppTheme from '../../decorator/NewAppTheme.jsx';
 
 import {isEmptyStr, getDateTimeItemsByStepForVal, getDateTimeItemsByStep} from 'util/Util.jsx';
 
@@ -286,7 +289,7 @@ function ChartPreviewStep2({chartData, chartDataLoading, getChartData, disabledP
 			<ChartDateFilter 
 				disabled={!chartData}
 				{...other}/>
-			<RaisedButton label={'预览'} disabled={disabledPreview} onClick={getChartData}/>
+			<RaisedButton label={'预览'} disabled={disabledPreview} onClick={getChartData} icon={<ActionVisibility/>}/>
 		</div>
 		{chartDataLoading ? <div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div> :
 		(chartData ?  <div className='diagnose-create-chart'><DiagnoseChart data={chartData}/></div> :
@@ -707,6 +710,7 @@ function CreateStep3({
 	);
 }
 
+@NewAppTheme
 @ReduxDecorator
 class CreateDiagnose extends Component {
 	static getStores() {
