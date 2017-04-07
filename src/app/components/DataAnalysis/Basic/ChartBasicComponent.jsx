@@ -160,20 +160,15 @@ export default class ChartBasicComponent extends Component {
 
     strategy = ChartReaderStrategyFactor.getStrategyByBizChartType( getStrategyByChartType(chartType) );
 
-    let timeRanges = [timeSpan.toJS()]/* || [
-      {"StartTime":"2015-12-31T16:00:00","EndTime":"2016-12-31T16:00:00"},
-      {"StartTime":"2014-12-31T16:00:00","EndTime":"2015-12-31T16:00:00"}
-    ]*/;
+    let timeRanges = [timeSpan.toJS()];
     if( contentSyntax ) {
       let syntaxObj = JSON.parse(contentSyntax);
       if( syntaxObj && syntaxObj.viewOption && syntaxObj.viewOption.TimeRanges ) {
         let TimeRanges = syntaxObj.viewOption.TimeRanges;
-//         if( TimeRanges.length > 1 ) {
-          MultipleTimespanStore.initDataByWidgetTimeRanges(TimeRanges);
-          timeRanges = MultipleTimespanStore.getSubmitTimespans();
-          startTime = timeRanges[0].StartTime;
-          endTime = timeRanges[0].EndTime;
-//         }
+        MultipleTimespanStore.initDataByWidgetTimeRanges(TimeRanges);
+        timeRanges = MultipleTimespanStore.getSubmitTimespans();
+        startTime = timeRanges[0].StartTime;
+        endTime = timeRanges[0].EndTime;
       }
     }
     let plotBands = null;
