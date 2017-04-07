@@ -38,7 +38,7 @@ const DiagnoseStore = assign({}, PrototypeStore, {
     return _diagnoseStatic
   },
   setDiagnose(data){
-    _currentDiagnose=data
+    _currentDiagnose=Immutable.fromJS(data)
   },
   getDiagnose(){
     return _currentDiagnose
