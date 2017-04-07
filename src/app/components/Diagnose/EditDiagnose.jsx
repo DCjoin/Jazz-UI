@@ -24,6 +24,8 @@ export default class EditDiagnose extends Component {
   constructor(props, ctx) {
           super(props);
           this._onChanged = this._onChanged.bind(this);
+					this._merge = this._merge.bind(this);
+					this._onUpdate = this._onUpdate.bind(this);
       }
 
   state={
@@ -131,7 +133,7 @@ export default class EditDiagnose extends Component {
       },
       onUpdateFilterObj:curry(this._merge)
     }
-    return <CreateStep2{...props} />
+    return <CreateStep2 {...props}/>
   }
 
   _renderContent(){
