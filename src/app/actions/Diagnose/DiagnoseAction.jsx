@@ -174,6 +174,7 @@ const DiagnoseAction = {
         AppDispatcher.dispatch({
           type: Action.CREATE_DIAGNOSE,
           isClose,
+          data: res
         })
       }
     });
