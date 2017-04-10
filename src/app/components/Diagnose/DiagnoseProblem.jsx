@@ -13,9 +13,7 @@ import DiagnoseStore from 'stores/DiagnoseStore.jsx';
 import DiagnoseChart from './DiagnoseChart.jsx';
 import {DiagnoseStatus} from 'constants/actionType/Diagnose.jsx';
 import {GenerateSolutionButton,GenerateSolution} from '../DataAnalysis/Basic/GenerateSolution.jsx';
-import FolderStore from 'stores/FolderStore.jsx';
-import util from 'util/Util.jsx';
-import RoutePath from 'util/RoutePath.jsx';
+
 
 function getFromImmu(key) {
 	return function(immuObj) {
@@ -43,10 +41,6 @@ function isSeniorFull() {
 	return privilegeWithSeniorSmartDiagnose(PrivilegeUtil.isFull.bind(PrivilegeUtil));
 }
 
-function SolutionFull() {
-	return PrivilegeUtil.isFull(PermissionCode.SOLUTION_FULL, CurrentUserStore.getCurrentPrivilege());
-}
-
 export default class DiagnoseProblem extends Component {
 
   static contextTypes = {
@@ -56,7 +50,6 @@ export default class DiagnoseProblem extends Component {
   constructor(props, ctx) {
   				super(props);
   				this._onTitleMenuSelect = this._onTitleMenuSelect.bind(this);
-          this._onShowSolutionSnakBar = this._onShowSolutionSnakBar.bind(this);
 					this._onSolutionShow = this._onSolutionShow.bind(this);
 					this._onChanged = this._onChanged.bind(this);
 					this._onIgnore = this._onIgnore.bind(this);
@@ -81,7 +74,7 @@ export default class DiagnoseProblem extends Component {
 			let chart=DiagnoseStore.getDiagnoseChartData();
 			var j2d=DataConverter.JsonToDateTime;
 
-			let timeRange=chart.getIn(['EnergyViewData','TargetEnergyData',0,'Target','TimeSpan']),
+			let timeRange=chart.getIn(['EnergyViewData','TargetEnergyData',0,'Target','TimeSpan']).toJS(),
 					startDate=j2d(timeRange.StartTime,false),
 					endDate=j2d(timeRange.EndTime,false);
 
@@ -109,12 +102,6 @@ export default class DiagnoseProblem extends Component {
     this.setState({
       solutionShow:true
     })
-  }
-
-  _onShowSolutionSnakBar() {
-    this.setState({
-      showSolutionTip: true
-    });
   }
 
 	_onChanged(){
@@ -177,7 +164,8 @@ export default class DiagnoseProblem extends Component {
 			startDate: startDate,
 			endDate: endDate,
 			startTime: startTime,
-			endTime: endTime
+			endTime: endTime,
+			chartData:null
 		}, () => {
 			var d2j=DataConverter.DatetimeToJson;
 			that.getProblem(d2j(timeRange.start),d2j(timeRange.end))
@@ -294,17 +282,16 @@ export default class DiagnoseProblem extends Component {
 
 		componentDidMount(){
 			DiagnoseStore.addChangeListener(this._onChanged);
-      FolderStore.addSolutionCreatedListener(this._onShowSolutionSnakBar);
 			this.getProblem();
 		}
 
 		componentWillUnmount(){
 			DiagnoseStore.removeChangeListener(this._onChanged);
-      FolderStore.removeSolutionCreatedListener(this._onShowSolutionSnakBar);
 		}
 
 
   render(){
+		var that=this;
     var {Name}=this.props.selectedNode.toJS();
     var dialog;
 
@@ -336,7 +323,7 @@ export default class DiagnoseProblem extends Component {
 						startTime={this.state.startTime}
 						endTime={this.state.endTime}
 						 _onDateSelectorChanged={this._onDateSelectorChanged}/>
-				</div>		
+				</div>
 
 					 {this.state.chartData?<DiagnoseChart data={this.state.chartData}/>
 																:<div className="flex-center" style={{flex:'none'}}>
@@ -350,17 +337,6 @@ export default class DiagnoseProblem extends Component {
             renderChartCmp={this._renderChart}
             />}
         {dialog}
-        <Snackbar ref='snackbar'
-					open={this.state.showSolutionTip}
-					onRequestClose={() => {
-						this.setState({showSolutionTip: false})
-					}}
-					message={SolutionFull() ? I18N.Setting.DataAnalysis.SaveScheme.FullTip : I18N.Setting.DataAnalysis.SaveScheme.PushTip}
-					action={I18N.Setting.DataAnalysis.SaveScheme.TipAction}
-					onActionTouchTap={() => {
-						util.openTab(RoutePath.ecm(this.props.params)+'?init_hierarchy_id='+this.context.hierarchyId);
-					}}
-				/>
       </div>
     )
   }

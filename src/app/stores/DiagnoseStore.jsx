@@ -176,7 +176,7 @@ const DiagnoseStore = assign({}, PrototypeStore, {
     _diagnoseList.forEach(diagnose=>{
       diagnose.get('Children').forEach(child=>{
         if(child.get('Children') && id===null) {
-          var index=child.get('Children').find(item=>(item.get('Id')===diagnoseId));
+          var index=child.get('Children').findIndex(item=>(item.get('Id')===diagnoseId));
           if(index>-1){
             if(index===0) id=null
               else if(index===child.get('Children').size-1) id=child.getIn(['Children',child.get('Children').size-2,'Id'])

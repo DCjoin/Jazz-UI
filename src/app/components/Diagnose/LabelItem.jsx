@@ -90,7 +90,7 @@ class Group extends Component{
                                 })}
            style={{paddingLeft:'30px'}} onClick={()=>{this.props.onItemTouchTap(data)}}>
         <div className="text">{data.get('Name')}</div>
-        {data.get('Status')===DiagnoseStatus.Suspend && <FontIcon className="icon-more" style={{fontSize:'14px',marginLeft:'15px'}}/>}
+        {!this.props.isFromProbem && data.get('Status')===DiagnoseStatus.Suspend && <FontIcon className="icon-more" style={{fontSize:'14px',marginLeft:'15px'}}/>}
       </div>
     ))
   }

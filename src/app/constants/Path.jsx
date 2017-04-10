@@ -71,7 +71,7 @@ module.exports = {
     getDiagnose:'/diagnose/get/{diagnoseId}',
     deletediagnose:'/diagnose/deletediagnose/{diagnoseId}',
     getdiagnosedata:'/diagnose/getdiagnosedata/{diagnoseId}',
-    getproblemdata:'/diagnose/getproblemdata/{diagnoseId}?{startTime}&{endTime}',
+    getproblemdata:'/diagnose/getproblemdata/{diagnoseId}',
     pauseorrecoverdiagnose:'/diagnose/pauseorrecoverdiagnose/{diagnoseId}/{status}',
     ignorediagnose:'/diagnose/ignorediagnose/{diagnoseId}',
     previewchart:'/diagnose/previewchart',
