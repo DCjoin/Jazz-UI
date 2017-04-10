@@ -26,10 +26,12 @@ import NewAppTheme from '../../decorator/NewAppTheme.jsx';
 import {isEmptyStr, getDateTimeItemsByStepForVal, getDateTimeItemsByStep} from 'util/Util.jsx';
 
 import LinkButton from 'controls/LinkButton.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
 import ViewableTextField from 'controls/ViewableTextField.jsx';
 import ViewableDatePicker from 'controls/ViewableDatePicker.jsx';
 import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
 import MonthDayItem from 'controls/MonthDayItem.jsx';
+import Dialog from 'controls/NewDialog.jsx';
 
 import DiagnoseStore from 'stores/DiagnoseStore.jsx';
 import DiagnoseAction from 'actions/diagnose/DiagnoseAction.jsx';
@@ -58,6 +60,29 @@ const CONDITION_TYPE = {
 	Equal: 0,
 	Smaller: 1,
 	SmallerAndEqual: 2,
+}
+const TIME_GRANULARITY_MAP_VAL = {
+	// [TimeGranularity.None]: -1,
+	[TimeGranularity.Minite]: 60 * 60,
+	// [TimeGranularity.Min15]: 15 * 60,
+	// [TimeGranularity.Min30]: 30 * 60,
+	[TimeGranularity.Hourly]: 60 * 60,
+	// [TimeGranularity.Hour2]: 2 * 60 * 60,
+	// [TimeGranularity.Hour4]: 4 * 60 * 60,
+	// [TimeGranularity.Hour6]: 6 * 60 * 60,
+	// [TimeGranularity.Hour8]: 8 * 60 * 60,
+	// [TimeGranularity.Hour12]: 12 * 60 * 60,
+	[TimeGranularity.Daily]: 24 * 60 * 60,
+	// [TimeGranularity.Weekly]: 7 * 24 * 60 * 60,
+	// [TimeGranularity.Monthly]: 30 * 24 * 60 * 60,
+	// [TimeGranularity.Yearly]: 365 * 24 * 60 * 60,
+}
+function checkStep(tags, step) {
+	return tags.filter(tag => tag.get('checked')).filter(tag => TIME_GRANULARITY_MAP_VAL[step] < TIME_GRANULARITY_MAP_VAL[tag.get('Step')] ).size === 0;
+}
+function getCanSelectTimeGranularity(tags) {
+	let maxTime = Math.max(tags.filter(tag => tag.get('checked')).map(tag => TIME_GRANULARITY_MAP_VAL[tag.get('Step')]).toJS());
+	return Object.keys(TIME_GRANULARITY_MAP_VAL).filter( step => TIME_GRANULARITY_MAP_VAL[step] >= maxTime );
 }
 function getStepItems(){
 	return [{
@@ -759,7 +784,7 @@ class CreateDiagnose extends Component {
 		DiagnoseAction.getDiagnoseTag(
 			ctx.hierarchyId,
 			props.EnergyLabel.get('Id'),
-			props.DiagnoseItemId || 11,
+			props.DiagnoseItemId,
 			1
 		);
 	}
@@ -788,7 +813,7 @@ class CreateDiagnose extends Component {
 			).toJS(), 
 			...{
 				HierarchyId: this.context.hierarchyId,
-				DiagnoseItemId: this.props.DiagnoseItemId || 11,
+				DiagnoseItemId: this.props.DiagnoseItemId,
 				EnergyLabelId: this.props.EnergyLabel.get('Id'),
 				DiagnoseModel: this.props.EnergyLabel.get('DiagnoseModel'),
 				TagIds: diagnoseTags
@@ -847,7 +872,7 @@ class CreateDiagnose extends Component {
 			).toJS(), 
 			...{
 				HierarchyId: this.context.hierarchyId,
-				DiagnoseItemId: this.props.DiagnoseItemId || 11,
+				DiagnoseItemId: this.props.DiagnoseItemId,
 				EnergyLabelId: this.props.EnergyLabel.get('Id'),
 				DiagnoseModel: this.props.EnergyLabel.get('DiagnoseModel'),
 				TagIds: checkedTags.map( tag => tag.get('Id') ).toJS(),
@@ -856,9 +881,18 @@ class CreateDiagnose extends Component {
 		}, isClose);		
 	}
 	_onCheckDiagnose(idx, val) {
-		this.setState({
-			diagnoseTags: this.state.diagnoseTags.setIn([idx, 'checked'], val)
-		}, this._getChartData);
+		let newDiagnoseTags = this.state.diagnoseTags.setIn([idx, 'checked'], val);
+		if( checkStep( newDiagnoseTags, this.state.filterObj.get('Step') ) ) {
+			this.setState({
+				diagnoseTags: newDiagnoseTags
+			}, this._getChartData);
+
+		} else {
+			this.setState({
+				tmpFilterDiagnoseTags: newDiagnoseTags,
+				tmpFilterStep: this.state.filterObj.get('Step')
+			});
+		}
 	}
 	_onSaveBack() {
 		this._createDiagnose(true);
@@ -915,7 +949,14 @@ class CreateDiagnose extends Component {
 						}}
 						Step={Step}
 						onUpdateStep={(val) => {
-							this._setFilterObjThenUpdataChart('Step', val);
+							if( checkStep(diagnoseTags, val) ) {
+								this._setFilterObjThenUpdataChart('Step', val);
+							} else {
+								this.setState({
+									tmpFilterDiagnoseTags: diagnoseTags,
+									tmpFilterStep: val
+								});
+							}
 						}}
 						chartData={chartData}
 						chartDataLoading={chartDataLoading}
@@ -962,6 +1003,26 @@ class CreateDiagnose extends Component {
 			return (<CreateStep3 diagnoseTags={diagnoseTags} onUpdateDiagnoseTags={(diagnoseTags) => {
 				this.setState({diagnoseTags});
 			}}/>);
+		}
+		return null;
+	}
+	_renderTipDialog() {
+		let {tmpFilterDiagnoseTags, tmpFilterStep, filterObj} = this.state;
+		if(tmpFilterDiagnoseTags) {
+			return (<Dialog onRequestClose={() => {this.setState({tmpFilterDiagnoseTags: null, tmpFilterStep: null});}} open={true} modal={false} actions={
+				getCanSelectTimeGranularity(tmpFilterDiagnoseTags).map(time => 
+					<FlatButton key={time} label={'按' + getStepItems().find(item => item.step === time * 1).text}
+						onClick={() => {
+							this.setState({
+								diagnoseTags: tmpFilterDiagnoseTags,
+								filterObj: filterObj.set('Step', time * 1),
+								tmpFilterDiagnoseTags: null,
+								tmpFilterStep: null,
+							}, this._getChartData);
+						}}/>)
+			}>
+				{`所选数据点不支持按“${getStepItems().find(item => item.step === tmpFilterStep).text}”`}
+			</Dialog>);
 		}
 		return null;
 	}
@@ -1020,6 +1081,7 @@ class CreateDiagnose extends Component {
 		        </nav>
 		        {this._renderContent()}
 		        <nav className='diagnose-create-footer'>{this._getFooterButton()}</nav>
+		        {this._renderTipDialog()}
 			</div>
 		);
 	}
