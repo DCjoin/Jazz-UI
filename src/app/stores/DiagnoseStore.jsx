@@ -32,7 +32,7 @@ const DiagnoseStore = assign({}, PrototypeStore, {
     return _diagnoseList;
   },
   setDiagnoseStatic(data){
-    _diagnoseStatic=data
+    _diagnoseStatic={1:data[2],2:data[4]}
   },
   getDiagnoseStatic(){
     return _diagnoseStatic
@@ -176,7 +176,7 @@ const DiagnoseStore = assign({}, PrototypeStore, {
     _diagnoseList.forEach(diagnose=>{
       diagnose.get('Children').forEach(child=>{
         if(child.get('Children') && id===null) {
-          var index=child.get('Children').find(item=>(item.get('Id')===diagnoseId));
+          var index=child.get('Children').findIndex(item=>(item.get('Id')===diagnoseId));
           if(index>-1){
             if(index===0) id=null
               else if(index===child.get('Children').size-1) id=child.getIn(['Children',child.get('Children').size-2,'Id'])

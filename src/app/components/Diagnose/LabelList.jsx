@@ -76,7 +76,7 @@ export default class LabelList extends Component {
 	}
 
   _renderTabs(){
-    var problemIcon=<FontIcon className="icon-lighten"/>;
+    var problemIcon=<FontIcon className="bubble-icon"/>;
     var tabsProp={
       inkBarStyle:{
         height:'3px',
@@ -177,7 +177,6 @@ export default class LabelList extends Component {
 
   componentDidMount(){
     DiagnoseStore.addChangeListener(this._onChanged);
-
 		if(this.context.hierarchyId){
 			this._getList(this.context.hierarchyId);
 			this.getCalendar(this.context.hierarchyId);

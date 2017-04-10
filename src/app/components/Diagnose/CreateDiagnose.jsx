@@ -34,7 +34,7 @@ import MonthDayItem from 'controls/MonthDayItem.jsx';
 import Dialog from 'controls/NewDialog.jsx';
 
 import DiagnoseStore from 'stores/DiagnoseStore.jsx';
-import DiagnoseAction from 'actions/diagnose/DiagnoseAction.jsx';
+import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
 
 import DiagnoseChart from './DiagnoseChart.jsx';
 
@@ -105,11 +105,11 @@ function StepItem({
 	onStepChange
 }) {
 	return (
-		<div 
+		<div
 			className={classnames('jazz-energy-step-item', {
 				'jazz-energy-step-item-selected': selected && !disabled,
 				'jazz-energy-step-item-disable': disabled
-			})} 
+			})}
 			onClick={() => {
 				!disabled && typeof onStepChange === 'function' && onStepChange(step)
 			}}>
@@ -178,20 +178,20 @@ function utcFormat(dateStr) {
 function updateUtcFormatFilter(filterObj, paths) {
 	return paths.reduce(
 		(computedFilterObj, path,) => computedFilterObj.set(
-								path, 
+								path,
 								utcFormat( computedFilterObj.get(path) )
-							), 
+							),
 		filterObj);
 }
 
 function AdditiveComp({
-	className, 
-	contentClassName, 
-	title, 
-	renderFunc, 
-	data, 
-	limit, 
-	onAdd, 
+	className,
+	contentClassName,
+	title,
+	renderFunc,
+	data,
+	limit,
+	onAdd,
 	onDelete}
 ) {
 	let disabled = data && data.length >= limit;
@@ -200,10 +200,10 @@ function AdditiveComp({
 			<hgroup className='' style={{color: '#ABAFAE', marginBottom: -15}}>
 			{title} <IconButton disabled={disabled}  iconClassName='icon-add' iconStyle={{fontSize: 14}} onClick={onAdd}/>
 			</hgroup>
-			<div className={contentClassName}>{data.map( (item, idx) => 
+			<div className={contentClassName}>{data.map( (item, idx) =>
 				<div style={{display: 'flex'}}>
 					{renderFunc(item, idx)}
-					{data && data.length > 1 && 
+					{data && data.length > 1 &&
 					(<IconButton iconClassName='icon-close' iconStyle={{fontSize: 14}} onClick={() => {
 						onDelete(idx);
 					}}/>)}
@@ -222,10 +222,10 @@ function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime
 			onChange={(val) => {
 				onChangeStartTime(val + 'T' + StartTime.split('T')[1]);
 			}}/>
-		<ViewableDropDownMenu 
+		<ViewableDropDownMenu
 			disabled={disabled}
 			style={{width: 100, marginLeft: 10, marginTop: -6}}
-			defaultValue={StartTime.split('T')[1].split(':').slice(0, 2).join(':')} 
+			defaultValue={StartTime.split('T')[1].split(':').slice(0, 2).join(':')}
 			dataItems={getDateTimeItemsByStep(60)}
 			didChanged={(val) => {
 				onChangeStartTime(moment(StartTime).format(DATE_FORMAT) + 'T' + val + ':00');
@@ -238,10 +238,10 @@ function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime
 			onChange={(val) => {
 				onChangeEndTime(val + 'T' + EndTime.split('T')[1]);
 			}}/>
-		<ViewableDropDownMenu 
+		<ViewableDropDownMenu
 			disabled={disabled}
 			style={{width: 100, marginLeft: 10, marginTop: -6}}
-			defaultValue={EndTime.split('T')[1].split(':').slice(0, 2).join(':')} 
+			defaultValue={EndTime.split('T')[1].split(':').slice(0, 2).join(':')}
 			dataItems={getDateTimeItemsByStep(60)}
 			didChanged={(val) => {
 				onChangeEndTime(moment(EndTime).format(DATE_FORMAT) + 'T' + val + ':00');
@@ -255,7 +255,7 @@ function TagList({tags, onCheck}) {
 		console.log(tags.toJS());
 		content = (
 			<ul className='diagnose-create-tag-list-content'>
-				{tags.map( (tag, i) => 
+				{tags.map( (tag, i) =>
 				<li className='diagnose-create-tag-list-item'  title={tag.get('Name')}>
 					<Checkbox checked={tag.get('checked')} onCheck={(e, isInputChecked) => {
 						onCheck(i, isInputChecked);
@@ -264,7 +264,7 @@ function TagList({tags, onCheck}) {
 						<div className='diagnose-create-checkbox-label-name hiddenEllipsis'>
 							{tag.get('Name')}
 						</div>
-						{tag.get('Status') !== 0 && 
+						{tag.get('Status') !== 0 &&
 						<div className='diagnose-create-checkbox-label-tip'>
 							{'诊断中'}
 						</div>}
@@ -272,7 +272,7 @@ function TagList({tags, onCheck}) {
 				</li>
 				).toJS()}
 			</ul>
-		);	
+		);
 	}
 	return (<section className='diagnose-create-tag-list'>
 		<hgroup className='diagnose-create-tag-list-title'>{'诊断数据点'}</hgroup>
@@ -294,7 +294,7 @@ function ChartPreview({chartData, chartDataLoading, onUpdateStep, SHHtep, ...oth
 	return (<section className='diagnose-create-chart-preview'>
 		<hgroup className='diagnose-range-title'>{'图表预览'}</hgroup>
 		<div className='diagnose-create-chart-action'>
-			<ChartDateFilter 
+			<ChartDateFilter
 				disabled={!chartData}
 				{...other}/>
 			<div className='jazz-energy-step'>
@@ -311,7 +311,7 @@ function ChartPreviewStep2({chartData, chartDataLoading, getChartData, disabledP
 	return (<section className='diagnose-create-chart-preview-step2'>
 		<hgroup className='diagnose-range-title'>{'图表预览'}</hgroup>
 		<div className='diagnose-create-chart-action'>
-			<ChartDateFilter 
+			<ChartDateFilter
 				disabled={!chartData}
 				{...other}/>
 			<RaisedButton label={'预览'} disabled={disabledPreview} onClick={getChartData} icon={<ActionVisibility/>}/>
@@ -335,8 +335,8 @@ export function DiagnoseRange({
 	Step,
 	onUpdateStep,
 	Timeranges,
-	onAddDateRange, 
-	onDeleteDateRange, 
+	onAddDateRange,
+	onDeleteDateRange,
 	onUpdateDateRange
 }) {
 	return (<section className='diagnose-range'>
@@ -352,16 +352,16 @@ export function DiagnoseRange({
 					{payload: TimeGranularity.Daily, text: I18N.EM.Day},
 				]}
 			/>
-			<AdditiveComp 
+			<AdditiveComp
 				className={'diagnose-range-time'}
-				title={'时间范围'} 
+				title={'时间范围'}
 				limit={2}
 				data={Timeranges}
 				onAdd={onAddDateRange}
 				onDelete={onDeleteDateRange}
-				renderFunc={(data, idx) => 
+				renderFunc={(data, idx) =>
 					<div key={idx} style={{display: 'flex', alignItems: 'center'}}>
-					<MonthDayItem 
+					<MonthDayItem
 						isViewStatus={false}
 						month={new Date(data.StartTime).getMonth() + 1}
 						day={new Date(data.StartTime).getDate()}
@@ -391,26 +391,26 @@ function RuntimeComp({
 	title
 }) {
 	return (
-		<AdditiveComp 
+		<AdditiveComp
 			className={'diagnose-condition-run-time'}
-			title={title} 
+			title={title}
 			limit={4}
 			data={workRuningTimes}
 			onAdd={onAddWorkTime}
 			onDelete={onDeleteWorkTime}
-			renderFunc={(data, idx) => 
+			renderFunc={(data, idx) =>
 			<div key={idx} style={{display: 'flex', alignItems: 'center'}}>
-				<ViewableDropDownMenu 
+				<ViewableDropDownMenu
 					style={{width: 100, marginLeft: 10, marginTop: -6}}
-					defaultValue={data.StartTime} 
+					defaultValue={data.StartTime}
 					dataItems={getDateTimeItemsByStepForVal(15)}
 					didChanged={(val) => {
 						onChangeWorkTime(idx, 'StartTime', val);
 					}}/>
-				{'至'} 
-				<ViewableDropDownMenu 
+				{'至'}
+				<ViewableDropDownMenu
 					style={{width: 100, marginLeft: 10, marginTop: -6}}
-					defaultValue={data.EndTime} 
+					defaultValue={data.EndTime}
 					dataItems={getDateTimeItemsByStepForVal(15)}
 					didChanged={(val) => {
 						onChangeWorkTime(idx, 'EndTime', val);
@@ -422,9 +422,9 @@ function RuntimeComp({
 function ModelACondition({TriggerValue, onUpdateTriggerValue}) {
 	return (<div className='diagnose-condition-model-a'>
 		<span>{'非运行时间触发值(kWh)'}</span>
-		<ViewableTextField 
+		<ViewableTextField
 			hintText={'输入触发值'}
-			defaultValue={TriggerValue} 
+			defaultValue={TriggerValue}
 			didChanged={onUpdateTriggerValue}/>
 		<span style={{fontSize: 14}}>{'注： 高于触发值时触发诊断'}</span>
 	</div>)
@@ -437,7 +437,7 @@ function ModelBCondition({
 	onUpdateConditionType,
 	TriggerType,
 	onUpdateTriggerType,
-	ToleranceRatio, 
+	ToleranceRatio,
 	onUpdateToleranceRatio,
 	HistoryStartTime,
 	HistoryEndTime,
@@ -449,9 +449,9 @@ function ModelBCondition({
 			<div>
 				<div>{'触发条件'}</div>
 			</div>
-			<RadioButtonGroup 
-				name="ConditionType" 
-				valueSelected={ConditionType} 
+			<RadioButtonGroup
+				name="ConditionType"
+				valueSelected={ConditionType}
 				onChange={(evt, val) => {
 					onUpdateConditionType(val);
 			}}>
@@ -470,9 +470,9 @@ function ModelBCondition({
 				<div>{'基准值属性'}</div>
 				<div>{'历史值仅支持单个数据点'}</div>
 			</div>
-			<RadioButtonGroup 
-				name="TriggerType" 
-				valueSelected={TriggerType} 
+			<RadioButtonGroup
+				name="TriggerType"
+				valueSelected={TriggerType}
 				onChange={(evt, val) => {
 					onUpdateTriggerType(val);
 			}}>
@@ -488,14 +488,14 @@ function ModelBCondition({
 		</div>
 		{ TriggerType === TRIGGER_TYPE.FixedValue && <div>
 			<span>{'基准值(kWh)'}</span>
-			<ViewableTextField 
+			<ViewableTextField
 				hintText={'填写基准值'}
-				defaultValue={TriggerValue} 
+				defaultValue={TriggerValue}
 				didChanged={onUpdateTriggerValue}/>
 		</div>}
 		{ TriggerType === TRIGGER_TYPE.HistoryValue && <div>
-			<span>{'基准值历史事件范围'}</span>			
-			<ChartDateFilter 
+			<span>{'基准值历史事件范围'}</span>
+			<ChartDateFilter
 				StartTime={HistoryStartTime}
 				EndTime={HistoryEndTime}
 				onChangeStartTime={onUpdateHistoryStartTime}
@@ -503,9 +503,9 @@ function ModelBCondition({
 		</div>}
 		<div>
 			<span>{'敏感值(%)'}</span>
-			<ViewableTextField 
+			<ViewableTextField
 				hintText={'填写敏感值'}
-				defaultValue={ToleranceRatio} 
+				defaultValue={ToleranceRatio}
 				didChanged={onUpdateToleranceRatio}/>
 			<span style={{fontSize: 14}}>{'注： 高于触发值时触发诊断'}</span>
 		</div>
@@ -525,7 +525,7 @@ function DiagnoseCondition({
 	// onUpdateConditionType,
 	// TriggerType,
 	// onUpdateTriggerType,
-	// ToleranceRatio, 
+	// ToleranceRatio,
 	// onUpdateToleranceRatio,
 	// HistoryStartTime,
 	// HistoryEndTime,
@@ -538,8 +538,8 @@ function DiagnoseCondition({
 		<hgroup>{'诊断条件'}</hgroup>
 		<div className='diagnose-condition-content'>
 			<RuntimeComp
-				workRuningTimes={workRuningTimes} 
-				title={'工作日运行时间'} 
+				workRuningTimes={workRuningTimes}
+				title={'工作日运行时间'}
 				type={CALENDAR_ITEM_TYPE.WorkDay}
 				onAddWorkTime={() => {
 					workRuningTimes.push({
@@ -558,8 +558,8 @@ function DiagnoseCondition({
 					onChangeWorkTime(workRuningTimes.concat(holidayRuningTimes));
 				}}/>
 			<RuntimeComp
-				workRuningTimes={holidayRuningTimes} 
-				title={'休息日运行时间'} 
+				workRuningTimes={holidayRuningTimes}
+				title={'休息日运行时间'}
 				type={CALENDAR_ITEM_TYPE.Holiday}
 				onAddWorkTime={() => {
 					holidayRuningTimes.push({
@@ -604,19 +604,19 @@ onUpdateDateRange: 修改诊断时间范围 :: idx, type, first/end, String(YYYY
 **/
 class CreateStep1 extends Component {
 	render() {
-		let { 
-			diagnoseTags, 
-			onCheckDiagnose, 
+		let {
+			diagnoseTags,
+			onCheckDiagnose,
 			StartTime,
-			onChangeStartTime, 
+			onChangeStartTime,
 			EndTime,
 			onChangeEndTime,
 			Step,
 			onUpdateStep,
 			chartData,
 			chartDataLoading,
-			Timeranges, 
-			onAddDateRange, 
+			Timeranges,
+			onAddDateRange,
 			onDeleteDateRange,
 			onUpdateDateRange,
 		} = this.props;
@@ -624,9 +624,9 @@ class CreateStep1 extends Component {
 			<section className='diagnose-create-content'>
 				<div className='diagnose-create-step'>
 					<TagList tags={diagnoseTags} onCheck={onCheckDiagnose}/>
-					<ChartPreview 
-						StartTime={StartTime} 
-						onChangeStartTime={onChangeStartTime} 
+					<ChartPreview
+						StartTime={StartTime}
+						onChangeStartTime={onChangeStartTime}
 						EndTime={EndTime}
 						onChangeEndTime={onChangeEndTime}
 						Step={Step}
@@ -634,11 +634,11 @@ class CreateStep1 extends Component {
 						chartData={chartData}
 						chartDataLoading={chartDataLoading}/>
 				</div>
-				<DiagnoseRange 
+				<DiagnoseRange
 					Step={Step}
 					onUpdateStep={onUpdateStep}
-					Timeranges={Timeranges} 
-					onAddDateRange={onAddDateRange} 
+					Timeranges={Timeranges}
+					onAddDateRange={onAddDateRange}
 					onDeleteDateRange={onDeleteDateRange}
 					onUpdateDateRange={onUpdateDateRange}/>
 			</section>
@@ -653,7 +653,7 @@ WorkTimes,
 TriggerValue,
 ConditionType,
 TriggerType,
-ToleranceRatio, 
+ToleranceRatio,
 HistoryStartTime,
 HistoryEndTime,
 
@@ -672,7 +672,7 @@ export class CreateStep2 extends Component {
 			TriggerValue,
 			ConditionType,
 			TriggerType,
-			ToleranceRatio, 
+			ToleranceRatio,
 			HistoryStartTime,
 			HistoryEndTime,
 			disabledPreview,
@@ -685,20 +685,20 @@ export class CreateStep2 extends Component {
 					onChangeStartTime={onUpdateFilterObj('StartTime')}
 					onChangeEndTime={onUpdateFilterObj('EndTime')}
 				/>
-				<DiagnoseCondition 
+				<DiagnoseCondition
 					DiagnoseModel={DiagnoseModel}
-					WorkTimes={WorkTimes} 
+					WorkTimes={WorkTimes}
 					onChangeWorkTime={onUpdateFilterObj('WorkTimes')}
 
 					TriggerValue={TriggerValue}
 					onUpdateTriggerValue={onUpdateFilterObj('TriggerValue')}
-					
+
 					ConditionType={ConditionType}
 					onUpdateConditionType={onUpdateFilterObj('ConditionType')}
-					
+
 					TriggerType={TriggerType}
 					onUpdateTriggerType={onUpdateFilterObj('TriggerType')}
-					
+
 					ToleranceRatio={ToleranceRatio}
 					onUpdateToleranceRatio={onUpdateFilterObj('ToleranceRatio')}
 
@@ -720,7 +720,7 @@ function CreateStep3({
 	return (
 		<section>
 			<hgroup>{'诊断名称'}</hgroup>
-			{diagnoseTags && diagnoseTags.map((tag, idx) => 
+			{diagnoseTags && diagnoseTags.map((tag, idx) =>
 			tag.get('checked') ?
 			<ViewableTextField
 			title={'诊断名称'}
@@ -780,7 +780,7 @@ class CreateDiagnose extends Component {
 	componentWillUnmount(){
 		DiagnoseStore.removeCreatedDiagnoseListener(this._onCreated);
 	}
-	_getTagList(props, ctx) {		
+	_getTagList(props, ctx) {
 		DiagnoseAction.getDiagnoseTag(
 			ctx.hierarchyId,
 			props.EnergyLabel.get('Id'),
@@ -810,7 +810,7 @@ class CreateDiagnose extends Component {
 			DiagnoseAction.getChartData({
 			...updateUtcFormatFilter(filterObj,
 				['EndTime', 'StartTime', 'HistoryEndTime', 'HistoryStartTime']
-			).toJS(), 
+			).toJS(),
 			...{
 				HierarchyId: this.context.hierarchyId,
 				DiagnoseItemId: this.props.DiagnoseItemId,
@@ -833,12 +833,12 @@ class CreateDiagnose extends Component {
 			return isEmptyStr( filterObj.get('TriggerValue') );
 		} else if(DiagnoseModel === DIAGNOSE_MODEL.B) {
 			if( filterObj.get('TriggerType') === TRIGGER_TYPE.FixedValue ) {
-				return isEmptyStr( filterObj.get('TriggerValue') ) || 
+				return isEmptyStr( filterObj.get('TriggerValue') ) ||
 						isEmptyStr( filterObj.get('ToleranceRatio') );
 			}
 			if( filterObj.get('TriggerType') === TRIGGER_TYPE.HistoryValue ) {
 				return isEmptyStr( filterObj.get('ToleranceRatio') );
-				
+
 			}
 		} else if(DiagnoseModel === DIAGNOSE_MODEL.C) {
 
@@ -869,7 +869,7 @@ class CreateDiagnose extends Component {
 		DiagnoseAction.createDiagnose({
 			...updateUtcFormatFilter(filterObj,
 				['EndTime', 'StartTime', 'HistoryEndTime', 'HistoryStartTime']
-			).toJS(), 
+			).toJS(),
 			...{
 				HierarchyId: this.context.hierarchyId,
 				DiagnoseItemId: this.props.DiagnoseItemId,
@@ -878,7 +878,7 @@ class CreateDiagnose extends Component {
 				TagIds: checkedTags.map( tag => tag.get('Id') ).toJS(),
 				Names: checkedTags.map( tag => tag.get('DiagnoseName') ).toJS(),
 			}
-		}, isClose);		
+		}, isClose);
 	}
 	_onCheckDiagnose(idx, val) {
 		let newDiagnoseTags = this.state.diagnoseTags.setIn([idx, 'checked'], val);
@@ -898,7 +898,7 @@ class CreateDiagnose extends Component {
 		this._createDiagnose(true);
 	}
 	_onSaveRenew() {
-		this._createDiagnose(false);		
+		this._createDiagnose(false);
 	}
 	_onRenew() {
 		this.setState({
@@ -922,21 +922,21 @@ class CreateDiagnose extends Component {
 		let DiagnoseModel = this.props.EnergyLabel.get('DiagnoseModel'),
 		{step, diagnoseTags, chartData, chartDataLoading, filterObj} = this.state,
 		{
-			TagIds, 
-			Timeranges, 
-			Step, 
-			StartTime, 
-			EndTime, 
-			WorkTimes, 
-			TriggerValue, 
-			ConditionType, 
-			TriggerType, 
-			ToleranceRatio, 
-			HistoryStartTime, 
-			HistoryEndTime, 
+			TagIds,
+			Timeranges,
+			Step,
+			StartTime,
+			EndTime,
+			WorkTimes,
+			TriggerValue,
+			ConditionType,
+			TriggerType,
+			ToleranceRatio,
+			HistoryStartTime,
+			HistoryEndTime,
 		} = filterObj.toJS();
 		if( step === 0 ) {
-			return (<CreateStep1 
+			return (<CreateStep1
 						diagnoseTags={diagnoseTags}
 						onCheckDiagnose={this._onCheckDiagnose}
 						StartTime={StartTime}
@@ -962,13 +962,13 @@ class CreateDiagnose extends Component {
 						chartDataLoading={chartDataLoading}
 						Timeranges={Timeranges}
 						onUpdateDateRange={(idx, type, startOrEnd, val) => {
-							this._setFilterObjThenUpdataChart(['Timeranges', idx, type], 
+							this._setFilterObjThenUpdataChart(['Timeranges', idx, type],
 								new Date().getFullYear() + SEPARTOR + val.join(SEPARTOR)
 							);
 						}}
 						onAddDateRange={() => {
 							Timeranges.push({
-								StartTime: getFirstDateByThisYear(DATE_FORMAT), 
+								StartTime: getFirstDateByThisYear(DATE_FORMAT),
 								EndTime: getEndDateByThisYear(DATE_FORMAT)});
 							this._setFilterObjThenUpdataChart('Timeranges', Timeranges);
 						}}
@@ -977,17 +977,17 @@ class CreateDiagnose extends Component {
 							this._setFilterObjThenUpdataChart('Timeranges', Timeranges);
 						}}/>);
 		} else if( step === 1 ) {
-			return (<CreateStep2 
+			return (<CreateStep2
 						DiagnoseModel={DiagnoseModel}
 						chartData={chartData}
 						chartDataLoading={chartDataLoading}
 
-						onUpdateFilterObj={paths => 
+						onUpdateFilterObj={paths =>
 							val => this._setFilterObj(paths, val)
 						}
 						disabledPreview={this._step2NeedRequire()}
 
-						StartTime={StartTime}						
+						StartTime={StartTime}
 						EndTime={EndTime}
 						getChartData={this._getChartData}
 						WorkTimes={WorkTimes}
@@ -997,7 +997,7 @@ class CreateDiagnose extends Component {
 						ToleranceRatio={ToleranceRatio}
 						HistoryStartTime={HistoryStartTime}
 						HistoryEndTime={HistoryEndTime}
-						
+
 						/>);
 		} else if( step === 2 ) {
 			return (<CreateStep3 diagnoseTags={diagnoseTags} onUpdateDiagnoseTags={(diagnoseTags) => {
@@ -1029,7 +1029,7 @@ class CreateDiagnose extends Component {
 	_getFooterButton() {
 		let {step, diagnoseTags, filterObj} = this.state,
 		checkedTags = diagnoseTags && diagnoseTags.filter(tag => tag.get('checked')),
-		needAddNames = !checkedTags || 
+		needAddNames = !checkedTags ||
 						checkedTags.map(tag => tag.get('DiagnoseName')).toJS()
 						.reduce((result, val) => result || isEmptyStr(val), false),
 		buttons = [];
