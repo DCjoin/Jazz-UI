@@ -93,16 +93,25 @@ const DiagnoseAction = {
       }
     });
   },
-  getChartData(params) {
+  getChartData(params, oldChartData) {
     AppDispatcher.dispatch({
       type: Action.GET_CHART_DATAING,
     })
     Ajax.post('/diagnose/previewchart', {
       params,
+      commonErrorHandling: false,
       success: (res) => {
         AppDispatcher.dispatch({
           type: Action.GET_CHART_DATA,
           data: res,
+        })
+      },
+      error: (err, res) => {
+        let {errorCode} = util.processErrorCode(res.body.error.Code);
+        util.popupErrorMessage(util.getErrorMessage(errorCode), res.body.error.Code, true);
+        AppDispatcher.dispatch({
+          type: Action.GET_CHART_DATA,
+          data: oldChartData,
         })
       }
     });
@@ -172,6 +181,7 @@ const DiagnoseAction = {
     var that=this;
     Ajax.post('/diagnose/adddiagnose', {
       params,
+      commonErrorHandling: false,
       success: (res) => {
         that.getDiagnosisList();
         AppDispatcher.dispatch({
@@ -179,6 +189,10 @@ const DiagnoseAction = {
           isClose,
           data: res
         })
+      },
+      error: (err, res) => {
+        let {errorCode} = util.processErrorCode(res.body.error.Code);
+        util.popupErrorMessage(util.getErrorMessage(errorCode), res.body.error.Code, true);
       }
     });
   },

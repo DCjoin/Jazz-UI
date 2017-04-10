@@ -1339,6 +1339,7 @@ I18N.Message.M21709 = 'Incorrect format template, please upload again';
 I18N.Message.M21802 = 'Selected tag include vtag, cannot support raw data view, please select again.';
 
 I18N.Message.M28001 = '"{0}"{1} This name already exists, please save with a different name.';
+I18N.Message.M28002 = '所选基准值历史事件范围无法计算出完整7天的数据，请重新选择后再预览';
 
 I18N.Folder = {};
 I18N.Folder.NewWidget = {};
