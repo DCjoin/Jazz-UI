@@ -177,7 +177,6 @@ export default class LabelList extends Component {
 
   componentDidMount(){
     DiagnoseStore.addChangeListener(this._onChanged);
-
 		if(this.context.hierarchyId){
 			this._getList(this.context.hierarchyId);
 			this.getCalendar(this.context.hierarchyId);

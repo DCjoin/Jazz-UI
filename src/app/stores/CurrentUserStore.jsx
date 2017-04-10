@@ -6,6 +6,7 @@ import { List, updater, update, Map } from 'immutable';
 
 import CurrentUser from '../constants/actionType/CurrentUser.jsx';
 import Measures from '../constants/actionType/Measures.jsx';
+import Diagnose from '../constants/actionType/Diagnose.jsx';
 import LoginActionType from '../constants/actionType/Login.jsx';
 import RoutePath from '../util/RoutePath.jsx';
 import PermissionCode from '../constants/PermissionCode.jsx';
@@ -172,8 +173,8 @@ var CurrentUserStore = assign({}, PrototypeStore, {
     return _ecmHasBubble;
   },
   //诊断问题标志
-  setDiagnoseubble:function(data){
-    _diagnoseHasBubble=data['1'] || data['2'];
+  setDiagnoseBubble:function(data){
+    _diagnoseHasBubble=data[2] || data[4];
   },
   getDiagnoseBubble:function(){
     return _diagnoseHasBubble;
@@ -400,7 +401,8 @@ var CurrentUserStore = assign({}, PrototypeStore, {
 });
 
 var CurrentUserAction = CurrentUser.Action,
-    MeasuresAction=Measures.Action;
+    MeasuresAction=Measures.Action,
+    DiagnoseAction=Diagnose.Action;
 
 CurrentUserStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
@@ -431,6 +433,11 @@ CurrentUserStore.dispatchToken = AppDispatcher.register(function(action) {
       CurrentUserStore.setEcmBubble(action.data);
       CurrentUserStore.emitCurrentUserChange();
       break;
+   //诊断问题
+   case DiagnoseAction.GET_DIAGNOSIS_STATIC:
+       CurrentUserStore.setDiagnoseBubble(action.data);
+       CurrentUserStore.emitCurrentUserChange()
+       break;
   }
 });
 

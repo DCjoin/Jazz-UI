@@ -32,7 +32,7 @@ const DiagnoseStore = assign({}, PrototypeStore, {
     return _diagnoseList;
   },
   setDiagnoseStatic(data){
-    _diagnoseStatic=data
+    _diagnoseStatic={1:data[2],2:data[4]}
   },
   getDiagnoseStatic(){
     return _diagnoseStatic

@@ -329,12 +329,14 @@ export default class DiagnoseProblem extends Component {
                       {this._renderIconMenu()}
                       </div>}
         </div>
-				<DateTimeSelector ref='dateTimeSelector' showTime={true} endLeft='-100px'
-					startDate= {this.state.startDate}
-					endDate={this.state.endDate}
-					startTime={this.state.startTime}
-					endTime={this.state.endTime}
-					 _onDateSelectorChanged={this._onDateSelectorChanged}/>
+				<div style={{display:this.state.chartData?'block':'none'}}>
+					<DateTimeSelector ref='dateTimeSelector' showTime={true} endLeft='-100px'
+						startDate= {this.state.startDate}
+						endDate={this.state.endDate}
+						startTime={this.state.startTime}
+						endTime={this.state.endTime}
+						 _onDateSelectorChanged={this._onDateSelectorChanged}/>
+				</div>		
 
 					 {this.state.chartData?<DiagnoseChart data={this.state.chartData}/>
 																:<div className="flex-center" style={{flex:'none'}}>
