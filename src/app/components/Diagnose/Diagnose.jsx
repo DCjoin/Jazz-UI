@@ -209,7 +209,10 @@ render(){
                        />
       </div>
       {this.state.formStatus === formStatus.ADD &&
-      <CreateDiagnose EnergyLabel={this.state.addLabel} DiagnoseItemId ={DiagnoseStore.findItemIdByLabel(this.state.addLabel.get('Id'))}
+      <CreateDiagnose 
+        isBasic={this.state.infoTabNo === 1}
+        EnergyLabel={this.state.addLabel} 
+        DiagnoseItem={DiagnoseStore.findItemByLabel(this.state.addLabel.get('Id'))}
         onClose={(id) => {
         this.setState({
           formStatus:formStatus.VIEW,
