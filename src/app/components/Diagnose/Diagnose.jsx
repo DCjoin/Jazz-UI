@@ -97,10 +97,11 @@ export default class Diagnose extends Component {
     })
   }
 
-  _onCreated(isClose) {
+  _onCreated(isClose, lastCreateId) {
     this.setState({
       createSuccessMeg: isClose
     });
+    alert('hehehe:' + lastCreateId);
     // DiagnoseAction.getDiagnoseStatic(this.context.hierarchyId);
   }
 
