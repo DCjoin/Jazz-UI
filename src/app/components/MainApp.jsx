@@ -40,6 +40,7 @@ import CurrentUserCustomerStore from 'stores/CurrentUserCustomerStore.jsx';
 import HierarchyStore from 'stores/HierarchyStore.jsx';
 import LoginStore from 'stores/LoginStore.jsx';
 import MeasuresAction from 'actions/ECM/MeasuresAction.jsx';
+import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
 import {Status} from 'constants/actionType/Measures.jsx';
 
@@ -166,6 +167,11 @@ let MainApp = React.createClass({
       MeasuresAction.getContainsunread(this.state.hierarchyId,statusArr);
     }
   },
+  _getDiagnoseProblem(){
+    if(this.state.hierarchyId){
+      DiagnoseAction.getDiagnoseStatic(this.state.hierarchyId);
+    }
+  },
   _dataReady: function() {
     let {router, params} = this.props,
     {customerId} = params;
@@ -187,7 +193,8 @@ let MainApp = React.createClass({
         this.setState({
           hierarchyId
         },()=>{
-          this._getECMUnread()
+          this._getECMUnread();
+          this._getDiagnoseProblem();
         });
         if( initHierarchyId ) {
           let {pathname, query} = router.location,

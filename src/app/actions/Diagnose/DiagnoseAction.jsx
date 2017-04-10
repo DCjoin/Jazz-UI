@@ -53,11 +53,11 @@ const DiagnoseAction = {
     var me=this;
     Ajax.get(util.replacePathParams(Path.Diagnose.deletediagnose, diagnoseId), {
       success: (res) => {
-        me.getDiagnosisList();
         AppDispatcher.dispatch({
           type: Action.REMOVE_DIAGNOSE_SUCCESS,
           data:diagnoseId
-        })
+        });
+        me.getDiagnosisList();
       }
     } );
   },
@@ -118,8 +118,10 @@ const DiagnoseAction = {
     } );
   },
   getproblemdata(diagnoseId,startTime,endTime){
-    Ajax.get(util.replacePathParams(Path.Diagnose.getdiagnosedata, diagnoseId,
-                                    `startTime=${startTime || null}`,`endTime=${endTime || null}`), {
+    var path=util.replacePathParams(Path.Diagnose.getproblemdata, diagnoseId);
+    console.log(path);
+    Ajax.get(path, {
+      params:`startTime=${startTime || null}&endTime=${endTime || null}`,
       success: (res) => {
         AppDispatcher.dispatch({
           type: Action.GET_DIAGNOSE_CHART_DATA_SUCCESS,
@@ -132,11 +134,12 @@ const DiagnoseAction = {
     var me=this;
     Ajax.get(util.replacePathParams(Path.Diagnose.ignorediagnose, diagnoseId), {
       success: (res) => {
-        me.getDiagnosisList();
         AppDispatcher.dispatch({
           type: Action.REMOVE_DIAGNOSE_SUCCESS,
           data:diagnoseId
         })
+        me.getDiagnosisList();
+        me.getDiagnoseStatic(_hierarchyId);
       }
     } );
   },
@@ -182,6 +185,7 @@ const DiagnoseAction = {
     var that=this;
     Ajax.post(Path.Diagnose.updateDiagnose, {
       params,
+      commonErrorHandling: false,
       success: () => {
         that.getDiagnosisList();
         AppDispatcher.dispatch({

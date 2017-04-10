@@ -13,6 +13,9 @@ import CreateDiagnose from './CreateDiagnose.jsx';
 import DiagnoseStore from 'stores/DiagnoseStore.jsx';
 import {formStatus} from 'constants/FormStatus.jsx';
 import EditDiagnose from './EditDiagnose.jsx';
+import FolderStore from 'stores/FolderStore.jsx';
+import util from 'util/Util.jsx';
+import RoutePath from 'util/RoutePath.jsx';
 
 
 function getFirstMenuPathFunc(menu) {
@@ -57,8 +60,9 @@ function isBasicNoPrivilege() {
 	return !(isBasicView() || isBasicFull())
 }
 
-
-
+function SolutionFull() {
+	return privilegeUtil.isFull(PermissionCode.SOLUTION_FULL, CurrentUserStore.getCurrentPrivilege());
+}
 
 export default class Diagnose extends Component {
 
@@ -73,6 +77,7 @@ export default class Diagnose extends Component {
         this._onBasicTabSwitch = this._onBasicTabSwitch.bind(this);
         this._onCreated = this._onCreated.bind(this);
         this._onRemove=this._onRemove.bind(this);
+        this._onShowSolutionSnakBar = this._onShowSolutionSnakBar.bind(this);
     }
 
   state={
@@ -83,6 +88,7 @@ export default class Diagnose extends Component {
         formStatus:formStatus.VIEW,
         addLabel:null,
         createSuccessMeg: false,
+        showSolutionTip:false
     }
 
   _onHasProblem(){
@@ -122,6 +128,13 @@ export default class Diagnose extends Component {
       selectedId:id
     })
   }
+
+  _onShowSolutionSnakBar() {
+    this.setState({
+      showSolutionTip: true
+    });
+  }
+
   _renderTab(){
     if(isListFull() && !isBasicNoPrivilege()){
       return(
@@ -155,6 +168,7 @@ export default class Diagnose extends Component {
     CurrentUserStore.addCurrentUserListener(this._onHasProblem);
     DiagnoseStore.addCreatedDiagnoseListener(this._onCreated);
     DiagnoseStore.addRemoveDiagnoseListener(this._onRemove);
+    FolderStore.addSolutionCreatedListener(this._onShowSolutionSnakBar);
     this.getProblem();
   }
 
@@ -171,6 +185,7 @@ export default class Diagnose extends Component {
     CurrentUserStore.removeCurrentUserListener(this._onHasProblem);
     DiagnoseStore.removeCreatedDiagnoseListener(this._onCreated);
     DiagnoseStore.removeRemoveDiagnoseListener(this._onRemove);
+    FolderStore.removeSolutionCreatedListener(this._onShowSolutionSnakBar);
   }
 
 render(){
@@ -211,6 +226,18 @@ render(){
       <Snackbar message={'诊断已创建'}
           open={this.state.createSuccessMeg}
           onRequestClose={() => {this.setState({createSuccessMeg: false})}}/>
+
+      <Snackbar ref='snackbar'
+            open={this.state.showSolutionTip}
+            onRequestClose={() => {
+              this.setState({showSolutionTip: false})
+            }}
+            message={SolutionFull() ? I18N.Setting.DataAnalysis.SaveScheme.FullTip : I18N.Setting.DataAnalysis.SaveScheme.PushTip}
+            action={I18N.Setting.DataAnalysis.SaveScheme.TipAction}
+            onActionTouchTap={() => {
+              util.openTab(RoutePath.ecm(this.props.params)+'?init_hierarchy_id='+this.context.hierarchyId);
+            }}
+          />
     </div>
   )
 }

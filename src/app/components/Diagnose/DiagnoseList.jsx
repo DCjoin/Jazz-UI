@@ -71,7 +71,7 @@ export default class DiagnoseList extends Component {
 
 	_renderIconMenu(){
 		var {Status}=this.props.selectedNode.toJS();
-		var IconButtonElement = <IconButton iconClassName="icon-arrow-down" iconStyle={{
+		var IconButtonElement = <IconButton iconClassName="icon-more" iconStyle={{
 			fontSize: '16px'
 		}} style={{
 			padding: '0px',
