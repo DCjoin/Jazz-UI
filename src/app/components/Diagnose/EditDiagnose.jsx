@@ -131,7 +131,7 @@ export default class EditDiagnose extends Component {
           me.getPreviewchart(this.state.diagnoseData.toJS())
         })
       },
-      onUpdateFilterObj:curry(this._merge)
+      onUpdateFilterObj:path => val => this._merge(path, val)
     }
     return <CreateStep2 {...props}/>
   }
@@ -175,19 +175,40 @@ export default class EditDiagnose extends Component {
 				</div>
 			)
 		}else {
+			var styles={
+				label:{
+					fontSize: '14px',
+  				fontWeight: '500',
+  				lineHeight: '1.14',
+  				color: '#ffffff'
+				},
+				btn:{
+					minWidth:'0',
+					borderRadius: '2px',
+					width:'120px',
+					marginTop:'20px'
+				}
+			};
 			return(
 				<div className='diagnose-overlay'>
 					<header className='diagnose-overlay-header'>
 						<div>
 							<span>{I18N.Setting.Diagnose.EditDiagnose}</span>
-							<span><TextField value={this.state.diagnoseData.get('Name')} onChange={(event)=>{this._merge('Name',event.target.value)}}/></span>
+							<span style={{marginLeft:'10px'}}><TextField value={this.state.diagnoseData.get('Name')} onChange={(event)=>{this._merge('Name',event.target.value)}}/></span>
 						</div>
 						<IconButton iconClassName='icon-close' onTouchTap={this.props.onClose}/>
 					</header>
 					{this._renderContent()}
-					<FlatButton label={I18N.Setting.Diagnose.SaveAndExit} style={{float:'right'}} disabled={this._validate()} onTouchTap={()=>{
-							DiagnoseAction.updateDiagnose(this.state.diagnoseData.toJS())
-						}}/>
+					<footer>
+						<div style={{float:"right"}}>
+								<FlatButton label={I18N.Setting.Diagnose.SaveAndExit} labelStyle={styles.label} style={styles.btn} backgroundColor="#0cad04"
+									disabled={this._validate()} onTouchTap={()=>{
+										DiagnoseAction.updateDiagnose(this.state.diagnoseData.toJS())
+									}}/>
+								</div>
+					</footer>
+
+
 					{this.state.errorShow && this._renderErrorDialog()}
 				</div>
 			)

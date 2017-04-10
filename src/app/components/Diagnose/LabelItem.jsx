@@ -17,8 +17,24 @@ class Group extends Component{
   _renderTitle(){
     var {Name,ChildrenCount}=this.props.nodeData.toJS();
     var styles={
+      btn:{
+        borderRadius: '2px',
+        padding:'3px 5px',
+        minWidth:'0',
+        height:'auto',
+        lineHeight:'auto',
+        marginLeft:'6px'
+      },
       label:{
-        fontSize:'14px'
+        fontSize:'9px',
+        padding:'0px',
+        color:"#ffffff"
+      },
+      btnIcon:{
+        fontSize:'9px',
+        color:"#ffffff",
+        marginLeft:'0',
+        marginRight:'4px'
       },
       icon:{
         fontSize:'14px',
@@ -26,23 +42,23 @@ class Group extends Component{
         marginLeft:'15px'
       },
       bubble:{
-        borderRadius:'5px',
-        backgroundColor:'#191919',
-        border:'1px solid red',
-        width:'16px',
-        height:'16px',
-        marginLeft:'15px'
+        borderRadius:'2px',
+        // backgroundColor:'#191919',
+        // border:'1px solid red',
+        width:'12px',
+        height:'12px',
+        marginLeft:'5px'
       },
       number:{
-        color:'red',
-        lineHeight:'16px'
+        color:'#ffffff',
+        lineHeight:'12px'
       }
     };
 
     var count=ChildrenCount>0?<BubbleIcon number={ChildrenCount} style={styles.bubble} numberStyle={styles.number}/>:null;
     var addBtn=<div className="addBtn">
-                  <FlatButton label={I18N.Setting.Diagnose.Diagnose} labelStyle={styles.label}
-                    icon={<FontIcon className="icon-more" style={styles.label}/>}
+                  <FlatButton label={I18N.Setting.Diagnose.Diagnose} labelStyle={styles.label} style={styles.btn} backgroundColor="#0cad04"
+                    icon={<FontIcon className="icon-add" style={styles.btnIcon}/>}
                     onClick={(e)=>{
                                     e.stopPropagation();
                                     this.props.onAdd(this.props.nodeData)}}/>
@@ -56,9 +72,9 @@ class Group extends Component{
         <div className="side">
           <div className="text">{Name}</div>
           {this.props.isFromProbem && count}
+          {!this.props.isFromProbem && addBtn}
         </div>
         <div className="side">
-          {!this.props.isFromProbem && addBtn}
           {collapsedIcon}
         </div>
       </div>

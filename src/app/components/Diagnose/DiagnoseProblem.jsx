@@ -57,6 +57,13 @@ export default class DiagnoseProblem extends Component {
   				super(props);
   				this._onTitleMenuSelect = this._onTitleMenuSelect.bind(this);
           this._onShowSolutionSnakBar = this._onShowSolutionSnakBar.bind(this);
+					this._onSolutionShow = this._onSolutionShow.bind(this);
+					this._onChanged = this._onChanged.bind(this);
+					this._onIgnore = this._onIgnore.bind(this);
+					this._onSuspend = this._onSuspend.bind(this);
+					this._onDateSelectorChanged = this._onDateSelectorChanged.bind(this);
+					this._renderChart = this._renderChart.bind(this);
+
   		}
 
   state={
@@ -179,7 +186,7 @@ export default class DiagnoseProblem extends Component {
 	}
 
 	_renderIconMenu(){
-		var IconButtonElement = <IconButton iconClassName="icon-arrow-down" iconStyle={{
+		var IconButtonElement = <IconButton iconClassName="icon-more" iconStyle={{
 			fontSize: '16px'
 		}} style={{
 			padding: '0px',
@@ -334,7 +341,7 @@ export default class DiagnoseProblem extends Component {
 																		 <CircularProgress  mode="indeterminate" size={80} />
 																	 </div>}
           {this.state.solutionShow && <GenerateSolution
-  					nodes={[this.state.selectedNode]}
+  					nodes={[this.props.selectedNode]}
   					onRequestClose={() => {
   						this.setState({solutionShow: false});
   					}}

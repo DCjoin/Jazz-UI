@@ -182,6 +182,7 @@ const DiagnoseAction = {
     var that=this;
     Ajax.post(Path.Diagnose.updateDiagnose, {
       params,
+      commonErrorHandling: false,
       success: () => {
         that.getDiagnosisList();
         AppDispatcher.dispatch({

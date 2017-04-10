@@ -76,7 +76,7 @@ export default class LabelList extends Component {
 	}
 
   _renderTabs(){
-    var problemIcon=<FontIcon className="icon-lighten"/>;
+    var problemIcon=<FontIcon className="bubble-icon"/>;
     var tabsProp={
       inkBarStyle:{
         height:'3px',
