@@ -187,8 +187,8 @@ const DiagnoseStore = assign({}, PrototypeStore, {
     })
     return id
   },
-  emitCreatedDiagnose: function(isClose) {
-    this.emit(CREATE_DIAGNOSE_EVENT, isClose);
+  emitCreatedDiagnose: function(isClose, data) {
+    this.emit(CREATE_DIAGNOSE_EVENT, isClose, data);
   },
   addCreatedDiagnoseListener: function(callback) {
     this.on(CREATE_DIAGNOSE_EVENT, callback);
@@ -264,7 +264,7 @@ DiagnoseStore.dispatchToken = AppDispatcher.register(function(action) {
           DiagnoseStore.emitChange()
           break;
     case Action.CREATE_DIAGNOSE:
-          DiagnoseStore.emitCreatedDiagnose(action.isClose)
+          DiagnoseStore.emitCreatedDiagnose(action.isClose, action.data)
           break;
     case Action.UPDATE_DIAGNOSE_SUCCESS:
           DiagnoseStore.emitUpdateDiagnose(true)
