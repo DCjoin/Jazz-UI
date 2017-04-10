@@ -290,7 +290,7 @@ EndTime: 结束时间(YYYY-MM-DDTHH:mm:ss)
 onChangeStartTime: 修改开始时间 :: String(YYYY-MM-DDTHH:mm:ss) -> ?
 onChangeEndTime: 修改结束时间 :: String(YYYY-MM-DDTHH:mm:ss) -> ?
 **/
-function ChartPreview({chartData, chartDataLoading, onUpdateStep, SHHtep, ...other}) {
+function ChartPreview({chartData, chartDataLoading, onUpdateStep, Step, ...other}) {
 	return (<section className='diagnose-create-chart-preview'>
 		<hgroup className='diagnose-range-title'>{'图表预览'}</hgroup>
 		<div className='diagnose-create-chart-action'>
@@ -443,6 +443,8 @@ function ModelBCondition({
 	HistoryEndTime,
 	onUpdateHistoryStartTime,
 	onUpdateHistoryEndTime,
+
+	disabledHistory,
 }) {
 	return (<div className='diagnose-condition-model-b'>
 		<div>
@@ -481,6 +483,7 @@ function ModelBCondition({
 					label={'固定值'}
 				/>
 				<RadioButton
+					disabled={disabledHistory}
 					value={TRIGGER_TYPE.HistoryValue}
 					label={'历史值'}
 				/>
@@ -662,6 +665,8 @@ EndTime,
 chartData,
 chartDataLoading,
 getChartData,
+
+disabledHistory,
 **/
 export class CreateStep2 extends Component {
 	render() {
@@ -676,6 +681,7 @@ export class CreateStep2 extends Component {
 			HistoryStartTime,
 			HistoryEndTime,
 			disabledPreview,
+			disabledHistory,
 			...other,
 		} = this.props;
 		return (
@@ -686,6 +692,7 @@ export class CreateStep2 extends Component {
 					onChangeEndTime={onUpdateFilterObj('EndTime')}
 				/>
 				<DiagnoseCondition
+					disabledHistory={disabledHistory}
 					DiagnoseModel={DiagnoseModel}
 					WorkTimes={WorkTimes}
 					onChangeWorkTime={onUpdateFilterObj('WorkTimes')}
@@ -820,7 +827,7 @@ class CreateDiagnose extends Component {
 						.filter( tag => tag.get('checked') )
 						.map( tag => tag.get('Id') )
 						.toJS(),
-			}});
+			}}, this.state.chartData);
 		}
 		this.setState({
 			chartData: null
@@ -978,6 +985,7 @@ class CreateDiagnose extends Component {
 						}}/>);
 		} else if( step === 1 ) {
 			return (<CreateStep2
+						disabledHistory={diagnoseTags.filter(tag => tag.get('checked')).size !== 1}
 						DiagnoseModel={DiagnoseModel}
 						chartData={chartData}
 						chartDataLoading={chartDataLoading}
