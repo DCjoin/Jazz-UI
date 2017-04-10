@@ -820,7 +820,7 @@ class CreateDiagnose extends Component {
 			).toJS(),
 			...{
 				HierarchyId: this.context.hierarchyId,
-				DiagnoseItemId: this.props.DiagnoseItemId,
+				DiagnoseItemId: this.props.DiagnoseItem.get('Id'),
 				EnergyLabelId: this.props.EnergyLabel.get('Id'),
 				DiagnoseModel: this.props.EnergyLabel.get('DiagnoseModel'),
 				TagIds: diagnoseTags
@@ -879,7 +879,7 @@ class CreateDiagnose extends Component {
 			).toJS(),
 			...{
 				HierarchyId: this.context.hierarchyId,
-				DiagnoseItemId: this.props.DiagnoseItemId,
+				DiagnoseItemId: this.props.DiagnoseItem.get('Id'),
 				EnergyLabelId: this.props.EnergyLabel.get('Id'),
 				DiagnoseModel: this.props.EnergyLabel.get('DiagnoseModel'),
 				TagIds: checkedTags.map( tag => tag.get('Id') ).toJS(),
@@ -1062,14 +1062,15 @@ class CreateDiagnose extends Component {
 		return buttons;
 	}
 	render() {
-		let {step} = this.state;
+		let {step} = this.state, 
+		{EnergyLabel, DiagnoseItem, isBasic} = this.props;
 		return (
 			<div className='diagnose-overlay'>
 				<header className='diagnose-overlay-header'>
 					<div>
 						<span>{'新建诊断'}</span>
 						<span>
-							{['基本', '室内环境异常', '公区温度'].join(SEPARTOR)}
+							{[isBasic?I18N.Setting.Diagnose.Basic:I18N.Setting.Diagnose.Senior, DiagnoseItem.get('Name'), EnergyLabel.get('Name')].join(SEPARTOR)}
 						</span>
 					</div>
 					<IconButton iconClassName='icon-close' onClick={this._onClose}/>
@@ -1095,8 +1096,9 @@ class CreateDiagnose extends Component {
 	}
 }
 CreateDiagnose.propTypes = {
-	EnergyLabel: PropTypes.number,
-	DiagnoseItemId: PropTypes.number,
+	isBasic: PropTypes.bool,
+	EnergyLabel: PropTypes.object,
+	DiagnoseItem: PropTypes.object,
 	onClose: PropTypes.func,
 	onSave: PropTypes.func,
 }

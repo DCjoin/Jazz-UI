@@ -163,13 +163,13 @@ const DiagnoseStore = assign({}, PrototypeStore, {
     })
     return temp
   },
-  findItemIdByLabel(labelId){
+  findItemByLabel(labelId){
     if(_diagnoseList===null) return null
-    var itemId=null;
+    var item=null;
     _diagnoseList.forEach(diagnose=>{
-      if(diagnose.get('Children').findIndex(item=>(item.get('Id')===labelId))>-1) itemId=diagnose.get('Id')
+      if(diagnose.get('Children').findIndex(item=>(item.get('Id')===labelId))>-1) item=diagnose
     })
-    return itemId
+    return item
     },
   getNextId(diagnoseId){
     var id=null;
