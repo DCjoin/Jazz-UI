@@ -330,7 +330,9 @@ export class GenerateSolution extends Component {
 			          marginBottom: '0px',
 			          marginLeft: '9px'
 			        }}>
-							{this.props.renderChartCmp(node,this._afterChartCreated)}
+							{this.props.renderChartCmp(node,() => {
+								this._afterChartCreated(nodeId);
+							})}
 					</div>
 				</div>);
 	}
