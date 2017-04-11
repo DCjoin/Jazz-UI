@@ -199,14 +199,24 @@ function AdditiveComp({
 	let disabled = data && data.length >= limit;
 	return (
 		<div className={className}>
-			<hgroup className='' style={{color: '#ABAFAE', marginBottom: -15}}>
-			{title} <IconButton disabled={disabled}  iconClassName='icon-add' iconStyle={{fontSize: 14}} onClick={onAdd}/>
+			<hgroup className='' style={{color: '#202622', marginBottom: -15}}>
+			{title} <IconButton 
+						disabled={disabled}  
+						iconClassName='icon-add' 
+						iconStyle={{
+							fontSize: 14,
+							iconHoverColor: '#0cad04',
+						}} 
+						onClick={onAdd}/>
 			</hgroup>
 			<div className={contentClassName}>{data.map( (item, idx) =>
 				<div style={{display: 'flex'}}>
 					{renderFunc(item, idx)}
 					{data && data.length > 1 &&
-					(<IconButton iconClassName='icon-close' iconStyle={{fontSize: 14}} onClick={() => {
+					(<IconButton iconClassName='icon-close' iconStyle={{
+						fontSize: 12,
+						iconHoverColor: '#0cad04',
+					}} onClick={() => {
 						onDelete(idx);
 					}}/>)}
 				</div>)}
@@ -258,8 +268,10 @@ function TagList({tags, onCheck}) {
 			<ul className='diagnose-create-tag-list-content'>
 				{tags.map( (tag, i) =>
 				<li className='diagnose-create-tag-list-item'  title={tag.get('Name')}>
-					<Checkbox disabled={!tag.get('checked') && tags.filter(tmpTag => tmpTag.get('checked')).size === 10} checked={tag.get('checked')} onCheck={(e, isInputChecked) => {
-						onCheck(i, isInputChecked);
+					<Checkbox checked={tag.get('checked')} 
+						disabled={!tag.get('checked') && tags.filter(tmpTag => tmpTag.get('checked')).size === 10} 
+						onCheck={(e, isInputChecked) => {
+							onCheck(i, isInputChecked);
 					}}/>
 					<div className='diagnose-create-checkbox-label'>
 						<div className='diagnose-create-checkbox-label-name hiddenEllipsis'>
@@ -276,7 +288,7 @@ function TagList({tags, onCheck}) {
 		);
 	}
 	return (<section className='diagnose-create-tag-list'>
-		<hgroup className='diagnose-create-tag-list-title'>{'诊断数据点'}</hgroup>
+		<hgroup className='diagnose-create-tag-list-title diagnose-create-title'>{'诊断数据点'}</hgroup>
 		{content}
 	</section>)
 }
@@ -293,7 +305,7 @@ onChangeEndTime: 修改结束时间 :: String(YYYY-MM-DDTHH:mm:ss) -> ?
 **/
 function ChartPreview({chartData, chartDataLoading, onUpdateStep, Step, onDeleteLegendItem, ...other}) {
 	return (<section className='diagnose-create-chart-preview'>
-		<hgroup className='diagnose-range-title'>{'图表预览'}</hgroup>
+		<hgroup className='diagnose-range-title diagnose-create-title'>{'图表预览'}</hgroup>
 		<div className='diagnose-create-chart-action'>
 			<ChartDateFilter
 				disabled={!chartData}
@@ -310,7 +322,7 @@ function ChartPreview({chartData, chartDataLoading, onUpdateStep, Step, onDelete
 
 function ChartPreviewStep2({chartData, chartDataLoading, getChartData, disabledPreview, onDeleteLegendItem, ...other}) {
 	return (<section className='diagnose-create-chart-preview-step2'>
-		<hgroup className='diagnose-range-title'>{'图表预览'}</hgroup>
+		<hgroup className='diagnose-create-title'>{'图表预览'}</hgroup>
 		<div className='diagnose-create-chart-action'>
 			<ChartDateFilter
 				disabled={!chartData}
@@ -341,9 +353,10 @@ export function DiagnoseRange({
 	onUpdateDateRange
 }) {
 	return (<section className='diagnose-range'>
-		<hgroup className='diagnose-range-title'>{'诊断范围'}</hgroup>
+		<hgroup className='diagnose-range-title diagnose-create-title'>{'诊断范围'}</hgroup>
 		<div className='diagnose-range-content'>
 			<ViewableDropDownMenu
+				style={{width: 116}}
 				title={'步长'}
 				defaultValue={Step}
 				didChanged={onUpdateStep}
@@ -355,6 +368,7 @@ export function DiagnoseRange({
 			/>
 			<AdditiveComp
 				className={'diagnose-range-time'}
+				contentClassName={'diagnose-range-time-content'}
 				title={'时间范围'}
 				limit={2}
 				data={Timeranges}
@@ -400,7 +414,7 @@ function RuntimeComp({
 			onAdd={onAddWorkTime}
 			onDelete={onDeleteWorkTime}
 			renderFunc={(data, idx) =>
-			<div key={idx} style={{display: 'flex', alignItems: 'center'}}>
+			<div key={idx} style={{display: 'flex', alignItems: 'center', marginLeft: -10}}>
 				<ViewableDropDownMenu
 					style={{width: 100, marginLeft: 10, marginTop: -6}}
 					defaultValue={data.StartTime}
@@ -428,12 +442,12 @@ function RuntimeComp({
 
 function ModelACondition({TriggerValue, onUpdateTriggerValue, uom}) {
 	return (<div className='diagnose-condition-model-a'>
-		<span>{`非运行时间触发值(${uom})`}</span>
+		<span className='diagnose-condition-subtitle'>{`非运行时间触发值(${uom})`}</span>
 		<ViewableTextField
 			hintText={'输入触发值'}
 			defaultValue={TriggerValue}
 			didChanged={onUpdateTriggerValue}/>
-		<span style={{fontSize: 14}}>{'注： 高于触发值时触发诊断'}</span>
+		<span style={{fontSize: 12, color: '#9c9c9c'}}>{'注： 高于触发值时触发诊断'}</span>
 	</div>)
 }
 
@@ -455,11 +469,10 @@ function ModelBCondition({
 	disabledHistory,
 }) {
 	return (<div className='diagnose-condition-model-b'>
-		<div>
-			<div>
-				<div>{'触发条件'}</div>
-			</div>
+		<div className='diagnose-condition-model-b-item'>
+			<div className='diagnose-condition-subtitle'>{'触发条件'}</div>
 			<RadioButtonGroup
+				className={'diagnose-condition-radio-group'}
 				name="ConditionType"
 				valueSelected={ConditionType}
 				onChange={(evt, val) => {
@@ -475,12 +488,13 @@ function ModelBCondition({
 				/>
 			</RadioButtonGroup>
 		</div>
-		<div>
+		<div className='diagnose-condition-model-b-item'>
 			<div>
-				<div>{'基准值属性'}</div>
-				<div>{'历史值仅支持单个数据点'}</div>
+				<div className='diagnose-condition-subtitle'>{'基准值属性'}</div>
+				{disabledHistory && <div style={{fontSize: 10, color: '#9c9c9c', marginTop: 5}}>{'(历史值仅支持单个数据点)'}</div>}
 			</div>
 			<RadioButtonGroup
+				className={'diagnose-condition-radio-group'}
 				name="TriggerType"
 				valueSelected={TriggerType}
 				onChange={(evt, val) => {
@@ -497,15 +511,17 @@ function ModelBCondition({
 				/>
 			</RadioButtonGroup>
 		</div>
-		{ TriggerType === TRIGGER_TYPE.FixedValue && <div>
-			<span>{`基准值(${uom})`}</span>
+		{ TriggerType === TRIGGER_TYPE.FixedValue && 
+		<div style={{marginTop: 15}}>
+			<span className='diagnose-condition-subtitle'>{`基准值(${uom})`}</span>
 			<ViewableTextField
 				hintText={'填写基准值'}
 				defaultValue={TriggerValue}
 				didChanged={onUpdateTriggerValue}/>
 		</div>}
-		{ TriggerType === TRIGGER_TYPE.HistoryValue && <div>
-			<span>{'基准值历史事件范围'}</span>
+		{ TriggerType === TRIGGER_TYPE.HistoryValue && 
+		<div style={{marginTop: 15}}>
+			<span className='diagnose-condition-subtitle'>{'基准值历史事件范围'}</span>
 			<ChartDateFilter
 				style={{
 					flexWrap: 'wrap'
@@ -515,13 +531,13 @@ function ModelBCondition({
 				onChangeStartTime={onUpdateHistoryStartTime}
 				onChangeEndTime={onUpdateHistoryEndTime}/>
 		</div>}
-		<div>
-			<span>{'敏感值(%)'}</span>
+		<div style={{marginTop: 15, marginBottom: 15}}>
+			<span className='diagnose-condition-subtitle'>{'敏感值(%)'}</span>
 			<ViewableTextField
 				hintText={'填写敏感值'}
 				defaultValue={!isEmptyStr(ToleranceRatio) ? ToleranceRatio * 100 : ToleranceRatio}
 				didChanged={onUpdateToleranceRatio}/>
-			<span style={{fontSize: 14}}>{'注： 高于触发值时触发诊断'}</span>
+			<span style={{fontSize: 12, color: '#ff4b00'}}>{'注：触发值=基准值*（1+／-敏感值)'}</span>
 		</div>
 	</div>)
 }
@@ -549,7 +565,7 @@ function DiagnoseCondition({
 	let workRuningTimes = WorkTimes.filter(time => time.TimeType === CALENDAR_ITEM_TYPE.WorkDay),
 	holidayRuningTimes = WorkTimes.filter(time => time.TimeType === CALENDAR_ITEM_TYPE.Holiday);
 	return (<section className='diagnose-condition'>
-		<hgroup>{'诊断条件'}</hgroup>
+		<hgroup className='diagnose-create-title'>{'诊断条件'}</hgroup>
 		<div className='diagnose-condition-content'>
 			<RuntimeComp
 				workRuningTimes={workRuningTimes}
@@ -705,7 +721,7 @@ export class CreateStep2 extends Component {
 			_firstUom = chartData.getIn(['EnergyViewData', 'TargetEnergyData', 0, 'Target', 'Uom']);
 		}
 		return (
-			<section className='diagnose-create-step'>
+			<section className='diagnose-create-content diagnose-create-step'>
 				<ChartPreviewStep2 {...other}
 					chartData={chartData}
 					disabledPreview={disabledPreview}
@@ -783,19 +799,23 @@ function CreateStep3({
 	onUpdateDiagnoseTags,
 }) {
 	return (
-		<section>
-			<hgroup>{'诊断名称'}</hgroup>
-			{diagnoseTags && diagnoseTags.map((tag, idx) =>
-			tag.get('checked') ?
-			<ViewableTextField
-			title={'诊断名称'}
-			hintText={'请输入诊断名称'}
-			defaultValue={tag.get('DiagnoseName')}
-			didChanged={(val) => {
-				onUpdateDiagnoseTags(diagnoseTags.setIn([idx, 'DiagnoseName'], val));
-			}}/>
-			: null
-			).toJS()}
+		<section className='diagnose-create-content diagnose-create-names'>
+			<hgroup className='diagnose-create-title'>{'诊断名称'}</hgroup>
+			<div style={{paddingLeft: 15, paddingBottom: 25}}>
+				{diagnoseTags && diagnoseTags.map((tag, idx) =>
+				tag.get('checked') ?
+				<div style={{paddingTop: 25}}>
+					<div className={'diagnose-condition-subtitle'}>{'诊断名称'}</div>
+					<ViewableTextField
+					hintText={'请输入诊断名称'}
+					defaultValue={tag.get('DiagnoseName')}
+					didChanged={(val) => {
+						onUpdateDiagnoseTags(diagnoseTags.setIn([idx, 'DiagnoseName'], val));
+					}}/>
+				</div>
+				: null
+				).toJS()}
+			</div>
 		</section>
 	);
 }
@@ -1202,7 +1222,7 @@ class CreateDiagnose extends Component {
 				<header className='diagnose-overlay-header'>
 					<div>
 						<span>{'新建诊断'}</span>
-						<span>
+						<span style={{marginLeft: 14}}>
 							{[isBasic?I18N.Setting.Diagnose.Basic:I18N.Setting.Diagnose.Senior, DiagnoseItem.get('Name'), EnergyLabel.get('Name')].join(SEPARTOR)}
 						</span>
 					</div>
@@ -1211,13 +1231,13 @@ class CreateDiagnose extends Component {
 				<nav className='diagnose-create-stepper'>
 			        <Stepper activeStep={step}>
 			          <Step>
-			            <StepLabel style={{height: 60}}>{'选择诊断数据点并配置诊断范围'}</StepLabel>
+			            <StepLabel style={{height: 50, color: '#1b1f2c', fontWeight: 'bold'}}>{'选择诊断数据点并配置诊断范围'}</StepLabel>
 			          </Step>
 			          <Step>
-			            <StepLabel style={{height: 60}}>{'编辑诊断条件'}</StepLabel>
+			            <StepLabel style={{height: 50, color: '#1b1f2c', fontWeight: 'bold'}}>{'编辑诊断条件'}</StepLabel>
 			          </Step>
 			          <Step>
-			            <StepLabel style={{height: 60}}>{'保存诊断'}</StepLabel>
+			            <StepLabel style={{height: 50, color: '#1b1f2c', fontWeight: 'bold'}}>{'保存诊断'}</StepLabel>
 			          </Step>
 			        </Stepper>
 		        </nav>
