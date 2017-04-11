@@ -187,6 +187,7 @@ var MonthDayItem = React.createClass({
       dataItems: monthItems,
       isViewStatus: me.props.isViewStatus,
       defaultValue: me.props.month,
+      disabled: this.props.disabled,
       title: '',
       textField: 'text',
       style: {
@@ -199,6 +200,7 @@ var MonthDayItem = React.createClass({
       dataItems: dayItems,
       isViewStatus: me.props.isViewStatus,
       defaultValue: me.props.day,
+      disabled: this.props.disabled,
       title: '',
       textField: 'text',
       style: {

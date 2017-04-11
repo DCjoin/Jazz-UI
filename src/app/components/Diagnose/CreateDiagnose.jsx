@@ -345,6 +345,7 @@ onDeleteDateRange: 删除诊断时间范围 :: Number(idx) ->
 onUpdateDateRange: 修改诊断时间范围 :: idx, type, first/end, String(YYYY-MM-DDTHH:mm:ss) -> ?
 **/
 export function DiagnoseRange({
+	disabled,
 	Step,
 	onUpdateStep,
 	Timeranges,
@@ -356,6 +357,7 @@ export function DiagnoseRange({
 		<hgroup className='diagnose-range-title diagnose-create-title'>{'诊断范围'}</hgroup>
 		<div className='diagnose-range-content'>
 			<ViewableDropDownMenu
+				disabled={disabled}
 				style={{width: 116}}
 				title={'步长'}
 				defaultValue={Step}
@@ -370,13 +372,14 @@ export function DiagnoseRange({
 				className={'diagnose-range-time'}
 				contentClassName={'diagnose-range-time-content'}
 				title={'时间范围'}
-				limit={2}
+				limit={disabled ? 0 : 2}
 				data={Timeranges}
 				onAdd={onAddDateRange}
 				onDelete={onDeleteDateRange}
 				renderFunc={(data, idx) =>
 					<div key={idx} style={{display: 'flex', alignItems: 'center'}}>
 					<MonthDayItem
+						disabled={disabled}
 						isViewStatus={false}
 						month={new Date(data.StartTime).getMonth() + 1}
 						day={new Date(data.StartTime).getDate()}
@@ -385,6 +388,7 @@ export function DiagnoseRange({
 						}}/>
 					至
 					<MonthDayItem
+						disabled={disabled}
 						isViewStatus={false}
 						month={new Date(data.EndTime).getMonth() + 1}
 						day={new Date(data.EndTime).getDate()}
@@ -667,6 +671,7 @@ class CreateStep1 extends Component {
 						chartDataLoading={chartDataLoading}/>
 				</div>
 				<DiagnoseRange
+					disabled={!chartData}
 					Step={Step}
 					onUpdateStep={onUpdateStep}
 					Timeranges={Timeranges}
