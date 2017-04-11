@@ -207,7 +207,8 @@ let MainApp = React.createClass({
             hierarchyId: initHierarchyId * 1
           }, () => {
             // router.push(pathname + search );
-            this._getECMUnread()
+            this._getECMUnread();
+            this._getDiagnoseProblem();
           });
         }
       }
@@ -232,7 +233,8 @@ let MainApp = React.createClass({
         let {pathname, query} = this.props.router.location;
         query.init_hierarchy_id = hierarchyId;
         this.props.router.push(pathname + '?' + querystring.stringify(query) );
-        this._getECMUnread()
+        this._getECMUnread();
+        this._getDiagnoseProblem();
       });
     };
     let doned = false;
