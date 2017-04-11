@@ -101,7 +101,7 @@ export default class Diagnose extends Component {
     this.setState({
       createSuccessMeg: isClose
     });
-    alert('hehehe:' + lastCreateId);
+    //alert('hehehe:' + lastCreateId);
     // DiagnoseAction.getDiagnoseStatic(this.context.hierarchyId);
   }
 
@@ -157,11 +157,11 @@ export default class Diagnose extends Component {
   }
 
 
-  getProblem(){
+  getProblem(hierarchyId){
     this.setState({
       nodeDetail:null
     },()=>{
-      DiagnoseAction.getDiagnoseStatic(this.context.hierarchyId)
+      DiagnoseAction.getDiagnoseStatic(hierarchyId)
     })
   }
 
@@ -170,15 +170,17 @@ export default class Diagnose extends Component {
     DiagnoseStore.addCreatedDiagnoseListener(this._onCreated);
     DiagnoseStore.addRemoveDiagnoseListener(this._onRemove);
     FolderStore.addSolutionCreatedListener(this._onShowSolutionSnakBar);
-    this.getProblem();
+    this.getProblem(this.context.hierarchyId);
   }
 
   componentWillReceiveProps(nextProps, nextCtx) {
     if( this.context.hierarchyId && nextCtx.hierarchyId === nextProps.params.customerId * 1 ) {
-      this.getProblem();
       nextProps.router.push(
         getFirstMenuPathFunc(CurrentUserStore.getMainMenuItems())(nextProps.params)
       )
+    }
+    if(nextCtx.hierarchyId!==this.context.hierarchyId){
+      this.getProblem(nextCtx.hierarchyId);
     }
   }
 
@@ -209,9 +211,9 @@ render(){
                        />
       </div>
       {this.state.formStatus === formStatus.ADD &&
-      <CreateDiagnose 
+      <CreateDiagnose
         isBasic={this.state.infoTabNo !== 1}
-        EnergyLabel={this.state.addLabel} 
+        EnergyLabel={this.state.addLabel}
         DiagnoseItem={DiagnoseStore.findItemByLabel(this.state.addLabel.get('Id'))}
         onClose={(id) => {
         this.setState({
