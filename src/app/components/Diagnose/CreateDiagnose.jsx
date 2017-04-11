@@ -38,6 +38,8 @@ import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
 
 import DiagnoseChart from './DiagnoseChart.jsx';
 
+let _firstUom = '';
+
 const SEPARTOR = '-';
 const DATE_FORMAT = 'YYYY-MM-DD';
 const CALENDAR_ITEM_TYPE = {
@@ -289,7 +291,7 @@ EndTime: 结束时间(YYYY-MM-DDTHH:mm:ss)
 onChangeStartTime: 修改开始时间 :: String(YYYY-MM-DDTHH:mm:ss) -> ?
 onChangeEndTime: 修改结束时间 :: String(YYYY-MM-DDTHH:mm:ss) -> ?
 **/
-function ChartPreview({chartData, chartDataLoading, onUpdateStep, Step, ...other}) {
+function ChartPreview({chartData, chartDataLoading, onUpdateStep, Step, onDeleteLegendItem, ...other}) {
 	return (<section className='diagnose-create-chart-preview'>
 		<hgroup className='diagnose-range-title'>{'图表预览'}</hgroup>
 		<div className='diagnose-create-chart-action'>
@@ -301,12 +303,12 @@ function ChartPreview({chartData, chartDataLoading, onUpdateStep, Step, ...other
 			</div>
 		</div>
 		{chartDataLoading ? <div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div> :
-		(chartData ?  <div className='diagnose-create-chart'><DiagnoseChart data={chartData}/></div> :
+		(chartData ?  <div className='diagnose-create-chart'><DiagnoseChart data={chartData} onDeleteButtonClick={onDeleteLegendItem}/></div> :
 		<div className='flex-center'>{'在左侧选择数据点'}</div>)}
 	</section>)
 }
 
-function ChartPreviewStep2({chartData, chartDataLoading, getChartData, disabledPreview, ...other}) {
+function ChartPreviewStep2({chartData, chartDataLoading, getChartData, disabledPreview, onDeleteLegendItem, ...other}) {
 	return (<section className='diagnose-create-chart-preview-step2'>
 		<hgroup className='diagnose-range-title'>{'图表预览'}</hgroup>
 		<div className='diagnose-create-chart-action'>
@@ -316,7 +318,7 @@ function ChartPreviewStep2({chartData, chartDataLoading, getChartData, disabledP
 			<RaisedButton label={'预览'} disabled={disabledPreview} onClick={getChartData} icon={<ActionVisibility/>}/>
 		</div>
 		{chartDataLoading ? <div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div> :
-		(chartData ?  <div className='diagnose-create-chart'><DiagnoseChart data={chartData}/></div> :
+		(chartData ?  <div className='diagnose-create-chart'><DiagnoseChart data={chartData} onDeleteButtonClick={onDeleteLegendItem}/></div> :
 		<div className='flex-center'>{'在左侧选择数据点'}</div>)}
 	</section>)
 
@@ -424,9 +426,9 @@ function RuntimeComp({
 		}/>);
 }
 
-function ModelACondition({TriggerValue, onUpdateTriggerValue}) {
+function ModelACondition({TriggerValue, onUpdateTriggerValue, uom}) {
 	return (<div className='diagnose-condition-model-a'>
-		<span>{'非运行时间触发值(kWh)'}</span>
+		<span>{`非运行时间触发值(${uom})`}</span>
 		<ViewableTextField
 			hintText={'输入触发值'}
 			defaultValue={TriggerValue}
@@ -436,6 +438,7 @@ function ModelACondition({TriggerValue, onUpdateTriggerValue}) {
 }
 
 function ModelBCondition({
+	uom,
 	TriggerValue,
 	onUpdateTriggerValue,
 	ConditionType,
@@ -495,7 +498,7 @@ function ModelBCondition({
 			</RadioButtonGroup>
 		</div>
 		{ TriggerType === TRIGGER_TYPE.FixedValue && <div>
-			<span>{'基准值(kWh)'}</span>
+			<span>{`基准值(${uom})`}</span>
 			<ViewableTextField
 				hintText={'填写基准值'}
 				defaultValue={TriggerValue}
@@ -630,12 +633,14 @@ class CreateStep1 extends Component {
 			onAddDateRange,
 			onDeleteDateRange,
 			onUpdateDateRange,
+			onDeleteLegendItem,
 		} = this.props;
 		return (
 			<section className='diagnose-create-content'>
 				<div className='diagnose-create-step'>
 					<TagList tags={diagnoseTags} onCheck={onCheckDiagnose}/>
 					<ChartPreview
+						onDeleteLegendItem={onDeleteLegendItem}
 						StartTime={StartTime}
 						onChangeStartTime={onChangeStartTime}
 						EndTime={EndTime}
@@ -675,6 +680,7 @@ chartDataLoading,
 getChartData,
 
 disabledHistory,
+onDeleteLegendItem,
 **/
 export class CreateStep2 extends Component {
 	render() {
@@ -692,11 +698,16 @@ export class CreateStep2 extends Component {
 			HistoryEndTime,
 			disabledPreview,
 			disabledHistory,
+			chartData,
 			...other,
 		} = this.props;
+		if(chartData) {
+			_firstUom = chartData.getIn(['EnergyViewData', 'TargetEnergyData', 0, 'Target', 'Uom']);
+		}
 		return (
 			<section className='diagnose-create-step'>
 				<ChartPreviewStep2 {...other}
+					chartData={chartData}
 					disabledPreview={disabledPreview}
 					StartTime={StartTime}
 					onChangeStartTime={(val) => {
@@ -736,6 +747,7 @@ export class CreateStep2 extends Component {
 					}}
 				/>
 				<DiagnoseCondition
+					uom={_firstUom}
 					disabledHistory={disabledHistory}
 					DiagnoseModel={DiagnoseModel}
 					WorkTimes={WorkTimes}
@@ -816,6 +828,7 @@ class CreateDiagnose extends Component {
 		this._onCheckDiagnose = this._onCheckDiagnose.bind(this);
 		this._getChartData = this._getChartData.bind(this);
 		this._onCreated = this._onCreated.bind(this);
+		this._onDeleteLegendItem = this._onDeleteLegendItem.bind(this);
 		this._onClose = this._onClose.bind(this);
 
 		this.state = {
@@ -947,6 +960,9 @@ class CreateDiagnose extends Component {
 			});
 		}
 	}
+	_onDeleteLegendItem(obj) {
+		this._onCheckDiagnose(this.state.diagnoseTags.findIndex(tag => tag.get('Id') === obj.uid), false);
+	}
 	_onSaveBack() {
 		this._createDiagnose(true);
 	}
@@ -960,13 +976,13 @@ class CreateDiagnose extends Component {
 		this._getTagList(this.props, this.context);
 		this._setStep(0)();
 	}
-	_onClose() {
+	_onClose(lastCreateId) {
 		DiagnoseAction.clearCreate();
-		this.props.onClose();
+		this.props.onClose(lastCreateId);
 	}
-	_onCreated(isClose) {
+	_onCreated(isClose, lastCreateId) {
 		if( isClose ) {
-			this._onClose();
+			this._onClose(lastCreateId);
 		} else {
 			this._onRenew();
 		}
@@ -990,6 +1006,7 @@ class CreateDiagnose extends Component {
 		} = filterObj.toJS();
 		if( step === 0 ) {
 			return (<CreateStep1
+						onDeleteLegendItem={this._onDeleteLegendItem}
 						diagnoseTags={diagnoseTags}
 						onCheckDiagnose={this._onCheckDiagnose}
 						StartTime={StartTime}
@@ -1067,6 +1084,7 @@ class CreateDiagnose extends Component {
 						}}/>);
 		} else if( step === 1 ) {
 			return (<CreateStep2
+						onDeleteLegendItem={this._onDeleteLegendItem}
 						disabledHistory={diagnoseTags.filter(tag => tag.get('checked')).size !== 1}
 						DiagnoseModel={DiagnoseModel}
 						chartData={chartData}

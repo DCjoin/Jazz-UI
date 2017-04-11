@@ -239,6 +239,7 @@ export default class ChartBasicComponent extends Component {
                   { viewOption: {TimeRanges:timeRanges}}
                 )) : config;
       },
+      onDeleteButtonClick: this.props.onDeleteButtonClick,
       postNewConfig
     };
     return (
