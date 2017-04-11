@@ -122,8 +122,8 @@ function StepItem({
 function getDefaultFilter() {
 	return Immutable.fromJS({
 		TagIds: [],
-		StartTime: '2017-02-01T00:00:00',
-		EndTime: '2017-02-07T24:00:00',
+		StartTime: moment().subtract(7, 'days').format('YYYY-MM-DDT00:00:00'),
+		EndTime: moment().format('YYYY-MM-DDT24:00:00'),
 		Step: TimeGranularity.Minite,
 		Timeranges: [
 			{
@@ -144,8 +144,8 @@ function getDefaultFilter() {
 		ConditionType: CONDITION_TYPE.Smaller,
 		TriggerType: TRIGGER_TYPE.FixedValue,
 		ToleranceRatio: null,
-		HistoryStartTime: '2017-02-20T00:00:00',
-		HistoryEndTime: '2017-03-21T00:00:00',
+		HistoryStartTime: moment().subtract(31, 'days').format('YYYY-MM-DDT00:00:00'),
+		HistoryEndTime: moment().subtract(1, 'days').format('YYYY-MM-DDT24:00:00'),
 	});
 }
 
@@ -213,8 +213,8 @@ function AdditiveComp({
 	)
 }
 
-function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime, disabled}) {
-	return (<section className='diagnose-create-chart-filter'>
+function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime, disabled, style}) {
+	return (<section className='diagnose-create-chart-filter' style={style}>
 		<ViewableDatePicker
 			disabled={disabled}
     		width={100}
@@ -252,12 +252,11 @@ function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime
 function TagList({tags, onCheck}) {
 	let content = (<section className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></section>);
 	if( tags ) {
-		console.log(tags.toJS());
 		content = (
 			<ul className='diagnose-create-tag-list-content'>
 				{tags.map( (tag, i) =>
 				<li className='diagnose-create-tag-list-item'  title={tag.get('Name')}>
-					<Checkbox checked={tag.get('checked')} onCheck={(e, isInputChecked) => {
+					<Checkbox disabled={!tag.get('checked') && tags.filter(tmpTag => tmpTag.get('checked')).size === 10} checked={tag.get('checked')} onCheck={(e, isInputChecked) => {
 						onCheck(i, isInputChecked);
 					}}/>
 					<div className='diagnose-create-checkbox-label'>
@@ -403,16 +402,22 @@ function RuntimeComp({
 				<ViewableDropDownMenu
 					style={{width: 100, marginLeft: 10, marginTop: -6}}
 					defaultValue={data.StartTime}
-					dataItems={getDateTimeItemsByStepForVal(15)}
+					dataItems={getDateTimeItemsByStepForVal(60)}
 					didChanged={(val) => {
+						if(val > data.EndTime) {
+							onChangeWorkTime(idx, 'EndTime', val);
+						}
 						onChangeWorkTime(idx, 'StartTime', val);
 					}}/>
 				{'至'}
 				<ViewableDropDownMenu
 					style={{width: 100, marginLeft: 10, marginTop: -6}}
 					defaultValue={data.EndTime}
-					dataItems={getDateTimeItemsByStepForVal(15)}
+					dataItems={getDateTimeItemsByStepForVal(60)}
 					didChanged={(val) => {
+						if(val < data.StartTime) {
+							onChangeWorkTime(idx, 'StartTime', val);
+						}
 						onChangeWorkTime(idx, 'EndTime', val);
 					}}/>
 			</div>
@@ -499,6 +504,9 @@ function ModelBCondition({
 		{ TriggerType === TRIGGER_TYPE.HistoryValue && <div>
 			<span>{'基准值历史事件范围'}</span>
 			<ChartDateFilter
+				style={{
+					flexWrap: 'wrap'
+				}}
 				StartTime={HistoryStartTime}
 				EndTime={HistoryEndTime}
 				onChangeStartTime={onUpdateHistoryStartTime}
@@ -508,7 +516,7 @@ function ModelBCondition({
 			<span>{'敏感值(%)'}</span>
 			<ViewableTextField
 				hintText={'填写敏感值'}
-				defaultValue={ToleranceRatio}
+				defaultValue={!isEmptyStr(ToleranceRatio) ? ToleranceRatio * 100 : ToleranceRatio}
 				didChanged={onUpdateToleranceRatio}/>
 			<span style={{fontSize: 14}}>{'注： 高于触发值时触发诊断'}</span>
 		</div>
@@ -672,6 +680,8 @@ export class CreateStep2 extends Component {
 	render() {
 		let {
 			onUpdateFilterObj,
+			StartTime,
+			EndTime,
 			DiagnoseModel,
 			WorkTimes,
 			TriggerValue,
@@ -688,8 +698,42 @@ export class CreateStep2 extends Component {
 			<section className='diagnose-create-step'>
 				<ChartPreviewStep2 {...other}
 					disabledPreview={disabledPreview}
-					onChangeStartTime={onUpdateFilterObj('StartTime')}
-					onChangeEndTime={onUpdateFilterObj('EndTime')}
+					StartTime={StartTime}
+					onChangeStartTime={(val) => {
+						let startTime = moment(val),
+						endTime = moment(EndTime),
+						setStartTime = () => {
+							onUpdateFilterObj('StartTime')(val);
+						};
+						if(endTime < startTime) {
+							endTime = moment(startTime).add(1, 'days');
+						} else if( moment(startTime).add(30, 'days') < endTime ) {
+							endTime = moment(startTime).add(30, 'days');
+						}
+						if(endTime.format('YYYY-MM-DDTHH:mm:ss') !== EndTime) {
+							onUpdateFilterObj('EndTime')(endTime.format('YYYY-MM-DDTHH:mm:ss'), setStartTime );
+						} else {
+							setStartTime();
+						}
+					}}
+					EndTime={EndTime}
+					onChangeEndTime={(val) => {
+						let startTime = moment(StartTime),
+						endTime = moment(val),
+						setEndTime = () => {
+							onUpdateFilterObj('EndTime')(val);
+						};
+						if(endTime < startTime) {
+							startTime = moment(endTime).subtract(1, 'days');
+						} else if( moment(endTime).subtract(30, 'days') > startTime ) {
+							startTime = moment(endTime).subtract(30, 'days');
+						}
+						if(startTime.format('YYYY-MM-DDTHH:mm:ss') !== StartTime) {
+							onUpdateFilterObj( 'StartTime')(startTime.format('YYYY-MM-DDTHH:mm:ss'), setEndTime );
+						} else {
+							setEndTime();
+						}
+					}}
 				/>
 				<DiagnoseCondition
 					disabledHistory={disabledHistory}
@@ -707,7 +751,9 @@ export class CreateStep2 extends Component {
 					onUpdateTriggerType={onUpdateFilterObj('TriggerType')}
 
 					ToleranceRatio={ToleranceRatio}
-					onUpdateToleranceRatio={onUpdateFilterObj('ToleranceRatio')}
+					onUpdateToleranceRatio={(val) => {
+						onUpdateFilterObj('ToleranceRatio')(!isEmptyStr(val) ? val / 100 : val)
+					}}
 
 					HistoryStartTime={HistoryStartTime}
 					onUpdateHistoryStartTime={onUpdateFilterObj('HistoryStartTime')}
@@ -948,11 +994,39 @@ class CreateDiagnose extends Component {
 						onCheckDiagnose={this._onCheckDiagnose}
 						StartTime={StartTime}
 						onChangeStartTime={(val) => {
-							this._setFilterObjThenUpdataChart('StartTime', val);
+							let startTime = moment(val),
+							endTime = moment(EndTime),
+							setStartTime = () => {
+								this._setFilterObjThenUpdataChart('StartTime', val);
+							};
+							if(endTime < startTime) {
+								endTime = moment(startTime).add(1, 'days');
+							} else if( moment(startTime).add(30, 'days') < endTime ) {
+								endTime = moment(startTime).add(30, 'days');
+							}
+							if(endTime.format('YYYY-MM-DDTHH:mm:ss') !== EndTime) {
+								this._setFilterObj( 'EndTime', endTime.format('YYYY-MM-DDTHH:mm:ss'), setStartTime );
+							} else {
+								setStartTime();
+							}
 						}}
 						EndTime={EndTime}
 						onChangeEndTime={(val) => {
-							this._setFilterObjThenUpdataChart('EndTime', val);
+							let startTime = moment(StartTime),
+							endTime = moment(val),
+							setEndTime = () => {
+								this._setFilterObjThenUpdataChart('EndTime', val);
+							};
+							if(endTime < startTime) {
+								startTime = moment(endTime).subtract(1, 'days');
+							} else if( moment(endTime).subtract(30, 'days') > startTime ) {
+								startTime = moment(endTime).subtract(30, 'days');
+							}
+							if(startTime.format('YYYY-MM-DDTHH:mm:ss') !== StartTime) {
+								this._setFilterObj( 'StartTime', startTime.format('YYYY-MM-DDTHH:mm:ss'), setEndTime );
+							} else {
+								setEndTime();
+							}
 						}}
 						Step={Step}
 						onUpdateStep={(val) => {
@@ -969,9 +1043,17 @@ class CreateDiagnose extends Component {
 						chartDataLoading={chartDataLoading}
 						Timeranges={Timeranges}
 						onUpdateDateRange={(idx, type, startOrEnd, val) => {
-							this._setFilterObjThenUpdataChart(['Timeranges', idx, type],
-								new Date().getFullYear() + SEPARTOR + val.join(SEPARTOR)
-							);
+							val = new Date().getFullYear() + SEPARTOR + val.join(SEPARTOR);
+							let setVal = () => {
+								this._setFilterObjThenUpdataChart(['Timeranges', idx, type], val);								
+							}
+							if( type === 'StartTime' && moment(val) > moment(Timeranges[idx].EndTime) ) {
+								this._setFilterObj(['Timeranges', idx, 'EndTime'], val, setVal)
+							} else if( type === 'EndTime' && moment(val) < moment(Timeranges[idx].StartTime) ) {
+								this._setFilterObj(['Timeranges', idx, 'StartTime'], val, setVal)
+							} else {
+								setVal();
+							}
 						}}
 						onAddDateRange={() => {
 							Timeranges.push({
@@ -990,8 +1072,41 @@ class CreateDiagnose extends Component {
 						chartData={chartData}
 						chartDataLoading={chartDataLoading}
 
-						onUpdateFilterObj={paths =>
-							val => this._setFilterObj(paths, val)
+						onUpdateFilterObj={paths => 
+							(val, callback) => {
+								let setVal = () => {
+									this._setFilterObj(paths, val, callback);
+								}
+								if(paths === 'HistoryStartTime') {
+									let startTime = moment(val),
+									endTime = moment(HistoryEndTime);
+									if(endTime < startTime) {
+										endTime = moment(startTime).add(1, 'days');
+									} else if( moment(startTime).add(90, 'days') < endTime ) {
+										endTime = moment(startTime).add(90, 'days');
+									}
+									if(endTime.format('YYYY-MM-DDTHH:mm:ss') !== HistoryEndTime) {
+										this._setFilterObj( 'HistoryEndTime', endTime.format('YYYY-MM-DDTHH:mm:ss'), setVal );
+									} else {
+										setVal();
+									}
+								} else if(paths === 'HistoryEndTime') {
+									let startTime = moment(HistoryStartTime),
+									endTime = moment(val);
+									if(endTime < startTime) {
+										startTime = moment(endTime).subtract(1, 'days');
+									} else if( moment(endTime).subtract(90, 'days') > startTime ) {
+										startTime = moment(endTime).subtract(90, 'days');
+									}
+									if(startTime.format('YYYY-MM-DDTHH:mm:ss') !== HistoryStartTime) {
+										this._setFilterObj( 'HistoryStartTime', startTime.format('YYYY-MM-DDTHH:mm:ss'), setVal );
+									} else {
+										setVal();
+									}
+								} else {
+									setVal();
+								}
+							}
 						}
 						disabledPreview={this._step2NeedRequire()}
 
