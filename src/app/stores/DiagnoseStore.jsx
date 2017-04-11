@@ -44,7 +44,7 @@ const DiagnoseStore = assign({}, PrototypeStore, {
     return _currentDiagnose
   },
   setTagsList(data){
-    _tagsList=Immutable.fromJS(data);
+    _tagsList=Immutable.fromJS(data).map(tag => tag.set('DiagnoseName', tag.get('Name')));
   },
   getTagsList(){
     return _tagsList;
