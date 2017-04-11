@@ -837,7 +837,7 @@ class CreateDiagnose extends Component {
 		DiagnoseAction.getDiagnoseTag(
 			ctx.hierarchyId,
 			props.EnergyLabel.get('Id'),
-			props.DiagnoseItemId,
+			props.DiagnoseItem.get('Id'),
 			1
 		);
 	}
