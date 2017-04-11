@@ -11,6 +11,7 @@ const muiTheme = getMuiTheme({...AppTheme, ...{
   palette: {
     primary1Color: getLessVar('newSchneiderGreen'),
     accent1Color: getLessVar('newSchneiderGreen'),
+    textColor: '#202622',
   },
 }});
 
