@@ -13,9 +13,10 @@ const TRIGGER_DATA_QUALITY = 10;
 const CALENDAR_TYPE_WORKTIME = 2;
 const CALENDAR_TYPE_NO_WORKTIME = 3;
 
-function mapSeriesDataWithMax(isTriggerVal, serie, serieIdx) {
+function mapSeriesDataWithMax(isTriggerVal, serie, serieIdx, series) {
   return {...serie, ...{
     enableHide: false,
+    enableDelete: series.length > 1,
     data: serie.data.map(
       (data, dataIdx) => {
         if( isTriggerVal(serieIdx, dataIdx) ) {
@@ -95,13 +96,14 @@ function postNewConfig(data, newConfig) {
 }
 
 export default function DiagnoseChart(props) {
-	let {data,afterChartCreated} = props,
+	let {data,afterChartCreated, onDeleteButtonClick} = props,
 
 	chartProps = {
 		chartType: CHART_TYPE,
 		tagData: data.get('EnergyViewData'),
 		postNewConfig: curry(postNewConfig)(data),
 		afterChartCreated,
+    onDeleteButtonClick,
 	};
 
 	return (

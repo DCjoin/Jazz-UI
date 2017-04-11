@@ -192,7 +192,10 @@ const DiagnoseAction = {
       },
       error: (err, res) => {
         let {errorCode} = util.processErrorCode(res.body.error.Code);
-        util.popupErrorMessage(util.getErrorMessage(errorCode), res.body.error.Code, true);
+        util.popupErrorMessage(
+          util.replacePathParams(util.getErrorMessage(errorCode), JSON.parse(res.text).error.Messages[0], '诊断名称'), 
+          res.body.error.Code, true
+        );
       }
     });
   },
