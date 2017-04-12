@@ -143,7 +143,7 @@ function getDefaultFilter() {
 			EndTime: 840,
 		}],
 		TriggerValue: null,
-		ConditionType: CONDITION_TYPE.Smaller,
+		ConditionType: CONDITION_TYPE.Larger,
 		TriggerType: TRIGGER_TYPE.FixedValue,
 		ToleranceRatio: null,
 		HistoryStartTime: moment().subtract(31, 'days').format('YYYY-MM-DDT00:00:00'),
