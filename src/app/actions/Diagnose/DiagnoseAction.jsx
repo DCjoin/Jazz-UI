@@ -226,6 +226,19 @@ const DiagnoseAction = {
       type: Action.MERGE_DIAGNOSE_SUCCESS,
       paths,value
     })
+  },
+  generateSolution(diagnoseId){
+    var me=this;
+    Ajax.get(util.replacePathParams(Path.Diagnose.generatesolution, diagnoseId), {
+      success: (res) => {
+        AppDispatcher.dispatch({
+          type: Action.REMOVE_DIAGNOSE_SUCCESS,
+          data:diagnoseId
+        })
+        me.getDiagnosisList();
+        me.getDiagnoseStatic(_hierarchyId);
+      }
+    } );
   }
 }
 

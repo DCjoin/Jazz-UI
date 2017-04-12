@@ -42,7 +42,7 @@ Regex.UrlRule = /(((^https?)):\/\/([\-\w]+\.)+\w{2,3}(\/[%\-\w]+(\.\w{2,})?)*(([
 Regex.FactorRule = /^0(\.(\d{1,6})?)$|^[1-9][0-9]{0,8}(\.(\d{1,6})?)?$/;
 Regex.TagRule = /^\-?0(\.(\d{1,6})?)?$|^\-?[1-9][0-9]{0,8}(\.(\d{1,6})?)?$/;
 Regex.ConsecutiveHoursRule = /^[1-9]\d{0,8}$|^0$/;
-Regex.Code = /^[^(\*{})]+$/;
+Regex.Code = /^[^\*{}]+$/;
 Regex.MeterCode = /^[^('"#$,<>)]+$/;
 Regex.CustomerCode = /^[^(?*:/'"#$,<>\\|)]+$/;
 

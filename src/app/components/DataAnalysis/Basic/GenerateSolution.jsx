@@ -400,7 +400,8 @@ export class GenerateSolution extends Component {
 			onClick={() => {
 				let {data} = this._getAPIDataFormat();
 				FolderAction.createEnergySolution(data);
-				this.props.onRequestClose();
+
+				this.props.onRequestClose(true); //true:closed by submit false:closed by cancel
 			}}/>);
 	}
 
