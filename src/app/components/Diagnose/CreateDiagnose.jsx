@@ -928,12 +928,12 @@ class CreateDiagnose extends Component {
 			return isEmptyStr( filterObj.get('TriggerValue') );
 		} else if(DiagnoseModel === DIAGNOSE_MODEL.B) {
 			if( filterObj.get('TriggerType') === TRIGGER_TYPE.FixedValue ) {
-				return isEmptyStr( filterObj.get('TriggerValue') ) ||
-						isEmptyStr( filterObj.get('ToleranceRatio') );
+				return isEmptyStr( filterObj.get('TriggerValue') )/* ||
+						isEmptyStr( filterObj.get('ToleranceRatio') )*/;
 			}
 			if( filterObj.get('TriggerType') === TRIGGER_TYPE.HistoryValue ) {
-				return isEmptyStr( filterObj.get('ToleranceRatio') );
-
+				// return isEmptyStr( filterObj.get('ToleranceRatio') );
+				return false;
 			}
 		} else if(DiagnoseModel === DIAGNOSE_MODEL.C) {
 			return true;
