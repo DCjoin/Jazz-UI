@@ -242,7 +242,7 @@ function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime
 			disabled={disabled}
 			style={{width: 100, marginLeft: 10, marginTop: -6}}
 			defaultValue={StartTime.split('T')[1].split(':').slice(0, 2).join(':')}
-			dataItems={getDateTimeItemsByStep(60).slice(0, 23)}
+			dataItems={getDateTimeItemsByStep(60).slice(0, 24)}
 			didChanged={(val) => {
 				onChangeStartTime(moment(StartTime).format(DATE_FORMAT) + 'T' + val + ':00');
 			}}/>
@@ -426,7 +426,7 @@ function RuntimeComp({
 				<ViewableDropDownMenu
 					style={{width: 100, marginLeft: 10, marginTop: -6}}
 					defaultValue={data.StartTime}
-					dataItems={getDateTimeItemsByStepForVal(60).slice(0, 23)}
+					dataItems={getDateTimeItemsByStepForVal(60).slice(0, 24)}
 					didChanged={(val) => {
 						if(val > data.EndTime) {
 							onChangeWorkTime(idx, 'EndTime', val);
@@ -741,8 +741,8 @@ export class CreateStep2 extends Component {
 						setStartTime = () => {
 							onUpdateFilterObj('StartTime')(val);
 						};
-						if(endTime < startTime) {
-							endTime = moment(startTime).add(1, 'days');
+						if(endTime < moment(startTime).add(1, 'hours')) {
+							endTime = moment(startTime).add(1, 'hours');
 						} else if( moment(startTime).add(30, 'days') < endTime ) {
 							endTime = moment(startTime).add(30, 'days');
 						}
@@ -759,8 +759,8 @@ export class CreateStep2 extends Component {
 						setEndTime = () => {
 							onUpdateFilterObj('EndTime')(val);
 						};
-						if(endTime < startTime) {
-							startTime = moment(endTime).subtract(1, 'days');
+						if(moment(endTime).subtract(1, 'hours') < startTime) {
+							startTime = moment(endTime).subtract(1, 'hours');
 						} else if( moment(endTime).subtract(30, 'days') > startTime ) {
 							startTime = moment(endTime).subtract(30, 'days');
 						}
@@ -1053,8 +1053,8 @@ class CreateDiagnose extends Component {
 							setStartTime = () => {
 								this._setFilterObjThenUpdataChart('StartTime', val);
 							};
-							if(endTime < startTime) {
-								endTime = moment(startTime).add(1, 'days');
+							if(endTime < moment(startTime).add(1, 'hours')) {
+								endTime = moment(startTime).add(1, 'hours');
 							} else if( moment(startTime).add(30, 'days') < endTime ) {
 								endTime = moment(startTime).add(30, 'days');
 							}
@@ -1071,8 +1071,8 @@ class CreateDiagnose extends Component {
 							setEndTime = () => {
 								this._setFilterObjThenUpdataChart('EndTime', val);
 							};
-							if(endTime < startTime) {
-								startTime = moment(endTime).subtract(1, 'days');
+							if(moment(endTime).subtract(1, 'hours') < startTime) {
+								startTime = moment(endTime).subtract(1, 'hours');
 							} else if( moment(endTime).subtract(30, 'days') > startTime ) {
 								startTime = moment(endTime).subtract(30, 'days');
 							}
