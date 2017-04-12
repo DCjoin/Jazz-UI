@@ -202,7 +202,7 @@ export default class DiagnoseList extends Component {
         </div>
 				<div className="content-chart">
 					{this.state.chartData?<DiagnoseChart data={this.state.chartData}/>
-															 :<div className="flex-center" style={{flex:'none'}}>
+															 :<div className="flex-center">
          						 							<CircularProgress  mode="indeterminate" size={80} />
        													</div>}
 				</div>

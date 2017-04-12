@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import Immutable from 'immutable';
 import FlatButton from 'controls/FlatButton.jsx';
 import NewDialog from 'controls/NewDialog.jsx';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -168,7 +169,7 @@ export default class DiagnoseProblem extends Component {
 			chartData:null
 		}, () => {
 			var d2j=DataConverter.DatetimeToJson;
-			that.getProblem(d2j(timeRange.start),d2j(timeRange.end))
+			that.getProblem(this.props,d2j(timeRange.start),d2j(timeRange.end))
 		})
 
 	}
@@ -276,13 +277,24 @@ export default class DiagnoseProblem extends Component {
       )
     }
 
-		getProblem(start,end){
-			DiagnoseAction.getproblemdata(this.props.selectedNode.get('Id'),start,end);
+		getProblem(props,start,end){
+			DiagnoseAction.getproblemdata(props.selectedNode.get('Id'),start,end);
 		}
 
 		componentDidMount(){
 			DiagnoseStore.addChangeListener(this._onChanged);
-			this.getProblem();
+			this.getProblem(this.props);
+		}
+
+		componentWillReceiveProps(nextProps){
+			if(!Immutable.is(this.props.selectedNode,nextProps.selectedNode)){
+				this.setState({
+					chartData:null
+				},()=>{
+					this.getProblem(nextProps)
+				})
+
+			}
 		}
 
 		componentWillUnmount(){
@@ -326,7 +338,7 @@ export default class DiagnoseProblem extends Component {
 				</div>
 
 					 {this.state.chartData?<DiagnoseChart data={this.state.chartData}/>
-																:<div className="flex-center" style={{flex:'none'}}>
+																:<div className="flex-center">
 																		 <CircularProgress  mode="indeterminate" size={80} />
 																	 </div>}
           {this.state.solutionShow && <GenerateSolution

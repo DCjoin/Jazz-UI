@@ -2219,7 +2219,6 @@ I18N.Setting.ECM.StatusToBeText='节能方案恢复为待分配';
 I18N.Setting.ECM.StatusToDoneText='节能方案保存至已执行';
 I18N.Setting.ECM.StatusToCancelText='节能方案保存至已取消';
 
-
 I18N.Setting.Diagnose={};
 I18N.Setting.Diagnose.EnergyLabel='能源标签';
 I18N.Setting.Diagnose.LightingPower='照明&动力';
