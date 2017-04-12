@@ -168,7 +168,11 @@ export default class DiagnoseList extends Component {
 
   componentWillReceiveProps(nextProps){
     if(this.props.selectedNode.get('Id')!==nextProps.selectedNode.get('Id')){
-      DiagnoseAction.getdiagnosedata(nextProps.selectedNode.get('Id'));
+      this.setState({
+        chartData:null
+      },()=>{
+        DiagnoseAction.getdiagnosedata(nextProps.selectedNode.get('Id'));
+      })      
     }
   }
 
@@ -202,7 +206,7 @@ export default class DiagnoseList extends Component {
         </div>
 				<div className="content-chart">
 					{this.state.chartData?<DiagnoseChart data={this.state.chartData}/>
-															 :<div className="flex-center" style={{flex:'none'}}>
+															 :<div className="flex-center">
          						 							<CircularProgress  mode="indeterminate" size={80} />
        													</div>}
 				</div>
