@@ -480,12 +480,14 @@ let CommonFuns = {
     },
     J2DNoTimezone: function(jsonstring, outintval) {
       outintval = typeof (outintval) === 'boolean' ? outintval : true;
-      jsonstring = jsonstring.substr(6, jsonstring.length - 8);
+      //jsonstring = jsonstring.substr(6, jsonstring.length - 8);
+      jsonstring = Momment(jsonstring).valueOf();
+      // var timezoneoffset = new Date().getTimezoneOffset() * 60000;
       var mydate;
       if (outintval) {
-        mydate = parseInt(jsonstring);
+        mydate = parseInt(jsonstring) ;
       } else {
-        mydate = parseInt(jsonstring);
+        mydate = parseInt(jsonstring) ;
         mydate = new Date(mydate);
       }
 

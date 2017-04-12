@@ -7,6 +7,7 @@ import DiagnoseStore from 'stores/DiagnoseStore.jsx';
 import {DiagnoseRange,CreateStep2} from './CreateDiagnose.jsx';
 import Immutable from 'immutable';
 import NewDialog from 'controls/NewDialog.jsx';
+import {DataConverter} from '../../util/Util.jsx';
 
 function getFirstDateByThisYear(formatStr) {
 	return new Date(moment().startOf('year').format(formatStr))
@@ -24,7 +25,6 @@ export default class EditDiagnose extends Component {
   constructor(props, ctx) {
           super(props);
           this._onChanged = this._onChanged.bind(this);
-					this._merge = this._merge.bind(this);
 					this._onUpdate = this._onUpdate.bind(this);
       }
 
@@ -53,14 +53,12 @@ export default class EditDiagnose extends Component {
 	}
 
   _merge(paths,value){
-    let diagnoseData = this.state.diagnoseData,
-		immuVal = Immutable.fromJS(value);
-		if(paths instanceof Array) {
-			diagnoseData = diagnoseData.setIn(paths, immuVal);
-		} else {
-			diagnoseData = diagnoseData.set(paths, immuVal);
+		if(paths==='StartTime' || paths==='EndTime'){
+			let j2d=DataConverter.J2DNoTimezone,
+					d2j=DataConverter.DatetimeToJson;
+			value=d2j(j2d(value))
 		}
-    this.setState({diagnoseData})
+    DiagnoseAction.mergeDiagnose(paths,value)
   }
 
   _validate(){
@@ -68,6 +66,11 @@ export default class EditDiagnose extends Component {
     if(Name==='' || Name===null || WorkTimes.length===0) return true
     return false
   }
+
+	_formatTime(time){
+		var j2d=DataConverter.JsonToDateTime;
+		return(moment(j2d(time)).format('YYYY-MM-DDTHH:mm:ss'))
+	}
 
 	_renderErrorDialog() {
 		var that = this;
@@ -121,7 +124,8 @@ export default class EditDiagnose extends Component {
           StartTime,EndTime}=this.state.diagnoseData.toJS();
     var props={
       DiagnoseModel,WorkTimes,TriggerValue,ConditionType,TriggerType,ToleranceRatio,HistoryStartTime,HistoryEndTime,
-      StartTime,EndTime,
+      StartTime:this._formatTime(StartTime),
+			EndTime:this._formatTime(EndTime),
       chartData:this.state.chartData,
       chartDataLoading:this.state.chartData===null,
       getChartData:()=>{

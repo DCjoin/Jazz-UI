@@ -76,6 +76,7 @@ module.exports = {
     ignorediagnose:'/diagnose/ignorediagnose/{diagnoseId}',
     previewchart:'/diagnose/previewchart',
     getDiagnoseTag: '/diagnose/getdiagnosetag',
-    updateDiagnose:'/diagnose/update'
+    updateDiagnose:'/diagnose/update',
+    generatesolution:'/diagnose/generatesolution/{diagnoseId}'
   }
 };

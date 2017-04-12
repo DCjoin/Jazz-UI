@@ -197,7 +197,7 @@ const DiagnoseAction = {
       error: (err, res) => {
         let {errorCode} = util.processErrorCode(res.body.error.Code);
         util.popupErrorMessage(
-          util.replacePathParams(util.getErrorMessage(errorCode), JSON.parse(res.text).error.Messages[0], '诊断名称'), 
+          util.replacePathParams(util.getErrorMessage(errorCode), JSON.parse(res.text).error.Messages[0], '诊断名称'),
           res.body.error.Code, true
         );
       }
@@ -221,6 +221,25 @@ const DiagnoseAction = {
       }
     });
   },
+  mergeDiagnose(paths,value){
+    AppDispatcher.dispatch({
+      type: Action.MERGE_DIAGNOSE_SUCCESS,
+      paths,value
+    })
+  },
+  generateSolution(diagnoseId){
+    var me=this;
+    Ajax.get(util.replacePathParams(Path.Diagnose.generatesolution, diagnoseId), {
+      success: (res) => {
+        AppDispatcher.dispatch({
+          type: Action.REMOVE_DIAGNOSE_SUCCESS,
+          data:diagnoseId
+        })
+        me.getDiagnosisList();
+        me.getDiagnoseStatic(_hierarchyId);
+      }
+    } );
+  }
 }
 
 export default DiagnoseAction;
