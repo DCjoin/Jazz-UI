@@ -1091,7 +1091,7 @@ class CreateDiagnose extends Component {
 						onUpdateDateRange={(idx, type, startOrEnd, val) => {
 							val = new Date().getFullYear() + SEPARTOR + val.join(SEPARTOR);
 							let setVal = () => {
-								this._setFilterObjThenUpdataChart(['Timeranges', idx, type], val);								
+								this._setFilterObj(['Timeranges', idx, type], val);								
 							}
 							if( type === 'StartTime' && moment(val) > moment(Timeranges[idx].EndTime) ) {
 								this._setFilterObj(['Timeranges', idx, 'EndTime'], val, setVal)
