@@ -13,10 +13,10 @@ const TRIGGER_DATA_QUALITY = 10;
 const CALENDAR_TYPE_WORKTIME = 2;
 const CALENDAR_TYPE_NO_WORKTIME = 3;
 
-function mapSeriesDataWithMax(isTriggerVal, serie, serieIdx, series) {
+function mapSeriesDataWithMax(isTriggerVal, isEdit, serie, serieIdx, series) {
   return {...serie, ...{
     enableHide: false,
-    enableDelete: series.length > 1,
+    enableDelete: isEdit && series.length > 1,
     data: serie.data.map(
       (data, dataIdx) => {
         if( isTriggerVal(serieIdx, dataIdx) ) {
@@ -38,7 +38,7 @@ function mapSeriesDataWithMax(isTriggerVal, serie, serieIdx, series) {
   }}
 }
 
-function postNewConfig(data, newConfig) {
+function postNewConfig(data, isEdit, newConfig) {
   let triggerVal = data.get('TriggerValue'),
   Calendars = data.getIn(['EnergyViewData', 'Calendars']);
   newConfig.series = newConfig.series.map(
@@ -48,7 +48,7 @@ function postNewConfig(data, newConfig) {
       serieIdx,
       'EnergyData',
       dataIdx, 
-      'DataQuality']) === TRIGGER_DATA_QUALITY)
+      'DataQuality']) === TRIGGER_DATA_QUALITY, isEdit)
   );
   isNumber(triggerVal) && newConfig.series.push({
       lockLegend: true,
@@ -96,14 +96,15 @@ function postNewConfig(data, newConfig) {
 }
 
 export default function DiagnoseChart(props) {
-	let {data,afterChartCreated, onDeleteButtonClick} = props,
+	let {data,afterChartCreated, onDeleteButtonClick, isEdit} = props,
 
 	chartProps = {
 		chartType: CHART_TYPE,
 		tagData: data.get('EnergyViewData'),
-		postNewConfig: curry(postNewConfig)(data),
+		postNewConfig: curry(postNewConfig)(data, isEdit),
 		afterChartCreated,
     onDeleteButtonClick,
+    isEdit,
 	};
 
 	return (
