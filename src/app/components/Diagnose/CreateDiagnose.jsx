@@ -166,7 +166,7 @@ function Left(props) {
 	return (<div style={{float: 'left', marginTop: 5}}>{props.children}</div>);
 }
 function Right(props) {
-	return (<div style={{float: 'right'}}>{props.children}</div>);
+	return (<div style={{float: 'right', display: 'flex'}}>{props.children}</div>);
 }
 function PrevButton(props) {
 	return (<LinkButton {...props} label={'<上一步'}/>);
@@ -1217,11 +1217,31 @@ class CreateDiagnose extends Component {
 		buttons = [];
 		switch (step) {
 			case 0:
-				buttons.push(<Right><NextButton disabled={!checkedTags || checkedTags.size === 0} onClick={this._setStep(1)}/></Right>);
+				buttons.push(<Right>
+					{(!checkedTags || checkedTags.size === 0) && 
+					<div style={{
+						paddingRight: 20, 
+						color: '#adafae', 
+						margin: 'auto'}}>
+						<FontIcon className='icon-information' 
+							style={{fontSize: 12, color: '#adafae', }}/>
+						{'请选择诊断数据点'}
+					</div>}
+					<NextButton disabled={!checkedTags || checkedTags.size === 0} onClick={this._setStep(1)}/></Right>);
 				break;
 			case 1:
 				buttons.push(<Left><PrevButton onClick={this._setStep(0)}/></Left>);
-				buttons.push(<Right><NextButton disabled={this._step2NeedRequire()} onClick={this._setStep(2)}/></Right>);
+				buttons.push(<Right>
+					{this._step2NeedRequire() && 
+					<div style={{
+						paddingRight: 20, 
+						color: '#adafae', 
+						margin: 'auto'}}>
+						<FontIcon className='icon-information' 
+							style={{fontSize: 12, color: '#adafae', }}/>
+						{'请填写诊断条件'}
+					</div>}
+					<NextButton disabled={this._step2NeedRequire()} onClick={this._setStep(2)}/></Right>);
 				break;
 			case 2:
 				buttons.push(<Left><PrevButton onClick={this._setStep(1)}/></Left>);
