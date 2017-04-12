@@ -82,6 +82,8 @@ const DiagnoseAction = {
       type: Action.GET_CHART_DATAING,
     })
     Ajax.post('/Energy/GetTagsData', {
+      tag: 'getChartDataStep1',
+      avoidDuplicate: true,
       params,
       success: (res) => {
         AppDispatcher.dispatch({
@@ -98,6 +100,8 @@ const DiagnoseAction = {
       type: Action.GET_CHART_DATAING,
     })
     Ajax.post('/diagnose/previewchart', {
+      tag: 'getChartData',
+      avoidDuplicate: true,
       params,
       commonErrorHandling: false,
       success: (res) => {
