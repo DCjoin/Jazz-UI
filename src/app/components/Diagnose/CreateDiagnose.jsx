@@ -319,7 +319,7 @@ function ChartPreview({chartData, chartDataLoading, onUpdateStep, Step, onDelete
 			</div>
 		</div>
 		{chartDataLoading ? <div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div> :
-		(chartData ?  <div className='diagnose-create-chart'><DiagnoseChart data={chartData} onDeleteButtonClick={onDeleteLegendItem}/></div> :
+		(chartData ?  <div className='diagnose-create-chart'><DiagnoseChart isEdit={true} data={chartData} onDeleteButtonClick={onDeleteLegendItem}/></div> :
 		<div className='flex-center'>{'在左侧选择数据点'}</div>)}
 	</section>)
 }
@@ -334,7 +334,7 @@ function ChartPreviewStep2({chartData, chartDataLoading, getChartData, disabledP
 			<RaisedButton label={'预览'} disabled={disabledPreview} onClick={getChartData} icon={<ActionVisibility/>}/>
 		</div>
 		{chartDataLoading ? <div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div> :
-		(chartData ?  <div className='diagnose-create-chart'><DiagnoseChart data={chartData} onDeleteButtonClick={onDeleteLegendItem}/></div> :
+		(chartData ?  <div className='diagnose-create-chart'><DiagnoseChart isEdit={true} data={chartData} onDeleteButtonClick={onDeleteLegendItem}/></div> :
 		<div className='flex-center'>{'在左侧选择数据点'}</div>)}
 	</section>)
 
