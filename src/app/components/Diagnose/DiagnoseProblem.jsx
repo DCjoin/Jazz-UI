@@ -343,8 +343,11 @@ export default class DiagnoseProblem extends Component {
 																	 </div>}
           {this.state.solutionShow && <GenerateSolution
   					nodes={[this.props.selectedNode]}
-  					onRequestClose={() => {
+  					onRequestClose={(bySubmit) => {
   						this.setState({solutionShow: false});
+							if(bySubmit){
+								DiagnoseAction.generateSolution(this.props.selectedNode.get('Id'))
+							}
   					}}
             renderChartCmp={this._renderChart}
             />}
