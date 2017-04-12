@@ -187,6 +187,14 @@ const DiagnoseStore = assign({}, PrototypeStore, {
     })
     return id
   },
+  mergeDiagnose(paths,value){
+    let immuVal = Immutable.fromJS(value);
+    if(paths instanceof Array) {
+      _currentDiagnose = _currentDiagnose.setIn(paths, immuVal);
+    } else {
+      _currentDiagnose = _currentDiagnose.set(paths, immuVal);
+    }
+  },
   emitCreatedDiagnose: function(isClose, data) {
     this.emit(CREATE_DIAGNOSE_EVENT, isClose, data);
   },
@@ -275,6 +283,10 @@ DiagnoseStore.dispatchToken = AppDispatcher.register(function(action) {
     case Action.REMOVE_DIAGNOSE_SUCCESS:
           DiagnoseStore.emitRemoveDiagnose(DiagnoseStore.getNextId(action.data))
          break;
+    case Action.MERGE_DIAGNOSE_SUCCESS:
+          DiagnoseStore.mergeDiagnose(action.paths,action.value);
+          DiagnoseStore.emitChange()
+          break;
   }
 })
 
