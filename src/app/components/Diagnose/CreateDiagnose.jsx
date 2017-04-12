@@ -499,7 +499,11 @@ function ModelBCondition({
 		<div className='diagnose-condition-model-b-item'>
 			<div>
 				<div className='diagnose-condition-subtitle'>{'基准值属性'}</div>
-				{disabledHistory && <div style={{fontSize: 10, color: '#9c9c9c', marginTop: 5}}>{'(历史值仅支持单个数据点)'}</div>}
+				<div style={{fontSize: 10, color: '#9c9c9c', marginTop: 5}}>
+					{TriggerType === TRIGGER_TYPE.HistoryValue
+					 ? '(选择历史值采用历史值曲线作为基准值)'
+					 : '(历史值仅支持单个数据点)'}
+				</div>
 			</div>
 			<RadioButtonGroup
 				className={'diagnose-condition-radio-group'}
