@@ -220,6 +220,10 @@
 
 .diagnose-create-content {
   margin-top: 10px;
+  & .datepicker-popup {
+    position: absolute;
+    z-index: 1;
+  }
 }
 
 .diagnose-create-checkbox-label {
@@ -259,10 +263,6 @@
   flex-direction: column;
   width: 78%;
   flex: none;
-  & .datepicker-popup {
-    position: absolute;
-    z-index: 1;
-  }
 }
 .diagnose-create-chart-action {
   display: flex;
