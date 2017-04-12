@@ -978,6 +978,14 @@ class CreateDiagnose extends Component {
 	_onCheckDiagnose(idx, val) {
 		let newDiagnoseTags = this.state.diagnoseTags.setIn([idx, 'checked'], val);
 		if( checkStep( newDiagnoseTags, this.state.filterObj.get('Step') ) ) {
+			if( newDiagnoseTags.filter(tag => tag.get('checked')).size > 1 && this.state.filterObj.get('TriggerType') === TRIGGER_TYPE.HistoryValue) {
+				this.setState({
+					filterObj: this.state.filterObj
+								.set( 'TriggerType', TRIGGER_TYPE.FixedValue )
+								.set( 'HistoryStartTime', moment().subtract(31, 'days').format('YYYY-MM-DDT00:00:00') )
+								.set( 'HistoryEndTime', moment().subtract(1, 'days').format('YYYY-MM-DDT24:00:00') )
+				});
+			}
 			this.setState({
 				diagnoseTags: newDiagnoseTags
 			}, this._getChartData);
@@ -1105,11 +1113,11 @@ class CreateDiagnose extends Component {
 							Timeranges.push({
 								StartTime: getFirstDateByThisYear(DATE_FORMAT),
 								EndTime: getEndDateByThisYear(DATE_FORMAT)});
-							this._setFilterObjThenUpdataChart('Timeranges', Timeranges);
+							this._setFilterObj('Timeranges', Timeranges);
 						}}
 						onDeleteDateRange={(idx) => {
 							Timeranges.splice(idx, 1);
-							this._setFilterObjThenUpdataChart('Timeranges', Timeranges);
+							this._setFilterObj('Timeranges', Timeranges);
 						}}/>);
 		} else if( step === 1 ) {
 			return (<CreateStep2
