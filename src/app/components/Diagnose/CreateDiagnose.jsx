@@ -226,6 +226,10 @@ function AdditiveComp({
 }
 
 function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime, disabled, style}) {
+	let endTimeLabel = EndTime.split('T')[1].split(':').slice(0, 2).join(':');
+	if(endTimeLabel === '00:00') {
+		endTimeLabel = '24:00';
+	}
 	return (<section className='diagnose-create-chart-filter' style={style}>
 		<ViewableDatePicker
 			disabled={disabled}
@@ -238,7 +242,7 @@ function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime
 			disabled={disabled}
 			style={{width: 100, marginLeft: 10, marginTop: -6}}
 			defaultValue={StartTime.split('T')[1].split(':').slice(0, 2).join(':')}
-			dataItems={getDateTimeItemsByStep(60)}
+			dataItems={getDateTimeItemsByStep(60).slice(0, 23)}
 			didChanged={(val) => {
 				onChangeStartTime(moment(StartTime).format(DATE_FORMAT) + 'T' + val + ':00');
 			}}/>
@@ -253,8 +257,8 @@ function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime
 		<ViewableDropDownMenu
 			disabled={disabled}
 			style={{width: 100, marginLeft: 10, marginTop: -6}}
-			defaultValue={EndTime.split('T')[1].split(':').slice(0, 2).join(':')}
-			dataItems={getDateTimeItemsByStep(60)}
+			defaultValue={endTimeLabel}
+			dataItems={getDateTimeItemsByStep(60).slice(1)}
 			didChanged={(val) => {
 				onChangeEndTime(moment(EndTime).format(DATE_FORMAT) + 'T' + val + ':00');
 			}}/>
@@ -422,7 +426,7 @@ function RuntimeComp({
 				<ViewableDropDownMenu
 					style={{width: 100, marginLeft: 10, marginTop: -6}}
 					defaultValue={data.StartTime}
-					dataItems={getDateTimeItemsByStepForVal(60)}
+					dataItems={getDateTimeItemsByStepForVal(60).slice(0, 23)}
 					didChanged={(val) => {
 						if(val > data.EndTime) {
 							onChangeWorkTime(idx, 'EndTime', val);
@@ -432,8 +436,8 @@ function RuntimeComp({
 				{'至'}
 				<ViewableDropDownMenu
 					style={{width: 100, marginLeft: 10, marginTop: -6}}
-					defaultValue={data.EndTime}
-					dataItems={getDateTimeItemsByStepForVal(60)}
+					defaultValue={data.EndTime || 60 * 24}
+					dataItems={getDateTimeItemsByStepForVal(60).slice(1)}
 					didChanged={(val) => {
 						if(val < data.StartTime) {
 							onChangeWorkTime(idx, 'StartTime', val);
@@ -932,7 +936,7 @@ class CreateDiagnose extends Component {
 
 			}
 		} else if(DiagnoseModel === DIAGNOSE_MODEL.C) {
-
+			return true;
 		}
 	}
 	_setStep(step) {
