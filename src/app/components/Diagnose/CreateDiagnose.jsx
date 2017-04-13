@@ -252,7 +252,11 @@ function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime
     		width={100}
 			value={EndTime.split('T')[0]}
 			onChange={(val) => {
-				onChangeEndTime(val + 'T' + EndTime.split('T')[1]);
+				let endTime = EndTime.split('T')[1];
+				if(endTime === '00:00:00') {
+					endTime = '24:00:00';
+				}
+				onChangeEndTime(val + 'T' + endTime);
 			}}/>
 		<ViewableDropDownMenu
 			disabled={disabled}
@@ -439,6 +443,9 @@ function RuntimeComp({
 					defaultValue={data.EndTime || 60 * 24}
 					dataItems={getDateTimeItemsByStepForVal(60).slice(1)}
 					didChanged={(val) => {
+						if(val === 0) {
+							val = 60 * 24;
+						}
 						if(val < data.StartTime) {
 							onChangeWorkTime(idx, 'StartTime', val);
 						}
