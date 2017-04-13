@@ -47,6 +47,7 @@ I18N.MainMenu.ParameterTemplate = 'Parameter template';
 
 I18N.MainMenu.KPI = 'KPI · Report';
 I18N.MainMenu.SaveSchemeTab = 'Energy Saving Scheme';
+I18N.MainMenu.SmartDiagnose = '智能诊断';
 I18N.MainMenu.DataAnalysis = 'Data Analysis';
 I18N.MainMenu.KPIActuality = 'KPI Actuality';
 I18N.MainMenu.KPIConfig = 'KPI Configuration';

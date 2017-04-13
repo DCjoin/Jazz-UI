@@ -20,6 +20,14 @@ function isFull() {
 	return privilegeWithSeniorSmartDiagnose(privilegeUtil.isFull.bind(privilegeUtil));
 }
 
+function isView() {
+	return privilegeWithSeniorSmartDiagnose(privilegeUtil.isView.bind(privilegeUtil));
+}
+
+function noPrivilege(){
+  return !isFull() && !isView()
+}
+
 
 export default class LabelList extends Component {
 
@@ -94,7 +102,7 @@ export default class LabelList extends Component {
           infoTabNo:no,
           list:null
         },()=>{
-          if(this.state.infoTabNo===1 || isFull()){
+          if(this.state.infoTabNo===1 || !noPrivilege()){
             this._getList(this.context.hierarchyId)
           }else {
             this.setState({
