@@ -42,6 +42,15 @@ function isSeniorFull() {
 	return privilegeWithSeniorSmartDiagnose(PrivilegeUtil.isFull.bind(PrivilegeUtil));
 }
 
+function privilegeWithSmartDiagnoseList( privilegeCheck ) {
+  //  return false
+	return privilegeCheck(PermissionCode.SMART_DIACRISIS_LIST, CurrentUserStore.getCurrentPrivilege());
+}
+
+function isListFull() {
+	return privilegeWithSmartDiagnoseList(PrivilegeUtil.isFull.bind(PrivilegeUtil));
+}
+
 export default class DiagnoseProblem extends Component {
 
   static contextTypes = {
@@ -192,8 +201,8 @@ export default class DiagnoseProblem extends Component {
 		return(
 			<IconMenu {...iconMenuProps} onItemTouchTap={this._onTitleMenuSelect}>
 															<MenuItem key="Ignore" primaryText={I18N.Setting.Diagnose.Ignore}/>
-															<MenuItem key="Suspend" primaryText={I18N.Setting.Diagnose.Suspend}/>
-															<MenuItem key="Edit" primaryText={I18N.Setting.Diagnose.Edit}/>
+															{isListFull() && <MenuItem key="Suspend" primaryText={I18N.Setting.Diagnose.Suspend}/>}
+															{isListFull() && <MenuItem key="Edit" primaryText={I18N.Setting.Diagnose.Edit}/>}
 													 </IconMenu>
 		)
 
