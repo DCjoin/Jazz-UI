@@ -76,7 +76,8 @@ export default class DiagnoseProblem extends Component {
 					endDate: null,
 					startTime: null,
 					endTime: null,
-          solutionShow:false
+          solutionShow:false,
+					timeselectorShow:false
   		}
 
 	_initDate(){
@@ -102,7 +103,8 @@ export default class DiagnoseProblem extends Component {
 				startDate: startDate,
 				endDate: endDate,
 				startTime: startTime,
-				endTime: endTime
+				endTime: endTime,
+				timeselectorShow:true
 			}
 		}
 		else return{}
@@ -298,7 +300,12 @@ export default class DiagnoseProblem extends Component {
 		componentWillReceiveProps(nextProps){
 			if(!Immutable.is(this.props.selectedNode,nextProps.selectedNode)){
 				this.setState({
-					chartData:null
+					chartData:null,
+					startDate: null,
+					endDate: null,
+					startTime: null,
+					endTime: null,
+					timeselectorShow:false
 				},()=>{
 					this.getProblem(nextProps)
 				})
@@ -337,14 +344,14 @@ export default class DiagnoseProblem extends Component {
                       {this._renderIconMenu()}
                       </div>}
         </div>
-				<div style={{display:this.state.chartData?'block':'none'}}>
-					<DateTimeSelector ref='dateTimeSelector' showTime={true} endLeft='-100px'
+
+					{this.state.timeselectorShow && <DateTimeSelector ref='dateTimeSelector' showTime={true} endLeft='-100px'
 						startDate= {this.state.startDate}
 						endDate={this.state.endDate}
 						startTime={this.state.startTime}
 						endTime={this.state.endTime}
-						 _onDateSelectorChanged={this._onDateSelectorChanged}/>
-				</div>
+						 _onDateSelectorChanged={this._onDateSelectorChanged}/>}
+
 
 					 {this.state.chartData?<DiagnoseChart data={this.state.chartData}/>
 																:<div className="flex-center">
