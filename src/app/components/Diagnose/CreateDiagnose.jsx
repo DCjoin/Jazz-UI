@@ -233,6 +233,7 @@ function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime
 	}
 	return (<section className='diagnose-create-chart-filter' style={style}>
 		<ViewableDatePicker
+			datePickerClassName={'diagnose-date-picker'}
 			disabled={disabled}
     		width={100}
 			value={StartTime.split('T')[0]}
@@ -241,7 +242,20 @@ function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime
 			}}/>
 		<ViewableDropDownMenu
 			disabled={disabled}
-			style={{width: 100, marginLeft: 10, marginTop: -6}}
+			autoWidth={false}
+			style={{
+				width: 50, 
+				height: 26,
+				marginLeft: 10, 
+				marginTop: -6, 
+				paddingTop: 4,
+				paddingLeft: 10,
+				borderRadius: 2,
+				border: 'solid 1px #e3e3e3'
+			}}
+			labelStyle={{lineHeight: '30px', textOverflow:'clip'}}
+			iconStyle={{display: 'none'}}
+			underlineStyle={{display: 'none'}}
 			defaultValue={StartTime.split('T')[1].split(':').slice(0, 2).join(':')}
 			dataItems={getDateTimeItemsByStep(60).slice(0, 24)}
 			didChanged={(val) => {
@@ -249,6 +263,7 @@ function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime
 			}}/>
 		<div style={{margin: '0 10px', alignSelf: 'center'}}>{'至'}</div>
 		<ViewableDatePicker
+			datePickerClassName={'diagnose-date-picker'}
 			disabled={disabled}
     		width={100}
 			value={EndTime.split('T')[0]}
@@ -261,7 +276,20 @@ function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime
 			}}/>
 		<ViewableDropDownMenu
 			disabled={disabled}
-			style={{width: 100, marginLeft: 10, marginTop: -6}}
+			autoWidth={false}
+			style={{
+				width: 50, 
+				height: 26,
+				marginLeft: 10, 
+				marginTop: -6, 
+				paddingTop: 4,
+				paddingLeft: 10,
+				borderRadius: 2,
+				border: 'solid 1px #e3e3e3'
+			}}
+			labelStyle={{lineHeight: '30px', textOverflow:'clip'}}
+			iconStyle={{display: 'none'}}
+			underlineStyle={{display: 'none'}}
 			defaultValue={endTimeLabel}
 			dataItems={getDateTimeItemsByStep(60).slice(1)}
 			didChanged={(val) => {
@@ -429,7 +457,9 @@ function RuntimeComp({
 			renderFunc={(data, idx) =>
 			<div key={idx} style={{display: 'flex', alignItems: 'center', marginLeft: -10}}>
 				<ViewableDropDownMenu
-					style={{width: 100, marginLeft: 10, marginTop: -6}}
+					autoWidth={false}
+					iconStyle={{display: 'none'}}
+					style={{width: 50, marginLeft: 10, marginTop: -6}}
 					defaultValue={data.StartTime}
 					dataItems={getDateTimeItemsByStepForVal(60).slice(0, 24)}
 					didChanged={(val) => {
@@ -440,7 +470,9 @@ function RuntimeComp({
 					}}/>
 				{'至'}
 				<ViewableDropDownMenu
-					style={{width: 100, marginLeft: 10, marginTop: -6}}
+					autoWidth={false}
+					iconStyle={{display: 'none'}}
+					style={{width: 50, marginLeft: 10, marginTop: -6}}
 					defaultValue={data.EndTime || 60 * 24}
 					dataItems={getDateTimeItemsByStepForVal(60).slice(1)}
 					didChanged={(val) => {

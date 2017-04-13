@@ -224,6 +224,24 @@
     position: absolute;
     z-index: 1;
   }
+
+  & .diagnose-date-picker {
+    width: 100px;
+    height: 30px;
+    border-radius: 2px;
+    border: solid 1px #e3e3e3;
+    position: relative;
+
+    & .jazz-month-picker-noempty {
+      position: absolute !important;
+      height: 100% !important;
+      padding-left: 5px;
+
+      &>div {
+        display: none;
+      }
+    }
+  }
 }
 
 .diagnose-create-checkbox-label {
@@ -267,7 +285,7 @@
 .diagnose-create-chart-action {
   display: flex;
   flex: none;
-  margin: 10px 20px;
+  margin: 20px;
   justify-content: space-between;
   align-items: center;
 }
