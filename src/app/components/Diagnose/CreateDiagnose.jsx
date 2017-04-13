@@ -16,6 +16,7 @@ import moment from 'moment';
 import Immutable from 'immutable';
 import classnames from 'classnames';
 import { curry } from 'lodash/function';
+import { divide } from 'lodash/math';
 
 import TimeGranularity from 'constants/TimeGranularity.jsx';
 import {DIAGNOSE_MODEL} from 'constants/actionType/Diagnose.jsx';
@@ -459,6 +460,8 @@ function ModelACondition({TriggerValue, onUpdateTriggerValue, uom}) {
 	return (<div className='diagnose-condition-model-a'>
 		<span className='diagnose-condition-subtitle'>{`非运行时间触发值(${uom})`}</span>
 		<ViewableTextField
+			regex={/^\d{1,9}([.]\d{1,6})?$/}
+			errorMessage={'请输入正确的格式'}
 			hintText={'输入触发值'}
 			defaultValue={TriggerValue}
 			didChanged={onUpdateTriggerValue}/>
@@ -534,6 +537,8 @@ function ModelBCondition({
 		<div style={{marginTop: 15}}>
 			<span className='diagnose-condition-subtitle'>{`基准值(${uom})`}</span>
 			<ViewableTextField
+				regex={/^\d{1,9}([.]\d{1,6})?$/}
+				errorMessage={'请输入正确的格式'}
 				hintText={'填写基准值'}
 				defaultValue={TriggerValue}
 				didChanged={onUpdateTriggerValue}/>
@@ -553,6 +558,8 @@ function ModelBCondition({
 		<div style={{marginTop: 15, marginBottom: 15}}>
 			<span className='diagnose-condition-subtitle'>{'敏感值(%)'}</span>
 			<ViewableTextField
+				regex={/^\d{1,9}([.]\d{1,6})?$/}
+				errorMessage={'请输入正确的格式'}
 				hintText={'填写敏感值'}
 				defaultValue={!isEmptyStr(ToleranceRatio) ? ToleranceRatio * 100 : ToleranceRatio}
 				didChanged={onUpdateToleranceRatio}/>
@@ -796,11 +803,22 @@ export class CreateStep2 extends Component {
 					onUpdateConditionType={onUpdateFilterObj('ConditionType')}
 
 					TriggerType={TriggerType}
-					onUpdateTriggerType={onUpdateFilterObj('TriggerType')}
+					onUpdateTriggerType={(type) => {
+						if( type === TRIGGER_TYPE.HistoryValue ) {
+							onUpdateFilterObj('TriggerValue')(null, () => {
+								onUpdateFilterObj('TriggerType')(type);
+							});
+						} else {
+							onUpdateFilterObj('TriggerType')(type);
+						}
+					}}
 
 					ToleranceRatio={ToleranceRatio}
 					onUpdateToleranceRatio={(val) => {
-						onUpdateFilterObj('ToleranceRatio')(!isEmptyStr(val) ? val / 100 : val)
+						if(!isEmptyStr(val)) {
+						    val = divide(val, 100);
+						}
+						onUpdateFilterObj('ToleranceRatio')(val);
 					}}
 
 					HistoryStartTime={HistoryStartTime}
