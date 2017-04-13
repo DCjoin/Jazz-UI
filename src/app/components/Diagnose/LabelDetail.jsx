@@ -16,6 +16,15 @@ function isFull() {
 	return privilegeWithSeniorSmartDiagnose(privilegeUtil.isFull.bind(privilegeUtil));
 }
 
+function isView() {
+	return privilegeWithSeniorSmartDiagnose(privilegeUtil.isView.bind(privilegeUtil));
+}
+
+function noPrivilege(){
+  return !isFull() && !isView()
+}
+
+
 export default class LabelDetail extends Component {
 
   constructor(props, ctx) {
@@ -63,7 +72,7 @@ export default class LabelDetail extends Component {
     var text=DiagnoseStore.getContentText(this.props.isFromProbem,this.state.selectedNode);
     var content;
 
-		if(this.props.isFromProbem && !this.props.isBasic && !isFull()){
+		if(this.props.isFromProbem && !this.props.isBasic && noPrivilege()){
       text=I18N.Setting.Diagnose.NoPrivilege
     }
 		if(text!==''){
