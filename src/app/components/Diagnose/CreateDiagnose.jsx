@@ -143,7 +143,7 @@ function getDefaultFilter() {
 			EndTime: 840,
 		}],
 		TriggerValue: null,
-		ConditionType: CONDITION_TYPE.Smaller,
+		ConditionType: CONDITION_TYPE.Larger,
 		TriggerType: TRIGGER_TYPE.FixedValue,
 		ToleranceRatio: null,
 		HistoryStartTime: moment().subtract(31, 'days').format('YYYY-MM-DDT00:00:00'),
@@ -166,7 +166,7 @@ function Left(props) {
 	return (<div style={{float: 'left', marginTop: 5}}>{props.children}</div>);
 }
 function Right(props) {
-	return (<div style={{float: 'right'}}>{props.children}</div>);
+	return (<div style={{float: 'right', display: 'flex'}}>{props.children}</div>);
 }
 function PrevButton(props) {
 	return (<LinkButton {...props} label={'<上一步'}/>);
@@ -242,7 +242,7 @@ function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime
 			disabled={disabled}
 			style={{width: 100, marginLeft: 10, marginTop: -6}}
 			defaultValue={StartTime.split('T')[1].split(':').slice(0, 2).join(':')}
-			dataItems={getDateTimeItemsByStep(60).slice(0, 23)}
+			dataItems={getDateTimeItemsByStep(60).slice(0, 24)}
 			didChanged={(val) => {
 				onChangeStartTime(moment(StartTime).format(DATE_FORMAT) + 'T' + val + ':00');
 			}}/>
@@ -252,7 +252,11 @@ function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime
     		width={100}
 			value={EndTime.split('T')[0]}
 			onChange={(val) => {
-				onChangeEndTime(val + 'T' + EndTime.split('T')[1]);
+				let endTime = EndTime.split('T')[1];
+				if(endTime === '00:00:00') {
+					endTime = '24:00:00';
+				}
+				onChangeEndTime(val + 'T' + endTime);
 			}}/>
 		<ViewableDropDownMenu
 			disabled={disabled}
@@ -319,7 +323,7 @@ function ChartPreview({chartData, chartDataLoading, onUpdateStep, Step, onDelete
 			</div>
 		</div>
 		{chartDataLoading ? <div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div> :
-		(chartData ?  <div className='diagnose-create-chart'><DiagnoseChart data={chartData} onDeleteButtonClick={onDeleteLegendItem}/></div> :
+		(chartData ?  <div className='diagnose-create-chart'><DiagnoseChart isEdit={true} data={chartData} onDeleteButtonClick={onDeleteLegendItem}/></div> :
 		<div className='flex-center'>{'在左侧选择数据点'}</div>)}
 	</section>)
 }
@@ -334,7 +338,7 @@ function ChartPreviewStep2({chartData, chartDataLoading, getChartData, disabledP
 			<RaisedButton label={'预览'} disabled={disabledPreview} onClick={getChartData} icon={<ActionVisibility/>}/>
 		</div>
 		{chartDataLoading ? <div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div> :
-		(chartData ?  <div className='diagnose-create-chart'><DiagnoseChart data={chartData} onDeleteButtonClick={onDeleteLegendItem}/></div> :
+		(chartData ?  <div className='diagnose-create-chart'><DiagnoseChart isEdit={true} data={chartData} onDeleteButtonClick={onDeleteLegendItem}/></div> :
 		<div className='flex-center'>{'在左侧选择数据点'}</div>)}
 	</section>)
 
@@ -426,7 +430,7 @@ function RuntimeComp({
 				<ViewableDropDownMenu
 					style={{width: 100, marginLeft: 10, marginTop: -6}}
 					defaultValue={data.StartTime}
-					dataItems={getDateTimeItemsByStepForVal(60).slice(0, 23)}
+					dataItems={getDateTimeItemsByStepForVal(60).slice(0, 24)}
 					didChanged={(val) => {
 						if(val > data.EndTime) {
 							onChangeWorkTime(idx, 'EndTime', val);
@@ -439,6 +443,9 @@ function RuntimeComp({
 					defaultValue={data.EndTime || 60 * 24}
 					dataItems={getDateTimeItemsByStepForVal(60).slice(1)}
 					didChanged={(val) => {
+						if(val === 0) {
+							val = 60 * 24;
+						}
 						if(val < data.StartTime) {
 							onChangeWorkTime(idx, 'StartTime', val);
 						}
@@ -499,7 +506,11 @@ function ModelBCondition({
 		<div className='diagnose-condition-model-b-item'>
 			<div>
 				<div className='diagnose-condition-subtitle'>{'基准值属性'}</div>
-				{disabledHistory && <div style={{fontSize: 10, color: '#9c9c9c', marginTop: 5}}>{'(历史值仅支持单个数据点)'}</div>}
+				<div style={{fontSize: 10, color: '#9c9c9c', marginTop: 5}}>
+					{TriggerType === TRIGGER_TYPE.HistoryValue
+					 ? '(选择历史值采用历史值曲线作为基准值)'
+					 : '(历史值仅支持单个数据点)'}
+				</div>
 			</div>
 			<RadioButtonGroup
 				className={'diagnose-condition-radio-group'}
@@ -741,8 +752,8 @@ export class CreateStep2 extends Component {
 						setStartTime = () => {
 							onUpdateFilterObj('StartTime')(val);
 						};
-						if(endTime < startTime) {
-							endTime = moment(startTime).add(1, 'days');
+						if(endTime < moment(startTime).add(1, 'hours')) {
+							endTime = moment(startTime).add(1, 'hours');
 						} else if( moment(startTime).add(30, 'days') < endTime ) {
 							endTime = moment(startTime).add(30, 'days');
 						}
@@ -759,8 +770,8 @@ export class CreateStep2 extends Component {
 						setEndTime = () => {
 							onUpdateFilterObj('EndTime')(val);
 						};
-						if(endTime < startTime) {
-							startTime = moment(endTime).subtract(1, 'days');
+						if(moment(endTime).subtract(1, 'hours') < startTime) {
+							startTime = moment(endTime).subtract(1, 'hours');
 						} else if( moment(endTime).subtract(30, 'days') > startTime ) {
 							startTime = moment(endTime).subtract(30, 'days');
 						}
@@ -928,12 +939,12 @@ class CreateDiagnose extends Component {
 			return isEmptyStr( filterObj.get('TriggerValue') );
 		} else if(DiagnoseModel === DIAGNOSE_MODEL.B) {
 			if( filterObj.get('TriggerType') === TRIGGER_TYPE.FixedValue ) {
-				return isEmptyStr( filterObj.get('TriggerValue') ) ||
-						isEmptyStr( filterObj.get('ToleranceRatio') );
+				return isEmptyStr( filterObj.get('TriggerValue') )/* ||
+						isEmptyStr( filterObj.get('ToleranceRatio') )*/;
 			}
 			if( filterObj.get('TriggerType') === TRIGGER_TYPE.HistoryValue ) {
-				return isEmptyStr( filterObj.get('ToleranceRatio') );
-
+				// return isEmptyStr( filterObj.get('ToleranceRatio') );
+				return false;
 			}
 		} else if(DiagnoseModel === DIAGNOSE_MODEL.C) {
 			return true;
@@ -978,6 +989,14 @@ class CreateDiagnose extends Component {
 	_onCheckDiagnose(idx, val) {
 		let newDiagnoseTags = this.state.diagnoseTags.setIn([idx, 'checked'], val);
 		if( checkStep( newDiagnoseTags, this.state.filterObj.get('Step') ) ) {
+			if( newDiagnoseTags.filter(tag => tag.get('checked')).size > 1 && this.state.filterObj.get('TriggerType') === TRIGGER_TYPE.HistoryValue) {
+				this.setState({
+					filterObj: this.state.filterObj
+								.set( 'TriggerType', TRIGGER_TYPE.FixedValue )
+								.set( 'HistoryStartTime', moment().subtract(31, 'days').format('YYYY-MM-DDT00:00:00') )
+								.set( 'HistoryEndTime', moment().subtract(1, 'days').format('YYYY-MM-DDT24:00:00') )
+				});
+			}
 			this.setState({
 				diagnoseTags: newDiagnoseTags
 			}, this._getChartData);
@@ -1045,8 +1064,8 @@ class CreateDiagnose extends Component {
 							setStartTime = () => {
 								this._setFilterObjThenUpdataChart('StartTime', val);
 							};
-							if(endTime < startTime) {
-								endTime = moment(startTime).add(1, 'days');
+							if(endTime < moment(startTime).add(1, 'hours')) {
+								endTime = moment(startTime).add(1, 'hours');
 							} else if( moment(startTime).add(30, 'days') < endTime ) {
 								endTime = moment(startTime).add(30, 'days');
 							}
@@ -1063,8 +1082,8 @@ class CreateDiagnose extends Component {
 							setEndTime = () => {
 								this._setFilterObjThenUpdataChart('EndTime', val);
 							};
-							if(endTime < startTime) {
-								startTime = moment(endTime).subtract(1, 'days');
+							if(moment(endTime).subtract(1, 'hours') < startTime) {
+								startTime = moment(endTime).subtract(1, 'hours');
 							} else if( moment(endTime).subtract(30, 'days') > startTime ) {
 								startTime = moment(endTime).subtract(30, 'days');
 							}
@@ -1091,7 +1110,7 @@ class CreateDiagnose extends Component {
 						onUpdateDateRange={(idx, type, startOrEnd, val) => {
 							val = new Date().getFullYear() + SEPARTOR + val.join(SEPARTOR);
 							let setVal = () => {
-								this._setFilterObjThenUpdataChart(['Timeranges', idx, type], val);								
+								this._setFilterObj(['Timeranges', idx, type], val);								
 							}
 							if( type === 'StartTime' && moment(val) > moment(Timeranges[idx].EndTime) ) {
 								this._setFilterObj(['Timeranges', idx, 'EndTime'], val, setVal)
@@ -1105,11 +1124,11 @@ class CreateDiagnose extends Component {
 							Timeranges.push({
 								StartTime: getFirstDateByThisYear(DATE_FORMAT),
 								EndTime: getEndDateByThisYear(DATE_FORMAT)});
-							this._setFilterObjThenUpdataChart('Timeranges', Timeranges);
+							this._setFilterObj('Timeranges', Timeranges);
 						}}
 						onDeleteDateRange={(idx) => {
 							Timeranges.splice(idx, 1);
-							this._setFilterObjThenUpdataChart('Timeranges', Timeranges);
+							this._setFilterObj('Timeranges', Timeranges);
 						}}/>);
 		} else if( step === 1 ) {
 			return (<CreateStep2
@@ -1205,11 +1224,31 @@ class CreateDiagnose extends Component {
 		buttons = [];
 		switch (step) {
 			case 0:
-				buttons.push(<Right><NextButton disabled={!checkedTags || checkedTags.size === 0} onClick={this._setStep(1)}/></Right>);
+				buttons.push(<Right>
+					{(!checkedTags || checkedTags.size === 0) && 
+					<div style={{
+						paddingRight: 20, 
+						color: '#adafae', 
+						margin: 'auto'}}>
+						<FontIcon className='icon-information' 
+							style={{fontSize: 12, color: '#adafae', }}/>
+						{'请选择诊断数据点'}
+					</div>}
+					<NextButton disabled={!checkedTags || checkedTags.size === 0} onClick={this._setStep(1)}/></Right>);
 				break;
 			case 1:
 				buttons.push(<Left><PrevButton onClick={this._setStep(0)}/></Left>);
-				buttons.push(<Right><NextButton disabled={this._step2NeedRequire()} onClick={this._setStep(2)}/></Right>);
+				buttons.push(<Right>
+					{this._step2NeedRequire() && 
+					<div style={{
+						paddingRight: 20, 
+						color: '#adafae', 
+						margin: 'auto'}}>
+						<FontIcon className='icon-information' 
+							style={{fontSize: 12, color: '#adafae', }}/>
+						{'请填写诊断条件'}
+					</div>}
+					<NextButton disabled={this._step2NeedRequire()} onClick={this._setStep(2)}/></Right>);
 				break;
 			case 2:
 				buttons.push(<Left><PrevButton onClick={this._setStep(1)}/></Left>);
