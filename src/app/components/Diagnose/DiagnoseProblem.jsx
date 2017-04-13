@@ -42,6 +42,15 @@ function isSeniorFull() {
 	return privilegeWithSeniorSmartDiagnose(PrivilegeUtil.isFull.bind(PrivilegeUtil));
 }
 
+function privilegeWithSmartDiagnoseList( privilegeCheck ) {
+  //  return false
+	return privilegeCheck(PermissionCode.SMART_DIACRISIS_LIST, CurrentUserStore.getCurrentPrivilege());
+}
+
+function isListFull() {
+	return privilegeWithSmartDiagnoseList(PrivilegeUtil.isFull.bind(PrivilegeUtil));
+}
+
 export default class DiagnoseProblem extends Component {
 
   static contextTypes = {
@@ -67,7 +76,8 @@ export default class DiagnoseProblem extends Component {
 					endDate: null,
 					startTime: null,
 					endTime: null,
-          solutionShow:false
+          solutionShow:false,
+					timeselectorShow:false
   		}
 
 	_initDate(){
@@ -93,7 +103,8 @@ export default class DiagnoseProblem extends Component {
 				startDate: startDate,
 				endDate: endDate,
 				startTime: startTime,
-				endTime: endTime
+				endTime: endTime,
+				timeselectorShow:true
 			}
 		}
 		else return{}
@@ -192,8 +203,8 @@ export default class DiagnoseProblem extends Component {
 		return(
 			<IconMenu {...iconMenuProps} onItemTouchTap={this._onTitleMenuSelect}>
 															<MenuItem key="Ignore" primaryText={I18N.Setting.Diagnose.Ignore}/>
-															<MenuItem key="Suspend" primaryText={I18N.Setting.Diagnose.Suspend}/>
-															<MenuItem key="Edit" primaryText={I18N.Setting.Diagnose.Edit}/>
+															{isListFull() && <MenuItem key="Suspend" primaryText={I18N.Setting.Diagnose.Suspend}/>}
+															{isListFull() && <MenuItem key="Edit" primaryText={I18N.Setting.Diagnose.Edit}/>}
 													 </IconMenu>
 		)
 
@@ -289,7 +300,12 @@ export default class DiagnoseProblem extends Component {
 		componentWillReceiveProps(nextProps){
 			if(!Immutable.is(this.props.selectedNode,nextProps.selectedNode)){
 				this.setState({
-					chartData:null
+					chartData:null,
+					startDate: null,
+					endDate: null,
+					startTime: null,
+					endTime: null,
+					timeselectorShow:false
 				},()=>{
 					this.getProblem(nextProps)
 				})
@@ -328,14 +344,14 @@ export default class DiagnoseProblem extends Component {
                       {this._renderIconMenu()}
                       </div>}
         </div>
-				<div style={{display:this.state.chartData?'block':'none'}}>
-					<DateTimeSelector ref='dateTimeSelector' showTime={true} endLeft='-100px'
+
+					{this.state.timeselectorShow && <DateTimeSelector ref='dateTimeSelector' showTime={true} endLeft='-100px'
 						startDate= {this.state.startDate}
 						endDate={this.state.endDate}
 						startTime={this.state.startTime}
 						endTime={this.state.endTime}
-						 _onDateSelectorChanged={this._onDateSelectorChanged}/>
-				</div>
+						 _onDateSelectorChanged={this._onDateSelectorChanged}/>}
+
 
 					 {this.state.chartData?<DiagnoseChart data={this.state.chartData}/>
 																:<div className="flex-center">
