@@ -87,6 +87,20 @@ function postNewConfig(data, isEdit, newConfig) {
       width: 2,
       value: triggerVal
     }];
+    let vals = data
+      .getIn(['EnergyViewData', 'TargetEnergyData', 0, 'EnergyData'])
+      .map(eData => eData.get('DataValue')).toJS(),
+    max = Math.max(...vals),
+    min = Math.min(...vals);
+
+    if(vals && vals.length > 0) {
+      if(max < triggerVal) {
+        newConfig.yAxis[0].max = triggerVal;
+      }
+      if( min > triggerVal ) {
+        newConfig.yAxis[0].min = triggerVal;
+      }
+    }
   }
   if( Calendars && Calendars.size > 0 ) {
     let {CalendarType, CalendarTimeRanges} = Calendars.get(0).toJS();
