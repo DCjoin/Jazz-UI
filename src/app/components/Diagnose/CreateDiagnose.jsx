@@ -66,7 +66,7 @@ const CONDITION_TYPE = {
 }
 const TIME_GRANULARITY_MAP_VAL = {
 	// [TimeGranularity.None]: -1,
-	[TimeGranularity.Minite]: 60 * 60,
+	[TimeGranularity.Minite]: 60,
 	// [TimeGranularity.Min15]: 15 * 60,
 	// [TimeGranularity.Min30]: 30 * 60,
 	[TimeGranularity.Hourly]: 60 * 60,
@@ -201,13 +201,13 @@ function AdditiveComp({
 	return (
 		<div className={className}>
 			<hgroup className='' style={{color: '#202622', marginBottom: -15}}>
-			{title} <IconButton 
-						disabled={disabled}  
-						iconClassName='icon-add' 
+			{title} <IconButton
+						disabled={disabled}
+						iconClassName='icon-add'
 						iconStyle={{
 							fontSize: 14,
 							iconHoverColor: '#0cad04',
-						}} 
+						}}
 						onClick={onAdd}/>
 			</hgroup>
 			<div className={contentClassName}>{data.map( (item, idx) =>
@@ -244,10 +244,10 @@ function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime
 			disabled={disabled}
 			autoWidth={false}
 			style={{
-				width: 50, 
+				width: 50,
 				height: 26,
-				marginLeft: 10, 
-				marginTop: -6, 
+				marginLeft: 10,
+				marginTop: -6,
 				paddingTop: 4,
 				paddingLeft: 10,
 				borderRadius: 2,
@@ -278,10 +278,10 @@ function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime
 			disabled={disabled}
 			autoWidth={false}
 			style={{
-				width: 50, 
+				width: 50,
 				height: 26,
-				marginLeft: 10, 
-				marginTop: -6, 
+				marginLeft: 10,
+				marginTop: -6,
 				paddingTop: 4,
 				paddingLeft: 10,
 				borderRadius: 2,
@@ -305,7 +305,7 @@ function TagList({tags, onCheck, checkedTags}) {
 			<ul className='diagnose-create-tag-list-content'>
 				{tags.map( (tag, i) =>
 				<li className='diagnose-create-tag-list-item'  title={tag.get('Name')}>
-					<Checkbox checked={checkedTags.map(checkedTag => checkedTag.Id).includes(tag.get('Id'))} 
+					<Checkbox checked={checkedTags.map(checkedTag => checkedTag.Id).includes(tag.get('Id'))}
 						disabled={!checkedTags.map(checkedTag => checkedTag.Id).includes(tag.get('Id')) && checkedTags.length === 10}
 						onCheck={(e, isInputChecked) => {
 							onCheck(tag.get('Id'), isInputChecked);
@@ -565,7 +565,7 @@ function ModelBCondition({
 				/>
 			</RadioButtonGroup>
 		</div>
-		{ TriggerType === TRIGGER_TYPE.FixedValue && 
+		{ TriggerType === TRIGGER_TYPE.FixedValue &&
 		<div style={{marginTop: 15}}>
 			<span className='diagnose-condition-subtitle'>{`基准值(${uom})`}</span>
 			<ViewableTextField
@@ -575,7 +575,7 @@ function ModelBCondition({
 				defaultValue={TriggerValue}
 				didChanged={onUpdateTriggerValue}/>
 		</div>}
-		{ TriggerType === TRIGGER_TYPE.HistoryValue && 
+		{ TriggerType === TRIGGER_TYPE.HistoryValue &&
 		<div style={{marginTop: 15}}>
 			<span className='diagnose-condition-subtitle'>{'基准值历史事件范围'}</span>
 			<ChartDateFilter
@@ -1173,7 +1173,7 @@ class CreateDiagnose extends Component {
 						onUpdateDateRange={(idx, type, startOrEnd, val) => {
 							val = new Date().getFullYear() + SEPARTOR + val.join(SEPARTOR);
 							let setVal = () => {
-								this._setFilterObj(['Timeranges', idx, type], val);								
+								this._setFilterObj(['Timeranges', idx, type], val);
 							}
 							if( type === 'StartTime' && moment(val) > moment(Timeranges[idx].EndTime) ) {
 								this._setFilterObj(['Timeranges', idx, 'EndTime'], val, setVal)
@@ -1201,7 +1201,7 @@ class CreateDiagnose extends Component {
 						chartData={chartData}
 						chartDataLoading={chartDataLoading}
 
-						onUpdateFilterObj={paths => 
+						onUpdateFilterObj={paths =>
 							(val, callback) => {
 								let setVal = () => {
 									this._setFilterObj(paths, val, callback);
@@ -1262,7 +1262,7 @@ class CreateDiagnose extends Component {
 		let {tmpFilterDiagnoseTags, tmpFilterStep, filterObj} = this.state;
 		if(tmpFilterDiagnoseTags) {
 			return (<Dialog onRequestClose={() => {this.setState({tmpFilterDiagnoseTags: null, tmpFilterStep: null});}} open={true} modal={false} actions={
-				getCanSelectTimeGranularity(tmpFilterDiagnoseTags).map(time => 
+				getCanSelectTimeGranularity(tmpFilterDiagnoseTags).map(time =>
 					<FlatButton key={time} label={'按' + getStepItems().find(item => item.step === time * 1).text}
 						onClick={() => {
 							this.setState({
@@ -1287,12 +1287,12 @@ class CreateDiagnose extends Component {
 		switch (step) {
 			case 0:
 				buttons.push(<Right>
-					{(!checkedTags || checkedTags.length === 0) && 
+					{(!checkedTags || checkedTags.length === 0) &&
 					<div style={{
-						paddingRight: 20, 
-						color: '#adafae', 
+						paddingRight: 20,
+						color: '#adafae',
 						margin: 'auto'}}>
-						<FontIcon className='icon-information' 
+						<FontIcon className='icon-information'
 							style={{fontSize: 12, color: '#adafae', }}/>
 						{'请选择诊断数据点'}
 					</div>}
@@ -1301,12 +1301,12 @@ class CreateDiagnose extends Component {
 			case 1:
 				buttons.push(<Left><PrevButton onClick={this._setStep(0)}/></Left>);
 				buttons.push(<Right>
-					{this._step2NeedRequire() && 
+					{this._step2NeedRequire() &&
 					<div style={{
-						paddingRight: 20, 
-						color: '#adafae', 
+						paddingRight: 20,
+						color: '#adafae',
 						margin: 'auto'}}>
-						<FontIcon className='icon-information' 
+						<FontIcon className='icon-information'
 							style={{fontSize: 12, color: '#adafae', }}/>
 						{'请填写诊断条件'}
 					</div>}
@@ -1325,7 +1325,7 @@ class CreateDiagnose extends Component {
 		return buttons;
 	}
 	render() {
-		let {step} = this.state, 
+		let {step} = this.state,
 		{EnergyLabel, DiagnoseItem, isBasic} = this.props;
 		return (
 			<div className='diagnose-overlay'>
