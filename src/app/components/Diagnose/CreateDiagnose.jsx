@@ -1031,8 +1031,8 @@ class CreateDiagnose extends Component {
 				DiagnoseItemId: this.props.DiagnoseItem.get('Id'),
 				EnergyLabelId: this.props.EnergyLabel.get('Id'),
 				DiagnoseModel: this.props.EnergyLabel.get('DiagnoseModel'),
-				TagIds: checkedTags.map( tag => tag.Id ).toJS(),
-				Names: checkedTags.map( tag => tag.DiagnoseName ).toJS(),
+				TagIds: checkedTags.map( tag => tag.Id ),
+				Names: checkedTags.map( tag => tag.DiagnoseName ),
 			}
 		}, isClose);
 	}
