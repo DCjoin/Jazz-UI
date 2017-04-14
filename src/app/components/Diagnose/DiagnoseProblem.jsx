@@ -309,7 +309,6 @@ export default class DiagnoseProblem extends Component {
 				},()=>{
 					this.getProblem(nextProps)
 				})
-
 			}
 		}
 
