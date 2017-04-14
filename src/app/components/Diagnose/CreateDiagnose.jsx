@@ -40,6 +40,7 @@ import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
 import DiagnoseChart from './DiagnoseChart.jsx';
 
 let _firstUom = '';
+let _previewed = false;
 
 const SEPARTOR = '-';
 const DATE_FORMAT = 'YYYY-MM-DD';
@@ -226,13 +227,14 @@ function AdditiveComp({
 	)
 }
 
-function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime, disabled, style}) {
+function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime, disabled, style, isPopover}) {
 	let endTimeLabel = EndTime.split('T')[1].split(':').slice(0, 2).join(':');
 	if(endTimeLabel === '00:00') {
 		endTimeLabel = '24:00';
 	}
 	return (<section className='diagnose-create-chart-filter' style={style}>
 		<ViewableDatePicker
+			isPopover={isPopover}
 			datePickerClassName={'diagnose-date-picker'}
 			disabled={disabled}
     		width={100}
@@ -263,6 +265,7 @@ function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime
 			}}/>
 		<div style={{margin: '0 10px', alignSelf: 'center'}}>{'至'}</div>
 		<ViewableDatePicker
+			isPopover={isPopover}
 			datePickerClassName={'diagnose-date-picker'}
 			disabled={disabled}
     		width={100}
@@ -582,6 +585,7 @@ function ModelBCondition({
 				style={{
 					flexWrap: 'wrap'
 				}}
+				isPopover={true}
 				StartTime={HistoryStartTime}
 				EndTime={HistoryEndTime}
 				onChangeStartTime={onUpdateHistoryStartTime}
@@ -911,6 +915,7 @@ class CreateDiagnose extends Component {
 
 	constructor(props, ctx) {
 		super(props, ctx);
+		_previewed = false;
 		this._setFilterObj = this._setFilterObj.bind(this);
 		this._onChange = this._onChange.bind(this);
 		this._onSaveBack = this._onSaveBack.bind(this);
@@ -947,7 +952,7 @@ class CreateDiagnose extends Component {
 	}
 	_getChartData() {
 		let {step, filterObj, checkedTags} = this.state;
-		if( step === 0 && checkedTags && checkedTags.length > 0 ) {
+		if(/* step === 0*/!_previewed && checkedTags && checkedTags.length > 0 ) {
 			DiagnoseAction.getChartDataStep1({
 				tagIds: checkedTags.map(tag => tag.Id),/*diagnoseTags
 						.filter( tag => tag.get('checked') )
@@ -963,7 +968,7 @@ class CreateDiagnose extends Component {
 					}]
 				}
 			});
-		} else if( step === 1 ) {
+		} else if( _previewed ) {
 			DiagnoseAction.getChartData({
 			...updateUtcFormatFilter(filterObj,
 				['EndTime', 'StartTime', 'HistoryEndTime', 'HistoryStartTime']
@@ -1003,7 +1008,12 @@ class CreateDiagnose extends Component {
 	}
 	_setStep(step) {
 		return () => {
-			this.setState({step}, () => this.state.step === 0 && this._getChartData());
+			this.setState({step}, () => {
+				if(this.state.step === 0){
+					_previewed = false;
+					this._getChartData();
+				}
+			});
 		}
 	}
 	_setFilterObj(paths, val, callback) {
@@ -1241,7 +1251,10 @@ class CreateDiagnose extends Component {
 
 						StartTime={StartTime}
 						EndTime={EndTime}
-						getChartData={this._getChartData}
+						getChartData={() => {
+							_previewed = true;
+							this._getChartData();
+						}}
 						WorkTimes={WorkTimes}
 						TriggerValue={TriggerValue}
 						ConditionType={ConditionType}

@@ -1,7 +1,9 @@
 'use strict';
 
 import React from 'react';
+import ReactDOM from 'react-dom';
 import TextField from 'material-ui/TextField';
+import Popover from 'material-ui/Popover';
 import moment from 'moment';
 import Calendar from './calendar/Calendar.jsx';
 import ClickAway from './ClickAwayListener.jsx';
@@ -82,6 +84,7 @@ class DatePicker extends React.Component {
     errorText:React.PropTypes.string,
     width: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
     datePickerClassName:React.PropTypes.string,
+    isPopover: React.PropTypes.bool,
   };
 
   constructor(props) {
@@ -117,11 +120,25 @@ class DatePicker extends React.Component {
 
   _renderPopup(dateObject){
     if (this.state.popup){
+      if( this.props.isPopover ) {        
+        return (<Popover
+          open={true}
+          anchorEl={ReactDOM.findDOMNode(this)}
+          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+          targetOrigin={{horizontal: 'left', vertical: 'top'}}
+          onRequestClose={() => {
+            this.setState({popup:false});
+          }}
+        >
+          <Calendar onChange={this._onDateChange} value={dateObject}/>
+        </Popover>);
+      } else {        
         return (
             <div className="datepicker-popup"  >
                 <Calendar onChange={this._onDateChange} value={dateObject}/>
             </div>
         );
+      }
     }
     return null;
   }
@@ -150,7 +167,9 @@ class DatePicker extends React.Component {
   }
 
   onClickAway(evt){
-    this.setState({popup:false});
+    if(!this.props.isPopover) {
+      this.setState({popup:false});
+    }
   }
 
   render() {

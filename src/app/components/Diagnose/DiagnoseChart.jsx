@@ -7,27 +7,36 @@ import {isNumber, isEmptyStr} from 'util/Util.jsx';
 import ChartBasicComponent from 'components/DataAnalysis/Basic/ChartBasicComponent.jsx'
 
 const ALARM_COLOR = '#ff4b00';
+const GRAY_COLOR = 'gary';
 const PLOT_BACKGROUND_COLOR = '#ecfaf8';
 const CHART_TYPE = 'line';
 const TRIGGER_DATA_QUALITY = 10;
+const IGNORE_DATA_QUALITY = 11;
 const CALENDAR_TYPE_WORKTIME = 2;
 const CALENDAR_TYPE_NO_WORKTIME = 3;
 
-function mapSeriesDataWithMax(isTriggerVal, isEdit, serie, serieIdx, series) {
+function mapSeriesDataWithMax(isTriggerVal, isIgnoreVal, isEdit, serie, serieIdx, series) {
   return {...serie, ...{
+    turboThreshold: null,
     enableHide: false,
     enableDelete: isEdit && series.length > 1,
     data: serie.data.map(
       (data, dataIdx) => {
-        if( isTriggerVal(serieIdx, dataIdx) ) {
+        let isTrigger = isTriggerVal(serieIdx, dataIdx);
+        let isIgnore = isIgnoreVal(serieIdx, dataIdx);
+        if( isTrigger || isIgnore ) {
+          let color = ALARM_COLOR;
+          if(isIgnore) {
+            color = GRAY_COLOR;
+          }
           return {
             x: data[0],
             y: data[1],
-            color: ALARM_COLOR,
+            color: color,
             marker: {
               states: {
                 hover: {
-                  fillColor: ALARM_COLOR,
+                  fillColor: color,
                 }
               }
             }
@@ -42,13 +51,22 @@ function postNewConfig(data, isEdit, newConfig) {
   let triggerVal = data.get('TriggerValue'),
   Calendars = data.getIn(['EnergyViewData', 'Calendars']);
   newConfig.series = newConfig.series.map(
-    curry(mapSeriesDataWithMax)((serieIdx, dataIdx) => data.getIn([
+    curry(mapSeriesDataWithMax)(
+      (serieIdx, dataIdx) => data.getIn([
       'EnergyViewData', 
       'TargetEnergyData', 
       serieIdx,
       'EnergyData',
       dataIdx, 
-      'DataQuality']) === TRIGGER_DATA_QUALITY, isEdit)
+      'DataQuality']) === TRIGGER_DATA_QUALITY, 
+      (serieIdx, dataIdx) => data.getIn([
+      'EnergyViewData', 
+      'TargetEnergyData', 
+      serieIdx,
+      'EnergyData',
+      dataIdx, 
+      'DataQuality']) === IGNORE_DATA_QUALITY, 
+    isEdit)
   );
   if( isNumber(triggerVal) ) {
     newConfig.series.push({
