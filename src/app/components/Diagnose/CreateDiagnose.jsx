@@ -226,13 +226,14 @@ function AdditiveComp({
 	)
 }
 
-function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime, disabled, style}) {
+function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime, disabled, style, isPopover}) {
 	let endTimeLabel = EndTime.split('T')[1].split(':').slice(0, 2).join(':');
 	if(endTimeLabel === '00:00') {
 		endTimeLabel = '24:00';
 	}
 	return (<section className='diagnose-create-chart-filter' style={style}>
 		<ViewableDatePicker
+			isPopover={isPopover}
 			datePickerClassName={'diagnose-date-picker'}
 			disabled={disabled}
     		width={100}
@@ -263,6 +264,7 @@ function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime
 			}}/>
 		<div style={{margin: '0 10px', alignSelf: 'center'}}>{'至'}</div>
 		<ViewableDatePicker
+			isPopover={isPopover}
 			datePickerClassName={'diagnose-date-picker'}
 			disabled={disabled}
     		width={100}
@@ -582,6 +584,7 @@ function ModelBCondition({
 				style={{
 					flexWrap: 'wrap'
 				}}
+				isPopover={true}
 				StartTime={HistoryStartTime}
 				EndTime={HistoryEndTime}
 				onChangeStartTime={onUpdateHistoryStartTime}
