@@ -50,24 +50,26 @@ function postNewConfig(data, isEdit, newConfig) {
       dataIdx, 
       'DataQuality']) === TRIGGER_DATA_QUALITY, isEdit)
   );
-  isNumber(triggerVal) && newConfig.series.push({
-      lockLegend: true,
-      enableDelete: false,
-      name: '触发值',
-      color: ALARM_COLOR, 
-      lineWidth: 2,
-      dashStyle: 'shortdash',
-      marker: {
-          symbol: 'null',
-      }
-  });
-  newConfig.yAxis[0].plotLines = [{
-    color: ALARM_COLOR,
-    dashStyle: 'ShortDash',
-    zIndex: 5,
-    width: 2,
-    value: triggerVal
-  }];
+  if( isNumber(triggerVal) ) {
+    newConfig.series.push({
+        lockLegend: true,
+        enableDelete: false,
+        name: '触发值',
+        color: ALARM_COLOR, 
+        lineWidth: 2,
+        dashStyle: 'shortdash',
+        marker: {
+            symbol: 'null',
+        }
+    });
+    newConfig.yAxis[0].plotLines = [{
+      color: ALARM_COLOR,
+      dashStyle: 'ShortDash',
+      zIndex: 5,
+      width: 2,
+      value: triggerVal
+    }];
+  }
   if( Calendars && Calendars.size > 0 ) {
     let {CalendarType, CalendarTimeRanges} = Calendars.get(0).toJS();
     if( CalendarType === CALENDAR_TYPE_WORKTIME || CalendarType === CALENDAR_TYPE_NO_WORKTIME 
