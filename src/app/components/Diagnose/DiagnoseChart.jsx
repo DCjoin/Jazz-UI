@@ -15,6 +15,7 @@ const CALENDAR_TYPE_NO_WORKTIME = 3;
 
 function mapSeriesDataWithMax(isTriggerVal, isEdit, serie, serieIdx, series) {
   return {...serie, ...{
+    turboThreshold: null,
     enableHide: false,
     enableDelete: isEdit && series.length > 1,
     data: serie.data.map(
