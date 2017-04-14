@@ -100,9 +100,16 @@ export default class EditDiagnose extends Component {
       onUpdateStep:(val)=>{this._merge('Step',val)},
       Timeranges,
       onUpdateDateRange:(idx, type, startOrEnd, val) => {
-							this._merge(['Timeranges', idx, type],
-								new Date().getFullYear() + SEPARTOR + val.join(SEPARTOR)
-							);
+							val = new Date().getFullYear() + SEPARTOR + val.join(SEPARTOR);
+							let setVal = () => {
+								this._merge(['Timeranges', idx, type], val);							
+							}
+							if( type === 'StartTime' && moment(val) > moment(Timeranges[idx].EndTime) ) {
+								this._merge(['Timeranges', idx, 'EndTime'], val);
+							} else if( type === 'EndTime' && moment(val) < moment(Timeranges[idx].StartTime) ) {
+								this._merge(['Timeranges', idx, 'StartTime'], val);
+							}
+							setVal();
 						},
       onAddDateRange:() => {
 							Timeranges.push({
