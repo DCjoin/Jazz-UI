@@ -16,6 +16,7 @@ import moment from 'moment';
 import Immutable from 'immutable';
 import classnames from 'classnames';
 import { curry } from 'lodash/function';
+import { divide } from 'lodash/math';
 
 import TimeGranularity from 'constants/TimeGranularity.jsx';
 import {DIAGNOSE_MODEL} from 'constants/actionType/Diagnose.jsx';
@@ -80,10 +81,10 @@ const TIME_GRANULARITY_MAP_VAL = {
 	// [TimeGranularity.Yearly]: 365 * 24 * 60 * 60,
 }
 function checkStep(tags, step) {
-	return tags.filter(tag => tag.get('checked')).filter(tag => TIME_GRANULARITY_MAP_VAL[step] < TIME_GRANULARITY_MAP_VAL[tag.get('Step')] ).size === 0;
+	return tags.filter(tag => TIME_GRANULARITY_MAP_VAL[step] < TIME_GRANULARITY_MAP_VAL[tag.Step] ).length === 0;
 }
 function getCanSelectTimeGranularity(tags) {
-	let maxTime = Math.max(tags.filter(tag => tag.get('checked')).map(tag => TIME_GRANULARITY_MAP_VAL[tag.get('Step')]).toJS());
+	let maxTime = Math.max(tags.map(tag => TIME_GRANULARITY_MAP_VAL[tag.Step]));
 	return Object.keys(TIME_GRANULARITY_MAP_VAL).filter( step => TIME_GRANULARITY_MAP_VAL[step] >= maxTime );
 }
 function getStepItems(){
@@ -232,6 +233,7 @@ function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime
 	}
 	return (<section className='diagnose-create-chart-filter' style={style}>
 		<ViewableDatePicker
+			datePickerClassName={'diagnose-date-picker'}
 			disabled={disabled}
     		width={100}
 			value={StartTime.split('T')[0]}
@@ -240,7 +242,20 @@ function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime
 			}}/>
 		<ViewableDropDownMenu
 			disabled={disabled}
-			style={{width: 100, marginLeft: 10, marginTop: -6}}
+			autoWidth={false}
+			style={{
+				width: 50, 
+				height: 26,
+				marginLeft: 10, 
+				marginTop: -6, 
+				paddingTop: 4,
+				paddingLeft: 10,
+				borderRadius: 2,
+				border: 'solid 1px #e3e3e3'
+			}}
+			labelStyle={{lineHeight: '30px', textOverflow:'clip'}}
+			iconStyle={{display: 'none'}}
+			underlineStyle={{display: 'none'}}
 			defaultValue={StartTime.split('T')[1].split(':').slice(0, 2).join(':')}
 			dataItems={getDateTimeItemsByStep(60).slice(0, 24)}
 			didChanged={(val) => {
@@ -248,6 +263,7 @@ function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime
 			}}/>
 		<div style={{margin: '0 10px', alignSelf: 'center'}}>{'至'}</div>
 		<ViewableDatePicker
+			datePickerClassName={'diagnose-date-picker'}
 			disabled={disabled}
     		width={100}
 			value={EndTime.split('T')[0]}
@@ -260,7 +276,20 @@ function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime
 			}}/>
 		<ViewableDropDownMenu
 			disabled={disabled}
-			style={{width: 100, marginLeft: 10, marginTop: -6}}
+			autoWidth={false}
+			style={{
+				width: 50, 
+				height: 26,
+				marginLeft: 10, 
+				marginTop: -6, 
+				paddingTop: 4,
+				paddingLeft: 10,
+				borderRadius: 2,
+				border: 'solid 1px #e3e3e3'
+			}}
+			labelStyle={{lineHeight: '30px', textOverflow:'clip'}}
+			iconStyle={{display: 'none'}}
+			underlineStyle={{display: 'none'}}
 			defaultValue={endTimeLabel}
 			dataItems={getDateTimeItemsByStep(60).slice(1)}
 			didChanged={(val) => {
@@ -269,17 +298,17 @@ function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime
 	</section>)
 }
 
-function TagList({tags, onCheck}) {
+function TagList({tags, onCheck, checkedTags}) {
 	let content = (<section className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></section>);
 	if( tags ) {
 		content = (
 			<ul className='diagnose-create-tag-list-content'>
 				{tags.map( (tag, i) =>
 				<li className='diagnose-create-tag-list-item'  title={tag.get('Name')}>
-					<Checkbox checked={tag.get('checked')} 
-						disabled={!tag.get('checked') && tags.filter(tmpTag => tmpTag.get('checked')).size === 10} 
+					<Checkbox checked={checkedTags.map(checkedTag => checkedTag.Id).includes(tag.get('Id'))} 
+						disabled={!checkedTags.map(checkedTag => checkedTag.Id).includes(tag.get('Id')) && checkedTags.length === 10}
 						onCheck={(e, isInputChecked) => {
-							onCheck(i, isInputChecked);
+							onCheck(tag.get('Id'), isInputChecked);
 					}}/>
 					<div className='diagnose-create-checkbox-label'>
 						<div className='diagnose-create-checkbox-label-name hiddenEllipsis'>
@@ -428,7 +457,9 @@ function RuntimeComp({
 			renderFunc={(data, idx) =>
 			<div key={idx} style={{display: 'flex', alignItems: 'center', marginLeft: -10}}>
 				<ViewableDropDownMenu
-					style={{width: 100, marginLeft: 10, marginTop: -6}}
+					autoWidth={false}
+					iconStyle={{display: 'none'}}
+					style={{width: 50, marginLeft: 10, marginTop: -6}}
 					defaultValue={data.StartTime}
 					dataItems={getDateTimeItemsByStepForVal(60).slice(0, 24)}
 					didChanged={(val) => {
@@ -439,7 +470,9 @@ function RuntimeComp({
 					}}/>
 				{'至'}
 				<ViewableDropDownMenu
-					style={{width: 100, marginLeft: 10, marginTop: -6}}
+					autoWidth={false}
+					iconStyle={{display: 'none'}}
+					style={{width: 50, marginLeft: 10, marginTop: -6}}
 					defaultValue={data.EndTime || 60 * 24}
 					dataItems={getDateTimeItemsByStepForVal(60).slice(1)}
 					didChanged={(val) => {
@@ -459,6 +492,8 @@ function ModelACondition({TriggerValue, onUpdateTriggerValue, uom}) {
 	return (<div className='diagnose-condition-model-a'>
 		<span className='diagnose-condition-subtitle'>{`非运行时间触发值(${uom})`}</span>
 		<ViewableTextField
+			regex={/^\d{1,9}([.]\d{1,6})?$/}
+			errorMessage={'请输入正确的格式'}
 			hintText={'输入触发值'}
 			defaultValue={TriggerValue}
 			didChanged={onUpdateTriggerValue}/>
@@ -534,6 +569,8 @@ function ModelBCondition({
 		<div style={{marginTop: 15}}>
 			<span className='diagnose-condition-subtitle'>{`基准值(${uom})`}</span>
 			<ViewableTextField
+				regex={/^\d{1,9}([.]\d{1,6})?$/}
+				errorMessage={'请输入正确的格式'}
 				hintText={'填写基准值'}
 				defaultValue={TriggerValue}
 				didChanged={onUpdateTriggerValue}/>
@@ -553,6 +590,8 @@ function ModelBCondition({
 		<div style={{marginTop: 15, marginBottom: 15}}>
 			<span className='diagnose-condition-subtitle'>{'敏感值(%)'}</span>
 			<ViewableTextField
+				regex={/^\d{1,9}([.]\d{1,6})?$/}
+				errorMessage={'请输入正确的格式'}
 				hintText={'填写敏感值'}
 				defaultValue={!isEmptyStr(ToleranceRatio) ? ToleranceRatio * 100 : ToleranceRatio}
 				didChanged={onUpdateToleranceRatio}/>
@@ -655,6 +694,7 @@ class CreateStep1 extends Component {
 	render() {
 		let {
 			diagnoseTags,
+			checkedTags,
 			onCheckDiagnose,
 			StartTime,
 			onChangeStartTime,
@@ -673,7 +713,7 @@ class CreateStep1 extends Component {
 		return (
 			<section className='diagnose-create-content'>
 				<div className='diagnose-create-step'>
-					<TagList tags={diagnoseTags} onCheck={onCheckDiagnose}/>
+					<TagList tags={diagnoseTags} checkedTags={checkedTags} onCheck={onCheckDiagnose}/>
 					<ChartPreview
 						onDeleteLegendItem={onDeleteLegendItem}
 						StartTime={StartTime}
@@ -796,11 +836,22 @@ export class CreateStep2 extends Component {
 					onUpdateConditionType={onUpdateFilterObj('ConditionType')}
 
 					TriggerType={TriggerType}
-					onUpdateTriggerType={onUpdateFilterObj('TriggerType')}
+					onUpdateTriggerType={(type) => {
+						if( type === TRIGGER_TYPE.HistoryValue ) {
+							onUpdateFilterObj('TriggerValue')(null, () => {
+								onUpdateFilterObj('TriggerType')(type);
+							});
+						} else {
+							onUpdateFilterObj('TriggerType')(type);
+						}
+					}}
 
 					ToleranceRatio={ToleranceRatio}
 					onUpdateToleranceRatio={(val) => {
-						onUpdateFilterObj('ToleranceRatio')(!isEmptyStr(val) ? val / 100 : val)
+						if(!isEmptyStr(val)) {
+						    val = divide(val, 100);
+						}
+						onUpdateFilterObj('ToleranceRatio')(val);
 					}}
 
 					HistoryStartTime={HistoryStartTime}
@@ -815,26 +866,25 @@ export class CreateStep2 extends Component {
 }
 
 function CreateStep3({
-	diagnoseTags,
+	checkedTags,
 	onUpdateDiagnoseTags,
 }) {
 	return (
 		<section className='diagnose-create-content diagnose-create-names'>
 			<hgroup className='diagnose-create-title'>{'诊断名称'}</hgroup>
 			<div style={{paddingLeft: 15, paddingBottom: 25}}>
-				{diagnoseTags && diagnoseTags.map((tag, idx) =>
-				tag.get('checked') ?
+				{checkedTags && checkedTags.map((tag, idx) =>
 				<div style={{paddingTop: 25}}>
 					<div className={'diagnose-condition-subtitle'}>{'诊断名称'}</div>
 					<ViewableTextField
 					hintText={'请输入诊断名称'}
-					defaultValue={tag.get('DiagnoseName')}
+					defaultValue={tag.DiagnoseName}
 					didChanged={(val) => {
-						onUpdateDiagnoseTags(diagnoseTags.setIn([idx, 'DiagnoseName'], val));
+						checkedTags[idx].DiagnoseName = val;
+						onUpdateDiagnoseTags(checkedTags);
 					}}/>
 				</div>
-				: null
-				).toJS()}
+				)}
 			</div>
 		</section>
 	);
@@ -875,7 +925,8 @@ class CreateDiagnose extends Component {
 			step: 0,
 			diagnoseTags: null,
 			cahrtData: null,
-			filterObj: getDefaultFilter()
+			filterObj: getDefaultFilter(),
+			checkedTags: []
 		};
 
 		this._getTagList(props, ctx);
@@ -895,13 +946,13 @@ class CreateDiagnose extends Component {
 		);
 	}
 	_getChartData() {
-		let {step, filterObj, diagnoseTags} = this.state;
-		if( step === 0 && diagnoseTags && diagnoseTags.filter( tag => tag.get('checked') ).size > 0 ) {
+		let {step, filterObj, checkedTags} = this.state;
+		if( step === 0 && checkedTags && checkedTags.length > 0 ) {
 			DiagnoseAction.getChartDataStep1({
-				tagIds: diagnoseTags
+				tagIds: checkedTags.map(tag => tag.Id),/*diagnoseTags
 						.filter( tag => tag.get('checked') )
 						.map( tag => tag.get('Id') )
-						.toJS(),
+						.toJS(),*/
 				viewOption: {
 					DataUsageType: 1,
 					IncludeNavigatorData: false,
@@ -922,10 +973,10 @@ class CreateDiagnose extends Component {
 				DiagnoseItemId: this.props.DiagnoseItem.get('Id'),
 				EnergyLabelId: this.props.EnergyLabel.get('Id'),
 				DiagnoseModel: this.props.EnergyLabel.get('DiagnoseModel'),
-				TagIds: diagnoseTags
+				TagIds: checkedTags.map(tag => tag.Id),/*diagnoseTags
 						.filter( tag => tag.get('checked') )
 						.map( tag => tag.get('Id') )
-						.toJS(),
+						.toJS(),*/
 			}}, this.state.chartData);
 		}
 		this.setState({
@@ -970,8 +1021,7 @@ class CreateDiagnose extends Component {
 		// this._getChartData();
 	}
 	_createDiagnose(isClose) {
-		let {filterObj, diagnoseTags} = this.state,
-		checkedTags = diagnoseTags.filter( tag => tag.get('checked') );
+		let {filterObj, checkedTags} = this.state;
 		DiagnoseAction.createDiagnose({
 			...updateUtcFormatFilter(filterObj,
 				['EndTime', 'StartTime', 'HistoryEndTime', 'HistoryStartTime']
@@ -986,10 +1036,21 @@ class CreateDiagnose extends Component {
 			}
 		}, isClose);
 	}
-	_onCheckDiagnose(idx, val) {
-		let newDiagnoseTags = this.state.diagnoseTags.setIn([idx, 'checked'], val);
-		if( checkStep( newDiagnoseTags, this.state.filterObj.get('Step') ) ) {
-			if( newDiagnoseTags.filter(tag => tag.get('checked')).size > 1 && this.state.filterObj.get('TriggerType') === TRIGGER_TYPE.HistoryValue) {
+	_onCheckDiagnose(id, val) {
+		let newCheckedTags = [...this.state.checkedTags],
+		currentTags = this.state.diagnoseTags.find(tag => tag.get('Id') === id);
+		if(val) {
+			newCheckedTags.push({
+				Id: currentTags.get('Id'),
+				DiagnoseName: currentTags.get('DiagnoseName'),
+				Step: currentTags.get('Step'),
+			});
+		} else {
+			newCheckedTags.splice(newCheckedTags.map(tag => tag.Id).indexOf(id), 1);
+		}
+		// let newDiagnoseTags = this.state.diagnoseTags.setIn([idx, 'checked'], val);
+		if( checkStep( newCheckedTags, this.state.filterObj.get('Step') ) ) {
+			if( newCheckedTags.length > 1 && this.state.filterObj.get('TriggerType') === TRIGGER_TYPE.HistoryValue) {
 				this.setState({
 					filterObj: this.state.filterObj
 								.set( 'TriggerType', TRIGGER_TYPE.FixedValue )
@@ -998,18 +1059,18 @@ class CreateDiagnose extends Component {
 				});
 			}
 			this.setState({
-				diagnoseTags: newDiagnoseTags
+				checkedTags: newCheckedTags
 			}, this._getChartData);
 
 		} else {
 			this.setState({
-				tmpFilterDiagnoseTags: newDiagnoseTags,
+				tmpFilterDiagnoseTags: newCheckedTags,
 				tmpFilterStep: this.state.filterObj.get('Step')
 			});
 		}
 	}
 	_onDeleteLegendItem(obj) {
-		this._onCheckDiagnose(this.state.diagnoseTags.findIndex(tag => tag.get('Id') === obj.uid), false);
+		this._onCheckDiagnose(obj.uid, false);
 	}
 	_onSaveBack() {
 		this._createDiagnose(true);
@@ -1020,6 +1081,7 @@ class CreateDiagnose extends Component {
 	_onRenew() {
 		this.setState({
 			diagnoseTags: null,
+			checkedTags: [],
 		}, DiagnoseAction.clearCreate);
 		this._getTagList(this.props, this.context);
 		this._setStep(0)();
@@ -1037,7 +1099,7 @@ class CreateDiagnose extends Component {
 	}
 	_renderContent() {
 		let DiagnoseModel = this.props.EnergyLabel.get('DiagnoseModel'),
-		{step, diagnoseTags, chartData, chartDataLoading, filterObj} = this.state,
+		{step, diagnoseTags, checkedTags, chartData, chartDataLoading, filterObj} = this.state,
 		{
 			TagIds,
 			Timeranges,
@@ -1056,6 +1118,7 @@ class CreateDiagnose extends Component {
 			return (<CreateStep1
 						onDeleteLegendItem={this._onDeleteLegendItem}
 						diagnoseTags={diagnoseTags}
+						checkedTags={checkedTags}
 						onCheckDiagnose={this._onCheckDiagnose}
 						StartTime={StartTime}
 						onChangeStartTime={(val) => {
@@ -1095,11 +1158,11 @@ class CreateDiagnose extends Component {
 						}}
 						Step={Step}
 						onUpdateStep={(val) => {
-							if( checkStep(diagnoseTags, val) ) {
+							if( checkStep(checkedTags, val) ) {
 								this._setFilterObjThenUpdataChart('Step', val);
 							} else {
 								this.setState({
-									tmpFilterDiagnoseTags: diagnoseTags,
+									tmpFilterDiagnoseTags: checkedTags,
 									tmpFilterStep: val
 								});
 							}
@@ -1133,7 +1196,7 @@ class CreateDiagnose extends Component {
 		} else if( step === 1 ) {
 			return (<CreateStep2
 						onDeleteLegendItem={this._onDeleteLegendItem}
-						disabledHistory={diagnoseTags.filter(tag => tag.get('checked')).size !== 1}
+						disabledHistory={checkedTags.length !== 1}
 						DiagnoseModel={DiagnoseModel}
 						chartData={chartData}
 						chartDataLoading={chartDataLoading}
@@ -1189,8 +1252,8 @@ class CreateDiagnose extends Component {
 
 						/>);
 		} else if( step === 2 ) {
-			return (<CreateStep3 diagnoseTags={diagnoseTags} onUpdateDiagnoseTags={(diagnoseTags) => {
-				this.setState({diagnoseTags});
+			return (<CreateStep3 checkedTags={checkedTags} onUpdateDiagnoseTags={(checkedTags) => {
+				this.setState({checkedTags});
 			}}/>);
 		}
 		return null;
@@ -1203,7 +1266,7 @@ class CreateDiagnose extends Component {
 					<FlatButton key={time} label={'按' + getStepItems().find(item => item.step === time * 1).text}
 						onClick={() => {
 							this.setState({
-								diagnoseTags: tmpFilterDiagnoseTags,
+								checkedTags: tmpFilterDiagnoseTags,
 								filterObj: filterObj.set('Step', time * 1),
 								tmpFilterDiagnoseTags: null,
 								tmpFilterStep: null,
@@ -1216,16 +1279,15 @@ class CreateDiagnose extends Component {
 		return null;
 	}
 	_getFooterButton() {
-		let {step, diagnoseTags, filterObj} = this.state,
-		checkedTags = diagnoseTags && diagnoseTags.filter(tag => tag.get('checked')),
+		let {step, filterObj, checkedTags} = this.state,
 		needAddNames = !checkedTags ||
-						checkedTags.map(tag => tag.get('DiagnoseName')).toJS()
+						checkedTags.map(tag => tag.DiagnoseName)
 						.reduce((result, val) => result || isEmptyStr(val), false),
 		buttons = [];
 		switch (step) {
 			case 0:
 				buttons.push(<Right>
-					{(!checkedTags || checkedTags.size === 0) && 
+					{(!checkedTags || checkedTags.length === 0) && 
 					<div style={{
 						paddingRight: 20, 
 						color: '#adafae', 
@@ -1234,7 +1296,7 @@ class CreateDiagnose extends Component {
 							style={{fontSize: 12, color: '#adafae', }}/>
 						{'请选择诊断数据点'}
 					</div>}
-					<NextButton disabled={!checkedTags || checkedTags.size === 0} onClick={this._setStep(1)}/></Right>);
+					<NextButton disabled={!checkedTags || checkedTags.length === 0} onClick={this._setStep(1)}/></Right>);
 				break;
 			case 1:
 				buttons.push(<Left><PrevButton onClick={this._setStep(0)}/></Left>);
