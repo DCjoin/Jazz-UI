@@ -232,7 +232,7 @@ export default class EditDiagnose extends Component {
 					</header>
 					{this._renderContent()}
 					<footer>
-						<div style={{float:"right"}}>
+						<div style={{float:"right", marginBottom: 40}}>
 								<FlatButton label={I18N.Setting.Diagnose.SaveAndExit} labelStyle={styles.label} style={styles.btn} backgroundColor="#0cad04"
 									disabled={this._validate()} onTouchTap={()=>{
 										DiagnoseAction.updateDiagnose(this.state.diagnoseData.toJS())
