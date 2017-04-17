@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Immutable from 'immutable';
 import {curry, flowRight} from 'lodash/function'
+import moment from 'moment';
 
 import {isNumber, isEmptyStr} from 'util/Util.jsx';
 
@@ -120,8 +121,8 @@ function postNewConfig(data, isEdit, newConfig) {
       newConfig.xAxis.plotBands = CalendarTimeRanges.map(({StartTime, EndTime}) => {
         return {
           color: PLOT_BACKGROUND_COLOR,
-          from: new Date(StartTime).valueOf(),
-          to: new Date(EndTime).valueOf()        
+          from: moment(StartTime).valueOf(),
+          to: moment(EndTime).valueOf()        
         }
       });
 
