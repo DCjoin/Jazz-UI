@@ -2206,6 +2206,27 @@ let CommonFuns = {
     return dataList;
   },
 
+  pow10(num, pow) {
+    num = (num + '');
+    let floatIdx = num.lastIndexOf('.'), 
+    arr = (num.replace('.', '')*1 + '').split('');
+    if(floatIdx === -1) {
+      floatIdx = 0;
+    }
+    floatIdx -= pow;
+    if( floatIdx > 0 ) {
+      while( arr.length <= floatIdx ) {
+        arr.unshift('0');
+      }
+      arr.splice(arr.length - floatIdx - 1, 0, '.');
+    } else if( floatIdx < 0 ) {
+      while( ++floatIdx ) {
+        arr.push('0');
+      }
+    }
+    return arr.join('') * 1;
+  }
+
 };
 
 function toFixed(num, s) {
