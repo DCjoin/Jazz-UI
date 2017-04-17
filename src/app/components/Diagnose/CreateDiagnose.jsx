@@ -24,7 +24,7 @@ import {DIAGNOSE_MODEL} from 'constants/actionType/Diagnose.jsx';
 import ReduxDecorator from '../../decorator/ReduxDecorator.jsx';
 import NewAppTheme from '../../decorator/NewAppTheme.jsx';
 
-import {isEmptyStr, getDateTimeItemsByStepForVal, getDateTimeItemsByStep} from 'util/Util.jsx';
+import {isEmptyStr, getDateTimeItemsByStepForVal, getDateTimeItemsByStep, pow10} from 'util/Util.jsx';
 
 import LinkButton from 'controls/LinkButton.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
@@ -99,6 +99,21 @@ function getStepItems(){
 		step: TimeGranularity.Daily,
 		text: I18N.EM.Day
 	}, ];
+}
+
+function step2NeedRequire(DiagnoseModel, TriggerType, TriggerValue) {
+	if( DiagnoseModel === DIAGNOSE_MODEL.A ) {
+		return isEmptyStr( TriggerValue );
+	} else if(DiagnoseModel === DIAGNOSE_MODEL.B) {
+		if( TriggerType === TRIGGER_TYPE.FixedValue ) {
+			return isEmptyStr( TriggerValue );
+		}
+		if( TriggerType === TRIGGER_TYPE.HistoryValue ) {
+			return false;
+		}
+	} else if(DiagnoseModel === DIAGNOSE_MODEL.C) {
+		return true;
+	}
 }
 
 function StepItem({
@@ -495,7 +510,7 @@ function ModelACondition({TriggerValue, onUpdateTriggerValue, uom}) {
 	return (<div className='diagnose-condition-model-a'>
 		<span className='diagnose-condition-subtitle'>{`非运行时间触发值(${uom})`}</span>
 		<ViewableTextField
-			regex={/^\d{1,9}([.]\d{1,6})?$/}
+			regex={/^(\-?)\d{1,9}([.]\d{1,6})?$/}
 			errorMessage={'请输入正确的格式'}
 			hintText={'输入触发值'}
 			defaultValue={TriggerValue}
@@ -572,7 +587,7 @@ function ModelBCondition({
 		<div style={{marginTop: 15}}>
 			<span className='diagnose-condition-subtitle'>{`基准值(${uom})`}</span>
 			<ViewableTextField
-				regex={/^\d{1,9}([.]\d{1,6})?$/}
+				regex={/^(\-?)\d{1,9}([.]\d{1,6})?$/}
 				errorMessage={'请输入正确的格式'}
 				hintText={'填写基准值'}
 				defaultValue={TriggerValue}
@@ -594,10 +609,10 @@ function ModelBCondition({
 		<div style={{marginTop: 15, marginBottom: 15}}>
 			<span className='diagnose-condition-subtitle'>{'敏感值(%)'}</span>
 			<ViewableTextField
-				regex={/^\d{1,9}([.]\d{1,6})?$/}
+				regex={/^(\-?)\d{1,9}([.]\d{1,6})?$/}
 				errorMessage={'请输入正确的格式'}
 				hintText={'填写敏感值'}
-				defaultValue={!isEmptyStr(ToleranceRatio) ? ToleranceRatio * 100 : ToleranceRatio}
+				defaultValue={!isEmptyStr(ToleranceRatio) ? pow10(ToleranceRatio, 2) : ToleranceRatio}
 				didChanged={onUpdateToleranceRatio}/>
 			<span style={{fontSize: 12, color: '#ff4b00'}}>{'注：触发值=基准值*（1+／-敏感值)'}</span>
 		</div>
@@ -776,11 +791,11 @@ export class CreateStep2 extends Component {
 			ToleranceRatio,
 			HistoryStartTime,
 			HistoryEndTime,
-			disabledPreview,
 			disabledHistory,
 			chartData,
 			...other,
-		} = this.props;
+		} = this.props,
+		disabledPreview = step2NeedRequire(DiagnoseModel, TriggerType, TriggerValue);
 		if(chartData) {
 			_firstUom = chartData.getIn(['EnergyViewData', 'TargetEnergyData', 0, 'Target', 'Uom']);
 		}
@@ -853,7 +868,7 @@ export class CreateStep2 extends Component {
 					ToleranceRatio={ToleranceRatio}
 					onUpdateToleranceRatio={(val) => {
 						if(!isEmptyStr(val)) {
-						    val = divide(val, 100);
+						    val = pow10(val, -2);
 						}
 						onUpdateFilterObj('ToleranceRatio')(val);
 					}}
@@ -987,24 +1002,6 @@ class CreateDiagnose extends Component {
 		this.setState({
 			chartData: null
 		});
-	}
-	_step2NeedRequire() {
-		let {filterObj} = this.state,
-		DiagnoseModel = this.props.EnergyLabel.get('DiagnoseModel');
-		if( DiagnoseModel === DIAGNOSE_MODEL.A ) {
-			return isEmptyStr( filterObj.get('TriggerValue') );
-		} else if(DiagnoseModel === DIAGNOSE_MODEL.B) {
-			if( filterObj.get('TriggerType') === TRIGGER_TYPE.FixedValue ) {
-				return isEmptyStr( filterObj.get('TriggerValue') )/* ||
-						isEmptyStr( filterObj.get('ToleranceRatio') )*/;
-			}
-			if( filterObj.get('TriggerType') === TRIGGER_TYPE.HistoryValue ) {
-				// return isEmptyStr( filterObj.get('ToleranceRatio') );
-				return false;
-			}
-		} else if(DiagnoseModel === DIAGNOSE_MODEL.C) {
-			return true;
-		}
 	}
 	_setStep(step) {
 		return () => {
@@ -1247,7 +1244,6 @@ class CreateDiagnose extends Component {
 								}
 							}
 						}
-						disabledPreview={this._step2NeedRequire()}
 
 						StartTime={StartTime}
 						EndTime={EndTime}
@@ -1296,7 +1292,8 @@ class CreateDiagnose extends Component {
 		needAddNames = !checkedTags ||
 						checkedTags.map(tag => tag.DiagnoseName)
 						.reduce((result, val) => result || isEmptyStr(val), false),
-		buttons = [];
+		buttons = [],
+		disabledNext = step2NeedRequire(this.props.DiagnoseModel, filterObj.get('TriggerType'), filterObj.get('TriggerValue'));
 		switch (step) {
 			case 0:
 				buttons.push(<Right>
@@ -1314,7 +1311,7 @@ class CreateDiagnose extends Component {
 			case 1:
 				buttons.push(<Left><PrevButton onClick={this._setStep(0)}/></Left>);
 				buttons.push(<Right>
-					{this._step2NeedRequire() &&
+					{disabledNext &&
 					<div style={{
 						paddingRight: 20,
 						color: '#adafae',
@@ -1323,7 +1320,7 @@ class CreateDiagnose extends Component {
 							style={{fontSize: 12, color: '#adafae', }}/>
 						{'请填写诊断条件'}
 					</div>}
-					<NextButton disabled={this._step2NeedRequire()} onClick={this._setStep(2)}/></Right>);
+					<NextButton disabled={disabledNext} onClick={this._setStep(2)}/></Right>);
 				break;
 			case 2:
 				buttons.push(<Left><PrevButton onClick={this._setStep(1)}/></Left>);
