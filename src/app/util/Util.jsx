@@ -2208,19 +2208,23 @@ let CommonFuns = {
 
   pow10(num, pow) {
     num = (num + '');
-    let floatIdx = num.lastIndexOf('.'), 
-    arr = (num.replace('.', '')*1 + '').split('');
+    let floatIdx = num.indexOf('.'), 
+    arr = num.replace('.', '').split('');
     if(floatIdx === -1) {
-      floatIdx = 0;
+      floatIdx = 0
+    } else {
+      floatIdx = arr.length - floatIdx;
     }
     floatIdx -= pow;
     if( floatIdx > 0 ) {
-      while( arr.length <= floatIdx ) {
+      let zeroLength = floatIdx - arr.length;
+      while( zeroLength-- > 0) {
         arr.unshift('0');
       }
-      arr.splice(arr.length - floatIdx - 1, 0, '.');
+      arr.splice(arr.length - floatIdx, 0, '.');
+      arr.unshift('0');
     } else if( floatIdx < 0 ) {
-      while( ++floatIdx ) {
+      while( floatIdx++ ) {
         arr.push('0');
       }
     }

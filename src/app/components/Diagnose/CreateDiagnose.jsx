@@ -510,7 +510,7 @@ function ModelACondition({TriggerValue, onUpdateTriggerValue, uom}) {
 	return (<div className='diagnose-condition-model-a'>
 		<span className='diagnose-condition-subtitle'>{`非运行时间触发值(${uom})`}</span>
 		<ViewableTextField
-			regex={/^\d{1,9}([.]\d{1,6})?$/}
+			regex={/^(\-?)\d{1,9}([.]\d{1,6})?$/}
 			errorMessage={'请输入正确的格式'}
 			hintText={'输入触发值'}
 			defaultValue={TriggerValue}
@@ -587,7 +587,7 @@ function ModelBCondition({
 		<div style={{marginTop: 15}}>
 			<span className='diagnose-condition-subtitle'>{`基准值(${uom})`}</span>
 			<ViewableTextField
-				regex={/^\d{1,9}([.]\d{1,6})?$/}
+				regex={/^(\-?)\d{1,9}([.]\d{1,6})?$/}
 				errorMessage={'请输入正确的格式'}
 				hintText={'填写基准值'}
 				defaultValue={TriggerValue}
@@ -609,7 +609,7 @@ function ModelBCondition({
 		<div style={{marginTop: 15, marginBottom: 15}}>
 			<span className='diagnose-condition-subtitle'>{'敏感值(%)'}</span>
 			<ViewableTextField
-				regex={/^\d{1,9}([.]\d{1,6})?$/}
+				regex={/^(\-?)\d{1,9}([.]\d{1,6})?$/}
 				errorMessage={'请输入正确的格式'}
 				hintText={'填写敏感值'}
 				defaultValue={!isEmptyStr(ToleranceRatio) ? pow10(ToleranceRatio, 2) : ToleranceRatio}
