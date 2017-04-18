@@ -1211,17 +1211,18 @@ class CreateDiagnose extends Component {
 						onUpdateFilterObj={paths =>
 							(val, callback) => {
 								let setVal = () => {
+									console.log(val);
 									this._setFilterObj(paths, val, callback);
 								}
 								if(paths === 'HistoryStartTime') {
 									let startTime = moment(val),
 									endTime = moment(HistoryEndTime);
-									if(endTime < startTime) {
+									if(endTime < moment(startTime).add(1, 'days')) {
 										endTime = moment(startTime).add(1, 'days');
 									} else if( moment(startTime).add(90, 'days') < endTime ) {
 										endTime = moment(startTime).add(90, 'days');
 									}
-									if(endTime.format('YYYY-MM-DDTHH:mm:ss') !== HistoryEndTime) {
+									if(endTime.valueOf() !== moment(HistoryEndTime).valueOf()) {
 										this._setFilterObj( 'HistoryEndTime', endTime.format('YYYY-MM-DDTHH:mm:ss'), setVal );
 									} else {
 										setVal();
@@ -1229,12 +1230,12 @@ class CreateDiagnose extends Component {
 								} else if(paths === 'HistoryEndTime') {
 									let startTime = moment(HistoryStartTime),
 									endTime = moment(val);
-									if(endTime < startTime) {
+									if(moment(endTime).subtract(1, 'days') < startTime) {
 										startTime = moment(endTime).subtract(1, 'days');
 									} else if( moment(endTime).subtract(90, 'days') > startTime ) {
 										startTime = moment(endTime).subtract(90, 'days');
 									}
-									if(startTime.format('YYYY-MM-DDTHH:mm:ss') !== HistoryStartTime) {
+									if(startTime.valueOf() !== moment(HistoryStartTime).valueOf()) {
 										this._setFilterObj( 'HistoryStartTime', startTime.format('YYYY-MM-DDTHH:mm:ss'), setVal );
 									} else {
 										setVal();
