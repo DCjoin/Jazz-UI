@@ -16,11 +16,12 @@ const IGNORE_DATA_QUALITY = 11;
 const CALENDAR_TYPE_WORKTIME = 2;
 const CALENDAR_TYPE_NO_WORKTIME = 3;
 
-function mapSeriesDataWithMax(isTriggerVal, isIgnoreVal, isEdit, serie, serieIdx, series) {
+function mapSeriesDataWithMax(isTriggerVal, isIgnoreVal, isEdit, isHistory, serie, serieIdx, series) {
   return {...serie, ...{
     turboThreshold: null,
     enableHide: false,
     enableDelete: isEdit && series.length > 1,
+    color: isHistory(serieIdx) ? ALARM_COLOR : undefined,
     data: serie.data.map(
       (data, dataIdx) => {
         let isTrigger = isTriggerVal(serieIdx, dataIdx);
@@ -67,7 +68,14 @@ function postNewConfig(data, isEdit, newConfig) {
       'EnergyData',
       dataIdx, 
       'DataQuality']) === IGNORE_DATA_QUALITY, 
-    isEdit)
+      isEdit,
+      (serieIdx, dataIdx) => data.getIn([
+      'EnergyViewData', 
+      'TargetEnergyData', 
+      serieIdx,
+      'Target',
+      'Code']) === 'TriggerValue', 
+    )
   );
   if( isNumber(triggerVal) ) {
     newConfig.series.push({
@@ -118,11 +126,17 @@ function postNewConfig(data, isEdit, newConfig) {
               symbol: 'null',
           }
       });
+      let rate = data.getIn([
+        'EnergyViewData', 
+        'TargetEnergyData', 
+        0,
+        'Target',
+        'Step'], 6) === 2 ? 16 : 8;
       newConfig.xAxis.plotBands = CalendarTimeRanges.map(({StartTime, EndTime}) => {
         return {
           color: PLOT_BACKGROUND_COLOR,
-          from: moment(StartTime).valueOf(),
-          to: moment(EndTime).valueOf()        
+          from: moment(StartTime).add(rate, 'hours').valueOf(),
+          to: moment(EndTime).add(rate, 'hours').valueOf()        
         }
       });
 
