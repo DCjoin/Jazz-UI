@@ -126,11 +126,17 @@ function postNewConfig(data, isEdit, newConfig) {
               symbol: 'null',
           }
       });
+      let rate = data.getIn([
+        'EnergyViewData', 
+        'TargetEnergyData', 
+        0,
+        'Target',
+        'Step'], 6) === 2 ? 16 : 8;
       newConfig.xAxis.plotBands = CalendarTimeRanges.map(({StartTime, EndTime}) => {
         return {
           color: PLOT_BACKGROUND_COLOR,
-          from: moment(StartTime).add(16, 'hours').valueOf(),
-          to: moment(EndTime).add(16, 'hours').valueOf()        
+          from: moment(StartTime).add(rate, 'hours').valueOf(),
+          to: moment(EndTime).add(rate, 'hours').valueOf()        
         }
       });
 
