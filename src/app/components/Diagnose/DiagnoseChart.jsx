@@ -21,7 +21,7 @@ function mapSeriesDataWithMax(isTriggerVal, isIgnoreVal, isEdit, isHistory, seri
     turboThreshold: null,
     enableHide: false,
     enableDelete: isEdit && series.length > 1,
-    color: isHistory ? ALARM_COLOR : undefined,
+    color: isHistory(serieIdx) ? ALARM_COLOR : undefined,
     data: serie.data.map(
       (data, dataIdx) => {
         let isTrigger = isTriggerVal(serieIdx, dataIdx);
@@ -129,8 +129,8 @@ function postNewConfig(data, isEdit, newConfig) {
       newConfig.xAxis.plotBands = CalendarTimeRanges.map(({StartTime, EndTime}) => {
         return {
           color: PLOT_BACKGROUND_COLOR,
-          from: moment(StartTime).valueOf(),
-          to: moment(EndTime).valueOf()        
+          from: moment(StartTime).add(16, 'hours').valueOf(),
+          to: moment(EndTime).add(16, 'hours').valueOf()        
         }
       });
 
