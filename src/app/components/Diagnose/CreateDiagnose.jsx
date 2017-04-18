@@ -323,8 +323,8 @@ function TagList({tags, onCheck, checkedTags}) {
 			<ul className='diagnose-create-tag-list-content'>
 				{tags.map( (tag, i) =>
 				<li className='diagnose-create-tag-list-item'  title={tag.get('Name')}>
-					<Checkbox checked={checkedTags.map(checkedTag => checkedTag.Id).includes(tag.get('Id'))}
-						disabled={!checkedTags.map(checkedTag => checkedTag.Id).includes(tag.get('Id')) && checkedTags.length === 10}
+					<Checkbox checked={checkedTags.map(checkedTag => checkedTag.Id).indexOf(tag.get('Id')) > -1}
+						disabled={!checkedTags.map(checkedTag => checkedTag.Id).indexOf(tag.get('Id')) > -1 && checkedTags.length === 10}
 						onCheck={(e, isInputChecked) => {
 							onCheck(tag.get('Id'), isInputChecked);
 					}}/>
