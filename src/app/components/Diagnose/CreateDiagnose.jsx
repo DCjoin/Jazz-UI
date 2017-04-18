@@ -1362,7 +1362,7 @@ class CreateDiagnose extends Component {
 			        </Stepper>
 		        </nav>
 		        {this._renderContent()}
-		        <nav className='diagnose-create-footer'>{this._getFooterButton()}</nav>
+		        <nav className='diagnose-create-footer'>{this._getFooterButton()}<br/></nav>
 		        {this._renderTipDialog()}
 			</div>
 		);
