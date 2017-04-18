@@ -236,7 +236,12 @@ export default class EditDiagnose extends Component {
 						<div style={{float:"right", marginBottom: 40}}>
 								<FlatButton label={I18N.Setting.Diagnose.SaveAndExit} labelStyle={styles.label} style={styles.btn} backgroundColor="#0cad04"
 									disabled={this._validate()} onTouchTap={()=>{
-										DiagnoseAction.updateDiagnose(this.state.diagnoseData.toJS())
+										DiagnoseAction.updateDiagnose(
+											{...this.state.diagnoseData.toJS(),
+											...{
+												HistoryEndTime: moment(this.state.diagnoseData.get('HistoryEndTime')).format('YYYY-MM-DDTHH:mm:ss')
+											}}
+										)
 									}}/>
 								</div>
 					</footer>
