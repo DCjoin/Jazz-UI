@@ -1211,7 +1211,6 @@ class CreateDiagnose extends Component {
 						onUpdateFilterObj={paths =>
 							(val, callback) => {
 								let setVal = () => {
-									console.log(val);
 									this._setFilterObj(paths, val, callback);
 								}
 								if(paths === 'HistoryStartTime') {
