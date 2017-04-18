@@ -57,13 +57,14 @@ export default class EditDiagnose extends Component {
 		}
 	}
 
-  _merge(paths,value){
+  _merge(paths,value, callback){
 		if(paths==='StartTime' || paths==='EndTime'){
 			let j2d=DataConverter.J2DNoTimezone,
 					d2j=DataConverter.DatetimeToJson;
 			value=d2j(j2d(value))
 		}
     DiagnoseAction.mergeDiagnose(paths,value)
+    callback && callback();
   }
 
   _validate(){
@@ -163,7 +164,7 @@ export default class EditDiagnose extends Component {
           me.getPreviewchart(this.state.diagnoseData.toJS())
         })
       },
-      onUpdateFilterObj:path => val => this._merge(path, val),
+      onUpdateFilterObj:path => (val, callback) => this._merge(path, val, callback),
     }
     return <CreateStep2 {...props}/>
   }
@@ -235,7 +236,12 @@ export default class EditDiagnose extends Component {
 						<div style={{float:"right", marginBottom: 40}}>
 								<FlatButton label={I18N.Setting.Diagnose.SaveAndExit} labelStyle={styles.label} style={styles.btn} backgroundColor="#0cad04"
 									disabled={this._validate()} onTouchTap={()=>{
-										DiagnoseAction.updateDiagnose(this.state.diagnoseData.toJS())
+										DiagnoseAction.updateDiagnose(
+											{...this.state.diagnoseData.toJS(),
+											...{
+												HistoryEndTime: moment(this.state.diagnoseData.get('HistoryEndTime')).format('YYYY-MM-DDTHH:mm:ss')
+											}}
+										)
 									}}/>
 								</div>
 					</footer>

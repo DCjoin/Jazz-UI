@@ -323,8 +323,8 @@ function TagList({tags, onCheck, checkedTags}) {
 			<ul className='diagnose-create-tag-list-content'>
 				{tags.map( (tag, i) =>
 				<li className='diagnose-create-tag-list-item'  title={tag.get('Name')}>
-					<Checkbox checked={checkedTags.map(checkedTag => checkedTag.Id).includes(tag.get('Id'))}
-						disabled={!checkedTags.map(checkedTag => checkedTag.Id).includes(tag.get('Id')) && checkedTags.length === 10}
+					<Checkbox checked={checkedTags.map(checkedTag => checkedTag.Id).indexOf(tag.get('Id')) > -1}
+						disabled={!checkedTags.map(checkedTag => checkedTag.Id).indexOf(tag.get('Id')) > -1 && checkedTags.length === 10}
 						onCheck={(e, isInputChecked) => {
 							onCheck(tag.get('Id'), isInputChecked);
 					}}/>
@@ -1216,12 +1216,12 @@ class CreateDiagnose extends Component {
 								if(paths === 'HistoryStartTime') {
 									let startTime = moment(val),
 									endTime = moment(HistoryEndTime);
-									if(endTime < startTime) {
+									if(endTime < moment(startTime).add(1, 'days')) {
 										endTime = moment(startTime).add(1, 'days');
 									} else if( moment(startTime).add(90, 'days') < endTime ) {
 										endTime = moment(startTime).add(90, 'days');
 									}
-									if(endTime.format('YYYY-MM-DDTHH:mm:ss') !== HistoryEndTime) {
+									if(endTime.valueOf() !== moment(HistoryEndTime).valueOf()) {
 										this._setFilterObj( 'HistoryEndTime', endTime.format('YYYY-MM-DDTHH:mm:ss'), setVal );
 									} else {
 										setVal();
@@ -1229,12 +1229,12 @@ class CreateDiagnose extends Component {
 								} else if(paths === 'HistoryEndTime') {
 									let startTime = moment(HistoryStartTime),
 									endTime = moment(val);
-									if(endTime < startTime) {
+									if(moment(endTime).subtract(1, 'days') < startTime) {
 										startTime = moment(endTime).subtract(1, 'days');
 									} else if( moment(endTime).subtract(90, 'days') > startTime ) {
 										startTime = moment(endTime).subtract(90, 'days');
 									}
-									if(startTime.format('YYYY-MM-DDTHH:mm:ss') !== HistoryStartTime) {
+									if(startTime.valueOf() !== moment(HistoryStartTime).valueOf()) {
 										this._setFilterObj( 'HistoryStartTime', startTime.format('YYYY-MM-DDTHH:mm:ss'), setVal );
 									} else {
 										setVal();
