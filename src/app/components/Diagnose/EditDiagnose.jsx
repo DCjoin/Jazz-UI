@@ -7,7 +7,8 @@ import DiagnoseStore from 'stores/DiagnoseStore.jsx';
 import {DiagnoseRange,CreateStep2} from './CreateDiagnose.jsx';
 import Immutable from 'immutable';
 import NewDialog from 'controls/NewDialog.jsx';
-import {DataConverter} from '../../util/Util.jsx';
+import {DataConverter, isEmptyStr} from 'util/Util.jsx';
+import {DIAGNOSE_MODEL} from 'constants/actionType/Diagnose.jsx';
 
 function getFirstDateByThisYear(formatStr) {
 	return new Date(moment().startOf('year').format(formatStr))
@@ -19,6 +20,10 @@ function getEndDateByThisYear(formatStr) {
 
 const DATA_FORMAT = 'YYYY-MM-DD';
 const SEPARTOR = '-';
+const TRIGGER_TYPE = {
+	FixedValue: 1,
+	HistoryValue: 2,
+}
 
 export default class EditDiagnose extends Component {
 
@@ -52,13 +57,14 @@ export default class EditDiagnose extends Component {
 		}
 	}
 
-  _merge(paths,value){
+  _merge(paths,value, callback){
 		if(paths==='StartTime' || paths==='EndTime'){
 			let j2d=DataConverter.J2DNoTimezone,
 					d2j=DataConverter.DatetimeToJson;
 			value=d2j(j2d(value))
 		}
     DiagnoseAction.mergeDiagnose(paths,value)
+    callback && callback();
   }
 
   _validate(){
@@ -125,6 +131,22 @@ export default class EditDiagnose extends Component {
     return <DiagnoseRange {...props}/>
   }
 
+	_editNeedRequire() {
+		let {diagnoseData} = this.state,
+		DiagnoseModel = this.props.EnergyLabel.get('DiagnoseModel');
+		if( DiagnoseModel === DIAGNOSE_MODEL.A ) {
+			return isEmptyStr( diagnoseData.get('TriggerValue') );
+		} else if(DiagnoseModel === DIAGNOSE_MODEL.B) {
+			if( diagnoseData.get('TriggerType') === TRIGGER_TYPE.FixedValue ) {
+				return isEmptyStr( diagnoseData.get('TriggerValue') )
+			}
+			if( diagnoseData.get('TriggerType') === TRIGGER_TYPE.HistoryValue ) {
+				return false;
+			}
+		} else if(DiagnoseModel === DIAGNOSE_MODEL.C) {
+			return true;
+		}
+	}
   _renderChart(){
     var me=this;
     var {DiagnoseModel,WorkTimes,TriggerValue,ConditionType,TriggerType,ToleranceRatio,HistoryStartTime,HistoryEndTime,
@@ -142,7 +164,7 @@ export default class EditDiagnose extends Component {
           me.getPreviewchart(this.state.diagnoseData.toJS())
         })
       },
-      onUpdateFilterObj:path => val => this._merge(path, val)
+      onUpdateFilterObj:path => (val, callback) => this._merge(path, val, callback),
     }
     return <CreateStep2 {...props}/>
   }
@@ -211,10 +233,15 @@ export default class EditDiagnose extends Component {
 					</header>
 					{this._renderContent()}
 					<footer>
-						<div style={{float:"right"}}>
+						<div style={{float:"right", marginBottom: 40}}>
 								<FlatButton label={I18N.Setting.Diagnose.SaveAndExit} labelStyle={styles.label} style={styles.btn} backgroundColor="#0cad04"
 									disabled={this._validate()} onTouchTap={()=>{
-										DiagnoseAction.updateDiagnose(this.state.diagnoseData.toJS())
+										DiagnoseAction.updateDiagnose(
+											{...this.state.diagnoseData.toJS(),
+											...{
+												HistoryEndTime: moment(this.state.diagnoseData.get('HistoryEndTime')).format('YYYY-MM-DDTHH:mm:ss')
+											}}
+										)
 									}}/>
 								</div>
 					</footer>

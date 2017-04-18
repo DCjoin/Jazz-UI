@@ -24,7 +24,7 @@ import {DIAGNOSE_MODEL} from 'constants/actionType/Diagnose.jsx';
 import ReduxDecorator from '../../decorator/ReduxDecorator.jsx';
 import NewAppTheme from '../../decorator/NewAppTheme.jsx';
 
-import {isEmptyStr, getDateTimeItemsByStepForVal, getDateTimeItemsByStep} from 'util/Util.jsx';
+import {isEmptyStr, getDateTimeItemsByStepForVal, getDateTimeItemsByStep, pow10} from 'util/Util.jsx';
 
 import LinkButton from 'controls/LinkButton.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
@@ -40,6 +40,7 @@ import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
 import DiagnoseChart from './DiagnoseChart.jsx';
 
 let _firstUom = '';
+let _previewed = false;
 
 const SEPARTOR = '-';
 const DATE_FORMAT = 'YYYY-MM-DD';
@@ -98,6 +99,21 @@ function getStepItems(){
 		step: TimeGranularity.Daily,
 		text: I18N.EM.Day
 	}, ];
+}
+
+function step2NeedRequire(DiagnoseModel, TriggerType, TriggerValue) {
+	if( DiagnoseModel === DIAGNOSE_MODEL.A ) {
+		return isEmptyStr( TriggerValue );
+	} else if(DiagnoseModel === DIAGNOSE_MODEL.B) {
+		if( TriggerType === TRIGGER_TYPE.FixedValue ) {
+			return isEmptyStr( TriggerValue );
+		}
+		if( TriggerType === TRIGGER_TYPE.HistoryValue ) {
+			return false;
+		}
+	} else if(DiagnoseModel === DIAGNOSE_MODEL.C) {
+		return true;
+	}
 }
 
 function StepItem({
@@ -226,13 +242,14 @@ function AdditiveComp({
 	)
 }
 
-function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime, disabled, style}) {
+function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime, disabled, style, isPopover}) {
 	let endTimeLabel = EndTime.split('T')[1].split(':').slice(0, 2).join(':');
 	if(endTimeLabel === '00:00') {
 		endTimeLabel = '24:00';
 	}
 	return (<section className='diagnose-create-chart-filter' style={style}>
 		<ViewableDatePicker
+			isPopover={isPopover}
 			datePickerClassName={'diagnose-date-picker'}
 			disabled={disabled}
     		width={100}
@@ -263,6 +280,7 @@ function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime
 			}}/>
 		<div style={{margin: '0 10px', alignSelf: 'center'}}>{'至'}</div>
 		<ViewableDatePicker
+			isPopover={isPopover}
 			datePickerClassName={'diagnose-date-picker'}
 			disabled={disabled}
     		width={100}
@@ -305,8 +323,8 @@ function TagList({tags, onCheck, checkedTags}) {
 			<ul className='diagnose-create-tag-list-content'>
 				{tags.map( (tag, i) =>
 				<li className='diagnose-create-tag-list-item'  title={tag.get('Name')}>
-					<Checkbox checked={checkedTags.map(checkedTag => checkedTag.Id).includes(tag.get('Id'))}
-						disabled={!checkedTags.map(checkedTag => checkedTag.Id).includes(tag.get('Id')) && checkedTags.length === 10}
+					<Checkbox checked={checkedTags.map(checkedTag => checkedTag.Id).indexOf(tag.get('Id')) > -1}
+						disabled={!checkedTags.map(checkedTag => checkedTag.Id).indexOf(tag.get('Id')) > -1 && checkedTags.length === 10}
 						onCheck={(e, isInputChecked) => {
 							onCheck(tag.get('Id'), isInputChecked);
 					}}/>
@@ -492,7 +510,7 @@ function ModelACondition({TriggerValue, onUpdateTriggerValue, uom}) {
 	return (<div className='diagnose-condition-model-a'>
 		<span className='diagnose-condition-subtitle'>{`非运行时间触发值(${uom})`}</span>
 		<ViewableTextField
-			regex={/^\d{1,9}([.]\d{1,6})?$/}
+			regex={/^(\-?)\d{1,9}([.]\d{1,6})?$/}
 			errorMessage={'请输入正确的格式'}
 			hintText={'输入触发值'}
 			defaultValue={TriggerValue}
@@ -569,7 +587,7 @@ function ModelBCondition({
 		<div style={{marginTop: 15}}>
 			<span className='diagnose-condition-subtitle'>{`基准值(${uom})`}</span>
 			<ViewableTextField
-				regex={/^\d{1,9}([.]\d{1,6})?$/}
+				regex={/^(\-?)\d{1,9}([.]\d{1,6})?$/}
 				errorMessage={'请输入正确的格式'}
 				hintText={'填写基准值'}
 				defaultValue={TriggerValue}
@@ -582,6 +600,7 @@ function ModelBCondition({
 				style={{
 					flexWrap: 'wrap'
 				}}
+				isPopover={true}
 				StartTime={HistoryStartTime}
 				EndTime={HistoryEndTime}
 				onChangeStartTime={onUpdateHistoryStartTime}
@@ -590,10 +609,10 @@ function ModelBCondition({
 		<div style={{marginTop: 15, marginBottom: 15}}>
 			<span className='diagnose-condition-subtitle'>{'敏感值(%)'}</span>
 			<ViewableTextField
-				regex={/^\d{1,9}([.]\d{1,6})?$/}
+				regex={/^(\-?)\d{1,9}([.]\d{1,6})?$/}
 				errorMessage={'请输入正确的格式'}
 				hintText={'填写敏感值'}
-				defaultValue={!isEmptyStr(ToleranceRatio) ? ToleranceRatio * 100 : ToleranceRatio}
+				defaultValue={!isEmptyStr(ToleranceRatio) ? pow10(ToleranceRatio, 2) : ToleranceRatio}
 				didChanged={onUpdateToleranceRatio}/>
 			<span style={{fontSize: 12, color: '#ff4b00'}}>{'注：触发值=基准值*（1+／-敏感值)'}</span>
 		</div>
@@ -772,11 +791,11 @@ export class CreateStep2 extends Component {
 			ToleranceRatio,
 			HistoryStartTime,
 			HistoryEndTime,
-			disabledPreview,
 			disabledHistory,
 			chartData,
 			...other,
-		} = this.props;
+		} = this.props,
+		disabledPreview = step2NeedRequire(DiagnoseModel, TriggerType, TriggerValue);
 		if(chartData) {
 			_firstUom = chartData.getIn(['EnergyViewData', 'TargetEnergyData', 0, 'Target', 'Uom']);
 		}
@@ -849,7 +868,7 @@ export class CreateStep2 extends Component {
 					ToleranceRatio={ToleranceRatio}
 					onUpdateToleranceRatio={(val) => {
 						if(!isEmptyStr(val)) {
-						    val = divide(val, 100);
+						    val = pow10(val, -2);
 						}
 						onUpdateFilterObj('ToleranceRatio')(val);
 					}}
@@ -911,6 +930,7 @@ class CreateDiagnose extends Component {
 
 	constructor(props, ctx) {
 		super(props, ctx);
+		_previewed = false;
 		this._setFilterObj = this._setFilterObj.bind(this);
 		this._onChange = this._onChange.bind(this);
 		this._onSaveBack = this._onSaveBack.bind(this);
@@ -947,7 +967,7 @@ class CreateDiagnose extends Component {
 	}
 	_getChartData() {
 		let {step, filterObj, checkedTags} = this.state;
-		if( step === 0 && checkedTags && checkedTags.length > 0 ) {
+		if(/* step === 0*/!_previewed && checkedTags && checkedTags.length > 0 ) {
 			DiagnoseAction.getChartDataStep1({
 				tagIds: checkedTags.map(tag => tag.Id),/*diagnoseTags
 						.filter( tag => tag.get('checked') )
@@ -963,7 +983,7 @@ class CreateDiagnose extends Component {
 					}]
 				}
 			});
-		} else if( step === 1 ) {
+		} else if( _previewed ) {
 			DiagnoseAction.getChartData({
 			...updateUtcFormatFilter(filterObj,
 				['EndTime', 'StartTime', 'HistoryEndTime', 'HistoryStartTime']
@@ -983,27 +1003,14 @@ class CreateDiagnose extends Component {
 			chartData: null
 		});
 	}
-	_step2NeedRequire() {
-		let {filterObj} = this.state,
-		DiagnoseModel = this.props.EnergyLabel.get('DiagnoseModel');
-		if( DiagnoseModel === DIAGNOSE_MODEL.A ) {
-			return isEmptyStr( filterObj.get('TriggerValue') );
-		} else if(DiagnoseModel === DIAGNOSE_MODEL.B) {
-			if( filterObj.get('TriggerType') === TRIGGER_TYPE.FixedValue ) {
-				return isEmptyStr( filterObj.get('TriggerValue') )/* ||
-						isEmptyStr( filterObj.get('ToleranceRatio') )*/;
-			}
-			if( filterObj.get('TriggerType') === TRIGGER_TYPE.HistoryValue ) {
-				// return isEmptyStr( filterObj.get('ToleranceRatio') );
-				return false;
-			}
-		} else if(DiagnoseModel === DIAGNOSE_MODEL.C) {
-			return true;
-		}
-	}
 	_setStep(step) {
 		return () => {
-			this.setState({step}, () => this.state.step === 0 && this._getChartData());
+			this.setState({step}, () => {
+				if(this.state.step === 0){
+					_previewed = false;
+					this._getChartData();
+				}
+			});
 		}
 	}
 	_setFilterObj(paths, val, callback) {
@@ -1209,12 +1216,12 @@ class CreateDiagnose extends Component {
 								if(paths === 'HistoryStartTime') {
 									let startTime = moment(val),
 									endTime = moment(HistoryEndTime);
-									if(endTime < startTime) {
+									if(endTime < moment(startTime).add(1, 'days')) {
 										endTime = moment(startTime).add(1, 'days');
 									} else if( moment(startTime).add(90, 'days') < endTime ) {
 										endTime = moment(startTime).add(90, 'days');
 									}
-									if(endTime.format('YYYY-MM-DDTHH:mm:ss') !== HistoryEndTime) {
+									if(endTime.valueOf() !== moment(HistoryEndTime).valueOf()) {
 										this._setFilterObj( 'HistoryEndTime', endTime.format('YYYY-MM-DDTHH:mm:ss'), setVal );
 									} else {
 										setVal();
@@ -1222,12 +1229,12 @@ class CreateDiagnose extends Component {
 								} else if(paths === 'HistoryEndTime') {
 									let startTime = moment(HistoryStartTime),
 									endTime = moment(val);
-									if(endTime < startTime) {
+									if(moment(endTime).subtract(1, 'days') < startTime) {
 										startTime = moment(endTime).subtract(1, 'days');
 									} else if( moment(endTime).subtract(90, 'days') > startTime ) {
 										startTime = moment(endTime).subtract(90, 'days');
 									}
-									if(startTime.format('YYYY-MM-DDTHH:mm:ss') !== HistoryStartTime) {
+									if(startTime.valueOf() !== moment(HistoryStartTime).valueOf()) {
 										this._setFilterObj( 'HistoryStartTime', startTime.format('YYYY-MM-DDTHH:mm:ss'), setVal );
 									} else {
 										setVal();
@@ -1237,11 +1244,13 @@ class CreateDiagnose extends Component {
 								}
 							}
 						}
-						disabledPreview={this._step2NeedRequire()}
 
 						StartTime={StartTime}
 						EndTime={EndTime}
-						getChartData={this._getChartData}
+						getChartData={() => {
+							_previewed = true;
+							this._getChartData();
+						}}
 						WorkTimes={WorkTimes}
 						TriggerValue={TriggerValue}
 						ConditionType={ConditionType}
@@ -1283,7 +1292,8 @@ class CreateDiagnose extends Component {
 		needAddNames = !checkedTags ||
 						checkedTags.map(tag => tag.DiagnoseName)
 						.reduce((result, val) => result || isEmptyStr(val), false),
-		buttons = [];
+		buttons = [],
+		disabledNext = step2NeedRequire(this.props.DiagnoseModel, filterObj.get('TriggerType'), filterObj.get('TriggerValue'));
 		switch (step) {
 			case 0:
 				buttons.push(<Right>
@@ -1301,7 +1311,7 @@ class CreateDiagnose extends Component {
 			case 1:
 				buttons.push(<Left><PrevButton onClick={this._setStep(0)}/></Left>);
 				buttons.push(<Right>
-					{this._step2NeedRequire() &&
+					{disabledNext &&
 					<div style={{
 						paddingRight: 20,
 						color: '#adafae',
@@ -1310,7 +1320,7 @@ class CreateDiagnose extends Component {
 							style={{fontSize: 12, color: '#adafae', }}/>
 						{'请填写诊断条件'}
 					</div>}
-					<NextButton disabled={this._step2NeedRequire()} onClick={this._setStep(2)}/></Right>);
+					<NextButton disabled={disabledNext} onClick={this._setStep(2)}/></Right>);
 				break;
 			case 2:
 				buttons.push(<Left><PrevButton onClick={this._setStep(1)}/></Left>);
@@ -1352,7 +1362,7 @@ class CreateDiagnose extends Component {
 			        </Stepper>
 		        </nav>
 		        {this._renderContent()}
-		        <nav className='diagnose-create-footer'>{this._getFooterButton()}</nav>
+		        <nav className='diagnose-create-footer'>{this._getFooterButton()}<br/></nav>
 		        {this._renderTipDialog()}
 			</div>
 		);
