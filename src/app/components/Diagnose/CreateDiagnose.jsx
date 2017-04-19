@@ -24,7 +24,7 @@ import {DIAGNOSE_MODEL} from 'constants/actionType/Diagnose.jsx';
 import ReduxDecorator from '../../decorator/ReduxDecorator.jsx';
 import NewAppTheme from '../../decorator/NewAppTheme.jsx';
 
-import {isEmptyStr, getDateTimeItemsByStepForVal, getDateTimeItemsByStep, pow10} from 'util/Util.jsx';
+import {isEmptyStr, isNumeric, getDateTimeItemsByStepForVal, getDateTimeItemsByStep, pow10} from 'util/Util.jsx';
 
 import LinkButton from 'controls/LinkButton.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
@@ -612,7 +612,7 @@ function ModelBCondition({
 				regex={/^(\-?)\d{1,9}([.]\d{1,6})?$/}
 				errorMessage={'请输入正确的格式'}
 				hintText={'填写敏感值'}
-				defaultValue={!isEmptyStr(ToleranceRatio) ? pow10(ToleranceRatio, 2) : ToleranceRatio}
+				defaultValue={isNumeric(ToleranceRatio) ? pow10(ToleranceRatio, 2) : ToleranceRatio}
 				didChanged={onUpdateToleranceRatio}/>
 			<span style={{fontSize: 12, color: '#ff4b00'}}>{'注：触发值=基准值*（1+／-敏感值)'}</span>
 		</div>
@@ -867,7 +867,7 @@ export class CreateStep2 extends Component {
 
 					ToleranceRatio={ToleranceRatio}
 					onUpdateToleranceRatio={(val) => {
-						if(!isEmptyStr(val)) {
+						if(isNumeric(val)) {
 						    val = pow10(val, -2);
 						}
 						onUpdateFilterObj('ToleranceRatio')(val);
