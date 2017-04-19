@@ -78,6 +78,7 @@ export default class Diagnose extends Component {
         this._onCreated = this._onCreated.bind(this);
         this._onRemove=this._onRemove.bind(this);
         this._onShowSolutionSnakBar = this._onShowSolutionSnakBar.bind(this);
+        this._onChanged = this._onChanged.bind(this);
     }
 
   state={
@@ -90,6 +91,10 @@ export default class Diagnose extends Component {
         createSuccessMeg: false,
         showSolutionTip:false
     }
+
+  _onChanged(){
+    this.forceUpdate()
+  }
 
   _onHasProblem(){
     this.setState({
@@ -170,6 +175,7 @@ export default class Diagnose extends Component {
     DiagnoseStore.addCreatedDiagnoseListener(this._onCreated);
     DiagnoseStore.addRemoveDiagnoseListener(this._onRemove);
     FolderStore.addSolutionCreatedListener(this._onShowSolutionSnakBar);
+    DiagnoseStore.addChangeListener(this._onChanged);
     this.getProblem(this.context.hierarchyId);
   }
 
@@ -185,6 +191,7 @@ export default class Diagnose extends Component {
   }
 
   componentWillUnmount(){
+    DiagnoseStore.removeChangeListener(this._onChanged);
     CurrentUserStore.removeCurrentUserListener(this._onHasProblem);
     DiagnoseStore.removeCreatedDiagnoseListener(this._onCreated);
     DiagnoseStore.removeRemoveDiagnoseListener(this._onRemove);
@@ -214,7 +221,7 @@ render(){
       <CreateDiagnose
         isBasic={this.state.infoTabNo !== 1}
         EnergyLabel={this.state.addLabel}
-        DiagnoseItem={DiagnoseStore.findItemByLabel(this.state.addLabel.get('Id'))}
+        DiagnoseItem={DiagnoseStore.findItemById(this.state.addLabel.get('ItemId'))}
         onClose={(id) => {
         this.setState({
           formStatus:formStatus.VIEW,

@@ -4,14 +4,27 @@ import {Type,DiagnoseStatus,ItemType} from '../../constants/actionType/Diagnose.
 import FlatButton from '../../controls/FlatButton.jsx';
 import FontIcon from 'material-ui/FontIcon';
 import BubbleIcon from '../BubbleIcon.jsx';
+import Immutable from 'immutable';
 
+function isChild(parent,item){
+  return parent.get('Children').findIndex(el=>el.get('Id')===item.get('Id'))>-1
+}
+
+function hasChild(parent){
+  return parent.get('Children')?true:false
+}
+
+function isCollapsed(parent,item){
+  return hasChild(parent)?!isChild(parent,item):true
+}
 class Group extends Component{
   constructor(props, ctx) {
     super(props);
   }
 
+
   state={
-    collapsed:true
+    collapsed:this.props.selectedNode?isCollapsed(this.props.nodeData,this.props.selectedNode):true
   }
 
   _renderTitle(){
@@ -93,6 +106,18 @@ class Group extends Component{
         {!this.props.isFromProbem && data.get('Status')===DiagnoseStatus.Suspend && <FontIcon className="icon-more" style={{fontSize:'14px',marginLeft:'15px'}}/>}
       </div>
     ))
+  }
+
+  componentWillReceiveProps(nextProps){
+    console.log(nextProps.selectedNode);
+    if(nextProps.selectedNode!==null){
+      console.log(nextProps.selectedNode.get('Id'));
+    }
+    if(!Immutable.is(nextProps.selectedNode,this.props.selectedNode)){
+      this.setState({
+        collapsed:nextProps.selectedNode?isCollapsed(nextProps.nodeData,nextProps.selectedNode):true
+      })
+    }
   }
 
   render(){
