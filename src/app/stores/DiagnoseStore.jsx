@@ -148,8 +148,7 @@ const DiagnoseStore = assign({}, PrototypeStore, {
     _calendar=calendar;
   },
   hasCalendar(){
-    if(_calendar===null) return null
-    return !(_calendar.CalendarItemGroups[0].CalendarItems===null)
+    return _calendar
   },
   setDiagnoseChartData(data){
     _diagnoseChartData=Immutable.fromJS(data)
@@ -263,8 +262,8 @@ DiagnoseStore.dispatchToken = AppDispatcher.register(function(action) {
           DiagnoseStore.setChartData(action.data);
           DiagnoseStore.emitChange()
           break;
-    case HierarchyAction.GET_CALENDAR_FOR_HIERARCHY:
-          DiagnoseStore.setCalendar(action.calendar);
+    case Action.GET_CONFIG_CALENDAR:
+          DiagnoseStore.setCalendar(action.data);
           DiagnoseStore.emitChange()
           break;
     case Action.GET_CHART_DATAING:
