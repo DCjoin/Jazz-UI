@@ -22,6 +22,7 @@ function mapSeriesDataWithMax(isTriggerVal, isIgnoreVal, isEdit, isHistory, seri
     enableHide: false,
     enableDelete: isEdit && series.length > 1,
     color: isHistory(serieIdx) ? ALARM_COLOR : undefined,
+    stacking: null,
     data: serie.data.map(
       (data, dataIdx) => {
         let isTrigger = isTriggerVal(serieIdx, dataIdx);
@@ -142,6 +143,8 @@ function postNewConfig(data, isEdit, newConfig) {
 
     }
   }
+
+  newConfig.stacking = null;
 }
 
 export default function DiagnoseChart(props) {
