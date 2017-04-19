@@ -68,25 +68,39 @@ const CONDITION_TYPE = {
 const TIME_GRANULARITY_MAP_VAL = {
 	// [TimeGranularity.None]: -1,
 	[TimeGranularity.Minite]: 60,
-	// [TimeGranularity.Min15]: 15 * 60,
-	// [TimeGranularity.Min30]: 30 * 60,
+	[TimeGranularity.Min15]: 15 * 60,
+	[TimeGranularity.Min30]: 30 * 60,
 	[TimeGranularity.Hourly]: 60 * 60,
-	// [TimeGranularity.Hour2]: 2 * 60 * 60,
-	// [TimeGranularity.Hour4]: 4 * 60 * 60,
-	// [TimeGranularity.Hour6]: 6 * 60 * 60,
-	// [TimeGranularity.Hour8]: 8 * 60 * 60,
-	// [TimeGranularity.Hour12]: 12 * 60 * 60,
+	[TimeGranularity.Hour2]: 2 * 60 * 60,
+	[TimeGranularity.Hour4]: 4 * 60 * 60,
+	[TimeGranularity.Hour6]: 6 * 60 * 60,
+	[TimeGranularity.Hour8]: 8 * 60 * 60,
+	[TimeGranularity.Hour12]: 12 * 60 * 60,
 	[TimeGranularity.Daily]: 24 * 60 * 60,
-	// [TimeGranularity.Weekly]: 7 * 24 * 60 * 60,
-	// [TimeGranularity.Monthly]: 30 * 24 * 60 * 60,
-	// [TimeGranularity.Yearly]: 365 * 24 * 60 * 60,
+	[TimeGranularity.Weekly]: 7 * 24 * 60 * 60,
+	[TimeGranularity.Monthly]: 30 * 24 * 60 * 60,
+	[TimeGranularity.Yearly]: 365 * 24 * 60 * 60,
 }
 function checkStep(tags, step) {
 	return tags.filter(tag => TIME_GRANULARITY_MAP_VAL[step] < TIME_GRANULARITY_MAP_VAL[tag.Step] ).length === 0;
 }
 function getCanSelectTimeGranularity(tags) {
 	let maxTime = Math.max(tags.map(tag => TIME_GRANULARITY_MAP_VAL[tag.Step]));
-	return Object.keys(TIME_GRANULARITY_MAP_VAL).filter( step => TIME_GRANULARITY_MAP_VAL[step] >= maxTime );
+	return Object.keys(TIME_GRANULARITY_MAP_VAL)
+          .filter( step => TIME_GRANULARITY_MAP_VAL[step] >= maxTime )
+          .filter( step => step*1===TimeGranularity.Minite || step*1===TimeGranularity.Hourly || step*1===TimeGranularity.Daily);
+}
+function getSupportStepItems(){
+	return [{
+		step: TimeGranularity.Minite,
+		text: I18N.EM.Raw
+	}, {
+		step: TimeGranularity.Hourly,
+		text: I18N.EM.Hour
+	}, {
+		step: TimeGranularity.Daily,
+		text: I18N.EM.Day
+  }];
 }
 function getStepItems(){
 	return [{
@@ -98,7 +112,37 @@ function getStepItems(){
 	}, {
 		step: TimeGranularity.Daily,
 		text: I18N.EM.Day
-	}, ];
+	},{
+		step: TimeGranularity.Min15,
+		text: I18N.Common.AggregationStep.Min15
+	},{
+		step: TimeGranularity.Min30,
+		text: I18N.Common.AggregationStep.Min30
+	},{
+		step: TimeGranularity.Hour2,
+		text: I18N.Common.AggregationStep.Hour2
+	},{
+		step: TimeGranularity.Hour4,
+		text: I18N.Common.AggregationStep.Hour4
+	},{
+		step: TimeGranularity.Hour6,
+		text: I18N.Common.AggregationStep.Hour6
+	},{
+		step: TimeGranularity.Hour8,
+		text: I18N.Common.AggregationStep.Hour8
+	},{
+		step: TimeGranularity.Hour12,
+		text: I18N.Common.AggregationStep.Hour12
+	},{
+		step: TimeGranularity.Weekly,
+		text: I18N.Common.AggregationStep.Weekly
+	},{
+		step: TimeGranularity.Monthly,
+		text: I18N.Common.AggregationStep.Monthly
+	},{
+		step: TimeGranularity.Yearly,
+		text: I18N.Common.AggregationStep.Yearly
+	}];
 }
 
 function step2NeedRequire(DiagnoseModel, TriggerType, TriggerValue) {
@@ -366,7 +410,7 @@ function ChartPreview({chartData, chartDataLoading, onUpdateStep, Step, onDelete
 				disabled={!chartData}
 				{...other}/>
 			<div className='jazz-energy-step'>
-				{getStepItems().map((item => <StepItem {...item} disabled={!chartData} selected={item.step === Step} onStepChange={onUpdateStep}/>))}
+				{getSupportStepItems().map((item => <StepItem {...item} disabled={!chartData} selected={item.step === Step} onStepChange={onUpdateStep}/>))}
 			</div>
 		</div>
 		{chartDataLoading ? <div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div> :

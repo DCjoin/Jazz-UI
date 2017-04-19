@@ -25,8 +25,21 @@ var _diagnoseList=null,
     _previewChartData=null;
 
 const DiagnoseStore = assign({}, PrototypeStore, {
+  initList(){
+    //add itemid for per label
+    _diagnoseList=_diagnoseList.map(item=>{
+      if(item.get('Children')){
+        let children=item.get("Children").map(child=>(child.set('ItemId',item.get('Id'))));
+        return item.set('Children',children)
+      }
+      else {
+        return item
+      }
+    })
+  },
   setDiagnoseList(data){
     _diagnoseList=Immutable.fromJS(data);
+    this.initList();
   },
   getDiagnosisList(){
     return _diagnoseList;
@@ -163,11 +176,11 @@ const DiagnoseStore = assign({}, PrototypeStore, {
     })
     return temp
   },
-  findItemByLabel(labelId){
+  findItemById(itemId){
     if(_diagnoseList===null) return null
     var item=null;
     _diagnoseList.forEach(diagnose=>{
-      if(diagnose.get('Children').findIndex(item=>(item.get('Id')===labelId))>-1) item=diagnose
+      if(diagnose.get('Id')===itemId) item=diagnose
     })
     return item
     },

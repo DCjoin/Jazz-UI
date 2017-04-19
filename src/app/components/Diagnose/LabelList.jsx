@@ -146,13 +146,17 @@ export default class LabelList extends Component {
   }
 
   _renderList(){
-    return this.state.list.map(item=>(
-      <LabelItem nodeData={item}
-                        selectedNode={this.props.selectedNode}
-                        isFromProbem={this.props.isFromProbem}
-                        onAdd={this._onAdd}
-                        onItemTouchTap={this.props.onItemTouchTap}/>
-    ))
+    return (<div style={{flex:1,overflowY:'auto'}}>
+            {this.state.list.map(item=>(
+            <LabelItem nodeData={item}
+                              selectedNode={this.props.selectedNode}
+                              isFromProbem={this.props.isFromProbem}
+                              onAdd={this._onAdd}
+                              onItemTouchTap={this.props.onItemTouchTap}/>
+          ))
+        }
+        </div>)
+
   }
 
 	_renderDialog(){
