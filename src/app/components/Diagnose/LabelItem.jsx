@@ -109,10 +109,6 @@ class Group extends Component{
   }
 
   componentWillReceiveProps(nextProps){
-    console.log(nextProps.selectedNode);
-    if(nextProps.selectedNode!==null){
-      console.log(nextProps.selectedNode.get('Id'));
-    }
     if(!Immutable.is(nextProps.selectedNode,this.props.selectedNode)){
       this.setState({
         collapsed:nextProps.selectedNode?isCollapsed(nextProps.nodeData,nextProps.selectedNode):true
