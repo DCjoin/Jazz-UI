@@ -77,6 +77,7 @@ module.exports = {
     previewchart:'/diagnose/previewchart',
     getDiagnoseTag: '/diagnose/getdiagnosetag',
     updateDiagnose:'/diagnose/update',
-    generatesolution:'/diagnose/generatesolution/{diagnoseId}'
+    generatesolution:'/diagnose/generatesolution/{diagnoseId}',
+    isconfigcalendar:'/diagnose/isconfigcalendar/{hierarchyId}'
   }
 };
