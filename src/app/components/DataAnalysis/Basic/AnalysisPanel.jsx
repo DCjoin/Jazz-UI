@@ -180,7 +180,6 @@ class AnalysisPanel extends Component {
   this.setState({
     isCalendarInited: false,
   });
-
   this.energyDataLoad(timeRanges, step, tagOptions, relativeDate, weather);
   }
 
@@ -387,7 +386,7 @@ class AnalysisPanel extends Component {
         var originalWidgetDto=DataAnalysisStore.getInitialWidgetDto();
         if(Immutable.is(currentWidgetDto,originalWidgetDto)){
           return sureLevalCallback()
-        } else {          
+        } else {
           this.setState({
             showLeaveDialog:false,
             showSaveDialog:true,
@@ -849,8 +848,8 @@ class AnalysisPanel extends Component {
               },
               addListener: FolderStore.addSelectedNodeListener.bind(FolderStore),
               removeListener: FolderStore.removeSelectedNodeListener.bind(FolderStore),
-            }} 
-            onOpen={this.props.onOpenGenerateSolution} 
+            }}
+            onOpen={this.props.onOpenGenerateSolution}
             nodes={[this.props.selectedNode]}
             disabled={!this.state.energyData || this.state.selectedChartType === 'rawdata'}/>}
           {this._renderMoreOperation()}
