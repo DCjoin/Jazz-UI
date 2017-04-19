@@ -58,7 +58,7 @@ export default class EditDiagnose extends Component {
 	}
 
   _merge(paths,value, callback){
-		if(paths==='StartTime' || paths==='EndTime'){
+		if(paths==='StartTime' || paths==='EndTime' || paths==='HistoryStartTime' || paths==='HistoryEndTime'){
 			let j2d=DataConverter.J2DNoTimezone,
 					d2j=DataConverter.DatetimeToJson;
 			value=d2j(j2d(value))
@@ -108,7 +108,7 @@ export default class EditDiagnose extends Component {
       onUpdateDateRange:(idx, type, startOrEnd, val) => {
 							val = new Date().getFullYear() + SEPARTOR + val.join(SEPARTOR);
 							let setVal = () => {
-								this._merge(['Timeranges', idx, type], val);							
+								this._merge(['Timeranges', idx, type], val);
 							}
 							if( type === 'StartTime' && moment(val) > moment(Timeranges[idx].EndTime) ) {
 								this._merge(['Timeranges', idx, 'EndTime'], val);
@@ -152,7 +152,9 @@ export default class EditDiagnose extends Component {
     var {DiagnoseModel,WorkTimes,TriggerValue,ConditionType,TriggerType,ToleranceRatio,HistoryStartTime,HistoryEndTime,
           StartTime,EndTime}=this.state.diagnoseData.toJS();
     var props={
-      DiagnoseModel,WorkTimes,TriggerValue,ConditionType,TriggerType,ToleranceRatio,HistoryStartTime,HistoryEndTime,
+      DiagnoseModel,WorkTimes,TriggerValue,ConditionType,TriggerType,ToleranceRatio,
+			HistoryStartTime:this._formatTime(HistoryStartTime),
+			HistoryEndTime:this._formatTime(HistoryEndTime),
       StartTime:this._formatTime(StartTime),
 			EndTime:this._formatTime(EndTime),
       chartData:this.state.chartData,
