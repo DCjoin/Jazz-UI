@@ -293,9 +293,11 @@ function AdditiveComp({
 }
 
 function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime, disabled, style, isPopover}) {
-	let endTimeLabel = EndTime.split('T')[1].split(':').slice(0, 2).join(':');
+	let endTimeLabel = EndTime.split('T')[1].split(':').slice(0, 2).join(':'),
+	endDateLabel = EndTime.split('T')[0];
 	if(endTimeLabel === '00:00') {
 		endTimeLabel = '24:00';
+		endDateLabel = moment(EndTime).subtract(1, 'days').format('YYYY-MM-DD');
 	}
 	return (<section className='diagnose-create-chart-filter' style={style}>
 		<ViewableDatePicker
@@ -334,7 +336,7 @@ function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime
 			datePickerClassName={'diagnose-date-picker'}
 			disabled={disabled}
     		width={100}
-			value={EndTime.split('T')[0]}
+			value={endDateLabel}
 			onChange={(val) => {
 				let endTime = EndTime.split('T')[1];
 				if(endTime === '00:00:00') {
