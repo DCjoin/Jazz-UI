@@ -80,9 +80,15 @@ const TIME_GRANULARITY_MAP_VAL = {
 	[TimeGranularity.Weekly]: 7 * 24 * 60 * 60,
 	[TimeGranularity.Monthly]: 30 * 24 * 60 * 60,
 	[TimeGranularity.Yearly]: 365 * 24 * 60 * 60,
+};
+function filterSpecialStep(step){
+  if(step===TimeGranularity.Min15 || step===TimeGranularity.Min30) return TimeGranularity.Minite
+  if(step===TimeGranularity.Hour2 || step===TimeGranularity.Hour4 ||
+     step===TimeGranularity.Hour6 || step===TimeGranularity.Hour8 || step===TimeGranularity.Hour12) return TimeGranularity.Hourly
+     return step
 }
 function checkStep(tags, step) {
-	return tags.filter(tag => TIME_GRANULARITY_MAP_VAL[step] < TIME_GRANULARITY_MAP_VAL[tag.Step] ).length === 0;
+	return tags.filter(tag => TIME_GRANULARITY_MAP_VAL[step] < TIME_GRANULARITY_MAP_VAL[filterSpecialStep(tag.Step)] ).length === 0;
 }
 function getCanSelectTimeGranularity(tags) {
 	let maxTime = Math.max(tags.map(tag => TIME_GRANULARITY_MAP_VAL[tag.Step]));
