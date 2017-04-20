@@ -192,7 +192,7 @@ function StepItem({
 function getDefaultFilter() {
 	return Immutable.fromJS({
 		TagIds: [],
-		StartTime: moment().subtract(7, 'days').format('YYYY-MM-DDT00:00:00'),
+		StartTime: moment().subtract(6, 'days').format('YYYY-MM-DDT00:00:00'),
 		EndTime: moment().format('YYYY-MM-DDT24:00:00'),
 		Step: TimeGranularity.Minite,
 		Timeranges: [
