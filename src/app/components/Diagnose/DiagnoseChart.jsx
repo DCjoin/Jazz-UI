@@ -9,7 +9,7 @@ import {Minite,Min15,Min30,Hourly,Hour2,Hour4,Hour6,Hour8,Hour12,Daily,Weekly,Mo
 import ChartBasicComponent from 'components/DataAnalysis/Basic/ChartBasicComponent.jsx'
 
 const ALARM_COLOR = '#ff4b00';
-const GRAY_COLOR = 'gary';
+const GRAY_COLOR = 'gray';
 const PLOT_BACKGROUND_COLOR = '#ecfaf8';
 const CHART_TYPE = 'line';
 const TRIGGER_DATA_QUALITY = 10;
