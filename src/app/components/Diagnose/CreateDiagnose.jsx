@@ -852,6 +852,7 @@ export class CreateStep2 extends Component {
 		return (
 			<section className='diagnose-create-content diagnose-create-step'>
 				<ChartPreviewStep2 {...other}
+					DiagnoseModel={DiagnoseModel}
 					chartData={chartData}
 					disabledPreview={disabledPreview}
 					StartTime={StartTime}
@@ -1343,7 +1344,7 @@ class CreateDiagnose extends Component {
 						checkedTags.map(tag => tag.DiagnoseName)
 						.reduce((result, val) => result || isEmptyStr(val), false),
 		buttons = [],
-		disabledNext = step2NeedRequire(this.props.DiagnoseModel, filterObj.get('TriggerType'), filterObj.get('TriggerValue'));
+		disabledNext = step2NeedRequire(this.props.EnergyLabel.get('DiagnoseModel'), filterObj.get('TriggerType'), filterObj.get('TriggerValue'));
 		switch (step) {
 			case 0:
 				buttons.push(<Right>
