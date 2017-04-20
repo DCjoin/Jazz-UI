@@ -294,9 +294,11 @@ function AdditiveComp({
 }
 
 function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime, disabled, style, isPopover}) {
-	let endTimeLabel = EndTime.split('T')[1].split(':').slice(0, 2).join(':');
+	let endTimeLabel = EndTime.split('T')[1].split(':').slice(0, 2).join(':'),
+	endDateLabel = EndTime.split('T')[0];
 	if(endTimeLabel === '00:00') {
 		endTimeLabel = '24:00';
+		endDateLabel = moment(EndTime).subtract(1, 'days').format('YYYY-MM-DD');
 	}
 	return (<section className='diagnose-create-chart-filter' style={style}>
 		<ViewableDatePicker
@@ -335,7 +337,7 @@ function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime
 			datePickerClassName={'diagnose-date-picker'}
 			disabled={disabled}
     		width={100}
-			value={EndTime.split('T')[0]}
+			value={endDateLabel}
 			onChange={(val) => {
 				let endTime = EndTime.split('T')[1];
 				if(endTime === '00:00:00') {
@@ -528,6 +530,7 @@ function RuntimeComp({
 				<ViewableDropDownMenu
 					autoWidth={false}
 					iconStyle={{display: 'none'}}
+					labelStyle={{textOverflow: 'clip'}}
 					style={{width: 50, marginLeft: 10, marginTop: -6}}
 					defaultValue={data.StartTime}
 					dataItems={getDateTimeItemsByStepForVal(60).slice(0, 24)}
@@ -541,6 +544,7 @@ function RuntimeComp({
 				<ViewableDropDownMenu
 					autoWidth={false}
 					iconStyle={{display: 'none'}}
+					labelStyle={{textOverflow: 'clip'}}
 					style={{width: 50, marginLeft: 10, marginTop: -6}}
 					defaultValue={data.EndTime || 60 * 24}
 					dataItems={getDateTimeItemsByStepForVal(60).slice(1)}
@@ -853,6 +857,7 @@ export class CreateStep2 extends Component {
 		return (
 			<section className='diagnose-create-content diagnose-create-step'>
 				<ChartPreviewStep2 {...other}
+					DiagnoseModel={DiagnoseModel}
 					chartData={chartData}
 					disabledPreview={disabledPreview}
 					StartTime={StartTime}
@@ -1344,7 +1349,7 @@ class CreateDiagnose extends Component {
 						checkedTags.map(tag => tag.DiagnoseName)
 						.reduce((result, val) => result || isEmptyStr(val), false),
 		buttons = [],
-		disabledNext = step2NeedRequire(this.props.DiagnoseModel, filterObj.get('TriggerType'), filterObj.get('TriggerValue'));
+		disabledNext = step2NeedRequire(this.props.EnergyLabel.get('DiagnoseModel'), filterObj.get('TriggerType'), filterObj.get('TriggerValue'));
 		switch (step) {
 			case 0:
 				buttons.push(<Right>
