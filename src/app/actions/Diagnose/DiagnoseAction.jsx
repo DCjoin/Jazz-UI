@@ -133,6 +133,8 @@ const DiagnoseAction = {
   getproblemdata(diagnoseId,startTime,endTime){
     var path=util.replacePathParams(Path.Diagnose.getproblemdata, diagnoseId);
     console.log(path);
+    tag: 'getproblemdata',
+    avoidDuplicate: true,
     Ajax.get(path, {
       params:`startTime=${startTime || null}&endTime=${endTime || null}`,
       success: (res) => {
