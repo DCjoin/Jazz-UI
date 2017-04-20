@@ -197,7 +197,7 @@ const DiagnoseAction = {
       error: (err, res) => {
         let {errorCode} = util.processErrorCode(res.body.error.Code);
         util.popupErrorMessage(
-          util.replacePathParams(util.getErrorMessage(errorCode), 
+          util.replacePathParams(util.getErrorMessage(errorCode),
           JSON.parse(res.text).error.Messages && JSON.parse(res.text).error.Messages[0], '诊断名称'),
           res.body.error.Code, true
         );
@@ -238,6 +238,16 @@ const DiagnoseAction = {
         })
         me.getDiagnosisList();
         me.getDiagnoseStatic(_hierarchyId);
+      }
+    } );
+  },
+  getConfigcalendar(hierarchyId){
+    Ajax.get(util.replacePathParams(Path.Diagnose.isconfigcalendar, hierarchyId), {
+      success: (res) => {
+        AppDispatcher.dispatch({
+          type: Action.GET_CONFIG_CALENDAR,
+          data: res,
+        })
       }
     } );
   }

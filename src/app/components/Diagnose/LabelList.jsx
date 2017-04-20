@@ -8,7 +8,7 @@ import FontIcon from 'material-ui/FontIcon';
 import privilegeUtil from 'util/privilegeUtil.jsx';
 import PermissionCode from 'constants/PermissionCode.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
-import HierarchyAction from '../../actions/hierarchySetting/HierarchyAction.jsx';
+// import HierarchyAction from '../../actions/hierarchySetting/HierarchyAction.jsx';
 import NewDialog from 'controls/NewDialog.jsx';
 
 function privilegeWithSeniorSmartDiagnose( privilegeCheck ) {
@@ -146,13 +146,17 @@ export default class LabelList extends Component {
   }
 
   _renderList(){
-    return this.state.list.map(item=>(
-      <LabelItem nodeData={item}
-                        selectedNode={this.props.selectedNode}
-                        isFromProbem={this.props.isFromProbem}
-                        onAdd={this._onAdd}
-                        onItemTouchTap={this.props.onItemTouchTap}/>
-    ))
+    return (<div style={{flex:1,overflowY:'auto'}}>
+            {this.state.list.map(item=>(
+            <LabelItem nodeData={item}
+                              selectedNode={this.props.selectedNode}
+                              isFromProbem={this.props.isFromProbem}
+                              onAdd={this._onAdd}
+                              onItemTouchTap={this.props.onItemTouchTap}/>
+          ))
+        }
+        </div>)
+
   }
 
 	_renderDialog(){
@@ -178,7 +182,7 @@ export default class LabelList extends Component {
 		this.setState({
 			hasCalendar:null
 		},()=>{
-			HierarchyAction.getCalendar(hierarchyId)
+			DiagnoseAction.getConfigcalendar(hierarchyId)
 		}
 	)
 	}
