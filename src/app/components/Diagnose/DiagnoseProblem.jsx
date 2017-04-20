@@ -83,12 +83,13 @@ export default class DiagnoseProblem extends Component {
 		if(this.state.startDate===null){
 			let chart=DiagnoseStore.getDiagnoseChartData();
 			var j2d=DataConverter.JsonToDateTime,
-					MinusStep=DateComputer.MinusStep.bind(DateComputer);
+					MinusStep=DateComputer.MinusStep,
+					fixedTimes=DateComputer.FixedTimes;
 
 			let timeRange=chart.getIn(['EnergyViewData','TargetEnergyData',0,'Target','TimeSpan']).toJS(),
 					step=chart.getIn(['EnergyViewData','TargetEnergyData',0,'Target','Step']),
-					startDate=MinusStep(j2d(timeRange.StartTime),step),
-					endDate=MinusStep(j2d(timeRange.EndTime),step);
+					startDate=MinusStep(j2d(timeRange.StartTime),step,fixedTimes),
+					endDate=MinusStep(j2d(timeRange.EndTime),step,fixedTimes);
 
 			let startTime = startDate.getHours(),
 				endTime = endDate.getHours();

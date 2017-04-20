@@ -1840,15 +1840,15 @@ let CommonFuns = {
 
       }
     },
-    MinusStep: function(time, step) {
+    MinusStep: function(time, step,fixedTimes) {
       var ticks = time - 0;
       switch (step) {
         case 1: //hourly, minus one hour, this is a fixed value
-          return new Date(ticks - this.FixedTimes.hour);
+          return new Date(ticks - fixedTimes.hour);
         case 2: //daily, minus one day, this is a fixed value
-          return new Date(ticks - this.FixedTimes.day);
+          return new Date(ticks - fixedTimes.day);
         case 5: //weekly, minus one week, this is a fixed value
-          return new Date(ticks - this.FixedTimes.week);
+          return new Date(ticks - fixedTimes.week);
         case 3: //monthly, minus one month, this is not a fixed value, need construct
           var year = time.getFullYear(),
             month = time.getMonth(),
@@ -1859,19 +1859,19 @@ let CommonFuns = {
           let newtime = new Date(time.getFullYear() - 1, 0, 1, 0, 0, 0, 0);
           return new Date(newtime - (newtime.getTimezoneOffset() * 60000));
         case 6:
-          return new Date(ticks - this.FixedTimes.minute * 15);
+          return new Date(ticks - fixedTimes.minute * 15);
         case 7:
-          return new Date(ticks - this.FixedTimes.minute * 30);
+          return new Date(ticks - fixedTimes.minute * 30);
         case 8:
-          return new Date(ticks - this.FixedTimes.hour * 2);
+          return new Date(ticks - fixedTimes.hour * 2);
         case 9:
-          return new Date(ticks - this.FixedTimes.hour * 4);
+          return new Date(ticks - fixedTimes.hour * 4);
         case 10:
-          return new Date(ticks - this.FixedTimes.hour * 6);
+          return new Date(ticks - fixedTimes.hour * 6);
         case 11:
-          return new Date(ticks - this.FixedTimes.hour * 8);
+          return new Date(ticks - fixedTimes.hour * 8);
         case 12:
-          return new Date(ticks - this.FixedTimes.hour * 12);
+          return new Date(ticks - fixedTimes.hour * 12);
 
       }
     },
