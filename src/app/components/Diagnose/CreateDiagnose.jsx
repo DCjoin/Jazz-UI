@@ -17,6 +17,7 @@ import Immutable from 'immutable';
 import classnames from 'classnames';
 import { curry } from 'lodash/function';
 import { divide } from 'lodash/math';
+import _ from 'lodash';
 
 import TimeGranularity from 'constants/TimeGranularity.jsx';
 import {DIAGNOSE_MODEL} from 'constants/actionType/Diagnose.jsx';
@@ -191,7 +192,7 @@ function StepItem({
 function getDefaultFilter() {
 	return Immutable.fromJS({
 		TagIds: [],
-		StartTime: moment().subtract(7, 'days').format('YYYY-MM-DDT00:00:00'),
+		StartTime: moment().subtract(6, 'days').format('YYYY-MM-DDT00:00:00'),
 		EndTime: moment().format('YYYY-MM-DDT24:00:00'),
 		Step: TimeGranularity.Minite,
 		Timeranges: [
@@ -1322,7 +1323,7 @@ class CreateDiagnose extends Component {
 		if(tmpFilterDiagnoseTags) {
 			return (<Dialog onRequestClose={() => {this.setState({tmpFilterDiagnoseTags: null, tmpFilterStep: null});}} open={true} modal={false} actions={
 				getCanSelectTimeGranularity(tmpFilterDiagnoseTags).map(time =>
-					<FlatButton key={time} label={'按' + getStepItems().find(item => item.step === time * 1).text}
+					<FlatButton key={time} label={'按' + _.find(getStepItems(),item => item.step === time * 1).text}
 						onClick={() => {
 							this.setState({
 								checkedTags: tmpFilterDiagnoseTags,
@@ -1332,7 +1333,7 @@ class CreateDiagnose extends Component {
 							}, this._getChartData);
 						}}/>)
 			}>
-				{`所选数据点不支持按“${getStepItems().find(item => item.step === tmpFilterStep).text}”`}
+				{`所选数据点不支持按“${_.find(getStepItems(),item => item.step === tmpFilterStep).text}”`}
 			</Dialog>);
 		}
 		return null;
