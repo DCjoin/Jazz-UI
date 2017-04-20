@@ -4,6 +4,7 @@ import {curry, flowRight} from 'lodash/function'
 import moment from 'moment';
 
 import {isNumber, isEmptyStr} from 'util/Util.jsx';
+import {Minite,Min15,Min30,Hourly,Hour2,Hour4,Hour6,Hour8,Hour12,Daily,Weekly,Monthly,Yearly} from 'constants/TimeGranularity.jsx';
 
 import ChartBasicComponent from 'components/DataAnalysis/Basic/ChartBasicComponent.jsx'
 
@@ -25,8 +26,13 @@ function mapSeriesDataWithMax(isTriggerVal, isIgnoreVal, isEdit, isHistory, seri
     stacking: null,
     data: serie.data.map(
       (data, dataIdx) => {
-        let isTrigger = isTriggerVal(serieIdx, dataIdx);
-        let isIgnore = isIgnoreVal(serieIdx, dataIdx);
+        // 由于API返回的数据为请求时间的后一个步长，所以为了数据点可以正常显示，图表会自动往前加一个步长的空数据
+        // 所以从原数据获取状态时，index会比原数据的index多1，故-1
+        // 为什么不在根源上解决这个问题？
+        // 最古老的代码中有这样的逻辑，没有时间重新整理这么复杂的逻辑，我也是受害者
+        // Law 2017/04/20
+        let isTrigger = isTriggerVal(serieIdx, dataIdx - 1);
+        let isIgnore = isIgnoreVal(serieIdx, dataIdx - 1);
         if( isTrigger || isIgnore ) {
           let color = ALARM_COLOR;
           if(isIgnore) {
@@ -158,8 +164,43 @@ export default function DiagnoseChart(props) {
     onDeleteButtonClick,
     isEdit,
 	};
+  // 由于API返回的数据为请求时间的后一个步长，所以为了数据点可以正常显示，加入如下逻辑
+  // Law 2017/04/20
+  let target = data.getIn(['EnergyViewData', 'TargetEnergyData', 0, 'Target'])
+  if( target && target.get('TimeSpan').size > 0 ) {
+    let step = target.get('Step');
+    chartProps.contentSyntax = JSON.stringify({
+      viewOption: {
+        TimeRanges: [{
+          StartTime: subtractStep(target.getIn(['TimeSpan', 'StartTime']), step),
+          EndTime: subtractStep(target.getIn(['TimeSpan', 'EndTime']), step),
+        }]
+      }
+    });
+  }
 
 	return (
 		<ChartBasicComponent {...chartProps}/>
 	);
+}
+
+const TIME_GRANULARITY_MAP_VAL = {
+  [Minite]: 60,
+  [Min15]: 15 * 60,
+  [Min30]: 30 * 60,
+  [Hourly]: 60 * 60,
+  [Hour2]: 2 * 60 * 60,
+  [Hour4]: 4 * 60 * 60,
+  [Hour6]: 6 * 60 * 60,
+  [Hour8]: 8 * 60 * 60,
+  [Hour12]: 12 * 60 * 60,
+  [Daily]: 24 * 60 * 60,
+  [Weekly]: 7 * 24 * 60 * 60,
+  [Monthly]: 30 * 24 * 60 * 60,
+  [Yearly]: 365 * 24 * 60 * 60,
+}
+function subtractStep(time, step) {
+  return moment(
+    moment(time).valueOf() - TIME_GRANULARITY_MAP_VAL[step] * 1000
+  ).format('YYYY-MM-DDTHH:mm:ss');
 }
