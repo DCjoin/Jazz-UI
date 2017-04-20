@@ -4,7 +4,7 @@ import FlatButton from 'controls/FlatButton.jsx';
 import NewDialog from 'controls/NewDialog.jsx';
 import RaisedButton from 'material-ui/RaisedButton';
 import { IconButton, IconMenu,MenuItem,CircularProgress,Snackbar} from 'material-ui';
-import {dateAdd,DataConverter} from 'util/Util.jsx';
+import {dateAdd,DataConverter,DateComputer} from 'util/Util.jsx';
 import PrivilegeUtil from 'util/privilegeUtil.jsx';
 import PermissionCode from 'constants/PermissionCode.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
@@ -14,7 +14,6 @@ import DiagnoseStore from 'stores/DiagnoseStore.jsx';
 import DiagnoseChart from './DiagnoseChart.jsx';
 import {DiagnoseStatus} from 'constants/actionType/Diagnose.jsx';
 import {GenerateSolutionButton,GenerateSolution} from '../DataAnalysis/Basic/GenerateSolution.jsx';
-
 
 function getFromImmu(key) {
 	return function(immuObj) {
@@ -83,17 +82,19 @@ export default class DiagnoseProblem extends Component {
 	_initDate(){
 		if(this.state.startDate===null){
 			let chart=DiagnoseStore.getDiagnoseChartData();
-			var j2d=DataConverter.JsonToDateTime;
+			var j2d=DataConverter.JsonToDateTime,
+					MinusStep=DateComputer.MinusStep.bind(DateComputer);
 
 			let timeRange=chart.getIn(['EnergyViewData','TargetEnergyData',0,'Target','TimeSpan']).toJS(),
-					startDate=j2d(timeRange.StartTime,false),
-					endDate=j2d(timeRange.EndTime,false);
+					step=chart.getIn(['EnergyViewData','TargetEnergyData',0,'Target','Step']),
+					startDate=MinusStep(j2d(timeRange.StartTime),step),
+					endDate=MinusStep(j2d(timeRange.EndTime),step);
 
-			// let startTime = startDate.getHours(),
-			// 	endTime = endDate.getHours();
+			let startTime = startDate.getHours(),
+				endTime = endDate.getHours();
 			// 	starttime&endtime of problem must be 0 told by backend
-			let startTime = 0,
-		endTime = 0;
+		// 	let startTime = 0,
+		// endTime = 0;
 
 
 			startDate.setHours(0, 0, 0, 0);

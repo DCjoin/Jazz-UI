@@ -1840,6 +1840,41 @@ let CommonFuns = {
 
       }
     },
+    MinusStep: function(time, step) {
+      var ticks = time - 0;
+      switch (step) {
+        case 1: //hourly, minus one hour, this is a fixed value
+          return new Date(ticks - this.FixedTimes.hour);
+        case 2: //daily, minus one day, this is a fixed value
+          return new Date(ticks - this.FixedTimes.day);
+        case 5: //weekly, minus one week, this is a fixed value
+          return new Date(ticks - this.FixedTimes.week);
+        case 3: //monthly, minus one month, this is not a fixed value, need construct
+          var year = time.getFullYear(),
+            month = time.getMonth(),
+            totalMonths = year * 12 + month - 1;
+          let newtime1 = new Date(Math.floor(totalMonths / 12), totalMonths % 12, 1, 0, 0, 0, 0);
+          return new Date(newtime1 - (newtime1.getTimezoneOffset() * 60000));
+        case 4: //yearly, minus one year, this is not a fixed value, need construct
+          let newtime = new Date(time.getFullYear() - 1, 0, 1, 0, 0, 0, 0);
+          return new Date(newtime - (newtime.getTimezoneOffset() * 60000));
+        case 6:
+          return new Date(ticks - this.FixedTimes.minute * 15);
+        case 7:
+          return new Date(ticks - this.FixedTimes.minute * 30);
+        case 8:
+          return new Date(ticks - this.FixedTimes.hour * 2);
+        case 9:
+          return new Date(ticks - this.FixedTimes.hour * 4);
+        case 10:
+          return new Date(ticks - this.FixedTimes.hour * 6);
+        case 11:
+          return new Date(ticks - this.FixedTimes.hour * 8);
+        case 12:
+          return new Date(ticks - this.FixedTimes.hour * 12);
+
+      }
+    },
     firstValueTime: function(startTime, step) {
       var time = new Date(startTime),
         ticks = time.valueOf(),
@@ -2208,7 +2243,7 @@ let CommonFuns = {
 
   pow10(num, pow) {
     num = (num + '');
-    let floatIdx = num.indexOf('.'), 
+    let floatIdx = num.indexOf('.'),
     arr = num.replace('.', '').split('');
     if(floatIdx === -1) {
       floatIdx = 0
