@@ -89,8 +89,12 @@ export default class DiagnoseProblem extends Component {
 					startDate=j2d(timeRange.StartTime,false),
 					endDate=j2d(timeRange.EndTime,false);
 
-			let startTime = startDate.getHours(),
-				endTime = endDate.getHours();
+			// let startTime = startDate.getHours(),
+			// 	endTime = endDate.getHours();
+			// 	starttime&endtime of problem must be 0 told by backend
+			let startTime = 0,
+		endTime = 0;
+
 
 			startDate.setHours(0, 0, 0, 0);
 			endDate.setHours(0, 0, 0, 0);
