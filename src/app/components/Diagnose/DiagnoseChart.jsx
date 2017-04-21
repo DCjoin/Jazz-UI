@@ -17,12 +17,19 @@ const IGNORE_DATA_QUALITY = 11;
 const CALENDAR_TYPE_WORKTIME = 2;
 const CALENDAR_TYPE_NO_WORKTIME = 3;
 
-function mapSeriesDataWithMax(isTriggerVal, isIgnoreVal, isEdit, isHistory, serie, serieIdx, series) {
+function mapSeriesDataWithMax(isTriggerVal, isIgnoreVal, isEdit, isHistory, energyData, serie, serieIdx, series) {
+  let history = isHistory(serieIdx),
+  enableDelete = isEdit;
+  if( enableDelete ) {
+    if( energyData.size < 2 || history ) {
+      enableDelete = false;
+    }
+  }
   return {...serie, ...{
     turboThreshold: null,
     enableHide: false,
-    enableDelete: isEdit && series.length > 1,
-    color: isHistory(serieIdx) ? ALARM_COLOR : undefined,
+    enableDelete: enableDelete,
+    color: history ? ALARM_COLOR : undefined,
     stacking: null,
     data: serie.data.map(
       (data, dataIdx) => {
@@ -82,6 +89,8 @@ function postNewConfig(data, isEdit, newConfig) {
       serieIdx,
       'Target',
       'Code']) === 'TriggerValue', 
+      data.getIn(['EnergyViewData', 'TargetEnergyData'])
+        .filter( energyData => energyData.getIn(['Target', 'Code']) !== 'TriggerValue' )
     )
   );
   if( isNumber(triggerVal) ) {
