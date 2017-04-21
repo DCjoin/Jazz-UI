@@ -167,13 +167,11 @@ export default class DiagnoseList extends Component {
 	}
 
   componentWillReceiveProps(nextProps){
-    if(this.props.selectedNode.get('Id')!==nextProps.selectedNode.get('Id')){
       this.setState({
         chartData:null
       },()=>{
         DiagnoseAction.getdiagnosedata(nextProps.selectedNode.get('Id'));
       })      
-    }
   }
 
 	componentWillUnmount(){
