@@ -252,6 +252,11 @@ const DiagnoseAction = {
         })
       }
     } );
+  },
+  clearDiagnoseChartData(){
+    AppDispatcher.dispatch({
+      type: Action.CLEAR_DIAGNOSE_CHART_DATA,
+    })
   }
 }
 
