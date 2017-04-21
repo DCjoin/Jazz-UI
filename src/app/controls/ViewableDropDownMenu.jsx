@@ -75,7 +75,7 @@ var ViewableDropDownMenu = React.createClass({
       let label = item[textField];
       return(
           <MenuItem value={item[valueField]} label={label} disabled={(item.disabled !== undefined) ? item.disabled : false}>
-            <div title={label} style={{
+            <div title={label} style={this.props.itemLabelStyle || {
               textOverflow: 'ellipsis',
               overflow: 'hidden',
             }}>{label}</div>
