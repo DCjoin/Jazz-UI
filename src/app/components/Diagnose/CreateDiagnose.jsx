@@ -1236,7 +1236,7 @@ class CreateDiagnose extends Component {
 						chartDataLoading={chartDataLoading}
 						Timeranges={Timeranges}
 						onUpdateDateRange={(idx, type, startOrEnd, val) => {
-							val = new Date().getFullYear() + SEPARTOR + val.join(SEPARTOR);
+							val = moment().month(val[0] - 1).date(val[1]).format('YYYY-MM-DD');
 							let setVal = () => {
 								this._setFilterObj(['Timeranges', idx, type], val);
 							}
