@@ -531,6 +531,7 @@ function RuntimeComp({
 					autoWidth={false}
 					iconStyle={{display: 'none'}}
 					labelStyle={{textOverflow: 'clip'}}
+					itemLabelStyle={{textOverflow: 'clip'}}
 					style={{width: 50, marginLeft: 10, marginTop: -6}}
 					defaultValue={data.StartTime}
 					dataItems={getDateTimeItemsByStepForVal(60).slice(0, 24)}
@@ -545,6 +546,7 @@ function RuntimeComp({
 					autoWidth={false}
 					iconStyle={{display: 'none'}}
 					labelStyle={{textOverflow: 'clip'}}
+					itemLabelStyle={{textOverflow: 'clip'}}
 					style={{width: 50, marginLeft: 10, marginTop: -6}}
 					defaultValue={data.EndTime || 60 * 24}
 					dataItems={getDateTimeItemsByStepForVal(60).slice(1)}
@@ -650,7 +652,7 @@ function ModelBCondition({
 		</div>}
 		{ TriggerType === TRIGGER_TYPE.HistoryValue &&
 		<div style={{marginTop: 15}}>
-			<span className='diagnose-condition-subtitle'>{'基准值历史事件范围'}</span>
+			<span className='diagnose-condition-subtitle'>{'基准值历史时间范围'}</span>
 			<ChartDateFilter
 				style={{
 					flexWrap: 'wrap'
