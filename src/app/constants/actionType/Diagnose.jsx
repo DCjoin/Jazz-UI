@@ -17,7 +17,8 @@ module.exports = {
     UPDATE_DIAGNOSE_ERROR:null,
     REMOVE_DIAGNOSE_SUCCESS:null,
     MERGE_DIAGNOSE_SUCCESS:null,
-    GET_CONFIG_CALENDAR:null
+    GET_CONFIG_CALENDAR:null,
+    CLEAR_DIAGNOSE_CHART_DATA:null
   }),
     EnergyLabel:{
         OfficeLighting:101,

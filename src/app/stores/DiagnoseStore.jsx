@@ -156,6 +156,9 @@ const DiagnoseStore = assign({}, PrototypeStore, {
   getDiagnoseChartData(){
     return _diagnoseChartData
   },
+  clearDiagnoseChartData(){
+    _diagnoseChartData=null
+  },
   setPreviewChartData(data){
     _previewChartData=Immutable.fromJS(data)
   },
@@ -299,6 +302,10 @@ DiagnoseStore.dispatchToken = AppDispatcher.register(function(action) {
           DiagnoseStore.mergeDiagnose(action.paths,action.value);
           DiagnoseStore.emitChange()
           break;
+    case Action.CLEAR_DIAGNOSE_CHART_DATA:
+          DiagnoseStore.clearDiagnoseChartData()
+          break;
+
   }
 })
 
