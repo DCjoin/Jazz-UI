@@ -650,7 +650,7 @@ function ModelBCondition({
 		</div>}
 		{ TriggerType === TRIGGER_TYPE.HistoryValue &&
 		<div style={{marginTop: 15}}>
-			<span className='diagnose-condition-subtitle'>{'基准值历史事件范围'}</span>
+			<span className='diagnose-condition-subtitle'>{'基准值历史时间范围'}</span>
 			<ChartDateFilter
 				style={{
 					flexWrap: 'wrap'
