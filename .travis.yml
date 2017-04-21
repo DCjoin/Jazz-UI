@@ -1,10 +1,33 @@
 language: node_js
+
 node_js:
-- 4
+  - "6.10.2"
+
 sudo: false
+
 cache:
+  yarn: true
   directories:
   - node_modules
-script: npm install
+  
+env:
+  global:
+  - PACKAGE_VERSION="3.8.0.${TRAVIS_BUILD_NUMBER}"
+  
+script:
+- yarn run build-test
+- cd build
+- echo -n "v${PACKAGE_VERSION}" > version.txt
+- export ARTIFACT_NAME="Jazz-WebUI-${TRAVIS_BRANCH}-v${PACKAGE_VERSION}.zip"
+- zip -r ../${ARTIFACT_NAME} ./
+- cd ..
 
-script: npm run build-test
+  
+deploy:
+- provider: script
+  skip_cleanup: true
+  on:
+    all_branches: true
+  script:
+    - echo ${ARTIFACT_NAME}
+#  - echo $http_proxy && curl -sS -o ./dep.sh "https://raw.githubusercontent.com/SE-REM/Baton/master/shell/travis_deploy_oss.sh" && chmod a+x ./dep.sh && ./dep.sh "Pop" "WebUI" "Pop-WebUI-${TRAVIS_BRANCH}-v${PACKAGE_VERSION}.zip" ${BASKET} ${BOB} ${JOHN} ${JENKINS_HOST} ${JENKINS_AUTH} ${JENKINS_TOKEN}
