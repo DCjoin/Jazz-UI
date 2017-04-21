@@ -68,8 +68,8 @@ export default class EditDiagnose extends Component {
   }
 
   _validate(){
-    var {Name,WorkTimes}=this.state.diagnoseData.toJS();
-    if(Name==='' || Name===null || WorkTimes.length===0) return true
+    var {Name,WorkTimes, TriggerValue, TriggerType}=this.state.diagnoseData.toJS();
+    if(Name==='' || Name===null || WorkTimes.length===0 || (TriggerType === 1 && isEmptyStr(TriggerValue))) return true
     return false
   }
 
@@ -210,6 +210,7 @@ export default class EditDiagnose extends Component {
 				</div>
 			)
 		}else {
+			let disabled = this._validate();
 			var styles={
 				label:{
 					fontSize: '14px',
@@ -236,7 +237,7 @@ export default class EditDiagnose extends Component {
 					{this._renderContent()}
 					<footer>
 						<div style={{float:"right", marginBottom: 40}}>
-								<FlatButton label={I18N.Setting.Diagnose.SaveAndExit} labelStyle={styles.label} style={styles.btn} backgroundColor="#0cad04"
+								<FlatButton label={I18N.Setting.Diagnose.SaveAndExit} labelStyle={styles.label} style={styles.btn} backgroundColor={disabled ? '#E5E5E5' :  "#0cad04"}
 									disabled={this._validate()} onTouchTap={()=>{
 										DiagnoseAction.updateDiagnose(
 											{...this.state.diagnoseData.toJS(),
