@@ -86,8 +86,7 @@ module.exports = function(options) {
 
       }
     },
-    new webpack.PrefetchPlugin("react"),
-    new webpack.PrefetchPlugin("react/lib/ReactComponentBrowserEnvironment")
+    new webpack.PrefetchPlugin("react")
   ];
   plugins.push(new webpack.optimize.CommonsChunkPlugin({
     name: "vendors", 
