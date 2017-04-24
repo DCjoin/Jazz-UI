@@ -1,10 +1,38 @@
 language: node_js
+
 node_js:
-- 4
+  - "6.10.2"
+
 sudo: false
+
 cache:
+  yarn: true
   directories:
   - node_modules
-script: npm install
+  
+env:
+  global:
+  - PACKAGE_VERSION="3.8.0.${TRAVIS_BUILD_NUMBER}"
+  - secure: "0xa4wt6NnjmrLRUR//ZKVSthlTMTPBsvrctyR7oY/hDtFlc534PZpXxxZyHwxQACwXTlbSNc2kTAMjlJrpFrkrKS9pyKyht3M6kNzfOMt/7VTJuH2yeJYwy6D4GZAP3t6SAAW43nmOwCgVbNpvbcEsJKFrgRpwZJ2jrVCN5/43D0ytz626giWcblsnA1FUnC65wHch5MwrP0VGhSlER4PDoK6MsaBim+CqD9aTHw5YIzVJ9VuoQLoa6m3EqGltkW0OpulsV3EWz6frMyPs52qHqltSsp0Sto/5HlyD5sBktQ9H3D7IC8TK38dgPQI/stratigBn5jn3O+bPt+4WIrsZt9U8p9srtxzKTXS5xIsfeHAd8eqYOqZFjqwlSJPInYzebbTRvbNGrCg1rF7LmIus0SXRPEOGS1yGI1LA+OY/VX5ASVBfmrEfujWzozjh6E5IsJCFexF+bZVjI0eWXOiMPHs5VteSpoQ7OY4o841KNCaQeibxNZS8mFSk8/ja99sQRVSnVLn2sKP8PMCTIGaKl+7XRvoOV/0JtX2K/DiNqf6wxOP0MrNqcQ0qFs6a4XaLPHoklPSa5vb/rTgDAgPI9z9LW0dJilVcYvJpKWxlBb0L+xzjvr9mjLiAJKg3MiKAMJdyDJ6JT72w/VTrXpeFsmOByHlbD05vWVQnw0SU="
+  - secure: "29F3H+LgjzpSQWGsJU3WIPw4RgYb5zPtRQ0MLkDeixc+JNeKEyet/Vt2WNeyTt1gKP3i1okBplLpbVUNaYE8Y7QWG6nCbd45c/3dg0F3tnRhSTd+21+a7o3WknM+c8CVeoxakqc4S55uo7hp8S2Gc19tT8THYXU5wlf6GgI3yIqRAgbF3p9x+7dyzFZg2o3QQLKHXkxlvX9f6vVzTIixL4h2AekRULnWdoX+OTnvOCnYpq5UtOU9XL3jf40Wc82DAbG+GlsjwTajC3DwEp+jmwK4frw/x+wjMSc44GXqzYnd4TtPfSSqOxsw2K0ZaQ5nJx8JhXJrShx3syy/1X+TVAcPF4NxgN5VylH0CTwQI5UMJ/yNrOG8AsA+1QiUGz/CA7eStiD7ofmvbp3HQFSk5SJoWFLbIq/ihq4+fr9t6O8crZGOloadMCS+gwX0BBNhtTH5E3ZHwPpoMTrQJjcijJU13gX8GKkJt6ZcK4t9+fmbM/4bnmc4TjEaMskUXu6b+qBV05QlXzOuCsZPkJk7x8NLr/y+/fZ6v2O/e31giFutIf51p55Wd6UO56v4mXXzKOTBMF9AgemKtnVIjSgsIgLhFHlwP3Pf3WnNDr7Tw2RPXs/BMAbPxv4Bkce/yGB8JSN/i/PsiXwD3nTK1G3sarM1F82n5gAHTDd0eaGV5pk="
+  - secure: "JCk1Ssj1vFuNod4TvDelJaQxy+zlZkB5mSevczMUz6HV0JAk/BCKosZ/N1u89k5kvY2DuVU4JgCkr9GVMWLEP94kzEnrvFuLGdPIkleyZbXepYt2cNbN5P87DY2k0vtuiZjhnby3LvTP8uCGgcvnLMGoQ6AO7VnU88rJOd63ltD9UPx4HdbBQyz7AW2oae+jh+Oko7gVxPVThrLPfyJk9bmhchw8B/EuFkgeNXJTkdt0DDiZq3b/XUASQ2ugnZWrYNvwhEDs3/5WEzXHmouI8V06hhnahO95/IbgnXBw866DGJFlTH/lJY/oWq4Lcf5V29zFHpb18gQrYKAtwn+OFW3AjVWitfAQbuheUc1DFRNwFOQgDBfe+T/bIswOAVBLS/5J5VXYSCP9jCheIylw15pIQpfi+B2WhvbVTHVJt49l+0T634kBr1NuKQ5SrWCuXu1WM0Gz8QbBcc0uHM53rBgIq6cIsvl2RZdf8yQvoZYeqOXaHUmkR8FCUyFpXsTX0uQfBTpl0M1ypzmGw67cxUjHZk/BjUTA9eVPut9DYXEdgNB1f+nuvMTwFP4bFYT5bt49FjQsfAJQj07LXpptFgOXsqRWO3hZW51HTUr8gX1qWW0KhrsZNbTf3b8axn0xk2U3dkhCnGu1uZdiLXy3NCgIZs/Kb407AKGtZ3zrws0="
+  - secure: "04V4lBiktDkNyHntcZagbEA5g0Aw2TxFvde/FDTXu+HW4HjPFT2KINCp0XYkO01rNzf4Qecf6dN/iEdO2lOHlMGl2D+blkMpau0bZdsU73tCZgXA4EtFJ25xf8JOUACYflaW2ERFUfOAGXfWSRlgQbsbB0kH44S96Jd9YKj3ba6du1KLFiMdUNdZi9aWPdPf1MENoE9f8ifCeZbfSMRzA6WLhbA+PTkktjhdKUDH96IV1ojWKIY7WI9UOJlmkLg02xbPXmz12aC82wi6xcTvbhYc6CUHiwv36UPHELKGgRozUdq9C0aStbPsRmY9IXeyPO9TGX00h5vX8f9PAXQruQBb93vdXwr9Gh3Eftxqrn8l+Yl+j3nEfPChANw/9SeUWcwJu9J8j6ecI/xUrXPGd7sf7fKPOp0A7tzB6lSzSWM/DgbXI89yv0XLsJJQ+B3AtWNnCLDCqe0dr2nf3r9wZxLu9aymE/1oC9THoFb4klOPTNQNqBtxqj75yW5GPyMV8DIrBia/acLtxHHFP1Z0MjLX5uQtpARm1V+O6rPLzkGKTK0rRUOl/Wdkp5Pc3cCDaqkvwAPN+pwxjsrqMtOoiKqwMtVtNKsc15M9fuYpYx9NEwyKZfWGbLuZ9KAPLGaEUpMpbWVaFmLOcxPmq+RvpziEyTR/xOC/J62g9LIeB6Y="
+  - secure: "eqtLCw0uVTf2/DY/3BNaUZgbVcwaJ6ICJw2rNjNRa8JU3kQPJsnACWf0KR2EfE43/L4AAhqpaGnxgQoWhcEzbQLnzV2rhrL9KsmRpslDk8aTgDWYHWycVdNEZ4gSdspmJICiTspM4D0RJ0R9ibSp3tsuw3nQp3/TZc4ecOGiUTa4IlhWbflAj0WYre63tWnbiqQVkMBR3MSicl5VYhufYuwUSQpNsaijdwRr1134a8q+RL8+bEBsBfqcePzyLjRB+zA15hOrI/LwUpAc3uKAXHJqqWwnQRjrrfJao+mIT3yY400Q8OzxP9xF+vWxPTdUctevbZeNWay9n5qS5VxZ2U3+r8jvP1M6aKc1mkM8Y+t3NWxpWaqXAnt8R6voQvra+QINeBCTZCaZTDHz0PfAw821So8lshwTUm4a6CC5MdUD3X5jwVewb08W4XE4zo09Hzyy7+BbNk21lyRyon25t/G0l6+HArrX71h2cPmVjbw4eGnS+679pE5UUmRHvOj2S06wTKB8nDsb7z5dtqm9q/qw9nKByQYo4Ua/21WKkepiRFZqAx+bZeCX5Zt35/WlGu+6WPCaBkx5+gXk+25z2uTTf0kd5sow2k/NneEyr+TmuVWJIyumYGI/YL30PYWonOEZWZPqn5DZabCjT/HCkih484QcqO29ow9KVnQ6cP0="
+  - secure: "MIshv3kMleXUwtlsmryi0X2UztTHQ02h+57moV5PFrHFyzmoio9cAV0ZmGnoJeHawYGQG4vV0g2qvWnKuGuHVX5sLkr8HnJn2jFgoqLnzF0HurYLA1umXT3RIbBIGbat7gJEq1LQO9ChojrKZnh/VzX6EtVR3NMna2pNhQfCvKlyNX7W1lkuYYtk3KbVxPK9AXmQjDTu/qEpGLFKzad6bJHjaHlLYT8pNY5rxAvCcJ4hBHlF2VrsjcPrYtT0FzEHKs/+58EhRSUfIfBF2cK0+uIjuT06KHLsfK6eVVEYImdCln9oWEQFzyMq4jSifC+o5zAX1lv8a7u1spGyDOlnYoRCiLiJQTS6P7YMUma3gVHjHSQNrc1MGgK6sFZT8x4rP65L6sWbDwli4/Qpo/rAV/9qTQvCTkT4/WxkVdQymeQW8NeYk8erT0S5CygLA8D9rUU9rHFIzj38wQuD8UyIX/t28/MjXSWL+TtU0ltxh/iXwZZqSyteyvHzu84TeajwyJL1WaWP8+38rL84KlIFEhwUTNTCGLvBBhUrtIhJokvT/ns5IfJ8V5nslhO8HXMASugQbnI0D/zYtO8DiIJBE03eyRgo9FeFwXxspSSHsHz4SYKQ5Hu8M0Z7qJ/G6UVO9Jyt1N3z3DePTQToV5TCjM0DgWqLXgqomUa/Z7lGYgQ="
+  
+script:
+- yarn run build-test
+- cd build
+- echo -n "v${PACKAGE_VERSION}" > version.txt
+- export ARTIFACT_NAME="Jazz-WebUI-${TRAVIS_BRANCH}-v${PACKAGE_VERSION}.zip"
+- zip -r ../${ARTIFACT_NAME} ./
+- cd ..
 
-script: npm run build-test
+  
+deploy:
+- provider: script
+  skip_cleanup: true
+  on:
+    all_branches: true
+  script:
+    - echo $http_proxy && curl -sS -o ./dep.sh "https://raw.githubusercontent.com/SE-REM/Baton/master/shell/travis_deploy_oss.sh" && chmod a+x ./dep.sh && ./dep.sh "Jazz" "WebUI" "${ARTIFACT_NAME}" ${BASKET} ${BOB} ${JOHN} ${JENKINS_HOST} ${JENKINS_AUTH} ${JENKINS_TOKEN}
