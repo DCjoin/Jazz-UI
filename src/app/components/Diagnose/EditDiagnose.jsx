@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import {CircularProgress,TextField,IconButton,FlatButton} from 'material-ui';
-import { curry } from 'lodash/function';
+import { curry } from 'lodash';
 import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
 import DiagnoseStore from 'stores/DiagnoseStore.jsx';
 import {DiagnoseRange,CreateStep2} from './CreateDiagnose.jsx';

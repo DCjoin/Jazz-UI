@@ -27,11 +27,11 @@ import UserStore from 'stores/UserStore.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 
 
-import _isFunction from "lodash/lang/isFunction";
-import _isNumber from "lodash/lang/isNumber";
-import _trim from 'lodash/string/trim';
-import find from 'lodash/collection/find';
-import curry from 'lodash/function/curry';
+import _isFunction from "lodash/isFunction";
+import _isNumber from "lodash/isNumber";
+import _trim from 'lodash/trim';
+import find from 'lodash/find';
+import curry from 'lodash/curry';
 
 var _ = {
   isFunction: _isFunction,

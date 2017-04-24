@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import moment from 'moment';
-import {slice, fill} from 'lodash/array';
-import {isNull, isUndefined} from 'lodash/lang';
+import {slice, fill} from 'lodash';
+import {isNull, isUndefined} from 'lodash';
 
 import KPIType from 'constants/actionType/KPI.jsx';
 import util from 'util/Util.jsx';

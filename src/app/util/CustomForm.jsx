@@ -1,6 +1,6 @@
 'use strict';
 
-import _assign from "lodash/object/assign";
+import _assign from "lodash/assign";
 var _ = {assign:_assign};
 /*
 	_options: 以键值对形式接收form参数，参数名与html一致

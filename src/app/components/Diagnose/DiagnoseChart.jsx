@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Immutable from 'immutable';
-import {curry, flowRight} from 'lodash/function'
+import {curry, flowRight} from 'lodash'
 import moment from 'moment';
 
 import {isNumber, isEmptyStr} from 'util/Util.jsx';

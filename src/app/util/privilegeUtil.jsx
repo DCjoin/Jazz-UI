@@ -7,7 +7,7 @@ import PermissionCode, {
 	TAG_MANAGEMENT, HIERARCHY_MANAGEMENT, CUSTOM_LABELING, PLATFORM_MANAGEMENT
 } from 'constants/PermissionCode.jsx';
 
-import {remove} from 'lodash/array';
+import {remove} from 'lodash';
 
 const PrivilegeUtil = {
 	getRolePrivilegeList: () => {

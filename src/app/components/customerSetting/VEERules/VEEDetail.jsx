@@ -3,7 +3,7 @@
 import React, {Component, PropTypes} from "react";
 import classnames from "classnames";
 import { Toggle } from 'material-ui';
-import { isFunction } from "lodash/lang";
+import { isFunction } from "lodash";
 import moment from 'moment';
 
 import { formStatus } from 'constants/FormStatus.jsx';

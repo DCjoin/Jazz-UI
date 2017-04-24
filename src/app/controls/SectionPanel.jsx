@@ -1,8 +1,8 @@
 'use strict';
 
 import React from 'react';
-import _assign from "lodash/object/assign";
-import _isFunction from "lodash/lang/isFunction";
+import _assign from "lodash/assign";
+import _isFunction from "lodash/isFunction";
 
 var _ = {
   assign: _assign,

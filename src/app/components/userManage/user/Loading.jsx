@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import _capitalize from 'lodash/string/capitalize';
+import _capitalize from 'lodash/capitalize';
 var _ = {capitalize:_capitalize};
 var Loading = React.createClass({
 

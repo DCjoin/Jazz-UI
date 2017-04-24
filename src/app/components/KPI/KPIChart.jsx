@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import {find} from 'lodash/collection';
-import {last, findLastIndex, fill} from 'lodash/array';
+import {find} from 'lodash';
+import {last, findLastIndex, fill} from 'lodash';
 
 import util from 'util/Util.jsx';
 

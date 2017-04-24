@@ -3,7 +3,7 @@
 import React from "react";
 import classnames from "classnames";
 import CircularProgress from 'material-ui/CircularProgress';
-import { isObject, isFunction } from "lodash/lang";
+import { isObject, isFunction } from "lodash";
 import UserStore from '../../../stores/UserStore.jsx';
 import UserAction from '../../../actions/UserAction.jsx';
 import { formStatus } from '../../../constants/FormStatus.jsx';

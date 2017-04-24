@@ -5,7 +5,7 @@ import assign from 'object-assign';
 import CircularProgress from 'material-ui/CircularProgress';
 import Popover from 'material-ui/Popover';
 import {Menu, MenuItem} from 'material-ui/Menu';
-import {find} from 'lodash/collection';
+import {find} from 'lodash';
 
 import util from 'util/Util.jsx';
 

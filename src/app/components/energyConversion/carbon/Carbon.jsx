@@ -2,7 +2,7 @@
 
 import React from "react";
 import classnames from "classnames";
-import { isFunction, isObject } from "lodash/lang";
+import { isFunction, isObject } from "lodash";
 import CarbonList from './CarbonList.jsx';
 import CarbonDetail from './CarbonDetail.jsx';
 import { formStatus } from '../../../constants/FormStatus.jsx';

@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import Immutable from 'immutable';
 import moment from 'moment';
-import {first, last} from 'lodash/array';
-import {find} from 'lodash/collection';
-import {isNull, isUndefined} from 'lodash/lang';
+import {first, last} from 'lodash';
+import {find} from 'lodash';
+import {isNull, isUndefined} from 'lodash';
 
 import KPIType from 'constants/actionType/KPI.jsx';
 import util from 'util/Util.jsx';
