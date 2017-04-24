@@ -1,7 +1,7 @@
 'use strict';
 import AppDispatcher from '../../dispatcher/AppDispatcher.jsx';
 import { Action } from '../../constants/actionType/energyConversion/Tariff.jsx';
-import Ajax from '../../ajax/ajax.jsx';
+import Ajax from '../../ajax/Ajax.jsx';
 import CommonFuns from '../../util/Util.jsx';
 let TariffAction = {
   GetTouTariff: function() {

@@ -31,8 +31,8 @@ import privilegeUtil from 'util/privilegeUtil.jsx';
 // import KPIReport from './KPIReport.jsx';
 import CustomerChartPanel from './CustomerChartPanel.jsx';
 import BuildingChartPanel from './BuildingChartPanel.jsx';
-import CreateKPI from './single/KPI.jsx';
-import UpdatePrediction from './single/UpdatePrediction.jsx';
+import CreateKPI from './Single/KPI.jsx';
+import UpdatePrediction from './Single/UpdatePrediction.jsx';
 
 import minHeightHOC from '../../decorator/minHeightHOC.jsx';
 

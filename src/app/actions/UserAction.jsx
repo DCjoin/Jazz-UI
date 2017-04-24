@@ -1,7 +1,7 @@
 'use strict';
 import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import { Action } from '../constants/actionType/User.jsx';
-import Ajax from '../ajax/ajax.jsx';
+import Ajax from '../ajax/Ajax.jsx';
 import Immutable from 'immutable';
 import CommonFuns from '../util/Util.jsx';
 let UserAction = {

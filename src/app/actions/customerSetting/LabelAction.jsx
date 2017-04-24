@@ -1,7 +1,7 @@
 'use strict';
 import AppDispatcher from '../../dispatcher/AppDispatcher.jsx';
 import { Action } from '../../constants/actionType/customerSetting/Label.jsx';
-import Ajax from '../../ajax/ajax.jsx';
+import Ajax from '../../ajax/Ajax.jsx';
 
 let LabelAction = {
   getLabelList: function(CustomerId) {

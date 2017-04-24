@@ -4,7 +4,7 @@ import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 
 import Hierarchy from '../constants/actionType/Hierarchy.jsx';
 import HierarchyStore from '../stores/HierarchyStore.jsx';
-import Ajax from '../ajax/ajax.jsx';
+import Ajax from '../ajax/Ajax.jsx';
 import util from 'util/Util.jsx';
 import Path from 'constants/Path.jsx';
 

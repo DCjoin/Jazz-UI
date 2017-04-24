@@ -4,7 +4,7 @@ import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import CommonFuns from '../util/Util.jsx';
 import { Action } from '../constants/actionType/Energy.jsx';
 import { DataConverter } from '../util/Util.jsx';
-import Ajax from '../ajax/ajax.jsx';
+import Ajax from '../ajax/Ajax.jsx';
 
 let MultiTimespanAction = {
   initMultiTimespanData(relativeType, startDate, endDate) {

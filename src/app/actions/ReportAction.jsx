@@ -1,7 +1,7 @@
 'use strict';
 import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import { Action } from '../constants/actionType/Report.jsx';
-import Ajax from '../ajax/ajax.jsx';
+import Ajax from '../ajax/Ajax.jsx';
 import util from 'util/Util.jsx'
 import CustomForm from 'util/CustomForm.jsx'
 let ReportAction = {

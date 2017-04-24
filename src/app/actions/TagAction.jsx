@@ -3,7 +3,7 @@
 import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 
 import Tag from '../constants/actionType/Tag.jsx';
-import Ajax from '../ajax/ajax.jsx';
+import Ajax from '../ajax/Ajax.jsx';
 
 var Action = Tag.Action;
 

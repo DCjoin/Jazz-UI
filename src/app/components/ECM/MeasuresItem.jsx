@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Config from 'config';
 import Checkbox from 'material-ui/Checkbox';
 import FontIcon from 'material-ui/FontIcon';
-import CommonFuns from 'util/util.jsx';
+import CommonFuns from 'util/Util.jsx';
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
 import BubbleIcon from '../BubbleIcon.jsx';
 function getUrl(url) {

@@ -1,7 +1,7 @@
 'use strict';
 import React, {Component,PropTypes} from 'react';
 import {Type,DataStatus} from 'constants/actionType/KPI.jsx';
-import Immutable from 'Immutable';
+import Immutable from 'immutable';
 import Prediction from './Prediction.jsx';
 import SingleKPIAction from 'actions/KPI/SingleKPIAction.jsx';
 import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx';

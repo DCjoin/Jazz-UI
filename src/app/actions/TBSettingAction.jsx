@@ -3,7 +3,7 @@
 import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 
 import TBSetting from '../constants/actionType/TBSetting.jsx';
-import Ajax from '../ajax/ajax.jsx';
+import Ajax from '../ajax/Ajax.jsx';
 
 var Action = TBSetting.Action;
 

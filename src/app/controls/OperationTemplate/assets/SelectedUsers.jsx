@@ -1,6 +1,6 @@
 'use strict';
 import React from "react";
-import ReactDom from 'React-dom';
+import ReactDom from 'react-dom';
 import { Navigation, State } from 'react-router';
 import { FontIcon } from 'material-ui';
 import AllUser from './AllUsers.jsx';

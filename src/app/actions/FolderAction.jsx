@@ -2,7 +2,7 @@
 import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import { Action } from '../constants/actionType/Folder.jsx';
 import GlobalErrorMessageAction from '../actions/GlobalErrorMessageAction.jsx';
-import Ajax from '../ajax/ajax.jsx';
+import Ajax from '../ajax/Ajax.jsx';
 import Immutable from 'immutable';
 let FolderAction = {
   getFolderTreeByHierarchyId(hierarchyId, isNew = false) {

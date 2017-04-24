@@ -1,6 +1,6 @@
 'use strict';
 import React, {Component,PropTypes} from 'react';
-import Immutable from 'Immutable';
+import Immutable from 'immutable';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 import TitleComponent from 'controls/TitleComponent.jsx';

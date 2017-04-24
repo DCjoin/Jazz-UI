@@ -1,7 +1,7 @@
 'use strict';
 import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import {Action} from '../constants/actionType/Setting.jsx';
-import Ajax from '../ajax/ajax.jsx';
+import Ajax from '../ajax/Ajax.jsx';
 
 let AlarmSettingAction = {
   loadData(tbId){

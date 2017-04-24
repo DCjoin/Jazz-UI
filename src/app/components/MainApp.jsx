@@ -15,7 +15,7 @@ import PermissionCode from 'constants/PermissionCode.jsx';
 import CookieUtil from 'util/cookieUtil.jsx';
 import util, { getCookie } from 'util/Util.jsx';
 import RoutePath from 'util/RoutePath.jsx';
-import PrivilegeUtil from 'util/PrivilegeUtil.jsx';
+import PrivilegeUtil from 'util/privilegeUtil.jsx';
 
 import NetworkChecker from 'controls/NetworkChecker.jsx';
 import CusFlatButton from 'controls/FlatButton.jsx';
