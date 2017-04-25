@@ -87,6 +87,7 @@
   },
   "dependencies": {
     "classnames": "2.1.1",
+    "create-react-class": "^15.5.2",
     "events": "1.0.2",
     "flux": "3.1.0",
     "immutable": "3.7.2",
@@ -96,6 +97,7 @@
     "moment": "2.10.6",
     "numeral": "1.5.3",
     "object-assign": "2.0.0",
+    "prop-types": "^15.5.8",
     "react": "15.5.0",
     "react-addons-css-transition-group": "15.5.0",
     "react-dom": "15.5.0",
