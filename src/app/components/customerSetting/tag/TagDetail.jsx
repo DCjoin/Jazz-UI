@@ -11,7 +11,7 @@ import FlatButton from '../../../controls/FlatButton.jsx';
 import PTagBasic from './PTagBasic.jsx';
 import VTagBasic from './VTagBasic.jsx';
 import TagFormula from './TagFormula.jsx';
-import PTagRawData from './PtagRawData.jsx';
+import PTagRawData from './PTagRawData.jsx';
 
 var TagDetail = React.createClass({
   propTypes: {

@@ -5,7 +5,7 @@ import { CircularProgress } from 'material-ui';
 import Item from '../../../controls/SelectableItem.jsx';
 import SelectablePanel from '../../../controls/SelectablePanel.jsx';
 import LabelAction from '../../../actions/customerSetting/LabelAction.jsx';
-import LabelStore from '../../../stores/customerSetting/LabelStore.jsx';
+import LabelStore from '../../../stores/customerSetting/labelStore.jsx';
 import { formStatus } from '../../../constants/FormStatus.jsx';
 import LabelDetail from './LabelDetail.jsx';
 import Immutable from 'immutable';
