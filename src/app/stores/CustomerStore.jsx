@@ -2,7 +2,7 @@ import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import PrototypeStore from './PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
-import _isEmpty from 'lodash/lang/isEmpty';
+import _isEmpty from 'lodash/isEmpty';
 import { List, updater, update, Map } from 'immutable';
 import { dataStatus } from '../constants/DataStatus.jsx';
 import Customer from '../constants/actionType/Customer.jsx';

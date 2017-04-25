@@ -3,7 +3,7 @@ import React from "react";
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
 import CommonFuns from '../../util/Util.jsx';
 import { CircularProgress, Paper } from 'material-ui';
-import _escape from 'lodash/string/escape';
+import _escape from 'lodash/escape';
 import Immutable from 'immutable';
 import DatePicker from './DatePicker.jsx';
 import MapAction from '../../actions/MapAction.jsx';

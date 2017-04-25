@@ -5,7 +5,7 @@ import CommonFuns from '../util/Util.jsx';
 import Map from '../constants/actionType/Map.jsx';
 import CurrentUser from '../constants/actionType/CurrentUser.jsx';
 import Language from '../constants/actionType/Language.jsx';
-import _get from 'lodash/object/get';
+import _get from 'lodash/get';
 var _ = {
   get: _get
 };

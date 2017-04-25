@@ -8,13 +8,11 @@ module.exports = function(options) {
   var modulePath = "node_modules";
   var appRoot = path.join(__dirname, "src", "app");
   var entry = {
-    main: path.join(appRoot, "app.jsx"),
+    bundle: path.join(appRoot, "app.jsx"),
+    // vendors: ['react']
     vendors: "./reference.jsx"
   };
 
-  var additionalLoaders = [
-    // { test: /some-reg-exp$/, loader: "any-loader" }
-  ];
   var alias = {
     config: path.join(__dirname, "src/app/config/" + options.env + ".jsx"),
     actions: path.join(__dirname, "src/app/actions/"),
@@ -23,6 +21,7 @@ module.exports = function(options) {
     util: path.join(__dirname, "src/app/util/"),
     constants: path.join(__dirname, "src/app/constants/"),
     components: path.join(__dirname, "src/app/components/"),
+    decorator: path.join(__dirname, "src/app/decorator/"),
   };
   var aliasLoader = {
 
@@ -32,11 +31,12 @@ module.exports = function(options) {
 
   var publicPath = options.devServer ?
     "http://localhost:3000/build/" :
-    "/webapihost/assets/"; //"./";
+    "/webapihost/assets/"; 
   var output = {
     path: path.join(__dirname, "build", "assets"),
     publicPath: publicPath,
-    filename: "bundle.js" + (options.publish ? "?[chunkhash]" : ""),
+    filename: "[name].js" + (options.publish ? "?[chunkhash]" : ""),
+    // filename: "bundle.js" + (options.publish ? "?[chunkhash]" : ""),
     chunkFilename: (options.devServer ? "[id].js" : "[name].js") + (options.publish ? "?[chunkhash]" : ""),
     //sourceMapFilename: "debugging/[file].map",
     pathinfo: options.debug
@@ -86,64 +86,81 @@ module.exports = function(options) {
 
       }
     },
-    new webpack.PrefetchPlugin("react"),
-    new webpack.PrefetchPlugin("react/lib/ReactComponentBrowserEnvironment")
+    new webpack.PrefetchPlugin("react")
   ];
-
-
-  plugins.push(new webpack.optimize.CommonsChunkPlugin("vendors", "vendors.js" + (options.publish ? "?[chunkhash]" : "")));
-  //plugins.push(new webpack.optimize.CommonsChunkPlugin("zhCn","zh-cn.js"+(options.publish?"?[chunkhash]":"")));
-  //plugins.push(new webpack.optimize.CommonsChunkPlugin("enUs","en-us.js"+(options.publish?"?[chunkhash]":"")));
-
-
-
-  plugins.push(new ExtractTextPlugin("main.css" + (options.publish ? "?[contenthash]" : "")));
+  plugins.push(new webpack.optimize.CommonsChunkPlugin({
+    name: "vendors", 
+    fiulename: "vendors.js" + (options.publish ? "?[chunkhash]" : "")
+  }));
+  plugins.push(new ExtractTextPlugin({
+    filename: "main.css" + (options.publish ? "?[contenthash]" : "")
+  }));
   plugins.push(extractLessModule.getWebpackPlugin());
-
   if (options.publish) {
     plugins.push(
       new webpack.optimize.UglifyJsPlugin(),
-      new webpack.optimize.DedupePlugin(),
       new webpack.DefinePlugin({
         "process.env": {
           NODE_ENV: JSON.stringify("production")
         }
       })
     );
-
-
-
+  } else {
+    plugins.push(
+      new webpack.LoaderOptionsPlugin({
+        debug: true
+      })
+    );
   }
 
   return {
     entry: entry,
     output: output,
     module: {
-      loaders: [
+      rules: [
         {
           test: /\.jsx?$/,
-          loaders: ["react-hot-loader", "babel-loader"],
+          use: ["react-hot-loader", "babel-loader"],
           exclude: /node_modules/
         },
         {
           test: /\.less$/,
-          loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader")
+          loaders: ExtractTextPlugin.extract({
+            fallback: "style-loader",
+            // use: 'css-loader?less-loader'
+            use: [
+              {
+                loader: "css-loader"
+              }, 
+              {
+                loader: "less-loader",
+                options: {
+                  plugins: [
+                    extractLessModule.getLessPlugin()
+                  ]
+                }
+              }],
+          }),
+          // loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader")
         },
         {
           test: /\.css$/,
-          loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+          loader: ExtractTextPlugin.extract({
+            fallback: "style-loader",
+            use: "css-loader",
+          }),
         },
         {
           test: /\.(png|jpg|gif)$/,
-          loader: 'file-loader?name=[name].[ext]'
+          use: 'file-loader?name=[name].[ext]'
         },
         {
           test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-          loader: "url-loader?name=[name].[ext]&limit=10000&minetype=application/font-woff"
+          use: "url-loader?name=[name].[ext]&limit=10000&minetype=application/font-woff"
         },
         {
           test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-          loader: "file-loader?name=[name].[ext]"
+          use: "file-loader?name=[name].[ext]"
         }
       ]
     },
@@ -151,7 +168,7 @@ module.exports = function(options) {
 			alias:alias
 		},
     devtool: options.devtool,
-    debug: options.debug,
+    // debug: options.debug,
     externals: externals,
     plugins: plugins,
     devServer: {
@@ -161,10 +178,10 @@ module.exports = function(options) {
       }
     },
 
-    lessLoader: {
-      lessPlugins: [
-        extractLessModule.getLessPlugin()
-      ]
-    }
+    // lessLoader: {
+    //   lessPlugins: [
+    //     extractLessModule.getLessPlugin()
+    //   ]
+    // }
   };
 };

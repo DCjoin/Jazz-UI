@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import classnames from 'classnames';
 import assign from 'object-assign';
-import {findLastIndex, fill, map} from 'lodash/array';
-import {find} from 'lodash/collection';
-import {sum} from 'lodash/math';
+import {findLastIndex, fill, map} from 'lodash';
+import {find} from 'lodash';
+import {sum} from 'lodash';
 import CircularProgress from 'material-ui/CircularProgress';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
@@ -31,8 +31,8 @@ import privilegeUtil from 'util/privilegeUtil.jsx';
 // import KPIReport from './KPIReport.jsx';
 import CustomerChartPanel from './CustomerChartPanel.jsx';
 import BuildingChartPanel from './BuildingChartPanel.jsx';
-import CreateKPI from './single/KPI.jsx';
-import UpdatePrediction from './single/UpdatePrediction.jsx';
+import CreateKPI from './Single/KPI.jsx';
+import UpdatePrediction from './Single/UpdatePrediction.jsx';
 
 import minHeightHOC from '../../decorator/minHeightHOC.jsx';
 

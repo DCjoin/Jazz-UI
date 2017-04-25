@@ -16,7 +16,7 @@ import {
   findLastIndex,
   last,
   first
-} from 'lodash/array';
+} from 'lodash';
 import {
   DataStatus,
   Type

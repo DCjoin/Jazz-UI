@@ -14,8 +14,8 @@ import FlatButton from '../../../controls/FlatButton.jsx';
 import UserAction from '../../../actions/UserAction.jsx';
 import UserStore from '../../../stores/UserStore.jsx';
 
-import _isObject from "lodash/lang/isObject";
-import _get from 'lodash/object/get';
+import _isObject from "lodash/isObject";
+import _get from 'lodash/get';
 
 var _ = {
   isObject: _isObject,

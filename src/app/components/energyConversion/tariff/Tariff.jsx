@@ -1,13 +1,13 @@
 'use strict';
 
 import React from "react";
-import { isFunction } from "lodash/lang";
+import { isFunction } from "lodash";
 import TariffList from './TariffList.jsx';
 import TariffDetail from './TariffDetail.jsx';
 import { formStatus } from '../../../constants/FormStatus.jsx';
 import { CircularProgress } from 'material-ui';
 import TariffAction from '../../../actions/energyConversion/TariffAction.jsx';
-import TariffStore from '../../../stores/EnergyConversion/TariffStore.jsx';
+import TariffStore from '../../../stores/energyConversion/TariffStore.jsx';
 import NewDialog from '../../../controls/NewDialog.jsx';
 
 var Tariff = React.createClass({

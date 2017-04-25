@@ -13,13 +13,13 @@ import LanguageAction from '../actions/LanguageAction.jsx';
 import ViewableTextField from '../controls/ViewableTextField.jsx';
 import Regex from '../constants/Regex.jsx';
 import CurrentUserAction from '../actions/CurrentUserAction.jsx';
-import _trimRight from 'lodash/string/trimRight';
+import _trimEnd from 'lodash/trimEnd';
 import _lang from '../lang/lang.jsx';
 
 import RoutePath from '../util/RoutePath.jsx';
 
 var _ = {
-  trimRight: _trimRight
+  trimEnd: _trimEnd
 };
 
 const MAX_LENGTH = 200;
@@ -120,7 +120,7 @@ let Login = React.createClass({
       return false;
     }
     LoginActionCreator.login({
-      userName: _.trimRight(username),
+      userName: _.trimEnd(username),
       password: password
     });
   },

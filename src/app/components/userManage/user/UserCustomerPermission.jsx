@@ -12,13 +12,13 @@ import Loading from './Loading.jsx';
 import HierarchyTree from '../../../controls/tree/Tree.jsx';
 
 import UserStore from '../../../stores/UserStore.jsx';
-import _forEach from 'lodash/collection/forEach';
-import _find from 'lodash/collection/find';
-import _filter from 'lodash/collection/filter';
-import _isEmpty from 'lodash/lang/isEmpty';
-import _isArray from 'lodash/lang/isArray';
-import _isFunction from 'lodash/lang/isFunction';
-import _remove from 'lodash/array/remove';
+import _forEach from 'lodash/forEach';
+import _find from 'lodash/find';
+import _filter from 'lodash/filter';
+import _isEmpty from 'lodash/isEmpty';
+import _isArray from 'lodash/isArray';
+import _isFunction from 'lodash/isFunction';
+import _remove from 'lodash/remove';
 
 var _ = {
   forEach: _forEach,

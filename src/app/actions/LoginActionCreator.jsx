@@ -4,7 +4,7 @@
 import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import LoginActionType from '../constants/actionType/Login.jsx';
 
-import Ajax from '../ajax/ajax.jsx';
+import Ajax from '../ajax/Ajax.jsx';
 
 let { Action } = LoginActionType;
 

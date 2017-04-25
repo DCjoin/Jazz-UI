@@ -2,40 +2,36 @@
 
 import React from "react";
 import {FlatButton, FontIcon, SelectField, Checkbox, CircularProgress} from 'material-ui';
-import Immutable from 'Immutable';
+import Immutable from 'immutable';
 import classnames from "classnames";
 
-
-import Regex from '../../../constants/Regex.jsx';
+import Regex from 'constants/Regex.jsx';
+import PermissionCode from 'constants/PermissionCode.jsx';
+import { formStatus } from 'constants/FormStatus.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
 
-import ViewableTextField from '../../../controls/ViewableTextField.jsx';
-
-import ViewableDropDownMenu from '../../../controls/ViewableDropDownMenu.jsx';
-
-//import PermissionPanel from './PermissionPanel.jsx';
-import PermissionCode from '../../../constants/PermissionCode.jsx';
+import ViewableTextField from 'controls/ViewableTextField.jsx';
+import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
+import OrigamiPanel from 'controls/OrigamiPanel.jsx';
+import FormBottomBar from 'controls/FormBottomBar.jsx';
+import NewDialog from 'controls/NewDialog.jsx';
+import SideNav from 'controls/SideNav.jsx';
+import Panel from 'controls/MainContentPanel.jsx';
+import ImageUpload from 'controls/ImageUpload.jsx';
 
 import Loading from './Loading.jsx';
-import OrigamiPanel from '../../../controls/OrigamiPanel.jsx';
-import FormBottomBar from '../../../controls/FormBottomBar.jsx';
-import NewDialog from '../../../controls/NewDialog.jsx';
 import UserCustomerPermission from './UserCustomerPermission.jsx';
 
-import { formStatus } from '../../../constants/FormStatus.jsx';
-
-import UserAction from '../../../actions/UserAction.jsx';
-import UserStore from '../../../stores/UserStore.jsx';
-import CurrentUserStore from '../../../stores/CurrentUserStore.jsx';
-import SideNav from '../../../controls/SideNav.jsx';
-import Panel from '../../../controls/MainContentPanel.jsx';
+import UserAction from 'actions/UserAction.jsx';
+import UserStore from 'stores/UserStore.jsx';
+import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 
 
-import _isFunction from "lodash/lang/isFunction";
-import _isNumber from "lodash/lang/isNumber";
-import _trim from 'lodash/string/trim';
-import find from 'lodash/collection/find';
-import curry from 'lodash/function/curry';
+import _isFunction from "lodash/isFunction";
+import _isNumber from "lodash/isNumber";
+import _trim from 'lodash/trim';
+import find from 'lodash/find';
+import curry from 'lodash/curry';
 
 var _ = {
   isFunction: _isFunction,
@@ -246,6 +242,25 @@ var UserDetail = React.createClass({
           });
         }
       },
+      imageProps = {
+        clip: false,
+        background: 'customer-background-logo',
+        // imageId: customer.get('LogoId'),
+        imageSource: {
+          // hierarchyId: customer.get('Id')
+        },
+        isViewState: isView,
+        updateTips: '上传头像推荐比例4:3',
+        // imageDidChanged: value => {
+        //   CustomerAction.merge({
+        //     value: value.logoId,
+        //     path: "LogoId"
+        //   })
+        // },
+        wrapperWidth: 120,
+        wrapperHeight: 160,
+        // uploadUrl: 'LogoUpload.aspx'
+      },
       userEmailProps = {
         key: 'email_' + isView,
         isViewStatus: isView,
@@ -300,26 +315,10 @@ var UserDetail = React.createClass({
             <div onClick={that._showRoleSideNav}>{I18N.Platform.User.ShowFuncAuth}</div>
           </div>
         </div>
-
-{/*				<div className="pop-user-detail-content-item pop-user-detail-user-type">
-					<div className="info-title">{I18N.Platform.User.Role}</div>
-					<div className="info-value">
-						{isView || isSuperAdmin ?
-        <div>{isSuperAdmin ? I18N.Platform.User.ServerManager : that.props.user.get("UserTypeName")}</div>
-        :<SelectField className="jazz-user-pop-viewableSelectField-ddm" onChange={(event, key, obj) => {
-                  UserAction.mergeUser({
-                    value: obj.id,
-                    path: "UserType"
-                  });
-                  UserAction.mergeUser({
-                    value: obj.text,
-                    path: "UserTypeName"
-                  });
-                }} ref="pop_user_detail_role" selectedIndex={roleSelectedIndex} menuItems={roleItems.toJS()} />
-      }
-						<div onClick={that._showRoleSideNav}>{I18N.Platform.User.ShowFuncAuth}</div>
-					</div>
-				</div>*/}
+      <div className="pop-user-detail-content-item">
+        <div className="info-title">{'头像'}</div>
+        <ImageUpload {...imageProps}/>
+      </div>
 
 			{isSuperAdmin ? null : <div className="pop-user-detail-content-item">
 					<ViewableTextField {...userTelephoneProps}/>

@@ -4,7 +4,7 @@ import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import CommonFuns from '../util/Util.jsx';
 import ActionTypes from '../constants/actionType/Carbon.jsx';
 import { DataConverter } from '../util/Util.jsx';
-import Ajax from '../ajax/ajax.jsx';
+import Ajax from '../ajax/Ajax.jsx';
 
 let CarbonAction = {
   //for select tags from taglist and click search button.

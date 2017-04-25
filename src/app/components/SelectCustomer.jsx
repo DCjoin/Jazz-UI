@@ -3,7 +3,7 @@
 import React from 'react';
 import { Navigation, State } from 'react-router';
 import classNames from 'classnames';
-import _findIndex from 'lodash/array/findIndex';
+import _findIndex from 'lodash/findIndex';
 import assign from 'object-assign';
 
 import BackgroudImage from '../controls/BackgroundImage.jsx';

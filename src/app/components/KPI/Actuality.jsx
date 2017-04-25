@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import CircularProgress from 'material-ui/CircularProgress';
 import IconButton from 'material-ui/IconButton';
-import {find} from 'lodash/collection';
+import {find} from 'lodash';
 
 import ReduxDecorator from '../../decorator/ReduxDecorator.jsx';
 

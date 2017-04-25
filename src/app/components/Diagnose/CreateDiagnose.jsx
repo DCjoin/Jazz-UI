@@ -15,8 +15,8 @@ import ActionVisibilityOff from 'material-ui/svg-icons/action/visibility-off';
 import moment from 'moment';
 import Immutable from 'immutable';
 import classnames from 'classnames';
-import { curry } from 'lodash/function';
-import { divide } from 'lodash/math';
+import { curry } from 'lodash';
+import { divide } from 'lodash';
 import _ from 'lodash';
 
 import TimeGranularity from 'constants/TimeGranularity.jsx';

@@ -1,4 +1,4 @@
-import flatten from 'lodash/array/flatten';
+import flatten from 'lodash/flatten';
 import util from 'util/Util.jsx';
 
 function flattenStoresListeners(stores) {

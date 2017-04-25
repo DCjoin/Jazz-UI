@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import {find} from 'lodash/collection';
+import {find} from 'lodash';
 import IconButton from 'material-ui/IconButton';
 
 import PermissionCode from 'constants/PermissionCode.jsx';

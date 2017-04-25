@@ -1,7 +1,7 @@
 'use strict';
 import AppDispatcher from '../../dispatcher/AppDispatcher.jsx';
 import { Action } from '../../constants/actionType/hierarchySetting/Hierarchy.jsx';
-import Ajax from '../../ajax/ajax.jsx';
+import Ajax from '../../ajax/Ajax.jsx';
 import HierarchyStore from '../../stores/hierarchySetting/HierarchyStore.jsx';
 import CommonFuns from '../../util/Util.jsx';
 import Immutable from 'immutable';

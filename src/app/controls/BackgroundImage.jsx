@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import _assign from 'lodash/object/assign';
+import _assign from 'lodash/assign';
 
 import Config from 'config';
 

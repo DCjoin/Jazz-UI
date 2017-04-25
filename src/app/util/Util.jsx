@@ -1,10 +1,10 @@
 'use strict';
 import Momment from 'moment';
 import Immutable from 'immutable';
-import _every from 'lodash/collection/every';
-import _forEach from 'lodash/collection/forEach';
-import _isArray from 'lodash/lang/isArray';
-import _isPlainObject from 'lodash/lang/isPlainObject';
+import _every from 'lodash/every';
+import _forEach from 'lodash/forEach';
+import _isArray from 'lodash/isArray';
+import _isPlainObject from 'lodash/isPlainObject';
 var _ = {
   every: _every,
   forEach: _forEach,

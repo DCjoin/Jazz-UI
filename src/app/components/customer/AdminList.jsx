@@ -15,9 +15,9 @@ import Immutable from 'immutable';
 //   FlatButton
 // } = mui;
 
-import _forIn from 'lodash/object/forIn';
-import _isEmpty from 'lodash/lang/isEmpty';
-import _trim from 'lodash/string/trim';
+import _forIn from 'lodash/forIn';
+import _isEmpty from 'lodash/isEmpty';
+import _trim from 'lodash/trim';
 var _ = {
   forIn: _forIn,
   isEmpty: _isEmpty,
