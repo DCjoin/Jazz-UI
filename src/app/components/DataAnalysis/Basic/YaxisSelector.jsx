@@ -5,6 +5,7 @@ import NewDialog from 'controls/NewDialog.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
 import MenuItem from 'material-ui/MenuItem';
 import CommonFuns from 'util/Util.jsx';
+import _ from 'lodash';
 
 let {isNumeric} = CommonFuns;
 
@@ -368,11 +369,11 @@ var YaxisDialog = React.createClass({
 
 var MaxMinPair = React.createClass({
   getInitialState() {
-    let maxValue = null,
-      minValue = null;
+    let maxValue = '',
+      minValue = '';
     if (this.props.defaultValues) {
-      maxValue = this.props.defaultValues[0];
-      minValue = this.props.defaultValues[1];
+      maxValue = this.props.defaultValues[0] || '';
+      minValue = this.props.defaultValues[1] || '';
     }
     return {
       maxValue: maxValue,
@@ -401,14 +402,16 @@ var MaxMinPair = React.createClass({
     //this.refs[this.props.uom + '_max'].setErrorText();
     this.setState({
       maxValue: e.currentTarget.value,
-      maxError:''
+      maxError:'',
+      minValue:this.state.minValue?this.state.minValue:e.currentTarget.value,
     });
   },
   _onMinFieldChange(e) {
     //this.refs[this.props.uom + '_min'].setErrorText();
     this.setState({
       minValue: e.currentTarget.value,
-      minError:''
+      minError:'',
+      maxValue:this.state.maxValue?this.state.maxValue:e.currentTarget.value,
     });
   }
 });

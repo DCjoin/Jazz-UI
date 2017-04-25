@@ -30,6 +30,7 @@ export default class DiagnoseList extends Component {
 					this._onChanged = this._onChanged.bind(this);
           this._onDelete = this._onDelete.bind(this);
           this._onResume = this._onResume.bind(this);
+          this._onUpdate = this._onUpdate.bind(this);
   		}
 
   state={
@@ -42,6 +43,15 @@ export default class DiagnoseList extends Component {
 			chartData:DiagnoseStore.getDiagnoseChartData()
 		})
 	}
+
+  _onUpdate(){
+    this.setState({
+      chartData:null
+    },()=>{
+      DiagnoseAction.clearDiagnoseChartData();
+      DiagnoseAction.getdiagnosedata(this.props.selectedNode.get('Id'));
+    })
+  }
 
   _onTitleMenuSelect(e, item) {
   		this.setState({
@@ -163,6 +173,7 @@ export default class DiagnoseList extends Component {
 
 	componentDidMount(){
 		DiagnoseStore.addChangeListener(this._onChanged);
+    DiagnoseStore.addUpdateDiagnoseListener(this._onUpdate);
 		DiagnoseAction.getdiagnosedata(this.props.selectedNode.get('Id'));
 	}
 
@@ -172,12 +183,13 @@ export default class DiagnoseList extends Component {
         chartData:null
       },()=>{
         DiagnoseAction.getdiagnosedata(nextProps.selectedNode.get('Id'));
-      })      
+      })
     }
   }
 
 	componentWillUnmount(){
 		DiagnoseStore.removeChangeListener(this._onChanged);
+    DiagnoseStore.removeUpdateDiagnoseListener(this._onUpdate);
 	}
 
   render(){
