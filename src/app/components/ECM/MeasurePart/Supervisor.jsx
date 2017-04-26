@@ -13,6 +13,7 @@ import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
 import _ from 'lodash';
 import NewDialog from 'controls/NewDialog.jsx';
 import MeasuresAction from 'actions/ECM/MeasuresAction.jsx';
+import RaisedButton from 'material-ui/RaisedButton';
 
 class SupervisorDialog extends Component{
 
@@ -152,12 +153,59 @@ class SupervisorDropDownMenu extends Component{
 
   constructor(props, ctx) {
     super(props);
+    this._onDelete=this._onDelete.bind(this);
   }
 
   state={
     operationMenuOpen:false,
     anchorEl:null,
-    editDialogShow:false
+    editDialogShow:false,
+    deleteDialogShow:false
+  }
+
+  _onDelete(event){
+    this.setState({
+                    editPerson: null,
+                    deleteDialogShow:false
+                    })
+  }
+
+  _renderDeleteDialog(){
+    var styles={
+      content:{
+        padding:'30px',
+        display:'flex',
+        justifyContent:'center'
+      },
+      action:{
+        padding:'0 30px'
+      }
+    };
+    var {Name,PhoneNumber}=this.state.editPerson.toJS();
+    var content=I18N.format(I18N.Setting.ECM.DeleteSupervior,`${Name} ${PhoneNumber}`);
+    return(
+      <NewDialog
+        open={true}
+        actionsContainerStyle={styles.action}
+        overlayStyle={{zIndex:'1000'}}
+        contentStyle={styles.content}
+        actions={[
+            <RaisedButton
+              label={I18N.Common.Button.Delete}
+              onClick={this._onDelete} />,
+
+            <FlatButton
+              label={I18N.Common.Button.Cancel2}
+              onClick={(event) => {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            this.setState({
+                              editPerson: null,
+                              deleteDialogShow:false
+                              })}} />
+          ]}
+      ><div className="jazz-ecm-measure-viewabletext">{content}</div></NewDialog>
+    )
   }
 
   render(){
@@ -236,14 +284,25 @@ class SupervisorDropDownMenu extends Component{
                                             'selected':person && person.get('Id')===Id
                                           })} onClick={()=>{handleMenuItemClick(supervisor)}}>
                                                 <div className="name">{`${Name} ${PhoneNumber}`}</div>
-                                                <div className="edit" onClick={(e)=>{
-                                                    this.setState({
-                                                      editDialogShow:true,
-                                                      editPerson:Immutable.fromJS(supervisor),
-                                                      operationMenuOpen: false,
-                                                    });
-                                                    e.stopPropagation();
-                                                  }}>{I18N.Common.Button.Edit}</div>
+                                                <div className="operate">
+                                                  <span className="edit" onClick={(e)=>{
+                                                      this.setState({
+                                                        editDialogShow:true,
+                                                        editPerson:Immutable.fromJS(supervisor),
+                                                        operationMenuOpen: false,
+                                                      });
+                                                      e.stopPropagation();
+                                                    }}>{I18N.Common.Button.Edit}</span>
+                                                  <span className="delete" onClick={(e)=>{
+                                                        this.setState({
+                                                          deleteDialogShow:true,
+                                                          editPerson:Immutable.fromJS(supervisor),
+                                                          operationMenuOpen: false,
+                                                        });
+                                                        e.stopPropagation();
+                                                      }}>{I18N.Common.Button.Delete}</span>
+                                                </div>
+
                                               </div>
                                             )
                                           })
@@ -272,6 +331,7 @@ class SupervisorDropDownMenu extends Component{
                                                             })
                                                           }}
                                                           onSuperviorClick={this.props.onSuperviorClick}/>}
+         {this.state.deleteDialogShow && this._renderDeleteDialog()}
       </div>
     )
   }
