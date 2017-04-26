@@ -200,7 +200,7 @@ var UserDetail = React.createClass({
     //     text: title
     //   };
     // }),
-    var {Title, Telephone, Email, Comment, UserTypeName, UserPhoto = 'https://imgsa.baidu.com/baike/c0%3Dbaike180%2C5%2C5%2C180%2C60/sign=f4aff1d95b6034a83defb0d3aa7a2231/c83d70cf3bc79f3d95569ce8bda1cd11738b29b6.jpg'} = this.props.user.toJS(),
+    var {Title, Telephone, Email, Comment, UserTypeName, UserPhoto} = this.props.user.toJS(),
 
       userTitleProps = {
         isViewStatus: isView,
@@ -247,7 +247,7 @@ var UserDetail = React.createClass({
       },
       imageProps = {
         clip: true,
-        background: 'customer-background-logo',
+        background: 'pop-user-photo-logo',
         clipMode: '100% 100%',
         imageUrl: Regex.UrlRule.test(UserPhoto) ? `url(${UserPhoto})` : 
           `url(data:image/png;base64,${UserPhoto})`,
@@ -314,8 +314,12 @@ var UserDetail = React.createClass({
             <div onClick={that._showRoleSideNav}>{I18N.Platform.User.ShowFuncAuth}</div>
           </div>
         </div>
-      {isConsultantStr(UserTypeName) && <div className="pop-user-detail-content-item">
-        <div className="info-title">{'头像'}</div>
+      {isConsultantStr(UserTypeName) && !(isView && !UserPhoto) && <div className="pop-user-detail-content-item">
+        <div className="info-title" style={{
+            fontSize: 14,
+            color: '#abafae',
+            marginBottom: 10,
+          }}>{'头像'}</div>
         <ImageUpload {...imageProps}/>
       </div>}
 
