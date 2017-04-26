@@ -390,3 +390,79 @@
   border: solid 1px #d7d7d7;
   border-radius: 2px;
 }
+
+.card-checkbox {
+  position: absolute;
+  top: -20px; 
+  left: 0;
+  display: none;
+
+  &:checked ~ .consultant-card-widgets {
+    transform: translateX(0);
+  }
+  &:checked ~ .card-overlay {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+.consultant-card-widgets {
+  position: fixed;
+  right: 0;
+  bottom: 30px;
+  transition: transform 0.32s ease 0s;
+  transform: translateX(100%);
+
+  & .card-overlay {
+    display: none;
+  }
+
+  & .card-icon {
+    position: absolute;
+    right: 100%;
+    height: 40px;
+    width: 40px;
+    background: #808080;
+    border-radius: 20px 0px 0px 20px;
+    text-align: center;
+    line-height: 40px;
+  }
+
+  & .card-info{
+    position: relative;
+    width: 350px;
+    display: flex;
+    border: 1px solid #000;
+    align-items: center;
+    padding: 20px 10px;
+
+    &-photo {
+      width: 120px;
+      height: 160px;
+      margin-right: 10px;
+      flex: none;
+    }
+
+    &-title {
+      color: #808080;
+      margin-bottom: 5px;
+    }
+
+    &-name {
+      font-size: 18px;
+      color: #000;
+      margin-right: 5px;
+    }
+
+    &-desc {
+      color: #808080;
+      margin-bottom: 5px;      
+    }
+
+    &-email {
+      color: #000;
+    }
+  }
+}

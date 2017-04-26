@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classnames from "classnames";
 import {CircularProgress, Snackbar} from 'material-ui';
+import find from 'lodash/find';
 import LabelList from './LabelList.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
@@ -10,10 +11,12 @@ import BubbleIcon from '../BubbleIcon.jsx';
 import Immutable from 'immutable';
 import LabelDetail from './LabelDetail.jsx';
 import CreateDiagnose from './CreateDiagnose.jsx';
+import ConsultantCard from './ConsultantCard.jsx';
 import DiagnoseStore from 'stores/DiagnoseStore.jsx';
 import {formStatus} from 'constants/FormStatus.jsx';
 import EditDiagnose from './EditDiagnose.jsx';
 import FolderStore from 'stores/FolderStore.jsx';
+import HierarchyStore from 'stores/HierarchyStore.jsx';
 import util from 'util/Util.jsx';
 import RoutePath from 'util/RoutePath.jsx';
 
@@ -251,6 +254,10 @@ render(){
               util.openTab(RoutePath.ecm(this.props.params)+'?init_hierarchy_id='+this.context.hierarchyId);
             }}
           />
+      <ConsultantCard
+        HierarchyName={(find(HierarchyStore.getBuildingList(), 
+            hier => hier.Id === this.context.hierarchyId)||{}).Name}
+      />
     </div>
   )
 }
