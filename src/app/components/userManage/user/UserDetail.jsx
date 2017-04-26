@@ -33,12 +33,15 @@ import _trim from 'lodash/trim';
 import find from 'lodash/find';
 import curry from 'lodash/curry';
 
+function isConsultantStr(str) {
+  return str === '咨询顾问' || str === 'Consultant';
+}
+
 var _ = {
   isFunction: _isFunction,
   isNumber: _isNumber,
   trim: _trim
 };
-
 
 var UserDetail = React.createClass({
 
@@ -197,7 +200,7 @@ var UserDetail = React.createClass({
     //     text: title
     //   };
     // }),
-    var {Title, Telephone, Email, Comment} = this.props.user.toJS(),
+    var {Title, Telephone, Email, Comment, UserTypeName, UserPhoto = 'https://imgsa.baidu.com/baike/c0%3Dbaike180%2C5%2C5%2C180%2C60/sign=f4aff1d95b6034a83defb0d3aa7a2231/c83d70cf3bc79f3d95569ce8bda1cd11738b29b6.jpg'} = this.props.user.toJS(),
 
       userTitleProps = {
         isViewStatus: isView,
@@ -222,7 +225,7 @@ var UserDetail = React.createClass({
         dataItems: roleItems.toJS(),
         didChanged: value => {
           UserAction.mergeUser({value: value ,path: "UserType"});
-          UserAction.mergeUser({value: find(roleItems,  item => item.id === value ).text ,path: "UserTypeName"})
+          UserAction.mergeUser({value: roleItems.find( item => item.get('id') === value ).get('text') ,path: "UserTypeName"})
         }
       },
       userTelephoneProps = {
@@ -243,23 +246,19 @@ var UserDetail = React.createClass({
         }
       },
       imageProps = {
-        clip: false,
+        clip: true,
         background: 'customer-background-logo',
-        // imageId: customer.get('LogoId'),
-        imageSource: {
-          // hierarchyId: customer.get('Id')
-        },
+        clipMode: '100% 100%',
+        imageUrl: Regex.UrlRule.test(UserPhoto) ? `url(${UserPhoto})` : 
+          `url(data:image/png;base64,${UserPhoto})`,
         isViewState: isView,
         updateTips: '上传头像推荐比例4:3',
-        // imageDidChanged: value => {
-        //   CustomerAction.merge({
-        //     value: value.logoId,
-        //     path: "LogoId"
-        //   })
-        // },
+        imageDidChanged: value => {
+          UserAction.mergeUser({value: value ,path: 'UserPhoto'});
+        },
         wrapperWidth: 120,
         wrapperHeight: 160,
-        // uploadUrl: 'LogoUpload.aspx'
+        uploadUrl: null
       },
       userEmailProps = {
         key: 'email_' + isView,
@@ -315,10 +314,10 @@ var UserDetail = React.createClass({
             <div onClick={that._showRoleSideNav}>{I18N.Platform.User.ShowFuncAuth}</div>
           </div>
         </div>
-      <div className="pop-user-detail-content-item">
+      {isConsultantStr(UserTypeName) && <div className="pop-user-detail-content-item">
         <div className="info-title">{'头像'}</div>
         <ImageUpload {...imageProps}/>
-      </div>
+      </div>}
 
 			{isSuperAdmin ? null : <div className="pop-user-detail-content-item">
 					<ViewableTextField {...userTelephoneProps}/>

@@ -6,7 +6,7 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import injectTapEventPlugin from "react-tap-event-plugin";
 
-import {Router, hashHistory} from 'react-router';
+import {Router, hashHistory, Route} from 'react-router';
 
 import assign from 'object-assign';
 //import * as polyfill from 'babel/polyfill';
@@ -75,7 +75,6 @@ import HierarchyLog from './components/hierarchySetting/importLog/HierarchyLog.j
 import './less/main.less';
 
 import Diagnose from './components/Diagnose/Diagnose.jsx';
-let {Route, DefaultRoute, Redirect, RouteHandler, Link, Navigation, State} = Router;
 
 
 window.currentUserId = getCookie('UserId');
@@ -120,6 +119,15 @@ function checkAuth({location, params, routes}, replaceState) {
     }) );
   }
 }
+/**
+ReactDom.render((<Router history={hashHistory}>
+  <Route path='/' onEnter={loadLanguage} >
+    <Route path=':lang' onEnter={checkAuth} component={JazzApp}>
+      <Route path='login' component={Login}></Route>
+    </Route>
+  </Route>
+</Router>), document.getElementById('emopapp'));/**/
+/**/
 ReactDom.render(<Router history={hashHistory} routes={{
   path: '/',
   onEnter: loadLanguage,
@@ -313,3 +321,4 @@ ReactDom.render(<Router history={hashHistory} routes={{
     }]
   }]
 }} />, document.getElementById('emopapp'));
+/**/
