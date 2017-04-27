@@ -69,6 +69,7 @@ export default class DataAnalysis extends Component {
     this._onDeleteNode = this._onDeleteNode.bind(this);
     this._onCopyItemSuccess = this._onCopyItemSuccess.bind(this);
     this._didDrag = this._didDrag.bind(this);
+    this._modifyFolderName = this._modifyFolderName.bind(this);
 
 		this._onSelectNode = this._onSelectNode.bind(this);
 		this._createFolderOrWidget = this._createFolderOrWidget.bind(this);
@@ -261,6 +262,10 @@ export default class DataAnalysis extends Component {
     this._onSelectedNodeChange();
   }
 
+	_modifyFolderName(newName) {
+		FolderAction.modifyFolderName(this.state.selectedNode, newName);
+	}
+
   _didDrag(targetNode, sourceNode, parentNode, isPre, collapsedId) {
     if (collapsedId) {
       let node = FolderStore.getNodeById(collapsedId);
@@ -336,10 +341,12 @@ export default class DataAnalysis extends Component {
             widgetDto: this.state.widgetDto.toJS(),
             isNew: !this.state.widgetDto.get('ChartType'),
 			onOpenGenerateSolution: this._onOpenGenerateSolution,
+			modifyFolderName: this._modifyFolderName,
           });
 				}
 			} else {
 				content = (<FolderPanel
+					modifyFolderName={this._modifyFolderName}
             		isBuilding={!this._isCustomer()}
 					onOpenGenerateSolution={this._onOpenGenerateSolution}
 					node={selectedNode}

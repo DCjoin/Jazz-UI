@@ -3,36 +3,41 @@ import React from "react";
 import Immutable from 'immutable';
 import assign from "object-assign";
 import { FontIcon, IconButton, DropDownMenu, Dialog, RaisedButton, CircularProgress, IconMenu, TextField } from 'material-ui';
-import CommonFuns from '../../util/Util.jsx';
+import MenuItem from 'material-ui/MenuItem';
 import classNames from 'classnames';
+
+import CommonFuns from 'util/Util.jsx';
+import { dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon } from 'util/Util.jsx';
+
+import OrigamiPanel from 'controls/OrigamiPanel.jsx';
+import EnergyDialog from 'controls/OperationTemplate/BlankDialog.jsx';
+import ExtendableMenuItem from 'controls/ExtendableMenuItem.jsx';
+import ViewableTextField from 'controls/ViewableTextField.jsx';
+
+import FolderAction from 'actions/FolderAction.jsx';
+import TBSettingAction from 'actions/TBSettingAction.jsx';
+import GlobalErrorMessageAction from 'actions/GlobalErrorMessageAction.jsx';
+import AlarmTagAction from 'actions/AlarmTagAction.jsx';
+
+import ConstStore from 'stores/ConstStore.jsx';
+import FolderStore from 'stores/FolderStore.jsx';
+import AlarmStore from 'stores/AlarmStore.jsx';
+import TagStore from 'stores/TagStore.jsx';
+import LabelStore from 'stores/LabelStore.jsx';
+import CostStore from 'stores/CostStore.jsx';
+import RankStore from 'stores/RankStore.jsx';
+import RatioStore from 'stores/RatioStore.jsx';
+import CarbonStore from 'stores/CarbonStore.jsx';
+import LabelMenuStore from 'stores/LabelMenuStore.jsx';
+import CurrentUserStore from 'stores/CurrentUserStore.jsx';
+import EnergyStore from 'stores/Energy/EnergyStore.jsx';
+import CommodityStore from 'stores/CommodityStore.jsx';
+import MultipleTimespanStore from 'stores/Energy/MultipleTimespanStore.jsx';
+
+import CalendarManager from './CalendarManager.jsx';
 import ChartStrategyFactor from './ChartStrategyFactor.jsx';
 import ChartMixins from './ChartMixins.jsx';
-import ConstStore from '../../stores/ConstStore.jsx';
-import FolderStore from '../../stores/FolderStore.jsx';
-import FolderAction from '../../actions/FolderAction.jsx';
-import AlarmStore from '../../stores/AlarmStore.jsx';
-import TagStore from '../../stores/TagStore.jsx';
-import LabelStore from '../../stores/LabelStore.jsx';
-import CostStore from '../../stores/CostStore.jsx';
-import RankStore from '../../stores/RankStore.jsx';
-import RatioStore from '../../stores/RatioStore.jsx';
-import CarbonStore from '../../stores/CarbonStore.jsx';
-import LabelMenuStore from '../../stores/LabelMenuStore.jsx';
-import CurrentUserStore from '../../stores/CurrentUserStore.jsx';
-import TBSettingAction from '../../actions/TBSettingAction.jsx';
-import EnergyStore from '../../stores/Energy/EnergyStore.jsx';
-import CommodityStore from '../../stores/CommodityStore.jsx';
 import ErrorStepDialog from '../alarm/ErrorStepDialog.jsx';
-import GlobalErrorMessageAction from '../../actions/GlobalErrorMessageAction.jsx';
-import MultipleTimespanStore from '../../stores/Energy/MultipleTimespanStore.jsx';
-import { dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon } from '../../util/Util.jsx';
-import CalendarManager from './CalendarManager.jsx';
-import ExtendableMenuItem from '../../controls/ExtendableMenuItem.jsx';
-import AlarmTagAction from '../../actions/AlarmTagAction.jsx';
-import OrigamiPanel from '../../controls/OrigamiPanel.jsx';
-import EnergyDialog from '../../controls/OperationTemplate/BlankDialog.jsx';
-import MenuItem from 'material-ui/MenuItem';
-//let MenuItem = require('material-ui/MenuItem');
 
 function currentUser() {
   return CurrentUserStore.getCurrentUser();
