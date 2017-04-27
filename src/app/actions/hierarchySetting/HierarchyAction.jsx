@@ -454,33 +454,33 @@ let HierarchyAction = {
       type: Action.RESET_ALL_FOR_HIERARCHY,
     });
   },
-  getConsultants: function(hierarchyId) {    
-    // setTimeout(() => {
-    //     AppDispatcher.dispatch({
-    //       type: Action.GET_CONSULTANTS,
-    //       data: [{
-    //         Id: 1,
-    //         RealName: '劳伦斯',
-    //         UserPhoto: 'http://img.idol001.com/origin/2017/04/10/805dcd0af2fab1c9d3f951f7d96aeb4e1491790409.jpg',
-    //         Telephone: 123456789,
-    //         Email: 'asdfa@adsf.coin'
-    //       }],
-    //     });  
-    // }, 1000);
+  getConsultants: function(hierarchyId) {
     AppDispatcher.dispatch({
       type: Action.GET_CONSULTANTS,
       data: null,
     });
-    Ajax.get(CommonFuns.replacePathParams(Path.Hierarchy.getConsultants, hierarchyId), {
-      avoidDuplicate: true,
-      tag: 'getConsultants',
-      success: res => {
+    // Ajax.get(CommonFuns.replacePathParams(Path.Hierarchy.getConsultants, hierarchyId), {
+    //   avoidDuplicate: true,
+    //   tag: 'getConsultants',
+    //   success: res => {
+    //     AppDispatcher.dispatch({
+    //       type: Action.GET_CONSULTANTS,
+    //       data: res,
+    //     });
+    //   }
+    // });
+    setTimeout(() => {
         AppDispatcher.dispatch({
           type: Action.GET_CONSULTANTS,
-          data: res,
-        });
-      }
-    });
+          data: [{
+            Id: 1,
+            RealName: '劳伦斯',
+            UserPhoto: 'http://img.idol001.com/origin/2017/04/10/805dcd0af2fab1c9d3f951f7d96aeb4e1491790409.jpg',
+            Telephone: 123456789,
+            Email: 'asdfa@adsf.coin'
+          }],
+        });  
+    }, 1000);
   }
 };
 
