@@ -53,7 +53,7 @@ export default class RankHistory extends Component {
     }
     else {
       return CommonFuns.getLabelData(value)
-    }    
+    }
   }
 
   _renderTable(){
@@ -97,10 +97,10 @@ export default class RankHistory extends Component {
   }
 
   componentDidMount(){
-    let {rankType,groupKpiId,buildingId}=this.props,
+    let {rankType,groupKpiId,buildingId,year}=this.props,
         customerId=parseInt(this.context.router.params.customerId);
     RankingKPIStore.addChangeListener(this._onChange);
-    RankingKPIAction.getRankRecord(customerId,groupKpiId,rankType,buildingId);
+    RankingKPIAction.getRankRecord(customerId,groupKpiId,rankType,buildingId,year);
   }
 
   componentWillUnmount(){
@@ -136,6 +136,7 @@ RankHistory.propTypes={
   buildingId:React.PropTypes.number,
   onClose:React.PropTypes.func,
   uomLabel:React.PropTypes.string,
+  year:React.PropTypes.number,
 }
 
 // RankHistory.defaultProps = {
