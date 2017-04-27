@@ -1952,6 +1952,7 @@ I18N.Setting.Building.HierarchyNodeCostProperties = 'Cost';
 I18N.Setting.Building.HierarchyNodePopulationNAreaProperties = 'Population & Area';
 I18N.Setting.Building.Industry = 'Industry involved';
 I18N.Setting.Building.Zone = 'Zone of climate';
+I18N.Setting.Building.Consultant = 'Consultant';
 I18N.Setting.Building.PTagCount = 'Physical Tag No.';
 I18N.Setting.Building.VTagCount = 'Virtual Tag No.';
 I18N.Setting.Building.AddImage = 'Please add building picture';

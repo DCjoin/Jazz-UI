@@ -2,14 +2,14 @@
 
 import React from "react";
 import Immutable from 'immutable';
-import HierarchyStore from '../../stores/hierarchySetting/HierarchyStore.jsx';
-import HierarchyAction from '../../actions/hierarchySetting/HierarchyAction.jsx';
+import HierarchyStore from 'stores/hierarchySetting/HierarchyStore.jsx';
+import HierarchyAction from 'actions/hierarchySetting/HierarchyAction.jsx';
 import HierarchyList from './HierarchyList.jsx';
-import { formStatus } from '../../constants/FormStatus.jsx';
-import { dataStatus } from '../../constants/DataStatus.jsx';
+import { formStatus } from 'constants/FormStatus.jsx';
+import { dataStatus } from 'constants/DataStatus.jsx';
 import { CircularProgress } from 'material-ui';
 import { Map, List } from 'immutable';
-import Dialog from '../../controls/NewDialog.jsx';
+import Dialog from 'controls/NewDialog.jsx';
 import Customer from './CustomerForHierarchy.jsx';
 import Organization from './Organization/Organization.jsx';
 import Building from './Building/Building.jsx';
@@ -75,6 +75,11 @@ var Hierarchy = React.createClass({
     };
     document.body.appendChild(iframe);
   },
+  _getConsultants: function(hierarchyId, type) {
+    if( type === 2 ) {
+      HierarchyAction.getConsultants(hierarchyId);
+    }
+  },
   _setViewStatus: function(selectedNode = this.state.selectedNode, infoNo = this.state.infoTabNo) {
     // if (!selectedId) {
     //   id = this.state.tariffs.getIn([0, "Id"]);
@@ -83,6 +88,7 @@ var Hierarchy = React.createClass({
     // if (this.state.selectedId !== selectedId) {
     //   infoTab = true;
     // }
+    this._getConsultants(selectedNode.get('Id'), selectedNode.get('Type'));
     this.setState({
       formStatus: formStatus.VIEW,
       selectedNode: selectedNode,
@@ -95,6 +101,7 @@ var Hierarchy = React.createClass({
     if (HierarchyDetail) {
       HierarchyDetail._clearErrorText();
     }
+    this._getConsultants(this.state.selectedNode.get('CustomerId'), newType);
     this.setState({
       infoTabNo: 1,
       formStatus: formStatus.ADD,
@@ -304,7 +311,17 @@ var Hierarchy = React.createClass({
         break;
       case 2:
         detailProps.ref = 'jazz_hierarchy_building_detail';
-        detail = <Building {...detailProps}/>;
+        let consultants = HierarchyStore.getConsultants();
+        detail = consultants ? <Building {...detailProps} consultants={consultants}/>: 
+
+          <div style={{
+            display: 'flex',
+            flex: 1,
+            'alignItems': 'center',
+            'justifyContent': 'center'
+          }}>
+            <CircularProgress  mode="indeterminate" size={80} />
+          </div>;
         break;
       case 101:
         detailProps.ref = 'jazz_hierarchy_dim_detail';

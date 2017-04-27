@@ -180,6 +180,7 @@ export default class Diagnose extends Component {
     FolderStore.addSolutionCreatedListener(this._onShowSolutionSnakBar);
     DiagnoseStore.addChangeListener(this._onChanged);
     this.getProblem(this.context.hierarchyId);
+    DiagnoseAction.getConsultant(this.context.hierarchyId);
   }
 
   componentWillReceiveProps(nextProps, nextCtx) {
@@ -190,6 +191,7 @@ export default class Diagnose extends Component {
     }
     if(nextCtx.hierarchyId!==this.context.hierarchyId){
       this.getProblem(nextCtx.hierarchyId);
+      DiagnoseAction.getConsultant(nextCtx.hierarchyId);
     }
   }
 
@@ -254,10 +256,11 @@ render(){
               util.openTab(RoutePath.ecm(this.props.params)+'?init_hierarchy_id='+this.context.hierarchyId);
             }}
           />
-      <ConsultantCard
+      {DiagnoseStore.getConsultant() && <ConsultantCard
+        {...DiagnoseStore.getConsultant()}
         HierarchyName={(find(HierarchyStore.getBuildingList(), 
             hier => hier.Id === this.context.hierarchyId)||{}).Name}
-      />
+      />}
     </div>
   )
 }

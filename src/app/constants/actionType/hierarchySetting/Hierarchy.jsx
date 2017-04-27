@@ -25,7 +25,8 @@ module.exports = {
     SET_ENERGY_CONSUMPTION: null,
     GET_COST_BY_HIERARCHY: null,
     SAVE_COST_BY_HIERARCHY_SUCCESS: null,
-    RESET_ALL_FOR_HIERARCHY: null
+    RESET_ALL_FOR_HIERARCHY: null,
+    GET_CONSULTANTS: null,
   })
 
 };

@@ -2,17 +2,17 @@
 
 import React from "react";
 import classnames from "classnames";
-import Panel from '../../../controls/MainContentPanel.jsx';
-import ViewableTextField from '../../../controls/ViewableTextField.jsx';
-import ViewableTextFieldUtil from '../../../controls/ViewableTextFieldUtil.jsx';
-import { formStatus } from '../../../constants/FormStatus.jsx';
-import FormBottomBar from '../../../controls/FormBottomBar.jsx';
-import Dialog from '../../../controls/NewDialog.jsx';
-import FlatButton from '../../../controls/FlatButton.jsx';
+import Panel from 'controls/MainContentPanel.jsx';
+import ViewableTextField from 'controls/ViewableTextField.jsx';
+import ViewableTextFieldUtil from 'controls/ViewableTextFieldUtil.jsx';
+import { formStatus } from 'constants/FormStatus.jsx';
+import FormBottomBar from 'controls/FormBottomBar.jsx';
+import Dialog from 'controls/NewDialog.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
 import MonitorTag from '../MonitorTag.jsx';
 import Basic from './BuildingBasic.jsx';
-import HierarchyStore from '../../../stores/hierarchySetting/HierarchyStore.jsx';
-import HierarchyAction from '../../../actions/hierarchySetting/HierarchyAction.jsx';
+import HierarchyStore from 'stores/hierarchySetting/HierarchyStore.jsx';
+import HierarchyAction from 'actions/hierarchySetting/HierarchyAction.jsx';
 import Calendar from '../Calendar.jsx';
 import Cost from '../Cost.jsx';
 import Property from './Property.jsx';
@@ -31,6 +31,7 @@ var Building = React.createClass({
     toggleList: React.PropTypes.func,
     closedList: React.PropTypes.bool,
     merge: React.PropTypes.func,
+    consultants: React.PropTypes.array,
   },
   //mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
   getInitialState: function() {
@@ -175,6 +176,7 @@ var Building = React.createClass({
         ref: 'jazz_building_basic',
         selectedNode: this.props.selectedNode,
         merge: this.props.merge,
+        consultants: this.props.consultants,
         formStatus: this.props.formStatus,
         setEditBtnStatus: this._setEditBtnStatus,
         key: this.props.selectedNode.get('Id') === null ? Math.random() : this.props.selectedNode.get('Id'),
