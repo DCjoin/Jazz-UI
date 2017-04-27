@@ -55,8 +55,8 @@ const RankingKPIAction = {
       }
     });
   },
-  getRankRecord(customerId,groupKpiId,rankType,buildingId){
-    Ajax.get(util.replacePathParams(Path.KPI.Rank.rankRecord,customerId,groupKpiId,rankType,buildingId),
+  getRankRecord(customerId,groupKpiId,rankType,buildingId,year){
+    Ajax.get(util.replacePathParams(Path.KPI.Rank.rankRecord,customerId,groupKpiId,rankType,buildingId,year),
       {
       params:{
         customerId,groupKpiId,rankType,buildingId
