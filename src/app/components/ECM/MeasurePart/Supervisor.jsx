@@ -127,7 +127,7 @@ class SupervisorDialog extends Component{
               this.handleClickCancel
             }/>]}
             dismissOnClickAway={false}
-            modal={true}
+            modapacl={true}
             open={true}
             ref="dialog1"
             style={{
