@@ -31,7 +31,7 @@ import Alarm from './components/alarm/Alarm.jsx';
 import Setting from './components/setting/Setting.jsx';
 import Mail from './components/mail/Mail.jsx';
 //for Test
-// import Report from './components/ECM/Test.jsx';
+// import Report from './components/Test.jsx';
 import Report from './components/report/Report.jsx';
 import DataAnalysis from './components/DataAnalysis';
 import AnalysisPanel from './components/DataAnalysis/Basic/AnalysisPanel.jsx';

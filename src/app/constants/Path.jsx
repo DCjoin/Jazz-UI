@@ -42,7 +42,7 @@ module.exports = {
       getGroupRank: '/rank/grouprank/{customerId}/{year}',
       getRank:'/rank/getrank/{customerId}',
       setRank:'/rank/setrank',
-      rankRecord:'/rank/rankrecord/{customerId}/{groupKpiId}/{rankType}/{buildingId}',
+      rankRecord:'/rank/rankrecord/{customerId}/{groupKpiId}/{rankType}/{buildingId}/{year}',
     }
 	},
   DataReport: {

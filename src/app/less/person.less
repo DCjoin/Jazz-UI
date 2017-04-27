@@ -34,20 +34,26 @@
   .name{
     font-size: 12px;
   }
-  .edit{
-    min-width: 40px;
-    font-size: 12px;
-    text-decoration:underline;
+  .operate{
     display: none;
+  }
+  .edit{
+    padding:0 5px;
+    font-size: 14px;
+    text-decoration:underline;
     &:hover{
-      color: @schneiderBlue;
+      color: #3dcd58;
       cursor: pointer;
     }
+  }
+  .delete{
+    .edit;
+    border-left: 1px solid black;
   }
   &:hover{
     cursor: pointer;
     background-color: @hoverGray;
-    .edit{
+    .operate{
       display: block;
     }
   }
