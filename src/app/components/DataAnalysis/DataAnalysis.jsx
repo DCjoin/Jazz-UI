@@ -406,7 +406,11 @@ export default class DataAnalysis extends Component {
 				<Left
 					tree={this.state.treeList}
 					selectedNode={this.state.selectedNode}
-					onSelectNode={this._onSelectNode}
+					onSelectNode={(node) => {
+						if(node.get('Id') !== this.state.selectedNode.get('Id')) {
+							this._onSelectNode(node);
+						}
+					}}
 					createWidgetOrFolder={this._createFolderOrWidget}
           didDrag={this._didDrag}
 					/>

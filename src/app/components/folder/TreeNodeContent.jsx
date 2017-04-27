@@ -1,13 +1,13 @@
 'use strict';
 import React from "react";
 import { Navigation, State } from 'react-router';
-import { TextField, Mixins, Snackbar } from 'material-ui';
-import TreeConstants from '../../constants/TreeConstants.jsx';
+import TextField from 'material-ui/TextField';
+import TreeConstants from 'constants/TreeConstants.jsx';
 import classNames from 'classnames';
 let {nodeType} = TreeConstants;
-import FolderAction from '../../actions/FolderAction.jsx';
-import FolderStore from '../../stores/FolderStore.jsx';
-import ClickAway from "../../controls/ClickAwayListener.jsx";
+import FolderAction from 'actions/FolderAction.jsx';
+import FolderStore from 'stores/FolderStore.jsx';
+import ClickAway from "controls/ClickAwayListener.jsx";
 
 var TreeNodeContent = React.createClass({
   //mixins: [Mixins.ClickAwayable],
@@ -88,13 +88,23 @@ var TreeNodeContent = React.createClass({
     };
     var text;
     if (this.props.nodeData.get('Id') < -1) {
-      text = <div className='jazz-foldertree-node-textfield'><TextField ref="textField" style={textStyle} value={this.state.text} onChange={this._onChanged}/></div>
+      text = <div className='jazz-foldertree-node-textfield'>
+        <TextField ref="textField" 
+          style={textStyle} 
+          value={this.state.text} 
+          onChange={this._onChanged}/>
+        </div>
     } else {
       text = (!this.state.isSelect || this.props.nodeData !== this.props.selectedNode || this.props.nodeData.get('Id') === -1 ?
         <div className="node-content-text" style={{
           color: '#ffffff'
         }} title={this.state.text}>{this.state.text}</div> :
-        <div className='jazz-foldertree-node-textfield'><TextField ref="textField" style={textStyle} value={this.state.text} onChange={this._onChanged}/></div>
+        <div className='jazz-foldertree-node-textfield'>
+          <TextField ref="textField" 
+            style={textStyle} 
+            value={this.state.text} 
+            onChange={this._onChanged}/>
+        </div>
       );
     }
     ;
