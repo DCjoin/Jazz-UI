@@ -3,14 +3,19 @@
 import React from "react";
 import classnames from "classnames";
 import { isFunction, isObject } from "lodash";
+import { CircularProgress } from 'material-ui';
+
+import { formStatus } from 'constants/FormStatus.jsx';
+import Dialog from 'controls/PopupDialog.jsx';
+
 import CustomerList from './CustomerList.jsx';
 import CustomerDetail from './CustomerDetail.jsx';
-import { formStatus } from '../../constants/FormStatus.jsx';
-import { CircularProgress } from 'material-ui';
-import CustomerAction from '../../actions/CustomerAction.jsx';
-import CustomerStore from '../../stores/CustomerStore.jsx';
-import Dialog from '../../controls/PopupDialog.jsx';
 
+import CustomerAction from 'actions/CustomerAction.jsx';
+import CustomerStore from 'stores/CustomerStore.jsx';
+
+import HierarchyAction from 'actions/hierarchySetting/HierarchyAction.jsx';
+import HierarchyStore from 'stores/hierarchySetting/HierarchyStore.jsx';
 
 var Customer = React.createClass({
   getInitialState: function() {
@@ -29,6 +34,7 @@ var Customer = React.createClass({
   _handlerTouchTap: function(selectedId) {
     this._setViewStatus(selectedId);
     if (this.state.selectedId != selectedId) {
+      HierarchyAction.getConsultants(selectedId);
       CustomerAction.setCurrentSelectedId(selectedId);
     }
   },
@@ -81,6 +87,7 @@ var Customer = React.createClass({
       infoTab = this.state.infoTab;
     if (!selectedId) {
       id = this.state.customers.getIn([0, "Id"]);
+      HierarchyAction.getConsultants(id);
       CustomerAction.setCurrentSelectedId(id);
     }
     if (this.state.selectedId != selectedId) {
@@ -127,10 +134,12 @@ var Customer = React.createClass({
   },
   _onChange: function(selectedId) {
     if (!!selectedId) {
+      HierarchyAction.getConsultants(selectedId);
       this._setViewStatus(selectedId);
     }
     this.setState({
       customers: CustomerStore.getCustomers(),
+      consultants: HierarchyStore.getConsultants(),
       isLoading: false,
       errorTitle: null,
       errorContent: null
@@ -167,6 +176,7 @@ var Customer = React.createClass({
   },
   componentDidMount: function() {
     CustomerStore.addChangeListener(this._onChange);
+    HierarchyStore.addChangeListener(this._onChange);
     CustomerStore.addErrorChangeListener(this._onError);
     CustomerAction.GetCustomers('Name');
     this.setState({
@@ -175,6 +185,7 @@ var Customer = React.createClass({
   },
   componentWillUnmount: function() {
     CustomerStore.removeChangeListener(this._onChange);
+    HierarchyStore.removeChangeListener(this._onChange);
     CustomerStore.removeErrorChangeListener(this._onError);
   //CustomerAction.ClearAll();
   },
@@ -194,6 +205,7 @@ var Customer = React.createClass({
       detailProps = {
         ref: 'pop_customer_detail',
         customer: isView ? CustomerStore.getPersistedCustomer() : CustomerStore.getUpdatingCustomer(),
+        consultants: this.state.consultants,
         formStatus: this.state.formStatus,
         infoTab: this.state.infoTab,
         setEditStatus: this._setEditStatus,

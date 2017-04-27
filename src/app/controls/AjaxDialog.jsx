@@ -91,9 +91,7 @@ var AjaxDialog = React.createClass({
       );
     // }
 
-    return (
-      <div>{dialog}</div>
-      );
+    return dialog;
   }
 });
 

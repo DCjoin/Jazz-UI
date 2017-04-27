@@ -1,9 +1,10 @@
 'use strict';
 import AppDispatcher from '../../dispatcher/AppDispatcher.jsx';
-import { Action } from '../../constants/actionType/hierarchySetting/Hierarchy.jsx';
+import { Action } from 'constants/actionType/hierarchySetting/Hierarchy.jsx';
 import Ajax from '../../ajax/Ajax.jsx';
-import HierarchyStore from '../../stores/hierarchySetting/HierarchyStore.jsx';
-import CommonFuns from '../../util/Util.jsx';
+import HierarchyStore from 'stores/hierarchySetting/HierarchyStore.jsx';
+import CommonFuns from 'util/Util.jsx';
+import Path from 'constants/Path.jsx';
 import Immutable from 'immutable';
 var _page,
   _hierarchyId,
@@ -453,6 +454,34 @@ let HierarchyAction = {
       type: Action.RESET_ALL_FOR_HIERARCHY,
     });
   },
+  getConsultants: function(hierarchyId) {
+    AppDispatcher.dispatch({
+      type: Action.GET_CONSULTANTS,
+      data: null,
+    });
+    // Ajax.get(CommonFuns.replacePathParams(Path.Hierarchy.getConsultants, hierarchyId), {
+    //   avoidDuplicate: true,
+    //   tag: 'getConsultants',
+    //   success: res => {
+    //     AppDispatcher.dispatch({
+    //       type: Action.GET_CONSULTANTS,
+    //       data: res,
+    //     });
+    //   }
+    // });
+    setTimeout(() => {
+        AppDispatcher.dispatch({
+          type: Action.GET_CONSULTANTS,
+          data: [{
+            Id: 1,
+            RealName: '劳伦斯',
+            UserPhoto: 'http://img.idol001.com/origin/2017/04/10/805dcd0af2fab1c9d3f951f7d96aeb4e1491790409.jpg',
+            Telephone: 123456789,
+            Email: 'asdfa@adsf.coin'
+          }],
+        });  
+    }, 1000);
+  }
 };
 
 module.exports = HierarchyAction;

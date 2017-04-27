@@ -55,14 +55,6 @@ let Login = React.createClass({
     return {
       username: "",
       password: "",
-      // username: "Ally_Test",
-      // password: "123456qq",
-      // username: "0123456",
-      // password: "0123456",
-      // username: "SchneiderElectricChina",
-      // password: "P@ssw0rdChina",
-      // username: "platformadmin",
-      // password: "P@ssw0rd",
       error: null,
       showQRCodeDialog: false,
       showForgetPSWDialog: false,
@@ -530,3 +522,15 @@ var DemoApplyDialog = React.createClass({
 });
 
 module.exports = Login;
+
+/*
+import React, { Component } from 'react';
+
+export default class Login extends Component {
+  render() {
+    return (
+      <div>123</div>
+    );
+  }
+}
+*/

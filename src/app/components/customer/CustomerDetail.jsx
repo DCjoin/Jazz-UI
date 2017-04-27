@@ -12,6 +12,7 @@ import CustomerStore from 'stores/CustomerStore.jsx';
 import Panel from 'controls/MainContentPanel.jsx';
 import ViewableTextField from 'controls/ViewableTextField.jsx';
 import ViewableDatePicker from 'controls/ViewableDatePicker.jsx';
+import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
 import FormBottomBar from 'controls/FormBottomBar.jsx';
 import NewDialog from 'controls/NewDialog.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
@@ -158,11 +159,15 @@ var CustomerDetail = React.createClass({
 
   },
   _renderInfoTab: function() {
-    var {customer} = this.props,
+    var {customer, consultants} = this.props,
       adminList = null,
       isView = this.props.formStatus === formStatus.VIEW,
       isAdd = this.props.formStatus === formStatus.ADD,
-      {Code, Address, StartTime, LinkMans, Comment, CalcStatus} = customer.toJS();
+      {Code, Address, StartTime, LinkMans, Comment, CalcStatus, ConsultantId} = customer.toJS();
+
+    if( !isAdd && !consultants) {
+      return (<div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>);
+    }
 
     //props
     var customerCodeProps = {
@@ -246,6 +251,23 @@ var CustomerDetail = React.createClass({
         });
       }
     };
+    var customerConsultantsProps = {
+      isViewStatus: isView,
+      title: I18N.Setting.Building.Consultant,
+      defaultValue: ConsultantId || 0,
+      valueField: 'Id',
+      textField: 'RealName',
+      dataItems: !isAdd && consultants.unshift({
+        Id: 0,
+        RealName: I18N.Common.Label.CommoEmptyText
+      }).toJS(),
+      didChanged: (value) => {
+        CustomerAction.merge({
+          value,
+          path: 'ConsultantId'
+        })
+      }
+    };
     var calStatusProps = {
       checked: (CalcStatus != true && CalcStatus != false) ? true : CalcStatus,
       disabled: isView,
@@ -294,6 +316,9 @@ var CustomerDetail = React.createClass({
           <div className="pop-customer-detail-content-left-item">
             <ViewableDatePicker {...customerStartTimeProps} />
           </div>
+          {!isAdd && (!isView || ConsultantId ) && consultants.length !== 0 && <div className="pop-customer-detail-content-left-item">
+            <ViewableDropDownMenu {...customerConsultantsProps} />
+          </div>}
           <div className="pop-user-detail-content-item">
             <Checkbox {...calStatusProps} />
           </div>

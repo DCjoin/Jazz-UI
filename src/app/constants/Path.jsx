@@ -1,13 +1,14 @@
 'use strict';
 
 module.exports = {
-    Hierarchy: {
-        GetBuildingList: '/Hierarchy/GetBuildingList/{customerId}'
-    },
-    RawData:{
-      RollBack:'/energy/rollback/{tagId}'
-    },
-    KPI:{
+  Hierarchy: {
+    GetBuildingList: '/Hierarchy/GetBuildingList/{customerId}',
+    getConsultants: '/user/getconsultants/{hierarchyId}',
+  },
+  RawData:{
+    RollBack:'/energy/rollback/{tagId}'
+  },
+  KPI:{
 		getKPIPeriod: '/kpi/getkpiperiod/{customerid}',
 		setKPIPeriod: '/kpi/setkpiperiod',
 		getKPIPeriodByYear: '/kpi/getkpiperiodpoint/{customerid}/{year}',
@@ -78,6 +79,7 @@ module.exports = {
     getDiagnoseTag: '/diagnose/getdiagnosetag',
     updateDiagnose:'/diagnose/update',
     generatesolution:'/diagnose/generatesolution/{diagnoseId}',
-    isconfigcalendar:'/diagnose/isconfigcalendar/{hierarchyId}'
+    isconfigcalendar:'/diagnose/isconfigcalendar/{hierarchyId}',
+    getConsultant: '/user/getconsultant/{hierarchyId}',
   }
 };
