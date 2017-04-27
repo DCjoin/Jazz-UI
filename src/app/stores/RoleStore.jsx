@@ -7,6 +7,8 @@ import Role from '../constants/actionType/Role.jsx';
 import User from '../constants/actionType/User.jsx';
 import CurrentUserStore from './CurrentUserStore.jsx';
 
+const DEFAULT_ROLE_TYPE = 102;
+
 function emptyList() {
   return new List();
 }
@@ -30,10 +32,13 @@ var RoleStore = assign({}, PrototypeStore, {
   getRoleList: function() {
     return _roles;
   },
+  getRoleByEnableView: function() {
+    return _roles.filter(role => role.RoleType !== DEFAULT_ROLE_TYPE);
+  },
   getRole: function(Id) {
     if (!!Id) {
-      var filterRole = Immutable.fromJS(_roles).filter(item => item.get("Id") == Id);
-      var index = Immutable.fromJS(_roles).findIndex(item => item.get("Id") == Id);
+      var filterRole = Immutable.fromJS(this.getRoleByEnableView()).filter(item => item.get("Id") == Id);
+      var index = Immutable.fromJS(this.getRoleByEnableView()).findIndex(item => item.get("Id") == Id);
       if (index > -1) {
         _persistedRole = _updatingRole = filterRole.first();
       }
@@ -88,7 +93,7 @@ var RoleStore = assign({}, PrototypeStore, {
   },
   deleteRole(deletedId) {
     var deletedIndex = -1,
-      roles = Immutable.fromJS(_roles);
+      roles = Immutable.fromJS(this.getRoleByEnableView());
 
     if (roles.size < 2) {
       roles = emptyList();
