@@ -81,6 +81,7 @@ let defaultConfig = {
     thousandsSep: ','
   },
   chart: {
+    zoomType: 'x',
     panning: false,
     animation: true,
     backgroundColor: "#FBFBFB",
@@ -515,7 +516,7 @@ let ChartComponentBox = React.createClass({
   _initChartObj() {
     var data = this.props.energyData.toJS();
     var cloneConfig = _.cloneDeep(defaultConfig);
-    var newConfig = assign({}, cloneConfig, this.props.config || {}, 
+    var newConfig = assign({}, cloneConfig, this.props.config || {},
       {
         title: {
           text: this.title,
@@ -588,7 +589,7 @@ let ChartComponentBox = React.createClass({
         if(nodeOptions[0]) {
           newConfig.legend.title={
             text:JazzCommon.GetArialStr(nodeOptions[0].tagName,23),
-          }          
+          }
         }
       }
       else {
