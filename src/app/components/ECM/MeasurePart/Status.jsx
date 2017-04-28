@@ -38,9 +38,10 @@ export default class StatusCmp extends Component {
 
     _renderEditStatus(){
       return(
-        <DropDownMenu style={{marginTop:'-10px',border:'1px solid #abafae',height:'25px',borderRadius:'20px'}}
-                      labelStyle={{lineHeight:'25px',fontSize:'12px'}}
-                      iconStyle={{marginTop:'-10px'}}
+        <DropDownMenu style={{marginTop:'-10px',border:'1px solid #d7d7d7',height:'30px',borderRadius:'4px',width: '95px',
+                              height: '28px'}}
+                      labelStyle={{lineHeight:'30px',paddingLeft:'5px',paddingRight:'0'}}
+                      iconStyle={{marginTop:'-10px',padding:'0',right:'0',width:'24px'}}
                       underlineStyle={{border:'none'}}
                       value={this.props.status}
                       onChange={(e, selectedIndex, value)=>{
@@ -54,7 +55,7 @@ export default class StatusCmp extends Component {
     render(){
       return(
         <div className="measure-status">
-          <div>{`${I18N.Setting.ECM.PushPanel.Status}：`}</div>
+          <div className='jazz-ecm-push-operation-label'>{`${I18N.Setting.ECM.PushPanel.Status}：`}</div>
           {this.props.canEdit && status!==Status.Done?this._renderEditStatus():MeasuresStore.getStatusText(this.props.status)}
         </div>
       )

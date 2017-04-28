@@ -14,6 +14,7 @@ import _ from 'lodash';
 import NewDialog from 'controls/NewDialog.jsx';
 import MeasuresAction from 'actions/ECM/MeasuresAction.jsx';
 import RaisedButton from 'material-ui/RaisedButton';
+import {IconText} from '../MeasuresItem.jsx';
 
 class SupervisorDialog extends Component{
 
@@ -214,13 +215,16 @@ class SupervisorDropDownMenu extends Component{
 
     var styles={
       btnStyle:{
-        height:'25px',
-        lineHeight:'25px',
-        border:'1px solid #abafae',
-        borderRadius:'20px'
+        width: '155px',
+        height: '28px',
+        borderRadius: '4px',
+        border: 'solid 1px #cbcbcb',
+        lineHeight:'28px',
       },
       label:{
-        fontSize:'12px'
+        fontSize: '14px',
+        color: '#626469',
+        paddingLeft:'5px'
       }
     };
 
@@ -258,7 +262,8 @@ class SupervisorDropDownMenu extends Component{
             anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
             targetOrigin={{horizontal: 'left', vertical: 'top'}}
             onRequestClose={handleRequestClose}
-            style={{overflowY: 'auto',maxWidth:'230px',maxHeight:'500px',padding:'15px',overflowX:'hidden'}}
+            style={{overflowY: 'auto',maxWidth:'220px',maxHeight:'500px',overflowX:'hidden'}}
+            className="person-list"
           >
           {
             this.props.supervisorList===null
@@ -266,7 +271,7 @@ class SupervisorDropDownMenu extends Component{
                                           <CircularProgress  mode="indeterminate" size={80} />
                                       </div>
                                     :  this.props.supervisorList.size===0
-                                                            ? <div style={{height:'40px',width:'100px',fontSize:'14px'}}>
+                                                            ? <div style={{height:'33px',width:'220px',fontSize:'14px',color:"#0f0f0f"}}>
                                                                   {I18N.Setting.ECM.NoSupervior}
                                                               </div>
                                                               :this.props.supervisorList.map(supervisorList=>{
@@ -315,7 +320,9 @@ class SupervisorDropDownMenu extends Component{
                 editPerson:Immutable.fromJS({}),
                 operationMenuOpen: false,
               })
-            }}>{I18N.Setting.ECM.AddSupervior}</div>
+            }}>
+            <FontIcon className="icon-cost_saving" color="#3dcd58" style={{marginRight:'5px',fontSize:'14px'}}/>
+            {I18N.Setting.ECM.AddSupervior}</div>
           </Popover>
           {this.state.editDialogShow && <SupervisorDialog person={this.state.editPerson}
                                                           onCancle={()=>{
@@ -347,30 +354,71 @@ SupervisorDropDownMenu.propTypes={
 export default class Supervisor extends Component {
 
   _renderEditContent(){
-    var classname=this.props.usedInDetail?"indetail":null;
+
     var prop={
       person:this.props.person,
       onSuperviorClick:this.props.onSuperviorClick,
       supervisorList:MeasuresStore.getSupervisorListByEnergySys(this.props.supervisorList,this.props.energySys)
+    };
+
+    if(this.props.usedInDetail){
+      return(
+        <div className="indetail">
+          <div className="jazz-ecm-push-operation-label">{I18N.Setting.CustomerManagement.Principal+':'}</div>
+          <SupervisorDropDownMenu {...prop}/>
+        </div>
+      )
     }
-    return(
-      <div className={classname}>
-        <div className="labelitem">{I18N.Setting.CustomerManagement.Principal}</div>
-        {this.props.usedInDetail && ':'}
-        <SupervisorDropDownMenu {...prop}/>
-      </div>
-    )
+    else {
+      let iconStyle = {
+          fontSize: '16px'
+        },
+        style = {
+          padding: '0px',
+          height: '18px',
+          width: '18px',
+          fontSize: '18px',
+          marginTop:'-5px'
+        };
+        var costIcon=<FontIcon className="icon-cost_saving" iconStyle ={iconStyle} style = {style} />;
+      return(
+        <IconText icon={costIcon} label={I18N.Setting.CustomerManagement.Principal}>
+          <div style={{marginTop:'10px'}}>
+            <SupervisorDropDownMenu {...prop}/>
+          </div>
+
+          </IconText>
+      )
+    }
   }
 
   _renderViewContent(){
-    var classname=this.props.usedInDetail?"indetail":null;
-    return(
-      <div className={classname}>
-        <div className="labelitem">{I18N.Setting.CustomerManagement.Principal}</div>
-        {this.props.usedInDetail && ':'}
-        <div>{this.props.person===null?'-':`${this.props.person.get('Name')} ${this.props.person.get('PhoneNumber')}`}</div>
-      </div>
-    )
+    if(this.props.usedInDetail){
+      return(
+        <div className="indetail">
+          <div className="jazz-ecm-push-operation-label">{I18N.Setting.CustomerManagement.Principal+':'}</div>
+          <div style={{fontSize:'14px',color:'#0f0f0f',marginLeft:'5px'}}>{this.props.person===null?'-':`${this.props.person.get('Name')} ${this.props.person.get('PhoneNumber')}`}</div>
+        </div>
+      )
+    }
+    else {
+      let iconStyle = {
+          fontSize: '16px'
+        },
+        style = {
+          padding: '0px',
+          height: '18px',
+          width: '18px',
+          fontSize: '18px',
+          marginTop:'-5px'
+        };
+        var costIcon=<FontIcon className="icon-cost_saving" iconStyle ={iconStyle} style = {style} />;
+      return(
+        <IconText icon={costIcon} label={I18N.Setting.CustomerManagement.Principal} uom={this.props.person===null?'-':`${this.props.person.get('Name')} ${this.props.person.get('PhoneNumber')}`}/>
+      )
+    }
+
+
   }
 
   render(){

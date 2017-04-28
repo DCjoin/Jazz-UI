@@ -5,11 +5,11 @@ import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
 import MeasuresAction from 'actions/ECM/MeasuresAction.jsx';
 import {Status} from 'constants/actionType/Measures.jsx';
 import {DataConverter} from 'util/Util.jsx';
-import MeasuresItem from './MeasuresItem.jsx';
+import {MeasuresItem} from './MeasuresItem.jsx';
 import {Snackbar,CircularProgress} from 'material-ui';
-import Title from './MeasurePart/MeasureTitle.jsx';
+import {EnergySys} from './MeasurePart/MeasureTitle.jsx';
 import Problem from './MeasurePart/Problem.jsx';
-import Solution from './MeasurePart/Solution.jsx';
+import {Solution,SolutionLabel} from './MeasurePart/Solution.jsx';
 import SolutionGallery from './MeasurePart/SolutionGallery.jsx';
 import NewDialog from 'controls/NewDialog.jsx';
 import PermissionCode from 'constants/PermissionCode.jsx';
@@ -139,9 +139,9 @@ export default class PushPanel extends Component {
   _renderTabTitle(status,unread,count){
     return (
       <div className="jazz-ecm-tab-title">
-        {status}
-        {unread?<BubbleIcon style={{width:'5px',height:'5px'}}/>:null}
+        <div>{status}</div>
         {count!==0?<div style={{marginLeft:'5px'}}>{count}</div>:null}
+        {unread?<BubbleIcon style={{width:'5px',height:'5px'}}/>:null}
       </div>
     )
 
@@ -160,7 +160,7 @@ export default class PushPanel extends Component {
         <span className={classnames({
               "jazz-ecm-push-tabs-tab": true,
               "selected": this.state.infoTabNo === 1
-            })} ref="tobe" data-tab-index="1" onClick={this._handlerSwitchTab.bind(this,1)}>{this._renderTabTitle(I18N.Setting.ECM.PushPanel.ToBe,unRead[0],this.state.activeCounts[0])}</span>
+            })} ref="tobe" data-tab-index="1" style={{marginLeft:'15px'}} onClick={this._handlerSwitchTab.bind(this,1)}>{this._renderTabTitle(I18N.Setting.ECM.PushPanel.ToBe,unRead[0],this.state.activeCounts[0])}</span>
         <span className={classnames({
                 "jazz-ecm-push-tabs-tab": true,
                 "selected": this.state.infoTabNo === 2
@@ -357,14 +357,22 @@ export default class PushPanel extends Component {
 
   _renderOperation(){
     var problem=this.state.solutionList.getIn([this.state.measureIndex,'EnergyProblem']),
-        user=problem.get('CreateUserName'),
         status=problem.get('Status'),
-        createUserId=problem.get('CreateUserId');
+        createUserId=problem.get('CreateUserId'),
+        currentSolution=this.state.solutionList.getIn([this.state.measureIndex]);;
+    var prop={
+      energySys:{
+        measure:currentSolution,
+        canNameEdit:canEdit(createUserId),
+        canEnergySysEdit:canEdit(createUserId),
+        merge:this.merge,
+      }
+    }
     return(
       <div className="jazz-ecm-push-operation">
         <StatusCmp status={status} canEdit={canEditStatus(createUserId,this.state.infoTabNo)} onChange={this._onStatusChange.bind(this)}/>
+        <EnergySys {...prop.energySys}/>
         {this._renderPersonInCharge(problem,true)}
-        <div>{`${I18N.Setting.ECM.PushPanel.CreateUser}：${user || '-'}`}</div>
       </div>
     )
   }
@@ -381,6 +389,8 @@ export default class PushPanel extends Component {
         MeasuresAction.updateSolution(currentSolution.toJS(),()=>{this.refresh(status[this.state.infoTabNo-1])});
       })
     };
+    var problem=this.state.solutionList.getIn([this.state.measureIndex,'EnergyProblem']),
+        user=problem.get('CreateUserName');
    var props={
      title:{
        measure:currentSolution,
@@ -418,11 +428,15 @@ export default class PushPanel extends Component {
         onRequestClose={onClose}
         titleStyle={{margin:'0 24px'}}
         contentStyle={{overflowY: 'auto',paddingRight:'5px',display:'block'}}>
-        <Title {...props.title}/>
         {this._renderOperation()}
+        <SolutionLabel {...props.solution}/>
         <Solution {...props.solution}/>
         <Problem {...props.problem}/>
         <SolutionGallery {...props.gallery}/>
+        <div style={{display:"flex"}}>
+          <div className="jazz-ecm-push-operation-label">{`${I18N.Setting.ECM.PushPanel.CreateUser} : `}</div>
+          <div style={{fontSize:'14px',color:'#0f0f0f',marginLeft:'5px'}}>{user || '-'}</div>
+        </div>
         <Remark {...props.remark}/>
       </NewDialog>
     )

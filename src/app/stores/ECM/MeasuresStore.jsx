@@ -141,7 +141,7 @@ const MeasuresStore = assign({}, PrototypeStore, {
         return I18N.Setting.ECM.InvestmentReturnCycle.ImmediateRecovery
       }
       else {
-        return I18N.format(I18N.Setting.ECM.InvestmentReturnCycle.Other,parseFloat(cycle.toFixed(1)))
+        return parseFloat(cycle.toFixed(1))
       }
     }
   },

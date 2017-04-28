@@ -77,7 +77,7 @@ export default class MainPanel extends Component {
 
   _renderAlreadyPushTitle(){
     return (
-      <div className="jazz-ecm-tab-title" style={{marginLeft:'30px'}}>
+      <div className="jazz-ecm-tab-title">
         {I18N.Setting.ECM.AlreadyPush}
         {this.state.unRead?<BubbleIcon style={{width:'5px',height:'5px'}}/>:null}
       </div>
@@ -89,11 +89,9 @@ export default class MainPanel extends Component {
     return(
       <div className="jazz-ecm-tabs">
         <span className={classnames({
-              "jazz-ecm-tabs-tab": true,
               "selected": this.state.infoTabNo === 1
             })} data-tab-index="1" onClick={this._handlerSwitchTab.bind(this,1)}>{I18N.Setting.ECM.NotPush}</span>
         <span className={classnames({
-                "jazz-ecm-tabs-tab": true,
                 "selected": this.state.infoTabNo === 2
               })} data-tab-index="2" ref='push' onClick={this._handlerSwitchTab.bind(this,2)}>{this._renderAlreadyPushTitle()}</span>
       </div>
@@ -136,8 +134,8 @@ export default class MainPanel extends Component {
   render(){
     return(
       <div className="jazz-ecm-mainpanel">
+        {isFull() && this._renderTabs()}
         <div className="jazz-ecm-mainpanel-content">
-          {isFull() && this._renderTabs()}
           {this.context.hierarchyId && this.context.hierarchyId!==this.props.params.customerId*1 && this._renderContent()}
         </div>
       </div>
