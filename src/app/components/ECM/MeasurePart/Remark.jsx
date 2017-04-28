@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
+import FontIcon from 'material-ui/FontIcon';
+import IconButton from 'material-ui/IconButton';
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
 import MeasuresAction from 'actions/ECM/MeasuresAction.jsx';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -7,7 +9,6 @@ import {DataConverter} from 'util/Util.jsx';
 import moment from 'moment';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import ViewableTextField from 'controls/ViewableTextField.jsx';
-import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'controls/FlatButton.jsx';
 
 function canDelete(canEdit,userId){
@@ -36,12 +37,15 @@ class AddRemark extends Component{
       <div className="add_remark_item">
         <ViewableTextField {...prop}/>
         <div>
-          <RaisedButton
-            style={{border:'1px solid #ececec'}}
+          <FlatButton
+            style={{width: '67px',height: '24px',borderRadius: '2px',border: 'solid 1px #3dcd58',lineHeight:'20px',minWidth:"67px"}}
+            labelStyle={{color:'#3dcd58',fontSize:'14px'}}
             label={I18N.Common.Button.Save}
             disabled={this.state.value===''}
             onClick={()=>{this.props.onSave(this.state.value)}} />
           <FlatButton
+            style={{width: '67px',height: '24px',borderRadius: '2px',lineHeight:'20px',minWidth:"67px",marginLeft:'15px'}}
+            labelStyle={{color:'#626469',fontSize:'14px'}}
             label={I18N.Common.Button.Cancel2}
             onClick={this.props.onCancel} />
           </div>
@@ -82,7 +86,7 @@ class RemarkItem extends Component{
         <div className="text">{this.displayText(Remark)}</div>
         <div className="info">
           <div className="time_name">{info}</div>
-          {canDelete(this.props.canEdit,CreateUserId) && <div className="delete" onClick={this.props.onDelete}>{I18N.Common.Button.Delete}</div>}
+          {canDelete(this.props.canEdit,CreateUserId) && <FontIcon className="icon-delete" style={{marginLeft:'5px',fontSize:'14px'}} onClick={this.props.onDelete}/>}
         </div>
       </div>
     )

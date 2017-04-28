@@ -8,12 +8,11 @@ import FontIcon from 'material-ui/FontIcon';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'controls/FlatButton.jsx';
 import NewDialog from 'controls/NewDialog.jsx';
-import MeasuresItem from './MeasuresItem.jsx';
+import {MeasuresItem} from './MeasuresItem.jsx';
 import {Snackbar, CircularProgress} from 'material-ui';
 import {DIALOG_TYPE} from '../../constants/actionType/Measures.jsx';
-import Title from './MeasurePart/MeasureTitle.jsx';
 import Problem from './MeasurePart/Problem.jsx';
-import Solution from './MeasurePart/Solution.jsx';
+import {Solution,SolutionLabel} from './MeasurePart/Solution.jsx';
 import SolutionGallery from './MeasurePart/SolutionGallery.jsx';
 import DisappareItem from './MeasurePart/DisappareItem.jsx';
 
@@ -91,10 +90,47 @@ export default class NotPushPanel extends Component {
     if(this.state.solutionList===null || this.state.solutionList.size===0){
       return null
     }else {
+      var styles={
+        icon:{
+          width: '16px',
+          height: '16px',
+          color:'#9fa0a4',
+          marginRight:'10px',
+          marginTop:'2px'
+        },
+        label:{
+          fontSize: '14px',
+          lineHeight: '1.5',
+          textAlign: 'left',
+          color: '#0f0f0f',
+          width:'28px'
+        },
+        box:{
+          marginRight:'15px',
+          width:'54px'
+        },
+        btn:{
+          width: '100px',
+          height: '25px',
+          borderRadius: '2px',
+          border: 'solid 1px #9fa0a4',
+          lineHeight:'15px'
+        },
+        btnIcon:{
+          fontSize:'11px'
+        },
+        btnlabel:{
+          fontSize: '12px',
+          color: '#0f0f0f'
+        }
+
+      }
       return(
         <div className="action">
-          <Checkbox disabled={MeasuresStore.IsAllCheckDisabled()} checked={MeasuresStore.getAllSelectedStatus()} onCheck={this._onAllCheck} label={I18N.Tag.SelectAll} style={{width:'100px'}}/>
-          <RaisedButton label={I18N.Setting.ECM.PushAll} disabled={MeasuresStore.IsPushAllDisabled()} onClick={()=>{
+          <Checkbox disabled={MeasuresStore.IsAllCheckDisabled()} iconStyle={styles.icon} labelStyle={styles.label} checked={MeasuresStore.getAllSelectedStatus()} onCheck={this._onAllCheck} label={I18N.Tag.SelectAll} style={styles.box}/>
+          <FlatButton label={I18N.Setting.ECM.PushAll} icon={<FontIcon className="icon-battery-full" color="#0f0f0f"style={styles.btnIcon}/>}
+                style={styles.btn} labelStyle={styles.btnlabel}
+                disabled={MeasuresStore.IsPushAllDisabled()} onClick={()=>{
               this.setState({
                 dialogType:DIALOG_TYPE.BATCH_PUSH,
                 handleIndex:'Batch'
@@ -107,9 +143,15 @@ export default class NotPushPanel extends Component {
   }
 
   _renderOperation(index){
+    var disabled=MeasuresStore.IsSolutionDisable(this.state.solutionList.getIn([index]).toJS());
     var styles={
-      label:{
-        fontSize:'16px'
+      pushlabel:{
+        fontSize:'14px',
+        color:disabled?'#9fa0a4':'#32ad3c'
+      },
+      deletelabel:{
+        fontSize:'14px',
+        color:'#0f0f0f'
       },
       button:{
         marginLeft:'15px'
@@ -117,16 +159,14 @@ export default class NotPushPanel extends Component {
     };
     return(
       <div style={{display:'inline-block'}} onClick={(e)=>{e.stopPropagation()}}>
-        <FlatButton disabled={MeasuresStore.IsSolutionDisable(this.state.solutionList.getIn([index]).toJS())} label={I18N.Setting.ECM.Push}
+        <FlatButton disabled={disabled} label={I18N.Setting.ECM.Push}
                     onClick={(e)=>{
                       e.stopPropagation();
                         this.setState({
                           dialogType:DIALOG_TYPE.PUSH,
                           handleIndex:index
                         })
-
-
-                    }} labelstyle={styles.label} icon={<FontIcon className="icon-to-ecm" style={styles.label}/>}/>
+                    }} labelStyle={styles.pushlabel} icon={<FontIcon className="icon-to-ecm" color="#32ad3c" style={styles.pushlabel}/>}/>
         <FlatButton label={I18N.Common.Button.Delete}
                     onClick={(e)=>{
                       e.stopPropagation();
@@ -134,7 +174,7 @@ export default class NotPushPanel extends Component {
                         dialogType:DIALOG_TYPE.DELETE,
                         handleIndex:index
                       })
-                    }} labelstyle={styles.label} icon={<FontIcon className="icon-delete" style={styles.label}/>} style={styles.button}/>
+                    }} labelStyle={styles.deletelabel} icon={<FontIcon className="icon-delete" color="#0f0f0f" style={styles.deletelabel}/>}/>
       </div>
     )
   }
@@ -303,10 +343,11 @@ export default class NotPushPanel extends Component {
         modal={false}
         isOutsideClose={false}
         onRequestClose={onClose}
-        titleStyle={{margin:'0 24px'}}
-        contentStyle={{overflowY: 'auto',paddingRight:'5px',display:'block'}}>
-        <Title {...props.title}/>
+        titleStyle={{margin:'0 40px'}}
+        contentStyle={{overflowY: 'auto',paddingRight:'5px',display:'block'}}
+        >
         {this._renderOperation(this.state.measureIndex)}
+        <SolutionLabel {...props.solution}/>
         <Solution {...props.solution}/>
         <Problem {...props.problem}/>
         <SolutionGallery {...props.gallery}/>

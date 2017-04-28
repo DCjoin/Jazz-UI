@@ -67,7 +67,7 @@ export default class CustomTextField extends Component {
           }
         }
 
-      return <div className="jazz-customtextfield" onClick={()=>{this.setState({isView:false})}} >
+      return <div className="jazz-customtextfield" style={this.props.displayStyle} onClick={()=>{this.setState({isView:false})}} >
         {isNumber?value==='' || value===null?'-':displayFn(CommonFuns.getLabelData(value*1)):this.props.multiLine?v:displayFn(v)}
       </div>
     }
@@ -85,7 +85,8 @@ CustomTextField.propTypes = {
   value:React.PropTypes.any,
   style:React.PropTypes.object,
   multiLine:React.PropTypes.bool,
-  displayFn:React.PropTypes.func
+  displayFn:React.PropTypes.func,
+  displayStyle:React.PropTypes.object,
 };
 
 CustomTextField.defaultProps={
