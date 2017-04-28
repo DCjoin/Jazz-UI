@@ -15,8 +15,8 @@ var Role = React.createClass({
   getInitialState: function() {
     return {
       formStatus: formStatus.VIEW,
-      selectedId: RoleStore.getRoleList().length === 0 ? null : RoleStore.getRoleList()[0].Id,
-      roles: RoleStore.getRoleList(),
+      selectedId: RoleStore.getRoleByEnableView().length === 0 ? null : RoleStore.getRoleByEnableView()[0].Id,
+      roles: RoleStore.getRoleByEnableView(),
       closedList: false,
       isLoading: false,
       errorTitle: null,
@@ -85,7 +85,7 @@ var Role = React.createClass({
       this._setViewStatus(selectedId);
     }
     this.setState({
-      roles: RoleStore.getRoleList(),
+      roles: RoleStore.getRoleByEnableView(),
       isLoading: false,
       errorTitle: null,
       errorContent: null
@@ -123,7 +123,7 @@ var Role = React.createClass({
   componentDidMount: function() {
     RoleStore.addChangeListener(this._onChange);
     RoleStore.addErrorChangeListener(this._onError);
-    if (RoleStore.getRoleList().length === 0) {
+    if (RoleStore.getRoleByEnableView().length === 0) {
       UserAction.getAllRoles();
       this.setState({
         isLoading: true

@@ -9,6 +9,7 @@ import TagDrawer from './TagDrawer.jsx';
 import FolderStore from 'stores/FolderStore.jsx';
 import Dialog from 'controls/OperationTemplate/BlankDialog.jsx';
 import NewDialog from 'controls/NewDialog.jsx';
+import ViewableTextField from 'controls/ViewableTextField.jsx';
 import MultipleTimespanStore from 'stores/Energy/MultipleTimespanStore.jsx';
 import FontIcon from 'material-ui/FontIcon';
 import Popover from 'material-ui/Popover';
@@ -17,6 +18,7 @@ import MenuItem from 'material-ui/MenuItem';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import IconButton from 'material-ui/IconButton';
 import _ from 'lodash';
 import EnergyStore from 'stores/Energy/EnergyStore.jsx';
 import CommonFuns from 'util/Util.jsx';
@@ -111,10 +113,17 @@ class AnalysisPanel extends Component {
       hierarchyId:this.props.hierarchyId,
       isBuilding:this.props.isBuilding,
       dimId:null,
-      tagId:null
+      tagId:null,
+      isViewName: true,
   }
 
   isMultiTime=false;
+
+  componentWillReceiveProps() {
+    this.setState({
+      isViewName: true
+    });    
+  }
 
   getInitTimeRanges(){
     let date = new Date();
@@ -829,7 +838,27 @@ class AnalysisPanel extends Component {
     return(
       <div className="head">
         <div style={{display:'flex',alignItems:'center'}}>
-          <div className="title">{this.props.chartTitle}</div>
+          <div className="title">
+            <ViewableTextField 
+              isViewStatus={this.state.isViewName}
+              style={{width: 'auto'}}
+              defaultValue={this.props.chartTitle}
+              didBlur={(val) => {
+                if(val !== this.props.chartTitle) {
+                  this.props.modifyFolderName(val)
+                }
+                this.setState({
+                  isViewName: true
+                });
+              }}
+            />
+            {this.state.isViewName && 
+            <IconButton iconClassName='icon-edit' onClick={() => {
+              this.setState({
+                isViewName: false
+              });
+            }}/>}
+          </div>
           <div className="description">{this.props.sourceUserName && `(${I18N.format(I18N.Folder.Detail.SubTitile,this.props.sourceUserName)})`}</div>
         </div>
         <div className="operation">

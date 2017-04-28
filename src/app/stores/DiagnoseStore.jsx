@@ -22,7 +22,8 @@ var _diagnoseList=null,
     _chartDataLoading=false,
     _calendar=null,
     _diagnoseChartData=null,
-    _previewChartData=null;
+    _previewChartData=null,
+    _consultant=null;
 
 const DiagnoseStore = assign({}, PrototypeStore, {
   initList(){
@@ -165,6 +166,12 @@ const DiagnoseStore = assign({}, PrototypeStore, {
   getPreviewChartData(){
     return _previewChartData
   },
+  setConsultant(data){
+    _consultant = data;
+  },
+  getConsultant(){
+    return _consultant;
+  },
   findDiagnoseById(id){
     if(_diagnoseList===null) return null
     var temp=null;
@@ -304,6 +311,10 @@ DiagnoseStore.dispatchToken = AppDispatcher.register(function(action) {
           break;
     case Action.CLEAR_DIAGNOSE_CHART_DATA:
           DiagnoseStore.clearDiagnoseChartData()
+          break;
+    case Action.GET_CONSULTANT:
+          DiagnoseStore.setConsultant(action.data);
+          DiagnoseStore.emitChange();
           break;
 
   }

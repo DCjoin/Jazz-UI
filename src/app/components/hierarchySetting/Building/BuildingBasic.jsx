@@ -4,17 +4,17 @@ import React from "react";
 import classnames from "classnames";
 import { Checkbox } from 'material-ui';
 import Immutable from 'immutable';
-import { formStatus } from '../../../constants/FormStatus.jsx';
-import { dataStatus } from '../../../constants/DataStatus.jsx';
-import ViewableTextField from '../../../controls/ViewableTextField.jsx';
-import ViewableTextFieldUtil from '../../../controls/ViewableTextFieldUtil.jsx';
-import ViewableDropDownMenu from '../../../controls/ViewableDropDownMenu.jsx';
-import Regex from '../../../constants/Regex.jsx';
-import AdminList from '../../customer/AdminList.jsx';
-import HierarchyStore from '../../../stores/hierarchySetting/HierarchyStore.jsx';
-import ImageUpload from '../../../controls/ImageUpload.jsx';
-//import Path from '../../../constants/Path.jsx';
-import ViewableMap from '../../../controls/ViewableMap.jsx';
+import { formStatus } from 'constants/FormStatus.jsx';
+import { dataStatus } from 'constants/DataStatus.jsx';
+import ViewableTextField from 'controls/ViewableTextField.jsx';
+import ViewableTextFieldUtil from 'controls/ViewableTextFieldUtil.jsx';
+import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
+import Regex from 'constants/Regex.jsx';
+import AdminList from 'components/customer/AdminList.jsx';
+import HierarchyStore from 'stores/hierarchySetting/HierarchyStore.jsx';
+import ImageUpload from 'controls/ImageUpload.jsx';
+//import Path from 'constants/Path.jsx';
+import ViewableMap from 'controls/ViewableMap.jsx';
 import Config from 'config';
 
 
@@ -57,11 +57,12 @@ var BuildingBasic = React.createClass({
     });
   },
   _renderDetail: function() {
-    var {Code, Comment, AssoiciatedTagCountP, AssoiciatedTagCountV, IndustryId, ZoneId, CalcStatus, BuildingPictureIds, Administrators} = this.props.selectedNode.toJS(),
+    var {Code, Comment, AssoiciatedTagCountP, AssoiciatedTagCountV, IndustryId, ZoneId, CalcStatus, BuildingPictureIds, Administrators, ConsultantId} = this.props.selectedNode.toJS(),
       isView = this.props.formStatus === formStatus.VIEW,
       isAdd = this.props.formStatus === formStatus.ADD,
       adminList = null,
       buildingPictureIds = Immutable.fromJS(BuildingPictureIds || []),
+      consultants = this.props.consultants,
       that = this;
     var codeProps = {
         isViewStatus: isView,
@@ -176,6 +177,23 @@ var BuildingBasic = React.createClass({
             path: "ZoneId"
           })
         }
+      },
+      consultantsProps = {
+        isViewStatus: isView,
+        title: I18N.Setting.Building.Consultant,
+        defaultValue: ConsultantId || 0,
+        valueField: 'Id',
+        textField: 'RealName',
+        dataItems: consultants.unshift({
+          Id: 0,
+          RealName: I18N.Common.Label.CommoEmptyText
+        }).toJS(),
+        didChanged: (value) => {
+          this.props.merge({
+            value,
+            path: 'ConsultantId'
+          })
+        }
       };
     var locationText = this.props.selectedNode.getIn(["Location", "Province"]);
     var lng = this.props.selectedNode.getIn(["Location", "Longitude"]);
@@ -215,6 +233,9 @@ var BuildingBasic = React.createClass({
           </div>}
           {isView && zoneSelectedIndex === 0 ? null : <div className="pop-customer-detail-content-left-item">
             <ViewableDropDownMenu {...zoneProps}/>
+          </div>}
+          {(isView && !ConsultantId ) || consultants.length === 0 ? null : <div className="pop-customer-detail-content-left-item">
+            <ViewableDropDownMenu {...consultantsProps}/>
           </div>}
           {locationText || !isView ? <div className="pop-customer-detail-content-left-item">
             {map}
@@ -256,11 +277,8 @@ var BuildingBasic = React.createClass({
       if (this.props.selectedNode.get('Code').length <= 200) {
         this.props.setEditBtnStatus(false);
     }
-    //this.initBatchViewbaleTextFiled();
-    //this.clearErrorTextBatchViewbaleTextFiled();
   },
   componentWillUnmount: function() {
-  //  this.clearErrorTextBatchViewbaleTextFiled();
   },
   render: function() {
     return (

@@ -63,7 +63,7 @@ module.exports = function(options) {
             STYLE_URL = "main.css"
           var html = fs.readFileSync(path.join(appRoot, "index.html"), "utf-8");
           Object.keys(stats.compilation.assets).forEach(function(item) {
-            var pathAssets = "/assets/";
+            var pathAssets = "/webapihost/assets/";
             if (item.indexOf(APP_URL) >= 0) {
               html = html.replace('APP_URL', pathAssets + item);
             }
@@ -86,7 +86,7 @@ module.exports = function(options) {
 
       }
     },
-    new webpack.PrefetchPlugin("react")
+    new webpack.PrefetchPlugin("react"),
   ];
   plugins.push(new webpack.optimize.CommonsChunkPlugin({
     name: "vendors", 
@@ -120,7 +120,7 @@ module.exports = function(options) {
       rules: [
         {
           test: /\.jsx?$/,
-          use: ["react-hot-loader", "babel-loader"],
+          use: [/*"react-hot-loader", */"babel-loader"],
           exclude: /node_modules/
         },
         {

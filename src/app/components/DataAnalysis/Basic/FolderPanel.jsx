@@ -8,6 +8,8 @@ import { MenuAction } from 'constants/AnalysisConstants.jsx';
 
 import {GenerateSolutionButton} from './GenerateSolution.jsx';
 
+import ViewableTextField from 'controls/ViewableTextField.jsx';
+
 function isFolder(node) {
 	return node.get('Type') === nodeType.Folder;
 }
@@ -41,6 +43,14 @@ export default class FolderPanel extends Component {
 		super(props);
 		this._renderChildrenItem = this._renderChildrenItem.bind(this);
 		this._onMenuSelect = this._onMenuSelect.bind(this);
+		this.state = {
+			isViewName: true
+		};
+	}
+	componentWillReceiveProps() {
+		this.setState({
+			isViewName: true
+		});
 	}
 	_onMenuSelect(node) {
 		return (e, item) => {
@@ -81,7 +91,27 @@ export default class FolderPanel extends Component {
 		}
 		return (
 			<div className='jazz-analysis-folder-panel-header'>
-				{node.get('Name')}
+				<div>
+				<ViewableTextField 
+					isViewStatus={this.state.isViewName}
+					style={{width: 'auto'}}
+					defaultValue={node.get('Name')}
+					didBlur={(val) => {
+						if(val !== node.get('Name')) {
+							this.props.modifyFolderName(val)
+						}
+						this.setState({
+							isViewName: true
+						});
+					}}
+				/>
+				{!isBase(node) && this.state.isViewName && 
+				<IconButton iconClassName='icon-edit' onClick={() => {
+					this.setState({
+						isViewName: false
+					});
+				}}/>}
+				</div>
 				{action}
 			</div>);
 	}

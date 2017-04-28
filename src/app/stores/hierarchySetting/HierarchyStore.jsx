@@ -27,7 +27,8 @@ var _hierarchys = emptyMap(),
   _industries = null,
   _zones = null,
   _cost = emptyMap(),
-  _costError = false;
+  _costError = false,
+  _consultants = null;
 let CHANGE_EVENT = 'change',
   ERROR_CHANGE_EVENT = 'errorchange',
   CUSTOMER_CHANGE_EVENT = 'customerchange',
@@ -300,6 +301,12 @@ var HierarchyStore = assign({}, PrototypeStore, {
   getCost: function() {
     return _cost;
   },
+  setConsultants: function(cost) {
+    _consultants = Immutable.fromJS(cost);
+  },
+  getConsultants: function() {
+    return _consultants;
+  },
   getCommodities: function() {
     var items = assign([], AllCommodityStore.getAllCommodities());
     items.shift();
@@ -558,6 +565,12 @@ HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case HierarchyAction.RESET_ALL_FOR_HIERARCHY:
       HierarchyStore.resetAll();
+      break;
+    case HierarchyAction.GET_CONSULTANTS:
+      HierarchyStore.setConsultants(action.data);
+      if( action.data !== null ) {
+        HierarchyStore.emitChange();
+      }
       break;
   }
 });
