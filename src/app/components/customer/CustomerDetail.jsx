@@ -255,11 +255,11 @@ var CustomerDetail = React.createClass({
       isViewStatus: isView,
       title: I18N.Setting.Building.Consultant,
       defaultValue: ConsultantId || 0,
-      valueField: 'Id',
-      textField: 'RealName',
+      valueField: 'Key',
+      textField: 'Value',
       dataItems: !isAdd && consultants.unshift({
-        Id: 0,
-        RealName: I18N.Common.Label.CommoEmptyText
+        Key: 0,
+        Value: I18N.Common.Label.CommoEmptyText
       }).toJS(),
       didChanged: (value) => {
         CustomerAction.merge({

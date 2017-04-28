@@ -260,25 +260,25 @@ const DiagnoseAction = {
   },
 
   getConsultant(hierarchyId) {
-    setTimeout(() => {
-        AppDispatcher.dispatch({
-          type: Action.GET_CONSULTANT,
-          data: {
-            RealName: '劳伦斯',
-            UserPhoto: 'http://img.idol001.com/origin/2017/04/10/805dcd0af2fab1c9d3f951f7d96aeb4e1491790409.jpg',
-            Telephone: 123456789,
-            Email: 'asdfa@adsf.coin'
-          },
-        });  
-    }, 10000);
-    /*Ajax.get(util.replacePathParams(Path.Diagnose.getConsultant, hierarchyId), {
+    // setTimeout(() => {
+    //     AppDispatcher.dispatch({
+    //       type: Action.GET_CONSULTANT,
+    //       data: {
+    //         RealName: '劳伦斯',
+    //         UserPhoto: 'http://img.idol001.com/origin/2017/04/10/805dcd0af2fab1c9d3f951f7d96aeb4e1491790409.jpg',
+    //         Telephone: 123456789,
+    //         Email: 'asdfa@adsf.coin'
+    //       },
+    //     });  
+    // }, 10000);
+    Ajax.get(util.replacePathParams(Path.Diagnose.getConsultant, hierarchyId), {
       success: res => {
         AppDispatcher.dispatch({
           type: Action.GET_CONSULTANT,
           data: res,
         });        
       }
-    });*/
+    });
 
   }
 }
