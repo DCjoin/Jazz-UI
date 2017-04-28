@@ -2110,6 +2110,7 @@ I18N.Setting.KPI.Rank = {};
 I18N.Setting.KPI.Rank.Name = '排名';
 I18N.Setting.KPI.Rank.Amount = '总量';
 I18N.Setting.KPI.Rank.ShowHistory = '查看排名历史';
+I18N.Setting.KPI.Rank.ShowByMonth = '查看逐月排名';
 I18N.Setting.KPI.Rank.UsageAmountRank = '指标使用量排名';
 I18N.Setting.KPI.Rank.RatioMonthSavingRank = '同比节能率排名';
 I18N.Setting.KPI.Rank.LastRank = '最新排名';
