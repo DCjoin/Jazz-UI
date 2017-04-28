@@ -10,6 +10,12 @@
   }
 }
 
+.person-list{
+  >div{
+    overflow-x: hidden;
+  }
+}
+
 .person-item{
   display: flex;
   flex-direction: row;
@@ -17,19 +23,21 @@
   height:30px;
   justify-content:space-between;
   align-items: center;
-  color:black;
+  color:@normal-black;
+  padding-left: 20px;
   &-sys{
     display: flex;
     flex-direction: row;
     width:200px;
-    height:30px;
+    height:33px;
     justify-content:space-between;
     align-items: center;
-    color: @schneiderGray;
+    color: @light-gray;
     font-size: 12px;
+    padding-left: 20px;
   }
   &.selected{
-    background-color: @hoverGray;
+    border-left:2px solid @life-green;
   }
   .name{
     font-size: 12px;
@@ -39,7 +47,8 @@
   }
   .edit{
     padding:0 5px;
-    font-size: 14px;
+    font-size: 12px;
+    color:@normal-black;
     text-decoration:underline;
     &:hover{
       color: #3dcd58;
@@ -52,18 +61,21 @@
   }
   &:hover{
     cursor: pointer;
-    background-color: @hoverGray;
+    background-color: rgba(203,203,203,0.4);
     .operate{
       display: block;
     }
   }
 }
 .add{
+  line-height:47px;
+  height:47px;
+  border-top:1px solid @border-gray;
+  display: flex;
   font-size: 14px;
-  text-decoration:underline;
-  line-height:40px;
+  color:@life-green;
+  margin-left: 20px;
   &:hover{
-    color: @schneiderBlue;
     cursor: pointer;
   }
 }
