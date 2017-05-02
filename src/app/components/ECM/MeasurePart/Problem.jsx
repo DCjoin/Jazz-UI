@@ -46,7 +46,7 @@ export default class Problem extends Component {
           </div>
           <div className="row">
             <div className="label">
-              {I18N.Common.Glossary.Name}
+              {I18N.Setting.ECM.ProblemDetailName}
             </div>
             {canEdit?<TextField {...props.name}/>:<div className="jazz-ecm-measure-viewabletext">{MeasuresStore.getDisplayText(EnergyProblem.Name)}</div>}
           </div>
