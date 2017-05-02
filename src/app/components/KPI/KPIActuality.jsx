@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import classnames from 'classnames';
 import assign from 'object-assign';
-import {findLastIndex, fill, map} from 'lodash';
-import {find} from 'lodash';
-import {sum} from 'lodash';
+import {findLastIndex, fill, map, some, find, sum} from 'lodash';
 import CircularProgress from 'material-ui/CircularProgress';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
@@ -102,7 +100,7 @@ class ActualityContent extends Component {
 	render() {
 		let {data, summaryData, period, year, onChangeYear, customerId, hierarchyId, onEdit, onRefresh, chartReady} = this.props,
 		message;
-		if( !chartReady ) {
+		if( !chartReady || ( year !== SingleKPIStore.getKPIDefaultYear() && some(SingleKPIStore.getKPIRank(), rank => !rank || !rank.YearRank ) ) ) {
 			return (<div className="content flex-center"><CircularProgress  mode="indeterminate" size={80} /></div>);
 		}
 		if( isFull() ) {
@@ -188,16 +186,25 @@ export default class Actuality extends Component {
 		}
 	}
 	_onChange() {
-		let configCB = this.props.configCB;
+		let configCB = this.props.configCB,
+		year = this.state.year || SingleKPIStore.getKPIDefaultYear();
 		if( configCB ) {
 			if( SingleKPIStore.chartReady() && !SingleKPIStore.getKPIChart() ) {
 				configCB('kpi', false);
 			} else {
 				configCB('kpi', true);
 			}
+		} else if(SingleKPIStore.getCustomerCurrentYear() !== year 
+			&& SingleKPIStore.getKPIRank()
+			&& some(SingleKPIStore.getKPIRank(), rank => !rank || !rank.YearRank)) {
+			SingleKPIStore.getKPIRank().forEach( (rank, i) => {
+				if( rank && rank.GroupKpiId ) {
+					SingleKPIAction.getKpiRankByYear(this._getCustomerId(), rank.GroupKpiId, year, rank.RankType, i);
+				}
+			} )
 		}
 		this.setState({
-			year: this.state.year || SingleKPIStore.getKPIDefaultYear(),
+			year: year,
 			loading: false
 		});
 	}

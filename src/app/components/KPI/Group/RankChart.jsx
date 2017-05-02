@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import moment from 'moment';
 import {slice, fill} from 'lodash';
 import {isNull, isUndefined} from 'lodash';
+import Chip from 'material-ui/Chip';
 
 import KPIType from 'constants/actionType/KPI.jsx';
 import util from 'util/Util.jsx';
@@ -72,7 +73,7 @@ function getRank(props) {
 	if(!props) {
 		return null;
 	}
-	let {DIndex, Index, Count} = props,
+	let {DIndex, Index, Count, byYear} = props,
 	flag = '-';
 
 	if(DIndex === 0) {
@@ -85,7 +86,7 @@ function getRank(props) {
 		flag = '↓ ' + DIndex * -1;
 	}
 
-	return `${Index}/${Count}<span class='rank-flag' style='margin-left: 2px'>${flag}</span>`;
+	return `${Index}/${Count}` + (byYear ? '' : `<span class='rank-flag' style='margin-left: 2px'>${flag}</span>`);
 }
 
 function fillArrayToTen(arr) {
@@ -128,6 +129,7 @@ export default class RankChart extends Component {
 		this.state = {
 			monthIndex: props.MonthRank && (props.MonthRank.length - 1),
 			rankIndex: 0,
+			byYear: !!this.props.YearRank,
 		}
 	}
 	_jumpToSingle(index) {
@@ -140,27 +142,6 @@ export default class RankChart extends Component {
 						+ '&kpiName='+this.props.RankName.split('-')[0]
 						+ '&kpiId='+KpiId);
 
-		// action = window.location.href.split('#')[0] + '#' + RoutePath.KPIActuality(this.context.router.params);
-		// 			 // + '?buildingId='+BuildingId
-		// 			 // + '&groupKpiId='+GroupKpiId
-		// 			 // + '&kpiId='+KpiId;
-		// if(action) {
-		// 	let form = new CustomForm({
-		// 		method: 'get',
-		// 		target: '_blank',
-		// 		action: action
-		// 	});
-		// 	// form.setParam({buildingId: BuildingId});
-		// 	// form.setParam({groupKpiId: GroupKpiId});
-		// 	// form.setParam({kpiId: KpiId});
-		// 	form.submit();
-		// }
-		// window.open(
-		// 	window.location.href.split('#')[0] + '#' + RoutePath.KPIActuality(this.context.router.params)
-		// 	 + '?buildingId='+BuildingId
-		// 	 + '&groupKpiId='+GroupKpiId
-		// 	 + '&kpiId='+KpiId
-		// );
 	}
 	_getCurrentMonthRank() {
 		if( !this.props.MonthRank ) {
@@ -169,7 +150,11 @@ export default class RankChart extends Component {
 		return this.props.MonthRank[this.state.monthIndex] || {};
 	}
 	_getCurrentAllBuildingRank() {
-		return this._getCurrentMonthRank().BuildingRank;
+		if(this.state.byYear) {
+			return this.props.YearRank;
+		} else {
+			return this._getCurrentMonthRank().BuildingRank;
+		}
 	}
 	_getCurrentRangeBuildingRank() {
 		return slice(this._getCurrentAllBuildingRank(), this.state.rankIndex, this.state.rankIndex + 10);
@@ -182,13 +167,16 @@ export default class RankChart extends Component {
 		let tooltip = `
 		<b>${this._getDateLabel()}</b><br/>
 		${I18N.Setting.KPI.Building + BuildingName}: ${getValueLabel(RankValue, this.props)}<br/>
-		${I18N.Setting.KPI.Rank.Name}: ${getRank({DIndex, Index, Count})}
+		${I18N.Setting.KPI.Rank.Name}: ${getRank({DIndex, Index, Count, byYear: this.state.byYear})}
 		`;
 		return tooltip;
 	}
 	_getDateLabel() {
 		let jsonstring = this._getCurrentMonthRank().Date,
 		date = new Date(moment.utc(jsonstring));
+		if(this.state.byYear) {
+			return date.getFullYear() + I18N.Baseline.BaselineModify.YearValue;
+		}
 		return util.replacePathParams(I18N.Kpi.YearMonth, date.getFullYear(), date.getMonth() + 1);
 	}
 	_getRankLabel() {
@@ -269,8 +257,10 @@ export default class RankChart extends Component {
 		{
 			monthIndex,
 			rankIndex,
+			byYear,
 		} = this.state,
-		onLastMonth, onNextMonth, onLastRank, onNextRank;
+		onLastMonth, onNextMonth, onLastRank, onNextRank,
+		hasRankByYear = this.props.YearRank;
 		if( !MonthRank ) {
 			return null;
 		}
@@ -306,15 +296,32 @@ export default class RankChart extends Component {
 			};
 		}
 
+		let switchByYear = (val) => {
+			return () => {
+				this.setState({
+					byYear: val,
+					rankIndex: 0,
+					monthIndex: this.props.MonthRank.length - 1,
+				});
+			}
+		}
+
         return (
         	<div className='kpi-rank-chart'>
         		<div className='kpi-rank-chart-title'>{RankName}</div>
-        		<SwitchBar
-        			className='switch-month'
-        			label={this._getDateLabel()}
-        			onLeft={onLastMonth}
-        			onRight={onNextMonth}
-        		/>
+        		{hasRankByYear && <div className='kpi-rank-chart-type' style={{position: byYear? 'relative' : 'absolute'}}>
+        			<Chip onClick={switchByYear(true)} style={{marginRight: 10, backgroundColor: (byYear ? '#3dcd58' : '#e0e0e0')}}>{'年度排名'}</Chip>
+        			<Chip onClick={switchByYear(false)} style={{marginRight: 10, backgroundColor: (!byYear ? '#3dcd58' : '#e0e0e0')}}>{'月度排名'}</Chip>
+        		</div>}
+        		{!byYear && 
+        		<div style={{marginBottom: hasRankByYear && 10}}>
+	        		<SwitchBar
+	        			className='switch-month'
+	        			label={this._getDateLabel()}
+	        			onLeft={onLastMonth}
+	        			onRight={onNextMonth}
+	        		/>
+	        	</div>}
         		<SwitchBar
         			className='switch-range'
         			label={this._getRankLabel()}

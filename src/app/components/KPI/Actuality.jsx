@@ -79,11 +79,7 @@ const TipMessage = (props, context, updater) => {
 export default class Actuality extends Component {
 
 	static getStores() {
-		return [/*{
-			store: HierarchyStore,
-			add: ['addBuildingListListener'],
-			remove: ['removeBuildingListListener'],
-		},*/ /*UserStore, */ReportStore];
+		return [ReportStore];
 	};
 
 	static calculateState(prevState) {
@@ -100,12 +96,9 @@ export default class Actuality extends Component {
 
 	componentWillMount() {
 		this._configCB = this._configCB.bind(this);
-		this._onPreActopn = this._onPreActopn.bind(this);
 		this._showReportEdit = this._showReportEdit.bind(this);
 		this._removeEditPage = this._removeEditPage.bind(this);
 
-		// HierarchyStore.addBuildingListListener(this._onPreActopn);
-		UserStore.addChangeListener(this._onPreActopn);
 
 		this._getInitialState(this.props);
 		this._loadInitData(this.props, this.context);
@@ -115,13 +108,7 @@ export default class Actuality extends Component {
 		if( !util.shallowEqual(nextContext.hierarchyId, this.context.hierarchyId) ) {
 			this._getInitialState(nextProps);
 			this._loadInitData(nextProps, nextContext);
-		} else if(!this._getHierarchyId(nextProps.router, nextContext)) {
-			this._onPreActopn();
 		}
-	}
-	componentWillUnmount() {		
-		// HierarchyStore.removeBuildingListListener(this._onPreActopn);
-		// UserStore.removeChangeListener(this._onPreActopn);
 	}
 	_getInitialState(props) {
 		this.setState({
@@ -136,15 +123,6 @@ export default class Actuality extends Component {
 				),
 		});
 	}
-	_onPreActopn() {
-		// if( this.state.userCustomers && this.state.userCustomers.size > 0 && this.state.buildingList ) {
-		// 	if(this._privilegedCustomer()) {
-		// 		this.props.router.push( this.props.router.location.pathname + '?hierarchyId=' + this._getCustomerId());
-		// 	} else if(this.state.buildingList.length === 1){
-		// 		this.props.router.push( this.props.router.location.pathname + '?hierarchyId=' + this.state.buildingList[0].Id);
-		// 	}
-		// }
-	}
 	_loadInitData(props, context) {
 		if( canView() ) {
 			this.setState({
@@ -152,8 +130,6 @@ export default class Actuality extends Component {
 				userCustomers: null,
 				allBuildingsExistence: null,
 			});
-			// HierarchyAction.getBuildingListByCustomerId(props.router.params.customerId);
-			// UserAction.getCustomerByUser(CurrentUserStore.getCurrentUser().Id);
 			ReportAction.allBuildingsExistence(props.router.params.customerId);
 		}
 	}
@@ -203,19 +179,16 @@ export default class Actuality extends Component {
 		let isCustomer = this._isCustomer();
 		let hasKPIEdit = isCustomer && isFull();
 		if(singleKPI) {
-		    // chartData = SingleKPIStore.getKPIChart();
     		prefixTitle = 
     			I18N.Setting.KPI.Building + 
     			this._getSelectedHierarchy().Name + '-' + 
     			this.props.router.location.query.kpiName + '-';
-			// title = this._getSelectedHierarchy().Name + '-' +  + '-' + I18N.Kpi.KPIActual;
 		}
 		return (<div className='jazz-actuality-content'>
 			{!kpiHide && <div className='jazz-actuality-item'>
 				<div className='jazz-actuality-item-title'>{prefixTitle + I18N.Kpi.KPIActual}</div>
 				{hasKPIEdit && !singleKPI &&
 		    	<IconButton iconClassName="fa icon-edit" onClick={() => {
-			      	// onRefresh(data.get('id'));
 			      	this.props.router.push(RoutePath.KPIGroupConfig(this.props.router.params));
 			      }}/>}
 				<KPIActuality configCB={isOnlyView() && this._configCB} router={this.props.router} hierarchyId={this._getHierarchyId(this.props.router, this.context)}/>
@@ -242,10 +215,6 @@ export default class Actuality extends Component {
 		if(this.state.edit && this._getHierarchyId(this.props.router, this.context)) {
 			let {type, data} = this.state.edit,
 			content = null;
-			// if( type === 'kpi' ) {
-			// 	content = (<ConfigMenu {...this.props.router}>
-			// 	</ConfigMenu>);
-			// }
 			if( type === 'report' ) {
 				content = (<ReportConfig 
 								hierarchyId={this._getHierarchyId(this.props.router, this.context)}
