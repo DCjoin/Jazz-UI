@@ -64,7 +64,8 @@ module.exports = {
     readProblem:'/energysolution/problem/read/{problemId}',
     remarkList:'/energysolution/problem/remark/{problemId}',
     addRemark:'/energysolution/problem/remark',
-    deleteRemark:'/energysolution/problem/remark/delete/{remarkId}'
+    deleteRemark:'/energysolution/problem/remark/delete/{remarkId}',
+    deleteSupervisor:'/energysolution/problem/supervisor/delete/{supervisorId}',
   },
   Diagnose:{
     diagnosislist:'/diagnose/diagnosislist',

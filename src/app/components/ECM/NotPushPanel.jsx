@@ -15,6 +15,7 @@ import Problem from './MeasurePart/Problem.jsx';
 import {Solution,SolutionLabel} from './MeasurePart/Solution.jsx';
 import SolutionGallery from './MeasurePart/SolutionGallery.jsx';
 import DisappareItem from './MeasurePart/DisappareItem.jsx';
+import {EnergySys} from './MeasurePart/MeasureTitle.jsx';
 
 export default class NotPushPanel extends Component {
   constructor(props) {
@@ -346,7 +347,11 @@ export default class NotPushPanel extends Component {
         titleStyle={{margin:'0 40px'}}
         contentStyle={{overflowY: 'auto',paddingRight:'5px',display:'block'}}
         >
-        {this._renderOperation(this.state.measureIndex)}
+        <div className="jazz-ecm-push-operation">
+          {this._renderOperation(this.state.measureIndex)}
+          <EnergySys {...props.title}/>
+        </div>
+
         <SolutionLabel {...props.solution}/>
         <Solution {...props.solution}/>
         <Problem {...props.problem}/>

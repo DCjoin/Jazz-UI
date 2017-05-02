@@ -209,6 +209,24 @@ const MeasuresAction = {
       type: Action.GET_ENERGY_SOLUTION_SUCCESS,
       data: null,
     })
+  },
+  deleteSupervisor(supervisorId){
+    Ajax.get(util.replacePathParams(Path.ECM.deleteSupervisor, supervisorId), {
+      commonErrorHandling: false,
+      success: (res) => {
+        AppDispatcher.dispatch({
+          type: Action.DELETE_SUPERVISOR_SUCCESS,
+          data: supervisorId,
+        });
+      },
+      error: function(err, res) {
+        AppDispatcher.dispatch({
+          type: Action.DELETE_SUPERVISOR_ERROR,
+          err: res.text,
+          supervisorId
+        });
+      }
+    } );
   }
 }
 

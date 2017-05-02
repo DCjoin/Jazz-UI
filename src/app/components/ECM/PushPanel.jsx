@@ -3,7 +3,7 @@ import ReactDom from 'react-dom';
 import classnames from "classnames";
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
 import MeasuresAction from 'actions/ECM/MeasuresAction.jsx';
-import {Status} from 'constants/actionType/Measures.jsx';
+import {Status,Msg} from 'constants/actionType/Measures.jsx';
 import {DataConverter} from 'util/Util.jsx';
 import {MeasuresItem} from './MeasuresItem.jsx';
 import {Snackbar,CircularProgress} from 'material-ui';
@@ -88,18 +88,20 @@ export default class PushPanel extends Component {
     activeCounts:[],
     unRead:[],
     toBeStatus:null,
-    statusDialogShow:false
+    statusDialogShow:false,
+    deleteSupervisorErrorMsg:null
   }
 
   _afterAnimation=()=>{}
 
-  _onChanged(){
+  _onChanged(error,msg){
     this.setState({
       solutionList:MeasuresStore.getSolutionList(),
       supervisorList:MeasuresStore.getSupervisor(),
       snackbarText:MeasuresStore.getText(),
       activeCounts:MeasuresStore.getActiveCounts(),
-      unRead:MeasuresStore.getUnread()
+      unRead:MeasuresStore.getUnread(),
+      deleteSupervisorErrorMsg:error===Msg.DELETE_SUPERVISOR_ERROR?msg:this.state.deleteSupervisorErrorMsg
     })
   }
 
@@ -442,6 +444,33 @@ export default class PushPanel extends Component {
     )
   }
 
+  _renderDeleteSupervisorError(){
+    var onClose=()=>{
+      this.setState({
+        deleteSupervisorErrorMsg:null
+      })
+    };
+    return(
+      <NewDialog
+        open={this.state.deleteSupervisorErrorMsg!==null}
+        modal={false}
+        isOutsideClose={false}
+        onRequestClose={onClose}
+        titleStyle={{margin:'0 24px'}}
+        contentStyle={{overflowY: 'auto',paddingRight:'5px',display:'block'}}>
+        <div>
+          {this.state.deleteSupervisorErrorMsg.supervisor}
+        </div>
+
+          <div>
+            {I18N.Setting.ECM.ErrorSolutionName}
+          </div>
+          <div>{this.state.deleteSupervisorErrorMsg.solutions}
+        </div>
+      </NewDialog>
+    )
+  }
+
   merge(paths,value){
     paths.unshift(this.state.measureIndex);
     MeasuresAction.merge(paths,value)
@@ -521,6 +550,7 @@ export default class PushPanel extends Component {
         {this._renderList()}
         {this.state.solutionList!==null && this.state.solutionList.size!==0 && this._renderMeasureDialog()}
         {this.state.statusDialogShow && this._renderStatusDialog()}
+        {this.state.deleteSupervisorErrorMsg!==null && this._renderDeleteSupervisorError()}
         <Snackbar ref='snackbar' open={!!this.state.snackbarText} onRequestClose={()=>{
             MeasuresAction.resetErrorText()
           }} message={this.state.snackbarText}/>
