@@ -64,12 +64,16 @@ var dataLabelFormatter = function(format) {
 };
 let defaultConfig = {
   colors: [
-    '#cfa9ff', '#11d9db', '#6f7cb3', '#fe8185', '#5edba3', '#ffd697',
-    '#ffceb3', '#a4fe95', '#a5f160', '#00a038', '#f7d5ff', '#eca9ff',
-    '#a988b1', '#01aefe', '#15b3b1', '#8ccdff', '#fff1a7', '#fde24f',
-    '#fdad4f', '#f6693e', '#a73e1d', '#ffa6d4', '#f25aa9', '#fd3266',
-    '#e95151', '#dedaff', '#a0a0fe', '#7c99be', '#626286', '#2727a1'
+    '#42b4e6', '#e47f00', '#1a79a9', '#71cbf4', '#b10043',
+    '#9fa0a4', '#87d200', '#626469', '#ffd100', '#df3870'
   ],
+  // colors: [
+  //   '#cfa9ff', '#11d9db', '#6f7cb3', '#fe8185', '#5edba3', '#ffd697',
+  //   '#ffceb3', '#a4fe95', '#a5f160', '#00a038', '#f7d5ff', '#eca9ff',
+  //   '#a988b1', '#01aefe', '#15b3b1', '#8ccdff', '#fff1a7', '#fde24f',
+  //   '#fdad4f', '#f6693e', '#a73e1d', '#ffa6d4', '#f25aa9', '#fd3266',
+  //   '#e95151', '#dedaff', '#a0a0fe', '#7c99be', '#626286', '#2727a1'
+  // ],
   lang: {
     loading: 'loading',
     months: [],

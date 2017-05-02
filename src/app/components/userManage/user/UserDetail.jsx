@@ -200,7 +200,7 @@ var UserDetail = React.createClass({
     //     text: title
     //   };
     // }),
-    var {Title, Telephone, Email, Comment, UserTypeName, UserPhoto} = this.props.user.toJS(),
+    var {Title, Telephone, Email, Comment, UserTypeName, UserPhoto, Version} = this.props.user.toJS(),
 
       userTitleProps = {
         isViewStatus: isView,
@@ -249,7 +249,7 @@ var UserDetail = React.createClass({
         clip: true,
         background: 'pop-user-photo-logo',
         clipMode: '100% 100%',
-        imageUrl: Regex.UrlRule.test(UserPhoto) ? `url(${UserPhoto})` : 
+        imageUrl: Regex.UrlRule.test(UserPhoto) ? `url(${UserPhoto}&v=${Version})` : 
           `url(data:image/png;base64,${UserPhoto})`,
         isViewState: isView,
         updateTips: '上传头像推荐比例4:3',

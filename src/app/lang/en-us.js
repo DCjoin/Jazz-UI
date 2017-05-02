@@ -2110,6 +2110,7 @@ I18N.Setting.KPI.Rank = {};
 I18N.Setting.KPI.Rank.Name = 'Ranking';
 I18N.Setting.KPI.Rank.Amount = 'Total Amount';
 I18N.Setting.KPI.Rank.ShowHistory = 'Show Ranking History';
+I18N.Setting.KPI.Rank.ShowByMonth = 'Show Ranking By Month';
 I18N.Setting.KPI.Rank.UsageAmountRank = 'Ranking by Index Usage';
 I18N.Setting.KPI.Rank.RatioMonthSavingRank = 'Ranking by Monthly year-on-year saving';
 I18N.Setting.KPI.Rank.LastRank = 'Newest Ranking';

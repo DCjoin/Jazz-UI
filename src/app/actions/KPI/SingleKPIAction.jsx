@@ -334,6 +334,20 @@ const SingleKPIAction = {
       type: Action.CLEAN_ACTUALITY,
     });
     this.initKPIChartData();
+  },
+
+  getKpiRankByYear(customerId, groupKPIId, year, rankType, idx) {
+    Ajax.get(`/rank/groupkpirank/${customerId}/${groupKPIId}/${year}/525600/${rankType}`, {
+      avoidDuplicate: true,
+      tag: 'getKpiRankByYear_' + groupKPIId + '_' + rankType,
+      success: (resBody) => {
+        AppDispatcher.dispatch({
+          type: Action.GET_KPI_RANK_BY_YEAR,
+          data: resBody,
+          idx
+        });
+      }
+    })
   }
 }
 

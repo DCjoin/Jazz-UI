@@ -94,9 +94,13 @@ function RankNumber(props) {
 	);
 }
 
-function getRanlLabelDate() {
-	let lastMonth = new moment().subtract('month', 1);
-	return util.replacePathParams(I18N.Kpi.YearMonth, lastMonth.get('year'), lastMonth.get('month') + 1);
+function getRanlLabelDate(year) {
+	if(year === new moment().year() ) {		
+		let lastMonth = new moment().subtract('month', 1);
+		return util.replacePathParams(I18N.Kpi.YearMonth, lastMonth.get('year'), lastMonth.get('month') + 1);
+	} else {
+		return year + I18N.Baseline.BaselineModify.YearValue;
+	}
 }
 
 export default class BuildingChartPanel extends Component {
@@ -119,21 +123,21 @@ export default class BuildingChartPanel extends Component {
 
 		return (
 			<div>
-				{isThisYear && topRank && 
+				{topRank && 
 				<div className='jazz-building-top-rank'>
 					<div className='top-rank-item'>
-						<div className='jazz-building-top-rank-title hiddenEllipsis'>{topRank.RankName}</div>
-						<div>{getRanlLabelDate()}</div>
+						<div className='jazz-building-top-rank-title'>{getRanlLabelDate(year)}</div>
+						<div className='hiddenEllipsis'>{topRank.RankName}</div>
 						<LinkButton 
 							className='jazz-building-top-rank-his' 
-							label={I18N.Setting.KPI.Rank.ShowHistory + '>>'}
+							label={(isThisYear ? I18N.Setting.KPI.Rank.ShowHistory : I18N.Setting.KPI.Rank.ShowByMonth) + '>>'}
 							onClick={() => {
 								this.setState({selectedRank: topRank});
 							}}/>
 					</div>
 					<div className='top-rank-item'>
 						<div>{I18N.Setting.KPI.Rank.Name}</div>
-						{RankNumber(topRank)}
+						{isThisYear && RankNumber(topRank)}
 					</div>
 					<div className='top-rank-item'>
 						<div>{RankingKPIStore.getUnitType(topRank.UnitType)}</div>
@@ -165,13 +169,13 @@ export default class BuildingChartPanel extends Component {
 						<div className='jazz-building-kpi-rank'>
 							<header className='jazz-building-kpi-rank-header hiddenEllipsis'>{currentTag.get('name')}</header>
 							<content className='jazz-building-kpi-rank-content'>
+								<div className='jazz-building-kpi-rank-time'>{this.context.router.location.query.groupKpiId ? I18N.Setting.KPI.Rank.LastRank : getRanlLabelDate(year)}</div>
 								<div>{currentTag.get('type') === 1 ? I18N.Setting.KPI.Rank.UsageAmountRank : I18N.Setting.KPI.Rank.RatioMonthSavingRank}</div>
-								<div className='jazz-building-kpi-rank-time'>{this.context.router.location.query.groupKpiId ? I18N.Setting.KPI.Rank.LastRank : getRanlLabelDate()}</div>
-								{RankNumber(currentRank)}
+								{isThisYear && RankNumber(currentRank)}
 							</content>
 							<LinkButton 
 								className='jazz-building-kpi-rank-footer' 
-								label={I18N.Setting.KPI.Rank.ShowHistory + '>>'}
+								label={(isThisYear ? I18N.Setting.KPI.Rank.ShowHistory : I18N.Setting.KPI.Rank.ShowByMonth) + '>>'}
 								onClick={() => {
 									this.setState({selectedRank: currentRank});
 								}}/>
@@ -189,6 +193,13 @@ export default class BuildingChartPanel extends Component {
 					</div> )}) :
 				<div className='jazz-kpi-report flex-center' style={{height: 400}}><b>{I18N.Kpi.Error.NonKPIConguredInThisYear}</b></div>}
 				{selectedRank && <RankHistory
+					renderTitle={!isThisYear && function() {
+						return (<div>
+							<span>{year + I18N.Baseline.BaselineModify.YearValue}</span>
+							<span>{I18N.Setting.KPI.Rank.Name + RankNumber(topRank)}</span>
+							<span>{getUnitLabel(topRank, true) + getValue(topRank)}</span>
+						</div>)
+					}}
 					name={selectedRank.RankType === TOP_RANK_TYPE 
 						? selectedRank.RankName
 						: safeImmuObj(tags.find(tag => tag.get('id') === selectedRank.KpiId)).get('name')}
@@ -198,6 +209,7 @@ export default class BuildingChartPanel extends Component {
 					customerId={this.context.router.params.customerId}
 					buildingId={buildingId}
 					onClose={() => {this.setState({selectedRank: null})}}
+					year={year}
 				/>}
 			</div>
 		);
