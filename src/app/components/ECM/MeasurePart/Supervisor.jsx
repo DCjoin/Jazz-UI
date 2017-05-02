@@ -165,10 +165,13 @@ class SupervisorDropDownMenu extends Component{
   }
 
   _onDelete(event){
+    event.preventDefault();
+    event.stopPropagation();
+    MeasuresAction.deleteSupervisor(this.state.editPerson.get('Id'))
     this.setState({
                     editPerson: null,
                     deleteDialogShow:false
-                    })
+                  })
   }
 
   _renderDeleteDialog(){

@@ -15,7 +15,14 @@ module.exports = {
     GET_REMARK_LIST_SUCCESS:null,
     ADD_REMARK:null,
     DELETE_REMARK:null,
-    SET_SNACKBAR_TEXT:null
+    SET_SNACKBAR_TEXT:null,
+    DELETE_SUPERVISOR_SUCCESS:null,
+    DELETE_SUPERVISOR_ERROR:null,
+
+  }),
+  Msg: keyMirror({
+    DELETE_SUPERVISOR_ERROR:null,
+    DELETE_SUPERVISOR_SUCCESS:null,
   }),
   ThumbnailSize:'w_160,h_80',
   DetailSize:'w_600,h_300',

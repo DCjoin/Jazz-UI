@@ -2,7 +2,7 @@
 'use strict';
 
 import AppDispatcher from '../../dispatcher/AppDispatcher.jsx';
-import { Action,Status} from '../../constants/actionType/Measures.jsx';
+import { Action,Status,Msg} from '../../constants/actionType/Measures.jsx';
 import PrototypeStore from '../PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
@@ -17,6 +17,7 @@ var _solutionList=null,
     _activeCounts=[],
     _unRead=[],
     _remarkList=null;
+var CHANGE_EVENT = 'change';
 const MeasuresStore = assign({}, PrototypeStore, {
   init(){
     _solutionList=null;
@@ -205,6 +206,11 @@ const MeasuresStore = assign({}, PrototypeStore, {
   getSupervisor(){
     return _supervisors
   },
+  deleteSupervisor(id){
+    let index=_supervisors.findIndex(item=>item.get('Supervisors').findIndex(item=>item.get('Id')===id)>-1),
+        supervisorId=_supervisors.getIn([index,'Supervisors']).findIndex(item=>item.get('Id')===id);
+    _supervisors=_supervisors.deleteIn([index,'Supervisors',supervisorId])
+  },
   setActiveCounts(data){
     _activeCounts=data
   },
@@ -242,6 +248,23 @@ const MeasuresStore = assign({}, PrototypeStore, {
     var list1=list.filter(item=>(item.get('EnergySys')===energySys)),
         list2=list.filter(item=>(item.get('EnergySys')!==energySys));
         return list1.concat(list2)
+  },
+  getErrorMsg(text,id){
+    let index=_supervisors.findIndex(item=>item.get('Supervisors').findIndex(item=>item.get('Id')===id)>-1),
+        supervisorId=_supervisors.getIn([index,'Supervisors']).findIndex(item=>item.get('Id')===id);
+    let supervisor=_supervisors.getIn([index,'Supervisors',supervisorId]),
+    {Name,PhoneNumber}=supervisor.toJS(),
+        error = JSON.parse(text).error,
+        _errorMessage = error.Messages,
+        solutions=_errorMessage.map((item,index)=>{
+          return index===0?item:'；'+item});
+    return {
+      supervisor:I18N.format(I18N.Setting.ECM.DeleteSuperviorError,Name+' '+PhoneNumber,_errorMessage.length),
+      solutions:solutions
+    }
+  },
+  emitChange(...args) {
+    this.emit(CHANGE_EVENT, ...args);
   },
 });
 
@@ -290,6 +313,13 @@ MeasuresStore.dispatchToken = AppDispatcher.register(function(action) {
     case Action.SET_SNACKBAR_TEXT:
         MeasuresStore.setSnackBarText(action.data);
         MeasuresStore.emitChange()
+        break;
+    case Action.DELETE_SUPERVISOR_SUCCESS:
+        MeasuresStore.deleteSupervisor(action.data);
+        MeasuresStore.emitChange(Msg.DELETE_SUPERVISOR_SUCCESS)
+        break;
+    case Action.DELETE_SUPERVISOR_ERROR:
+        MeasuresStore.emitChange(Msg.DELETE_SUPERVISOR_ERROR,MeasuresStore.getErrorMsg(action.err,action.supervisorId));
         break;
     }
   });
