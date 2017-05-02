@@ -193,6 +193,13 @@ export default class BuildingChartPanel extends Component {
 					</div> )}) :
 				<div className='jazz-kpi-report flex-center' style={{height: 400}}><b>{I18N.Kpi.Error.NonKPIConguredInThisYear}</b></div>}
 				{selectedRank && <RankHistory
+					renderTitle={!isThisYear && function() {
+						return (<div>
+							<span>{year + I18N.Baseline.BaselineModify.YearValue}</span>
+							<span>{I18N.Setting.KPI.Rank.Name + RankNumber(topRank)}</span>
+							<span>{getUnitLabel(topRank, true) + getValue(topRank)}</span>
+						</div>)
+					}}
 					name={selectedRank.RankType === TOP_RANK_TYPE 
 						? selectedRank.RankName
 						: safeImmuObj(tags.find(tag => tag.get('id') === selectedRank.KpiId)).get('name')}
