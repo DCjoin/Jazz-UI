@@ -123,7 +123,7 @@ export default class RankHistory extends Component {
         open={true}
         onRequestClose={this.props.onClose}
         >
-        {renderTitle && renderTitle()}
+        {this.props.renderTitle && this.props.renderTitle()}
         {content}
       </Dialog>
     )

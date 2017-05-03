@@ -80,6 +80,10 @@ const RankingKPIStore = assign({}, PrototypeStore, {
         {
           Id:Unit.MonthRatio,
           Name:I18N.Setting.KPI.Group.Ranking.MonthRatio
+        },
+        {
+          Id:Unit.MonthScale,
+          Name:I18N.Setting.KPI.Group.Ranking.MonthUsaged
         }
       ])
   },

@@ -2098,6 +2098,7 @@ I18N.Setting.KPI.Group.Ranking.TotalAreaUnit=' Unit Area';
 I18N.Setting.KPI.Group.Ranking.TotalRoomUnit=' Unit Room';
 I18N.Setting.KPI.Group.Ranking.TotalPersonUnit='Unit Person';
 I18N.Setting.KPI.Group.Ranking.MonthRatio='Monthly year-on-year change';
+I18N.Setting.KPI.Group.Ranking.MonthUsaged='Monthly year-on-year usaged';
 I18N.Setting.KPI.Group.Ranking.SelectSource='Choose Data Source';
 I18N.Setting.KPI.Group.Ranking.NoKpi='Please create new index and set building data points before setting ranking.';
 I18N.Setting.KPI.Group.Ranking.History = {};
