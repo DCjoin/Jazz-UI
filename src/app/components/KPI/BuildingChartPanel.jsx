@@ -68,7 +68,7 @@ function getValue(data) {
 // 	return (isScale(data.UnitType) ? value.toFixed(1)*1 : util.getLabelData(value)) + getUnitLabel(data);
 // }
 
-function RankNumber(props) {
+function RankNumber(props, isThisYear) {
 	if(!props) {
 		return null;
 	}
@@ -89,7 +89,7 @@ function RankNumber(props) {
 		<div className='building-rank-number'>
 			<span className='self-number'>{Index}</span>
 			<span>/{Count}</span>
-			<span className='rank-flag'>{flag}</span>
+			{isThisYear && <span className='rank-flag'>{flag}</span>}
 		</div>
 	);
 }
@@ -137,7 +137,7 @@ export default class BuildingChartPanel extends Component {
 					</div>
 					<div className='top-rank-item'>
 						<div>{I18N.Setting.KPI.Rank.Name}</div>
-						{isThisYear && RankNumber(topRank)}
+						{RankNumber(topRank, isThisYear)}
 					</div>
 					<div className='top-rank-item'>
 						<div>{RankingKPIStore.getUnitType(topRank.UnitType)}</div>
@@ -153,7 +153,7 @@ export default class BuildingChartPanel extends Component {
 						currentKPIId = currentTag.get('id'),
 						currentSummaryData = find(safeArr(summaryData), sum => sum.KpiId === currentKPIId),
 						currentRank = find(KPIRank, rank => rank.KpiId === currentKPIId);
-					if( !isThisYear || !currentRank ) {
+					if( !currentRank ) {
 						return (
 							<KPIReport
 								currentYearDone={last(period).clone().add(1, 'months').isBefore(new Date())}
@@ -171,7 +171,7 @@ export default class BuildingChartPanel extends Component {
 							<content className='jazz-building-kpi-rank-content'>
 								<div className='jazz-building-kpi-rank-time'>{this.context.router.location.query.groupKpiId ? I18N.Setting.KPI.Rank.LastRank : getRanlLabelDate(year)}</div>
 								<div>{currentTag.get('type') === 1 ? I18N.Setting.KPI.Rank.UsageAmountRank : I18N.Setting.KPI.Rank.RatioMonthSavingRank}</div>
-								{isThisYear && RankNumber(currentRank)}
+								{RankNumber(currentRank, isThisYear)}
 							</content>
 							<LinkButton 
 								className='jazz-building-kpi-rank-footer' 
@@ -194,10 +194,10 @@ export default class BuildingChartPanel extends Component {
 				<div className='jazz-kpi-report flex-center' style={{height: 400}}><b>{I18N.Kpi.Error.NonKPIConguredInThisYear}</b></div>}
 				{selectedRank && <RankHistory
 					renderTitle={!isThisYear && function() {
-						return (<div>
-							<span>{year + I18N.Baseline.BaselineModify.YearValue}</span>
-							<span>{I18N.Setting.KPI.Rank.Name + RankNumber(topRank)}</span>
-							<span>{getUnitLabel(topRank, true) + getValue(topRank)}</span>
+						return (<div style={{marginBottom: 20}}>
+							<span style={{marginRight: 80}}>{year + I18N.Baseline.BaselineModify.YearValue}</span>
+							<span style={{marginRight: 80}}>{I18N.Setting.KPI.Rank.Name + ' ' + selectedRank.Index + '/' + selectedRank.Count}</span>
+							<span>{RankingKPIStore.getUnitType(selectedRank.UnitType) + ' ' + getValue(selectedRank)}</span>
 						</div>)
 					}}
 					name={selectedRank.RankType === TOP_RANK_TYPE 
