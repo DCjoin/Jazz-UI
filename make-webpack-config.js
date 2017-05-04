@@ -63,7 +63,7 @@ module.exports = function(options) {
             STYLE_URL = "main.css"
           var html = fs.readFileSync(path.join(appRoot, "index.html"), "utf-8");
           Object.keys(stats.compilation.assets).forEach(function(item) {
-            var pathAssets = "/webapihost/assets/";
+            var pathAssets = "/assets/";
             if (item.indexOf(APP_URL) >= 0) {
               html = html.replace('APP_URL', pathAssets + item);
             }
