@@ -15,7 +15,8 @@ import assign from 'object-assign';
 import {
   findLastIndex,
   last,
-  first
+  first,
+  every
 } from 'lodash';
 import {
   DataStatus,
@@ -212,10 +213,14 @@ const SingleKPIStore = assign({}, PrototypeStore, {
     }
     return _KPIRank;
   },
+  setKpiRankByYear(data, idx) {
+    _KPIRank[idx].YearRank = data;
+  },
   _initKpiChartData() {
     _KPIChartSummaryLoading = true;
     _KPIChartLoading = true;
     _KPIRankLoading = true;
+    this.setKPIRank(null);
     _quotaperiodYear = null;
   },
   _emptyKpiChartData() {
@@ -664,6 +669,11 @@ SingleKPIStore.dispatchToken = AppDispatcher.register(function (action) {
     case Action.CLEAN_ACTUALITY:
       SingleKPIStore.cleanActuality();
       break;
+    case Action.GET_KPI_RANK_BY_YEAR:
+      SingleKPIStore.setKpiRankByYear(action.data, action.idx);
+      if(every(SingleKPIStore.getKPIRank(), rank => rank && rank.YearRank )) {
+        SingleKPIStore.emitChange();
+      }
 
     default:
   }

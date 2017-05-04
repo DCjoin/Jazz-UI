@@ -123,6 +123,7 @@ export default class RankHistory extends Component {
         open={true}
         onRequestClose={this.props.onClose}
         >
+        {this.props.renderTitle && this.props.renderTitle()}
         {content}
       </Dialog>
     )
@@ -137,6 +138,7 @@ RankHistory.propTypes={
   onClose:React.PropTypes.func,
   uomLabel:React.PropTypes.string,
   year:React.PropTypes.number,
+  renderTitle:React.PropTypes.func,
 }
 
 // RankHistory.defaultProps = {

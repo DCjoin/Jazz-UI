@@ -786,6 +786,24 @@
     z-index: 1;
     background: #fff;
   }
+
+  &-type {
+    display: flex;
+    margin: 5px 0;
+
+    &>div:last-child {
+      background-color: @life-green;
+    }
+
+    &.kpi-rank-chart-selected-first {
+      &:first-child {
+        background-color: @life-green;
+      }
+      &:last-child {
+        background-color: #e0e0e0;
+      }
+    }
+  }
 }
 .kpi-report{
 	&-commnet{

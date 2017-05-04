@@ -48,6 +48,7 @@ module.exports = {
     SAVE_KPI_REPORT_SUCCESS:null,
     SAVE_KPI_REPORT_ERROR:null,
     CLEAN_ACTUALITY:null,
+    GET_KPI_RANK_BY_YEAR:null,
   }),
 
   Type:{
