@@ -15,7 +15,8 @@ import assign from 'object-assign';
 import {
   findLastIndex,
   last,
-  first
+  first,
+  every
 } from 'lodash';
 import {
   DataStatus,
@@ -670,7 +671,9 @@ SingleKPIStore.dispatchToken = AppDispatcher.register(function (action) {
       break;
     case Action.GET_KPI_RANK_BY_YEAR:
       SingleKPIStore.setKpiRankByYear(action.data, action.idx);
-      SingleKPIStore.emitChange();
+      if(every(SingleKPIStore.getKPIRank(), rank => rank && rank.YearRank )) {
+        SingleKPIStore.emitChange();
+      }
 
     default:
   }
