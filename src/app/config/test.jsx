@@ -1,5 +1,5 @@
 export default {
-  ServeAddress: "/webapihost",
+  ServeAddress: "",
   APIBasePath: "/API",
   socketServer: "",
 }
