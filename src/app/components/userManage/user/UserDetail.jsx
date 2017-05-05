@@ -643,7 +643,7 @@ var UserDetail = React.createClass({
       })}>
 					<div className="pop-manage-detail-header-name">
 						<div className="pop-user-detail-name">
-              {isAdd ? <div className="add" style={addStyle}>
+              {isAdd ? <div className="add-user" style={addStyle}>
               								<ViewableTextField {...userNameProps}/>
               							</div> :
         <div><span className="pop-user-detail-display-name exists" title={that.props.user.get("Name")}>{that.props.user.get("Name")}</span>
