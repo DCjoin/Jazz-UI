@@ -11,7 +11,6 @@ import BubbleIcon from '../BubbleIcon.jsx';
 import Immutable from 'immutable';
 import LabelDetail from './LabelDetail.jsx';
 import CreateDiagnose from './CreateDiagnose.jsx';
-import ConsultantCard from './ConsultantCard.jsx';
 import DiagnoseStore from 'stores/DiagnoseStore.jsx';
 import {formStatus} from 'constants/FormStatus.jsx';
 import EditDiagnose from './EditDiagnose.jsx';
@@ -180,7 +179,6 @@ export default class Diagnose extends Component {
     FolderStore.addSolutionCreatedListener(this._onShowSolutionSnakBar);
     DiagnoseStore.addChangeListener(this._onChanged);
     this.getProblem(this.context.hierarchyId);
-    DiagnoseAction.getConsultant(this.context.hierarchyId);
   }
 
   componentWillReceiveProps(nextProps, nextCtx) {
@@ -188,10 +186,6 @@ export default class Diagnose extends Component {
       nextProps.router.push(
         getFirstMenuPathFunc(CurrentUserStore.getMainMenuItems())(nextProps.params)
       )
-    }
-    if(nextCtx.hierarchyId!==this.context.hierarchyId){
-      this.getProblem(nextCtx.hierarchyId);
-      DiagnoseAction.getConsultant(nextCtx.hierarchyId);
     }
   }
 
@@ -256,11 +250,6 @@ render(){
               util.openTab(RoutePath.ecm(this.props.params)+'?init_hierarchy_id='+this.context.hierarchyId);
             }}
           />
-      {DiagnoseStore.getConsultant() && <ConsultantCard
-        {...DiagnoseStore.getConsultant()}
-        HierarchyName={(find(HierarchyStore.getBuildingList(), 
-            hier => hier.Id === this.context.hierarchyId)||{}).Name}
-      />}
     </div>
   )
 }

@@ -10,7 +10,8 @@ import Immutable from 'immutable';
 
 const CREATE_DIAGNOSE_EVENT = 'create_diagnose_event',
       UPDATE_DIAGNOSE_EVENT='update_diagnose_event',
-      REMOVE_DIAGNOSE_EVENT='remove_diagnose_event';
+      REMOVE_DIAGNOSE_EVENT='remove_diagnose_event',
+      GET_CONSULTANT_EVENT='get_consultant_event';
 
 var HierarchyAction=Hierarchy.Action;
 
@@ -246,6 +247,16 @@ const DiagnoseStore = assign({}, PrototypeStore, {
   removeRemoveDiagnoseListener: function(callback) {
     this.removeListener(REMOVE_DIAGNOSE_EVENT, callback);
     this.dispose();
+  },
+  emitConsultantChange: function(args) {
+    this.emit(GET_CONSULTANT_EVENT, args);
+  },
+  addConsultantListener: function(callback) {
+    this.on(GET_CONSULTANT_EVENT, callback);
+  },
+  removeConsultantListener: function(callback) {
+    this.removeListener(GET_CONSULTANT_EVENT, callback);
+    this.dispose();
   }
 })
 
@@ -314,9 +325,8 @@ DiagnoseStore.dispatchToken = AppDispatcher.register(function(action) {
           break;
     case Action.GET_CONSULTANT:
           DiagnoseStore.setConsultant(action.data);
-          DiagnoseStore.emitChange();
+          DiagnoseStore.emitConsultantChange();
           break;
-
   }
 })
 
