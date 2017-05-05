@@ -180,7 +180,21 @@ let MainApp = React.createClass({
       if(defaultReplace && !router.isActive(defaultReplace)) {
         router.replace(defaultReplace);
       } else {
-        this.forceUpdate();
+        if(!this.state.hierarchyId) {
+          let WholeCustomer = getCustomerPrivilageById( customerId ) && getCustomerPrivilageById( customerId ).get('WholeCustomer');
+          let initHierarchyId = router.location.query.init_hierarchy_id;
+          let hierarchyId = customerId * 1;
+          if(!WholeCustomer && HierarchyStore.getBuildingList()[0]) {
+            hierarchyId = HierarchyStore.getBuildingList()[0].Id * 1;
+          }
+          
+          this.setState({
+            hierarchyId
+          },this.forceUpdate);
+
+        } else {
+          this.forceUpdate();
+        }
       }
 
       if( customerId && !this.state.hierarchyId ) {
