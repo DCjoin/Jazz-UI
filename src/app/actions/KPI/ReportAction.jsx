@@ -9,11 +9,7 @@ const ReportAction = {
   getTemplateListByCustomerId(customerId, sortBy, order) {
     Ajax.post('/DataReport/GetExportTemplateByCustomerId', {
       params: {
-        dto: {
-          customerId: customerId,
-          sortBy: sortBy,
-          order: order
-        }
+        customerId: customerId,
       },
       success: function(templateList) {
         AppDispatcher.dispatch({
