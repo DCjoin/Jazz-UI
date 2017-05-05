@@ -22,6 +22,7 @@ function emptyList() {
   return new List();
 }
 var customerId=null;
+var _currentConsultantsHierarchyId = null;
 var Hierarchy = React.createClass({
   contextTypes:{
       currentRoute: React.PropTypes.object
@@ -76,8 +77,9 @@ var Hierarchy = React.createClass({
     document.body.appendChild(iframe);
   },
   _getConsultants: function(hierarchyId, type) {
-    if( type === 2 ) {
+    if( type === 2 && _currentConsultantsHierarchyId !== hierarchyId ) {
       HierarchyAction.getConsultants(hierarchyId);
+      _currentConsultantsHierarchyId = hierarchyId;
     }
   },
   _setViewStatus: function(selectedNode = this.state.selectedNode, infoNo = this.state.infoTabNo) {
