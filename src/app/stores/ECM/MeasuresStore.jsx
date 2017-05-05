@@ -209,7 +209,13 @@ const MeasuresStore = assign({}, PrototypeStore, {
   deleteSupervisor(id){
     let index=_supervisors.findIndex(item=>item.get('Supervisors').findIndex(item=>item.get('Id')===id)>-1),
         supervisorId=_supervisors.getIn([index,'Supervisors']).findIndex(item=>item.get('Id')===id);
-    _supervisors=_supervisors.deleteIn([index,'Supervisors',supervisorId])
+        if(supervisorId===0){
+          _supervisors=_supervisors.deleteIn([index])
+        }
+        else {
+          _supervisors=_supervisors.deleteIn([index,'Supervisors',supervisorId])
+        }
+
   },
   setActiveCounts(data){
     _activeCounts=data
