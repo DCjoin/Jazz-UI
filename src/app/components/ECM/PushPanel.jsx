@@ -461,12 +461,6 @@ export default class PushPanel extends Component {
         <div>
           {this.state.deleteSupervisorErrorMsg.supervisor}
         </div>
-
-          <div>
-            {I18N.Setting.ECM.ErrorSolutionName}
-          </div>
-          <div>{this.state.deleteSupervisorErrorMsg.solutions}
-        </div>
       </NewDialog>
     )
   }
