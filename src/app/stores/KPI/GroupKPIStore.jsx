@@ -318,6 +318,16 @@ const GroupKPIStore = assign({}, PrototypeStore, {
         text: I18N.Common.Commodity.CoalOther,
         uomId:8
       },
+      {
+        payload: 10,
+        text: I18N.Common.Commodity.LiquidGas,
+        uomId:8
+      },
+      {
+        payload: 10,
+        text: I18N.Common.Commodity.HeavyOil,
+        uomId:8
+      },
     ])
   },
 
