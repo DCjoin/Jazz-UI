@@ -164,8 +164,8 @@ export default class ChartComponent extends Component {
 
   dateChanged(chart, start, end, type) {
     analysisPanel.refs.dateTimeSelector.setDateField(start, end);
-    analysisPanel.refs.relativeDate.setState({
-      selectedIndex: 0
+    analysisPanel.setState({
+      relativeDate: 'Customerize'
     });
 
   if (type === 'resize' || this.refs.chart.navCache === false) {
