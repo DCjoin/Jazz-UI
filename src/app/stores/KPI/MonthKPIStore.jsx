@@ -98,7 +98,8 @@ const MonthKPIStore = assign({}, PrototypeStore, {
         _annualValueSum='-'
       }
       else {
-        _annualValueSum=_.sum(_.map(values,'Value'));
+        _annualValueSum=_.sum(_.map(values,(value)=>{
+          return parseFloat(value.Value===null || value.Value===''?0:value.Value)}));
       }
     }
     console.log(_annualValueSum);
