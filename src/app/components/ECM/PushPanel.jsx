@@ -373,8 +373,8 @@ export default class PushPanel extends Component {
     return(
       <div className="jazz-ecm-push-operation">
         <StatusCmp status={status} canEdit={canEditStatus(createUserId,this.state.infoTabNo)} onChange={this._onStatusChange.bind(this)}/>
-        <EnergySys {...prop.energySys}/>
         {this._renderPersonInCharge(problem,true)}
+        <EnergySys {...prop.energySys}/>
       </div>
     )
   }

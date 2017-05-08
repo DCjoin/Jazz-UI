@@ -383,7 +383,7 @@ export default class Supervisor extends Component {
           fontSize: '18px',
           marginTop:'-5px'
         };
-        var costIcon=<FontIcon className="icon-cost_saving" iconStyle ={iconStyle} style = {style} />;
+        var costIcon=<FontIcon className="icon-user" iconStyle ={iconStyle} style = {style} />;
       return(
         <IconText icon={costIcon} label={I18N.Setting.CustomerManagement.Principal}>
           <div style={{marginTop:'10px'}}>
