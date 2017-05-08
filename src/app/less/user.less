@@ -89,13 +89,13 @@
         }
         // Hide edit & add at view state
         .edit,
-        .add {
+        .add-user {
             display: none;
         }
         &.editing {
             // Hide view & add at edit state
             .view,
-            .add {
+            .add-user {
                 display: none;
             }
             // show view & exists at edit state
@@ -109,8 +109,9 @@
                     display: none;
                 }
                 // show add at edit adding
-                .add {
+                .add-user {
                     display: block;
+                    margin-top: -30px;
                 }
             }
         }

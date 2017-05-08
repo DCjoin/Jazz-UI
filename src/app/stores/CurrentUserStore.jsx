@@ -193,7 +193,8 @@ var CurrentUserStore = assign({}, PrototypeStore, {
     }
 
     if ( this.permit(PermissionCode.SENIOR_DATA_ANALYSE.FULL) ||
-          this.permit(PermissionCode.PUSH_SOLUTION.READONLY) ) {
+          this.permit(PermissionCode.PUSH_SOLUTION.READONLY)  ||
+          this.permit(PermissionCode.PUSH_SOLUTION.FULL) ) {
       menuItems.push(
         {
           getPath: RoutePath.ecm,

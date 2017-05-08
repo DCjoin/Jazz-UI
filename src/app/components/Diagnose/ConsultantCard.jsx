@@ -30,7 +30,7 @@ export default function ConsultantCard({
 					</div>
 					<div>
 						<FontIcon className='icon-language' style={{fontSize: 14, marginRight: 5}}/>
-						<a className='card-info-email' href='mailto: heheh@hehe.com'>{Email}</a>
+						<a className='card-info-email' href={'mailto: ' + Email}>{Email}</a>
 					</div>
 				</div>
 			</div>

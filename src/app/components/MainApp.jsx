@@ -26,6 +26,7 @@ import lang from '../lang/lang.jsx';
 import ExportChart from './energy/ExportChart.jsx';
 import MainAppBar from './MainAppBar.jsx';
 import SelectCustomer from './SelectCustomer.jsx';
+import ConsultantCard from 'components/Diagnose/ConsultantCard.jsx';
 
 import MainAction from 'actions/MainAction.jsx';
 import UserAction from 'actions/UserAction.jsx';
@@ -39,6 +40,7 @@ import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import CurrentUserCustomerStore from 'stores/CurrentUserCustomerStore.jsx';
 import HierarchyStore from 'stores/HierarchyStore.jsx';
 import LoginStore from 'stores/LoginStore.jsx';
+import DiagnoseStore from 'stores/DiagnoseStore.jsx';
 import MeasuresAction from 'actions/ECM/MeasuresAction.jsx';
 import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
@@ -180,7 +182,22 @@ let MainApp = React.createClass({
       if(defaultReplace && !router.isActive(defaultReplace)) {
         router.replace(defaultReplace);
       } else {
-        this.forceUpdate();
+        if(!this.state.hierarchyId) {
+          let WholeCustomer = getCustomerPrivilageById( customerId ) && getCustomerPrivilageById( customerId ).get('WholeCustomer');
+          let initHierarchyId = router.location.query.init_hierarchy_id;
+          let hierarchyId = customerId * 1;
+          if(!WholeCustomer && HierarchyStore.getBuildingList()[0]) {
+            hierarchyId = HierarchyStore.getBuildingList()[0].Id * 1;
+          }
+          
+          this.setState({
+            hierarchyId
+          },this.forceUpdate);
+          DiagnoseAction.getConsultant(hierarchyId);
+
+        } else {
+          this.forceUpdate();
+        }
       }
 
       if( customerId && !this.state.hierarchyId ) {
@@ -195,6 +212,7 @@ let MainApp = React.createClass({
         },()=>{
           this._getECMUnread();
           this._getDiagnoseProblem();
+          DiagnoseAction.getConsultant(hierarchyId);
         });
         if( initHierarchyId ) {
           let {pathname, query} = router.location,
@@ -209,6 +227,7 @@ let MainApp = React.createClass({
             // router.push(pathname + search );
             this._getECMUnread();
             this._getDiagnoseProblem();
+            DiagnoseAction.getConsultant(initHierarchyId);
           });
         }
       }
@@ -230,6 +249,7 @@ let MainApp = React.createClass({
       this.setState({
         hierarchyId
       }, () => {
+        DiagnoseAction.getConsultant(hierarchyId);
         let {pathname, query} = this.props.router.location;
         query.init_hierarchy_id = hierarchyId;
         this.props.router.push(pathname + '?' + querystring.stringify(query) );
@@ -278,6 +298,12 @@ let MainApp = React.createClass({
     </div>);
   },
 
+  _onShowConsultantCard: function() {
+    this.setState({
+      showConsultantCard: true
+    });
+  },
+
   render: function() {
     let customerId = this.props.params.customerId;
     let hierarchyId = this.state.hierarchyId;
@@ -311,6 +337,13 @@ let MainApp = React.createClass({
             {customerId && this.props.children}
             <NetworkChecker />
             <ExportChart />
+            {this.state.hierarchyId && DiagnoseStore.getConsultant() && <ConsultantCard
+              {...DiagnoseStore.getConsultant()}
+              HierarchyName={
+                customerId == hierarchyId ? getCustomerById(customerId).Name :
+                (find(HierarchyStore.getBuildingList(), 
+                  hier => hier.Id === this.state.hierarchyId)||{}).Name}
+            />}
           </div>
         );
       } else {
@@ -331,7 +364,9 @@ let MainApp = React.createClass({
       );
   },
   componentWillMount() {
-    this.state = {};
+    this.state = {
+      showConsultantCard: false
+    };
   },
   componentDidMount() {
     UOMStore.addChangeListener(this._onAllUOMSChange);
@@ -341,6 +376,7 @@ let MainApp = React.createClass({
     CurrentUserCustomerStore.addChangeListener(this._onChange);
     CurrentUserStore.addCurrentUserListener(this._onChange);
     HierarchyStore.addBuildingListListener(this._onChange);
+    DiagnoseStore.addConsultantListener(this._onShowConsultantCard);
 
     MainAction.getAllUoms();
     MainAction.getAllCommodities();
@@ -362,6 +398,7 @@ let MainApp = React.createClass({
     CurrentUserCustomerStore.removeChangeListener(this._onChange);
     CurrentUserStore.removeCurrentUserListener(this._onChange);
     HierarchyStore.removeBuildingListListener(this._onChange);
+    DiagnoseStore.removeConsultantListener(this._onShowConsultantCard);
   }
 });
 

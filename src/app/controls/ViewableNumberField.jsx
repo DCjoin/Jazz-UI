@@ -19,6 +19,7 @@ var ViewableNumberField = React.createClass({
   },
 
   _focus: false,
+  _touched:false,
 
   getDefaultProps: function() {
     return {
@@ -52,6 +53,7 @@ var ViewableNumberField = React.createClass({
     var node = ReactDom.findDOMNode(this.refs.tf);
     node.className = 'pop-viewableTextField-focus';
     this._focus = true;
+    this._touched = true;
   },
 
   _handleChange(event) {
@@ -62,6 +64,11 @@ var ViewableNumberField = React.createClass({
   },
 
   isValid(value = this.props.defaultValue) {
+    if(!this._touched) {
+      return {
+        valid: true
+      };
+    }
     if (!this.props.validate && value != null && value !== "" && !/^(\+|\-)?[0-9]+(.[0-9]+)?$/.test(value)) {
       return {
         valid: false,

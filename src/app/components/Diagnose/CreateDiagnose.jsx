@@ -487,6 +487,7 @@ export function DiagnoseRange({
 				renderFunc={(data, idx) =>
 					<div key={idx} style={{display: 'flex', alignItems: 'center'}}>
 					<MonthDayItem
+						type={0}
 						disabled={disabled}
 						isViewStatus={false}
 						month={new Date(data.StartTime).getMonth() + 1}
@@ -496,6 +497,7 @@ export function DiagnoseRange({
 						}}/>
 					至
 					<MonthDayItem
+						type={1}
 						disabled={disabled}
 						isViewStatus={false}
 						month={new Date(data.EndTime).getMonth() + 1}

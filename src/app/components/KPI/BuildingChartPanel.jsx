@@ -169,7 +169,10 @@ export default class BuildingChartPanel extends Component {
 						<div className='jazz-building-kpi-rank'>
 							<header className='jazz-building-kpi-rank-header hiddenEllipsis'>{currentTag.get('name')}</header>
 							<content className='jazz-building-kpi-rank-content'>
-								<div className='jazz-building-kpi-rank-time'>{this.context.router.location.query.groupKpiId ? I18N.Setting.KPI.Rank.LastRank : getRanlLabelDate(year)}</div>
+								<div className='jazz-building-kpi-rank-time'>{
+									this.context.router.location.query.groupKpiId ? 
+										(isThisYear ? I18N.Setting.KPI.Rank.LastRank : getRanlLabelDate(year)):
+										getRanlLabelDate(year)}</div>
 								<div>{currentTag.get('type') === 1 ? I18N.Setting.KPI.Rank.UsageAmountRank : I18N.Setting.KPI.Rank.RatioMonthSavingRank}</div>
 								{RankNumber(currentRank, isThisYear)}
 							</content>

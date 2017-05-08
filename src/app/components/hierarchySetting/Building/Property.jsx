@@ -229,7 +229,7 @@ var Property = React.createClass({
       propertyIndex = properties.findIndex(item => (item.get('Code') === code)),
       propertyItemValue = properties.getIn([propertyIndex, 'Values']);
     var addPropertyItem = Immutable.fromJS({
-      StartDate: d2j(new Date()),
+      StartDate: null,//d2j(new Date()),
       Value:''
     });
     propertyItemValue = propertyItemValue.unshift(addPropertyItem);
