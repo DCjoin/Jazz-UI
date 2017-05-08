@@ -318,6 +318,16 @@ const GroupKPIStore = assign({}, PrototypeStore, {
         text: I18N.Common.Commodity.CoalOther,
         uomId:8
       },
+      {
+        payload: 10,
+        text: I18N.Common.Commodity.LiquidGas,
+        uomId:8
+      },
+      {
+        payload: 10,
+        text: I18N.Common.Commodity.HeavyOil,
+        uomId:8
+      },
     ])
   },
 
@@ -354,8 +364,11 @@ const GroupKPIStore = assign({}, PrototypeStore, {
         _annualSum='-'
       }
         else {
-            _annualSum=_.sum(_.map(buildings,'AnnualQuota'));
+          _annualSum=_.sum(_.map(buildings,(value)=>{
+            return parseFloat(value.AnnualQuota===null || value.AnnualQuota===''?0:value.AnnualQuota)}));
         }
+            // _annualSum=_.sum(_.map(buildings,'AnnualQuota'));
+        
 
     }
     return _annualSum
