@@ -8,7 +8,7 @@ import assign from 'object-assign';
 import Immutable from 'immutable';
 import _ from 'lodash';
 import {remove, findIndex, flatten} from 'lodash';
-import {sortBy, map, find,filter} from 'lodash';
+import {orderBy, map, find,filter} from 'lodash';
 import { Map,List} from 'immutable';
 import SingleKPIStore from './SingleKPIStore.jsx';
 // import UOMStore from 'stores/UOMStore.jsx';
@@ -85,7 +85,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
   },
 
   setGroupByYear(data,info){
-    _groupInfo=Immutable.fromJS(data);
+    _groupInfo=Immutable.fromJS(data || []);
     // var thisYearKpiList=Immutable.fromJS(_groupSettingsList).filter(item=>(item.get('Year')===info.Year && item.get('GroupKpiItems').size>0)).first();
     // if(thisYearKpiList){
     //   thisYearKpiList.getIn(['GroupKpiItems']).forEach(item=>{
@@ -117,7 +117,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
       }
     }
     convertedData = convertedData.concat(data);
-    _groupSettingsList = sortBy(convertedData, ['Year']);
+    _groupSettingsList = orderBy(convertedData, 'Year', 'desc');
   },
 
   getGroupSettingsList() {

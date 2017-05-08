@@ -234,14 +234,14 @@ var CurrentUserStore = assign({}, PrototypeStore, {
       );
     }
 
-    if (this.permit(PermissionCode.ENERGY_ALARM.FULL)) {
-      menuItems.push(
-        {
-          getPath: RoutePath.alarm,
-          title: I18N.MainMenu.Alarm
-        }
-      );
-    }
+    // if (this.permit(PermissionCode.ENERGY_ALARM.FULL)) {
+    //   menuItems.push(
+    //     {
+    //       getPath: RoutePath.alarm,
+    //       title: I18N.MainMenu.Alarm
+    //     }
+    //   );
+    // }
 
     if (this.permit(PermissionCode.ENERGY_MANAGE.FULL)) {
       menuItems.push(
