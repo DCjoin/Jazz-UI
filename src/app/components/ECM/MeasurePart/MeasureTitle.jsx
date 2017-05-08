@@ -35,7 +35,6 @@ export class EnergySys extends Component {
     var {EnergyProblem}=measure.toJS();
     return(
       <div style={{display:'flex',justifyContent:'cneter'}}>
-        <div className='jazz-ecm-push-operation-label'>{`${I18N.Setting.ECM.SysLabel} : `}</div>
         {canEnergySysEdit?this._renderEnergySys()
                          :<div style={{fontSize:'16px',minWidth:'40px'}}>{MeasuresStore.getEnergySys(EnergyProblem.EnergySys)}</div>}
       </div>

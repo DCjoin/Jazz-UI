@@ -26,7 +26,7 @@
 
 .dialog-transition-group {
 
-    &-enter {        
+    &-enter {
         & .dialog {
             transform: translate3d(0px, -24px, 0px);
         }
@@ -57,8 +57,8 @@
 
     &-leave&-leave-active {
         & .dialog {
-            transform: translate3d(0px, -24px, 0px);    
-            transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1);        
+            transform: translate3d(0px, -24px, 0px);
+            transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1);
         }
         &.dialog-overlay {
             opacity: 0;
@@ -83,8 +83,8 @@
 
 .dialog-wrapper {
     width: 75%;
-    height: 75%;
-    max-width: 768px; 
+    height: 94%;//modified for GUI 2017/5/8
+    max-width: 768px;
     overflow: hidden;
     display: flex;
     flex-direction: column;

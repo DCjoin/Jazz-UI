@@ -64,7 +64,7 @@ export class MeasuresItem extends Component {
         return <div style={{display:"flex",flexDirection:'row',alignItems:'center',marginTop:'-3px'}}>
                 <FontIcon className="icon-no_ecm" color="#dc0a0a" iconStyle ={iconStyle} style = {style} />
                 <div style={{color:'#dc0a0a',fontSize:'14px'}}>{I18N.Setting.ECM.NoECM}</div>
-                <div style={{color:'#dc0a0a',marginLeft:'5px',fontSize:'10px'}}>{`(${I18N.Setting.ECM.EnergyProblem}:${EnergyProblem.Name})`}</div>
+                <div style={{color:'#505559',marginLeft:'10px',fontSize:'10px'}}>{`(${I18N.Setting.ECM.EnergyProblem}:${EnergyProblem.Name})`}</div>
               </div>
       }
     }
