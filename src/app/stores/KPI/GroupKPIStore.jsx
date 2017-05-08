@@ -364,8 +364,11 @@ const GroupKPIStore = assign({}, PrototypeStore, {
         _annualSum='-'
       }
         else {
-            _annualSum=_.sum(_.map(buildings,'AnnualQuota'));
+          _annualSum=_.sum(_.map(buildings,(value)=>{
+            return parseFloat(value.AnnualQuota===null || value.AnnualQuota===''?0:value.AnnualQuota)}));
         }
+            // _annualSum=_.sum(_.map(buildings,'AnnualQuota'));
+        
 
     }
     return _annualSum
