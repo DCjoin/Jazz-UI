@@ -5,10 +5,11 @@ import Ajax from '../ajax/Ajax.jsx';
 import util from 'util/Util.jsx'
 import CustomForm from 'util/CustomForm.jsx'
 let ReportAction = {
-  getReportListByCustomerId(hierarchyId, sortBy, order) {
+  getReportListByCustomerId(hierarchyId, sortBy, order, IsNew = 0) {
     Ajax.post('/DataReport/GetExportByHierarchyId', {
       params: {
         HierarchyId: hierarchyId,
+        IsNew
       },
       success: function(reportList) {
         AppDispatcher.dispatch({

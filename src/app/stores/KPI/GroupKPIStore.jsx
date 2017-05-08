@@ -85,7 +85,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
   },
 
   setGroupByYear(data,info){
-    _groupInfo=Immutable.fromJS(data);
+    _groupInfo=Immutable.fromJS(data || []);
     // var thisYearKpiList=Immutable.fromJS(_groupSettingsList).filter(item=>(item.get('Year')===info.Year && item.get('GroupKpiItems').size>0)).first();
     // if(thisYearKpiList){
     //   thisYearKpiList.getIn(['GroupKpiItems']).forEach(item=>{
