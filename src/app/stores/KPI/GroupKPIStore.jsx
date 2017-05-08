@@ -8,7 +8,7 @@ import assign from 'object-assign';
 import Immutable from 'immutable';
 import _ from 'lodash';
 import {remove, findIndex, flatten} from 'lodash';
-import {sortBy, map, find,filter} from 'lodash';
+import {orderBy, map, find,filter} from 'lodash';
 import { Map,List} from 'immutable';
 import SingleKPIStore from './SingleKPIStore.jsx';
 // import UOMStore from 'stores/UOMStore.jsx';
@@ -117,7 +117,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
       }
     }
     convertedData = convertedData.concat(data);
-    _groupSettingsList = sortBy(convertedData, ['Year']);
+    _groupSettingsList = orderBy(convertedData, 'Year', 'desc');
   },
 
   getGroupSettingsList() {
