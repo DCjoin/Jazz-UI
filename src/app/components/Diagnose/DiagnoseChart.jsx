@@ -112,11 +112,25 @@ function postNewConfig(data, isEdit, newConfig) {
       width: 2,
       value: triggerVal
     }];
-    let vals = data
-      .getIn(['EnergyViewData', 'TargetEnergyData', 0, 'EnergyData'])
-      .map(eData => eData.get('DataValue')).toJS(),
-    max = Math.max(...vals),
-    min = Math.min(...vals);
+    let vals = [];
+    let max  = triggerVal;
+    let min  = triggerVal;
+    data.getIn(['EnergyViewData', 'TargetEnergyData'])
+      .map( TargetEnergyData => TargetEnergyData.get('EnergyData').map(eData => {
+        let val = eData.get('DataValue');
+        if( val > max ) {
+          max = val;
+        }
+        if( val < min ) {
+          min = val
+        }
+        vals.push(eData.get('DataValue'));
+      }) )
+    // data
+    //   .getIn(['EnergyViewData', 'TargetEnergyData', 0, 'EnergyData'])
+    //   .map(eData => eData.get('DataValue')).toJS(),
+    // max = Math.max(...vals),
+    // min = Math.min(...vals);
 
     if(vals && vals.length > 0) {
       if(max < triggerVal) {
