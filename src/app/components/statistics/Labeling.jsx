@@ -338,7 +338,7 @@ var Labeling = React.createClass({
       selectedYear: selectedData.get('StartYear'),
       onYearPickerSelected: me._onItemChange.bind(null, 'StartYear'),
       style: {
-        width: '90px'
+        width: '100px'
       }
     };
     var endYearProps = {
@@ -347,7 +347,7 @@ var Labeling = React.createClass({
       selectedYear: selectedData.get('EndYear'),
       onYearPickerSelected: me._onItemChange.bind(null, 'EndYear'),
       style: {
-        width: '90px'
+        width: '100px'
       }
     };
     var grade = (<div className="jazz-labeling-content-grade">
