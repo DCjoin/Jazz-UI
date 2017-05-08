@@ -274,7 +274,7 @@ class SupervisorDropDownMenu extends Component{
                                           <CircularProgress  mode="indeterminate" size={80} />
                                       </div>
                                     :  this.props.supervisorList.size===0
-                                                            ? <div style={{height:'33px',width:'220px',fontSize:'14px',color:"#0f0f0f"}}>
+                                                            ? <div style={{height:'77px',width:'220px',lineHeight:'77px',verticalAlign:'middle',paddingLeft:'20px',fontSize:'14px',color:"#505559"}}>
                                                                   {I18N.Setting.ECM.NoSupervior}
                                                               </div>
                                                               :this.props.supervisorList.map(supervisorList=>{
@@ -324,7 +324,7 @@ class SupervisorDropDownMenu extends Component{
                 operationMenuOpen: false,
               })
             }}>
-            <FontIcon className="icon-cost_saving" color="#3dcd58" style={{marginRight:'5px',fontSize:'14px'}}/>
+            <FontIcon className="icon-user" color="#3dcd58" style={{marginRight:'5px',fontSize:'14px'}}/>
             {I18N.Setting.ECM.AddSupervior}</div>
           </Popover>
           {this.state.editDialogShow && <SupervisorDialog person={this.state.editPerson}
