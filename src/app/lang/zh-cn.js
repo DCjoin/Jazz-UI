@@ -182,6 +182,7 @@ I18N.Common.Commodity.HeavyWater = '重水';
 I18N.Common.Commodity.ReclaimedWater = '中水';
 I18N.Common.Commodity.LightWater = '轻水';
 I18N.Common.Commodity.DieselOil = '柴油';
+I18N.Common.Commodity.Cost = '成本';
 I18N.Common.Commodity.LiquidGas = '液化气';
 I18N.Common.Commodity.HeavyOil = '重油';
 I18N.Common.Commodity.Carbon = '碳';
