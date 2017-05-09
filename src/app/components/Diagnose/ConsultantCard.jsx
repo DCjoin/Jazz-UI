@@ -9,7 +9,7 @@ export default function ConsultantCard({
 	HierarchyName,
 }) {
 	return (
-		<div>
+		<div style={{zIndex: 1}}>
 			<input type='checkbox' id='cardCheckbox' name='cardCheckbox' className='card-checkbox'/>
 			<label className='card-overlay' htmlFor='cardCheckbox'/>
 			<div className='consultant-card-widgets'>
