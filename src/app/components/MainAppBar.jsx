@@ -346,7 +346,8 @@ var MainAppBar = React.createClass({
       location.pathname.replace(/(\w)+(-)?(\w)*/,
         (params.lang === 'en-us') ? 'zh-cn' : 'en-us')
       + location.search);
-    document.location.reload();
+    setTimeout(() =>{ document.location.reload() }, 0);
+    // document.location.reload();
   },
   _onMailLoaded: function() {
     var params = getParams(this.context.router);

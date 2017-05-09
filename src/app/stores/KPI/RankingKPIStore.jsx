@@ -87,10 +87,10 @@ const RankingKPIStore = assign({}, PrototypeStore, {
   getUnitType(type){
     var units=Immutable.fromJS(this.getAlgorithmList());
     return units.push(
-      {
+      Immutable.fromJS({
         Id:Unit.MonthScale,
         Name:I18N.Setting.KPI.Group.Ranking.MonthUsaged
-      }
+      })
     ).find(item=>(item.get('Id')===type)).get('Name')
   },
 
