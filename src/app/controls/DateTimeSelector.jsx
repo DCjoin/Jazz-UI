@@ -250,7 +250,6 @@ let DateTimeSelector = React.createClass({
         {this.props.showTime && <CalendarTime ref='endTime' {...endTimeProps}/>}
       </div>
     </div>;
-
   }
 });
 module.exports = DateTimeSelector;
