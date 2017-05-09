@@ -122,7 +122,7 @@ class AnalysisPanel extends Component {
   componentWillReceiveProps() {
     this.setState({
       isViewName: true
-    });    
+    });
   }
 
   getInitTimeRanges(){
@@ -839,7 +839,7 @@ class AnalysisPanel extends Component {
       <div className="head">
         <div style={{display:'flex',alignItems:'center'}}>
           <div className="title">
-            <ViewableTextField 
+            <ViewableTextField
               isViewStatus={this.state.isViewName}
               style={{width: 'auto'}}
               defaultValue={this.props.chartTitle}
@@ -852,7 +852,7 @@ class AnalysisPanel extends Component {
                 });
               }}
             />
-            {this.state.isViewName && 
+            {this.state.isViewName &&
             <IconButton iconClassName='icon-edit' onClick={() => {
               this.setState({
                 isViewName: false
@@ -1047,7 +1047,7 @@ class AnalysisPanel extends Component {
   _renderRemark(){
     var remarkTextArea = null;
       if (this.state.remarkDisplay) {
-        remarkTextArea = <div className='jazz-energy-remark-text'><TextField hintText={I18N.Remark.DefaultText} value={this.state.remarkText} onChange={this.getRemarck} hintStyle={{
+        remarkTextArea = <div className='jazz-energy-remark-text' style={{width:'100%'}}><TextField hintText={I18N.Remark.DefaultText} value={this.state.remarkText} onChange={this.getRemarck} hintStyle={{
             color: '#abafae'
           }} multiLine={true} underlineShow={false}></TextField></div>;
         }
@@ -1057,10 +1057,7 @@ class AnalysisPanel extends Component {
               'jazz-energy-remark-container': true,
               'jazz-energy-remark-expand': true
             }
-          )}>
-          <div style={{
-                textAlign: 'center'
-              }}>
+          )} style={{display:'flex',alignItems:'center'}}>
               <div className='jazz-energy-remark-button'>
                 <RaisedButton label={I18N.Remark.Label} onClick={()=>{
                     this.setState({
@@ -1068,7 +1065,6 @@ class AnalysisPanel extends Component {
                     })}
                   }/>
               </div>
-            </div>
             {remarkTextArea}
           </div>;
       return remarkDiv;

@@ -34,10 +34,10 @@ export default class ReportChart extends Component {
 					<div>{data.get('Name')}</div>
 					<div>{url && <LinkButton onClick={() => onDownload(id)} iconName='download-icon' label={'下载'}/>}</div>
 				</div>
-				{url ? <iframe 
+				{url ? <iframe
 					src={`https://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(url)}`}
-					border="0" 
-					height='600'
+					border="0"
+					height='550'
 					width='100%'/> :
 					<div style={{height: 600}} className='flex-center'><b>{'无效模板'}</b></div>}
 			</div>

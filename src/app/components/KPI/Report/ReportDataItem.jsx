@@ -150,8 +150,8 @@ let ReportDataItem = React.createClass({
     if(value>20 && value<33){
       //January ,February ...December
       var month=value-21,
-          start=moment().month(month).date(1)._d,
-          end=moment().month(month).date(CommonFuns.getDaysOfMonth(month))._d;
+          start=moment().month(month).date(1).hour(0).minute(0).second(0).millisecond(0)._d,
+          end=moment().month(month).date(CommonFuns.getDaysOfMonth(month)).hour(24).minute(0).second(0).millisecond(0)._d;
           dateSelector.setDateField(start, end);
     }
     this._handleStepDisabled(value);
@@ -387,7 +387,7 @@ let ReportDataItem = React.createClass({
           var month=this.props.dateType-21,
               year=moment().year();
               startTime=moment([year,month,1,0,0,0,0])._d,
-              endTime=moment([year,month,CommonFuns.getDaysOfMonth(month),1,0,0,0])._d;
+              endTime=moment([year,month,CommonFuns.getDaysOfMonth(month),24,0,0,0])._d;
         }
         dateSelector.setDateField(startTime, endTime);
       } else {
@@ -417,7 +417,7 @@ let ReportDataItem = React.createClass({
           var month=this.props.dateType-21,
               year=moment().year();
           startTime=moment([year,month,1,0,0,0,0])._d,
-          endTime=moment([year,month,CommonFuns.getDaysOfMonth(month),0,0,0,0])._d;
+          endTime=moment([year,month,CommonFuns.getDaysOfMonth(month),24,0,0,0])._d;
         }
         dateSelector.setDateField(startTime, endTime);
       } else {
