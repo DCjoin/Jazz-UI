@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import classnames from 'classnames';
 import assign from 'object-assign';
-import {findLastIndex, fill, map, some, find, sum} from 'lodash';
+import {findLastIndex, fill, map, some, find, sum, filter} from 'lodash';
 import CircularProgress from 'material-ui/CircularProgress';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
@@ -103,7 +103,7 @@ class ActualityContent extends Component {
 		if( !chartReady || ( 
 				hierarchyId === customerId && 
 				year !== SingleKPIStore.getKPIDefaultYear() && 
-				some(SingleKPIStore.getKPIRank(), rank => rank && !rank.YearRank ) ) ) {
+				filter(SingleKPIStore.getKPIRank(), rank => rank).some(rank => !rank.YearRank ) ) ) {
 			return (<div className="content flex-center"><CircularProgress  mode="indeterminate" size={80} /></div>);
 		}
 		if( isFull() ) {
