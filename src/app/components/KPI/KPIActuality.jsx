@@ -100,7 +100,10 @@ class ActualityContent extends Component {
 	render() {
 		let {data, summaryData, period, year, onChangeYear, customerId, hierarchyId, onEdit, onRefresh, chartReady} = this.props,
 		message;
-		if( !chartReady || ( hierarchyId === customerId && year !== SingleKPIStore.getKPIDefaultYear() && some(SingleKPIStore.getKPIRank(), rank => !rank || !rank.YearRank ) ) ) {
+		if( !chartReady || ( 
+				hierarchyId === customerId && 
+				year !== SingleKPIStore.getKPIDefaultYear() && 
+				some(SingleKPIStore.getKPIRank(), rank => rank && !rank.YearRank ) ) ) {
 			return (<div className="content flex-center"><CircularProgress  mode="indeterminate" size={80} /></div>);
 		}
 		if( isFull() ) {
