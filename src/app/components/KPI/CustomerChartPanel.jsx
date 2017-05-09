@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Immutable from 'immutable';
-import {find} from 'lodash';
-import {isNull, isUndefined} from 'lodash';
+import {isNull, isUndefined, find, last} from 'lodash';
 
 import KPIReport from './KPIReport.jsx';
 import RankChart from './Group/RankChart.jsx';
@@ -31,6 +30,7 @@ export default function CustomerChartPanel(props) {
 		<div>
 			{(period && period.length > 0 && tags && tags.size > 0) ?
 				tags.map( (tag, i) => <KPIReport
+					currentYearDone={last(period).clone().add(1, 'months').isBefore(new Date())}
 					isGroup={true}
 					period={period}
 					data={tag}
