@@ -87,8 +87,8 @@ let YaxisSelector = React.createClass({
       for (let j = 0; j < _storedConfig.length; j++) {
         if (yaxis[i].options.yname == _storedConfig[j].uom) { //navigator's yaxis donot have yTitle
           yaxis[i].update({
-            max: _storedConfig[j].val[0],
-            min: _storedConfig[j].val[1]
+            max: _storedConfig[j].val[0]==='' || _storedConfig[j].val[0]===null?yaxis[i].max:_storedConfig[j].val[0],
+            min: _storedConfig[j].val[1]==='' || _storedConfig[j].val[1]===null?yaxis[i].min:_storedConfig[j].val[1]
           }, false);
           up = true;
         }
