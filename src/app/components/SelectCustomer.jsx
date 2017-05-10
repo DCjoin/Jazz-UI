@@ -1,24 +1,19 @@
 'use strict';
 
 import React from 'react';
-import { Navigation, State } from 'react-router';
 import classNames from 'classnames';
-import _findIndex from 'lodash/findIndex';
 import assign from 'object-assign';
 
-import BackgroudImage from '../controls/BackgroundImage.jsx';
-import CurrentUserCustomerStore from '../stores/CurrentUserCustomerStore.jsx';
-import SelectCustomerActionCreator from '../actions/SelectCustomerActionCreator.jsx';
-import LoginStore from '../stores/LoginStore.jsx';
-import CurrentUserStore from '../stores/CurrentUserStore.jsx';
-import CurrentUserAction from '../actions/CurrentUserAction.jsx';
-import CommodityStore from '../stores/CommodityStore.jsx';
-import HierarchyAction from '../actions/hierarchySetting/HierarchyAction.jsx';
-import RoutePath from '../util/RoutePath.jsx';
-var timeoutHandler = null;
-var _ = {
-  findIndex: _findIndex
-};
+import RoutePath from 'util/RoutePath.jsx';
+
+import BackgroudImage from 'controls/BackgroundImage.jsx';
+
+import CurrentUserCustomerStore from 'stores/CurrentUserCustomerStore.jsx';
+import LoginStore from 'stores/LoginStore.jsx';
+import CurrentUserStore from 'stores/CurrentUserStore.jsx';
+import CommodityStore from 'stores/CommodityStore.jsx';
+
+import HierarchyAction from 'actions/hierarchySetting/HierarchyAction.jsx';
 
 function getFirstMenuPathFunc(menu) {
   let firstMenu = menu[0];
@@ -36,18 +31,13 @@ function getFirstMenuPathFunc(menu) {
   return  firstMenu.getPath;
 }
 
-var SelectCustomer = React.createClass({
+const SelectCustomer = React.createClass({
   propTypes: {
     onClose: React.PropTypes.func,
   },
   contextTypes: {
     router: React.PropTypes.object,
     currentRoute: React.PropTypes.object,
-  },
-  getInitialState: function() {
-    return {
-      currentIndex: 0,
-    };
   },
   _hasClose() {
     return this._getCurrentCustomerId() || this._getCusNum();
@@ -74,115 +64,22 @@ var SelectCustomer = React.createClass({
     }
     this.context.router.replace(pathname);
 
-    // this.context.router.
   },
   _onClose() {
-
-    this.setState(this.getInitialState());
     if(this.props.onClose) {
       this.props.onClose();
     }
   },
-  _selectCustomerChangeHandler: function(selectedIndex) {
-    if (this.state.currentIndex == selectedIndex) {
-      CommodityStore.resetHierInfo();
-      HierarchyAction.resetAll();
+  _selectCustomerChangeHandler: function(customerId) {
+    CommodityStore.resetHierInfo();
+    HierarchyAction.resetAll();
 
-      this.context.router.replace(getFirstMenuPathFunc( this._getMenuItems() )(
-        assign({}, this.context.currentRoute.params, {
-          customerId: CurrentUserCustomerStore.getAll()[selectedIndex].Id
-        })
-      ));
-      this._onClose();
-    } else {
-      this.setState({
-        currentIndex: selectedIndex
-      });
-    }
-  },
-
-  _getCustomerList() {
-    var customerList = CurrentUserCustomerStore.getAll();
-    if (customerList && customerList.length > 0) {
-      customerList = customerList.map(((item, idx) => {
-        var style = {
-          opacity: 0.95
-        };
-        var innerStyle = {
-          width: '90%',
-          height: '90%',
-          cursor: 'pointer'
-        };
-        var baseWidth = this.state.screenWidth / 5.5;
-        var baseHeight = baseWidth / 2;
-        if (baseWidth < 210)
-          baseWidth = 210;
-        style.width = baseWidth + 'px';
-        style.height = baseHeight + 'px';
-        style.minWidth = style.width;
-        var gap = this.state.currentIndex - idx;
-        var title = null;
-        if (this.state.currentIndex != idx) {
-          var absGap = Math.abs(gap);
-          if (absGap == 1) {
-            style.opacity = 0.8;
-            innerStyle.width = '48%';
-            innerStyle.height = '48%';
-          } else if (absGap == 2) {
-            style.opacity = 0.65;
-            innerStyle.width = '32%';
-            innerStyle.height = '32%';
-          }
-        } else {
-          title = item.Name;
-        }
-        style.left = ((this.state.screenWidth - 150 * 2 - baseWidth) / 2 - this.state.currentIndex * baseWidth) + 'px';
-
-        var imageContent = {
-          hierarchyId: item.Id,
-        };
-        var customerName = item.Name;
-
-        return (
-          <div className="jazz-select-customer-ct" style={style} key={idx} onClick={this._selectCustomerChangeHandler.bind(this, idx)} >
-                    <div style={innerStyle} title={customerName}>
-                      <BackgroudImage imageContent={imageContent} />
-                    </div>
-                    {customerName && <span className="jazz-select-cusName">{customerName}</span>}
-                </div>
-          );
-      }).bind(this));
-
-      return customerList;
-    }
-    return
-  },
-
-  _prevPage() {
-    if (this.state.currentIndex > 0) {
-      this.setState({
-        currentIndex: this.state.currentIndex - 1
-      });
-    }
-  },
-  _nextPage() {
-    var customerList = CurrentUserCustomerStore.getAll();
-    if (this.state.currentIndex < (customerList.length - 1)) {
-      this.setState({
-        currentIndex: this.state.currentIndex + 1
-      });
-    }
-  },
-
-  _handleResize() {
-    if (timeoutHandler != null) {
-      clearTimeout(timeoutHandler);
-    }
-    timeoutHandler = setTimeout(() => {
-      this.setState({
-        screenWidth: document.getElementById('emopapp').clientWidth
-      });
-    }, 400);
+    this.context.router.replace(getFirstMenuPathFunc( this._getMenuItems() )(
+      assign({}, this.context.currentRoute.params, {
+        customerId
+      })
+    ));
+    this._onClose();
   },
 
   _sysManagement() {
@@ -192,132 +89,34 @@ var SelectCustomer = React.createClass({
     this._onClose();
   },
 
-  componentDidMount: function() {
-    window.addEventListener('resize', this._handleResize);
-
-    var that = this,
-      app = document.getElementById('emopapp');
-
-    this.setState({
-      screenWidth: app.clientWidth,
-    });
-  },
-  componentWillMount: function() {
-    window.addEventListener('resize', this._handleResize);
-
-    if (this._getCustomerList()) {
-      var customerList = CurrentUserCustomerStore.getAll();
-      var idx = _.findIndex(customerList, customer => customer.Id === this.context.currentRoute.params.customerId * 1);
-      if (idx < 0) {        
-        idx = 0;
-      }
-      this.setState({
-        currentIndex: idx
-      });
-    }
-  },
-
   render: function() {
-    var overlayClass = classNames('overlay-background', {
-        "pop-overlay": true,
-        "pop-is-shown": true
-    });
-    var scollerStyle={
-        display:'flex',
-        flex:1,
-        flexDirection:'column'
-    };
-    if ( this._hasClose() ) {
-      var closeButton = (
-      <em className="icon-close pop-close-overlay-icon" onClick={this._onClose} style={{
-        margin: -10,
-        padding: 10,
-        position: 'absolute',
-        zIndex: 100,
-        top: '30px',
-        right: '30px',
-        color: '#fff'
-      }}></em>
-      );
-    }
-    var leftHandlerBarStyle = {};
-    var rightHandlerBarStyle = {};
-    var spManagementStyle = {};
-    if (this.state.currentIndex === 0) {
-      leftHandlerBarStyle.visibility = 'hidden';
-    }
-    if (this.state.currentIndex == (CurrentUserCustomerStore.getAll().length - 1)) {
-      rightHandlerBarStyle.visibility = 'hidden';
-    }
     return (
-      <div style={{
-        position: 'fixed',
-        width: '100%',
-        height: '100%',
-        zIndex: 999,
-        left: 0,
-        top: 0,
-      }}>
-                <div className="jazz-selectbg"></div>
-                <div style={{
-                  backgroundColor: '#fff',
-                  width: '100%',
-                  height: '100%',
-                  position: 'fixed'
-                }}></div>
-                <div className="jazz-mask"></div>
-                <div className="jazz-customerList">
-                  <div style={{
-        width: '100%',
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center'
-      }}>
-                    <span style={{
-        position: 'fixed',
-        width: '100%',
-        fontSize: '22px',
-        top: "20%",
-        textAlign: 'center',
-        color: 'white'
-      }}>{I18N.SelectCustomer.Title}</span>
-                    <div style={{
-        display: 'flex',
-        flex: 1,
-        flexDirection: 'column'
-      }}>
-                      {closeButton}
-                      <div style={{
-        flex: 1,
-        display: 'flex'
-      }}>
-                        <div className="jazz-select-customer-handler" style={leftHandlerBarStyle} onClick ={this._prevPage} >
-                          <em className="icon-arrow-left"></em>
-                        </div>
-                        <div style={{
-        flex: 1,
-        display: 'flex',
-        alignItems: 'center',
-        overflow: 'hidden'
-      }}>
-                          <div id="pop_select_customer_list" style={{
-        flex: 1,
-        display: 'flex'
-      }}>{this._getCustomerList()}</div>
-                        </div>
-                        <div className="jazz-select-customer-handler" style={rightHandlerBarStyle} onClick ={this._nextPage}>
-                          <em className="icon-arrow-right"></em>
-                        </div>
-                      </div>
-                    </div>
-                    {LoginStore.checkHasSpAdmin() && <span title={I18N.SelectCustomer.SysManagementTip} className="jazz-select-sp-manage" style={spManagementStyle}
-      onClick={this._sysManagement}>{I18N.SelectCustomer.SysManagement}></span>}
-                  </div>
-                </div>
-            </div>
+      <div className='jazz-select-customer'>
+        {this._hasClose() && <em onClick={this._onClose} className='icon-close'/>}
+        <header className="jazz-select-customer-header">
+          <span className='step'>{I18N.SelectCustomer.Title}</span>
+          {LoginStore.checkHasSpAdmin() && 
+          <a href='javascript:void(0)' 
+            className="jazz-select-customer-sp-manage"
+            title={I18N.SelectCustomer.SysManagementTip} 
+            onClick={this._sysManagement}>
+            {I18N.SelectCustomer.SysManagement}
+            <em className='icon-setting'/>
+          </a>}
+        </header>
 
-      );
+        <ul className='jazz-select-customer-list'>
+          {CurrentUserCustomerStore.getAll().map( cus => 
+            <li className='jazz-select-customer-item'>
+              <a href='javascript:void(0)' className='jazz-select-customer-item-content' onClick={() => this._selectCustomerChangeHandler(cus.Id)}>
+                <div className='jazz-select-customer-item-logo'><BackgroudImage imageContent={{hierarchyId: cus.Id}}/></div>
+                {cus.Name}
+              </a>
+            </li>
+           )}
+        </ul>
+      </div>
+    );
   }
 });
 

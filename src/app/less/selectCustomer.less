@@ -14,7 +14,6 @@
   height: 100%;
   background-color: rgba(23, 25, 25, 0.5);
   position: absolute;
-  margin-top: -88px;
 }
 
 .jazz-customerList{
@@ -22,19 +21,6 @@
   height: 100%;
   position: absolute;
   margin-top: -88px;
-}
-
-.jazz-select-customer-handler{
-    width:150px;
-    color:white;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    cursor: pointer;
-    font-size: 48px;
-    &:hover{
-        opacity:0.5;
-    }
 }
 
 .jazz-select-sp-manage{
@@ -49,25 +35,67 @@
     }
 }
 
-.jazz-select-customer-ct {
-    transition: left 0.5s ease-in-out 0;
-    position: relative;
+.jazz-select-customer {
+
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  background-color: #282d27;
+  color: #ffffff;
+
+  &-header {
+    margin: 30px;
+    height: 22px;
     display: flex;
+    justify-content: space-between;
+  }
+
+  &-list {
+    display: flex;
+    flex-wrap: wrap;
+    height: calc(~'100% - 82px');
+    overflow-x: hidden;
+    overflow-y: auto;
+    align-items: center;
+  }
+
+  &-item {
+    width: 33%;
+    flex: none;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
-    box-sizing: border-box;
-    width: 100px;
-    height: 100px;
-}
+    display: flex;
+    height: 33%;
 
-.jazz-select-cusName{
-  width: 100%;
-  left: 0;
-  top: 110%;
-  color: #fff;
-  text-align: center;
-  position: absolute;
-  font-size: 20px;
-  word-break: break-all;
+    &-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: auto;
+    }
+
+    &-logo {
+      width: 170px;
+      height: 90px;
+      border-bottom: 1px solid #9fa0a4;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+    }
+  }
+
+  & .icon-close {    
+    z-index: 100;
+    position: absolute;
+    top: 5px;
+    right: 10px;
+
+    .cursorPoint;
+  }
+
+  & .icon-setting {
+    margin-left: 20px;
+  }
 }
