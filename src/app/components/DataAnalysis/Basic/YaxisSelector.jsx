@@ -388,13 +388,16 @@ var MaxMinPair = React.createClass({
         width: '100px',
         display: 'inline-block'
       }}>{I18N.Common.Glossary.Max}</span>
-    <TextField hintText={I18N.Common.Glossary.Auto} value={this.state.maxValue} errorText={this.state.maxError} onChange={this._onMaxFieldChange} ref={this.props.uom + '_max'} value={this.state.maxValue}/>
+    <TextField hintText={I18N.Common.Glossary.Auto} value={this.state.maxValue} errorText={this.state.maxError}
+      onChange={this._onMaxFieldChange} onBlur={this._onMaxFieldBlur}
+      ref={this.props.uom + '_max'} value={this.state.maxValue}/>
                <span>{this.props.uom}</span></div>
          <div style={{display:'flex',alignItems:'center'}}> <span style={{
         width: '100px',
         display: 'inline-block'
       }}>{I18N.Common.Glossary.Min}</span>
-    <TextField hintText={I18N.Common.Glossary.Auto} value={this.state.minValue} errorText={this.state.minError} onChange={this._onMinFieldChange}ref={this.props.uom + '_min'} value={this.state.minValue}/>
+    <TextField hintText={I18N.Common.Glossary.Auto} value={this.state.minValue} errorText={this.state.minError}
+      onChange={this._onMinFieldChange} onBlur={this._onMinFieldBlur} ref={this.props.uom + '_min'} value={this.state.minValue}/>
                <span>{this.props.uom}</span></div>
        </div>;
   },
@@ -403,17 +406,26 @@ var MaxMinPair = React.createClass({
     this.setState({
       maxValue: e.currentTarget.value,
       maxError:'',
-      minValue:this.state.minValue?this.state.minValue:e.currentTarget.value,
     });
+  },
+  _onMaxFieldBlur(){
+    this.setState({
+      minValue:this.state.minValue?this.state.minValue:this.state.maxValue,
+    })
   },
   _onMinFieldChange(e) {
     //this.refs[this.props.uom + '_min'].setErrorText();
     this.setState({
       minValue: e.currentTarget.value,
       minError:'',
-      maxValue:this.state.maxValue?this.state.maxValue:e.currentTarget.value,
+
     });
-  }
+  },
+  _onMinFieldBlur(){
+    this.setState({
+      maxValue:this.state.maxValue?this.state.maxValue:this.state.minValue,
+    })
+  },
 });
 
 YaxisSelector.reset = function() {
