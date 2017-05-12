@@ -87,8 +87,8 @@ let YaxisSelector = React.createClass({
       for (let j = 0; j < _storedConfig.length; j++) {
         if (yaxis[i].options.yname == _storedConfig[j].uom) { //navigator's yaxis donot have yTitle
           yaxis[i].update({
-            max: _storedConfig[j].val[0],
-            min: _storedConfig[j].val[1]
+            max: _storedConfig[j].val[0]==='' || _storedConfig[j].val[0]===null?yaxis[i].max:_storedConfig[j].val[0],
+            min: _storedConfig[j].val[1]==='' || _storedConfig[j].val[1]===null?yaxis[i].min:_storedConfig[j].val[1]
           }, false);
           up = true;
         }
@@ -333,22 +333,22 @@ var YaxisDialog = React.createClass({
         minValue = maxMinPair.state.minValue,
         maxError='',minError='';
 
-      if (maxValue === '' && minValue === '') {
-        //flag = false;
-        continue;
-      } else if (maxValue === '') {
-        maxError=I18N.Common.Label.MandatoryEmptyError;
-        flag = false;
-      } else if (minValue === '') {
-        minError=I18N.Common.Label.MandatoryEmptyError;
-        flag = false;
-      }
+      // if (maxValue === '' && minValue === '') {
+      //   //flag = false;
+      //   continue;
+      // } else if (maxValue === '') {
+      //   maxError=I18N.Common.Label.MandatoryEmptyError;
+      //   flag = false;
+      // } else if (minValue === '') {
+      //   minError=I18N.Common.Label.MandatoryEmptyError;
+      //   flag = false;
+      // }
 
-      if (!isNumeric(maxValue)) {
+      if (!isNumeric(maxValue) && maxValue!=='') {
         maxError=I18N.Common.Label.MandatoryNumberError;
         flag = false;
       }
-      if (!isNumeric(minValue)) {
+      if (!isNumeric(minValue) && minValue!=='') {
         minError=I18N.Common.Label.MandatoryNumberError;
         flag = false;
       }
@@ -389,15 +389,14 @@ var MaxMinPair = React.createClass({
         display: 'inline-block'
       }}>{I18N.Common.Glossary.Max}</span>
     <TextField hintText={I18N.Common.Glossary.Auto} value={this.state.maxValue} errorText={this.state.maxError}
-      onChange={this._onMaxFieldChange} onBlur={this._onMaxFieldBlur}
-      ref={this.props.uom + '_max'} value={this.state.maxValue}/>
+      onChange={this._onMaxFieldChange} ref={this.props.uom + '_max'} value={this.state.maxValue}/>
                <span>{this.props.uom}</span></div>
          <div style={{display:'flex',alignItems:'center'}}> <span style={{
         width: '100px',
         display: 'inline-block'
       }}>{I18N.Common.Glossary.Min}</span>
     <TextField hintText={I18N.Common.Glossary.Auto} value={this.state.minValue} errorText={this.state.minError}
-      onChange={this._onMinFieldChange} onBlur={this._onMinFieldBlur} ref={this.props.uom + '_min'} value={this.state.minValue}/>
+      onChange={this._onMinFieldChange} ref={this.props.uom + '_min'} value={this.state.minValue}/>
                <span>{this.props.uom}</span></div>
        </div>;
   },
@@ -408,11 +407,6 @@ var MaxMinPair = React.createClass({
       maxError:'',
     });
   },
-  _onMaxFieldBlur(){
-    this.setState({
-      minValue:this.state.minValue?this.state.minValue:this.state.maxValue,
-    })
-  },
   _onMinFieldChange(e) {
     //this.refs[this.props.uom + '_min'].setErrorText();
     this.setState({
@@ -420,11 +414,6 @@ var MaxMinPair = React.createClass({
       minError:'',
 
     });
-  },
-  _onMinFieldBlur(){
-    this.setState({
-      maxValue:this.state.maxValue?this.state.maxValue:this.state.minValue,
-    })
   },
 });
 
