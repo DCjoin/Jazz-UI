@@ -239,7 +239,7 @@ var TreeNode = React.createClass({
   generateArrow: function(hasChild) {
     var nodeData = this.props.nodeData;
     var type = nodeData.get("Type");
-    var {arrowClass} = this.props;
+    var {arrowClass, arrowIconCollapsedClass, arrowIconExpandClass} = this.props;
     return (
       <div className={classNames("arrow", arrowClass, true)} onClick={this.handleClickArrow}>
         <div className={classNames({
@@ -247,8 +247,8 @@ var TreeNode = React.createClass({
         "hasNoChild": !(hasChild || type == nodeType.Folder || (nodeData.get('Id') === this.props.collapsedNodeId && nodeData.get('Type') !== 7))
       })}>
           <div className={classNames({
-        "fa icon-hierarchy-unfold": !this.state.collapsed,
-        "fa icon-hierarchy-fold": this.state.collapsed
+        [arrowIconExpandClass || 'fa icon-hierarchy-unfold']: !this.state.collapsed,
+        [arrowIconCollapsedClass || 'fa icon-hierarchy-fold']: this.state.collapsed
       })}/>
         </div>
       </div>
@@ -350,8 +350,6 @@ var TreeNode = React.createClass({
         {this.props.generateNodeConent ? this.props.generateNodeConent(this.props.nodeData) : this.generateNodeConent(this.props.nodeData)}
        </div>
       </div>
-
-
       );
   },
 

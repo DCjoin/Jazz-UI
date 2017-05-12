@@ -354,10 +354,7 @@ export default class DataAnalysis extends Component {
 					onOperationSelect={this._onOperationSelect}/>);
 			}
 		}
-		return (<div className='jazz-framework-right-fold' style={{
-					backgroundColor: '#fff',
-					marginTop: -16
-				}}>{content}</div>);
+		return <div className='jazz-new-folder-rightpanel'>{content}</div>;
 	}
 
 	_renderDialog() {

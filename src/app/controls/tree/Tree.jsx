@@ -105,6 +105,8 @@ var Tree = React.createClass({
     onGragulaNode: React.PropTypes.func,
     // arrow style
     arrowClass: React.PropTypes.string,
+    arrowIconExpandClass: React.PropTypes.string,
+    arrowIconCollapsedClass: React.PropTypes.string,
     ifGragulaInvalid: React.PropTypes.func,
     treeSource: React.PropTypes.number,
   },
@@ -221,7 +223,7 @@ var Tree = React.createClass({
     drake = dragula({
       moves: function(el, source, handle) {
         drag = true;
-        el.style.backgroundColor = '#323c4d';
+        // el.style.backgroundColor = '#323c4d'; // why? law 2017/5/11
         return true; // elements are always draggable by default
       },
       invalid: function(el, target) {
@@ -300,6 +302,8 @@ var Tree = React.createClass({
           putGragulaContainer: this.putGragulaContainer,
           collapsedNodeId: this.state.collapsedNodeId,
           arrowClass: this.props.arrowClass,
+          arrowIconCollapsedClass: this.props.arrowIconCollapsedClass,
+          arrowIconExpandClass: this.props.arrowIconExpandClass,
           treeSource: this.props.treeSource
         };
         parentNode.push(<TreeNode {...props}></TreeNode>);

@@ -468,3 +468,77 @@
     }
   }
 }
+
+.jazz-new-foldertree-node {
+  background-color: #ffffff;
+  color: #626469;
+  &:hover {
+    color: #32ad3d;
+  }
+  &.selected {
+    background-color: #32ad3d;
+    color: #ffffff;
+    position: relative;
+
+    &:before {
+      content: '';
+      height: 100%;
+      position: absolute;
+      width: 4px;
+      background-color: #25842e;
+      left: 0px;
+    }
+  }
+}
+
+.jazz-new-folder-leftpanel-foldertree {
+  background-color: #ffffff;  
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.jazz-new-folder-leftpanel {
+
+  &-container {
+    width: 237px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &-header {
+    margin: 5px;
+    display: flex;
+    justify-content: space-around;
+    line-height: 32px;
+    flex: none;
+  }
+
+  &-searchbox {
+    background-color: #f7f7f7;
+    border-radius: 3px;
+    border: solid 1px #e6e6e6;
+    display: flex;
+    margin: 0px 8px 10px;
+    height: 25px;
+    align-items: center;
+    padding: 0 10px;
+    color: #9fa0a4;
+  }
+}
+.jazz-new-folder-rightpanel {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background-color: #f3f5f7;
+
+  & .jazz-analysis-folder-panel-header {
+    height: 24px;
+    padding: 18px 0;
+    margin: 0 20px;
+    border-color: #e6e6e6;
+
+    color: #0f0f0f;
+    font-weight: bold;
+  }
+
+}

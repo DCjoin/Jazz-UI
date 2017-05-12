@@ -110,7 +110,7 @@ const SelectCustomer = React.createClass({
             <li className='jazz-select-customer-item'>
               <a href='javascript:void(0)' className='jazz-select-customer-item-content' onClick={() => this._selectCustomerChangeHandler(cus.Id)}>
                 <div className='jazz-select-customer-item-logo'><BackgroudImage imageContent={{hierarchyId: cus.Id}}/></div>
-                {cus.Name}
+                <div style={{textAlign: 'center'}}>{cus.Name}</div>
               </a>
             </li>
            )}
