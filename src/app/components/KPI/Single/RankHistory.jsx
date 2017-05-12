@@ -39,10 +39,10 @@ export default class RankHistory extends Component {
       ratio='-'
     }
     else if(dIndex>0){
-      ratio=<FontIcon className="icon-rank-up" style={style}>{dIndex}</FontIcon>
+      ratio=<FontIcon className="icon-rank-up" color="#dc0a0a" style={style}><span style={{color:'#626469'}}>{dIndex}</span></FontIcon>
     }
     else if(dIndex<0){
-      ratio=<FontIcon className="icon-rank-down" style={style}>{-dIndex}</FontIcon>
+      ratio=<FontIcon className="icon-rank-down" color="#32ad3d" style={style}><span style={{color:'#626469'}}>{-dIndex}</span></FontIcon>
     }
     return ratio
   }
@@ -119,6 +119,7 @@ export default class RankHistory extends Component {
       <Dialog
         ref = "_dialog"
         title={I18N.format(I18N.Setting.KPI.Group.Ranking.History.Name,this.props.name)}
+        titleStyle={{color:'#0f0f0f',fontSize:'16px',borderBottom:'solid 1px #e6e6e6',padding:'15px 0',fontWeight:'500'}}
         modal={false}
         open={true}
         onRequestClose={this.props.onClose}

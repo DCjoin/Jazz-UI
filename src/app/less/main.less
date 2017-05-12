@@ -57,6 +57,7 @@
 @import "measures.less";
 @import "person.less";
 @import "Diagnose.less";
+@import "animation.less";
 
 html,body{
     height: 100%;
@@ -71,7 +72,7 @@ body{
 
 @mainBlueStart: rgb(70,184,255);
 @mainBlueEnd: rgb(117,125,213);
-@menuActive: rgb(75, 132, 196);
+@menuActive:rgb(75, 132, 196);
 @searchBar:#e4fbf5;
 @breadcrumb:#abafae;
 @propValue:#464949;
@@ -245,11 +246,12 @@ span {
 
 
 .jazz-mainmenu{
-  background: -webkit-linear-gradient(left, @mainBlueStart, @mainBlueEnd); /* Safari 5.1 - 6.0 */
-  background: -o-linear-gradient(right, @mainBlueStart, @mainBlueEnd); /* Opera 11.1 - 12.0 */
-  background: -moz-linear-gradient(right, @mainBlueStart, @mainBlueEnd); /* Firefox 3.6 - 15 */
-  background: linear-gradient(to right, @mainBlueStart, @mainBlueEnd);
-
+  // background: -webkit-linear-gradient(left, @mainBlueStart, @mainBlueEnd); /* Safari 5.1 - 6.0 */
+  // background: -o-linear-gradient(right, @mainBlueStart, @mainBlueEnd); /* Opera 11.1 - 12.0 */
+  // background: -moz-linear-gradient(right, @mainBlueStart, @mainBlueEnd); /* Firefox 3.6 - 15 */
+  // background: linear-gradient(to right, @mainBlueStart, @mainBlueEnd);
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.15);
+  background-color: @normal-black;
     width:100%;
     font-size:14px;
     display: flex;

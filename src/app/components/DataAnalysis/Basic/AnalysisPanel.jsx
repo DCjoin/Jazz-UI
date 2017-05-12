@@ -5,7 +5,7 @@ import { withRouter } from 'react-router';
 import assign from "object-assign";
 import classNames from 'classnames';
 import FlatButton from 'controls/FlatButton.jsx';
-import TagDrawer from './TagDrawer.jsx';
+import TagDrawer from './TagDrawerNew.jsx';
 import FolderStore from 'stores/FolderStore.jsx';
 import Dialog from 'controls/OperationTemplate/BlankDialog.jsx';
 import NewDialog from 'controls/NewDialog.jsx';
@@ -1450,7 +1450,7 @@ class AnalysisPanel extends Component {
         </div>
         {<TagDrawer hierarchyId={this.state.hierarchyId}
                     isBuilding={this.state.isBuilding}
-                    customerId={this.context.router.params.customerId}
+                    customerId={parseInt(this.context.router.params.customerId)}
                     tagId={this.state.tagId}
                     open={this.state.tagShow}
                     onClose={(open)=>{

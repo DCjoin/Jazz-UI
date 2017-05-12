@@ -2165,6 +2165,7 @@ I18N.Setting.DataAnalysis.To = '至';
 I18N.Setting.DataAnalysis.NotagRecommend = '点击“+数据点”按钮，选择要查看的数据点';
 I18N.Setting.DataAnalysis.SaveTip = '图表未保存，是否保存图表并离开？';
 I18N.Setting.DataAnalysis.LeaveTip = '图表为空，离开将直接删除该图表，是否离开？';
+I18N.Setting.DataAnalysis.SearchHintText = '搜索当前项目下数据点';
 
 I18N.Setting.ECM = {};
 I18N.Setting.ECM.EstimatedAnnualCostSavings = '预计年节约成本';
