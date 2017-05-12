@@ -55,6 +55,9 @@ function getValue(data) {
 	if( noValue(data.RankValue) ) {
 		return I18N.Setting.KPI.Group.Ranking.History.NoValue;
 	}
+	if( typeof data.RankValue === 'string' ) {
+		return data.RankValue;
+	}
 	if( isScale(data.UnitType) ) {
 		return data.RankValue.toFixed(1) + '%';
 	}

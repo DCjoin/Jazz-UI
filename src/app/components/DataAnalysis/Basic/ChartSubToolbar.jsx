@@ -46,6 +46,7 @@ export default class ChartSubToolbar extends Component {
       subMenuValue = e.props.value;
       if (subMenuValue === 'work' || subMenuValue === 'hc') {
         this.props.handleCalendarChange(subMenuValue);
+        this.refs.button_menu.handleRequestClose();
       }
       break;
       }
@@ -119,7 +120,9 @@ export default class ChartSubToolbar extends Component {
         }
       });
     }
-    calendarEl = <ExtendableMenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' subItems={calendarSubItems}/>;
+    calendarEl = <ExtendableMenuItem onTouchTap={(e) => {
+      this._onConfigBtnItemTouchTap(e, null, 'background')
+    }} primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' subItems={calendarSubItems}/>;
   }
   return calendarEl;
  }
@@ -129,7 +132,7 @@ export default class ChartSubToolbar extends Component {
     let calendarEl = this.getCalenderBgBtnEl();
     return(
       <div className="jazz-AuxiliaryCompareBtn-container">
-        <ButtonMenu label={I18N.EM.Tool.MoreAnalysis}  style={{
+        <ButtonMenu ref={'button_menu'} label={I18N.EM.Tool.MoreAnalysis}  style={{
           marginLeft: '10px'
         }} backgroundColor="#fbfbfb"
         onItemTouchTap={this._onConfigBtnItemTouchTap} disabled={this.getMoreBtnDisableStatus()}>
