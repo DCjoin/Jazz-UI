@@ -204,7 +204,7 @@ export default class HistoryWindow extends Component {
 
   _addNewCompareItem() {
     let analysisPanel=this.props.analysisPanel;
-    let timeRange = analysisPanel.refs.dateTimeSelector.getDateTime();
+    let timeRange = analysisPanel.refs.subToolBar.refs.dateTimeSelector.getDateTime();
     MultiTimespanAction.addMultiTimespanData(timeRange.start, timeRange.end);
   }
 
@@ -231,7 +231,7 @@ export default class HistoryWindow extends Component {
     MultipleTimespanStore.addChangeListener(this._onrelativeListChange);
     let analysisPanel=this.props.analysisPanel;
     let relativeType = analysisPanel.state.relativeDate;
-    let timeRange = analysisPanel.refs.dateTimeSelector.getDateTime();
+    let timeRange = analysisPanel.refs.subToolBar.refs.dateTimeSelector.getDateTime();
     MultiTimespanAction.initMultiTimespanData(relativeType, timeRange.start, timeRange.end);
   }
 

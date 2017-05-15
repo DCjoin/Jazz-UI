@@ -49,6 +49,7 @@ module.exports = {
     SAVE_KPI_REPORT_ERROR:null,
     CLEAN_ACTUALITY:null,
     GET_KPI_RANK_BY_YEAR:null,
+    GET_TEMPLATE_REFERENCE:null
   }),
 
   Type:{
@@ -214,6 +215,12 @@ module.exports = {
     GroupRank:1,
     TopRank:2,
 
+  },
+  ReportStatus:{
+    NotExist:1,
+    ExistAndCanNotReplaced:2,
+    ExistAndNoReference:3,
+    ExistAndHaveReference:4
   }
 
 };

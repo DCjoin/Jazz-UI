@@ -344,13 +344,19 @@ let ReportDataItem = React.createClass({
       open={true}
       actions={dialogActions}
       modal={true}
+      titleStyle={{
+        fontSize:'16px',
+        fontWeight:'500',
+        color:'#0f0f0f',
+        paddingBottom:'25px',
+        borderBottom:'1px solid #e6e6e6'
+      }}
       wrapperStyle={{
         width:"auto",
         maxWidth:'1000px'
       }}
       contentStyle={{
-        minHeight:'350px',
-        minWidth:'852px'
+        minHeight:'430px'
       }}
       >
       <div style={{

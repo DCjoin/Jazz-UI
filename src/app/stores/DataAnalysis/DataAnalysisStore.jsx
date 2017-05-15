@@ -3,13 +3,20 @@
 
 import AppDispatcher from '../../dispatcher/AppDispatcher.jsx';
 import { Action } from 'constants/actionType/DataAnalysis.jsx';
+import Dim from 'constants/actionType/Dim.jsx';
 import PrototypeStore from '../PrototypeStore.jsx';
 import assign from 'object-assign';
 import EnergyStore from 'stores/Energy/EnergyStore.jsx';
 import CommonFuns from 'util/Util.jsx';
 import Immutable from 'immutable';
+import {nodeType} from 'constants/TreeConstants.jsx';
+import HierarchyStore from '../HierarchyStore.jsx';
+import CurrentUserCustomerStore from '../CurrentUserCustomerStore.jsx';
+import {find} from 'lodash';
 
-var _gatherInfo=null,_widgetDto=null;
+var _gatherInfo=null,_widgetDto=null,_dimTree=null;
+const AREA_DIM_EVENT = 'area_dim_event';
+
 const DataAnalysisStore = assign({}, PrototypeStore, {
   setGatherInfo(data){
     _gatherInfo=data
@@ -68,13 +75,45 @@ const DataAnalysisStore = assign({}, PrototypeStore, {
   getInitialWidgetDto(){
     return _widgetDto;
   },
+  setAreaDimTree(data,hierarchyId){
+    let hierarchyNode=find(CurrentUserCustomerStore.getAll(), customer => customer.Id === hierarchyId * 1 );
+    if(!hierarchyNode){
+      hierarchyNode=find(HierarchyStore.getBuildingList(), building => building.Id === hierarchyId * 1 )
+    }
+    _dimTree=Immutable.fromJS({
+      Id:hierarchyNode.Id,
+      Name:hierarchyNode.Name,
+      Type:hierarchyNode.Type,
+      Children:data
+    })
+  },
+  getAreaDimTree(){
+    return _dimTree;
+  },
+  getHierarchyName(hierarchyId){
+    let hierarchyNode=find(CurrentUserCustomerStore.getAll(), customer => customer.Id === hierarchyId * 1 );
+    if(!hierarchyNode){
+      hierarchyNode=find(HierarchyStore.getBuildingList(), building => building.Id === hierarchyId * 1 )
+    }
+    return hierarchyNode.Name
+  },
   dispose(){
     _gatherInfo=null;
     // _widgetDto=null;
-  }
-
+  },
+  emitAreaDim: function(args) {
+    this.emit(AREA_DIM_EVENT, args);
+  },
+  addAreaDimListener: function(callback) {
+    this.on(AREA_DIM_EVENT, callback);
+  },
+  removeAreaDimListener: function(callback) {
+    this.removeListener(AREA_DIM_EVENT, callback);
+    this.dispose();
+  },
 });
 
+let DimAction=Dim.Action;
 DataAnalysisStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
     case Action.GET_WIDGET_GATHER_INFO:
@@ -83,6 +122,11 @@ DataAnalysisStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case Action.SET_INITIAL_WIDGET_DTO:
           DataAnalysisStore.setInitialWidgetDto(action.dto);
+          break;
+    case DimAction.LOAD_DIM_NODE:
+          DataAnalysisStore.setAreaDimTree(action.dimList,action.hierarchyId);
+          DataAnalysisStore.emitAreaDim()
+        break;
     default:
   }
 });

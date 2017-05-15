@@ -14,7 +14,8 @@ let DimAction = {
         success: function(dimList){
           AppDispatcher.dispatch({
               type: Action.LOAD_DIM_NODE,
-              dimList: dimList
+              dimList: dimList,
+              hierarchyId:data
           });
         },
         error: function(err, res){

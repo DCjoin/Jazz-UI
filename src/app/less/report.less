@@ -313,7 +313,7 @@
 }
 .jazz-report-taglist-container-left{
    display: flex;
-   width: 380px;
+   width: 359px;
    flex-direction: column;
    flex: 1;
    border: 1px solid #d9d9d9;
@@ -326,21 +326,24 @@
    }
 
    .jazz-report-taglist-tagselect{
-     width: 380px;
+     width: 359px;
      display: flex;
      height: 78px;
      min-height: 78px;
      flex-direction: column;
+     flex:1;
      div{
        color:#000000 !important;
      }
      .header{
        min-height:32px;
+       height:32px;
        width:100%;
-       background-color: #efefef;
+       background-color: @ultra-light-gray;
        display:flex;
        flex-flow:row nowrap;
        align-items:center;
+       justify-content: space-between;
        div{
          color:#000000!important;
          margin-top: 0px;
@@ -404,7 +407,7 @@
 }
 .jazz-report-taglist-container-right{
   display: flex;
-  width: 380px;
+  width: 359px;
   flex-direction: column;
   flex: 1;
   border: 1px solid #d9d9d9;
@@ -444,7 +447,7 @@
   display: flex;
   flex-direction: row;
   height:30px;
-  padding-left: 7px;
+  padding: 0 15px;
   line-height: 30px;
   >div:nth-of-type(1){
     width: 45px;
@@ -465,7 +468,9 @@
   }
 }
 .jazz-report-tag-item-right:hover{
-  background-color: #f5f5f5;
+  background-color: #32ad3d;
+  color: #ffffff !important;
+  cursor: pointer;
 }
 .jazz-report-taglist{
   overflow: auto;
