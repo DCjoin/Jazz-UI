@@ -436,8 +436,8 @@ export default class TagDrawer extends Component {
         <div className="jazz-analysis-tag">
           {this.state.selectedDimNode===null && <div className="header">
             <ProjectSelect hierarchyId={this.state.selectedHierId} customerId={this.props.customerId} onProjectSelected={this._onProjectSelect}/>
-            {!this.state.searchShow && <IconButton iconClassName="icon-search" iconStyle={{fontSize:"15px",color:'#fff'}} className="search-icon" onTouchTap={this._onSearchShow}/>}
-            {this.state.searchShow && <div className="search-cancel" onClick={this._onSearchShow}>{I18N.Common.Button.Cancel2}</div>}
+            {!this.state.searchShow && <IconButton iconClassName="icon-search" iconStyle={{fontSize:"15px",color:'#fff'}} className="jazz-analysis-tag-search-icon" onTouchTap={this._onSearchShow}/>}
+            {this.state.searchShow && <div className="jazz-analysis-tag-search-cancel" onClick={this._onSearchShow}>{I18N.Common.Button.Cancel2}</div>}
           </div>}
           {this.state.selectedDimNode!==null && <div className="header">
             <FlatButton label={this.state.selectedDimNode.get('Name')}

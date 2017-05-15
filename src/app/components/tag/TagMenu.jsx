@@ -125,7 +125,8 @@ var TagMenu = React.createClass({
         </div>
       </div>
       <div style={{
-        'overflow': 'auto',
+        'overflowY': 'auto',
+        'overflowX': 'hidden',
         display: 'flex',
         flexDirection: 'column',
         flex: '1'

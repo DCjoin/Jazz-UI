@@ -43,7 +43,7 @@ export default class ProjectSelect extends Component {
             isViewStatus={false}
             defaultValue={this.props.hierarchyId}
             style={{
-              width: 150,
+              width: this.props.width,
               margin: '0 20px'
             }}
             labelStyle={{
@@ -51,7 +51,7 @@ export default class ProjectSelect extends Component {
               fontSize:'14px'
             }}
             listStyle={{
-              width: 150,
+              width: this.props.width,
             }}
             underlineStyle={{
               display: 'none',
@@ -68,4 +68,9 @@ ProjectSelect.propTypes = {
 	hierarchyId:React.PropTypes.number,
   onProjectSelected:React.PropTypes.func,
   customerId:React.PropTypes.number,
+  width:React.PropTypes.number,
 };
+
+ProjectSelect.defaultProps={
+  width:150
+}
