@@ -20,6 +20,7 @@ var CHANGE_TAG_LIST_EVENT = 'changetaglist';
 var CHANGE_SELECTED_TAG_LIST_EVENT = 'changeselectedtaglist';
 var CHANGE_SAVE_SUCCESS_EVENT = 'changesavesuccess';
 var CHANGE_SAVE_ERROR_EVENT = 'changesaveerror';
+var CHANGE_TEMPLATE_REFERENCE_EVENT = 'changetemplatereference';
 
 const ReportStore = assign({}, PrototypeStore, {
   getDefalutReport(report){
@@ -162,6 +163,15 @@ const ReportStore = assign({}, PrototypeStore, {
   removeSaveErrorChangeListener: function(callback) {
     this.removeListener(CHANGE_SAVE_ERROR_EVENT, callback);
   },
+  emitTemplateReferenceChange: function(args) {
+    this.emit(CHANGE_TEMPLATE_REFERENCE_EVENT,args);
+  },
+  addTemplateReferenceChangeListener: function(callback) {
+    this.on(CHANGE_TEMPLATE_REFERENCE_EVENT, callback);
+  },
+  removeTemplateReferenceChangeListener: function(callback) {
+    this.removeListener(CHANGE_TEMPLATE_REFERENCE_EVENT, callback);
+  },
 });
 
 ReportStore.dispatchToken = AppDispatcher.register(function(action) {
@@ -193,6 +203,9 @@ ReportStore.dispatchToken = AppDispatcher.register(function(action) {
     case Action.SAVE_KPI_REPORT_ERROR:
       ReportStore._initErrorText(action.errorText, action.errorReport);
       ReportStore.emitSaveErrorChange();
+      break;
+    case Action.GET_TEMPLATE_REFERENCE:
+      ReportStore.emitTemplateReferenceChange(action.res);
       break;
     default:
   }

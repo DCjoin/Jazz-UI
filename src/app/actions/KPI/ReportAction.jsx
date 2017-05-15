@@ -117,6 +117,16 @@ const ReportAction = {
       }
     });
   },
+  templateReference(templateName,customerId){
+    Ajax.get( util.replacePathParams(Path.DataReport.templateReference, templateName,customerId), {
+      success: (res) => {
+        AppDispatcher.dispatch({
+          type: Action.GET_TEMPLATE_REFERENCE,
+          res,
+        })
+      }
+    } );
+  }
 }
 
 export default ReportAction;

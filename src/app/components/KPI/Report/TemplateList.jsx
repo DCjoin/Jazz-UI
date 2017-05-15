@@ -8,6 +8,7 @@ import TemplateItem from './TemplateItem.jsx';
 import ReportAction from 'actions/KPI/ReportAction.jsx';
 import ReportStore from 'stores/KPI/ReportStore.jsx';
 import util from 'util/Util.jsx';
+import UploadConfirmDialog from './UploadConfirmDialog.jsx';
 
 
 let TemplateList = React.createClass({
@@ -16,6 +17,8 @@ let TemplateList = React.createClass({
       showDeleteDialog: false,
       showReplaceDialog: false,
       showUploadDialog: false,
+      showUploadConfirm:false,
+      fileName:''
     };
   },
   _handleDialogDismiss() {
@@ -82,7 +85,7 @@ let TemplateList = React.createClass({
       <FlatButton
       labelPosition="before"
       label={I18N.EM.Report.Replace}>
-        <input type='file' onChange={this._replaceTemplate} name='templateFile' ref='fileInput' style={{
+        <input type='file' onChange={this._replaceTemplateConfirm} name='templateFile' ref='fileInput' style={{
           cursor: 'pointer',
           position: 'absolute',
           top: 0,
@@ -114,16 +117,19 @@ let TemplateList = React.createClass({
     ReportAction.deleteTemplateById(id);
     this._handleDialogDismiss();
   },
-  _replaceTemplate: function(event) {
+  _replaceTemplateConfirm(event){
     let me = this;
     var file = event.target.files[0];
     if(!file) return;
     var fileName = file.name;
+    this.setState({
+      fileName,
+      showUploadConfirm:true,
+      showReplaceDialog:false
+    })
+  },
 
-    if (!util.endsWith(fileName.toLowerCase(), '.xlsx') && !util.endsWith(fileName.toLowerCase(), '.xls')) {
-      util.popupErrorMessage(I18N.EM.Report.WrongExcelFile, '', false);
-      return;
-    }
+  _replaceTemplate: function(event) {
     let createElement = window.Highcharts.createElement,
       discardElement = window.Highcharts.discardElement;
     let iframe = createElement('iframe', null, {
@@ -181,7 +187,6 @@ let TemplateList = React.createClass({
     discardElement(form);
     this._handleDialogDismiss();
     me.setState({
-      fileName: fileName,
       showUploadDialog: true
     });
   },
@@ -220,6 +225,20 @@ let TemplateList = React.createClass({
         {deleteDialog}
         {this._renderUploadDialog()}
         {this._renderReplaceDialog()}
+        {this.state.fileName!=='' && this.state.showUploadConfirm && <UploadConfirmDialog name={this.state.fileName}
+                             onConfirm={()=>{
+                               this._replaceTemplate();
+                               this.setState({
+                                 showUploadConfirm:false,
+                                 showUploadDialog: true
+                               });
+                             }}
+                             onCancel={()=>{
+                               this.setState({
+                                showUploadConfirm:false,
+                                fileName:''
+                              });
+                             }}/>}
       </div>
       );
   }

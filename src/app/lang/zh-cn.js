@@ -2135,6 +2135,10 @@ I18N.Setting.KPI.Report.TimeRangeComment= '注：当前年为{0}年，只需配�
 I18N.Setting.KPI.Report.DuplicatedName = '已经存在名称为“{0}”的模板，是否覆盖已有模板。';
 I18N.Setting.KPI.Report.DeleteTemplateMessage = '模板“{0}”将被删除。';
 I18N.Setting.KPI.Report.StartCellHintText = '填写起始单元格';
+I18N.Setting.KPI.Report.ExistAndCanNotReplaced = '名称为“{0}”模板已存在，请更改其他名称';
+I18N.Setting.KPI.Report.ExistAndNoReference = '名称为“{0}”模板已存在，确定覆盖替换吗？';
+I18N.Setting.KPI.Report.ExistAndHaveReference = '名称为“{0}”模板已被引用，确定覆盖替换吗？';
+
 
 I18N.Setting.DataAnalysis = {};
 I18N.Setting.DataAnalysis.Scheme = '生成方案';
