@@ -77,8 +77,11 @@ const DataAnalysisStore = assign({}, PrototypeStore, {
   },
   setAreaDimTree(data,hierarchyId){
     let hierarchyNode=find(CurrentUserCustomerStore.getAll(), customer => customer.Id === hierarchyId * 1 );
+
     if(!hierarchyNode){
       hierarchyNode=find(HierarchyStore.getBuildingList(), building => building.Id === hierarchyId * 1 )
+    }else {
+      hierarchyNode.Type=nodeType.Customer;
     }
     _dimTree=Immutable.fromJS({
       Id:hierarchyNode.Id,

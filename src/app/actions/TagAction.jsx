@@ -55,6 +55,7 @@ let TagAction = {
       params: {
         hierarchyId: ioData.hierId,
         tagId: ioData.tagId,
+        areaDimensionId:ioData.dimId,
         pageSize: 20,
       },
       success: function(tagList) {
