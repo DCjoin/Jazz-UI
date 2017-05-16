@@ -17,9 +17,6 @@ export default class ReportChart extends Component {
 		if( url === null ) {
 			return (<div className='jazz-report-chart-table-wrapper flex-center' style={{height: 600}}><CircularProgress mode="indeterminate" size={80} /></div>);
 		}
-		// if( url === false ) {
-		// 	return (<div className='jazz-report-chart-table-wrapper flex-center' style={{height: 600}}><b>{'无效模板'}</b></div>);
-		// }
 
 		return (
 			<div className='jazz-report-chart-table-wrapper'>

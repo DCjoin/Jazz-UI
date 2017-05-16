@@ -51,6 +51,11 @@
     height: 22px;
     display: flex;
     justify-content: space-between;
+
+    & .step.link {
+      .pointer;
+      text-decoration: underline;
+    }
   }
 
   &-list {
@@ -97,5 +102,31 @@
 
   & .icon-setting {
     margin-left: 20px;
+  }
+}
+
+.jazz-select-customer-hierarchy-list {
+  &-wrapper {
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: auto;
+    align-items: center;
+    height: calc(~'100% - 82px');
+  }
+
+  width: 400px;
+
+  &-header {
+    margin-top: 29px;
+    font-weight: bold;
+    font-size: 20px;
+  }
+
+  &-item {
+    .hiddenEllipsis;
+    margin-top: 14px;
+    font-size: 16px;
+    display: block;
   }
 }

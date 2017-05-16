@@ -1,7 +1,8 @@
 'use strict';
 import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
-import SelectCustomerActionCreator from '../actions/SelectCustomerActionCreator.jsx';
-import { Action } from '../constants/actionType/CurrentUser.jsx';
+import SelectCustomerActionCreator from 'actions/SelectCustomerActionCreator.jsx';
+import UserAction from 'actions/UserAction.jsx';
+import { Action } from 'constants/actionType/CurrentUser.jsx';
 import Ajax from '../ajax/Ajax.jsx';
 import Immutable from 'immutable';
 var UserTypeName = null,
@@ -9,7 +10,7 @@ var UserTypeName = null,
 let CurrentUserAction = {
   getInitData: function(userId) {
     this.getUser(userId);
-    //this.getRoles(userId);
+    UserAction.getCustomerByUser(userId);
     SelectCustomerActionCreator.getCustomer(userId);
   },
   getUser: function(userId) {
@@ -21,7 +22,6 @@ let CurrentUserAction = {
         }
       },
       success: function(userList) {
-        //console.log('Here:'+JSON.stringify(userList,0,1));
         UserTypeName = userList[0].UserTypeName;
         UserType = userList[0].UserType;
         that.getRoles(userId);

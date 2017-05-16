@@ -777,9 +777,13 @@ var MainAppBar = React.createClass({
         {this._getEditPasswordDialog()}
         {this._getEditUserDialog()}
         {this._getLogoutDialog()}
-        {this.state.showCustomerList && (<SelectCustomer onClose={() => {
+        {this.state.showCustomerList && (<SelectCustomer onClose={(hierarchyId) => {
           this.setState({
             showCustomerList: false
+          }, () => {            
+            if(this.props.changeHierarchy) {
+              this.props.changeHierarchy(hierarchyId);
+            }
           });
         }}/>)}
     </div>

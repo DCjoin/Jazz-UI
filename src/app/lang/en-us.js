@@ -144,8 +144,11 @@ I18N.InitPassword.SuccessTips = 'Your password has been set successfully, please
 
 I18N.SelectCustomer = {};
 I18N.SelectCustomer.Title = "Select customer";
+I18N.SelectCustomer.SubTitle = 'Select Project';
 I18N.SelectCustomer.SysManagement = "EnergyMost sys-management";
 I18N.SelectCustomer.SysManagementTip = "System management";
+I18N.SelectCustomer.Group = "Group";
+I18N.SelectCustomer.Single = "Project";
 
 I18N.M212001 = 'User does not exist';
 I18N.M212002 = 'Service provider is invalid';
