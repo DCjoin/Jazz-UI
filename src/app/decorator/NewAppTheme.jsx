@@ -9,9 +9,8 @@ import getLessVar from 'util/GetLessVar.jsx';
 
 const muiTheme = getMuiTheme({...AppTheme, ...{
   palette: {
-    primary1Color: getLessVar('newSchneiderGreen'),
-    accent1Color: getLessVar('newSchneiderGreen'),
-    textColor: '#202622',
+    primary1Color: getLessVar('medium-green'),
+    accent1Color: getLessVar('medium-green'),
   },
 }});
 
