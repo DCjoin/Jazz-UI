@@ -4,11 +4,11 @@
 
 @font-face {
   font-family: "fontcustom";
-  src: url("./fontcustom_0695fe3b39ad8a2cb406c4a798a30a2a.eot");
-  src: url("./fontcustom_0695fe3b39ad8a2cb406c4a798a30a2a.eot?#iefix") format("embedded-opentype"),
-       url("./fontcustom_0695fe3b39ad8a2cb406c4a798a30a2a.woff") format("woff"),
-       url("./fontcustom_0695fe3b39ad8a2cb406c4a798a30a2a.ttf") format("truetype"),
-       url("./fontcustom_0695fe3b39ad8a2cb406c4a798a30a2a.svg#fontcustom") format("svg");
+  src: url("./fontcustom_5b0bb32d66af6e9ecbd8a56307e87cd8.eot");
+  src: url("./fontcustom_5b0bb32d66af6e9ecbd8a56307e87cd8.eot?#iefix") format("embedded-opentype"),
+       url("./fontcustom_5b0bb32d66af6e9ecbd8a56307e87cd8.woff") format("woff"),
+       url("./fontcustom_5b0bb32d66af6e9ecbd8a56307e87cd8.ttf") format("truetype"),
+       url("./fontcustom_5b0bb32d66af6e9ecbd8a56307e87cd8.svg#fontcustom") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -16,15 +16,19 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: "fontcustom";
-    src: url("./fontcustom_0695fe3b39ad8a2cb406c4a798a30a2a.svg#fontcustom") format("svg");
+    src: url("./fontcustom_5b0bb32d66af6e9ecbd8a56307e87cd8.svg#fontcustom") format("svg");
   }
 }
 
 [data-icon]:before { content: attr(data-icon); }
 
 [data-icon]:before,
+.icon-HAVC:before,
+.icon-Low-voltage-electric:before,
 .icon-accessory:before,
 .icon-add:before,
+.icon-administration:before,
+.icon-air-compression:before,
 .icon-alarm:before,
 .icon-alarm-notification:before,
 .icon-alarm-ticket:before,
@@ -39,6 +43,8 @@
 .icon-battery-empty:before,
 .icon-battery-full:before,
 .icon-binding:before,
+.icon-boiler:before,
+.icon-box:before,
 .icon-building:before,
 .icon-calendar:before,
 .icon-calendar1:before,
@@ -47,14 +53,17 @@
 .icon-cb-open:before,
 .icon-cb-trip:before,
 .icon-chart:before,
+.icon-chart1:before,
 .icon-check-circle:before,
 .icon-check-mark:before,
 .icon-clean:before,
 .icon-close:before,
 .icon-cloud:before,
+.icon-collection:before,
 .icon-column:before,
 .icon-column-fold:before,
 .icon-connected-position:before,
+.icon-contact-us:before,
 .icon-copy:before,
 .icon-cost_saving:before,
 .icon-current:before,
@@ -66,20 +75,30 @@
 .icon-disconnected-position:before,
 .icon-double-arrow-left:before,
 .icon-double-arrow-right:before,
+.icon-download:before,
+.icon-drag-2:before,
 .icon-dust-concentration:before,
 .icon-edit:before,
+.icon-email:before,
+.icon-end-user:before,
 .icon-energy-analysis:before,
 .icon-energy-consumption:before,
 .icon-energy_saving:before,
 .icon-export:before,
+.icon-eye:before,
+.icon-factory:before,
 .icon-file:before,
 .icon-filter:before,
 .icon-filtered:before,
+.icon-fit:before,
 .icon-folder:before,
+.icon-folder1:before,
 .icon-hide:before,
 .icon-hierarchy:before,
 .icon-hierarchy-fold:before,
 .icon-hierarchy-unfold:before,
+.icon-high-voltage-electric:before,
+.icon-history:before,
 .icon-humidity:before,
 .icon-image:before,
 .icon-import:before,
@@ -95,21 +114,29 @@
 .icon-lighten:before,
 .icon-line:before,
 .icon-location:before,
+.icon-location1:before,
 .icon-log:before,
+.icon-machine:before,
+.icon-machine-ol:before,
+.icon-machine-tap:before,
 .icon-mainline:before,
 .icon-map:before,
 .icon-marker:before,
 .icon-menu:before,
 .icon-model:before,
 .icon-more:before,
+.icon-my:before,
 .icon-myalarm:before,
 .icon-next-arrow-right:before,
 .icon-no_ecm:before,
 .icon-orgnization:before,
+.icon-others:before,
 .icon-overdue:before,
 .icon-oxygen:before,
 .icon-panel:before,
 .icon-panel-box:before,
+.icon-phone:before,
+.icon-phone-login:before,
 .icon-photo:before,
 .icon-pie:before,
 .icon-platform-logo:before,
@@ -118,6 +145,8 @@
 .icon-pole:before,
 .icon-post:before,
 .icon-power:before,
+.icon-product-line:before,
+.icon-project:before,
 .icon-qrcode:before,
 .icon-quickview:before,
 .icon-rank-down:before,
@@ -132,6 +161,7 @@
 .icon-room:before,
 .icon-save:before,
 .icon-scan:before,
+.icon-scan-more:before,
 .icon-schneider-cn:before,
 .icon-schneider-en:before,
 .icon-search:before,
@@ -139,12 +169,14 @@
 .icon-set-alarm:before,
 .icon-setalarm:before,
 .icon-setting:before,
+.icon-show:before,
 .icon-signal1:before,
 .icon-signal2:before,
 .icon-signal3:before,
 .icon-signal4:before,
 .icon-signal5:before,
 .icon-site:before,
+.icon-site1:before,
 .icon-spring-compression:before,
 .icon-spring-tension:before,
 .icon-stack:before,
@@ -162,7 +194,9 @@
 .icon-unit-index:before,
 .icon-uploading:before,
 .icon-user:before,
+.icon-user-name-login:before,
 .icon-voltage:before,
+.icon-water-supply-and-drainage:before,
 .icon-wear-rate:before,
 .icon-weather-cloudy:before,
 .icon-weather-haze:before,
@@ -174,7 +208,7 @@
 .icon-weather-sunny-cloudy:before,
 .icon-weather-thunder:before,
 .icon-weather-wind:before {
-  display: inline-block;
+        display: inline-block;
   font-family: "fontcustom";
   font-style: normal;
   font-weight: normal;
@@ -186,10 +220,14 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   font-smoothing: antialiased;
-}
+      }
 
+      .icon-HAVC:before { content: "\f1a1"; }
+.icon-Low-voltage-electric:before { content: "\f1a2"; }
 .icon-accessory:before { content: "\f147"; }
 .icon-add:before { content: "\f100"; }
+.icon-administration:before { content: "\f1b5"; }
+.icon-air-compression:before { content: "\f1a3"; }
 .icon-alarm:before { content: "\f133"; }
 .icon-alarm-notification:before { content: "\f101"; }
 .icon-alarm-ticket:before { content: "\f187"; }
@@ -204,6 +242,8 @@
 .icon-battery-empty:before { content: "\f108"; }
 .icon-battery-full:before { content: "\f109"; }
 .icon-binding:before { content: "\f198"; }
+.icon-boiler:before { content: "\f1a4"; }
+.icon-box:before { content: "\f1a8"; }
 .icon-building:before { content: "\f10a"; }
 .icon-calendar:before { content: "\f149"; }
 .icon-calendar1:before { content: "\f197"; }
@@ -212,14 +252,17 @@
 .icon-cb-open:before { content: "\f10c"; }
 .icon-cb-trip:before { content: "\f16c"; }
 .icon-chart:before { content: "\f153"; }
+.icon-chart1:before { content: "\f1bc"; }
 .icon-check-circle:before { content: "\f16a"; }
 .icon-check-mark:before { content: "\f161"; }
 .icon-clean:before { content: "\f10d"; }
 .icon-close:before { content: "\f10e"; }
 .icon-cloud:before { content: "\f10f"; }
+.icon-collection:before { content: "\f1b2"; }
 .icon-column:before { content: "\f154"; }
 .icon-column-fold:before { content: "\f110"; }
 .icon-connected-position:before { content: "\f162"; }
+.icon-contact-us:before { content: "\f1b9"; }
 .icon-copy:before { content: "\f178"; }
 .icon-cost_saving:before { content: "\f199"; }
 .icon-current:before { content: "\f135"; }
@@ -231,20 +274,30 @@
 .icon-disconnected-position:before { content: "\f163"; }
 .icon-double-arrow-left:before { content: "\f173"; }
 .icon-double-arrow-right:before { content: "\f155"; }
+.icon-download:before { content: "\f19f"; }
+.icon-drag-2:before { content: "\f1b6"; }
 .icon-dust-concentration:before { content: "\f136"; }
 .icon-edit:before { content: "\f142"; }
+.icon-email:before { content: "\f1ba"; }
+.icon-end-user:before { content: "\f1a9"; }
 .icon-energy-analysis:before { content: "\f156"; }
 .icon-energy-consumption:before { content: "\f116"; }
 .icon-energy_saving:before { content: "\f19a"; }
 .icon-export:before { content: "\f117"; }
+.icon-eye:before { content: "\f1bd"; }
+.icon-factory:before { content: "\f1aa"; }
 .icon-file:before { content: "\f16e"; }
 .icon-filter:before { content: "\f118"; }
 .icon-filtered:before { content: "\f165"; }
+.icon-fit:before { content: "\f1a0"; }
 .icon-folder:before { content: "\f157"; }
+.icon-folder1:before { content: "\f1be"; }
 .icon-hide:before { content: "\f168"; }
 .icon-hierarchy:before { content: "\f143"; }
 .icon-hierarchy-fold:before { content: "\f119"; }
 .icon-hierarchy-unfold:before { content: "\f11a"; }
+.icon-high-voltage-electric:before { content: "\f1a5"; }
+.icon-history:before { content: "\f1bf"; }
 .icon-humidity:before { content: "\f14a"; }
 .icon-image:before { content: "\f11b"; }
 .icon-import:before { content: "\f11c"; }
@@ -260,21 +313,29 @@
 .icon-lighten:before { content: "\f172"; }
 .icon-line:before { content: "\f159"; }
 .icon-location:before { content: "\f11f"; }
+.icon-location1:before { content: "\f1ab"; }
 .icon-log:before { content: "\f13a"; }
+.icon-machine:before { content: "\f1ac"; }
+.icon-machine-ol:before { content: "\f1ad"; }
+.icon-machine-tap:before { content: "\f1ae"; }
 .icon-mainline:before { content: "\f120"; }
 .icon-map:before { content: "\f121"; }
 .icon-marker:before { content: "\f18f"; }
 .icon-menu:before { content: "\f123"; }
 .icon-model:before { content: "\f124"; }
 .icon-more:before { content: "\f195"; }
+.icon-my:before { content: "\f1b7"; }
 .icon-myalarm:before { content: "\f166"; }
 .icon-next-arrow-right:before { content: "\f16d"; }
 .icon-no_ecm:before { content: "\f19c"; }
 .icon-orgnization:before { content: "\f125"; }
+.icon-others:before { content: "\f1a6"; }
 .icon-overdue:before { content: "\f186"; }
 .icon-oxygen:before { content: "\f174"; }
 .icon-panel:before { content: "\f126"; }
 .icon-panel-box:before { content: "\f127"; }
+.icon-phone:before { content: "\f1bb"; }
+.icon-phone-login:before { content: "\f1b3"; }
 .icon-photo:before { content: "\f128"; }
 .icon-pie:before { content: "\f15a"; }
 .icon-platform-logo:before { content: "\f185"; }
@@ -283,6 +344,8 @@
 .icon-pole:before { content: "\f13b"; }
 .icon-post:before { content: "\f144"; }
 .icon-power:before { content: "\f129"; }
+.icon-product-line:before { content: "\f1af"; }
+.icon-project:before { content: "\f1b0"; }
 .icon-qrcode:before { content: "\f12a"; }
 .icon-quickview:before { content: "\f13c"; }
 .icon-rank-down:before { content: "\f190"; }
@@ -297,6 +360,7 @@
 .icon-room:before { content: "\f12b"; }
 .icon-save:before { content: "\f15d"; }
 .icon-scan:before { content: "\f13d"; }
+.icon-scan-more:before { content: "\f19e"; }
 .icon-schneider-cn:before { content: "\f145"; }
 .icon-schneider-en:before { content: "\f146"; }
 .icon-search:before { content: "\f12c"; }
@@ -304,12 +368,14 @@
 .icon-set-alarm:before { content: "\f152"; }
 .icon-setalarm:before { content: "\f12e"; }
 .icon-setting:before { content: "\f12f"; }
+.icon-show:before { content: "\f1b8"; }
 .icon-signal1:before { content: "\f188"; }
 .icon-signal2:before { content: "\f189"; }
 .icon-signal3:before { content: "\f18a"; }
 .icon-signal4:before { content: "\f18b"; }
 .icon-signal5:before { content: "\f18c"; }
 .icon-site:before { content: "\f130"; }
+.icon-site1:before { content: "\f1b1"; }
 .icon-spring-compression:before { content: "\f13e"; }
 .icon-spring-tension:before { content: "\f13f"; }
 .icon-stack:before { content: "\f15e"; }
@@ -327,7 +393,9 @@
 .icon-unit-index:before { content: "\f160"; }
 .icon-uploading:before { content: "\f179"; }
 .icon-user:before { content: "\f132"; }
+.icon-user-name-login:before { content: "\f1b4"; }
 .icon-voltage:before { content: "\f14f"; }
+.icon-water-supply-and-drainage:before { content: "\f1a7"; }
 .icon-wear-rate:before { content: "\f141"; }
 .icon-weather-cloudy:before { content: "\f17a"; }
 .icon-weather-haze:before { content: "\f17b"; }
