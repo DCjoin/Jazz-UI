@@ -9,6 +9,7 @@ import PrivilegeUtil from 'util/privilegeUtil.jsx';
 
 import Dialog from 'controls/NewDialog.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
+import NewFlatButton from 'controls/NewFlatButton.jsx';
 import LinkButton from 'controls/LinkButton.jsx';
 import ViewableTextField from 'controls/ViewableTextField.jsx';
 import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
@@ -482,7 +483,8 @@ export class GenerateSolutionButton extends Component {
 	    };
 		return (
 			<span>
-				<FlatButton
+				<NewFlatButton
+					secondary={true}
 					disabled={disabled}
 					label={I18N.Setting.DataAnalysis.Scheme}
 					labelstyle={styles.label}
