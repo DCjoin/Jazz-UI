@@ -8,8 +8,8 @@ import { nodeType } from 'constants/TreeConstants.jsx';
 import DropdownButton from 'controls/DropdownButton.jsx';
 import Tree from 'controls/tree/Tree.jsx';
 
-import NodeContent from '../folder/TreeNodeContent.jsx';
-import SearchBox from '../folder/FolderSearchBox.jsx';
+import NodeContent from './TreeNodeContent.jsx';
+import SearchBox from './TreeSearchBox.jsx';
 
 import FolderAction from 'actions/FolderAction.jsx';
 import FolderStore from 'stores/FolderStore.jsx';
@@ -78,8 +78,10 @@ export default class Left extends Component {
 	        onSelectNode: this.props.onSelectNode,
 	        selectedNode: this.props.selectedNode,
 	        onGragulaNode: this._onGragulaNode,
-	        arrowClass: 'jazz-foldertree-arrow',
-	        treeNodeClass: 'jazz-foldertree-node',
+	        arrowClass: 'jazz-new-foldertree-arrow',
+	        arrowIconCollapsedClass: 'icon-arrow-fold',
+	        arrowIconExpandClass: 'icon-arrow-unfold',
+	        treeNodeClass: 'jazz-new-foldertree-node',
 	        treeSource: treeSource.Energy
 	     };
 		return (<Tree {...treeProps}/>);
@@ -95,42 +97,47 @@ export default class Left extends Component {
 			color: '#767a7a',
 			paddingLeft: '44px'
 		},
+		disabledButton = isWidget(this.props.selectedNode),
 		buttonStyle = {
-			backgroundColor: 'transparent',
-			height: '32px'
-		},
-		disabledButton = isWidget(this.props.selectedNode);
+			height: 32,
+			lineHeight: '32px',
+		};
 
-	    return (
-	      <div className="jazz-folder-leftpanel-container">
-	        <div className="jazz-folder-leftpanel-header">
-	          <div className={classnames('se-dropdownbutton btn-container', {
-	          	'btn-container-active': !disabledButton
-	          })}>
-	            <FlatButton disabled={disabledButton} onClick={this._onNewFolder} style={buttonStyle}>
-	              <FontIcon className="fa icon-add btn-icon"/>
-	              <span className="mui-flat-button-label btn-text">{I18N.Folder.FolderName}</span>
-	            </FlatButton>
-	          </div>
-	          <div className={classnames('se-dropdownbutton btn-container', {
-	          	'btn-container-active': !disabledButton
-	          })}>
-	            <FlatButton disabled={disabledButton} onClick={this._onNewWidget} style={buttonStyle}>
-	              <FontIcon className="fa icon-add btn-icon"/>
-	              <span className="mui-flat-button-label btn-text">{I18N.Folder.DataAnalysisWidget}</span>
-	            </FlatButton>
-	          </div>
-	        </div>
+		if( !disabledButton ) {
+			buttonStyle.color = '#626469';
+		}
 
-	        <div className="jazz-folder-leftpanel-search">
-	          <SearchBox onSearchClick={this.props.onSelectNode}/>
-	        </div>
+    return (
+      <div className='jazz-new-folder-leftpanel-container'>
+        <div className='jazz-new-folder-leftpanel-header'>
+          <FlatButton 
+          	disabled={disabledButton} 
+          	onClick={this._onNewFolder} 
+          	style={buttonStyle}
+          	icon={<FontIcon className='icon-add' style={{fontSize: 16}}/>}
+          	label={I18N.Folder.FolderName}
+          />
+				  <svg style={{width: 1, height: 32}}>
+				    <line x1='0' y1='0' x2='0' y2='32' style={{
+				    	stroke: '#e6e6e6',
+				    	strokeWidth: 1
+				    }}/>
+				  </svg>
+          <FlatButton 
+          	disabled={disabledButton} 
+          	onClick={this._onNewWidget} 
+          	style={buttonStyle}
+          	icon={<FontIcon className='icon-add' style={{fontSize: 16}}/>}
+          	label={I18N.Folder.DataAnalysisWidget}
+          />
+        </div>
+				<SearchBox onSearchClick={this.props.onSelectNode}/>
 
-	        <div className="jazz-folder-leftpanel-foldertree">
-	          {this._renderTree()}
-	        </div>
+        <div className="jazz-new-folder-leftpanel-foldertree">
+          {this._renderTree()}
+        </div>
 
-	      </div>
-	    );
+      </div>
+    );
 	}
 }

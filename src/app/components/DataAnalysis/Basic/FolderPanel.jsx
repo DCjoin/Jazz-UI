@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Immutable from 'immutable';
-import { IconMenu, IconButton, MenuItem } from 'material-ui';
+import { IconMenu, IconButton, MenuItem, FontIcon } from 'material-ui';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 import { nodeType } from 'constants/TreeConstants.jsx';
@@ -79,7 +79,7 @@ export default class FolderPanel extends Component {
 				color: '#464949',
 			},
 		    iconMenuProps = {
-				iconButtonElement: (<IconButton iconStyle={iconStyle}><MoreVertIcon /></IconButton>),
+				iconButtonElement: (<IconButton iconClassName='icon-more' style={{fontSize: '18px'}}/>),
 				anchorOrigin:{horizontal: 'left', vertical: 'top'},
 				targetOrigin:{horizontal: 'left', vertical: 'top'},
 				onItemTouchTap: this._onMenuSelect(node)
@@ -123,30 +123,17 @@ export default class FolderPanel extends Component {
 		return (<ul className='jazz-analysis-folder-panel-content'>{node.get('Children').map(this._renderChildrenItem).toJS()}</ul>);
 	}
 	_renderImage(nodeData) {
-		let image;
 		if ( isFolder(nodeData) ) {
-			image = <img src={require('../../../less/images/folder.png')}/>
+			return (<em className='icon-folder1' style={{
+					fontSize: '50px',
+					color: '#fdbb00'
+				}}/>);
 		} else {
-			switch (nodeData.get('ChartType')) {
-				case 1:
-					image = <img src={require('../../../less/images/line.png')}/>;
-					break;
-				case 2:
-				case 3:
-					image = <img src={require('../../../less/images/column.png')}/>;
-					break;
-				case 4:
-					image = <img src={require('../../../less/images/pie.png')}/>;
-					break;
-				case 5:
-					image = <img src={require('../../../less/images/raw-data.png')}/>;
-					break;
-				case 'Column':
-					image = <img src={require('../../../less/images/labeling.png')}/>;
-					break;
-			}
+			return (<em className='icon-chart1' style={{
+					fontSize: '50px',
+					color: '#32ad3d'
+				}}/>);
 		}
-		return image
 	}
 	_renderChildrenItem(child) {
 		let iconStyle = {
@@ -154,21 +141,27 @@ export default class FolderPanel extends Component {
 			color: '#464949'
 		},
 	    iconMenuProps = {
-			iconButtonElement: (<IconButton iconStyle={iconStyle}><MoreVertIcon /></IconButton>),
+			iconButtonElement: (
+				<button style={{
+					backgroundColor: 'transparent',
+					border: 10,
+				}}>
+					<FontIcon className='icon-more' style={{fontSize: '26px'}}/>
+				</button>),
 			anchorOrigin:{horizontal: 'left', vertical: 'top'},
 			targetOrigin:{horizontal: 'left', vertical: 'top'},
 			onItemTouchTap: this._onMenuSelect(child)
 	    };
 		return (<li className='jazz-folder-detail-item'>
-	        <div className='title' title={child.get('Name')}>
+	        <div className='title' title={child.get('Name')} style={{
+	        	backgroundColor: '#f7f7f7'
+	        }}>
 	          <div className='name'>
 	            {child.get('Name')}
 	          </div>
-	          <div className='select'>
-	              {this._renderMenu(child, iconMenuProps)}
-	          </div>
+	          {this._renderMenu(child, iconMenuProps)}
 	        </div>
-	        <div className='icon' onClick={() => {
+	        <div className='icon flex-center' onClick={() => {
 	        	this.props.onSelectNode(child);
 	        }}>
 	        {this._renderImage(child)}

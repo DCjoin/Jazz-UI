@@ -10,7 +10,6 @@ import RoutePath from 'util/RoutePath.jsx';
 import util from 'util/Util.jsx';
 
 import Dialog from 'controls/Dialog.jsx';
-// import FaltButton from 'controls/FaltButton.jsx';
 import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
 
 import Left from './Left.jsx';
@@ -20,8 +19,7 @@ import AnalysisGenerateSolution from './Basic/AnalysisGenerateSolution.jsx';
 
 // import CopyView from '../folder/operationView/CopyView.jsx';
 import DeleteView from '../folder/operationView/DeleteView.jsx';
-import ShareView from '../folder/operationView/ShareView.jsx';
-import SendView from '../folder/operationView/SendView.jsx';
+import SendView from './operationView/SendView.jsx';
 import SaveAsView from '../folder/operationView/SaveAsView.jsx';
 import ExportView from '../folder/operationView/ExportView.jsx';
 
@@ -31,6 +29,7 @@ import UserAction from 'actions/UserAction.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import FolderStore from 'stores/FolderStore.jsx';
 import WidgetStore from 'stores/Energy/WidgetStore.jsx';
+import UserStore from 'stores/UserStore.jsx';
 
 function isWidget(node) {
 	return node.get('Type') === nodeType.Widget;
@@ -354,10 +353,7 @@ export default class DataAnalysis extends Component {
 					onOperationSelect={this._onOperationSelect}/>);
 			}
 		}
-		return (<div className='jazz-framework-right-fold' style={{
-					backgroundColor: '#fff',
-					marginTop: -16
-				}}>{content}</div>);
+		return <div className='jazz-new-folder-rightpanel'>{content}</div>;
 	}
 
 	_renderDialog() {
@@ -367,13 +363,21 @@ export default class DataAnalysis extends Component {
 			// case MenuAction.Copy:
 			// 	dialog = <CopyView isNew={true} onDismiss={this._onDialogDismiss} copyNode={dialogData}/>;
 			// 	break;
-			case MenuAction.Send:
-				dialog = <SendView isNew={true} onDismiss={this._onDialogDismiss} sendNode={dialogData}
-          getNode={isWidget(dialogData) && dialogData.get('Id') === selectedNode.get('Id') ? FolderStore.getSelectedNode : null}/>;
-				break;
 			case MenuAction.Share:
-				dialog = <SendView isNew={true} onDismiss={this._onDialogDismiss} sendNode={dialogData}
-          getNode={isWidget(dialogData) && dialogData.get('Id') === selectedNode.get('Id') ? FolderStore.getSelectedNode : null}/>;
+				let _isWidget = isWidget(dialogData),
+				_type = _isWidget ? I18N.Folder.WidgetName : I18N.Folder.FolderName,
+				_userId = dialogData.get('UserId'),
+				_getNode = _isWidget && dialogData.get('Id') === selectedNode.get('Id') ? FolderStore.getSelectedNode : null;
+
+				dialog = <SendView 
+									onSendItem={() => {
+										this._onDialogDismiss();
+										FolderAction.sendFolderCopy(_getNode ? _getNode() : dialogData, UserStore.getUserIds(), true);
+									}}
+									onDismiss={this._onDialogDismiss} 
+          				type={_type}
+          				userId={_userId}
+          				/>;
 				break;
 			case MenuAction.Delete:
 				dialog = <DeleteView isLoadByWidget={selectedNode.get('Id') === dialogData.get('Id')} onDismiss={this._onDialogDismiss} deleteNode={dialogData}/>;
