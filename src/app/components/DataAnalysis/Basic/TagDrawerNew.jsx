@@ -189,8 +189,11 @@ export default class TagDrawer extends Component {
           selectedNode: this.state.selectedDimNode,
           generateNodeConent:this._renderDimTreeNode,
           nodeOriginPaddingLeft:0,
-          treeClass:'jazz-analysis-tag-treeview',
-          treeNodeClass: 'jazz-copy-tree'
+          //treeNodeClass: 'jazz-copy-tree',
+          arrowClass: 'jazz-new-foldertree-arrow',
+          arrowIconCollapsedClass: 'icon-arrow-fold',
+          arrowIconExpandClass: 'icon-arrow-unfold',
+          treeNodeClass: 'jazz-new-foldertree-node',
        };
        return (<Tree {...treeProps}/>);
     }
@@ -375,9 +378,10 @@ export default class TagDrawer extends Component {
         TagStore.addAlarmTagNodeListener(this._onAlarmTagNodeChange);
         let data = {
           hierId: this.props.hierarchyId,
-          tagId: this.props.tagId
+          tagId: this.props.tagId,
+          dimId:null
         };
-        TagAction.loadAlarmData(data);
+
         let hierNode=Immutable.fromJS({
           Id:this.props.hierarchyId,
           Name:DataAnalysisStore.getHierarchyName(this.props.hierarchyId)
@@ -386,8 +390,13 @@ export default class TagDrawer extends Component {
           Id:TagStore.getCurrentDimInfo().dimId,
           Name:TagStore.getCurrentDimInfo().dimName
         });
+        if(dimNode.get('Id')){
+          data.dimId=dimNode.get('Id')
+        }
         this.setState({
           selectedDimNode:TagStore.getCurrentDimInfo().dimId?dimNode:hierNode
+        },()=>{
+          TagAction.loadAlarmData(data);
         })
       }
       // else {
@@ -428,7 +437,7 @@ export default class TagDrawer extends Component {
     return(
       <Drawer
         docked={false}
-        width={232}
+        width={237}
         open={this.props.open}
         onRequestChange={this.props.onClose}
         overlayStyle={{opacity:'0'}}

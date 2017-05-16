@@ -419,8 +419,10 @@ _renderDimTreeNode(nodeData){
         selectedNode: this.state.selectedDimNode,
         generateNodeConent:this._renderDimTreeNode,
         nodeOriginPaddingLeft:0,
-        treeClass:'jazz-analysis-tag-treeview',
-        treeNodeClass: 'jazz-copy-tree'
+        arrowClass: 'jazz-new-foldertree-arrow',
+        arrowIconCollapsedClass: 'icon-arrow-fold',
+        arrowIconExpandClass: 'icon-arrow-unfold',
+        treeNodeClass: 'jazz-new-foldertree-node',
      };
      return (<Tree {...treeProps}/>);
   }
