@@ -5,6 +5,7 @@ import HierarchyStore from 'stores/HierarchyStore.jsx';
 import CurrentUserCustomerStore from 'stores/CurrentUserCustomerStore.jsx';
 import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
 import UserStore from 'stores/UserStore.jsx';
+import NewAppTheme from '../../../decorator/NewAppTheme.jsx';
 
 function getCustomerPrivilageById(customerId) {
   return UserStore.getUserCustomers().find(customer => customer.get('CustomerId') === customerId * 1 );
