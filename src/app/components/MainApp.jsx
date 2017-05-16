@@ -3,7 +3,7 @@
 import React from 'react';
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
 import keyMirror from 'keymirror';
-import { LeftNav, CircularProgress } from 'material-ui';
+import { CircularProgress } from 'material-ui';
 import assign from 'object-assign';
 import {remove} from 'lodash';
 import {find} from 'lodash';
@@ -29,7 +29,6 @@ import SelectCustomer from './SelectCustomer.jsx';
 import ConsultantCard from 'components/Diagnose/ConsultantCard.jsx';
 
 import MainAction from 'actions/MainAction.jsx';
-import UserAction from 'actions/UserAction.jsx';
 import HierarchyAction from 'actions/HierarchyAction.jsx';
 import FolderAction from '../actions/FolderAction.jsx';
 
@@ -224,7 +223,6 @@ let MainApp = React.createClass({
           this.setState({
             hierarchyId: initHierarchyId * 1
           }, () => {
-            // router.push(pathname + search );
             this._getECMUnread();
             this._getDiagnoseProblem();
             DiagnoseAction.getConsultant(initHierarchyId);
@@ -238,7 +236,9 @@ let MainApp = React.createClass({
   },
 
   _getCustomerId: function(customerId) {
-    HierarchyAction.getBuildingListByCustomerId(customerId);
+    if(customerId !== HierarchyStore.getBuildingListForCustomerId()) {
+      HierarchyAction.getBuildingListByCustomerId(customerId);
+    }
     this.setState({
       hierarchyId: null
     });
@@ -333,7 +333,8 @@ let MainApp = React.createClass({
               topSelectHierarchy={this._renderTopSelectHierarchy()}
               disabledSelectCustomer={MainApp.needDefaultReplace(this.props.router)}
               items={menuItems}
-              logoUrl={customerId && 'Logo.aspx?hierarchyId=' + customerId}/>
+              logoUrl={customerId && 'Logo.aspx?hierarchyId=' + customerId}
+              changeHierarchy={this._setHierarchyId}/>
             {customerId && this.props.children}
             <NetworkChecker />
             <ExportChart />
@@ -380,7 +381,7 @@ let MainApp = React.createClass({
 
     MainAction.getAllUoms();
     MainAction.getAllCommodities();
-    UserAction.getCustomerByUser(LoginStore.getCurrentUserId());
+    // UserAction.getCustomerByUser(LoginStore.getCurrentUserId());
 
     if(this.props.params.customerId) {
       this._getCustomerId(this.props.params.customerId);

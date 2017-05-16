@@ -143,9 +143,12 @@ I18N.InitPassword.SuccessTitle = '密码设置成功';
 I18N.InitPassword.SuccessTips = '密码已设置成功，请单击“继续”返回登录页面。';
 
 I18N.SelectCustomer = {};
-I18N.SelectCustomer.Title = '请选择客户';
+I18N.SelectCustomer.Title = '选择客户';
+I18N.SelectCustomer.SubTitle = '选择项目';
 I18N.SelectCustomer.SysManagement = '\"云能效\"系统管理';
 I18N.SelectCustomer.SysManagementTip = "资产管理开放平台";
+I18N.SelectCustomer.Group = "集团";
+I18N.SelectCustomer.Single = "项目";
 
 I18N.M212001 = '用户不存在';
 I18N.M212002 = '服务提供商无效';
