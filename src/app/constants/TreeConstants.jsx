@@ -13,6 +13,8 @@ module.exports = {
     Widget: 7,
     Area: 101,
     Hierarchy:2,
-    Dimension:6
+    Dimension:6,
+    HierarchyOnly:1,
+    DimensionOnly:5
   }
 };

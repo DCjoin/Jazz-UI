@@ -16,6 +16,7 @@ import LinkButton from 'controls/LinkButton.jsx';
 import ReportDataItem from './ReportDataItem.jsx';
 import FormBottomBar from 'controls/FormBottomBar.jsx';
 import { formStatus } from 'constants/FormStatus.jsx';
+import UploadConfirmDialog from './UploadConfirmDialog.jsx';
 
 var customerId=null;
 export default class ReportConfig extends Component {
@@ -50,7 +51,8 @@ export default class ReportConfig extends Component {
     showUploadDialog: false,
     fileName: '',
 		errorMsg:null,
-		isLoading:false
+		isLoading:false,
+		showUploadConfirm:false
 	};
 
 	_onChange(){
@@ -166,18 +168,23 @@ export default class ReportConfig extends Component {
 			if(!file) return;
       var fileName = file.name;
 
-      if (!CommonFuns.endsWith(fileName.toLowerCase(), '.xlsx') && 
-      	!CommonFuns.endsWith(fileName.toLowerCase(), '.xls')) {
 			this.setState({
-				errorMsg:I18N.EM.Report.WrongExcelFile
+				fileName,
+				showUploadConfirm:true
 			})
-        return;
-      }
-      this.refs.upload_tempalte.upload();
-      this.setState({
-      	fileName,
-        showUploadDialog: true
-      });
+
+      // if (!CommonFuns.endsWith(fileName.toLowerCase(), '.xlsx') &&
+      // 	!CommonFuns.endsWith(fileName.toLowerCase(), '.xls')) {
+			// this.setState({
+			// 	errorMsg:I18N.EM.Report.WrongExcelFile
+			// })
+      //   return;
+      // }
+      // this.refs.upload_tempalte.upload();
+      // this.setState({
+      // 	fileName,
+      //   showUploadDialog: true
+      // });
   }/*
   _handleFileSelect(event) {
       var me = this;
@@ -511,9 +518,9 @@ export default class ReportConfig extends Component {
           </div>
           {/*uploadButton*/}
           <RaisedButton containerElement="label" labelPosition="before" label={I18N.EM.Report.UploadTemplate}>
-          	<UploadForm 
+          	<UploadForm
           		ref={'upload_tempalte'}
-          		action={'TagImportExcel.aspx?Type=ReportTemplate'} 
+          		action={'TagImportExcel.aspx?Type=ReportTemplate'}
           		fileName={'templateFile'}
 				enctype={'multipart/form-data'}
 				method={'post'}
@@ -523,6 +530,20 @@ export default class ReportConfig extends Component {
           		<input type="hidden" name='IsActive' value={true}/>
           	</UploadForm>
           </RaisedButton>
+					{this.state.fileName!=='' && this.state.showUploadConfirm && <UploadConfirmDialog name={this.state.fileName}
+															 onConfirm={()=>{
+																 this.refs.upload_tempalte.upload();
+																 this.setState({
+																	 showUploadConfirm:false,
+																   showUploadDialog: true
+																 });
+															 }}
+															 onCancel={()=>{
+																 this.setState({
+																	showUploadConfirm:false,
+																	fileName:''
+																});
+															 }}/>}
         </div>
 
       )

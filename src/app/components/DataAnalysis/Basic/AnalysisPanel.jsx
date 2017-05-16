@@ -5,7 +5,7 @@ import { withRouter } from 'react-router';
 import assign from "object-assign";
 import classNames from 'classnames';
 import FlatButton from 'controls/FlatButton.jsx';
-import TagDrawer from './TagDrawer.jsx';
+import TagDrawer from './TagDrawerNew.jsx';
 import FolderStore from 'stores/FolderStore.jsx';
 import Dialog from 'controls/OperationTemplate/BlankDialog.jsx';
 import NewDialog from 'controls/NewDialog.jsx';
@@ -25,9 +25,9 @@ import CommonFuns from 'util/Util.jsx';
 import ChartStatusStore from 'stores/Energy/ChartStatusStore.jsx';
 import FolderAction from 'actions/FolderAction.jsx';
 import ExportChartAction from 'actions/ExportChartAction.jsx';
-import ConstStore from 'stores/ConstStore.jsx';
+// import ConstStore from 'stores/ConstStore.jsx';
 import TagStore from 'stores/TagStore.jsx';
-import DateTimeSelector from 'controls/DateTimeSelector.jsx';
+// import DateTimeSelector from 'controls/DateTimeSelector.jsx';
 import GlobalErrorMessageAction from 'actions/GlobalErrorMessageAction.jsx';
 import AlarmTagStore from 'stores/AlarmTagStore.jsx';
 import MultiTimespanAction from 'actions/MultiTimespanAction.jsx';
@@ -46,7 +46,8 @@ import CommodityStore from 'stores/CommodityStore.jsx';
 import HierarchyStore from 'stores/HierarchyStore.jsx';
 import WidgetStore from 'stores/Energy/WidgetStore.jsx';
 import TagAction from 'actions/TagAction.jsx';
-import CommodityAction from 'actions/CommodityAction.jsx'
+import CommodityAction from 'actions/CommodityAction.jsx';
+import AuxiliaryFunction from './AuxiliaryFunction.jsx';
 
 const DIALOG_TYPE = {
   SWITCH_WIDGET: "switchwidget",
@@ -88,7 +89,7 @@ class AnalysisPanel extends Component {
     this.getRemarck  = this.getRemarck.bind(this);
     this._onDialogChanged  = this._onDialogChanged.bind(this);
     this._handleSave  = this._handleSave.bind(this);
-
+    this._onChartTypeChanged  = this._onChartTypeChanged.bind(this);
   }
 
   state={
@@ -198,7 +199,7 @@ class AnalysisPanel extends Component {
       this.isMultiTime=invokeFromMultiTime;
     }
     // console.log(invokeFromMultiTime);
-    let dateSelector = this.refs.dateTimeSelector;
+    let dateSelector = this.refs.subToolBar.refs.dateTimeSelector;
     let dateRange = dateSelector.getDateTime(),
         startDate = dateRange.start,
         endDate = dateRange.end;
@@ -888,7 +889,7 @@ class AnalysisPanel extends Component {
   }
 
   _onRelativeDateChange(e, selectedIndex, value,refresh=true) {
-    let dateSelector = this.refs.dateTimeSelector;
+    let dateSelector = this.refs.subToolBar.refs.dateTimeSelector;
 
     if (this.state.selectedChartType === 'rawdata' && value !== 'Customerize' && value !== 'Last7Day' && value !== 'Today' && value !== 'Yesterday' && value !== 'ThisWeek' && value !== 'LastWeek') {
     FolderAction.setDisplayDialog('errornotice', null, I18N.EM.RawData.ErrorForEnergy);
@@ -923,7 +924,7 @@ class AnalysisPanel extends Component {
   }
 
   _onSearchBtnItemTouchTap(value) {
-  let dateSelector = this.refs.dateTimeSelector;
+  let dateSelector = this.refs.subToolBar.refs.dateTimeSelector;
   let dateRange = dateSelector.getDateTime(),
     startDate = dateRange.start,
     endDate = dateRange.end;
@@ -973,8 +974,41 @@ class AnalysisPanel extends Component {
     });
   }
 
+  _onChartTypeChanged(e, selectedIndex, value){
+    this._onSearchBtnItemTouchTap(value)
+  }
+
+  getChartTypeIconMenu(disabled) {
+  let iconStyle = {
+      fontSize: '16px'
+    },
+    style = {
+      padding: '0px',
+      height: '18px',
+      width: '18px',
+      fontSize: '18px',
+      marginTop:'-5px'
+    };
+    var lineIcon=<FontIcon className="icon-line" iconStyle ={iconStyle} style = {style} />,
+        columnIcon=<FontIcon className="icon-column" iconStyle ={iconStyle} style = {style}  />,
+        stackIcon=<FontIcon className="icon-stack" iconStyle ={iconStyle} style = {style} />,
+        pieIcon=<FontIcon className="icon-pie" iconStyle ={iconStyle} style = {style} />,
+        rawdataIcon=<FontIcon className="icon-raw-data" iconStyle ={iconStyle} style = {style} />;
+
+  let chartType = this.state.selectedChartType || 'line';
+  return(
+    <DropDownMenu disabled={AlarmTagStore.getSearchTagList().length===0}
+      style={{width: '120px'}} labelStyle={{top:'10px',lineHeight:'32px',paddingRight:'0'}} value={chartType} onChange={this._onChartTypeChanged}>
+    <MenuItem primaryText={I18N.EM.CharType.Line} value="line" leftIcon={lineIcon}/>
+    <MenuItem primaryText={I18N.EM.CharType.Bar} value="column" leftIcon={columnIcon}/>
+    <MenuItem primaryText={I18N.EM.CharType.Stack} value="stack" leftIcon={stackIcon}/>
+    <MenuItem primaryText={I18N.EM.CharType.Pie} value="pie" leftIcon={pieIcon}/>
+    <MenuItem primaryText={I18N.EM.CharType.GridTable} value="rawdata" leftIcon={rawdataIcon}/>
+  </DropDownMenu>
+  )
+  }
+
   _renderSearchBar(){
-    var relativeDate=this.state.relativeDate;
     var styles={
       button:{
         border:'1px solid #efefef',
@@ -982,6 +1016,18 @@ class AnalysisPanel extends Component {
       },
       label:{
         fontSize:'14px'
+      }
+    };
+    var props={
+      auxiliary:{
+        selectedChartType:this.state.selectedChartType,
+        hasTagData:!(AlarmTagStore.getSearchTagList().length===0),
+        timeRanges:this.state.timeRanges,
+        yaxisConfig:this.state.yaxisConfig,
+        initYaxisDialog:this._initYaxisDialog,
+        onYaxisSelectorDialogSubmit:this._onYaxisSelectorDialogSubmit,
+        handleCalendarChange:this._handleCalendarChange,
+        analysisPanel:this,
       }
     }
     return(
@@ -1002,12 +1048,9 @@ class AnalysisPanel extends Component {
                          tagShow:true
                        })
                      }}/>
-         <DropDownMenu ref="relativeDate" style={{
-          width: '90px',
-        }} labelStyle={{fontSize:'12px',lineHeight:'32px',paddingRight:'0'}} value={relativeDate} onChange={this._onRelativeDateChange}>{ConstStore.getSearchDate()}</DropDownMenu>
+          {this.getChartTypeIconMenu()}
        </div>
-       <DateTimeSelector ref='dateTimeSelector' endLeft='-100px' _onDateSelectorChanged={this._onDateSelectorChanged} showTime={true}/>
-
+        <AuxiliaryFunction {...props.auxiliary}/>
      </div>
     )
   }
@@ -1189,10 +1232,10 @@ class AnalysisPanel extends Component {
     date.setHours(0, 0, 0);
     let last7Days = CommonFuns.dateAdd(date, -6, 'days');
     let endDate = CommonFuns.dateAdd(date, 1, 'days');
-    this.refs.relativeDate.setState({
-      selectedIndex: 1
-    });
-    this.refs.dateTimeSelector.setDateField(last7Days, endDate);
+    // this.refs.relativeDate.setState({
+    //   selectedIndex: 1
+    // });
+    this.refs.subToolBar.refs.dateTimeSelector.setDateField(last7Days, endDate);
   }
 
   resetCalendarType() {
@@ -1263,8 +1306,8 @@ class AnalysisPanel extends Component {
         this._onRelativeDateChange(null,null,'Customerize',false);
         let start = j2d(timeRange.StartTime, false);
         let end = j2d(timeRange.EndTime, false);
-        if (this.refs.dateTimeSelector) {
-          this.refs.dateTimeSelector.setDateField(start, end);
+        if (this.refs.subToolBar.refs.dateTimeSelector) {
+          this.refs.subToolBar.refs.dateTimeSelector.setDateField(start, end);
         }
       }
     };
@@ -1424,6 +1467,7 @@ class AnalysisPanel extends Component {
     var errorDialog;
     var props={
       subToolBar:{
+        ref:'subToolBar',
         selectedChartType:this.state.selectedChartType,
         onSearchBtnItemTouchTap:this._onSearchBtnItemTouchTap,
         hasTagData:!(AlarmTagStore.getSearchTagList().length===0),
@@ -1434,7 +1478,10 @@ class AnalysisPanel extends Component {
         initYaxisDialog:this._initYaxisDialog,
         onYaxisSelectorDialogSubmit:this._onYaxisSelectorDialogSubmit,
         handleCalendarChange:this._handleCalendarChange,
-        analysisPanel:this
+        analysisPanel:this,
+        relativeDate:this.state.relativeDate,
+        onRelativeDateChange:this._onRelativeDateChange,
+        onDateSelectorChanged:this._onDateSelectorChanged
       }
     }
     if (this.state.errorObj) {
@@ -1450,7 +1497,7 @@ class AnalysisPanel extends Component {
         </div>
         {<TagDrawer hierarchyId={this.state.hierarchyId}
                     isBuilding={this.state.isBuilding}
-                    customerId={this.context.router.params.customerId}
+                    customerId={parseInt(this.context.router.params.customerId)}
                     tagId={this.state.tagId}
                     open={this.state.tagShow}
                     onClose={(open)=>{

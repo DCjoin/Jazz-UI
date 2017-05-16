@@ -32,8 +32,6 @@ export default class TagDrawer extends Component {
 		this._onHierachyTreeClick = this._onHierachyTreeClick.bind(this);
     this._onTagNodeChange = this._onTagNodeChange.bind(this);
     this._onAlarmTagNodeChange = this._onAlarmTagNodeChange.bind(this);
-
-
 	}
 
   state={
@@ -90,6 +88,7 @@ export default class TagDrawer extends Component {
     else {
       page = 1;
       if(node.Id !== 0){
+        TagAction.setCurrentDimentionInfo(node.Id,node.Name);
         TagAction.loadData(customerId,node.Id, nodeType.Dimension, 1, null, filters);
         this.setState({
           tagId: node.Id,
@@ -111,9 +110,6 @@ export default class TagDrawer extends Component {
 
   _onSearch(e) {
     var value = e.target.value;
-    if (TagStore.getData().length === 0) {
-      //FolderAction.setDisplayDialog('errornotice', null, I18N.Tag.SelectError);
-    } else {
       if (value) {
         ReactDom.findDOMNode(this.refs.cleanIcon).style.display = 'block';
         filters = [
@@ -139,8 +135,6 @@ export default class TagDrawer extends Component {
       })
     }
 
-
-  }
 
   _onSearchClick() {
     ReactDom.findDOMNode(this.refs.searchIcon).style.display = 'none';

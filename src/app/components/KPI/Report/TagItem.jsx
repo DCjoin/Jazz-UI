@@ -55,10 +55,11 @@ let TagItem = React.createClass({
           'jazz-report-tag-item-left': me.props.leftPanel,
           'jazz-report-tag-item-right': !me.props.leftPanel
         }
-      )}>
+      )}
+      style={{fontSize:'14px',color:"#626469"}}>
         {checkBox}
         {displayIndex}
-        <div title={me.props.name}>{me.props.name}</div>
+        <div title={me.props.name} >{me.props.name}</div>
         {hierarchyName}
         {deleteButton}
       </div>

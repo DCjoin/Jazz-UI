@@ -11,6 +11,7 @@ import TemplateList from './TemplateList.jsx';
 import ReportStore from 'stores/KPI/ReportStore.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import PermissionCode from 'constants/PermissionCode.jsx';
+import UploadConfirmDialog from './UploadConfirmDialog.jsx';
 
 
 var Template = React.createClass({
@@ -27,7 +28,8 @@ var Template = React.createClass({
       showUploadDialog: false,
       sortBy: 'Name',
       fileName: '',
-      errorMsg:false
+      errorMsg:false,
+      showUploadConfirm:false
     };
   },
   _onChange() {
@@ -79,18 +81,23 @@ var Template = React.createClass({
       if(!file) return;
       var fileName = file.name;
 
-      if (!CommonFuns.endsWith(fileName.toLowerCase(), '.xlsx') && 
-        !CommonFuns.endsWith(fileName.toLowerCase(), '.xls')) {
-      this.setState({
-        errorMsg:I18N.EM.Report.WrongExcelFile
-      })
-        return;
-      }
-      this.refs.upload_tempalte.upload();
       this.setState({
         fileName,
-        showUploadDialog: true
-      });
+        showUploadConfirm:true
+      })
+
+      // if (!CommonFuns.endsWith(fileName.toLowerCase(), '.xlsx') &&
+      //   !CommonFuns.endsWith(fileName.toLowerCase(), '.xls')) {
+      // this.setState({
+      //   errorMsg:I18N.EM.Report.WrongExcelFile
+      // })
+      //   return;
+      // }
+      // this.refs.upload_tempalte.upload();
+      // this.setState({
+      //   fileName,
+      //   showUploadDialog: true
+      // });
   },
   /*
   _handleFileSelect(event) {
@@ -290,9 +297,9 @@ var Template = React.createClass({
               {/*uploadDom*/}
               <div style={{marginRight: 10}}>
                 <RaisedButton labelPosition="before" containerElement="label" label={I18N.EM.Report.UploadTemplate}>
-                  <UploadForm 
+                  <UploadForm
                     ref={'upload_tempalte'}
-                    action={'TagImportExcel.aspx?Type=ReportTemplate'} 
+                    action={'TagImportExcel.aspx?Type=ReportTemplate'}
                     fileName={'templateFile'}
                     enctype={'multipart/form-data'}
                     method={'post'}
@@ -302,6 +309,20 @@ var Template = React.createClass({
                     <input type="hidden" name='IsActive' value={true}/>
                   </UploadForm>
                 </RaisedButton>
+                {this.state.fileName!=='' && this.state.showUploadConfirm && <UploadConfirmDialog name={this.state.fileName}
+                                     onConfirm={()=>{
+                                       this.refs.upload_tempalte.upload();
+                                       this.setState({
+                                         showUploadConfirm:false,
+                                         showUploadDialog: true
+                                       });
+                                     }}
+                                     onCancel={()=>{
+                                       this.setState({
+                                        showUploadConfirm:false,
+                                        fileName:''
+                                      });
+                                     }}/>}
               </div>
             </div>
           </div>

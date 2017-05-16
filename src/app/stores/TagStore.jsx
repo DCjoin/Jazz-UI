@@ -389,7 +389,7 @@ var TagStore = assign({}, PrototypeStore, {
         });
         let lastTagOption = tagOptions[tagOptions.length - 1];
 
-        //this.setCurrentHierarchyInfo(lastTagOption.hierId, lastTagOption.hierName);
+        // this.setCurrentHierarchyInfo(lastTagOption.hierId, lastTagOption.hierName);
         this.setCurrentDimInfo(lastTagOption.dimId, lastTagOption.dimName);
         if (_tagTotal == _tagSum) {
           this.setTagTotalStatus();
@@ -406,6 +406,7 @@ var TagStore = assign({}, PrototypeStore, {
           let viewAssociation = contentObj.viewAssociation;
           if (viewAssociation.HierarchyId !== null) {
             this.setCurrentHierarchyId(viewAssociation.HierarchyId);
+
             if (viewAssociation.AreaDimensionId !== null) {
               // let node = {
               //   Id: viewAssociation.AreaDimensionId,

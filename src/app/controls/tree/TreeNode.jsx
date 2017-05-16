@@ -292,7 +292,7 @@ var TreeNode = React.createClass({
       "icon-device-box": type == nodeType.Device && !isAsset,
       "icon-column-fold": type == nodeType.Folder,
       "icon-image": type == nodeType.Widget,
-      "icon-dimension-node": type == nodeType.Area
+      "icon-dimension-node": type == nodeType.Area,
     })}/>
         </div>
     );
