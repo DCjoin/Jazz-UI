@@ -9,7 +9,11 @@ import ReportAction from 'actions/KPI/ReportAction.jsx';
 import ReportStore from 'stores/KPI/ReportStore.jsx';
 import util from 'util/Util.jsx';
 import UploadConfirmDialog from './UploadConfirmDialog.jsx';
+import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 
+function currentUser() {
+  return CurrentUserStore.getCurrentUser();
+}
 
 let TemplateList = React.createClass({
   getInitialState: function() {
@@ -193,6 +197,7 @@ let TemplateList = React.createClass({
   componentDidMount: function() {},
   componentWillUnmount: function() {},
   render() {
+    var user = window.currentUser || currentUser() || {};
     let me = this;
     var deleteDialog = me._renderDeleteDialog();
     let templateList = this.props.templateList;
@@ -211,7 +216,7 @@ let TemplateList = React.createClass({
           isReference: item.get('IsReference'),
           showDeleteDialog: me._showDeleteDialog,
           showReplaceDialog: me._showReplaceDialog,
-          onlyRead: me.props.onlyRead
+          onlyRead: me.props.onlyRead || user.Id!==item.get('CreateUserId')
         };
         return (
           <TemplateItem {...props}></TemplateItem>
