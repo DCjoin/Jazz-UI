@@ -13,7 +13,6 @@ import assign from 'object-assign';
 // require("babel-polyfill");
 import BlankPage from './components/BlankPage.jsx';
 import JazzApp from './components/JazzApp.jsx';
-import SelectCustomer from './components/SelectCustomer.jsx';
 import Login from './components/Login.jsx';
 import MainApp from './components/MainApp.jsx';
 import resetPSWApp from './components/resetPSWApp.jsx';
