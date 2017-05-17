@@ -128,15 +128,18 @@
   //background-color: grey;
 }
 .jazz-energy-step-item{
-  font-size: 12px;
+  font-size: 14px;
   display: inline-block;
-  padding: 3px 0px;
+  //padding: 3px 0px;
   text-align: center;
-  border-radius: 3px;
-  width: 32px;
+  // border-radius: 2px;
+  width: 56px;
+  height:30px;
+  line-height: 30px;
   cursor: pointer;
-  margin-left: 30px;
-  color: #464949;
+  // margin-left: 30px;
+  color: @medium-gray;
+  background-color: @border-gray
 }
 .jazz-energy-step-item-disable{
   color:@hoverGray !important;
@@ -147,14 +150,19 @@
   }
 }
 .jazz-energy-step-item:hover{
-  color: #1ca8dd;
+  //color: #1ca8dd;
 }
 .jazz-energy-step-item-selected{
-  color: #1ca8dd;
+  border:2px solid @border-gray;
+  background-color: #ffffff;
+  color:@dark-gray;
+  box-sizing: border-box;
+  line-height: 26px;
 }
 .jazz-energy-step{
-  margin-bottom: 7px;
+  //margin-bottom: 7px;
   align-self: flex-end;
+  display: flex;
 }
 .jazz-alarm-left-panel-dropdownmenu-container{
   flex: none;
@@ -266,7 +274,9 @@
 .jazz-alarm-chart-toolbar{
   display: flex;
   align-items: center;
-  margin-right: 30px;
+  margin-right: 10px;
+  height:59px;
+  min-height: 59px;
 }
 .jazz-label-year{
   hr{
@@ -418,25 +428,27 @@
   align-items: center;
   background-color:'#fbfbfb';
   >span{
-    font-size: 12px;
+    font-size: 14px;
+    color:@dark-gray;
   }
 }
 .jazz-full-border-datepicker-container{
   display: flex;
   align-items: center;
-  height: 38px;
-  margin-left:10px;
-  margin-right: 10px;
+  height: 30px;
+  margin-left:20px;
+  //margin-right: 10px;
   >div{
     position: relative;
     background-color: #ffffff;
     cursor: pointer;
     border: 1px solid rgb(235, 235, 235);
+    margin-right:12px;
     >div:first-child{
       width: 90px !important;
       >input{
         cursor: pointer;
-        font-size: 12px !important;
+        font-size: 14px !important;
       }
       >hr{
         border-bottom-width: 0px !important;

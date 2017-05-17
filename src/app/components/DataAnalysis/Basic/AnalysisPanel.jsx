@@ -48,7 +48,7 @@ import WidgetStore from 'stores/Energy/WidgetStore.jsx';
 import TagAction from 'actions/TagAction.jsx';
 import CommodityAction from 'actions/CommodityAction.jsx';
 import AuxiliaryFunction from './AuxiliaryFunction.jsx';
-
+import ChartAction from 'actions/ChartAction.jsx';
 import NewFlatButton from 'controls/NewFlatButton.jsx';
 
 const DIALOG_TYPE = {
@@ -1042,7 +1042,7 @@ class AnalysisPanel extends Component {
     }
     return(
       <div className={'jazz-alarm-chart-toolbar'} style={{
-          marginTop: '15px',marginLeft:'20px',justifyContent:'space-between'
+          justifyContent:'space-between'
         }}>
        <div className={'jazz-full-border-dropdownmenu-container'} style={{
           display: 'flex',
@@ -1100,22 +1100,17 @@ class AnalysisPanel extends Component {
   _renderRemark(){
     var remarkTextArea = null;
       if (this.state.remarkDisplay) {
-        remarkTextArea = <div className='jazz-energy-remark-text' style={{width:'100%'}}><TextField hintText={I18N.Remark.DefaultText} value={this.state.remarkText} onChange={this.getRemarck} hintStyle={{
+        remarkTextArea = <div className='jazz-energy-remark-text'><TextField hintText={I18N.Remark.DefaultText} value={this.state.remarkText} onChange={this.getRemarck} hintStyle={{
             color: '#abafae'
           }} multiLine={true} underlineShow={false}></TextField></div>;
         }
     var remarkDiv = null;
-        remarkDiv = <div className={classNames(
-            {
-              'jazz-energy-remark-container': true,
-              'jazz-energy-remark-expand': true
-            }
-          )} style={{display:'flex',alignItems:'center'}}>
+        remarkDiv = <div className='jazz-energy-remark-expand' style={{display:'flex',flexDirection:'column',marginTop:'40px',marginLeft:'-20px'}}>
               <div className='jazz-energy-remark-button'>
-                <RaisedButton label={I18N.Remark.Label} onClick={()=>{
+                <RaisedButton label={I18N.Remark.Label} style={{height:'26px',lineHeight:'26px'}} onClick={()=>{
                     this.setState({
                       remarkDisplay: !this.state.remarkDisplay
-                    })}
+                    },ChartAction.redrawChart)}
                   }/>
               </div>
             {remarkTextArea}

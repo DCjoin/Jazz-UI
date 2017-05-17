@@ -28,19 +28,26 @@ export default class ChartSubToolbar extends Component {
     return(
       <div style={{
           display: 'flex',
-          minHeight: '48px',
-          height: '48px',
-          padding:'0 15px',
-          'justifyContent': 'space-between'
+          minHeight: '70px',
+          height: '70px',
+          padding:'0 20px',
+          alignItems:'center',
+          border:'solid 1px #e6e6e6',
+          borderBottom:'none'
         }}>
         <div style={{display:'flex'}}>
           <DropDownMenu ref="relativeDate" style={{
-           width: '90px',
-         }} labelStyle={{fontSize:'12px',lineHeight:'32px',paddingRight:'0'}} value={this.props.relativeDate} onChange={this.props.onRelativeDateChange}>{ConstStore.getSearchDate()}</DropDownMenu>
+           width: '100px',
+           height:'30px',
+           lineHeight:'30px',
+           backgroundColor:'#ffffff',
+           border:'1px solid #e6e6e6'
+         }}
+         labelStyle={{fontSize:'14px',lineHeight:'30px',paddingRight:'0',color:'#626469',height:'30px',paddingLeft:'0',textAlign:'center'}} iconStyle={{display:'none'}} underlineStyle={{display:'none'}} value={this.props.relativeDate} onChange={this.props.onRelativeDateChange}>{ConstStore.getSearchDate()}</DropDownMenu>
 
        <DateTimeSelector ref='dateTimeSelector' endLeft='-100px' _onDateSelectorChanged={this.props.onDateSelectorChanged} showTime={true}/>
 
-          {this.props.timeRanges && <StepSelector disabled={!this.getConfigBtnStatus()} stepValue={this.props.step} onStepChange={this.props.onStepChange} timeRanges={this.props.timeRanges}/>}
+        {this.props.timeRanges && <StepSelector disabled={!this.getConfigBtnStatus()} stepValue={this.props.step} onStepChange={this.props.onStepChange} timeRanges={this.props.timeRanges}/>}
        </div>
         </div>
     )
