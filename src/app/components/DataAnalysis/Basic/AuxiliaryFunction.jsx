@@ -113,8 +113,7 @@ export default class AuxiliaryFunction extends Component {
       <div className="jazz-AuxiliaryCompareBtn-container">
         <ButtonMenu ref={'button_menu'} label={I18N.EM.Tool.MoreAnalysis}  style={{
           marginLeft: '10px'
-        }} backgroundColor="#fbfbfb"
-        onItemTouchTap={this._onConfigBtnItemTouchTap} disabled={this.getMoreBtnDisableStatus()}>
+        }} backgroundColor="#f7f7f7" onItemTouchTap={this._onConfigBtnItemTouchTap} disabled={this.getMoreBtnDisableStatus()}>
        <MenuItem primaryText={I18N.EM.Tool.DataStatistics} value='sum' disabled={disabled}/>
          {calendarEl}
       <MenuItem primaryText={I18N.EM.Tool.YaxisConfig} value='yaxis' disabled={disabled}/>
@@ -176,7 +175,8 @@ export default class AuxiliaryFunction extends Component {
   render(){
     var styles={
       label:{
-        fontSize:'14px'
+        fontSize:'14px',
+        color:'#626469'
       }
     };
     return(

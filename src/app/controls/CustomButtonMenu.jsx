@@ -61,7 +61,7 @@ export default class CustomButtonMenu extends Component {
       marginBottom: '5px',
       backgroundColor:this.props.backgroundColor
     }} label={this.props.label} onClick={this.handleTouchTap} disabled={this.props.disabled}>
-                      <FontIcon className="icon-arrow-down" style={{
+                      <FontIcon className="icon-arrow-unfold" style={{
       fontSize: '10px',
       marginRight: '10px',
       marginLeft: '-5px'
