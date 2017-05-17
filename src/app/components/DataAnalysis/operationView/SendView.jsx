@@ -102,7 +102,15 @@ export default class SendView extends Component {
   }
   render() {
     let props = {
-      title: I18N.format( I18N.Template.Share.Title, this.props.type),
+      title: (
+        <header style={{
+          fontSize: 16,
+          fontWeight: 'bold',
+          color: '#0d0d0d',
+        }}>
+        {I18N.format( I18N.Template.Share.Title, this.props.type)}
+        </header>
+      ),
       modal: true,
       open: this.state.open,
       actionsContainerStyle: {
@@ -137,7 +145,20 @@ export default class SendView extends Component {
           <CircularProgress color='#32ad3d' size={80} />
         </div>);
     } else if(this.state.users != null) {
-      content = <UsersOperation users={this.state.users} type={I18N.Template.Send.Send}/>;
+      content = (
+        <UsersOperation 
+          users={this.state.users} 
+          type={I18N.Template.Send.Send}
+          titleStyle={{color: '#626469'}}
+          contentStyle={{
+            paddingTop: 15,
+            borderTop: '1px solid #e6e6e6',
+          }}
+          boxStyle={{
+            marginLeft: 4,
+          }}
+        />
+      );;
     }
     return (
       <Dialog {...props}>{content}</Dialog>

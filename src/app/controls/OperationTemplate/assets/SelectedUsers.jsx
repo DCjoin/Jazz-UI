@@ -12,6 +12,7 @@ import UserAction from '../../../actions/UserAction.jsx';
 var UserItem = React.createClass({
   propTypes: {
     user: React.PropTypes.object,
+    titleStyle: React.PropTypes.object,
   },
   _onCleanButtonClick: function() {
     UserAction.setUserStatus(this.props.user, false);
@@ -29,6 +30,7 @@ var UserItem = React.createClass({
       fontSize: '16px',
       display: 'none',
       marginLeft: '50px',
+      backgroundColor: '#ffffff',
     };
     var userTitle = [
       I18N.Setting.User.EnergyConsultant,
@@ -54,7 +56,7 @@ var UserItem = React.createClass({
           <div style={{
         float: 'right'
       }}>
-            <FontIcon className="icon-clean" style={cleanIconStyle} hoverColor='#6b6b6b' color="#939796" ref="cleanIcon" onClick={this._onCleanButtonClick}/>
+            <FontIcon className="icon-clean" style={cleanIconStyle} hoverColor='#3dcd58' color="#32ad3d" ref="cleanIcon" onClick={this._onCleanButtonClick}/>
 
           </div>
 
@@ -97,7 +99,7 @@ var SelectedUsers = React.createClass({
     }
     return (
       <div>
-        <div style={fontStyle}>
+        <div style={{...fontStyle, ...this.props.titleStyle}}>
           {I18N.format(I18N.Template.User.Selected, this.props.type)}
         </div>
         <div className='jazz-folder-selectedusers'>

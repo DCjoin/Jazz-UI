@@ -780,11 +780,10 @@ var MainAppBar = React.createClass({
         {this.state.showCustomerList && (<SelectCustomer onClose={(hierarchyId) => {
           this.setState({
             showCustomerList: false
-          }, () => {            
-            if(this.props.changeHierarchy) {
-              this.props.changeHierarchy(hierarchyId);
-            }
-          });
+          });       
+          if(hierarchyId && this.props.changeHierarchy) {
+            this.props.changeHierarchy(hierarchyId);
+          }
         }}/>)}
     </div>
 

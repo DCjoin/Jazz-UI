@@ -10,6 +10,8 @@ var UserItem = React.createClass({
   propTypes: {
     user: React.PropTypes.object,
     status: React.PropTypes.bool,
+    titleStyle: React.PropTypes.object,
+    boxStyle: React.PropTypes.object,
   },
   _onClick: function() {
     UserAction.setUserStatus(this.props.user, !this.props.status);
@@ -43,7 +45,7 @@ var UserItem = React.createClass({
       <div className='jazz-folder-alluser-useritem' onClick={this._onClick}>
         <Checkbox
       checked={this.props.status}
-      style={boxStyle}
+      style={{...boxStyle, ...this.props.boxStyle}}
       iconStyle={iconstyle}
       labelStyle={labelstyle}
       />
@@ -96,13 +98,13 @@ var AllUsers = React.createClass({
         color: '#abafae'
       };
 
-    this.props.users.forEach(function(user) {
+    this.props.users.forEach(user => {
       let status = (that.state.userStatusList.findIndex(item => item.get('Id') == user.get('Id')) >= 0);
-      content.push(<UserItem user={user} status={status}/>);
+      content.push(<UserItem user={user} status={status} boxStyle={this.props.boxStyle}/>);
     })
     return (
       <div>
-        <div style={fontStyle}>
+        <div style={{...fontStyle, ...this.props.titleStyle}}>
           {I18N.Template.User.Alluser}
         </div>
         <div className='jazz-folder-allusers'>
@@ -110,7 +112,7 @@ var AllUsers = React.createClass({
             <Checkbox
       onCheck={this._onAllCheck}
       ref="checkall"
-      style={allCheckStyle}
+      style={{...allCheckStyle, ...this.props.boxStyle}}
       labelStyle={labelstyle}
       />
             <div style={fontStyle} className='name'>
