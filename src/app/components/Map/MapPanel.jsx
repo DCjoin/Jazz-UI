@@ -365,7 +365,6 @@ let MapPanel = React.createClass({
         "flex": "1",
         "display": "flex",
         flexDirection: 'column',
-        marginTop: '-16px'
       }}>
     <div className='map-timepickerbar'><DatePicker lang={this.context.router.params.lang} onMenuItemClick={this._onDateChanged}/></div>
     <div style={styleMap} id="_map"></div>
