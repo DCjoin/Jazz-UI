@@ -97,7 +97,7 @@ export default class NotPushPanel extends Component {
           height: '16px',
           color:'#9fa0a4',
           marginRight:'10px',
-          marginTop:'2px'
+          marginTop:'1px'
         },
         label:{
           fontSize: '14px',

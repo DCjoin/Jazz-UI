@@ -17,7 +17,7 @@ class ItemComponent extends Component{
   render(){
     return(
       <div style={this.props.style}>
-        <div style={{fontSize:'16px',color:'#464949',marginBottom:'15px',fontWeight:'bold'}}>
+        <div style={{fontSize:'14px',color:'#626469',marginBottom:'7px',marginTop:'25px',paddingLeft:'10px'}}>
           {this.props.title}
         </div>
         {this.props.children}
@@ -32,11 +32,16 @@ ItemComponent.propTypes={
 }
 
 class TableHeader extends Component{
+
   render(){
+    var defaultStyle={
+      height:'29px',minHeight:'29px',lineHeight:'29px',border:'1px solid #e6e6e6',display:'flex',fontSize:'10px',color:'#626469'
+    };
+    var style=assign({},defaultStyle,this.props.style);
     return(
-      <div style={{'borderBottom':'1px solid #464949',display:'flex',fontSize:'14px',color:'#abafae'}}>
-        <div style={{width:'300px'}}>{this.props.columnName}</div>
-        <div style={{width:'150px'}}>{this.props.hasTime?I18N.Setting.Calendar.Time:''}</div>
+      <div style={style}>
+        <div style={{paddingLeft:'10px',width:'181px'}}>{this.props.columnName}</div>
+        <div style={{width:'220px'}}>{this.props.hasTime?I18N.Setting.Calendar.Time:''}</div>
         <div>
           {this.props.typeName}
         </div>
@@ -49,23 +54,26 @@ TableHeader.propTypes={
   columnName:React.PropTypes.string,
   typeName:React.PropTypes.string,
   hasTime:React.PropTypes.bool,
+  style:React.PropTypes.object,
 }
 
 class TableRow extends Component{
   render(){
     var defaultStyle={
-      height:'30px',
-      minHeight:'30px',
-      fontSize:'14px',
-      borderBottom:'1px solid #464949',
+      height:'36px',
+      minHeight:'36px',
+      fontSize:'12px',
+      border:'1px solid #e6e6e6',
+      borderTop:'none',
       display:'flex',
-      'alignItems':'center'
+      alignItems:'center',
+      color:'#626469'
     };
     var style=assign({},defaultStyle,this.props.style);
     return(
       <div style={style}>
-        <div style={{width:'300px'}}>{this.props.columnValue}</div>
-          <div style={{width:'150px'}}>{this.props.time}</div>
+        <div style={{paddingLeft:'10px',width:'181px'}}>{this.props.columnValue}</div>
+          <div style={{width:'220px'}}>{this.props.time}</div>
           <div>
             {this.props.typeValue}
           </div>
@@ -126,13 +134,14 @@ export default class StatisticsDialog extends Component {
       header={
         columnName:I18N.SumWindow.Data,
         typeName:I18N.SumWindow.Sum,
-        hasTime:false
+        hasTime:false,
+        style:{'marginBottom':'none'}
       };
       content=SumGroup.map(sum=>{
         var {CommodityId,UomName,Items,GatherValue}=sum;
         var commodity=CommonFuns.getCommodityById(CommodityId).Comment;
         var title=(
-          <div style={{height:'30px',backgroundColor:'#fbfbfb',display:'flex','alignItems':'center',fontSize:'14px'}}>
+          <div style={{paddingLeft:'10px',height:'30px',minHeight:'30px',backgroundColor:'#f7f7f7',lineHeight:'30px',fontSize:'12px',color:'#626469',borderLeft:'1px solid #e6e6e6',borderRight:'1px solid #e6e6e6'}}>
             {I18N.Common.Glossary.Commodity+":"+commodity+" "+I18N.Common.Glossary.UOM+':'+UomName}
           </div>
         );
@@ -142,7 +151,6 @@ export default class StatisticsDialog extends Component {
             columnValue:TagName,
             typeValue:ItemGatherValue+' '+UomName,
             time:null,
-            style:{borderBottom:'none'},
           }
           return <TableRow {...props}/>
         })
@@ -150,12 +158,11 @@ export default class StatisticsDialog extends Component {
           group.push(
             <TableRow columnValue={I18N.SumWindow.Sum}
                       typeValue={GatherValue+' '+UomName}
-                      time={null}
-                      style={{borderBottom:'none'}}/>
+                      time={null}/>
           )
         }
         return(
-          <div style={{borderBottom:'1px solid #464949'}}>
+          <div>
             {title}
             {group}
           </div>
@@ -285,7 +292,7 @@ export default class StatisticsDialog extends Component {
     }else {
       let j2d = CommonFuns.DataConverter.JsonToDateTime;
       var startDate=new Date(j2d(this.props.timeRanges[0].StartTime)),endDate=new Date(j2d(this.props.timeRanges[0].EndTime));
-      return I18N.EM.Tool.DataStatistics+' '+DataAnalysisStore.getDisplayDate(startDate,false)+I18N.Setting.DataAnalysis.To+DataAnalysisStore.getDisplayDate(endDate,true)
+      return I18N.EM.Tool.DataStatistics+'   '+DataAnalysisStore.getDisplayDate(startDate,false)+' '+I18N.Setting.DataAnalysis.To+' '+DataAnalysisStore.getDisplayDate(endDate,true)
     }
   }
 
@@ -340,6 +347,19 @@ export default class StatisticsDialog extends Component {
   render(){
     var title=this.getTitle();
     var content;
+    var style={
+      title:{
+        fontSize:'16px',
+        fontWeight:'bold',
+        color:'#0f0f0f',
+        height:'52px',
+        borderBottom:'1px solid #e6e6e6',
+        paddingTop:'0',
+        lineHeight:'52px',
+        marginBottom:'0',
+        paddingLeft:'10px'
+      }
+    };
         if(this.state.gatherInfo===null){
           content=(
             <div className="flex-center">
@@ -351,7 +371,7 @@ export default class StatisticsDialog extends Component {
           content=this._renderContent()
         }
     return(
-      <Dialog title={title} open={true}  modal={false} onRequestClose={this.props.onCloseDialog}>
+      <Dialog title={title} titleStyle={style.title} open={true}  modal={false} onRequestClose={this.props.onCloseDialog}>
         {content}
       </Dialog>
     )

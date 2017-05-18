@@ -64,7 +64,7 @@ const DataAnalysisStore = assign({}, PrototypeStore, {
       var month = time.getMonth() + 1;
       var day = time.getDate();
 
-      return year + '/' + month + '/' + day + ' ' + hour + ':00';
+      return year + '-' + month + '-' + day + ' ' + hour + ':00';
     } else {
       return '';
     }
