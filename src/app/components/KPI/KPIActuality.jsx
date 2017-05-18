@@ -121,16 +121,28 @@ class ActualityContent extends Component {
 		let tags = data.get('data');
 		let isGroup = !!getCustomerById(hierarchyId);
 		let baseProps = {period, tags, summaryData, year, ranks: SingleKPIStore.getKPIRank()};
+		let iconStyle = {
+			color: '#505559',
+			cursor: 'pointer',
+			opacity: 1,
+			backgroundColor: '#fff',
+			width: 30,
+			height: 30,
+			lineHeight: '30px',
+			textAlign: 'center',
+			borderRadius: 2,
+			border: '1px solid #e6e6e6',
+		};
 		return (
 			<div className='content'>
 				<div className='action-bar'>
-					<LinkButton iconName={ "icon-arrow-left" } disabled={ !SingleKPIStore.hasLastYear(year) } onClick={() => {
+					<LinkButton iconName={ 'icon-arrow-left' } labelStyle={iconStyle} disabled={ !SingleKPIStore.hasLastYear(year) } onClick={() => {
 						if( SingleKPIStore.hasLastYear(year) ) {
 							onChangeYear(year * 1 - 1);
 						}
 					}}/>
 					<span className='current-year'>{year}</span>
-					<LinkButton iconName={ "icon-arrow-right" } disabled={ !SingleKPIStore.hasNextYear(year) } onClick={() => {
+					<LinkButton iconName={ 'icon-arrow-right' } labelStyle={iconStyle} disabled={ !SingleKPIStore.hasNextYear(year) } onClick={() => {
 						if( SingleKPIStore.hasNextYear(year) ) {
 							onChangeYear(year * 1 + 1);
 						}
@@ -239,37 +251,6 @@ export default class Actuality extends Component {
 	_onPreAction() {
 
 		if( SingleKPIStore.getCustomerCurrentYear() ) {
-			// let hierarchyId;
-			// // 从多项目点入单项目时，url记录参数，优先查询kpiid
-			// if(this.state.hierarchyId) {
-			// 	if(this._validBuilding(this.state.hierarchyId) && this._getKpiId()) {
-			// 		hierarchyId = this.state.hierarchyId;
-			// 	}
-			// }
-			// if( !hierarchyId ) {
-			// 	// 无全客户 & 单楼 显示单楼图标
-			// 	if( !this._privilegedCustomer() ) {
-			// 		if( isSingleBuilding() ) {
-			// 			hierarchyId = HierarchyStore.getBuildingList()[0].Id;
-			// 		}
-			// 	// 有全客户 & 仅查看 (能源经理) 显示多项目图标
-			// 	} else if( isOnlyView() ) {
-			// 		hierarchyId = this._getCustomerId();
-			// 	}				
-			// }
-			// if( hierarchyId ) {
-			// 	this.setState({
-			// 		year: null,
-			// 		hierarchyId,
-			// 	});
-			// 	SingleKPIAction.getKPIConfigured(
-			// 		this._getCustomerId(), 
-			// 		null, 
-			// 		hierarchyId,
-			// 		this._getKpiId(),
-			// 		this._getKPIRank(hierarchyId));
-			// 	return;
-			// }
 			let hierarchyId = this._getHierarchyId();
 			if( hierarchyId ) {
 				SingleKPIAction.getKPIConfigured(

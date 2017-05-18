@@ -25,8 +25,11 @@ const DEFAULT_OPTIONS = {
         enabled: false
     },
 
+    colors: ['#0cad04'],
+
     chart: {
-        type: 'column'
+        type: 'column',
+        height: 238,
     },
     title: {
     	text: '',
@@ -53,18 +56,31 @@ const DEFAULT_OPTIONS = {
     		offset: 15,
     		align: 'high',
     		rotation: 0,
-    	}
+    	},
+        gridLineWidth: 0,
     },
 
 };
 
 function SwitchBar(props) {
 	let {onLeft, onRight, label, className} = props;
+	let iconStyle = {
+		color: '#505559',
+		cursor: 'pointer',
+		opacity: 1,
+		backgroundColor: '#fff',
+		width: 30,
+		height: 30,
+		lineHeight: '30px',
+		textAlign: 'center',
+		borderRadius: 2,
+		border: '1px solid #e6e6e6',
+	};
 	return (
 		<div className={classnames('switch-action-bar', {[className]: className})}>
-			<LinkButton iconName={ "icon-arrow-left" } disabled={ !onLeft } onClick={onLeft}/>
+			<LinkButton labelStyle={iconStyle} iconName={ "icon-arrow-left" } disabled={ !onLeft } onClick={onLeft}/>
 			<span className='current-label'>{label}</span>
-			<LinkButton iconName={ "icon-arrow-right" } disabled={ !onRight } onClick={onRight}/>
+			<LinkButton labelStyle={iconStyle} iconName={ "icon-arrow-right" } disabled={ !onRight } onClick={onRight}/>
 		</div>
 	);
 }
@@ -309,25 +325,27 @@ export default class RankChart extends Component {
         return (
         	<div className='kpi-rank-chart'>
         		<div className='kpi-rank-chart-title'>{RankName}</div>
-        		{hasRankByYear && <div className='kpi-rank-chart-type' style={{position: byYear? 'relative' : 'absolute'}}>
-        			<Chip onClick={switchByYear(true)} style={{marginRight: 10, backgroundColor: (byYear ? '#3dcd58' : '#e0e0e0')}}>{'年度排名'}</Chip>
-        			<Chip onClick={switchByYear(false)} style={{marginRight: 10, backgroundColor: (!byYear ? '#3dcd58' : '#e0e0e0')}}>{'月度排名'}</Chip>
-        		</div>}
-        		{!byYear && 
-        		<div style={{marginBottom: hasRankByYear && 10}}>
+        		<div className='kpi-rank-chart-action'>
+	        		{hasRankByYear && <div className='kpi-rank-chart-type' style={{position: byYear? 'relative' : 'absolute'}}>
+	        			<Chip onClick={switchByYear(true)} style={{marginRight: 10, backgroundColor: (byYear ? '#3dcd58' : '#e0e0e0')}}>{'年度排名'}</Chip>
+	        			<Chip onClick={switchByYear(false)} style={{marginRight: 10, backgroundColor: (!byYear ? '#3dcd58' : '#e0e0e0')}}>{'月度排名'}</Chip>
+	        		</div>}
+	        		{!byYear && 
+	        		<div style={{marginBottom: hasRankByYear && 10}}>
+		        		<SwitchBar
+		        			className='switch-month'
+		        			label={this._getDateLabel()}
+		        			onLeft={onLastMonth}
+		        			onRight={onNextMonth}
+		        		/>
+		        	</div>}
 	        		<SwitchBar
-	        			className='switch-month'
-	        			label={this._getDateLabel()}
-	        			onLeft={onLastMonth}
-	        			onRight={onNextMonth}
-	        		/>
-	        	</div>}
-        		<SwitchBar
-        			className='switch-range'
-        			label={this._getRankLabel()}
-        			onLeft={onLastRank}
-        			onRight={onNextRank}
-        			/>
+	        			className='switch-range'
+	        			label={this._getRankLabel()}
+	        			onLeft={onLastRank}
+	        			onRight={onNextRank}
+	        			/>
+        		</div>
 	            <Highcharts
 	                ref="highcharts"
 	                options={this._generatorOptions()}/>
