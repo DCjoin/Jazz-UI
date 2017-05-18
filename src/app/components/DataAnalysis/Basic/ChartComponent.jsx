@@ -254,7 +254,8 @@ export default class ChartComponent extends Component {
                   display: 'flex',
                   flexDirection: 'column',
                   marginBottom: '0px',
-                  marginLeft: '9px'
+                  border:'solid 1px #e6e6e6',
+                  borderTop:'none'
                 }}>
                  <ChartComponentBox
                     {...analysisPanel.state.paramsObj}

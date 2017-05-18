@@ -36,6 +36,7 @@ function groupProjectMenuItems(customerId) {
     }].concat(getCustomerById(customerId));
 }
 
+@NewAppTheme
 export default class ProjectSelect extends Component {
 
   render(){

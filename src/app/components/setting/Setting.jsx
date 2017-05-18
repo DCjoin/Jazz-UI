@@ -531,7 +531,9 @@ let Setting = React.createClass({
 
     let operation = (this.state.templateShow ? this.getTemplate() : null);
     let leftPanel = (this.state.showLeftPanel) ? <div style={{
-      display: 'flex'
+      display: 'flex',
+      paddingTop:'16px',
+      backgroundColor:'#000000'
     }}><LeftPanel/></div> : <div style={{
       display: 'none'
     }}><LeftPanel/></div>;

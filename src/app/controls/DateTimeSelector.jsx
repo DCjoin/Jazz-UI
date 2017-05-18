@@ -206,10 +206,10 @@ let DateTimeSelector = React.createClass({
     };
     var startDateProps = {
       datePickerClassName:'jazz-energy-date-picker',
-      dateFormatStr: 'YYYY/MM/DD',
-      value: this.state.startDate && moment(this.state.startDate).format("YYYY/MM/DD"),
+      dateFormatStr: 'YYYY-MM-DD',
+      value: this.state.startDate && moment(this.state.startDate).format("YYYY-MM-DD"),
       isViewStatus:false,
-      width: '90px',
+      width: '100px',
       onChange: function(value) {
         value=moment(value)._d;
         me._onChangeDateTime(value, null, null, null);
@@ -223,11 +223,11 @@ let DateTimeSelector = React.createClass({
     };
     var endDateProps = {
       datePickerClassName:'jazz-energy-date-picker',
-      dateFormatStr: 'YYYY/MM/DD',
-      value: this.state.endDate && moment(this.state.endDate).format("YYYY/MM/DD"),
+      dateFormatStr: 'YYYY-MM-DD',
+      value: this.state.endDate && moment(this.state.endDate).format("YYYY-MM-DD"),
       timeType: 1,
       //left: this.props.endLeft,
-      width: '90px',
+      width: '100px',
       onChange: function(value) {
         value=moment(value)._d;
         me._onChangeDateTime(null, null, value, null);

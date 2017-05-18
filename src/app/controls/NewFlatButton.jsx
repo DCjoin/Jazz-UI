@@ -63,13 +63,13 @@ export default class NewFlatButton extends Component {
 		};
 		if( primary ) {
 			props.style = other.disabled ? PrimaryStyleDisable :
-				hovered ? PrimaryStyleHover : PrimaryStyleNormal;	
+				hovered ? PrimaryStyleHover : PrimaryStyleNormal;
 		} else if( secondary ) {
 			props.style = other.disabled ? SecondaryStyleDisable :
-				hovered ? SecondaryStyleHover : SecondaryStyleNormal;			
+				hovered ? SecondaryStyleHover : SecondaryStyleNormal;
 		}
 		if( style ) {
-			props.style = {...style, ...props.style};
+			props.style = { ...props.style,...style};
 		}
 		return (
 			<FlatButton {...other} {...props}/>

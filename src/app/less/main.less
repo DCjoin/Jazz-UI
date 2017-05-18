@@ -288,12 +288,13 @@ span {
               flex-direction: column;
 
               &.active{
-                background-color:@menuActive;
+                // background-color:@menuActive;
+                border-bottom:4px solid #32ad3d;
                 flex-direction: column;
                 line-height: 21px;
                 width: 120px;
                 text-align: center;
-                padding: 26px 0 0;
+                padding: 20px 0 0;
               }
 
               &.active .jazz-mainmenu-main-title {
@@ -323,9 +324,10 @@ span {
         display:flex;
         flex-direction: row;
         line-height:64px;
-        color: white;
+        color: #f3f5f7;
         text-decoration:none;
         padding:0 22px;
+        font-size: 16px;
         .pointer;
         &-bubble{
             display: flex;
@@ -337,11 +339,17 @@ span {
 
         }
         &:active{
-            background-color:@menuActive;
+            // background-color:@menuActive;
+            border-bottom:4px solid #32ad3d
         }
         &.active{
-
-            background-color:@menuActive;
+          color:#ffffff;
+            border-bottom:4px solid #32ad3d;
+            -webkit-animation-duration: 0.01s;
+            animation-duration: 0.01s;
+            -webkit-animation-timing-function: ease-in-out;
+            animation-timing-function: ease-in-out;
+            //background-color:@menuActive;
         }
 
         &.active &-title {
