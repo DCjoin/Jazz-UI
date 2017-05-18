@@ -29,12 +29,16 @@ var CalendarTime = React.createClass({
       let style = {
         autoWidth:false,
         style:{
-        width: '90px',
-        height: '32px'
+        width: '60px',
+        height: '30px',
+        fontSize:'14px',
+        color:'#626469'
         },
         labelStyle:{
-        lineHeight:'32px',
-        textOverflow:'clip'
+        lineHeight:'30px',
+        textOverflow:'clip',
+        paddingLeft:'12px',
+        paddingRight:'0'
         },
         onChange:this._onTimeTouchTap
       };

@@ -48,6 +48,8 @@ import WidgetStore from 'stores/Energy/WidgetStore.jsx';
 import TagAction from 'actions/TagAction.jsx';
 import CommodityAction from 'actions/CommodityAction.jsx';
 import AuxiliaryFunction from './AuxiliaryFunction.jsx';
+import ChartAction from 'actions/ChartAction.jsx';
+import NewFlatButton from 'controls/NewFlatButton.jsx';
 
 const DIALOG_TYPE = {
   SWITCH_WIDGET: "switchwidget",
@@ -751,8 +753,12 @@ class AnalysisPanel extends Component {
 
   _renderMoreOperation(){
     var styles={
-      label:{
-        fontSize:'14px'
+      iconBtn:{
+        width:'30px',
+        height:'30px',
+        backgroundColor:'#ffffff',
+        border:'solid 1px #e3e3e3',
+        padding:'0'
       }
     };
 
@@ -808,7 +814,7 @@ class AnalysisPanel extends Component {
 
     return(
       <div>
-        <FlatButton label={I18N.Common.Button.More} labelStyle={styles.label} icon={<FontIcon className="icon-more" style={styles.label}/>} onClick={handleTouchTap}/>
+        <IconButton iconClassName="icon-more"  style={styles.iconBtn} iconStyle={{fontSize:'14px'}} onTouchTap={handleTouchTap}/>
         <Popover
           open={this.state.operationMenuOpen}
           anchorEl={this.state.anchorEl}
@@ -830,7 +836,9 @@ class AnalysisPanel extends Component {
   _renderHeader(){
     var styles={
       button:{
-        marginRight:'10px'
+        marginRight:'12px',
+        height:'30px',
+        lineHeight:'30px'
       },
       label:{
         fontSize:'14px'
@@ -863,7 +871,7 @@ class AnalysisPanel extends Component {
           <div className="description">{this.props.sourceUserName && `(${I18N.format(I18N.Folder.Detail.SubTitile,this.props.sourceUserName)})`}</div>
         </div>
         <div className="operation">
-          <FlatButton label={I18N.Common.Button.Save} disabled={!this.state.energyData} labelstyle={styles.label}
+          <NewFlatButton label={I18N.Common.Button.Save} disabled={!this.state.energyData} labelstyle={styles.label} secondary={true}
             icon={<FontIcon className="icon-save" style={styles.label}/>} style={styles.button}
             onClick={()=>{this._handleSave()}}/>
           {this.props.isBuilding && <GenerateSolutionButton preAction={{
@@ -998,7 +1006,7 @@ class AnalysisPanel extends Component {
   let chartType = this.state.selectedChartType || 'line';
   return(
     <DropDownMenu disabled={AlarmTagStore.getSearchTagList().length===0}
-      style={{width: '120px'}} labelStyle={{top:'10px',lineHeight:'32px',paddingRight:'0'}} value={chartType} onChange={this._onChartTypeChanged}>
+      style={{width: '95px',backgroundColor:'#ffffff'}} iconStyle={{padding:'0',width:'24px',height:'24px',right:'6px'}} labelStyle={{lineHeight:'30px',paddingRight:'0'}} value={chartType} onChange={this._onChartTypeChanged}>
     <MenuItem primaryText={I18N.EM.CharType.Line} value="line" leftIcon={lineIcon}/>
     <MenuItem primaryText={I18N.EM.CharType.Bar} value="column" leftIcon={columnIcon}/>
     <MenuItem primaryText={I18N.EM.CharType.Stack} value="stack" leftIcon={stackIcon}/>
@@ -1012,7 +1020,9 @@ class AnalysisPanel extends Component {
     var styles={
       button:{
         border:'1px solid #efefef',
-        marginRight:'15px'
+        marginRight:'15px',
+        height:'30px',
+        lineHeight:'30px'
       },
       label:{
         fontSize:'14px'
@@ -1032,7 +1042,7 @@ class AnalysisPanel extends Component {
     }
     return(
       <div className={'jazz-alarm-chart-toolbar'} style={{
-          marginTop: '30px',marginLeft:'30px'
+          justifyContent:'space-between'
         }}>
        <div className={'jazz-full-border-dropdownmenu-container'} style={{
           display: 'flex',
@@ -1041,7 +1051,7 @@ class AnalysisPanel extends Component {
           height: '38px',
           marginTop: '-4px'
         }}>
-         <FlatButton label={I18N.Setting.Tag.Tag} labelstyle={styles.label}
+         <NewFlatButton label={I18N.Setting.Tag.Tag} labelstyle={styles.label} secondary={true}
                      icon={<FontIcon className="icon-add" style={styles.label}/>} style={styles.button}
                      onClick={()=>{
                        this.setState({
@@ -1090,22 +1100,17 @@ class AnalysisPanel extends Component {
   _renderRemark(){
     var remarkTextArea = null;
       if (this.state.remarkDisplay) {
-        remarkTextArea = <div className='jazz-energy-remark-text' style={{width:'100%'}}><TextField hintText={I18N.Remark.DefaultText} value={this.state.remarkText} onChange={this.getRemarck} hintStyle={{
+        remarkTextArea = <div className='jazz-energy-remark-text'><TextField hintText={I18N.Remark.DefaultText} value={this.state.remarkText} onChange={this.getRemarck} hintStyle={{
             color: '#abafae'
           }} multiLine={true} underlineShow={false}></TextField></div>;
         }
     var remarkDiv = null;
-        remarkDiv = <div className={classNames(
-            {
-              'jazz-energy-remark-container': true,
-              'jazz-energy-remark-expand': true
-            }
-          )} style={{display:'flex',alignItems:'center'}}>
+        remarkDiv = <div className='jazz-energy-remark-expand' style={{display:'flex',flexDirection:'column',marginTop:'40px',marginLeft:'-20px'}}>
               <div className='jazz-energy-remark-button'>
-                <RaisedButton label={I18N.Remark.Label} onClick={()=>{
+                <RaisedButton label={I18N.Remark.Label} style={{height:'26px',lineHeight:'26px'}} onClick={()=>{
                     this.setState({
                       remarkDisplay: !this.state.remarkDisplay
-                    })}
+                    },ChartAction.redrawChart)}
                   }/>
               </div>
             {remarkTextArea}

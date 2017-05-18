@@ -261,7 +261,7 @@
         }
        span{
          font-weight: normal !important;
-         font-size: 12px !important;
+         font-size: 14px !important;
        }
       }
     }
@@ -308,26 +308,23 @@
 }
 .jazz-energy-remark-button{
   display: inline-block;
-  position: absolute;
-  top:-30px;
-  margin: 0 auto;
+  // position: absolute;
+  // top:-30px;
+  //margin: 0 auto;
   z-index: 2;
   >div{
-    height: 20px !important;
+    height: 26px !important;
     min-width: 60px !important;
     box-shadow: none !important;
+    background-color: #f7f7f7 !important;
     >button{
-      border-top: 1px solid #ffc549 !important;
-      border-left: 1px solid #ffc549 !important;
-      border-right: 1px solid #ffc549 !important;
-      border-bottom: 0px !important;
-      background-color: #fff1cb !important;
-      border-radius: 3px !important;
+      background-color: #ffc360 !important;
+      border-radius: 0 13px 0 0!important;
       >div{
         >div{
           >span{
-            color: #ffc549 !important;
-            font-size: 12px !important;
+            color: #ffffff !important;
+            font-size: 14px !important;
             line-height: 20px !important;
             padding: 0 !important;
           }
@@ -340,21 +337,22 @@
   }
 }
 .jazz-energy-remark-text{
-  height: 77px;
+  height: 53px;
   bottom:0;
-  margin-top: -3px;
-  background-color: #fff1cb;
-  border-top: 1px solid #ffc549;
+  // margin-top: -3px;
+  background-color: #fffaf0;
+  // border-top: 1px solid #ffc549;
   overflow-y: auto;
   overflow-x: hidden;
+  width:calc(~'100% + 40px');
   >div{
     >div:nth-of-type(1){
-      font-size: 12px!important;
+      font-size: 14px!important;
     }
     >div:nth-of-type(2){
       >textarea:nth-of-type(2){
         color: #767a7a!important;
-        font-size: 12px!important;
+        font-size: 14px!important;
         overflow:hidden !important;
         margin-top: 5px !important;
       }
@@ -371,8 +369,12 @@
   }
 }
 .jazz-energy-date-picker{
+  margin-right: 12px;
   .jazz-month-picker-noempty{
-    height:32px !important;
+    height:30px !important;
+    font-size: 14px !important;
+    color:@ultra-light-gray;
+    padding-left: 5px;
     >div{
       >hr{
         border-bottom:none !important;

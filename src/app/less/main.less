@@ -288,7 +288,8 @@ span {
               flex-direction: column;
 
               &.active{
-                background-color:@menuActive;
+                // background-color:@menuActive;
+                border-bottom:4px solid #32ad3d;
                 flex-direction: column;
                 line-height: 21px;
                 width: 120px;
@@ -336,11 +337,16 @@ span {
 
         }
         &:active{
-            background-color:@menuActive;
+            // background-color:@menuActive;
+            border-bottom:4px solid #32ad3d
         }
         &.active{
-
-            background-color:@menuActive;
+            border-bottom:4px solid #32ad3d;
+            -webkit-animation-duration: 0.01s;
+            animation-duration: 0.01s;
+            -webkit-animation-timing-function: ease-in-out;
+            animation-timing-function: ease-in-out;
+            //background-color:@menuActive;
         }
 
         &.active &-title {
