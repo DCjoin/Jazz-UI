@@ -199,7 +199,7 @@ export default class Actuality extends Component {
 			{!kpiHide && <div className='jazz-actuality-item'>
 				<div className='jazz-actuality-item-title'>{prefixTitle + I18N.Kpi.KPIActual}</div>
 				{hasKPIEdit && !singleKPI &&
-		    	<IconButton iconClassName="fa icon-edit" onClick={() => {
+		    	<IconButton iconClassName='icon-setting' iconStyle={{color: '#32ad3d'}} onClick={() => {
 			      	this.props.router.push(RoutePath.KPIGroupConfig(this.props.router.params));
 			      }}/>}
 				<KPIActuality configCB={isOnlyView() && this._configCB} router={this.props.router} hierarchyId={this._getHierarchyId(this.props.router, this.context)}/>
@@ -207,9 +207,10 @@ export default class Actuality extends Component {
 			{!singleKPI && !reportHide && <div className='jazz-actuality-item'>
 				<div className='jazz-actuality-item-title'>{'报表'}</div>
 				{isFull() &&
-		    	<IconButton iconClassName="fa icon-add" onClick={() => {
+				<a href="javascript:void(0)" className='icon-add' onClick={() => {
 			      	this._showReportEdit();
-			      }}/>}
+			      }}/>
+		    	}
 				<ReportPreview 
 					configCB={isOnlyView() && this._configCB}
 					ref={'report_preview'}

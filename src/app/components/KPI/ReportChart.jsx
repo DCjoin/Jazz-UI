@@ -28,7 +28,6 @@ export default class ReportChart extends Component {
 						{isFull() && <li><LinkButton onClick={() => onDelete(id)} label={'删除'}/></li>}{isFull() && url && '|'}
 						<li>{url && <LinkButton onClick={() => onSetFirst(id)} label={'设为首个报表'}/>}</li>
 					</ul>
-					<div>{data.get('Name')}</div>
 					<div>{url && <LinkButton onClick={() => onDownload(id)} iconName='download-icon' label={'下载'}/>}</div>
 				</div>
 				{url ? <iframe

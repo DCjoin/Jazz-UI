@@ -1,8 +1,8 @@
 'use strict';
 
 import request from 'superagent';
-import Path from '../constants/Path.jsx';
-import Util from '../util/Util.jsx';
+import Path from 'constants/Path.jsx';
+import Util from 'util/Util.jsx';
 import Config from 'config';
 import AjaxAction from '../actions/Ajax.jsx';
 
@@ -27,11 +27,34 @@ var _generatorRequest = function( url, type, params ) {
   }
 
 };
+
+function _addQueryUserId(pathname, UserId) {
+  if( pathname.indexOf('?') !== -1 ) {
+    return pathname + '&UserId=' + UserId;
+  } else {
+    return pathname + '?UserId=' + UserId;
+  }
+}
+
+function _trackPageview(apiPath) {
+  if( _czc ) {
+    let prevPath = window.location.href.substr(window.location.href.indexOf('/#/') + 2),
+    nextPath = Config.APIBasePath + apiPath,
+    UserId = Util.getCookie('UserId');
+    if( UserId ) {
+      prevPath = _addQueryUserId(prevPath, UserId);
+      nextPath = _addQueryUserId(nextPath, UserId);
+    }
+    _czc.push(﻿['_trackPageview',nextPath,prevPath]);
+  }
+}
+
 var _ajax = function(url, options) {
+
+  _trackPageview(url);
 
 	options = options || {};
   options.avoidDuplicate && options.tag && _abort(options.tag);
-
 	var realUrl = Config.ServeAddress + Config.APIBasePath + url,
 		type = options.type || "get",
 		params = options.params || {},
