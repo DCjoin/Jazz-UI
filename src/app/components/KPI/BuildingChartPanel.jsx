@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import Immutable from 'immutable';
 import moment from 'moment';
+import classnames from 'classnames';
 import {first, last} from 'lodash';
 import {find} from 'lodash';
 import {isNull, isUndefined} from 'lodash';
@@ -64,13 +65,6 @@ function getValue(data) {
 	return util.getLabelData(data.RankValue);
 }
 
-// function getValueLabel(value, data) {
-// 	if( noValue(value) ) {
-// 		return I18N.Setting.KPI.Group.Ranking.History.NoValue;
-// 	}
-// 	return (isScale(data.UnitType) ? value.toFixed(1)*1 : util.getLabelData(value)) + getUnitLabel(data);
-// }
-
 function RankNumber(props, isThisYear) {
 	if(!props) {
 		return null;
@@ -92,7 +86,12 @@ function RankNumber(props, isThisYear) {
 		<div className='building-rank-number'>
 			<span className='self-number'>{Index}</span>
 			<span>/{Count}</span>
-			{isThisYear && <span className='rank-flag'>{flag}</span>}
+			{isThisYear && <span>
+				<span className={classnames('rank-flag', {
+				['up-index']: DIndex > 0,
+				['down-index']: DIndex < 0,
+			})}>{flag}</span>{DIndex !== 0 ? DIndex : ''}
+			</span>}
 		</div>
 	);
 }
@@ -170,13 +169,16 @@ export default class BuildingChartPanel extends Component {
 					return (
 					<div className='jazz-building-kpi-rank-wrapper'>
 						<div className='jazz-building-kpi-rank'>
-							<header className='jazz-building-kpi-rank-header hiddenEllipsis'>{currentTag.get('name')}</header>
-							<content className='jazz-building-kpi-rank-content'>
+							<header className='jazz-building-kpi-rank-header'>
+								<em className='jazz-building-kpi-rank-icon icon-humidity'/>
+								<div className='jazz-building-kpi-rank-name hiddenEllipsis'>{currentTag.get('name')}</div>
 								<div className='jazz-building-kpi-rank-time'>{
 									this.context.router.location.query.groupKpiId ? 
 										(isThisYear ? I18N.Setting.KPI.Rank.LastRank : getRanlLabelDate(year)):
 										getRanlLabelDate(year)}</div>
-								<div>{currentTag.get('type') === 1 ? I18N.Setting.KPI.Rank.UsageAmountRank : I18N.Setting.KPI.Rank.RatioMonthSavingRank}</div>
+								<div className='jazz-building-kpi-rank-type'>{currentTag.get('type') === 1 ? I18N.Setting.KPI.Rank.UsageAmountRank : I18N.Setting.KPI.Rank.RatioMonthSavingRank}</div>							
+							</header>
+							<content className='jazz-building-kpi-rank-content'>
 								{RankNumber(currentRank, isThisYear)}
 							</content>
 							<LinkButton 

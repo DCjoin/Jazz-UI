@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import {find} from 'lodash';
-import IconButton from 'material-ui/IconButton';
 
 import NewAppTheme from 'decorator/NewAppTheme.jsx';
 
 import PermissionCode from 'constants/PermissionCode.jsx';
+
+import LinkButton from 'controls/LinkButton.jsx';
 
 import util from 'util/Util.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
@@ -75,13 +76,13 @@ export default class KPIReport extends Component {
 			<div className='jazz-kpi-report-wrapper'>
 				<div style={{
 					position: 'absolute',
-    				right: 0,
-    				top: -8,
+    				right: 20,
+    				top: 10,
 				}}>
 				    {isFull() && !isGroup &&
-				    	<IconButton iconClassName="fa icon-edit" onClick={() => {
+				    	<LinkButton iconName="icon-edit" onClick={() => {
 					      	onRefresh(data.get('id'));
-					      }}/>}
+					      }} label={'编辑'}/>}
 				</div>
 				<div className='jazz-kpi-report-header'>{data.get('name')}</div>
 				<div className='jazz-kpi-report'>

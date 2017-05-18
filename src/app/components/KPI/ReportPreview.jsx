@@ -191,21 +191,33 @@ export default class ReportPreview extends Component {
         			label={this._getDateLabel()}
         			onLeft={onLastMonth}
         			onRight={onNextMonth}/>
-        		{preview && showAll && <LinkButton 
-        						disabled={!this.props.hasAll}
-        						className={'show-full-report'} 
-        						label={'查看各建筑报表 >>'}
-        						onClick={() => {
-        							util.openTab(RoutePath.report.actualityReport(this.props.router.params));
-        						}}/>}
 				<div className='jazz-report-chart'>
-					<div className='jazz-report-chart-header'>
-						<div className='jazz-report-chart-excel-list'>
-							{this.state.reportList.map(report => 
-							<div className={classnames('tab', {
-								selected: this.state.selectedReprotId === report.get('Id')
-							})} onClick={() => {this._selectReport(report.get('Id'))}}>{report.get('Name')}</div>).toJS()}
-						</div>
+					<div style={{
+						backgroundColor: '#f7f7f7',
+						height: 50,
+						position: 'absolute',
+						width: '100%',
+						zIndex: 1,
+					}}>
+						<div className='jazz-report-chart-header'>
+							<div className='jazz-report-chart-excel-list'>
+								{this.state.reportList.map(report => 
+								<div className={classnames('tab', {
+									selected: this.state.selectedReprotId === report.get('Id')
+								})} onClick={() => {this.state.selectedReprotId !== report.get('Id') && this._selectReport(report.get('Id'))}}>{report.get('Name')}</div>).toJS()}
+							</div>
+						</div>						
+						{preview && showAll && <LinkButton 
+										disabled={!this.props.hasAll}
+										className={'show-full-report'} 
+										labelStyle={{
+											color: '#626469',
+										}}
+										iconName={'icon-eye'}
+										label={'查看各建筑报表'}
+										onClick={() => {
+											util.openTab(RoutePath.report.actualityReport(this.props.router.params));
+										}}/>}
 					</div>
 					<ReportChart 
 						onEdit={this._onEdit}
