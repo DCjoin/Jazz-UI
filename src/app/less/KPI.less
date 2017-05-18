@@ -929,20 +929,42 @@
 
   &-type {
     display: flex;
-    margin-right: 32px;
+    position: relative;
+    background-color: @border;
+    border-radius: 2px;
+    width: 170px;
+    height: 30px;
+    margin-right: 30px;
+  
+    & button {
+      .pointer;
+      border: 10px;
+      margin: 2px;
+      flex: 1;
+      font-size: 14px;
+      color: @medium-gray;
+      background-color: @border;
+      border-radius: 2px;
 
-    &>div:last-child {
-      background-color: @life-green;
+      &.selected {
+        background-color: #ffffff;
+        color: @slate-grey;
+      }
     }
 
-    &.kpi-rank-chart-selected-first {
-      &:first-child {
-        background-color: @life-green;
-      }
-      &:last-child {
-        background-color: #e0e0e0;
-      }
-    }
+
+   /*  &>div:last-child {
+     background-color: @life-green;
+   }
+   
+   &.kpi-rank-chart-selected-first {
+     &:first-child {
+       background-color: @life-green;
+     }
+     &:last-child {
+       background-color: #e0e0e0;
+     }
+   } */
   }
 
   & .pop-chart-paper {

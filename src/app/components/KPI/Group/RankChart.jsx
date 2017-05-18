@@ -326,19 +326,21 @@ export default class RankChart extends Component {
         	<div className='kpi-rank-chart'>
         		<div className='kpi-rank-chart-title'>{RankName}</div>
         		<div className='kpi-rank-chart-action'>
-	        		{hasRankByYear && <div className='kpi-rank-chart-type' style={{position: byYear? 'relative' : 'absolute'}}>
-	        			<Chip onClick={switchByYear(true)} style={{marginRight: 10, backgroundColor: (byYear ? '#3dcd58' : '#e0e0e0')}}>{'年度排名'}</Chip>
-	        			<Chip onClick={switchByYear(false)} style={{marginRight: 10, backgroundColor: (!byYear ? '#3dcd58' : '#e0e0e0')}}>{'月度排名'}</Chip>
-	        		</div>}
-	        		{!byYear && 
-	        		<div style={{marginBottom: hasRankByYear && 10}}>
-		        		<SwitchBar
-		        			className='switch-month'
-		        			label={this._getDateLabel()}
-		        			onLeft={onLastMonth}
-		        			onRight={onNextMonth}
-		        		/>
-		        	</div>}
+        			<div style={{display: 'flex'}}>
+		        		{hasRankByYear && <div className='kpi-rank-chart-type'>
+		        			<button onClick={switchByYear(true)} className={classnames({selected: byYear})}>{'年度排名'}</button>
+		        			<button onClick={switchByYear(false)} className={classnames({selected: !byYear})}>{'月度排名'}</button>
+		        		</div>}
+		        		{!byYear && 
+		        		<div style={{marginBottom: hasRankByYear && 10}}>
+			        		<SwitchBar
+			        			className='switch-month'
+			        			label={this._getDateLabel()}
+			        			onLeft={onLastMonth}
+			        			onRight={onNextMonth}
+			        		/>
+			        	</div>}
+		        	</div>
 	        		<SwitchBar
 	        			className='switch-range'
 	        			label={this._getRankLabel()}
