@@ -88,18 +88,9 @@ let TemplateList = React.createClass({
     var dialogActions = [
       <FlatButton
       labelPosition="before"
-      label={I18N.EM.Report.Replace}>
-        <input type='file' onChange={this._replaceTemplateConfirm} name='templateFile' ref='fileInput' style={{
-          cursor: 'pointer',
-          position: 'absolute',
-          top: 0,
-          bottom: 0,
-          right: 0,
-          left: 0,
-          width: '100%',
-          opacity: 0,
-        }} />
-      </FlatButton>,
+      label={I18N.EM.Report.Replace}
+      onClick={()=>{ReactDom.findDOMNode(this.refs.fileInput).click()}}
+      />,
 
       <FlatButton
       label={I18N.Common.Button.Cancel}
@@ -122,8 +113,10 @@ let TemplateList = React.createClass({
     this._handleDialogDismiss();
   },
   _replaceTemplateConfirm(event){
+    console.log(event);
     let me = this;
     var file = event.target.files[0];
+    let input = this.refs.fileInput;
     if(!file) return;
     var fileName = file.name;
     this.setState({
@@ -134,6 +127,7 @@ let TemplateList = React.createClass({
   },
 
   _replaceTemplate: function(event) {
+    var me=this;
     let createElement = window.Highcharts.createElement,
       discardElement = window.Highcharts.discardElement;
     let iframe = createElement('iframe', null, {
@@ -166,30 +160,28 @@ let TemplateList = React.createClass({
     let input = this.refs.fileInput;
     form.appendChild(input);
     let replaceInput = createElement('input', {
-      type: 'hidden',
-      name: 'IsReplace',
-      value: true
-    }, null, form);
-    let replaceIdInput = createElement('input', {
-      type: 'hidden',
-      name: 'Id',
-      value: me.state.id
-    }, null, form);
-    let customerInput = createElement('input', {
-      type: 'hidden',
-      name: 'CustomerId',
-      value: parseInt(me.props.customerId)
-    }, null, form);
-    let activeInput = createElement('input', {
-      type: 'hidden',
-      name: 'IsActive',
-      value: 1
-    }, null, form);
-
-
+  type: 'hidden',
+  name: 'IsReplace',
+  value: true
+}, null, form);
+let replaceIdInput = createElement('input', {
+  type: 'hidden',
+  name: 'Id',
+  value: me.state.id
+}, null, form);
+let customerInput = createElement('input', {
+  type: 'hidden',
+  name: 'CustomerId',
+  value: parseInt(me.props.customerId)
+}, null, form);
+let activeInput = createElement('input', {
+  type: 'hidden',
+  name: 'IsActive',
+  value: 1
+}, null, form);
     form.submit();
     discardElement(form);
-    this._handleDialogDismiss();
+    // this._handleDialogDismiss();
     me.setState({
       showUploadDialog: true
     });
@@ -244,6 +236,16 @@ let TemplateList = React.createClass({
                                 fileName:''
                               });
                              }}/>}
+        <input type='file' onChange={this._replaceTemplateConfirm} name='templateFile' ref='fileInput' style={{
+                               cursor: 'pointer',
+                               position: 'absolute',
+                               top: 0,
+                               bottom: 0,
+                               right: 0,
+                               left: 0,
+                               width: '100%',
+                               opacity: 0,
+                             }} />
       </div>
       );
   }
