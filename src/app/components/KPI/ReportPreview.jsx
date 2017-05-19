@@ -171,26 +171,53 @@ export default class ReportPreview extends Component {
 				this._selectYear(this.state.year + 1);
 			}
 		}
+		let iconStyle = {
+			color: '#505559',
+			cursor: 'pointer',
+			opacity: 1,
+			backgroundColor: '#fff',
+			width: 30,
+			height: 30,
+			lineHeight: '30px',
+			textAlign: 'center',
+			borderRadius: 2,
+			border: '1px solid #e6e6e6',
+		};
 		return (
-			<div className='jazz-report-preview' style={{marginBottom: 20}}>
+			<div className='jazz-report-preview'>
 				<SwitchBar 
+					iconStyle={iconStyle}
 					className='switch-year'
         			label={this._getDateLabel()}
         			onLeft={onLastMonth}
         			onRight={onNextMonth}/>
-        		{preview && showAll && <LinkButton 
-        						disabled={!this.props.hasAll}
-        						className={'show-full-report'} 
-        						label={'查看各建筑报表 >>'}
-        						onClick={() => {
-        							util.openTab(RoutePath.report.actualityReport(this.props.router.params));
-        						}}/>}
 				<div className='jazz-report-chart'>
-					<div className='jazz-report-chart-header'>
-						{this.state.reportList.map(report => 
-						<div className={classnames('tab', {
-							selected: this.state.selectedReprotId === report.get('Id')
-						})} onClick={() => {this._selectReport(report.get('Id'))}}>{report.get('Name')}</div>).toJS()}
+					<div style={{
+						backgroundColor: '#f7f7f7',
+						height: 50,
+						position: 'absolute',
+						width: '100%',
+						zIndex: 1,
+					}}>
+						<div className='jazz-report-chart-header'>
+							<div className='jazz-report-chart-excel-list'>
+								{this.state.reportList.map(report => 
+								<div className={classnames('tab', {
+									selected: this.state.selectedReprotId === report.get('Id')
+								})} onClick={() => {this.state.selectedReprotId !== report.get('Id') && this._selectReport(report.get('Id'))}}>{report.get('Name')}</div>).toJS()}
+							</div>
+						</div>						
+						{preview && showAll && <LinkButton 
+										disabled={!this.props.hasAll}
+										className={'show-full-report'} 
+										labelStyle={{
+											color: '#626469',
+										}}
+										iconName={'icon-eye'}
+										label={'查看各建筑报表'}
+										onClick={() => {
+											util.openTab(RoutePath.report.actualityReport(this.props.router.params));
+										}}/>}
 					</div>
 					<ReportChart 
 						onEdit={this._onEdit}

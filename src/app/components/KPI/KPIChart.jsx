@@ -13,10 +13,10 @@ function getUnit(id) {
 }
 
 function changeLegendStyle(item) {
-	item.setAttribute('width', item.getAttribute('width') * 1  - 1);
-	item.setAttribute('height', item.getAttribute('height') * 1  - 1);
-	item.setAttribute('y', item.getAttribute('y') * 1 + 1);
-	item.setAttribute('stroke', '#434348');
+	item.setAttribute('width', 16);
+	item.setAttribute('height', 12);
+	item.setAttribute('y', 5);
+	item.setAttribute('stroke', '#0cad04');
 	item.setAttribute('stroke-width', 1);
 	item.setAttribute('stroke-dasharray', '4,3');
 }
@@ -37,20 +37,23 @@ const DEFAULT_OPTIONS = {
               		}
               	}
           	}
-      	}
+      	},
+      	height: 220
     },
-    title: {
-    	align: 'left',
-    	margin: 40,
-    },
+    title: null,
     legend: {
-    	align: 'left',
-    	padding: 30
+        align: 'top',
+        verticalAlign: 'top',
+        layout: 'horizontal',
+        y: -15,
+        x: 200,
     },
     xAxis: {
-    	tickLength: 0
+    	tickLength: 0,
+    	lineColor: '#9fa0a4',
     },
     yAxis: {
+    	lineColor: '#9fa0a4',
     	lineWidth: 1,
     	labels: {
 	    	formatter: function() {
@@ -59,6 +62,7 @@ const DEFAULT_OPTIONS = {
     	},
     	type: 'column',
         min: 0,
+        gridLineWidth: 0,
         title: {
             align: 'high',
             rotation: 0,
@@ -90,24 +94,29 @@ const DEFAULT_OPTIONS = {
     series: [ {
         type: 'line',
         marker: {
-	        lineWidth: 3,
-	        lineColor: window.Highcharts.getOptions().colors[0],
+	        lineWidth: 1,
+	        lineColor: '#0cad04',//window.Highcharts.getOptions().colors[0],
 	        fillColor: 'white',
+	        radius: 2,
 	    },
         zIndex: 2,
+        color: '#0cad04',
+        lineWidth: 1,
     },{
         type: 'column',
         pointPadding: 0.4,
         pointPlacement: 0,
-        color: '#90ed7d',
+        color: '#0cad04',
+        pointWidth: 30,
     }, {
         type: 'column',
         pointPadding: 0.2,
         pointPlacement: 0,
-		borderColor: '#434348',
+		borderColor: '#0cad04',
         borderWidth: 1,
 		dashStyle: 'dash',
-		color: 'rgba(255, 255, 255, 0.1)',
+		color: 'rgba(255, 255, 255, 0)',
+        pointWidth: 34,
 
     },]
 };
@@ -194,7 +203,7 @@ export default class KPIChart extends Component {
 	    	`;
 	    };
 
-		options.title.text = data.get('name');
+		// options.title.text = data.get('name');
 
 		options.series[0].data = data.get('target') && data.get('target').toJS().slice(0, 12);
 		options.series[0].name = I18N.Kpi.TargetValues;

@@ -9,7 +9,7 @@ const DEFAULT_STYLE = {
     cursor: "pointer",
     opacity: 0.9 //must have this, for right color #1ca8dd
   },
-  hoverColor: "#1ca8dd",
+  hoverColor: "#0cad04", // change by law 17/05/17
   disableColor: "#abafae"
 };
 
@@ -92,7 +92,7 @@ var LinkButton = React.createClass({
     }
 
     return (
-      <div className={className} {...props}>{icon}<span style={style}>{label}</span></div>
+      <div className={className} {...props}>{icon}{label && <span style={style}>{label}</span>}</div>
       );
   }
 

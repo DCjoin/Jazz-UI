@@ -55,8 +55,9 @@ var UserItem = React.createClass({
           </div>
           <div style={{
         float: 'right'
-      }}>
-            <FontIcon className="icon-clean" style={cleanIconStyle} hoverColor='#3dcd58' color="#32ad3d" ref="cleanIcon" onClick={this._onCleanButtonClick}/>
+      }}> 
+            <a href="" onClick={this._onCleanButtonClick}>X</a>
+            
 
           </div>
 

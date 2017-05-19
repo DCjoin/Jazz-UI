@@ -53,11 +53,16 @@ function returnUpdateBrowserHtml(request,reply){
 }
 
 
+var JAZZ_UI_UMENG_CNZZ_SDK_URL = process.env.JAZZ_UI_UMENG_CNZZ_SDK_URL;
 function returnIndexHtml(request,reply){
 	var html = fs.readFileSync(path.resolve(__dirname, "../app/index.html"), "utf-8");
 	html = html.replace('APP_URL',APP_URL);
 	html = html.replace('VENDOR_URL',VENDOR_URL);
 	html = html.replace('STYLE_URL',STYLE_URL);
+
+  if(JAZZ_UI_UMENG_CNZZ_SDK_URL) {
+    html = html.replace('${JAZZ_UI_UMENG_CNZZ_SDK_URL}', JAZZ_UI_UMENG_CNZZ_SDK_URL);
+  }
 	var res = reply(html).type("text/html");
 	return res;
 }

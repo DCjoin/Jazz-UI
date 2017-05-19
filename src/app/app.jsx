@@ -118,18 +118,23 @@ function checkAuth({location, params, routes}, replaceState) {
     }) );
   }
 }
-/**
-ReactDom.render((<Router history={hashHistory}>
-  <Route path='/' onEnter={loadLanguage} >
-    <Route path=':lang' onEnter={checkAuth} component={JazzApp}>
-      <Route path='login' component={Login}></Route>
-    </Route>
-  </Route>
-</Router>), document.getElementById('emopapp'));/**/
-/**/
+
+function trackPageview(prevRoute, nextRoute) {
+  let prevPath = prevRoute.location.pathname,
+  nextPath = nextRoute.location.pathname;
+  if( _czc && prevPath !== nextPath ) {
+    let userId = getCookie('UserId');
+    if( userId ) {
+      prevPath += '?UserId=' + userId;
+      nextPath += '?UserId=' + userId;
+    }
+    _czc.push(﻿['_trackPageview',nextPath,prevPath]);
+  }
+}
 ReactDom.render(<Router history={hashHistory} routes={{
   path: '/',
   onEnter: loadLanguage,
+  onChange: trackPageview,
   childRoutes: [{
     path: ':lang',
     component: JazzApp,

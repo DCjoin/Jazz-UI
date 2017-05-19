@@ -24,19 +24,18 @@ export default class ReportChart extends Component {
 					<ul className='jazz-report-chart-table-header-action' style={{
 						width: url ? false : 100
 					}}>
-						{isFull() && <li><LinkButton onClick={() => onEdit(id)} label={'设置'}/></li>}{isFull() && '|'}
-						{isFull() && <li><LinkButton onClick={() => onDelete(id)} label={'删除'}/></li>}{isFull() && url && '|'}
-						<li>{url && <LinkButton onClick={() => onSetFirst(id)} label={'设为首个报表'}/>}</li>
+						{isFull() && <li><LinkButton iconName='icon-edit' onClick={() => onEdit(id)} label={'编辑'}/></li>}
+						{isFull() && <li><LinkButton iconName='icon-delete' onClick={() => onDelete(id)} label={'删除'}/></li>}
+						<li>{url && <LinkButton iconName='icon-check-circle' onClick={() => onSetFirst(id)} label={'设为首个报表'}/>}</li>
 					</ul>
-					<div>{data.get('Name')}</div>
-					<div>{url && <LinkButton onClick={() => onDownload(id)} iconName='download-icon' label={'下载'}/>}</div>
+					<li>{url && <LinkButton iconName='icon-download' onClick={() => onDownload(id)} label={'下载'}/>}</li>
 				</div>
 				{url ? <iframe
 					src={`https://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(url)}`}
 					border="0"
-					height='550'
-					width='100%'/> :
+					height='550'/> :
 					<div style={{height: 600}} className='flex-center'><b>{'无效模板'}</b></div>}
+				<input type='checkbox' className='jazz-report-chart-overlay-iframe'/>
 			</div>
 		);
 	}
