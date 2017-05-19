@@ -82,13 +82,13 @@ export default class DiagnoseList extends Component {
 	_renderIconMenu(){
 		var {Status}=this.props.selectedNode.toJS();
 		var IconButtonElement = <IconButton iconClassName="icon-more" iconStyle={{
-			fontSize: '16px'
+			fontSize: '14px'
 		}} style={{
-			padding: '0px',
-			height: '18px',
-			width: '18px',
-			marginLeft: '10px',
-			marginTop: '5px'
+      width:'30px',
+      height:'30px',
+      backgroundColor:'#ffffff',
+      border:'solid 1px #e3e3e3',
+      padding:'0'
 		}}/>;
 		var iconMenuProps = {
 			iconButtonElement: IconButtonElement,
@@ -208,15 +208,15 @@ export default class DiagnoseList extends Component {
     		}
 
     return(
-      <div className="content">
-        <div className="content-head">
+      <div className="detail-content-content">
+        <div className="detail-content-content-head">
           <div className="side">
-            <div className="text">{Name}</div>
-            {Status===DiagnoseStatus.Suspend && <FontIcon className="icon-more" style={{fontSize:'14px',marginLeft:'15px'}}/>}
+            <div className="name">{Name}</div>
+            {Status===DiagnoseStatus.Suspend && <div className="suspend-font" style={{marginLeft:'10px'}}>{I18N.Setting.Diagnose.Suspend}</div>}
           </div>
           {isFull() && this._renderIconMenu()}
         </div>
-				<div className="content-chart">
+				<div className="detail-content-content-problem-chart ">
 					{this.state.chartData?<DiagnoseChart data={this.state.chartData}/>
 															 :<div className="flex-center">
          						 							<CircularProgress  mode="indeterminate" size={80} />

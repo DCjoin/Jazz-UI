@@ -147,11 +147,11 @@ export default class Diagnose extends Component {
     if(isListFull() && !isBasicNoPrivilege()){
       return(
         <div className="titleTabs">
-          <div className={classnames({"tab":true,'selected':this.state.infoTabNo===1})} onClick={this._switchTab.bind(this,1)} style={{display:'flex'}}>
+          <div className={classnames({"tab":true,'selected':this.state.infoTabNo===1})} onClick={this._switchTab.bind(this,1)} style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
             {I18N.Setting.Diagnose.DiagnoseProblem}
-            {this.state.hasProblem?<BubbleIcon style={{width:'5px',height:'5px'}}/>:null}
+            {this.state.hasProblem?<BubbleIcon style={{width:'5px',height:'5px',marginTop:'-12px'}}/>:null}
           </div>
-          <div className={classnames({"tab":true,'selected':this.state.infoTabNo===2})} onClick={this._switchTab.bind(this,2)} style={{marginLeft:'72px'}}>
+          <div className={classnames({"tab":true,'selected':this.state.infoTabNo===2})} onClick={this._switchTab.bind(this,2)} style={{marginLeft:'15px'}}>
             {I18N.Setting.Diagnose.DiagnoseList}
           </div>
         </div>
@@ -200,14 +200,15 @@ export default class Diagnose extends Component {
 render(){
   return(
     <div className="diagnose-panel">
-      {this._renderTab()}
+      <LabelList ref='list' isFromProbem={this.state.infoTabNo===1} selectedNode={DiagnoseStore.findDiagnoseById(this.state.selectedId)}
+        onItemTouchTap={this._onItemTouchTap} onTabSwitch={this._onBasicTabSwitch}
+        onAdd={(label)=>{this.setState({
+          formStatus:formStatus.ADD,
+          addLabel:label
+        })}}/>
+
       <div className="content">
-          <LabelList ref='list' isFromProbem={this.state.infoTabNo===1} selectedNode={DiagnoseStore.findDiagnoseById(this.state.selectedId)}
-            onItemTouchTap={this._onItemTouchTap} onTabSwitch={this._onBasicTabSwitch}
-            onAdd={(label)=>{this.setState({
-              formStatus:formStatus.ADD,
-              addLabel:label
-            })}}/>
+          {this._renderTab()}
           <LabelDetail isFromProbem={this.state.infoTabNo===1} selectedNode={DiagnoseStore.findDiagnoseById(this.state.selectedId)}
                        isBasic={this.state.isBasic} formStatus={this.state.formStatus} addLabel={this.state.addLabel}
                        onEdit={(label)=>{this.setState({
