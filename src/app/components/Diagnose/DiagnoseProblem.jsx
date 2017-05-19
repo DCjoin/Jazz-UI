@@ -193,13 +193,13 @@ export default class DiagnoseProblem extends Component {
 
 	_renderIconMenu(){
 		var IconButtonElement = <IconButton iconClassName="icon-more" iconStyle={{
-			fontSize: '16px'
+			fontSize: '14px'
 		}} style={{
-			padding: '0px',
-			height: '18px',
-			width: '18px',
-			marginLeft: '10px',
-			marginTop: '5px'
+			width:'30px',
+			height:'30px',
+			backgroundColor:'#ffffff',
+			border:'solid 1px #e3e3e3',
+			padding:'0'
 		}}/>;
 		var iconMenuProps = {
 			iconButtonElement: IconButtonElement,
@@ -341,37 +341,43 @@ export default class DiagnoseProblem extends Component {
 
   var isFull=this.props.isBasic?isBasicFull():isSeniorFull();
     return(
-      <div className="content">
-        <div className="content-head">
-            <div className="text">{Name}</div>
+      <div className="detail-content-content">
+        <div className="detail-content-content-head">
+            <div className="name">{Name}</div>
           {isFull && <div className="side">
                       <GenerateSolutionButton onOpen={this._onSolutionShow.bind(this)} disabled={this.state.chartData===null}/>
                       {this._renderIconMenu()}
                       </div>}
         </div>
-
-					{this.state.timeselectorShow && <DateTimeSelector ref='dateTimeSelector' showTime={true} endLeft='-100px'
+				<div className="detail-content-content-problem-chart">
+					{this.state.timeselectorShow && <div style={{height:'60px',display:'flex'}}>
+						<DateTimeSelector ref='dateTimeSelector' showTime={true} endLeft='-100px'
 						startDate= {this.state.startDate}
 						endDate={this.state.endDate}
 						startTime={this.state.startTime}
 						endTime={this.state.endTime}
-						 _onDateSelectorChanged={this._onDateSelectorChanged}/>}
+						 _onDateSelectorChanged={this._onDateSelectorChanged}/>
+					</div>
+						}
 
 
 					 {this.state.chartData?<DiagnoseChart data={this.state.chartData}/>
 																:<div className="flex-center">
 																		 <CircularProgress  mode="indeterminate" size={80} />
 																	 </div>}
-          {this.state.solutionShow && <GenerateSolution
-  					nodes={[this.props.selectedNode]}
-  					onRequestClose={(bySubmit) => {
-  						this.setState({solutionShow: false});
+					{this.state.solutionShow && <GenerateSolution
+						nodes={[this.props.selectedNode]}
+						onRequestClose={(bySubmit) => {
+							this.setState({solutionShow: false});
 							if(bySubmit){
 								DiagnoseAction.generateSolution(this.props.selectedNode.get('Id'))
 							}
-  					}}
-            renderChartCmp={this._renderChart}
-            />}
+						}}
+						renderChartCmp={this._renderChart}
+						/>}
+				</div>
+
+
         {dialog}
       </div>
     )

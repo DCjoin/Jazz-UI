@@ -14,22 +14,50 @@
   }
 }
 .diagnose-label-list{
-  width:21%;
+  width:237px;
   height:100%;
-  background-color: #191919;
+  background-color: #ffffff;
   display: flex;
   flex-direction: column;
   // overflow-y:auto;
+  .label-tabs{
+    height:41px;
+    min-height: 41px;
+    line-height:41px;
+    display: flex;
+    .tab{
+      flex: 1;
+      background-color: @border-gray;
+      font-size: 14px;
+      color: #4f5156;
+      justify-content: center;
+      align-items: center;
+      border-bottom-left-radius: 5px;
+      &:hover{
+        cursor: pointer;
+      }
+    }
+    .left{
+      border-bottom-left-radius: 0px;
+      border-bottom-right-radius: 5px;
+    }
+    .selected{
+      background-color: #ffffff;
+      color: #2ca12f
+    }
+  }
   .label-group{
     border-bottom: 1px solid #ffffff;
     .item{
-      height:41px;
-      min-height: 41px;
-      color:#ffffff;
-      padding:0 15px;
+      height:36px;
+      min-height: 36px;
+      color:@dark-gray;
+      padding:0 9px 0 13px;
       display: flex;
       flex-direction: row;
       align-items: center;
+      padding-left: 13px;
+      font-size: 14px;
       .side{
         display: flex;
         flex-direction: row;
@@ -39,11 +67,11 @@
         display: none;
       }
       &.selected {
-        background-color: #0CAD04 !important;
+        background-color: #32ad3d !important;
+        color:#ffffff;
       }
       &:hover {
-        background-color: #174321 !important;
-        color:#d9d9da !important;
+        color:#32ad3d !important;
         .addBtn{
             display: block;
           }
@@ -77,38 +105,46 @@
 .diagnose-panel{
   display: flex;
   flex:1;
-  flex-direction: column;
-  align-items: center;
-  padding:0 12px 17px 12px;
-  background-color: #ffffff;
+  flex-direction: row;
+  // align-items: center;
+  // padding:0 12px 17px 12px;
+  background-color: @ultra-light-gray;
   .content{
     flex:1;
     display: flex;
-    width: 100%
+    flex-direction: column;
+    padding:0 20px 0 15px;
   }
   .titleTabs{
     display: flex;
-    height:49px;
+    height:72px;
     align-items: center;
+    border-bottom: 1px solid @border-gray;
+    justify-content: center;
     .tab{
-      font-size: 16px;
-      width: 74px;
+      font-size: 14px;
+      width: 86px;
       text-align: center;
+      height: 31px;
+      color: @medium-gray;
+      line-height: 31px;
       &:hover{
         cursor: pointer;
       }
     }
     .selected{
-      color:#0CAD04;
-      border-bottom: 1px solid #0CAD04;
+      color:#434343;
+      border-radius: 2px;
+      background-color: #ffffff;
+      box-shadow: 0 0 2px 2px rgba(209, 209, 209, 0.5);
     }
   }
   .detail-content{
     flex:1;
     display: flex;
     flex-direction: column;
-    padding: 20px;
-    .content{
+    // padding: 20px;
+    &-content{
       flex:1;
       display: flex;
       flex-direction: column;
@@ -117,6 +153,8 @@
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
+        height: 60px;
+        border-bottom: 1px solid @border-gray;
         .side{
           display: flex;
           flex-direction: row;
@@ -129,6 +167,19 @@
           text-overflow: ellipsis;
           overflow: hidden;
         }
+        .name{
+          font-size: 17px;
+          color:@normal-black;
+          font-weight: bold;
+        }
+      }
+      &-problem-chart{
+        flex:1;
+        display: flex;
+        margin-top:20px;
+        margin-bottom: 45px;
+        border:1px solid @border-gray;
+        flex-direction: column;
       }
       &-chart{
         flex:1;
@@ -411,7 +462,7 @@
 
 .card-checkbox {
   position: absolute;
-  top: -20px; 
+  top: -20px;
   left: 0;
   display: none;
 
@@ -478,7 +529,7 @@
 
     &-desc {
       color: #808080;
-      margin-bottom: 5px;      
+      margin-bottom: 5px;
     }
 
     &-email {
@@ -510,7 +561,7 @@
 }
 
 .jazz-new-folder-leftpanel-foldertree {
-  background-color: #ffffff;  
+  background-color: #ffffff;
   overflow-x: hidden;
   overflow-y: auto;
 }
@@ -559,4 +610,11 @@
     font-weight: bold;
   }
 
+}
+
+.suspend-font{
+  font-size: 9px;
+  font-weight: bold;
+  color:@normal-red;
+  min-width:50px
 }

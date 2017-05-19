@@ -119,7 +119,7 @@ export default class RankHistory extends Component {
       <Dialog
         ref = "_dialog"
         title={I18N.format(I18N.Setting.KPI.Group.Ranking.History.Name,this.props.name)}
-        titleStyle={{color:'#0f0f0f',fontSize:'16px',borderBottom:'solid 1px #e6e6e6',padding:'15px 0',fontWeight:'500'}}
+        titleStyle={{color:'#0f0f0f',fontSize:'16px',borderBottom:'solid 1px #e6e6e6',padding:'15px 12px',fontWeight:'bold',marginBottom:'15px'}}
         modal={false}
         open={true}
         onRequestClose={this.props.onClose}

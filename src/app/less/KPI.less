@@ -454,7 +454,7 @@
   padding: 20px;
   padding-right: 0;
 
-  &-wrapper {    
+  &-wrapper {
     margin-top: 20px;
     border: 1px solid #e6e6e6;
     &:first-of-type {
@@ -871,6 +871,18 @@
 		}
   }
   }
+	&-subtitle{
+		margin-bottom: 8px;
+		font-size:14px;
+		color:#626469;
+		font-weight:bold;
+		display: flex;
+		flex-direction: row;
+		>span{
+			flex:1;
+			padding-left: 12px;
+		}
+	}
 }
 
 .switch-action-bar {
@@ -911,7 +923,7 @@
     font-size: 14px;
     font-weight: bold;
   }
-  &-action {    
+  &-action {
     display: flex;
     height: 72px;
     flex: none;
@@ -935,7 +947,7 @@
     width: 170px;
     height: 30px;
     margin-right: 30px;
-  
+
     & button {
       .pointer;
       border: 10px;
@@ -956,7 +968,7 @@
    /*  &>div:last-child {
      background-color: @life-green;
    }
-   
+
    &.kpi-rank-chart-selected-first {
      &:first-child {
        background-color: @life-green;

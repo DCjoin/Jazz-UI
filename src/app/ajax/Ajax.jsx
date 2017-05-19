@@ -37,7 +37,7 @@ function _addQueryUserId(pathname, UserId) {
 }
 
 function _trackPageview(apiPath) {
-  if( _czc ) {
+  if( window._czc ) {
     let prevPath = window.location.href.substr(window.location.href.indexOf('/#/') + 2),
     nextPath = Config.APIBasePath + apiPath,
     UserId = Util.getCookie('UserId');

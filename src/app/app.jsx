@@ -122,7 +122,7 @@ function checkAuth({location, params, routes}, replaceState) {
 function trackPageview(prevRoute, nextRoute) {
   let prevPath = prevRoute.location.pathname,
   nextPath = nextRoute.location.pathname;
-  if( _czc && prevPath !== nextPath ) {
+  if( window._czc && prevPath !== nextPath ) {
     let userId = getCookie('UserId');
     if( userId ) {
       prevPath += '?UserId=' + userId;
