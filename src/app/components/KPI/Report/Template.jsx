@@ -196,26 +196,27 @@ var Template = React.createClass({
         I18N.EM.Report.DuplicatedName.replace(/{\w}/, '(.)*')
       ).test(this.state.errorMsg)
     ) {
-      return (
-        <NewDialog open={true} title={I18N.EM.Report.UploadNewTemplate} actions={[
-          (<FlatButton label={I18N.EM.Report.Upload} onClick={() => {
-            this.refs.upload_tempalte.upload({IsReplace: true});
-            this.setState({
-              errorMsg: null,
-            }, () => {
-              this.refs.upload_tempalte.reset();
-            });
-          }}/>),
-          (<FlatButton label={I18N.Common.Button.Cancel2} onClick={() => {
-            this.refs.upload_tempalte.reset();
-            this.setState({
-              errorMsg: null,
-            });
-          }}/>),
-        ]}>
-        {this.state.errorMsg}
-        </NewDialog>
-      );
+      // return (
+      //   <NewDialog open={true} title={I18N.EM.Report.UploadNewTemplate} actions={[
+      //     (<FlatButton label={I18N.EM.Report.Upload} onClick={() => {
+      //       this.refs.upload_tempalte.upload({IsReplace: true});
+      //       this.setState({
+      //         errorMsg: null,
+      //       }, () => {
+      //         this.refs.upload_tempalte.reset();
+      //       });
+      //     }}/>),
+      //     (<FlatButton label={I18N.Common.Button.Cancel2} onClick={() => {
+      //       this.refs.upload_tempalte.reset();
+      //       this.setState({
+      //         errorMsg: null,
+      //       });
+      //     }}/>),
+      //   ]}>
+      //   {this.state.errorMsg}
+      //   </NewDialog>
+      // );
+      return null
     } else {
       var onClose = ()=> {
         if(this.state.errorMsg===I18N.EM.Report.WrongExcelFile){
