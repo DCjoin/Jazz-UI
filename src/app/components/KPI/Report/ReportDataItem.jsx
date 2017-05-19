@@ -14,6 +14,7 @@ import FlatButton from 'controls/FlatButton.jsx';
 import NewDialog from 'controls/NewDialog.jsx';
 import Immutable from 'immutable';
 import LinkButton from 'controls/LinkButton.jsx';
+import NewFlatButton from 'controls/NewFlatButton.jsx';
 
 var dateTypeChanged = false;
 var d2j = CommonFuns.DataConverter.DatetimeToJson;
@@ -328,13 +329,21 @@ let ReportDataItem = React.createClass({
       return null;
     }
     var dialogActions = [
-      <FlatButton disabled={this.props.disabled}
-      label={I18N.Common.Button.Confirm}
-      onClick={this._onTagDataChange} />,
-
-      <FlatButton
+      <NewFlatButton
       label={I18N.Common.Button.Cancel}
-      onClick={this._handleDialogDismiss} />
+      secondary={true}
+      onClick={this._handleDialogDismiss} style={{
+        marginRight: '20px',width:'68px',minWidth:'68px'
+      }}/>,
+      <NewFlatButton
+      label={I18N.Common.Button.Confirm}
+      primary={true}
+      onClick={this._onTagDataChange}
+      disabled={this.props.disabled}
+      style={{
+        width:'68px',
+        minWidth:'68px'
+      }}/>
     ];
     var tagWindow = <TagSelectWindow ref='tagListWindow' hierarchyId={this.props.hierarchyId} type={this.props.reportType} disabled={this.props.disabled} selectedTagList={this.props.tagList}></TagSelectWindow>;
 
@@ -346,10 +355,10 @@ let ReportDataItem = React.createClass({
       modal={true}
       titleStyle={{
         fontSize:'16px',
-        fontWeight:'500',
+        fontWeight:'bold',
         color:'#0f0f0f',
         paddingBottom:'25px',
-        borderBottom:'1px solid #e6e6e6'
+        borderBottom:'1px solid #e6e6e6',
       }}
       wrapperStyle={{
         width:"auto",
@@ -358,11 +367,15 @@ let ReportDataItem = React.createClass({
       contentStyle={{
         minHeight:'430px'
       }}
+      actionsContainerStyle={{
+        margin:'30px 22px'
+      }}
       >
       <div style={{
         flex: 1,
         display: 'flex',
-        height: '350px'
+        height: '350px',
+        flexDirection:'column'
       }}>
       {tagWindow}
       </div>
