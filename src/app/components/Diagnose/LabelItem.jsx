@@ -5,6 +5,7 @@ import FlatButton from '../../controls/FlatButton.jsx';
 import FontIcon from 'material-ui/FontIcon';
 import BubbleIcon from '../BubbleIcon.jsx';
 import Immutable from 'immutable';
+import NewFlatButton from 'controls/NewFlatButton.jsx';
 
 function isChild(parent,item){
   return parent.get('Children').findIndex(el=>el.get('Id')===item.get('Id'))>-1
@@ -36,7 +37,7 @@ class Group extends Component{
         minWidth:'0',
         height:'auto',
         lineHeight:'auto',
-        marginLeft:'6px'
+        marginLeft:'6px',
       },
       label:{
         fontSize:'9px',
@@ -44,18 +45,17 @@ class Group extends Component{
         color:"#ffffff"
       },
       btnIcon:{
-        fontSize:'9px',
+        fontSize:'7px',
         color:"#ffffff",
         marginLeft:'0',
         marginRight:'4px'
       },
       icon:{
         fontSize:'14px',
-        color:'#ffffff',
-        marginLeft:'15px'
+        color:'#626469',
       },
       bubble:{
-        borderRadius:'2px',
+        borderRadius:'100px',
         // backgroundColor:'#191919',
         // border:'1px solid red',
         width:'12px',
@@ -70,40 +70,49 @@ class Group extends Component{
 
     var count=ChildrenCount>0?<BubbleIcon number={ChildrenCount} style={styles.bubble} numberStyle={styles.number}/>:null;
     var addBtn=<div className="addBtn">
-                  <FlatButton label={I18N.Setting.Diagnose.Diagnose} labelStyle={styles.label} style={styles.btn} backgroundColor="#0cad04"
+                  <NewFlatButton label={I18N.Setting.Diagnose.Diagnose} labelStyle={styles.label} style={styles.btn} primary={true}
                     icon={<FontIcon className="icon-add" style={styles.btnIcon}/>}
                     onClick={(e)=>{
                                     e.stopPropagation();
                                     this.props.onAdd(this.props.nodeData)}}/>
                 </div>
     var collapsedIcon=ChildrenCount>0?<FontIcon className={classnames({
-                                                                "icon-arrow-down":this.state.collapsed,
-                                                                "icon-arrow-up":!this.state.collapsed
-                                                              })} style={styles.icon}/>:null;
+                                                                "icon-arrow-fold":this.state.collapsed,
+                                                                "icon-arrow-unfold":!this.state.collapsed
+                                                              })} style={styles.icon}/>:<div style={{width:'15px'}}/>;
     return(
       <div className={classnames({"item":true,"canSelect":ChildrenCount>0})} style={{justifyContent:'space-between'}} onClick={()=>{this.setState({collapsed:!this.state.collapsed})}}>
         <div className="side">
+          {collapsedIcon}
+          <FontIcon className="icon-add" style={{fontSize:'14px',color:'#626469',marginRight:'5px'}}/>
           <div className="text">{Name}</div>
           {this.props.isFromProbem && count}
-          {!this.props.isFromProbem && addBtn}
         </div>
         <div className="side">
-          {collapsedIcon}
+          {!this.props.isFromProbem && addBtn}
         </div>
       </div>
     )
   }
 
   _renderContent(){
+    var styles={
+      icon:{
+        fontSize:'14px',
+        color:'#626469',
+        marginRight:'5px'
+      },
+    }
     return this.props.nodeData.get('Children').map(data=>(
-      <div className={classnames({
+      <div title={data.get('Name')} className={classnames({
                                   "item":true,
                                   "selected":this.props.selectedNode?data.get('Id')===this.props.selectedNode.get('Id'):false,
                                   'canSelect':true
                                 })}
-           style={{paddingLeft:'30px'}} onClick={()=>{this.props.onItemTouchTap(data)}}>
+           style={{paddingLeft:'50px'}} onClick={()=>{this.props.onItemTouchTap(data)}}>
+           <FontIcon className="icon-add" style={styles.icon}/>
         <div className="text">{data.get('Name')}</div>
-        {!this.props.isFromProbem && data.get('Status')===DiagnoseStatus.Suspend && <FontIcon className="icon-more" style={{fontSize:'14px',marginLeft:'15px'}}/>}
+        {!this.props.isFromProbem && data.get('Status')===DiagnoseStatus.Suspend && <div className="suspend-font" style={{marginLeft:'5px'}}>{I18N.Setting.Diagnose.Suspend}</div>}
       </div>
     ))
   }
@@ -141,32 +150,10 @@ export default class LabelItem extends Component {
   }
 
   _renderGroupTitle(){
-    var {Id,Name}=this.props.nodeData.toJS();
-    var icon = (
-    <div className="node-content-icon" style={{
-      color: '#ffffff'
-    }}>
-        <div className={classnames({
-      //"icon-folder": Id === ItemType.Basic.NonRunTime || Id === ItemType.Senior.NonRunTime,
-      "icon-chart": [ItemType.Basic.NonRunTime,ItemType.Senior.NonRunTime,ItemType.Basic.DeviceEfficiency, ItemType.Senior.DeviceEfficiency,
-                    ItemType.Basic.NonEssentialOperation, ItemType.Senior.NonEssentialOperation,
-                    ItemType.Basic.IndoorEnvironmental, ItemType.Senior.IndoorEnvironmental,
-                    ItemType.Senior.RunTime,
-                    ItemType.Basic.DemandOptimization,
-                    ItemType.Senior.OperationOptimization].reduce((result, type) => result || Id === type, false)
-      // "icon-chart": Id === ItemType.Basic.DeviceEfficiency || Id === ItemType.Senior.DeviceEfficiency,
-      // "icon-chart": Id === ItemType.Basic.NonEssentialOperation || Id === ItemType.Senior.NonEssentialOperation,
-      // "icon-chart": Id === ItemType.Basic.IndoorEnvironmental || Id === ItemType.Senior.IndoorEnvironmental,
-      // "icon-chart": Id === ItemType.Senior.RunTime,
-      // "icon-chart": Id === ItemType.Basic.DemandOptimization,
-      // "icon-chart": Id === ItemType.Senior.OperationOptimization,
-    })}/>
-      </div>
-    );
+    var {Name}=this.props.nodeData.toJS();
     return (
-      <div className="item">
-        {icon}
-        <div className="text" style={{marginLeft:'10px'}}>{Name}</div>
+      <div className="item" style={{borderBottom:'1px solid #e6e6e6'}}>
+        <div className="text" style={{fontWeight:'bold'}}>{Name}</div>
       </div>
     )
   }

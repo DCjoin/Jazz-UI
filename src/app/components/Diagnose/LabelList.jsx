@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {Tabs, Tab, CircularProgress} from 'material-ui';
+import classnames from "classnames";
+import { CircularProgress} from 'material-ui';
 import Immutable from 'immutable';
 import LabelItem from './LabelItem.jsx';
 import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
@@ -10,6 +11,7 @@ import PermissionCode from 'constants/PermissionCode.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 // import HierarchyAction from '../../actions/hierarchySetting/HierarchyAction.jsx';
 import NewDialog from 'controls/NewDialog.jsx';
+import BubbleIcon from '../BubbleIcon.jsx';
 
 function privilegeWithSeniorSmartDiagnose( privilegeCheck ) {
   //  return false
@@ -83,65 +85,37 @@ export default class LabelList extends Component {
 		}
 	}
 
+  _switchTab(no){
+    if(this.state.infoTabNo!==no){
+      this.setState({
+        infoTabNo:no,
+        list:null
+      },()=>{
+        if(this.state.infoTabNo===1 || !noPrivilege()){
+          this._getList(this.context.hierarchyId)
+        }else {
+          this.setState({
+            list:Immutable.fromJS([])
+          })
+        }
+        this.props.onTabSwitch(no)
+      })
+    }
+
+  }
+
   _renderTabs(){
-    var problemIcon=<FontIcon className="bubble-icon"/>;
-    var tabsProp={
-      inkBarStyle:{
-        height:'3px',
-        backgroundColor:'#0CAD04'
-      },
-      tabItemContainerStyle:{
-        backgroundColor:'#191919',
-      },
-      style:{
-        width:'100%',
-      },
-      value:this.state.infoTabNo,
-      onChange:(no)=>{
-        this.setState({
-          infoTabNo:no,
-          list:null
-        },()=>{
-          if(this.state.infoTabNo===1 || !noPrivilege()){
-            this._getList(this.context.hierarchyId)
-          }else {
-            this.setState({
-              list:Immutable.fromJS([])
-            })
-          }
-					this.props.onTabSwitch(no)
-        })
-      }
-    },
-    tab1Prop={
-      key:1,
-      value:1,
-      label:I18N.Setting.Diagnose.Basic,
-      icon:this.state.static && this.state.static['1'] && problemIcon,
-      className:'diagnose-tab',
-      style:{
-        height:'55px',
-        color:this.state.infoTabNo===1?'#0CAD04':'#ffffff',
-        backgroundColor:this.state.infoTabNo===2?'rgba(255,255,255,0.17)':'#191919',
-      },
-    },
-    tab2Prop={
-      key:2,
-      value:2,
-      label:I18N.Setting.Diagnose.Senior,
-      icon:this.state.static && this.state.static['2'] && problemIcon,
-      className:'diagnose-tab',
-      style:{
-        height:'55px',
-        color:this.state.infoTabNo===2?'#0CAD04':'#ffffff',
-        backgroundColor:this.state.infoTabNo===1?'rgba(255,255,255,0.17)':'#191919',
-      },
-    };
     return(
-      <Tabs {...tabsProp}>
-        <Tab {...tab1Prop}/>
-        <Tab {...tab2Prop}/>
-      </Tabs>
+      <span className="label-tabs">
+        <span className={classnames({"tab":true,'left':true,'selected':this.state.infoTabNo===1})} onClick={this._switchTab.bind(this,1)} style={{display:'flex'}}>
+          {I18N.Setting.Diagnose.Basic}
+          {this.state.static && this.state.static['1']?<BubbleIcon style={{width:'5px',height:'5px',marginTop:'-10px'}}/>:null}
+        </span>
+        <span className={classnames({"tab":true,'selected':this.state.infoTabNo===2})} onClick={this._switchTab.bind(this,2)} style={{display:'flex'}}>
+          {I18N.Setting.Diagnose.Senior}
+          {this.state.static && this.state.static['2']?<BubbleIcon style={{width:'5px',height:'5px',marginTop:'-10px'}}/>:null}
+        </span>
+      </span>
     )
   }
 
