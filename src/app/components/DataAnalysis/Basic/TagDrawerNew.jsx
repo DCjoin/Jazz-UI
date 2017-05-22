@@ -80,7 +80,7 @@ export default class TagDrawer extends Component {
     this.setState({
       tagList: data.Data,
       tagId: tagId,
-      optionType: 2,
+      // optionType: 2,
       isLoading: false,
     });
   }
@@ -380,7 +380,8 @@ export default class TagDrawer extends Component {
           hierId: this.props.hierarchyId,
           tagId: this.props.tagId,
           dimId:null
-        };
+        },
+        optionType=nodeType.HierarchyOnly;
 
         let hierNode=Immutable.fromJS({
           Id:this.props.hierarchyId,
@@ -391,10 +392,12 @@ export default class TagDrawer extends Component {
           Name:TagStore.getCurrentDimInfo().dimName
         });
         if(dimNode.get('Id')){
-          data.dimId=dimNode.get('Id')
+          data.dimId=dimNode.get('Id'),
+          optionType=nodeType.DimensionOnly
         }
         this.setState({
-          selectedDimNode:TagStore.getCurrentDimInfo().dimId?dimNode:hierNode
+          selectedDimNode:TagStore.getCurrentDimInfo().dimId?dimNode:hierNode,
+          optionType
         },()=>{
           TagAction.loadAlarmData(data);
         })
