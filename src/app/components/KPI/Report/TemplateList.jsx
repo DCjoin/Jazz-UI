@@ -22,7 +22,8 @@ let TemplateList = React.createClass({
       showReplaceDialog: false,
       showUploadDialog: false,
       showUploadConfirm:false,
-      fileName:''
+      fileName:'',
+      errorMsg:null
     };
   },
   _handleDialogDismiss() {
@@ -113,12 +114,21 @@ let TemplateList = React.createClass({
     this._handleDialogDismiss();
   },
   _replaceTemplateConfirm(event){
-    console.log(event);
     let me = this;
     var file = event.target.files[0];
     let input = this.refs.fileInput;
     if(!file) return;
     var fileName = file.name;
+
+    if (!util.endsWith(fileName.toLowerCase(), '.xlsx') &&
+      !util.endsWith(fileName.toLowerCase(), '.xls')) {
+    this.setState({
+      errorMsg:I18N.EM.Report.WrongExcelFile,
+      showReplaceDialog:false
+    })
+      return;
+    }
+
     this.setState({
       fileName,
       showUploadConfirm:true,
@@ -186,6 +196,58 @@ let TemplateList = React.createClass({
       showUploadDialog: true
     });
   },
+
+  _renderErrorMsg(){
+    var that = this;
+    if( new RegExp(
+        I18N.EM.Report.DuplicatedName.replace(/{\w}/, '(.)*')
+      ).test(this.state.errorMsg)
+    ) {
+      return null
+      // return (
+      // 	<Dialog open={true} title={I18N.EM.Report.UploadNewTemplate} actions={[
+      // 		(<FlatButton label={I18N.EM.Report.Upload} onClick={() => {
+      // 			this.refs.upload_tempalte.upload({IsReplace: true});
+      // 			this.setState({
+      // 				errorMsg: null,
+      // 			}, () => {
+      // 				this.refs.upload_tempalte.reset();
+      // 			});
+      // 		}}/>),
+      // 		(<FlatButton label={I18N.Common.Button.Cancel2} onClick={() => {
+      // 			this.refs.upload_tempalte.reset();
+      // 			this.setState({
+      // 				errorMsg: null,
+      // 			});
+      // 		}}/>),
+      // 	]}>
+      // 	{this.state.errorMsg}
+      // 	</Dialog>
+      // );
+    } else {
+      var onClose = ()=> {
+        if(this.state.errorMsg===I18N.EM.Report.WrongExcelFile){
+          this.refs.fileInput.value='';
+        }
+        that.setState({
+          errorMsg: null,
+        });
+      };
+      if (this.state.errorMsg!==null) {
+        return (<NewDialog
+                  ref = "_dialog"
+                  title={I18N.Platform.ServiceProvider.ErrorNotice}
+                  modal={false}
+                  open={!!this.state.errorMsg}
+                  onRequestClose={onClose}
+                  >
+                  {this.state.errorMsg}
+                </NewDialog>);
+      } else {
+        return null;
+      }
+    }
+  },
   componentDidMount: function() {},
   componentWillUnmount: function() {},
   render() {
@@ -222,6 +284,7 @@ let TemplateList = React.createClass({
         {deleteDialog}
         {this._renderUploadDialog()}
         {this._renderReplaceDialog()}
+        {this._renderErrorMsg()}
         {this.state.fileName!=='' && this.state.showUploadConfirm && <UploadConfirmDialog name={this.state.fileName}
                              onConfirm={()=>{
                                this._replaceTemplate();

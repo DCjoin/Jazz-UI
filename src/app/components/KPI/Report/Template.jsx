@@ -81,18 +81,20 @@ var Template = React.createClass({
       if(!file) return;
       var fileName = file.name;
 
+      if (!CommonFuns.endsWith(fileName.toLowerCase(), '.xlsx') &&
+        !CommonFuns.endsWith(fileName.toLowerCase(), '.xls')) {
+      this.setState({
+        errorMsg:I18N.EM.Report.WrongExcelFile
+      })
+        return;
+      }
+
       this.setState({
         fileName,
         showUploadConfirm:true
       })
 
-      // if (!CommonFuns.endsWith(fileName.toLowerCase(), '.xlsx') &&
-      //   !CommonFuns.endsWith(fileName.toLowerCase(), '.xls')) {
-      // this.setState({
-      //   errorMsg:I18N.EM.Report.WrongExcelFile
-      // })
-      //   return;
-      // }
+
       // this.refs.upload_tempalte.upload();
       // this.setState({
       //   fileName,
@@ -220,7 +222,7 @@ var Template = React.createClass({
     } else {
       var onClose = ()=> {
         if(this.state.errorMsg===I18N.EM.Report.WrongExcelFile){
-          this.refs.fileInput.value='';
+          this.refs.upload_tempalte.reset();
         }
         that.setState({
           errorMsg: null,
