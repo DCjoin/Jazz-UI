@@ -55,7 +55,7 @@ let TagItem = React.createClass({
       )}>
         {checkBox}
         {displayIndex}
-        <div title={me.props.name}>{me.props.name}</div>
+        <div title={me.props.name} style={{width:150,minWidth:150}}>{me.props.name}</div>
         <div title={me.props.code}>{me.props.code}</div>
         {deleteButton}
       </div>
