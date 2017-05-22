@@ -160,25 +160,25 @@ let TemplateList = React.createClass({
     let input = this.refs.fileInput;
     form.appendChild(input);
     let replaceInput = createElement('input', {
-  type: 'hidden',
-  name: 'IsReplace',
-  value: true
-}, null, form);
-let replaceIdInput = createElement('input', {
-  type: 'hidden',
-  name: 'Id',
-  value: me.state.id
-}, null, form);
-let customerInput = createElement('input', {
-  type: 'hidden',
-  name: 'CustomerId',
-  value: parseInt(me.props.customerId)
-}, null, form);
-let activeInput = createElement('input', {
-  type: 'hidden',
-  name: 'IsActive',
-  value: 1
-}, null, form);
+      type: 'hidden',
+      name: 'IsReplace',
+      value: true
+    }, null, form);
+    let replaceIdInput = createElement('input', {
+      type: 'hidden',
+      name: 'Id',
+      value: me.state.id
+    }, null, form);
+    let customerInput = createElement('input', {
+      type: 'hidden',
+      name: 'CustomerId',
+      value: parseInt(me.props.customerId)
+    }, null, form);
+    let activeInput = createElement('input', {
+      type: 'hidden',
+      name: 'IsActive',
+      value: 1
+    }, null, form);
     form.submit();
     discardElement(form);
     // this._handleDialogDismiss();
@@ -240,9 +240,6 @@ let activeInput = createElement('input', {
                                cursor: 'pointer',
                                position: 'absolute',
                                top: 0,
-                               bottom: 0,
-                               right: 0,
-                               left: 0,
                                width: '100%',
                                opacity: 0,
                              }} />
