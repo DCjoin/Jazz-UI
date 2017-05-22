@@ -31,6 +31,8 @@ script:
 - cd ..
 
 before_deploy:
+  - curl -sS -o ./dep.sh "https://raw.githubusercontent.com/SE-REM/Baton/master/shell/travis_deploy_oss.sh"
+  - chmod a+x ./dep.sh
   - curl -sS -o ./upload.sh "https://raw.githubusercontent.com/SE-REM/Baton/master/shell/travis_upload.sh"
   - chmod a+x ./upload.sh
   - cat upload.sh
@@ -42,8 +44,4 @@ deploy:
   on:
     all_branches: true
   script:
-    - curl -sS -o ./dep.sh "https://raw.githubusercontent.com/SE-REM/Baton/master/shell/travis_deploy_oss.sh" && \
-      chmod a+x ./dep.sh && \
-      ./dep.sh ${PROJECT} ${ROLE} "${ARTIFACT_NAME}" ${BASKET} ${BOB} ${JOHN} ${JENKINS_HOST} ${JENKINS_AUTH} ${JENKINS_TOKEN} && \
-      ./upload.sh ./${file} ${PROJECT} ${TRAVIS_BRANCH} ${ROLE} ${PACKAGE_VERSION} ${BASKET} ${BOB} ${JOHN}
-    
+    - ./dep.sh ${PROJECT} ${ROLE} "${ARTIFACT_NAME}" ${BASKET} ${BOB} ${JOHN} ${JENKINS_HOST} ${JENKINS_AUTH} ${JENKINS_TOKEN} && ./upload.sh ./${file} ${PROJECT} ${TRAVIS_BRANCH} ${ROLE} ${PACKAGE_VERSION} ${BASKET} ${BOB} ${JOHN}
