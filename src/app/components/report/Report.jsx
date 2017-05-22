@@ -69,7 +69,6 @@ let Report = React.createClass({
     }}><LeftPanel onlyRead={this.state.onlyRead}/></div>;
 
     mainPanel = <div style={{
-      marginTop: '-16px',
       backgroundColor: '#ffffff',
       position: 'relative',
       display: 'flex',
