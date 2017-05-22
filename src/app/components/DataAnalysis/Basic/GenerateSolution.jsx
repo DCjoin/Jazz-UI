@@ -247,10 +247,12 @@ export class GenerateSolution extends Component {
 					didChanged={this._setStateValue('ProblemMark')}/>
 			</div>
 			<OnceHidePanel label={I18N.Setting.DataAnalysis.EnergyProblem.AddDesc}>
+			<div>
 				<ViewableTextField title={I18N.Setting.UserManagement.Comment}
 					multiLine={true}
 					defaultValue={ProblemDesc}
 					didChanged={this._setStateValue('ProblemDesc')}/>
+			</div>
 			</OnceHidePanel>
 		</div>);
 	}
