@@ -25,6 +25,9 @@ import EnergyStore from 'stores/Energy/EnergyStore.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
 
+const SVG_WIDTH = 1242;
+const SVG_HEIGHT = 828;
+
 function SolutionFull() {
 	return PrivilegeUtil.isFull(PermissionCode.SOLUTION_FULL, CurrentUserStore.getCurrentPrivilege());
 }
@@ -131,63 +134,13 @@ export class GenerateSolution extends Component {
 			SaveDesc: null,
 			showDelete: false,
 		};
-		//this._onChange = this._onChange.bind(this);
 		this._afterChartCreated = this._afterChartCreated.bind(this);
 		this._setStateValue = this._setStateValue.bind(this);
 		this._setIdx = this._setIdx.bind(this);
 		this._onDelete = this._onDelete.bind(this);
 		this._renderHighChart = this._renderHighChart.bind(this);
 		this._renderChart = this._renderChart.bind(this);
-		//this._getTagsDataByNode = this._getTagsDataByNode.bind(this);
-
-		// if(props.preAction && typeof props.preAction.action === 'function') {
-		// 	let {action, addListener} = props.preAction;
-		// 	if( addListener && typeof addListener === 'function' ) {
-		// 		addListener(this._getTagsDataByNode);
-		// 	}
-		// 	if( action() ) {
-		// 		getTagsDataByNode(props);
-		// 	}
-		// } else {
-		// 	getTagsDataByNode(props);
-		// }
-		//
-		// FolderStore.addSolutionChangeListener(this._onChange);
 	}
-	// componentWillUnmount() {
-	// 	FolderStore.removeSolutionChangeListener(this._onChange);
-	// 	if(this.props.preAction && typeof this.props.preAction.removeListener === 'function') {
-	// 		this.props.preAction.removeListener(this._getTagsDataByNode);
-	// 	}
-	// }
-
-	// _getTagsDataByNode() {
-	// 	getTagsDataByNode(this.props);
-	// }
-
-	// _onChange(data, nodeId) {
-	// 	let tagData = data.get('EnergyViewData'),
-	// 	widgetStatus = data.get('WidgetStatus'),
-	// 	contentSyntax = data.get('ContentSyntax'),
-	// 	widgetSeriesArray = data.get('WidgetSeriesArray');
-	// 	this.setState({
-	// 		widgetStatus,
-	// 		widgetSeriesArray,
-	// 		tagDatas: {...this.state.tagDatas, ...{
-	// 			[nodeId]: tagData
-	// 		}},
-	// 		widgetStatuss: {...this.state.widgetStatuss, ...{
-	// 			[nodeId]: widgetStatus
-	// 		}},
-	// 		widgetSeriesArrays: {...this.state.widgetSeriesArrays, ...{
-	// 			[nodeId]: widgetSeriesArray
-	// 		}},
-	// 		contentSyntaxs: {...this.state.contentSyntaxs, ...{
-	// 			[nodeId]: contentSyntax
-	// 		}}
-	// 	});
-	// }
-
 	_afterChartCreated(nodeId) {
 		let svgString,
 		parent = ReactDOM.findDOMNode(this).querySelector('#chart_basic_component_' + nodeId);
@@ -308,10 +261,10 @@ export class GenerateSolution extends Component {
 		if( currentNode ) {
 			let svgString = svgStrings[getId(currentNode)];
 			if(svgStrings[getId(currentNode)]) {
-				return (<div style={{height: 300, width: 600}} dangerouslySetInnerHTML={{__html: svgString}} />);
+				return (<div style={{height: SVG_HEIGHT, width: SVG_WIDTH}} dangerouslySetInnerHTML={{__html: svgString}} />);
 			}
 		}
-		return (<div style={{height: 300, width: 600}} className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>);
+		return (<div style={{height: SVG_HEIGHT, width: SVG_WIDTH}} className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>);
 	}
 
 	_renderHighChart(node) {
@@ -319,12 +272,12 @@ export class GenerateSolution extends Component {
 			return null;
 		}
 		let nodeId = getId(node);
-		return (<div style={{position: 'relative', overflowX: 'hidden', height: 300, width: 600}}>
+		return (<div style={{position: 'relative', overflowX: 'hidden', height: SVG_HEIGHT, width: SVG_WIDTH}}>
 			      <div id={'chart_basic_component_' + nodeId} style={{
 			          flex: 1,
 			          position: 'absolute',
-			          width: 610,
-			          height: 320,
+			          width: SVG_WIDTH,
+			          height: SVG_HEIGHT,
 			          display: 'flex',
 			          opacity: 0,
 			          flexDirection: 'column',
@@ -433,6 +386,7 @@ export class GenerateSolution extends Component {
 				open={true}
 				title={I18N.Setting.DataAnalysis.Scheme}
 				actions={[this._renderSubmit(), this._renderCancel()]}
+				wrapperStyle={{maxWidth: '100%', width: '100%'}}
 				contentStyle={{overflowY: 'auto'}}>
 				{this._renderEnergyProblem()}
 				<div style={{margin: '10px 0', flex: 'none'}}>
