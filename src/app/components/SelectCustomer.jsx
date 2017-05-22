@@ -22,7 +22,7 @@ import HierarchyAction from 'actions/hierarchySetting/HierarchyAction.jsx';
 import BaseHierarchyAction from 'actions/HierarchyAction.jsx';
 
 function getCustomerPrivilageById(customerId) {
-  return find(UserStore.getUserCustomers(), customer => customer.get('CustomerId') === customerId * 1 );
+  return UserStore.getUserCustomers().find(customer => customer.get('CustomerId') === customerId * 1 );
 }
 
 function isWholeCustomer(customerId) {
@@ -45,6 +45,8 @@ function getFirstMenuPathFunc(menu) {
   return  firstMenu.getPath;
 }
 
+let selectCustomerId = null;
+
 const SelectCustomer = React.createClass({
   propTypes: {
     onClose: React.PropTypes.func,
@@ -54,27 +56,27 @@ const SelectCustomer = React.createClass({
     currentRoute: React.PropTypes.object,
   },
   componentWillMount() {
-    this.setState({
-      step: 1,
-      hierarchyList: null,
-      selectCustomerId: null,
-    });
-  },
-  componentDidMount() {
     HierarchyStore.addBuildingListListener(this._onChange);
   },
   componentWillUnmount: function() {
     HierarchyStore.removeBuildingListListener(this._onChange);
   },
+  getInitialState() {
+    selectCustomerId = null;
+    return {
+      step: 1,
+      hierarchyList: null,
+      selectCustomerId: null,      
+    }
+  },
   _onChange() {
-    let hierarchyList = HierarchyStore.getBuildingList(),
-    {selectCustomerId} = this.state;
+    let hierarchyList = HierarchyStore.getBuildingList();
 
     if( hierarchyList.length === 0 ) {
-      return this._selectCustomerDone(customerId, customerId);
-    } else if(hierarchyList.length === 1 && !isWholeCustomer() ) {
-      let firstHierarchyId = hierarchyList[0];
-      return this._selectCustomerDone(firstHierarchyId, firstHierarchyId);
+      return this._selectCustomerDone(selectCustomerId, selectCustomerId);
+    } else if(hierarchyList.length === 1 && !isWholeCustomer(selectCustomerId) ) {
+      let firstHierarchyId = hierarchyList[0].Id;
+      return this._selectCustomerDone(selectCustomerId, firstHierarchyId);
     } else {
       this.setState({
         hierarchyList,
@@ -95,16 +97,18 @@ const SelectCustomer = React.createClass({
   },
   _onClose(hierarchyId) {
     if(this.props.onClose) {
-    console.log('hierarchyId = ' + hierarchyId);
       this.props.onClose(hierarchyId);
     }
   },
   _selectCustomerChangeHandler: function(customerId) {
-    BaseHierarchyAction.getBuildingListByCustomerId(customerId);
+    selectCustomerId = customerId;
     this.setState({
       selectCustomerId: customerId * 1,
       step: 2,
     });
+    setTimeout(() => {
+      BaseHierarchyAction.getBuildingListByCustomerId(customerId)
+    }, 0);
   },
 
   _selectCustomerDone(customerId, hierarchyId) {
@@ -172,6 +176,7 @@ const SelectCustomer = React.createClass({
           <div>
             <span className={classnames('step', {link: step === 2})} onClick={() => {
               if(step === 2) {
+                selectCustomerId = null;
                 this.setState({
                   step: 1,
                   selectCustomerId: null,
