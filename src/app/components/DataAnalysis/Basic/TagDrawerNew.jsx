@@ -431,7 +431,11 @@ export default class TagDrawer extends Component {
     var styles={
       label:{
         fontSize:'14px',
-        color:'#ffffff'
+        color:'#ffffff',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
+        overflow: 'hidden',
+        marginLeft:'15px'
       }
     }
     return(
@@ -449,9 +453,12 @@ export default class TagDrawer extends Component {
             {this.state.searchShow && <div className="jazz-analysis-tag-search-cancel" onClick={this._onSearchShow}>{I18N.Common.Button.Cancel2}</div>}
           </div>}
           {this.state.selectedDimNode!==null && <div className="header">
-            <FlatButton label={this.state.selectedDimNode.get('Name')}
-              labelStyle={styles.label} className="jazz-analysis-tag-rollback" hoverColor="rgba(0,0,0,0)"
-              icon={<FontIcon className="icon-return" style={styles.label}/>} onClick={this._onDimRollBack.bind(this)}/>
+            <div className="jazz-analysis-tag-rollback" onClick={this._onDimRollBack.bind(this)} title={this.state.selectedDimNode.get('Name')}>
+              <FontIcon className="icon-return" style={{fontSize:'14px', color:'#ffffff'}}/>
+              <div style={styles.label}>
+                {this.state.selectedDimNode.get('Name')}
+              </div>
+            </div>
           </div>}
         {this.state.selectedDimNode===null && !this.state.searchShow && this._renderTree()}
         {this.state.selectedDimNode===null && this.state.searchShow && this._renderSearchTag()}

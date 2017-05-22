@@ -159,7 +159,7 @@ let TemplateList = React.createClass({
 
     let form = createElement('form', {
       method: 'post',
-      action: 'TagImportExcel.aspx?Type=ReportTemplate',
+      action: 'http://sp1.energymost.com/TagImportExcel.aspx?Type=ReportTemplate',
       target: '_self',
       enctype: 'multipart/form-data',
       name: 'inputForm'
