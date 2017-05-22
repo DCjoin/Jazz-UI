@@ -181,12 +181,13 @@ export default class BuildingChartPanel extends Component {
 							<content className='jazz-building-kpi-rank-content'>
 								{RankNumber(currentRank, isThisYear)}
 							</content>
+							{year <= SingleKPIStore.getCustomerCurrentYear() && 
 							<LinkButton
 								className='jazz-building-kpi-rank-footer'
 								label={(isThisYear ? I18N.Setting.KPI.Rank.ShowHistory : I18N.Setting.KPI.Rank.ShowByMonth) + '>>'}
 								onClick={() => {
 									this.setState({selectedRank: currentRank});
-								}}/>
+								}}/>}
 						</div>
 						<div className='jazz-building-kpi-rank-report'>
 							<KPIReport
