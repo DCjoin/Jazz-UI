@@ -181,17 +181,23 @@ let MainApp = React.createClass({
       if(defaultReplace && !router.isActive(defaultReplace)) {
         router.replace(defaultReplace);
       } else {
-        if(!this.state.hierarchyId) {
+        if(customerId && !this.state.hierarchyId) {
           let WholeCustomer = getCustomerPrivilageById( customerId ) && getCustomerPrivilageById( customerId ).get('WholeCustomer');
           let initHierarchyId = router.location.query.init_hierarchy_id;
           let hierarchyId = customerId * 1;
           if(!WholeCustomer && HierarchyStore.getBuildingList()[0]) {
             hierarchyId = HierarchyStore.getBuildingList()[0].Id * 1;
           }
+          if( initHierarchyId ) {
+            hierarchyId = initHierarchyId * 1;
+          }
           
           this.setState({
             hierarchyId
           },this.forceUpdate);
+
+          this._getECMUnread();
+          this._getDiagnoseProblem();
           DiagnoseAction.getConsultant(hierarchyId);
 
         } else {
@@ -199,36 +205,39 @@ let MainApp = React.createClass({
         }
       }
 
-      if( customerId && !this.state.hierarchyId ) {
-        let WholeCustomer = getCustomerPrivilageById( customerId ) && getCustomerPrivilageById( customerId ).get('WholeCustomer');
-        let initHierarchyId = router.location.query.init_hierarchy_id;
-        let hierarchyId = customerId * 1;
-        if(!WholeCustomer && HierarchyStore.getBuildingList()[0]) {
-          hierarchyId = HierarchyStore.getBuildingList()[0].Id * 1;
-        }
-        this.setState({
-          hierarchyId
-        },()=>{
-          this._getECMUnread();
-          this._getDiagnoseProblem();
-          DiagnoseAction.getConsultant(hierarchyId);
-        });
-        if( initHierarchyId ) {
-          let {pathname, query} = router.location,
-          search = '';
-          delete query.init_hierarchy_id;
-          if(Object.keys(query).length > 0) {
-            search = '?' + querystring.stringify(query);
-          }
-          this.setState({
-            hierarchyId: initHierarchyId * 1
-          }, () => {
-            this._getECMUnread();
-            this._getDiagnoseProblem();
-            DiagnoseAction.getConsultant(initHierarchyId);
-          });
-        }
-      }
+      // if( customerId && !this.state.hierarchyId ) {
+      //   let WholeCustomer = getCustomerPrivilageById( customerId ) && getCustomerPrivilageById( customerId ).get('WholeCustomer');
+      //   let initHierarchyId = router.location.query.init_hierarchy_id;
+      //   let hierarchyId = customerId * 1;
+      //   if(!WholeCustomer && HierarchyStore.getBuildingList()[0]) {
+      //     hierarchyId = HierarchyStore.getBuildingList()[0].Id * 1;
+      //   }
+      //   if( initHierarchyId ) {
+      //     hierarchyId = initHierarchyId;
+      //   }
+      //   this.setState({
+      //     hierarchyId
+      //   },()=>{
+      //     this._getECMUnread();
+      //     this._getDiagnoseProblem();
+      //     DiagnoseAction.getConsultant(hierarchyId);
+      //   });
+        // if( initHierarchyId ) {
+        //   let {pathname, query} = router.location,
+        //   search = '';
+        //   delete query.init_hierarchy_id;
+        //   if(Object.keys(query).length > 0) {
+        //     search = '?' + querystring.stringify(query);
+        //   }
+        //   this.setState({
+        //     hierarchyId: initHierarchyId * 1
+        //   }, () => {
+        //     this._getECMUnread();
+        //     this._getDiagnoseProblem();
+        //     DiagnoseAction.getConsultant(initHierarchyId);
+        //   });
+        // }
+      // }
     }
   },
   _onChange: function() {
@@ -348,7 +357,7 @@ let MainApp = React.createClass({
           </div>
         );
       } else {
-        return ( <SelectCustomer />);
+        return ( <SelectCustomer  onClose={this._setHierarchyId}/>);
       }
     }
     return (
