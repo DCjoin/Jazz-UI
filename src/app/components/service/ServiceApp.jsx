@@ -132,7 +132,7 @@ let ServiceApp = React.createClass({
 
     return (
       <div className='jazz-main'>
-            <MainAppBar disabledSelectCustomer={this.props.params.cusnum === 0} items={menuItems} title={I18N.Setting.SPManagement}/>
+            <MainAppBar disabledSelectCustomer={this.props.params.cusnum * 1 === 0} items={menuItems} title={I18N.Setting.SPManagement}/>
             {this.props.children}
             <NetworkChecker></NetworkChecker>
         </div>

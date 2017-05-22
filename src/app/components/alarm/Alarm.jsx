@@ -135,7 +135,6 @@ let Alarm = React.createClass({
     var LeftPanelField,
       dataSelectPanel = null,
       mainPanel = (<div style={{
-        marginTop: '-16px',
         backgroundColor: '#ffffff',
         position: 'relative',
         flex: 1
@@ -162,7 +161,6 @@ let Alarm = React.createClass({
     if (me.state.title) {
       if (me.state.refreshAnalysisPanel) {
         mainPanel = <div style={{
-          marginTop: '-16px',
           backgroundColor: '#ffffff',
           position: 'relative',
           flex: 1
