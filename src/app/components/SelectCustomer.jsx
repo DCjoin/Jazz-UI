@@ -95,6 +95,7 @@ const SelectCustomer = React.createClass({
   },
   _onClose(hierarchyId) {
     if(this.props.onClose) {
+    console.log('hierarchyId = ' + hierarchyId);
       this.props.onClose(hierarchyId);
     }
   },
