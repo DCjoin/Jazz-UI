@@ -152,8 +152,8 @@ const SelectCustomer = React.createClass({
       return (
         <div className='jazz-select-customer-hierarchy-list-wrapper'>          
           <div className='jazz-select-customer-hierarchy-list'>
-            {isWholeCustomer() && <div className='jazz-select-customer-hierarchy-list-header'>{I18N.SelectCustomer.Group}</div>}
-            {isWholeCustomer() && <a href='javascript:void(0)' className='jazz-select-customer-hierarchy-list-item' onClick={() => {
+            {isWholeCustomer(selectCustomerId) && <div className='jazz-select-customer-hierarchy-list-header'>{I18N.SelectCustomer.Group}</div>}
+            {isWholeCustomer(selectCustomerId) && <a href='javascript:void(0)' className='jazz-select-customer-hierarchy-list-item' onClick={() => {
               this._selectCustomerDone(selectCustomerId, selectCustomerId);
             }}>{find(CurrentUserCustomerStore.getAll(), cus => cus.Id === selectCustomerId).Name}</a>}
             <div className='jazz-select-customer-hierarchy-list-header'>{I18N.SelectCustomer.Single}</div>
