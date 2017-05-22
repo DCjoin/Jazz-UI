@@ -22,7 +22,8 @@ let TemplateList = React.createClass({
       showReplaceDialog: false,
       showUploadDialog: false,
       showUploadConfirm:false,
-      fileName:''
+      fileName:'',
+      errorMsg:null
     };
   },
   _handleDialogDismiss() {
@@ -88,18 +89,9 @@ let TemplateList = React.createClass({
     var dialogActions = [
       <FlatButton
       labelPosition="before"
-      label={I18N.EM.Report.Replace}>
-        <input type='file' onChange={this._replaceTemplateConfirm} name='templateFile' ref='fileInput' style={{
-          cursor: 'pointer',
-          position: 'absolute',
-          top: 0,
-          bottom: 0,
-          right: 0,
-          left: 0,
-          width: '100%',
-          opacity: 0,
-        }} />
-      </FlatButton>,
+      label={I18N.EM.Report.Replace}
+      onClick={()=>{ReactDom.findDOMNode(this.refs.fileInput).click()}}
+      />,
 
       <FlatButton
       label={I18N.Common.Button.Cancel}
@@ -124,8 +116,19 @@ let TemplateList = React.createClass({
   _replaceTemplateConfirm(event){
     let me = this;
     var file = event.target.files[0];
+    let input = this.refs.fileInput;
     if(!file) return;
     var fileName = file.name;
+
+    if (!util.endsWith(fileName.toLowerCase(), '.xlsx') &&
+      !util.endsWith(fileName.toLowerCase(), '.xls')) {
+    this.setState({
+      errorMsg:I18N.EM.Report.WrongExcelFile,
+      showReplaceDialog:false
+    })
+      return;
+    }
+
     this.setState({
       fileName,
       showUploadConfirm:true,
@@ -134,6 +137,7 @@ let TemplateList = React.createClass({
   },
 
   _replaceTemplate: function(event) {
+    var me=this;
     let createElement = window.Highcharts.createElement,
       discardElement = window.Highcharts.discardElement;
     let iframe = createElement('iframe', null, {
@@ -185,14 +189,64 @@ let TemplateList = React.createClass({
       name: 'IsActive',
       value: 1
     }, null, form);
-
-
     form.submit();
     discardElement(form);
-    this._handleDialogDismiss();
+    // this._handleDialogDismiss();
     me.setState({
       showUploadDialog: true
     });
+  },
+
+  _renderErrorMsg(){
+    var that = this;
+    if( new RegExp(
+        I18N.EM.Report.DuplicatedName.replace(/{\w}/, '(.)*')
+      ).test(this.state.errorMsg)
+    ) {
+      return null
+      // return (
+      // 	<Dialog open={true} title={I18N.EM.Report.UploadNewTemplate} actions={[
+      // 		(<FlatButton label={I18N.EM.Report.Upload} onClick={() => {
+      // 			this.refs.upload_tempalte.upload({IsReplace: true});
+      // 			this.setState({
+      // 				errorMsg: null,
+      // 			}, () => {
+      // 				this.refs.upload_tempalte.reset();
+      // 			});
+      // 		}}/>),
+      // 		(<FlatButton label={I18N.Common.Button.Cancel2} onClick={() => {
+      // 			this.refs.upload_tempalte.reset();
+      // 			this.setState({
+      // 				errorMsg: null,
+      // 			});
+      // 		}}/>),
+      // 	]}>
+      // 	{this.state.errorMsg}
+      // 	</Dialog>
+      // );
+    } else {
+      var onClose = ()=> {
+        if(this.state.errorMsg===I18N.EM.Report.WrongExcelFile){
+          this.refs.fileInput.value='';
+        }
+        that.setState({
+          errorMsg: null,
+        });
+      };
+      if (this.state.errorMsg!==null) {
+        return (<NewDialog
+                  ref = "_dialog"
+                  title={I18N.Platform.ServiceProvider.ErrorNotice}
+                  modal={false}
+                  open={!!this.state.errorMsg}
+                  onRequestClose={onClose}
+                  >
+                  {this.state.errorMsg}
+                </NewDialog>);
+      } else {
+        return null;
+      }
+    }
   },
   componentDidMount: function() {},
   componentWillUnmount: function() {},
@@ -230,6 +284,7 @@ let TemplateList = React.createClass({
         {deleteDialog}
         {this._renderUploadDialog()}
         {this._renderReplaceDialog()}
+        {this._renderErrorMsg()}
         {this.state.fileName!=='' && this.state.showUploadConfirm && <UploadConfirmDialog name={this.state.fileName}
                              onConfirm={()=>{
                                this._replaceTemplate();
@@ -244,6 +299,13 @@ let TemplateList = React.createClass({
                                 fileName:''
                               });
                              }}/>}
+        <input type='file' onChange={this._replaceTemplateConfirm} name='templateFile' ref='fileInput' style={{
+                               cursor: 'pointer',
+                               position: 'absolute',
+                               top: 0,
+                               width: '100%',
+                               opacity: 0,
+                             }} />
       </div>
       );
   }
