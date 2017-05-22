@@ -168,18 +168,20 @@ export default class ReportConfig extends Component {
 			if(!file) return;
       var fileName = file.name;
 
+			if (!CommonFuns.endsWith(fileName.toLowerCase(), '.xlsx') &&
+				!CommonFuns.endsWith(fileName.toLowerCase(), '.xls')) {
+			this.setState({
+				errorMsg:I18N.EM.Report.WrongExcelFile
+			})
+				return;
+			}
+
 			this.setState({
 				fileName,
 				showUploadConfirm:true
 			})
 
-      // if (!CommonFuns.endsWith(fileName.toLowerCase(), '.xlsx') &&
-      // 	!CommonFuns.endsWith(fileName.toLowerCase(), '.xls')) {
-			// this.setState({
-			// 	errorMsg:I18N.EM.Report.WrongExcelFile
-			// })
-      //   return;
-      // }
+
       // this.refs.upload_tempalte.upload();
       // this.setState({
       // 	fileName,
@@ -532,7 +534,7 @@ export default class ReportConfig extends Component {
           </RaisedButton>
 					{this.state.fileName!=='' && this.state.showUploadConfirm && <UploadConfirmDialog name={this.state.fileName}
 															 onConfirm={()=>{
-																 this.refs.upload_tempalte.upload();
+																 this.refs.upload_tempalte.upload({IsReplace: true});
 																 this.setState({
 																	 showUploadConfirm:false,
 																   showUploadDialog: true
@@ -656,7 +658,7 @@ export default class ReportConfig extends Component {
 		} else {
 			var onClose = ()=> {
 				if(this.state.errorMsg===I18N.EM.Report.WrongExcelFile){
-					this.refs.fileInput.value='';
+					this.refs.upload_tempalte.reset();
 				}
 				that.setState({
 					errorMsg: null,
