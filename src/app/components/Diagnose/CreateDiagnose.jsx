@@ -11,7 +11,7 @@ import Checkbox from 'material-ui/Checkbox';
 import CircularProgress from 'material-ui/CircularProgress';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import ActionVisibility from 'material-ui/svg-icons/action/visibility';
-import ActionVisibilityOff from 'material-ui/svg-icons/action/visibility-off';
+import SvgIcon from 'material-ui/SvgIcon';
 import moment from 'moment';
 import Immutable from 'immutable';
 import classnames from 'classnames';
@@ -22,18 +22,18 @@ import _ from 'lodash';
 import TimeGranularity from 'constants/TimeGranularity.jsx';
 import {DIAGNOSE_MODEL} from 'constants/actionType/Diagnose.jsx';
 
-import ReduxDecorator from '../../decorator/ReduxDecorator.jsx';
-import NewAppTheme from '../../decorator/NewAppTheme.jsx';
+import ReduxDecorator from 'decorator/ReduxDecorator.jsx';
+import NewAppTheme from 'decorator/NewAppTheme.jsx';
 
 import {isEmptyStr, isNumeric, getDateTimeItemsByStepForVal, getDateTimeItemsByStep, pow10} from 'util/Util.jsx';
 
-import LinkButton from 'controls/LinkButton.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
 import ViewableTextField from 'controls/ViewableTextField.jsx';
 import ViewableDatePicker from 'controls/ViewableDatePicker.jsx';
 import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
 import MonthDayItem from 'controls/MonthDayItem.jsx';
 import Dialog from 'controls/NewDialog.jsx';
+import NewFlatButton from 'controls/NewFlatButton.jsx';
 
 import DiagnoseStore from 'stores/DiagnoseStore.jsx';
 import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
@@ -152,6 +152,23 @@ function getStepItems(){
 	}];
 }
 
+function AddIcon(props) {
+	let otherProps = {
+		onClick: (e) => {
+			if( !props.disabled && props.onClick && typeof props.onClick === 'function' ) {
+				props.onClick(e);
+			}
+		}
+	};
+	if( !props.disabled ) {
+		otherProps.className = 'icon-add';
+		otherProps.href = 'javascript:void(0)';
+	} else {
+		otherProps.className = 'icon-add disabled';
+	}
+	return (<a {...props} {...otherProps}/>)
+}
+
 function step2NeedRequire(DiagnoseModel, TriggerType, TriggerValue) {
 	if( DiagnoseModel === DIAGNOSE_MODEL.A ) {
 		return isEmptyStr( TriggerValue );
@@ -165,6 +182,34 @@ function step2NeedRequire(DiagnoseModel, TriggerType, TriggerValue) {
 	} else if(DiagnoseModel === DIAGNOSE_MODEL.C) {
 		return true;
 	}
+}
+
+function stepLabelProps(stepValue, currentStep) {
+	let props = {
+		style: {			
+			height: 50, 
+			fontSize: 14,
+			color: '#0f0f0f',
+			fontWeight: 'bold',
+		},
+	},
+	iconColor = '#32ad3d';
+	if( currentStep < stepValue ) {
+		props.style.color = '#9fa0a4';
+		iconColor = '#a3e7b0';
+	}
+	props.icon = (
+		<SvgIcon color={iconColor} style={{
+		      display: 'block',
+		      fontSize: 24,
+		      width: 24,
+		      height: 24,
+		      color: iconColor,
+		  }}>
+		<circle cx={12} cy={12} r={10}/>
+		<text x={12} y={16} fill='#ffffff' fontSize='12px' textAnchor='middle'>{stepValue + 1}</text>
+	</SvgIcon>);
+	return props;
 }
 
 function StepItem({
@@ -237,10 +282,10 @@ function Right(props) {
 	return (<div style={{float: 'right', display: 'flex'}}>{props.children}</div>);
 }
 function PrevButton(props) {
-	return (<LinkButton {...props} label={'<上一步'}/>);
+	return (<NewFlatButton {...props} secondary={true} label={'<上一步'}/>);
 }
 function NextButton(props) {
-	return (<RaisedButton {...props} label={'下一步'}  primary={true}/>);
+	return (<NewFlatButton {...props} label={'下一步'}  primary={true}/>);
 }
 function utcFormat(dateStr) {
 	return moment(dateStr).subtract(8, 'hours').format(DATE_FORMAT + 'THH:mm:ss');
@@ -267,14 +312,9 @@ function AdditiveComp({
 	let disabled = data && data.length >= limit;
 	return (
 		<div className={className}>
-			<hgroup className='' style={{color: '#202622', marginBottom: -15}}>
-			{title} <IconButton
+			<hgroup className='' style={{color: '#202622', fontSize: '14px',}}>
+			{title} <AddIcon
 						disabled={disabled}
-						iconClassName='icon-add'
-						iconStyle={{
-							fontSize: 14,
-							iconHoverColor: '#0cad04',
-						}}
 						onClick={onAdd}/>
 			</hgroup>
 			<div className={contentClassName}>{data.map( (item, idx) =>
@@ -435,7 +475,7 @@ function ChartPreviewStep2({chartData, chartDataLoading, getChartData, disabledP
 			<ChartDateFilter
 				disabled={!chartData}
 				{...other}/>
-			<RaisedButton label={'预览'} disabled={disabledPreview} onClick={getChartData} icon={<ActionVisibility/>}/>
+			<NewFlatButton secondary={true} label={'预览'} disabled={disabledPreview} onClick={getChartData} icon={<ActionVisibility/>}/>
 		</div>
 		{chartDataLoading ? <div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div> :
 		(chartData ?  <div className='diagnose-create-chart'><DiagnoseChart isEdit={true} data={chartData} onDeleteButtonClick={onDeleteLegendItem}/></div> :
@@ -1386,8 +1426,8 @@ class CreateDiagnose extends Component {
 				buttons.push(<Left><PrevButton onClick={this._setStep(1)}/></Left>);
 				buttons.push(
 					<Right>
-						<RaisedButton disabled={needAddNames} onClick={this._onSaveBack} label={'保存并返回诊断列表'}/>
-						<RaisedButton disabled={needAddNames} onClick={this._onSaveRenew} label={'保存并继续添加'} style={{marginLeft: 10}} primary={true}/>
+						<NewFlatButton secondary={true} disabled={needAddNames} onClick={this._onSaveBack} label={'保存并返回诊断列表'}/>
+						<NewFlatButton primary={true} disabled={needAddNames} onClick={this._onSaveRenew} label={'保存并继续添加'} style={{marginLeft: 10}} primary={true}/>
 					</Right>
 				);
 				break;
@@ -1409,15 +1449,15 @@ class CreateDiagnose extends Component {
 					<IconButton iconClassName='icon-close' onClick={this._onClose}/>
 				</header>
 				<nav className='diagnose-create-stepper'>
-			        <Stepper activeStep={step}>
+			        <Stepper activeStep={step} style={{width: '80%'}}>
 			          <Step>
-			            <StepLabel style={{height: 50, color: '#1b1f2c', fontWeight: 'bold'}}>{'选择诊断数据点并配置诊断范围'}</StepLabel>
+			            <StepLabel {...stepLabelProps(0, step)}>{'选择诊断数据点并配置诊断范围 '}</StepLabel>
 			          </Step>
 			          <Step>
-			            <StepLabel style={{height: 50, color: '#1b1f2c', fontWeight: 'bold'}}>{'编辑诊断条件'}</StepLabel>
+			            <StepLabel {...stepLabelProps(1, step)}>{' 编辑诊断条件 '}</StepLabel>
 			          </Step>
 			          <Step>
-			            <StepLabel style={{height: 50, color: '#1b1f2c', fontWeight: 'bold'}}>{'保存诊断'}</StepLabel>
+			            <StepLabel {...stepLabelProps(2, step)}>{' 保存诊断 '}</StepLabel>
 			          </Step>
 			        </Stepper>
 		        </nav>
