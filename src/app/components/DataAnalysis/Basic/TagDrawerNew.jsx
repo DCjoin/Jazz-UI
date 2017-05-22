@@ -134,10 +134,12 @@ export default class TagDrawer extends Component {
   _onSearchShow(){
     page=0;
     filters=null;
+    let searchShow=!this.state.searchShow;
     this.setState({
-      searchShow:!this.state.searchShow,
+      searchShow,
       searchFilter:null,
-      tagList:[]
+      tagList:[],
+      optionType:searchShow?nodeType.Hierarchy:nodeType.HierarchyOnly
     })
   }
 
