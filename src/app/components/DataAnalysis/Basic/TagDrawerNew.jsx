@@ -94,6 +94,7 @@ export default class TagDrawer extends Component {
       optionType: nodeType.HierarchyOnly,
     },()=>{
       DimAction.loadall(hierarchyId);
+      TagAction.setCurrentHierarchyId(hierarchyId);
       if(this.state.searchShow){
         this._onSearch({target:{value:this.state.searchFilter}})
       }
