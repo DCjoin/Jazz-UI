@@ -12,7 +12,9 @@ cache:
   
 env:
   global:
-  - PACKAGE_VERSION="3.8.0.${TRAVIS_BUILD_NUMBER}"
+  - PROJECT="Jazz"
+  - ROLE="WebUI"
+  - PACKAGE_VERSION="v3.8.0.${TRAVIS_BUILD_NUMBER}"
   - secure: "0xa4wt6NnjmrLRUR//ZKVSthlTMTPBsvrctyR7oY/hDtFlc534PZpXxxZyHwxQACwXTlbSNc2kTAMjlJrpFrkrKS9pyKyht3M6kNzfOMt/7VTJuH2yeJYwy6D4GZAP3t6SAAW43nmOwCgVbNpvbcEsJKFrgRpwZJ2jrVCN5/43D0ytz626giWcblsnA1FUnC65wHch5MwrP0VGhSlER4PDoK6MsaBim+CqD9aTHw5YIzVJ9VuoQLoa6m3EqGltkW0OpulsV3EWz6frMyPs52qHqltSsp0Sto/5HlyD5sBktQ9H3D7IC8TK38dgPQI/stratigBn5jn3O+bPt+4WIrsZt9U8p9srtxzKTXS5xIsfeHAd8eqYOqZFjqwlSJPInYzebbTRvbNGrCg1rF7LmIus0SXRPEOGS1yGI1LA+OY/VX5ASVBfmrEfujWzozjh6E5IsJCFexF+bZVjI0eWXOiMPHs5VteSpoQ7OY4o841KNCaQeibxNZS8mFSk8/ja99sQRVSnVLn2sKP8PMCTIGaKl+7XRvoOV/0JtX2K/DiNqf6wxOP0MrNqcQ0qFs6a4XaLPHoklPSa5vb/rTgDAgPI9z9LW0dJilVcYvJpKWxlBb0L+xzjvr9mjLiAJKg3MiKAMJdyDJ6JT72w/VTrXpeFsmOByHlbD05vWVQnw0SU="
   - secure: "29F3H+LgjzpSQWGsJU3WIPw4RgYb5zPtRQ0MLkDeixc+JNeKEyet/Vt2WNeyTt1gKP3i1okBplLpbVUNaYE8Y7QWG6nCbd45c/3dg0F3tnRhSTd+21+a7o3WknM+c8CVeoxakqc4S55uo7hp8S2Gc19tT8THYXU5wlf6GgI3yIqRAgbF3p9x+7dyzFZg2o3QQLKHXkxlvX9f6vVzTIixL4h2AekRULnWdoX+OTnvOCnYpq5UtOU9XL3jf40Wc82DAbG+GlsjwTajC3DwEp+jmwK4frw/x+wjMSc44GXqzYnd4TtPfSSqOxsw2K0ZaQ5nJx8JhXJrShx3syy/1X+TVAcPF4NxgN5VylH0CTwQI5UMJ/yNrOG8AsA+1QiUGz/CA7eStiD7ofmvbp3HQFSk5SJoWFLbIq/ihq4+fr9t6O8crZGOloadMCS+gwX0BBNhtTH5E3ZHwPpoMTrQJjcijJU13gX8GKkJt6ZcK4t9+fmbM/4bnmc4TjEaMskUXu6b+qBV05QlXzOuCsZPkJk7x8NLr/y+/fZ6v2O/e31giFutIf51p55Wd6UO56v4mXXzKOTBMF9AgemKtnVIjSgsIgLhFHlwP3Pf3WnNDr7Tw2RPXs/BMAbPxv4Bkce/yGB8JSN/i/PsiXwD3nTK1G3sarM1F82n5gAHTDd0eaGV5pk="
   - secure: "JCk1Ssj1vFuNod4TvDelJaQxy+zlZkB5mSevczMUz6HV0JAk/BCKosZ/N1u89k5kvY2DuVU4JgCkr9GVMWLEP94kzEnrvFuLGdPIkleyZbXepYt2cNbN5P87DY2k0vtuiZjhnby3LvTP8uCGgcvnLMGoQ6AO7VnU88rJOd63ltD9UPx4HdbBQyz7AW2oae+jh+Oko7gVxPVThrLPfyJk9bmhchw8B/EuFkgeNXJTkdt0DDiZq3b/XUASQ2ugnZWrYNvwhEDs3/5WEzXHmouI8V06hhnahO95/IbgnXBw866DGJFlTH/lJY/oWq4Lcf5V29zFHpb18gQrYKAtwn+OFW3AjVWitfAQbuheUc1DFRNwFOQgDBfe+T/bIswOAVBLS/5J5VXYSCP9jCheIylw15pIQpfi+B2WhvbVTHVJt49l+0T634kBr1NuKQ5SrWCuXu1WM0Gz8QbBcc0uHM53rBgIq6cIsvl2RZdf8yQvoZYeqOXaHUmkR8FCUyFpXsTX0uQfBTpl0M1ypzmGw67cxUjHZk/BjUTA9eVPut9DYXEdgNB1f+nuvMTwFP4bFYT5bt49FjQsfAJQj07LXpptFgOXsqRWO3hZW51HTUr8gX1qWW0KhrsZNbTf3b8axn0xk2U3dkhCnGu1uZdiLXy3NCgIZs/Kb407AKGtZ3zrws0="
@@ -23,11 +25,16 @@ env:
 script:
 - yarn run build-test
 - cd build
-- echo -n "v${PACKAGE_VERSION}" > version.txt
-- export ARTIFACT_NAME="Jazz-WebUI-${TRAVIS_BRANCH}-v${PACKAGE_VERSION}.zip"
+- echo -n "${PACKAGE_VERSION}" > version.txt
+- export ARTIFACT_NAME="${PROJECT}-${ROLE}-${TRAVIS_BRANCH}-${PACKAGE_VERSION}.zip"
 - zip -r ../${ARTIFACT_NAME} ./
 - cd ..
 
+before_deploy:
+  - curl -sS -o ./upload.sh "https://raw.githubusercontent.com/SE-REM/Baton/master/shell/travis_upload.sh"
+  - chmod a+x ./upload.sh
+  - cat upload.sh
+  - file="${PROJECT}-${ROLE}-${TRAVIS_BRANCH}-${PACKAGE_VERSION}.zip"
   
 deploy:
 - provider: script
@@ -35,4 +42,8 @@ deploy:
   on:
     all_branches: true
   script:
-    - echo $http_proxy && curl -sS -o ./dep.sh "https://raw.githubusercontent.com/SE-REM/Baton/master/shell/travis_deploy_oss.sh" && chmod a+x ./dep.sh && ./dep.sh "Jazz" "WebUI" "${ARTIFACT_NAME}" ${BASKET} ${BOB} ${JOHN} ${JENKINS_HOST} ${JENKINS_AUTH} ${JENKINS_TOKEN}
+    - curl -sS -o ./dep.sh "https://raw.githubusercontent.com/SE-REM/Baton/master/shell/travis_deploy_oss.sh" && \
+      chmod a+x ./dep.sh && \
+      ./dep.sh ${PROJECT} ${ROLE} "${ARTIFACT_NAME}" ${BASKET} ${BOB} ${JOHN} ${JENKINS_HOST} ${JENKINS_AUTH} ${JENKINS_TOKEN} && \
+      ./upload.sh ./${file} ${PROJECT} ${TRAVIS_BRANCH} ${ROLE} ${PACKAGE_VERSION} ${BASKET} ${BOB} ${JOHN}
+    
