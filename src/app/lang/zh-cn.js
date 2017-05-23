@@ -2141,6 +2141,7 @@ I18N.Setting.KPI.Report.StartCellHintText = '填写起始单元格';
 I18N.Setting.KPI.Report.ExistAndCanNotReplaced = '名称为“{0}”模板已存在，请更改其他名称';
 I18N.Setting.KPI.Report.ExistAndNoReference = '名称为“{0}”模板已存在，确定覆盖替换吗？';
 I18N.Setting.KPI.Report.ExistAndHaveReference = '名称为“{0}”模板已被引用，确定覆盖替换吗？';
+I18N.Setting.KPI.Report.SheetErrorText = '模板已被替换，请选择新的模板Sheet';
 
 
 I18N.Setting.DataAnalysis = {};

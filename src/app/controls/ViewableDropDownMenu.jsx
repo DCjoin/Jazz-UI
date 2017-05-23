@@ -19,6 +19,7 @@ var ViewableDropDownMenu = React.createClass({
     dataItems: React.PropTypes.array.isRequired,
     style: React.PropTypes.object,
     disabled: React.PropTypes.bool,
+    errorText: React.PropTypes.string,
   },
   getDefaultProps() {
     return {
@@ -29,15 +30,14 @@ var ViewableDropDownMenu = React.createClass({
     };
   },
   getInitialState: function() {
-
     return {
       errorText: ""
     };
   },
-  isValid: function() {
-    let dataItems=Immutable.fromJS(this.props.dataItems);
+  isValid: function(props=this.props) {
+    let dataItems=Immutable.fromJS(props.dataItems);
     var index = dataItems.findIndex((item) => {
-      if (item.get(this.props.valueField) === this.props.defaultValue) {
+      if (item.get(props.valueField) === props.defaultValue) {
         return true;
       }
     });
@@ -62,6 +62,20 @@ var ViewableDropDownMenu = React.createClass({
     }
 
     return true;
+  },
+
+  componentWillReceiveProps(nextProps){
+    var errorText='';
+    if((!CommonFuns.CompareArray(this.props.dataItems, nextProps.dataItems) || this.props.defaultValue === nextProps.defaultValue)){
+      if(nextProps.errorText){
+        if(!this.isValid(nextProps)){
+          errorText=this.props.errorText
+        }
+      }
+    }
+    this.setState({
+      errorText
+    })
   },
 
   render: function() {
