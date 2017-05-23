@@ -82,12 +82,15 @@ export default class ReportConfig extends Component {
   }
 
 	_updateReportItem(reportItem,sheetNames){
-		reportItem.get('data').forEach((report,id)=>{
-			reportItem=reportItem.setIn(['data',id,'TargetSheet'],sheetNames.getIn([0]))
-		})
+		// reportItem.get('data').forEach((report,id)=>{
+		// 	reportItem=reportItem.setIn(['data',id,'TargetSheet'],sheetNames.getIn([0]))
+		// })
+		var saveDisabled=reportItem.get('data').map((report,id)=>(sheetNames.findIndex(item=>item===report.get('TargetSheet'))>-1))
+																					 .has(false);
 		this.setState({
 			reportItem: reportItem,
-			sheetNames: sheetNames
+			sheetNames: sheetNames,
+			saveDisabled:saveDisabled?saveDisabled:this.state.saveDisabled
 		})
 	}
 
@@ -522,7 +525,7 @@ export default class ReportConfig extends Component {
           <RaisedButton containerElement="label" labelPosition="before" label={I18N.EM.Report.UploadTemplate}>
           	<UploadForm
           		ref={'upload_tempalte'}
-          		action={'TagImportExcel.aspx?Type=ReportTemplate'}
+          		action={'http://sp1.energymost.com/TagImportExcel.aspx?Type=ReportTemplate'}
           		fileName={'templateFile'}
 				enctype={'multipart/form-data'}
 				method={'post'}
