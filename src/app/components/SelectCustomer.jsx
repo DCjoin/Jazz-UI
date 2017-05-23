@@ -134,9 +134,9 @@ const SelectCustomer = React.createClass({
     let {step, hierarchyList, selectCustomerId} = this.state;
     if( step === 1 ) {
       return (
-        <ul className='jazz-select-customer-list'>
+        <ul className='jazz-select-customer-list' style={{height: document.body.clientHeight - 82}}>
           {CurrentUserCustomerStore.getAll().map( cus => 
-            <li className='jazz-select-customer-item'>
+            <li className='jazz-select-customer-item' style={{width: (document.body.clientWidth - 20) / 3, height: document.body.clientHeight / 3}}>
               <a href='javascript:void(0)' className='jazz-select-customer-item-content' onClick={() => this._selectCustomerChangeHandler(cus.Id)}>
                 <div className='jazz-select-customer-item-logo'><BackgroudImage imageContent={{hierarchyId: cus.Id}}/></div>
                 <div style={{textAlign: 'center'}}>{cus.Name}</div>
