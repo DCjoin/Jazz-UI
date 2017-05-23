@@ -35,7 +35,7 @@ let ReaderFuncs = {
       for (var i = 0, len = data.TargetEnergyData.length; i < len; i++) {
         energyData = data.TargetEnergyData[i].EnergyData;
         if (energyData && energyData.length > 0) {
-          localTime = j2d(energyData[0].LocalTime);
+          localTime = j2d(energyData[0].UtcTime);
           if (localTime < earliestTime) {
             earliestTime = localTime;
           }
@@ -45,12 +45,12 @@ let ReaderFuncs = {
 
     if (navigatorData && navigatorData.EnergyData && navigatorData.EnergyData.length > 0) {
       var arr = [];
-      if (j2d(navigatorData.EnergyData[0].LocalTime) != earliestTime) {
+      if (j2d(navigatorData.EnergyData[0].UtcTime) != earliestTime) {
         arr.push([ReaderFuncs.translateDate(earliestTime, null, step), null]);
       }
       for (var j = 0; j < navigatorData.EnergyData.length; j++) {
         d = navigatorData.EnergyData[j];
-        arr.push([ReaderFuncs.translateDate(d.LocalTime, null, step), d.DataValue]);
+        arr.push([ReaderFuncs.translateDate(d.UtcTime, null, step), d.DataValue]);
       }
       nav = arr;
     } else {
@@ -129,7 +129,7 @@ let ReaderFuncs = {
       if (series.EnergyData) {
         for (var j = 0; j < series.EnergyData.length; j++) {
           eData = series.EnergyData[j];
-          arr.push([ReaderFuncs.translateDate(eData.LocalTime, null, step), eData.DataValue]);
+          arr.push([ReaderFuncs.translateDate(eData.UtcTime, null, step), eData.DataValue]);
         }
       }
       obj = seriesConstructorFn(series.Target);

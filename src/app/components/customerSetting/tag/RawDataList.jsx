@@ -143,7 +143,7 @@ let RawDataList = React.createClass({
       nId = 0,
       that = this;
     energyData.forEach((data, index) => {
-      let str = CommonFuns.formatDateValueForRawData(j2d(data.get('LocalTime')), this.props.step);
+      let str = CommonFuns.formatDateValueForRawData(j2d(data.get('UtcTime')), this.props.step);
       let date = str.split(' ')[0],
         time = str.split(' ')[1];
 
@@ -198,7 +198,7 @@ let RawDataList = React.createClass({
       nId = 0,
       that = this;
     energyData.forEach((data, index) => {
-      let str = CommonFuns.formatDateValueForRawData(j2d(data.get('LocalTime')), this.props.step);
+      let str = CommonFuns.formatDateValueForRawData(j2d(data.get('UtcTime')), this.props.step);
 
       Items.push(
         <ListItem key={`${str}+${data}`} isRawData={this.props.isRawData} time={str} data={data} isSelected={this.state.selectedId === nId} onClick={that._onItemClick.bind(this, {

@@ -178,11 +178,11 @@ let ChartReaderStrategyFactor = {
           for (let j = 0, len = dataArray.length; j < len; j++) {
             dataItem = dataArray[j];
             dataValue = (dataItem.DataQuality == 7) ? 'NA' : dataItem.DataValue;
-            localTime = formatDateValue(j2d(dataItem.LocalTime, true), step);
+            localTime = formatDateValue(j2d(dataItem.UtcTime, true), step);
             items.push({
               value: dataValue,
               localTime: localTime,
-              dataTime: dataItem.LocalTime
+              dataTime: dataItem.UtcTime
             });
           }
           result.push(retItem);
@@ -312,7 +312,7 @@ let ChartReaderStrategyFactor = {
         for (var i = 0, len = data.TargetEnergyData.length; i < len; i++) {
           energyData = data.TargetEnergyData[i].EnergyData;
           if (energyData && energyData.length > 0) {
-            localTime = j2d(energyData[0].LocalTime);
+            localTime = j2d(energyData[0].UtcTime);
             if (localTime < earliestTime) {
               earliestTime = localTime;
             }
@@ -322,12 +322,12 @@ let ChartReaderStrategyFactor = {
 
       if (navigatorData && navigatorData.EnergyData && navigatorData.EnergyData.length > 0) {
         var arr = [];
-        if (j2d(navigatorData.EnergyData[0].LocalTime) != earliestTime) {
+        if (j2d(navigatorData.EnergyData[0].UtcTime) != earliestTime) {
           arr.push([energyStore.readerStrategy.translateDateFn(earliestTime, null, step), null]);
         }
         for (var j = 0; j < navigatorData.EnergyData.length; j++) {
           d = navigatorData.EnergyData[j];
-          arr.push([energyStore.readerStrategy.translateDateFn(d.LocalTime, null, step), d.DataValue]);
+          arr.push([energyStore.readerStrategy.translateDateFn(d.UtcTime, null, step), d.DataValue]);
         }
         nav = arr;
       } else {
@@ -401,7 +401,7 @@ let ChartReaderStrategyFactor = {
         var navArr = [];
         for (let j = 0; j < navigatorData.EnergyData.length; j++) {
           d = navigatorData.EnergyData[j];
-          navArr.push([energyStore.readerStrategy.translateDateFn(d.LocalTime, null, step), d.DataValue]);
+          navArr.push([energyStore.readerStrategy.translateDateFn(d.UtcTime, null, step), d.DataValue]);
         }
         nav = navArr;
       }
@@ -470,7 +470,7 @@ let ChartReaderStrategyFactor = {
           if (i === 0) {
             standardStart = timeRange.StartTime;
             for (let j = 0, len = navData.length; j < len; j++) {
-              orgintime = j2d(navData[j].LocalTime);
+              orgintime = j2d(navData[j].UtcTime);
               arr.push([energyStore.readerStrategy.translateDateFn(orgintime, null, step), navData[j].DataValue]);
             }
           } else {
@@ -479,7 +479,7 @@ let ChartReaderStrategyFactor = {
 
             var xAxisdate;
             for (let j = 0, len = navData.length; j < len; j++) {
-              orgintime = CommonFuns.DateComputer.AddSevralStep(new Date(j2d(navData[j].LocalTime)), step, -stepSpan) - 0;
+              orgintime = CommonFuns.DateComputer.AddSevralStep(new Date(j2d(navData[j].UtcTime)), step, -stepSpan) - 0;
               xAxisdate = energyStore.readerStrategy.translateDateFn(orgintime, null, step);
               arr.push([xAxisdate, navData[j].DataValue]);
 
@@ -493,7 +493,7 @@ let ChartReaderStrategyFactor = {
           }
         } else {
           for (let j = 0; j < eData.length; j++) {
-            orgintime = j2d(eData[j].LocalTime);
+            orgintime = j2d(eData[j].UtcTime);
             arr.push([energyStore.readerStrategy.translateDateFn(orgintime, null, step), eData[j].DataValue]);
             if (i > 0) {
               if (returndata[0].data[j]) {
@@ -662,7 +662,7 @@ let ChartReaderStrategyFactor = {
         if (series.EnergyData) {
           for (var j = 0; j < series.EnergyData.length; j++) {
             eData = series.EnergyData[j];
-            arr.push([energyStore.readerStrategy.translateDateFn(eData.LocalTime, null, eStep), eData.DataValue]);
+            arr.push([energyStore.readerStrategy.translateDateFn(eData.UtcTime, null, eStep), eData.DataValue]);
           }
         }
         obj = seriesConstructorFn(series.Target);

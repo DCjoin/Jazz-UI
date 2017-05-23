@@ -223,7 +223,7 @@ var TagStore = assign({}, PrototypeStore, {
   getFirstDifferenceItem: function(firstItem, differenceData) {
     var difItem = {
       DataValue: null,
-      LocalTime: firstItem.LocalTime,
+      UtcTime: firstItem.UtcTime,
       DataQuality: firstItem.DataQuality
     };
 
@@ -240,7 +240,7 @@ var TagStore = assign({}, PrototypeStore, {
     var preItem,
       difItem = {
         DataValue: null,
-        LocalTime: currentItem.LocalTime,
+        UtcTime: currentItem.UtcTime,
         DataQuality: currentItem.DataQuality
       };
     var accuracy=1000000;
