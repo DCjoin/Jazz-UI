@@ -80,7 +80,7 @@ export default class TagDrawer extends Component {
     this.setState({
       tagList: data.Data,
       tagId: tagId,
-      optionType: 2,
+      // optionType: 2,
       isLoading: false,
     });
   }
@@ -94,6 +94,7 @@ export default class TagDrawer extends Component {
       optionType: nodeType.HierarchyOnly,
     },()=>{
       DimAction.loadall(hierarchyId);
+      TagAction.setCurrentHierarchyId(hierarchyId);
       if(this.state.searchShow){
         this._onSearch({target:{value:this.state.searchFilter}})
       }
@@ -134,10 +135,12 @@ export default class TagDrawer extends Component {
   _onSearchShow(){
     page=0;
     filters=null;
+    let searchShow=!this.state.searchShow;
     this.setState({
-      searchShow:!this.state.searchShow,
+      searchShow,
       searchFilter:null,
-      tagList:[]
+      tagList:[],
+      optionType:searchShow?nodeType.Hierarchy:nodeType.HierarchyOnly
     })
   }
 
@@ -380,7 +383,8 @@ export default class TagDrawer extends Component {
           hierId: this.props.hierarchyId,
           tagId: this.props.tagId,
           dimId:null
-        };
+        },
+        optionType=nodeType.HierarchyOnly;
 
         let hierNode=Immutable.fromJS({
           Id:this.props.hierarchyId,
@@ -391,10 +395,12 @@ export default class TagDrawer extends Component {
           Name:TagStore.getCurrentDimInfo().dimName
         });
         if(dimNode.get('Id')){
-          data.dimId=dimNode.get('Id')
+          data.dimId=dimNode.get('Id'),
+          optionType=nodeType.DimensionOnly
         }
         this.setState({
-          selectedDimNode:TagStore.getCurrentDimInfo().dimId?dimNode:hierNode
+          selectedDimNode:TagStore.getCurrentDimInfo().dimId?dimNode:hierNode,
+          optionType
         },()=>{
           TagAction.loadAlarmData(data);
         })
@@ -431,7 +437,11 @@ export default class TagDrawer extends Component {
     var styles={
       label:{
         fontSize:'14px',
-        color:'#ffffff'
+        color:'#ffffff',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
+        overflow: 'hidden',
+        marginLeft:'15px'
       }
     }
     return(
@@ -449,9 +459,12 @@ export default class TagDrawer extends Component {
             {this.state.searchShow && <div className="jazz-analysis-tag-search-cancel" onClick={this._onSearchShow}>{I18N.Common.Button.Cancel2}</div>}
           </div>}
           {this.state.selectedDimNode!==null && <div className="header">
-            <FlatButton label={this.state.selectedDimNode.get('Name')}
-              labelStyle={styles.label} className="jazz-analysis-tag-rollback" hoverColor="rgba(0,0,0,0)"
-              icon={<FontIcon className="icon-return" style={styles.label}/>} onClick={this._onDimRollBack.bind(this)}/>
+            <div className="jazz-analysis-tag-rollback" onClick={this._onDimRollBack.bind(this)} title={this.state.selectedDimNode.get('Name')}>
+              <FontIcon className="icon-return" style={{fontSize:'14px', color:'#ffffff'}}/>
+              <div style={styles.label}>
+                {this.state.selectedDimNode.get('Name')}
+              </div>
+            </div>
           </div>}
         {this.state.selectedDimNode===null && !this.state.searchShow && this._renderTree()}
         {this.state.selectedDimNode===null && this.state.searchShow && this._renderSearchTag()}
