@@ -339,7 +339,7 @@ let TagSelectWindow = React.createClass({
       marginBottom: '10px'
     }}>{I18N.EM.Report.AllTag}</div>
       <div className='jazz-report-taglist-container-left'>
-        <div className="jazz-report-taglist-tagselect" >
+        <div className="jazz-report-taglist-tagselect" style={{flex:'none'}} >
           <div className="header">
             <Header onHierachyTreeClick={this._onHierachyTreeClick}/>
           </div>

@@ -163,7 +163,7 @@ export default class ChartComponent extends Component {
   }
 
   dateChanged(chart, start, end, type) {
-    analysisPanel.refs.dateTimeSelector.setDateField(start, end);
+    analysisPanel.refs.subToolBar.refs.dateTimeSelector.setDateField(start, end);
     analysisPanel.setState({
       relativeDate: 'Customerize'
     });
@@ -176,7 +176,7 @@ export default class ChartComponent extends Component {
 
   _onNavigatorChangeLoad() {
     let tagOptions = EnergyStore.getTagOpions(),
-          dateSelector = analysisPanel.refs.dateTimeSelector,
+          dateSelector = analysisPanel.refs.subToolBar.refs.dateTimeSelector,
           dateRange = dateSelector.getDateTime(),
           startDate = dateRange.start,
           endDate = dateRange.end;
