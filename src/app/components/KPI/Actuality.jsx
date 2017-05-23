@@ -104,17 +104,6 @@ export default class Actuality extends Component {
 		this._loadInitData(this.props, this.context);
 
 	}
-	// componentDidUpdate() {
-		
-	// 	document.querySelector('.jazz-actuality-content').onscroll = function(e) {
-	// 		console.log(e);
-	// 		if(!e.currentTarget) {
-	// 			e.preventDefault();
-	// 			e.stopPropagation();
-	// 			return false;
-	// 		}
-	// 	}
-	// }
 	componentWillReceiveProps(nextProps, nextContext) {
 		if( !util.shallowEqual(nextContext.hierarchyId, this.context.hierarchyId) ) {
 			this._getInitialState(nextProps);
