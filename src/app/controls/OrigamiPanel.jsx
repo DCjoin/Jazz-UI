@@ -6,7 +6,7 @@ var OrigamiPanel = React.createClass({
 
 	_getStyles: function() {
 		return {
-			position: "relative",
+			position: "absolute",
 		  left: -4,
 		  top: -1,
 		  border: "16px solid rgba(0, 0, 0, 0.38)",

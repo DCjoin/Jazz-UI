@@ -174,7 +174,10 @@ export default class AuxiliaryFunction extends Component {
 
   render(){
     var styles={
-      label:{
+      label:this.getHistoryBtnStatus()?{
+        color:'rgba(118, 122, 122, 0.298039)',
+        fontSize:'14px'
+      }:{
         fontSize:'14px',
         color:'#626469'
       }

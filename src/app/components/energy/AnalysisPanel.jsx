@@ -246,7 +246,7 @@ let AnalysisPanel = React.createClass({
       {remarkTextArea}
     </div>;
     }
-    let panel = <div className={'jazz-energy-panel'}>
+    let panel = <div className={'jazz-energy-panel'} style={{marginTop:0}}>
         <div className='header'>
         <OrigamiPanel/>
           {collapseButton}
