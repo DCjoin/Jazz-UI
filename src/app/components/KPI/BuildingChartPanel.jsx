@@ -130,12 +130,13 @@ export default class BuildingChartPanel extends Component {
 					<div className='top-rank-item'>
 						<div className='jazz-building-top-rank-title'>{getRanlLabelDate(year)}</div>
 						<div className='hiddenEllipsis'>{topRank.RankName}</div>
+						{year <= SingleKPIStore.getCustomerCurrentYear() && 
 						<LinkButton
 							className='jazz-building-top-rank-his'
 							label={(isThisYear ? I18N.Setting.KPI.Rank.ShowHistory : I18N.Setting.KPI.Rank.ShowByMonth) + '>>'}
 							onClick={() => {
 								this.setState({selectedRank: topRank});
-							}}/>
+							}}/>}
 					</div>
 					<div className='top-rank-item'>
 						<div>{I18N.Setting.KPI.Rank.Name}</div>

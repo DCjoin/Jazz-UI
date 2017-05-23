@@ -740,15 +740,6 @@ var MainAppBar = React.createClass({
             <div className="jazz-mainmenu-user" style={{
         display: 'flex'
       }}>
-                <FlatButton label={I18N.Platform.InEnglish} labelStyle={langLabelStyle} onClick={this._onLangSwitch} style={{
-        backgroundColor: 'transparent',
-        color: 'white',
-        lineHeight: '16px'
-      }} linkButton={true}></FlatButton>
-            </div>
-            <div className="jazz-mainmenu-user" style={{
-        display: 'flex'
-      }}>
                 <FlatButton label={user.RealName} labelStyle={nameLableStyle} onClick={this._showUserInfo} style={{
         backgroundColor: 'transparent',
         color: 'white',
