@@ -10,6 +10,29 @@ import PermissionCode from 'constants/PermissionCode.jsx';
 function isFull() {
 	return privilegeUtil.isFull(PermissionCode.INDEX_AND_REPORT, CurrentUserStore.getCurrentPrivilege());
 }
+
+function onload() {
+
+	var scrollListener = function(e) {
+		let src = e.srcElement;
+		if( e.deltaY < 0 ) {
+			if( e.currentTarget.getElementById && e.currentTarget.getElementById('m_excelWebRenderer_ewaCtl_sheetContentDiv') && e.currentTarget.getElementById('m_excelWebRenderer_ewaCtl_sheetContentDiv').scrollTop === 0 ) {
+				e.preventDefault();
+			}
+		}
+	}
+	var subIframe = document.getElementById('iframe1').contentWindow
+					.document.getElementById('wacframe');
+	subIframe.onload = function() {
+		var w = subIframe.contentWindow;
+		var d = w.document;
+		if(d.addEventListener){
+			d.addEventListener('DOMMouseScroll', scrollListener, false);
+		}
+		w.onmousewheel = d.onmousewheel = scrollListener;
+	}
+}
+
 export default class ReportChart extends Component {
 	render() {
 		let {data, url, onEdit, onDelete, onSetFirst, onDownload} = this.props,
@@ -31,6 +54,13 @@ export default class ReportChart extends Component {
 					<li>{url && <LinkButton iconName='icon-download' onClick={() => onDownload(id)} label={'下载'}/>}</li>
 				</div>
 				{url ? <iframe
+					id='iframe1'
+					onLoad={onload}
+					onMouseOut={(e) => {
+						if( e.currentTarget.nextElementSibling.type === 'checkbox' ) {
+							e.currentTarget.nextElementSibling.checked = false;
+						}
+					}}
 					src={`https://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(url)}`}
 					border="0"
 					height='550'/> :

@@ -1711,7 +1711,7 @@ let CommonFuns = {
 
       if (data.TargetEnergyData[i].EnergyData !== null && data.TargetEnergyData[i].EnergyData.length > 0)
         for (var j = 0; j < data.TargetEnergyData[i].EnergyData.length; j++)
-          hash[data.TargetEnergyData[i].EnergyData[j].LocalTime] = j + 1;
+          hash[data.TargetEnergyData[i].EnergyData[j].UtcTime] = j + 1;
 
       hashtable[i] = hash;
 
@@ -1742,7 +1742,7 @@ let CommonFuns = {
           energy.splice(index, 0, {
             DataQuality: null,
             DataValue: null,
-            LocalTime: timeJson
+            UtcTime: timeJson
           });
 
         keyTime = CommonFuns.DateComputer.AddStep(keyTime, step); //JazzCommon.DateComputer.AddStep(keyTime, step);
