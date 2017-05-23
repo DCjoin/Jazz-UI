@@ -275,8 +275,9 @@ var YaxisDialog = React.createClass({
       position:'absolute',
       color:'#32ad3d',
       top:'-49px'
-    }} onClick={this._onRemoveAllClick} label={I18N.Common.Button.ClearAll} icon={<FontIcon className="icon-delete" style={{fontSize:'14px'}}/>}/>
-      <div className={'jazz-energy-yaxis-container'}>
+    }}
+    onClick={this._onRemoveAllClick} label={I18N.Common.Button.ClearAll} icon={<FontIcon className="icon-delete" style={{fontSize:'14px'}}/>}/>
+  <div className={'jazz-energy-yaxis-container'} style={{overflowY:'auto'}}>
         {groups}
       </div>
     </NewDialog>;

@@ -371,7 +371,7 @@ export default class StatisticsDialog extends Component {
           content=this._renderContent()
         }
     return(
-      <Dialog title={title} titleStyle={style.title} open={true}  modal={false} onRequestClose={this.props.onCloseDialog}>
+      <Dialog title={title} titleStyle={style.title} open={true}  modal={false} onRequestClose={this.props.onCloseDialog} contentStyle={{overflowY:'auto'}}>
         {content}
       </Dialog>
     )
