@@ -321,6 +321,7 @@ var Template = React.createClass({
                                        });
                                      }}
                                      onCancel={()=>{
+                                       this.refs.upload_tempalte.reset();
                                        this.setState({
                                         showUploadConfirm:false,
                                         fileName:''
