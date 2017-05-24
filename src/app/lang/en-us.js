@@ -2134,6 +2134,11 @@ I18N.Setting.KPI.Report.TimeRangeComment= 'Notice：Current year is year{0}. Ple
 I18N.Setting.KPI.Report.DuplicatedName = 'Template\"{0}\"already exists, replcae exists template?';
 I18N.Setting.KPI.Report.DeleteTemplateMessage = 'Template\"{0}\" will be deleted.';
 I18N.Setting.KPI.Report.StartCellHintText = 'Please fill the start cell.';
+I18N.Setting.KPI.Report.ExistAndCanNotReplaced = '名称为“{0}”模板已存在，请更改其他名称';
+I18N.Setting.KPI.Report.ExistAndNoReference = '名称为“{0}”模板已存在，确定覆盖替换吗？';
+I18N.Setting.KPI.Report.ExistAndHaveReference = '名称为“{0}”模板已被引用，确定覆盖替换吗？';
+I18N.Setting.KPI.Report.SheetErrorText = '模板已被替换，请选择新的模板sheet';
+
 
 I18N.Setting.DataAnalysis = {};
 I18N.Setting.DataAnalysis.Scheme = 'Create Scheme';

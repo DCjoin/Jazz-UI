@@ -590,7 +590,8 @@ let ReportDataItem = React.createClass({
       defaultValue: me.props.targetSheet,
       title: I18N.Setting.KPI.Report.Sheet,
       textField: 'text',
-      didChanged: me._handleSelectValueChange.bind(null, 'TargetSheet')
+      didChanged: me._handleSelectValueChange.bind(null, 'TargetSheet'),
+      errorText:I18N.Setting.KPI.Report.SheetErrorText
     };
     var startCellProps = {
       ref: 'startCellId',

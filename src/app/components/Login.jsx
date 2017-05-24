@@ -255,10 +255,6 @@ let Login = React.createClass({
           <div className="jazz-login-content-container">
               <LoginForm username={username} password={password} onKeyPress={this._onKeyPress} errorMsg={errorMsg}
                   userNameChanged={this._onUsernameChange} passwordChanged={this._onPasswordChange} login={this._login} forgetPSW={this._showForgetPSWDialog}/>
-                 <div className="jazz-login-demo-link" onClick={this._showTrialUseDialog}>
-                   <span>{I18N.Login.tryProduct}</span>
-                   <em className="icon-next-arrow-right"/>
-                 </div>
           </div>
         </div>
         <div className="jazz-public-footer">
@@ -319,18 +315,18 @@ var LoginForm = React.createClass({
             <div className="jazz-login-error">{errorMsg}</div>
           </div>
           <div className="jazz-login-form-content-button">
-            <RaisedButton 
-              disabled={!username.length || !password.length} 
-              primary label={I18N.Login.Login} 
+            <RaisedButton
+              disabled={!username.length || !password.length}
+              primary label={I18N.Login.Login}
               style={{
                 width: 300,
                 height: 46
-              }} 
+              }}
               labelStyle={{
                 lineHeight: '42px',
                 fontSize: 16,
                 padding: 0
-              }} 
+              }}
               onClick={this.props.login}/>
           </div>
           <div className="jazz-login-form-content-forgetPSW">
