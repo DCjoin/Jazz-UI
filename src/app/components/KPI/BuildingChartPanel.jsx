@@ -125,18 +125,17 @@ export default class BuildingChartPanel extends Component {
 
 		return (
 			<div>
-				{topRank &&
+				{topRank && year <= SingleKPIStore.getCustomerCurrentYear() && 
 				<div className='jazz-building-top-rank'>
 					<div className='top-rank-item'>
 						<div className='jazz-building-top-rank-title'>{getRanlLabelDate(year)}</div>
 						<div className='hiddenEllipsis'>{topRank.RankName}</div>
-						{year <= SingleKPIStore.getCustomerCurrentYear() && 
 						<LinkButton
 							className='jazz-building-top-rank-his'
 							label={(isThisYear ? I18N.Setting.KPI.Rank.ShowHistory : I18N.Setting.KPI.Rank.ShowByMonth) + '>>'}
 							onClick={() => {
 								this.setState({selectedRank: topRank});
-							}}/>}
+							}}/>
 					</div>
 					<div className='top-rank-item'>
 						<div>{I18N.Setting.KPI.Rank.Name}</div>
@@ -150,13 +149,13 @@ export default class BuildingChartPanel extends Component {
 						</div>
 					</div>
 				</div>}
-				{(safeArr(period).length > 0 && safeImmuArr(tags).size > 0) ?
+				{(safeArr(period).length > 0 && safeImmuArr(tags).size > 0 ) ?
 					tags.map( (tag, i) => {
 						let currentTag = safeImmuObj(tag),
 						currentKPIId = currentTag.get('id'),
 						currentSummaryData = find(safeArr(summaryData), sum => sum.KpiId === currentKPIId),
 						currentRank = find(KPIRank, rank => rank.KpiId === currentKPIId);
-					if( !currentRank ) {
+					if( !currentRank || year > SingleKPIStore.getCustomerCurrentYear() ) {
 						return (
 							<KPIReport
 								currentYearDone={last(period).clone().add(1, 'months').isBefore(new Date())}
@@ -182,13 +181,12 @@ export default class BuildingChartPanel extends Component {
 							<content className='jazz-building-kpi-rank-content'>
 								{RankNumber(currentRank, isThisYear)}
 							</content>
-							{year <= SingleKPIStore.getCustomerCurrentYear() && 
 							<LinkButton
 								className='jazz-building-kpi-rank-footer'
 								label={(isThisYear ? I18N.Setting.KPI.Rank.ShowHistory : I18N.Setting.KPI.Rank.ShowByMonth) + '>>'}
 								onClick={() => {
 									this.setState({selectedRank: currentRank});
-								}}/>}
+								}}/>
 						</div>
 						<div className='jazz-building-kpi-rank-report'>
 							<KPIReport
