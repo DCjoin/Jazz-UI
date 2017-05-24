@@ -418,7 +418,9 @@ let ReportDataItem = React.createClass({
           dateSelector.setDateField(startTime, endTime);
         }
       }
-
+      // if(this._isValid()===false){
+      //   this.props.onSaveBtnStatusChange();
+      // }
     }
   },
   componentDidMount: function() {
