@@ -424,7 +424,6 @@ var MaxMinPair = React.createClass({
     this.setState({
       minValue: e.currentTarget.value,
       minError:'',
-
     });
   },
 });

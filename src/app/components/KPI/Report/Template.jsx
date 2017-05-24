@@ -62,6 +62,8 @@ var Template = React.createClass({
       ReportAction.getTemplateListByCustomerId(parseInt(this.context.currentRoute.params.customerId), this.state.sortBy, 'asc');
       this.setState({
         showUploadDialog: false
+      },()=>{
+        this.refs.upload_tempalte.reset();
       });
     } else {
       var errorCode = obj.UploadResponse.ErrorCode,
