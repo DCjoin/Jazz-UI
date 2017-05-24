@@ -152,7 +152,8 @@ export default class ReportConfig extends Component {
 			saveDisabled: !this._isValid(),
 			showUploadDialog: false
 		},()=>{
-			this._updateReportItem(reportItem,Immutable.fromJS(obj.SheetList))
+			this._updateReportItem(reportItem,Immutable.fromJS(obj.SheetList)),
+			this.refs.upload_tempalte.reset();
 		});
 	} else {
 		var errorCode = obj.UploadResponse.ErrorCode,

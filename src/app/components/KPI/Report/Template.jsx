@@ -62,6 +62,8 @@ var Template = React.createClass({
       ReportAction.getTemplateListByCustomerId(parseInt(this.context.currentRoute.params.customerId), this.state.sortBy, 'asc');
       this.setState({
         showUploadDialog: false
+      },()=>{
+        this.refs.upload_tempalte.reset();
       });
     } else {
       var errorCode = obj.UploadResponse.ErrorCode,
@@ -302,7 +304,7 @@ var Template = React.createClass({
                 <RaisedButton labelPosition="before" containerElement="label" label={I18N.EM.Report.UploadTemplate}>
                   <UploadForm
                     ref={'upload_tempalte'}
-                    action={'TagImportExcel.aspx?Type=ReportTemplate'}
+                    action={'http://sp1.energymost.com/TagImportExcel.aspx?Type=ReportTemplate'}
                     fileName={'templateFile'}
                     enctype={'multipart/form-data'}
                     method={'post'}
