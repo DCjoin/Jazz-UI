@@ -526,7 +526,7 @@ export default class ReportConfig extends Component {
           <RaisedButton containerElement="label" labelPosition="before" label={I18N.EM.Report.UploadTemplate}>
           	<UploadForm
           		ref={'upload_tempalte'}
-          		action={'http://sp1.energymost.com/TagImportExcel.aspx?Type=ReportTemplate'}
+          		action={'TagImportExcel.aspx?Type=ReportTemplate'}
           		fileName={'templateFile'}
 				enctype={'multipart/form-data'}
 				method={'post'}
