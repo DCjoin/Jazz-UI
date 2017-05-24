@@ -900,18 +900,26 @@ class AnalysisPanel extends Component {
     let dateSelector = this.refs.subToolBar.refs.dateTimeSelector;
 
     if (this.state.selectedChartType === 'rawdata' && value !== 'Customerize' && value !== 'Last7Day' && value !== 'Today' && value !== 'Yesterday' && value !== 'ThisWeek' && value !== 'LastWeek') {
+      var timeregion = CommonFuns.GetDateRegion(value.toLowerCase());
+      dateSelector.setDateField(timeregion.start, timeregion.end);
     FolderAction.setDisplayDialog('errornotice', null, I18N.EM.RawData.ErrorForEnergy);
   } else {
     if (value && value !== 'Customerize' && dateSelector) {
       var timeregion = CommonFuns.GetDateRegion(value.toLowerCase());
       dateSelector.setDateField(timeregion.start, timeregion.end);
     }
+    // this.setState({
+    //   relativeDate:value
+    // },()=>{
+    //   if(refresh){this._onSearchDataButtonClick()}
+    // })
   }
-    this.setState({
-      relativeDate:value
-    },()=>{
-      if(refresh){this._onSearchDataButtonClick()}
-    })
+  this.setState({
+    relativeDate:value
+  },()=>{
+    if(refresh){this._onSearchDataButtonClick()}
+  })
+
   }
 
   _onDateSelectorChanged() {
