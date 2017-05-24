@@ -861,13 +861,13 @@ class AnalysisPanel extends Component {
                 });
               }}
             />
-            {this.state.isViewName &&
-            <IconButton iconClassName='icon-edit' iconStyle={{fontSize:'20px'}} onClick={() => {
-              this.setState({
-                isViewName: false
-              });
-            }}/>}
           </div>
+          {this.state.isViewName &&
+          <IconButton iconClassName='icon-edit' iconStyle={{fontSize:'20px'}} onClick={() => {
+            this.setState({
+              isViewName: false
+            });
+          }}/>}
           <div className="description">{this.props.sourceUserName && `(${I18N.format(I18N.Folder.Detail.SubTitile,this.props.sourceUserName)})`}</div>
         </div>
         <div className="operation">
