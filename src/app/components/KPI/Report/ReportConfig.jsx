@@ -86,12 +86,13 @@ export default class ReportConfig extends Component {
 		// 	reportItem=reportItem.setIn(['data',id,'TargetSheet'],sheetNames.getIn([0]))
 		// })
 		var saveDisabled=reportItem.get('data').map((report,id)=>(sheetNames.findIndex(item=>item===report.get('TargetSheet'))>-1))
-																					 .has(false);
+																					 .includes(false);
 		this.setState({
 			reportItem: reportItem,
 			sheetNames: sheetNames,
 			saveDisabled:saveDisabled?saveDisabled:this.state.saveDisabled
 		})
+		this.refs.upload_tempalte.reset();
 	}
 
   _onExistTemplateChange(value) {
@@ -525,7 +526,7 @@ export default class ReportConfig extends Component {
           <RaisedButton containerElement="label" labelPosition="before" label={I18N.EM.Report.UploadTemplate}>
           	<UploadForm
           		ref={'upload_tempalte'}
-          		action={'http://sp1.energymost.com/TagImportExcel.aspx?Type=ReportTemplate'}
+          		action={'TagImportExcel.aspx?Type=ReportTemplate'}
           		fileName={'templateFile'}
 				enctype={'multipart/form-data'}
 				method={'post'}
@@ -544,6 +545,7 @@ export default class ReportConfig extends Component {
 																 });
 															 }}
 															 onCancel={()=>{
+																 this.refs.upload_tempalte.reset();
 																 this.setState({
 																	showUploadConfirm:false,
 																	fileName:''
@@ -585,7 +587,8 @@ export default class ReportConfig extends Component {
 		id: item.get('Id'),
 		tagList: item.get('TagsList'),
 		addReport: this.state.reportItem.get('id') === 0 ? true : false,
-		settingYear:this.state.reportItem.get('year')
+		settingYear:this.state.reportItem.get('year'),
+		// onSaveBtnStatusChange:()=>{this.setState({saveDisabled:true})}
 	};
 	return (
 		<ReportDataItem {...props}></ReportDataItem>

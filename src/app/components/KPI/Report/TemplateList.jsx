@@ -294,6 +294,7 @@ let TemplateList = React.createClass({
                                });
                              }}
                              onCancel={()=>{
+                               this.refs.fileInput.value="";
                                this.setState({
                                 showUploadConfirm:false,
                                 fileName:''
