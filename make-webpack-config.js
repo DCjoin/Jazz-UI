@@ -120,7 +120,7 @@ module.exports = function(options) {
       rules: [
         {
           test: /\.jsx?$/,
-          use: [/*"react-hot-loader", */"babel-loader"],
+          use: ["react-hot-loader", "babel-loader"],
           exclude: /node_modules/
         },
         {
