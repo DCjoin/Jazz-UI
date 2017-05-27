@@ -244,3 +244,42 @@
     }
   }
 }
+
+.jazz-input-data{
+  &-tag-panel{
+    margin-top: 20px;
+    width: 237px;
+    height:100%;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    &-list{
+      flex:1;
+      overflow-y: auto;
+      &-item{
+        width: 208px;
+        height: 33px;
+        min-height: 33px;
+        line-height: 33px;
+        padding-left: 29px;
+        color: @slate-grey;
+        font-size: 14px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        &:hover{
+          cursor: pointer;
+          color: @medium-green;
+          &.selected{
+            background-color: #32ad3d;
+            color:#ffffff
+          }
+        }
+        &.selected{
+          background-color: #32ad3d;
+          color:#ffffff
+        }
+      }
+    }
+  }
+}

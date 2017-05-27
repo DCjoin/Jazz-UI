@@ -4,7 +4,8 @@ module.exports = {
 
     Action:keyMirror({
       GET_WIDGET_GATHER_INFO:null,
-      SET_INITIAL_WIDGET_DTO:null
+      SET_INITIAL_WIDGET_DTO:null,
+      GET_MANUAL_TAGS:null
   }),
   // calculationType:{
   //   Sum:1,

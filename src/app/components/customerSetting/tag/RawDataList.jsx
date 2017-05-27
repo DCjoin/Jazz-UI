@@ -9,6 +9,18 @@ import CommonFuns from '../../../util/Util.jsx';
 import TagAction from '../../../actions/customerSetting/TagAction.jsx';
 import classnames from "classnames";
 import { List} from 'immutable';
+import Regex from '../../../constants/Regex.jsx';
+
+function isValid(number){
+  //非数字
+  if(!CommonFuns.isNumeric(number)) return false;
+
+  //前9后6
+  if(!Regex.TagRule.test(number*1)) return false;
+
+  return true
+}
+
 let j2d = CommonFuns.DataConverter.JsonToDateTime;
 let dateItem = [],
   indexItem = [];
@@ -24,7 +36,8 @@ let ListItem = React.createClass({
   getInitialState(){
     return{
       isEdit:false,
-      value:this.props.data.get('DataValue')
+      value:this.props.data.get('DataValue'),
+      errorText:''
     }
   },
   _onClick(){
@@ -64,9 +77,22 @@ let ListItem = React.createClass({
                   value:event.target.value
                 })
               }}
+              errorText={this.state.errorText}
               onBlur={()=>{
                 if(this.state.value!==this.props.data.get('DataValue')){
-                  this.props.onDataChange(this.state.value)
+                  if(isValid(this.state.value)){
+                    this.setState({
+                      errorText:''
+                    },()=>{
+                      this.props.onDataChange(this.state.value)
+                    })
+
+                  }else {
+                    this.setState({
+                      errorText:'xxx'
+                    })
+                  }
+
                 }
               }}
               />

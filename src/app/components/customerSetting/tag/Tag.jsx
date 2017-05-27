@@ -480,6 +480,7 @@ let Tag = React.createClass({
       Comment: ' ',
       TagGroupType: 0,
       TimezoneId: 1,
+      CollectionMethod:1,
       CalculationType: 1,
       UomId: 1,
       UomName: " ",

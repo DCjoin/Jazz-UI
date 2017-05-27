@@ -11,12 +11,14 @@ import LoginActionType from '../constants/actionType/Login.jsx';
 import RoutePath from '../util/RoutePath.jsx';
 import PermissionCode from '../constants/PermissionCode.jsx';
 import _ from 'lodash';
+import DataAnalysis from '../constants/actionType/DataAnalysis.jsx';
 
 let _currentUser = null,
   _error = null,
   _currentPrivilege = null,
   _ecmHasBubble=false,
-  _diagnoseHasBubble=false;
+  _diagnoseHasBubble=false,
+  _dataAnalysisMenu=null;
 let CURRENT_USER_EVENT = 'currentuser',
   PASSWORD_ERROR_EVENT = 'passworderror',
   PASSWORD_SUCCESS_EVENT = 'passwordsuccess',
@@ -179,6 +181,40 @@ var CurrentUserStore = assign({}, PrototypeStore, {
   getDiagnoseBubble:function(){
     return _diagnoseHasBubble;
   },
+  //录入数据
+  setInputDataMenu(tagData){
+    var _tagList=tagData===null?[]:tagData.Data;
+
+    if(_tagList.length!==0){
+      _dataAnalysisMenu=      {
+              name: 'dataAnalysis',
+              title: I18N.MainMenu.DataAnalysis,
+              children: [{
+                list: [
+                  {
+                    name: 'analysis',
+                    getPath: RoutePath.dataAnalysis,
+                    title: I18N.MainMenu.DataAnalysis
+                  },
+                  {
+                    name: 'inputData',
+                    getPath: RoutePath.inputData,
+                    title: I18N.MainMenu.InputData
+                  }
+                ]
+              }]
+            }
+    }
+  },
+  getDataAnalysisMenu(){
+    if(_dataAnalysisMenu===null){
+      _dataAnalysisMenu={
+            getPath: RoutePath.dataAnalysis,
+            title: I18N.MainMenu.DataAnalysis
+          }
+    }
+    return _dataAnalysisMenu
+  },
   getMainMenuItems: function() {
     var menuItems = [];
     if (!this.getCurrentPrivilege()) return
@@ -218,10 +254,7 @@ var CurrentUserStore = assign({}, PrototypeStore, {
 
     if ( this.permit(PermissionCode.BASIC_DATA_ANALYSE.FULL) || this.permit(PermissionCode.SENIOR_DATA_ANALYSE.FULL) ) {
       menuItems.push(
-        {
-          getPath: RoutePath.dataAnalysis,
-          title: I18N.MainMenu.DataAnalysis
-        }
+        this.getDataAnalysisMenu()
       );
     }
 
@@ -352,6 +385,11 @@ var CurrentUserStore = assign({}, PrototypeStore, {
     }
     return menuItems;
   },
+  resetAllFalg(){
+    _ecmHasBubble=false;
+    _diagnoseHasBubble=false;
+    _dataAnalysisMenu=null;
+  },
   emitCurrentUserChange: function() {
     this.emit(CURRENT_USER_EVENT);
   },
@@ -403,7 +441,8 @@ var CurrentUserStore = assign({}, PrototypeStore, {
 
 var CurrentUserAction = CurrentUser.Action,
     MeasuresAction=Measures.Action,
-    DiagnoseAction=Diagnose.Action;
+    DiagnoseAction=Diagnose.Action,
+    DataAnalysisAction=DataAnalysis.Action;
 
 CurrentUserStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
@@ -439,6 +478,16 @@ CurrentUserStore.dispatchToken = AppDispatcher.register(function(action) {
        CurrentUserStore.setDiagnoseBubble(action.data);
        CurrentUserStore.emitCurrentUserChange()
        break;
+    //是否添加录入数据二级菜单（数据分析）
+    case DataAnalysisAction.GET_MANUAL_TAGS:
+        CurrentUserStore.setInputDataMenu(action.tagData);
+        CurrentUserStore.emitCurrentUserChange()
+        break;
+    //切换层级时清空所有标志
+  case DataAnalysisAction.RESET_MENU_FLAG:
+        CurrentUserStore.resetAllFalg();
+        CurrentUserStore.emitCurrentUserChange()
+        break;
   }
 });
 
