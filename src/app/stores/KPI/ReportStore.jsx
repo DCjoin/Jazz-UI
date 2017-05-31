@@ -67,11 +67,6 @@ const ReportStore = assign({}, PrototypeStore, {
       };
     }).toJS();
   }
-  Items.unshift({
-    payload: -1,
-    text:I18N.EM.Report.Select,
-    disabled:true
-  });
   return Items
   },
   deleteTemplateById: function(id) {

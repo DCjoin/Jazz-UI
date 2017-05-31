@@ -23,8 +23,6 @@ let _reqTrialUseReset = null;
 
 let LoginStore = assign({}, EventEmitter.prototype, {
   checkHasSpAdmin: function() {
-    // var _pri = CurrentUserStore.getCurrentPrivilege();
-    // JSON.parse(getCookie('UserInfo'))
     if (CurrentUserStore.getCurrentUser().UserType === -1 || (CurrentUserStore.permit(PermissionCode.PLATFORM_MANAGEMENT.FULL) )) {
       return true;
     }
@@ -33,14 +31,14 @@ let LoginStore = assign({}, EventEmitter.prototype, {
   init: function(data, success) {
     if (success) {
       _lastError = null;
-      //, {'expires':5,'path':'/'}
-      //CookieUtil.set('UserInfo', JSON.stringify(data));
-
-      CookieUtil.set('UserId', data.Id);
-      // CookieUtil.set('Username', data.Name);
-
-      // var _UserInfo = JSON.stringify(data);
-      // CookieUtil.set('UserInfo', _UserInfo);
+      CookieUtil.set('UserId', data.Id, {
+        expires: 30
+      });
+      if( data.Token ) {        
+        CookieUtil.set('AuthLoginToken', data.Token, {
+          expires: 30
+        });
+      }
 
       window.currentUserId = data.Id;
       window.currentUser = data;
@@ -80,9 +78,6 @@ let LoginStore = assign({}, EventEmitter.prototype, {
     return false;
   },
   getCurrentUserId: function() {
-    // if (!_currentUserId) {
-    //   _currentUserId = CookieUtil.get('UserId');
-    // }
     return CookieUtil.get('UserId');
   },
   getCurrentUser: function(argument) {
@@ -95,17 +90,12 @@ let LoginStore = assign({}, EventEmitter.prototype, {
     this.removeListener(CHANGE_EVENT, callback);
   },
   empty: function() {
-    CookieUtil.set('UserId', null);
-    // //location.reload();
-    // CookieUtil.set('UserId', null);
-    // // CookieUtil.set('Username', null);
-    // CookieUtil.set('currentCustomerId', null);
-    // // CookieUtil.set('UserInfo', null);
-    // window.currentUserId = null;
-    // window.currentUser = null;
-    // window.currentCustomerId = null;
-    // window.toMainApp = null;
-    // window.currentCustomerId = null;
+    CookieUtil.set('UserId', null, {
+      expires: -1
+    });
+    CookieUtil.set('AuthLoginToken', null, {
+      expires: -1
+    });
   },
   getLastError: function(argument) {
     return _lastError;
