@@ -3,6 +3,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import moment from 'moment';
+import FontIcon from 'material-ui/FontIcon';
+
 import CommonFuns from 'util/Util.jsx';
 import Regex from 'constants/Regex.jsx';
 import DateTimeSelector from 'controls/DateTimeSelector.jsx';
@@ -49,13 +51,14 @@ let ReportDataItem = React.createClass({
       payload: 4,
       text: I18N.Common.AggregationStep.Yearly
     }];
-    var start = this.getRealTime(this.props.startTime);
-    var end = this.getRealTime(this.props.endTime);
-    stepItems = this._getDisabledStepItems(this.props.dateType, Immutable.fromJS(stepItems), start, end);
+    var start = this.getRealTime(this.props.data.startTime);
+    var end = this.getRealTime(this.props.data.endTime);
+    stepItems = this._getDisabledStepItems(this.props.data.dateType, Immutable.fromJS(stepItems), start, end);
     return {
       showTagSelectDialog: false,
       stepItems: stepItems,
-      emptyErrorText: ''
+      emptyErrorText: '',
+      data: this.props.data,
     };
   },
   _clearErrorText() {
@@ -63,7 +66,7 @@ let ReportDataItem = React.createClass({
   },
   _isValid() {
     var isValid;
-    if (this.props.tagList.size === 0) {
+    if (this.state.data.get('TagsList').size === 0) {
       return false;
     }
     if (this.refs.stepId) {
@@ -126,15 +129,42 @@ let ReportDataItem = React.createClass({
     }
   },
   _updateReportData(name, value, stepValue, startTime, endTime) {
-    if (this.props.updateReportData) {
-      this.props.updateReportData(name, value, this.props.index, stepValue, startTime, endTime);
+
+    var reportData = this.state.data;
+    reportData = reportData.setIn([name], value);
+    if (name === 'DateType') {
+      reportData = reportData.setIn(['ExportStep'], stepValue);
+      reportData = reportData.setIn(['DataStartTime'], startTime);
+      reportData = reportData.setIn(['DataEndTime'], endTime);
     }
-  },
-  _deleteReportData() {
-    if (this.props.deleteReportData) {
-      this.props.deleteReportData(this.props.index);
+    if(name==='ReportType'){
+      if(value===1){
+        reportData = reportData.setIn(['ExportStep'], 0);
+      }
+      else {
+        if(reportData.getIn(['DateType'])===7){
+          reportData = reportData.setIn(['ExportStep'], 1);
+        }
+      }
     }
+
+    this.setState({
+      data: reportData
+    }/*, () => {
+      this.setState({
+        saveDisabled: !me._isValid()
+      });
+    }*/);
+
+    // if (this.state.data.get('updateReportData')) {
+    //   this.state.data.get('updateReportData')(name, value, this.state.data.get('index'), stepValue, startTime, endTime);
+    // }
   },
+  // _deleteReportData() {
+  //   if (this.state.data.get('deleteReportData')) {
+  //     this.state.data.get('deleteReportData')(this.state.data.get('index'));
+  //   }
+  // },
   _onDirectionChange(value) {
     this._updateReportData('ExportLayoutDirection', value);
   },
@@ -206,8 +236,8 @@ let ReportDataItem = React.createClass({
       //   timeregion = dateSelector.getDateTime();
       //   list = CommonFuns.getInterval(timeregion.start, timeregion.end).stepList;
       // } else {
-      //   var start = this.getRealTime(this.props.startTime);
-      //   var end = this.getRealTime(this.props.startTime);
+      //   var start = this.getRealTime(this.state.data.get('StartTime'));
+      //   var end = this.getRealTime(this.state.data.get('StartTime'));
       //   list = CommonFuns.getInterval(start, end).stepList;
       // }
 
@@ -252,8 +282,8 @@ let ReportDataItem = React.createClass({
 
     var stepItems = this._getDisabledStepItems(dateType, this.state.stepItems, customizedStart, customizedEnd);
     for (var i = 0; i < stepItems.size; i++) {
-      if (stepItems.getIn([i, 'payload']) === this.props.step && !stepItems.getIn([i, 'disabled'])) {
-        stepValue = this.props.step;
+      if (stepItems.getIn([i, 'payload']) === this.state.data.get('ExportStep') && !stepItems.getIn([i, 'disabled'])) {
+        stepValue = this.state.data.get('ExportStep');
         break;
       }
     }
@@ -270,6 +300,9 @@ let ReportDataItem = React.createClass({
     this.setState({
       stepItems: stepItems
     });
+  },
+  _onReprtNameChange(value) {
+    this._handleSelectValueChange('Name', value);
   },
   _onReprtTypeChange(value) {
     if (value === 0) {
@@ -303,13 +336,13 @@ let ReportDataItem = React.createClass({
   },
   _displayTimeRange() {
     var str = '';
-    if (this.props.dateType !== 33) {
-      var dateType = CommonFuns.GetStrDateType(this.props.dateType);
+    if (this.state.data.get('DateType') !== 33) {
+      var dateType = CommonFuns.GetStrDateType(this.state.data.get('DateType'));
       var timeregion = CommonFuns.GetDateRegion(dateType);
       str = this.getDisplayDate(timeregion.start, false) + '-' + this.getDisplayDate(timeregion.end, true);
     } else {
-      var startTime = this.getRealTime(this.props.startTime);
-      var endTime = this.getRealTime(this.props.endTime);
+      var startTime = this.getRealTime(this.state.data.get('StartTime'));
+      var endTime = this.getRealTime(this.state.data.get('EndTime'));
       str = this.getDisplayDate(startTime, false) + '-' + this.getDisplayDate(endTime, true);
     }
     return str;
@@ -339,13 +372,12 @@ let ReportDataItem = React.createClass({
       label={I18N.Common.Button.Confirm}
       primary={true}
       onClick={this._onTagDataChange}
-      disabled={this.props.disabled}
       style={{
         width:'68px',
         minWidth:'68px'
       }}/>
     ];
-    var tagWindow = <TagSelectWindow ref='tagListWindow' hierarchyId={this.props.hierarchyId} type={this.props.reportType} disabled={this.props.disabled} selectedTagList={this.props.tagList}></TagSelectWindow>;
+    var tagWindow = <TagSelectWindow ref='tagListWindow' hierarchyId={this.props.hierarchyId} type={this.state.data.get('ReportType')} selectedTagList={this.state.data.get('TagsList')}></TagSelectWindow>;
 
     return (<div className='jazz-data-tag-select-window'><NewDialog
       ref="tagSelectDialog"
@@ -381,29 +413,28 @@ let ReportDataItem = React.createClass({
       </div>
     </NewDialog></div>);
   },
-  componentWillReceiveProps: function(nextProps) {
-    if (nextProps.id !== this.props.id) {
-      var start = this.getRealTime(nextProps.startTime);
-      var end = this.getRealTime(nextProps.endTime);
-      var stepItems = this._getDisabledStepItems(nextProps.dateType, this.state.stepItems, start, end);
-      this.setState({
-        stepItems: stepItems
-      });
-    }
-  },
+  // componentWillReceiveProps: function(nextProps) {
+  //   if (nextProps.id !== this.state.data.get('id')) {
+  //     var start = this.getRealTime(nextProps.startTime);
+  //     var end = this.getRealTime(nextProps.endTime);
+  //     var stepItems = this._getDisabledStepItems(nextProps.dateType, this.state.stepItems, start, end);
+  //     this.setState({
+  //       stepItems: stepItems
+  //     });
+  //   }
+  // },
   componentDidUpdate: function() {
-    if (!this.props.disabled) {
       var dateSelector = this.refs.dateTimeSelector;
-      if (this.props.dateType !== 33) {
+      if (this.state.data.get('DateType') !== 33) {
         var startTime,endTime;
-        if(this.props.dateType===7 || this.props.dateType===8){
-          var newDateType = CommonFuns.GetStrDateType(this.props.dateType),
+        if(this.state.data.get('DateType')===7 || this.state.data.get('DateType')===8){
+          var newDateType = CommonFuns.GetStrDateType(this.state.data.get('DateType')),
           timeRange = CommonFuns.GetDateRegion(newDateType);
           startTime = timeRange.start;
           endTime = timeRange.end;
         }else {
           //January ,February ...December
-          var month=this.props.dateType-21,
+          var month=this.state.data.get('DateType')-21,
               year=moment().year();
               startTime=moment([year,month,1,0,0,0,0])._d,
               endTime=moment([year,month,CommonFuns.getDaysOfMonth(month),24,0,0,0])._d;
@@ -413,44 +444,40 @@ let ReportDataItem = React.createClass({
         if (dateTypeChanged) {
           dateTypeChanged = false;
         } else {
-          var startTime = this.getRealTime(this.props.startTime);
-          var endTime = this.getRealTime(this.props.endTime);
+          var startTime = this.getRealTime(this.state.data.get('StartTime'));
+          var endTime = this.getRealTime(this.state.data.get('EndTime'));
           dateSelector.setDateField(startTime, endTime);
         }
       }
-
-    }
   },
   componentDidMount: function() {
-    if (!this.props.disabled) {
-      var dateSelector = this.refs.dateTimeSelector;
-      if (this.props.dateType !== 33) {
-        var startTime,endTime;
-        if(this.props.dateType===7 || this.props.dateType===8){
-          var newDateType = CommonFuns.GetStrDateType(this.props.dateType),
-          timeRange = CommonFuns.GetDateRegion(newDateType);
-          startTime = timeRange.start;
-          endTime = timeRange.end;
-        }else {
-          //January ,February ...December
-          var month=this.props.dateType-21,
-              year=moment().year();
-          startTime=moment([year,month,1,0,0,0,0])._d,
-          endTime=moment([year,month,CommonFuns.getDaysOfMonth(month),24,0,0,0])._d;
-        }
-        dateSelector.setDateField(startTime, endTime);
-      } else {
-        var startTime = moment(this.getRealTime(this.props.startTime));
-        var endTime = moment(this.getRealTime(this.props.endTime));
-        // var currentYear=(new Date()).getFullYear();
-        // var settingYear=this.props.settingYear;
-        // startTime=startTime.add(currentYear-settingYear, 'y');
-        // endTime=endTime.add(currentYear-settingYear, 'y');
-
-        startTime=formatDate(startTime,this.props.settingYear);
-        endTime=formatDate(endTime,this.props.settingYear)
-        dateSelector.setDateField(startTime, endTime);
+    var dateSelector = this.refs.dateTimeSelector;
+    if (this.state.data.get('DateType') !== 33) {
+      var startTime,endTime;
+      if(this.state.data.get('DateType')===7 || this.state.data.get('DateType')===8){
+        var newDateType = CommonFuns.GetStrDateType(this.state.data.get('DateType')),
+        timeRange = CommonFuns.GetDateRegion(newDateType);
+        startTime = timeRange.start;
+        endTime = timeRange.end;
+      }else {
+        //January ,February ...December
+        var month=this.state.data.get('DateType')-21,
+            year=moment().year();
+        startTime=moment([year,month,1,0,0,0,0])._d,
+        endTime=moment([year,month,CommonFuns.getDaysOfMonth(month),24,0,0,0])._d;
       }
+      dateSelector.setDateField(startTime, endTime);
+    } else {
+      var startTime = moment(this.getRealTime(this.state.data.get('StartTime')));
+      var endTime = moment(this.getRealTime(this.state.data.get('EndTime')));
+      // var currentYear=(new Date()).getFullYear();
+      // var settingYear=this.state.data.get('settingYear');
+      // startTime=startTime.add(currentYear-settingYear, 'y');
+      // endTime=endTime.add(currentYear-settingYear, 'y');
+
+      startTime=formatDate(startTime,this.props.settingYear);
+      endTime=formatDate(endTime,this.props.settingYear)
+      dateSelector.setDateField(startTime, endTime);
     }
   },
   componentWillUnmount: function() {},
@@ -520,84 +547,76 @@ let ReportDataItem = React.createClass({
       payload: 2,
       text: I18N.EM.Report.Daily
     }];
-    var me = this;
     var deleteButton = null,
-      dateTimeSelector = null,
-      dataSourceButton = null;
-    if (!me.props.disabled) {
-      deleteButton = <div className='jazz-report-data-delete-button'>
-        <LinkButton iconName={ "icon-delete" } onClick={me._deleteReportData} style={{marginRight:'15px'}}/>
-        </div>;
-      dataSourceButton =<FlatButton secondary={true} style={{border:'1px solid #abafae',width:'150px'}} label={this.props.tagList.size===0 ? I18N.EM.Report.SelectTag : I18N.EM.Report.EditTag} onClick={me._showTagsDialog}/>;
-      dateTimeSelector = <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={me._onDateSelectorChanged} showTime={false}/>;
-    } else {
-      dataSourceButton = <div className='jazz-report-data-datasource-button'><FlatButton secondary={true} onClick={me._showTagsDialog} label={I18N.EM.Report.ViewTag}/></div>;
-      dateTimeSelector = <div style={{
-        marginLeft: '15px',
-        paddingTop: '6px'
-      }}>{me._displayTimeRange()}</div>;
-    }
-    var diplayCom = null;
-    if (me.props.showStep) {
+    dataSourceButton =<FlatButton secondary={true} style={{border:'1px solid #abafae',width:'150px'}} label={this.state.data.get('TagsList').size===0 ? I18N.EM.Report.SelectTag : I18N.EM.Report.EditTag} onClick={this._showTagsDialog}/>,
+    dateTimeSelector = <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={this._onDateSelectorChanged} showTime={false}/>,
+    diplayCom = null;
+    if (this.state.data.get('ReportType') === 1) {
       var stepProps = {
         ref: 'stepId',
-        dataItems: me.state.stepItems.toJS(),
-        isViewStatus: me.props.disabled,
-        defaultValue: me.props.step,
+        dataItems: this.state.stepItems.toJS(),
+        isViewStatus: false,
+        defaultValue: this.state.data.get('ExportStep'),
         title: I18N.EM.Report.Step,
         textField: 'text',
-        didChanged: me._handleSelectValueChange.bind(null, 'ExportStep')
+        didChanged: this._handleSelectValueChange.bind(null, 'ExportStep')
       };
-      diplayCom = <ViewableDropDownMenu {...stepProps}></ViewableDropDownMenu>;
+      diplayCom = <ViewableDropDownMenu {...stepProps} style={{width: 300}}></ViewableDropDownMenu>;
     } else {
       var numberRuleProps = {
         ref: 'numberRuleId',
         dataItems: numberRuleItems,
-        isViewStatus: me.props.disabled,
-        defaultValue: me.props.numberRule,
+        isViewStatus: false,
+        defaultValue: this.state.data.get('NumberRule'),
         title: I18N.EM.Report.NumberRule,
         textField: 'text',
-        didChanged: me._handleSelectValueChange.bind(null, 'NumberRule')
+        didChanged: this._handleSelectValueChange.bind(null, 'NumberRule')
       };
-      diplayCom = <ViewableDropDownMenu {...numberRuleProps}></ViewableDropDownMenu>;
+      diplayCom = <ViewableDropDownMenu {...numberRuleProps} style={{width: 300}}></ViewableDropDownMenu>;
     }
-    var tagDialog = me._renderTagSelectDialog();
+    var tagDialog = this._renderTagSelectDialog();
+    var reportNameProps = {
+      ref: 'reportTypeName',
+      defaultValue: this.state.data.get('Name'),
+      title: '表格数据名称',
+      didChanged: this._onReprtNameChange
+    };
     var reportTypeProps = {
       ref: 'reportTypeId',
       dataItems: typeItems,
-      isViewStatus: me.props.disabled,
-      defaultValue: me.props.reportType,
+      isViewStatus: false,
+      defaultValue: this.state.data.get('ReportType'),
       title: I18N.EM.Report.DataType,
       textField: 'text',
-      didChanged: me._onReprtTypeChange
+      didChanged: this._onReprtTypeChange
     };
     var dateTypeProps = {
       ref: 'dateTypeId',
       dataItems: dateTypeItems,
-      isViewStatus: me.props.disabled,
-      defaultValue: me.props.dateType,
+      isViewStatus: false,
+      defaultValue: this.state.data.get('DateType'),
       title: '',
       textField: 'text',
-      didChanged: me._onDateTypeChange,
+      didChanged: this._onDateTypeChange,
       style: {
         width: '120px'
       }
     };
     var targetSheetProps = {
       ref: 'targetSheetId',
-      dataItems: me._getSheetItems(),
-      isViewStatus: me.props.disabled,
-      defaultValue: me.props.targetSheet,
+      dataItems: this._getSheetItems(),
+      isViewStatus: false,
+      defaultValue: this.state.data.get('TargetSheet'),
       title: I18N.Setting.KPI.Report.Sheet,
       textField: 'text',
-      didChanged: me._handleSelectValueChange.bind(null, 'TargetSheet'),
+      didChanged: this._handleSelectValueChange.bind(null, 'TargetSheet'),
       errorText:I18N.Setting.KPI.Report.SheetErrorText
     };
     var startCellProps = {
       ref: 'startCellId',
-      isViewStatus: me.props.disabled,
-      didChanged: me._onStartCellChange,
-      defaultValue: me.props.startCell,
+      isViewStatus: false,
+      didChanged: this._onStartCellChange,
+      defaultValue: this.state.data.get('StartCell'),
       title: I18N.EM.Report.StartCell,
       hintText:I18N.Setting.KPI.Report.StartCellHintText,
       isRequired: true,
@@ -606,41 +625,38 @@ let ReportDataItem = React.createClass({
     };
     var directTime = null,
       directTag = null;
-    if ((me.props.disabled && me.props.exportLayoutDirection === 0) || !me.props.disabled) {
-      directTime = <div onClick={me._onDirectionChange.bind(null, 0)} className={classNames(
+    if ((false && this.state.data.get('ExportLayoutDirection') === 0) || !false) {
+      directTime = <div onClick={this._onDirectionChange.bind(null, 0)} className={classNames(
         {
-          'jazz-report-data-direction-time': me.props.exportLayoutDirection !== 0 && !me.props.disabled,
-          'jazz-report-data-direction-time-selected': me.props.exportLayoutDirection === 0,
-          'jazz-report-data-direction-time-disabled': me.props.disabled
+          'jazz-report-data-direction-time': this.state.data.get('ExportLayoutDirection') !== 0 && !false,
+          'jazz-report-data-direction-time-selected': this.state.data.get('ExportLayoutDirection') === 0,
+          'jazz-report-data-direction-time-disabled': false
         }
       )}></div>;
     }
-    if ((me.props.disabled && me.props.exportLayoutDirection === 1) || !me.props.disabled) {
-      directTag = <div onClick={me._onDirectionChange.bind(null, 1)} className={classNames(
+    if ((false && this.state.data.get('ExportLayoutDirection') === 1) || !false) {
+      directTag = <div onClick={this._onDirectionChange.bind(null, 1)} className={classNames(
         {
-          'jazz-report-data-direction-tag': me.props.exportLayoutDirection !== 1 && !me.props.disabled,
-          'jazz-report-data-direction-tag-selected': me.props.exportLayoutDirection === 1,
-          'jazz-report-data-direction-tag-disabled': me.props.disabled
+          'jazz-report-data-direction-tag': this.state.data.get('ExportLayoutDirection') !== 1 && !false,
+          'jazz-report-data-direction-tag-selected': this.state.data.get('ExportLayoutDirection') === 1,
+          'jazz-report-data-direction-tag-disabled': false
         }
       )}></div>;
     }
 
     return (
+
+    <NewDialog open>
+      <header className='kpi-report-edit-data-header'>
+        <div>{'添加表格数据'}</div>
+        <FontIcon className='icon-close' style={{fontSize: '16px'}} onClick={this.props.onClose}/>
+      </header>
       <div className='jazz-report-data-content'>
         <div className='jazz-report-data-container'>
-          <div style={{
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        fontSize:'14px'
-      }}>
-
-          <div>{I18N.Setting.KPI.Report.Data}</div>
-          <div className='jazz-report-data-delete'>{deleteButton}</div>
-          </div>
+          <ViewableTextField {...reportNameProps} style={{width: 300}}/>
         </div>
         <div className='jazz-report-data-container'>
-            <ViewableDropDownMenu {...reportTypeProps}></ViewableDropDownMenu>
+            <ViewableDropDownMenu {...reportTypeProps} style={{width: 300}}/>
         </div>
         <div className='jazz-report-data-container'>
           <span>{I18N.Setting.Tag.Tag}</span>
@@ -653,7 +669,7 @@ let ReportDataItem = React.createClass({
           </div>
 
           <div className='jazz-report-data-timerange'>
-            <ViewableDropDownMenu  {...dateTypeProps}></ViewableDropDownMenu>
+            <ViewableDropDownMenu  {...dateTypeProps}/>
             {dateTimeSelector}
           </div>
         </div>
@@ -661,17 +677,17 @@ let ReportDataItem = React.createClass({
           {diplayCom}
         </div>
         <div className='jazz-report-data-container'>
-          <ViewableDropDownMenu  {...targetSheetProps}></ViewableDropDownMenu>
+          <ViewableDropDownMenu  {...targetSheetProps} style={{width: 300}}/>
         </div>
         <div className='jazz-report-data-container'>
           <span>{I18N.EM.Report.ExportFormat}</span>
           <div className='jazz-report-data-checkbox'>
-            <Checkbox disabled={me.props.disabled} checked={me.props.isExportTagName} label={I18N.EM.Report.ExportTagName} onCheck={me._handleCheckboxCheck.bind(null, 'IsExportTagName')}/>
-            <Checkbox disabled={me.props.disabled} checked={me.props.isExportTimestamp} label={I18N.EM.Report.ExportTimeLabel} onCheck={me._handleCheckboxCheck.bind(null, 'IsExportTimestamp')}/>
+            <Checkbox disabled={false} checked={this.state.data.get('IsExportTagName')} label={I18N.EM.Report.ExportTagName} onCheck={this._handleCheckboxCheck.bind(null, 'IsExportTagName')}/>
+            <Checkbox disabled={false} checked={this.state.data.get('IsExportTimestamp')} label={I18N.EM.Report.ExportTimeLabel} onCheck={this._handleCheckboxCheck.bind(null, 'IsExportTimestamp')}/>
           </div>
         </div>
         <div className='jazz-report-data-container'>
-          <ViewableTextField {...startCellProps}></ViewableTextField>
+          <ViewableTextField {...startCellProps} style={{width: 300}}/>
         </div>
         <div className='jazz-report-data-container'>
           <span>{I18N.EM.Report.Layout}</span>
@@ -682,6 +698,13 @@ let ReportDataItem = React.createClass({
         </div>
         {tagDialog}
       </div>
+      <footer className='kpi-report-edit-data-footer'>            
+        <NewFlatButton onClick={this.props.onClose} label={'取消'} secondary/>
+        <NewFlatButton onClick={() => {
+          this.props.onSave(this.state.data);
+        }} disabled={!this._isValid()} style={{marginLeft: 20}} label={'添加'} primary/>
+      </footer>
+    </NewDialog>
       );
   }
 });

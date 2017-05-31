@@ -1,6 +1,24 @@
 import React, { Component } from 'react';
 import ReactDom from 'react-dom';
-import { CircularProgress, RaisedButton} from 'material-ui';
+
+import classnames from 'classnames';
+
+import CircularProgress from 'material-ui/CircularProgress';
+import RaisedButton from 'material-ui/RaisedButton';
+import {
+  Step,
+  Stepper,
+  StepLabel,
+} from 'material-ui/Stepper';
+import FontIcon from 'material-ui/FontIcon';
+import SvgIcon from 'material-ui/SvgIcon';
+import Popover from 'material-ui/Popover';
+import ArrowDropDown from 'material-ui/svg-icons/navigation/arrow-drop-down';
+import Menu from 'material-ui/Menu';
+import MenuItem from 'material-ui/MenuItem';
+import TextField from 'material-ui/TextField';
+
+import NewAppTheme from 'decorator/NewAppTheme.jsx';
 import Dialog from 'controls/NewDialog.jsx';
 import TitleComponent from 'controls/TitleComponent.jsx';
 import Immutable from 'immutable';
@@ -8,7 +26,7 @@ import ReportAction from 'actions/KPI/ReportAction.jsx';
 import ReportStore from 'stores/KPI/ReportStore.jsx';
 import ViewableTextField from 'controls/ViewableTextField.jsx';
 import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
-import FlatButton from 'controls/FlatButton.jsx';
+import NewFlatButton from 'controls/NewFlatButton.jsx';
 import UploadForm from 'controls/UploadForm.jsx';
 import CommonFuns from 'util/Util.jsx';
 import RoutePath from 'util/RoutePath.jsx';
@@ -18,7 +36,107 @@ import FormBottomBar from 'controls/FormBottomBar.jsx';
 import { formStatus } from 'constants/FormStatus.jsx';
 import UploadConfirmDialog from './UploadConfirmDialog.jsx';
 
+function stepLabelProps(stepValue, currentStep) {
+  let props = {
+    style: {      
+      height: 50, 
+      fontSize: 14,
+      color: '#0f0f0f',
+      fontWeight: 'bold',
+    },
+  },
+  iconColor = '#32ad3d';
+  if( currentStep < stepValue ) {
+    props.style.color = '#9fa0a4';
+    iconColor = '#a3e7b0';
+  }
+  props.icon = (
+    <SvgIcon color={iconColor} style={{
+          display: 'block',
+          fontSize: 24,
+          width: 24,
+          height: 24,
+          color: iconColor,
+      }}>
+    <circle cx={12} cy={12} r={10}/>
+    <text x={12} y={16} fill='#ffffff' fontSize='12px' textAnchor='middle'>{stepValue + 1}</text>
+  </SvgIcon>);
+  return props;
+}
+
 var customerId=null;
+
+
+class CustomDropDownMenu extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      opened: false
+    }
+  }
+  render() {
+    return (
+      <div style={{position: 'relative', width: 430,}}>        
+        <TextField fullWidth={true} hintText='请选择' value={this.props.label} inputStyle={{
+          width: 400,
+          textOverflow: 'ellipsis',
+        }}/>
+        <div onClick={() => {
+            this.setState({
+              opened: true,
+              anchorEl: ReactDom.findDOMNode(this),
+            });
+          }}
+          style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          cursor: 'pointer',
+        }}>
+            <ArrowDropDown style={{
+            position: 'absolute',
+            top: 10,
+            right: 0,
+            color: '#e0e0e0',
+            border: 10,
+            backgroundColor: 'transparent',
+            outline: 'none',
+          }}/>
+          <Popover
+            open={this.state.opened}
+            anchorEl={this.state.anchorEl}
+            anchorOrigin={{horizontal: 'left', vertical: 'top'}}
+            targetOrigin={{horizontal: 'left', vertical: 'top'}}
+            onRequestClose={() => {
+              this.setState({
+                opened: false,
+                anchorEl: null,
+              });
+            }}
+          >
+            <Menu listStyle={{
+                display: 'inline',
+                width: 'auto',
+              }} 
+              style={{width: 430}} 
+              onClick={() => {
+                this.setState({
+                  opened: false,
+                  anchorEl: null,
+                });
+            }}>{this.props.children}</Menu>
+          </Popover>
+        </div>
+
+      </div>
+    );
+  }
+}
+
+@NewAppTheme
 export default class ReportConfig extends Component {
 
 	static contextTypes = {
@@ -33,10 +151,9 @@ export default class ReportConfig extends Component {
 		this._onTemplateOpen = this._onTemplateOpen.bind(this);
 		this._onExistTemplateChange = this._onExistTemplateChange.bind(this);
 		this._downloadTemplate = this._downloadTemplate.bind(this);
-		// this._handleFileSelect = this._handleFileSelect.bind(this);
 		this._addReportData = this._addReportData.bind(this);
 		this._deleteReportData = this._deleteReportData.bind(this);
-		this._updateReportData = this._updateReportData.bind(this);
+		// this._updateReportData = this._updateReportData.bind(this);
 		this._saveReport = this._saveReport.bind(this);
 		this._onSave = this._onSave.bind(this);
 		this._onErrorHandle = this._onErrorHandle.bind(this);
@@ -52,7 +169,8 @@ export default class ReportConfig extends Component {
     fileName: '',
 		errorMsg:null,
 		isLoading:false,
-		showUploadConfirm:false
+		showUploadConfirm:false, 
+    step: 0,
 	};
 
 	_onChange(){
@@ -82,11 +200,9 @@ export default class ReportConfig extends Component {
   }
 
 	_updateReportItem(reportItem,sheetNames){
-		// reportItem.get('data').forEach((report,id)=>{
-		// 	reportItem=reportItem.setIn(['data',id,'TargetSheet'],sheetNames.getIn([0]))
-		// })
-		var saveDisabled=reportItem.get('data').map((report,id)=>(sheetNames.findIndex(item=>item===report.get('TargetSheet'))>-1))
-																					 .has(false);
+		var saveDisabled=reportItem.get('data')
+                      .map((report,id)=>(sheetNames.findIndex(item=>item===report.get('TargetSheet'))>-1))
+											.has(false);
 		this.setState({
 			reportItem: reportItem,
 			sheetNames: sheetNames,
@@ -109,23 +225,21 @@ export default class ReportConfig extends Component {
   }
 
 	_clearAllErrorText() {
-	this.refs.reportTitleId.clearErrorText();
-	var dataLength = this.state.reportItem.get('data').size;
-	for (var i = 0; i < dataLength; i++) {
-		this.refs['reportData' + (i + 1)]._clearErrorText();
-	}
+    if(this.refs.reportTitleId) {
+       this.refs.reportTitleId.clearErrorText();
+    }
 	}
 
   _isValid() {
-    var isValid = this.refs.reportTitleId.isValid();
-    var dataLength = this.state.reportItem.get('data').size;
-    if (dataLength === 0) {
-      return false;
+    if(this.state.step === 0) {
+      return this.refs.reportTitleId.isValid();
+    } else {
+      return this.state.reportItem.get('data').size > 0;
     }
-    for (var i = 0; i < dataLength; i++) {
-      isValid = isValid && this.refs['reportData' + (i + 1)]._isValid();
-    }
-    return isValid;
+  }
+
+  _isNew() {
+    return !this.props.report;
   }
 
   _downloadTemplate() {
@@ -147,7 +261,7 @@ export default class ReportConfig extends Component {
 		reportItem = reportItem.set('templateId', obj.TemplateId);
 		ReportAction.getTemplateListByCustomerId(this.context.currentRoute.params.customerId, 'Name', 'asc');
 		this.setState({
-          	reportItem: reportItem,
+      reportItem: reportItem,
 			saveDisabled: !this._isValid(),
 			showUploadDialog: false
 		},()=>{
@@ -183,103 +297,7 @@ export default class ReportConfig extends Component {
 				fileName,
 				showUploadConfirm:true
 			})
-
-
-      // this.refs.upload_tempalte.upload();
-      // this.setState({
-      // 	fileName,
-      //   showUploadDialog: true
-      // });
-  }/*
-  _handleFileSelect(event) {
-      var me = this;
-      var file = event.target.files[0];
-			if(!file) return;
-      var fileName = file.name;
-
-      if (!CommonFuns.endsWith(fileName.toLowerCase(), '.xlsx') && !CommonFuns.endsWith(fileName.toLowerCase(), '.xls')) {
-				me.setState({
-					errorMsg:I18N.EM.Report.WrongExcelFile
-				})
-        return;
-      }
-      var createElement = window.Highcharts.createElement,
-        discardElement = window.Highcharts.discardElement;
-
-
-      var iframe = createElement('iframe', null, {
-        display: 'none'
-      }, document.body);
-      iframe.onload = function() {
-        var json = iframe.contentDocument.body.innerHTML;
-        var obj = JSON.parse(json);
-        var reportItem = me.state.reportItem;
-        if (obj.success === true) {
-          reportItem = reportItem.set('templateId', obj.TemplateId);
-          ReportAction.getTemplateListByCustomerId(customerId, 'Name', 'asc');
-
-            me.setState({
-              saveDisabled: !me._isValid(),
-							showUploadDialog: false
-            },()=>{
-							me._updateReportItem(reportItem,Immutable.fromJS(obj.SheetList))
-						});
-
-        } else {
-          var errorCode = obj.UploadResponse.ErrorCode,
-            errorMessage=null;
-          if (errorCode === -1) {
-            errorMessage = I18N.format(I18N.EM.Report.DuplicatedName,fileName);
-          }
-					me.setState({
-						showUploadDialog: false,
-						fileName: '',
-						errorMsg:errorMessage
-					});
-          // if (errorMessage) {
-          //   CommonFuns.popupErrorMessage(errorMessage, '', true);
-          // }
-        }
-      };
-
-      var form = createElement('form', {
-        method: 'post',
-        action: 'TagImportExcel.aspx?Type=ReportTemplate',
-        target: '_self',
-        enctype: 'multipart/form-data',
-        name: 'inputForm'
-      }, {
-        display: 'none'
-      }, iframe.contentDocument.body);
-
-      var input = ReactDom.findDOMNode(this.refs.fileInput);
-      form.appendChild(input);
-      var customerInput = createElement('input', {
-        type: 'hidden',
-        name: 'CustomerId',
-        value: parseInt(customerId)
-      }, null, form);
-      var activeInput = createElement('input', {
-        type: 'hidden',
-        name: 'IsActive',
-        value: 1
-      }, null, form);
-
-      form.submit();
-      discardElement(form);
-      var label = ReactDom.findDOMNode(me.refs.fileInputLabel);
-      var tempForm = document.createElement('form');
-      document.body.appendChild(tempForm);
-      tempForm.appendChild(input);
-      tempForm.reset();
-      document.body.removeChild(tempForm);
-      label.appendChild(input);
-      me.setState({
-        fileName: fileName,
-        showUploadDialog: true
-      });
-    }
-*/
+  }
   newReportItem(){
     return Immutable.fromJS({
       id: 0,
@@ -290,43 +308,53 @@ export default class ReportConfig extends Component {
     })
   }
 
+  _setStep(step) {
+    return () => {
+      this.setState({step});
+    }
+  }
+
+  _getAddData() {
+
+    var imSheetNames = this.state.sheetNames;
+    var sheetNames = imSheetNames !== null ? imSheetNames.toJS() : null;
+    var dateType = CommonFuns.GetStrDateType(7);//this year
+    var timeRange = CommonFuns.GetDateRegion(dateType);
+    var d2j = CommonFuns.DataConverter.DatetimeToJson;
+    var startTime = d2j(timeRange.start);
+    var endTime = d2j(timeRange.end);
+    return {
+      DataStartTime: startTime,
+      DataEndTime: endTime,
+      DateType: 7,
+      ExportLayoutDirection: 0,
+      ExportStep: 1,
+      IsExportTagName: false,
+      IsExportTimestamp: false,
+      NumberRule: 0,
+      ReportType: 0,
+      StartCell: '',
+      TagsList: [],
+      TargetSheet: sheetNames !== null ? sheetNames[0] : null
+    };
+  }
+
 	_addReportData(){
-	var reportItem = this.state.reportItem;
-	var reportData = reportItem.get('data');
-	var imSheetNames = this.state.sheetNames;
-	var sheetNames = imSheetNames !== null ? imSheetNames.toJS() : null;
-	var dateType = CommonFuns.GetStrDateType(7);//this year
-	var timeRange = CommonFuns.GetDateRegion(dateType);
-	var d2j = CommonFuns.DataConverter.DatetimeToJson;
-	var startTime = d2j(timeRange.start);
-	var endTime = d2j(timeRange.end);
-	var newReportData = {
-		DataStartTime: startTime,
-		DataEndTime: endTime,
-		DateType: 7,
-		ExportLayoutDirection: 0,
-		ExportStep: 1,
-		IsExportTagName: false,
-		IsExportTimestamp: false,
-		NumberRule: 0,
-		ReportType: 0,
-		StartCell: '',
-		TagsList: [],
-		TargetSheet: sheetNames !== null ? sheetNames[0] : null
-	};
-	reportData = reportData.unshift(Immutable.fromJS(newReportData));
-	reportData = reportData.map((item, i) => {
-		return item.set('Index', i);
-	});
-	reportItem = reportItem.set('data', reportData);
-	this.setState({
-		reportItem: reportItem,
-		saveDisabled: true
-	});
+  	var reportItem = this.state.reportItem;
+  	var reportData = reportItem.get('data');
+  	reportData = reportData.unshift(Immutable.fromJS(this._getAddData()));
+  	reportData = reportData.map((item, i) => {
+  		return item.set('Index', i);
+  	});
+  	reportItem = reportItem.set('data', reportData);
+  	this.setState({
+  		reportItem: reportItem,
+  		saveDisabled: true
+  	});
 	}
 
 	_updateReportData(name, value, index, stepValue, startTime, endTime) {
-	var me = this;
+/*	var me = this;
 	var reportItem = this.state.reportItem;
 	var reportData = reportItem.get('data');
 	reportData = reportData.setIn([index, name], value);
@@ -353,25 +381,25 @@ export default class ReportConfig extends Component {
 		this.setState({
 			saveDisabled: !me._isValid()
 		});
-	});
+	});*/
 	}
 
 	_deleteReportData(index) {
 		var me=this;
-	var reportItem = this.state.reportItem;
-	var reportData = reportItem.get('data');
-	reportData = reportData.delete(index);
-	reportData = reportData.map((item, i) => {
-		return item.set('Index', i);
-	});
-	reportItem = reportItem.set('data', reportData);
-	this.setState({
-		reportItem: reportItem
-	},()=>{
-		this.setState({
-			saveDisabled: !me._isValid()
-		})
-	});
+  	var reportItem = this.state.reportItem;
+  	var reportData = reportItem.get('data');
+  	reportData = reportData.delete(index);
+  	reportData = reportData.map((item, i) => {
+  		return item.set('Index', i);
+  	});
+  	reportItem = reportItem.set('data', reportData);
+  	this.setState({
+  		reportItem: reportItem
+  	},()=>{
+  		this.setState({
+  			saveDisabled: !me._isValid()
+  		})
+  	});
 	}
 
 	_onSave(Id){
@@ -464,6 +492,38 @@ export default class ReportConfig extends Component {
     CommonFuns.popupErrorMessage(errorMessage, '', true);
   }
 
+  _renderNav() {
+    let {step} = this.state;
+    return (
+      <nav className='jazz-kpi-config-stepper jazz-card'>
+        <Stepper activeStep={step} style={{width: '40%'}}>
+          <Step>
+            <StepLabel {...stepLabelProps(0, step)}>{' 基础设置 '}</StepLabel>
+          </Step>
+          <Step>
+            <StepLabel {...stepLabelProps(1, step)}>{' 表格数据设置 '}</StepLabel>
+          </Step>
+        </Stepper>
+      </nav>
+    );
+  }
+
+  _renderStepButtons() {
+    let {step, reportItem} = this.state;
+    if( step === 0 ) {
+      let disabled = !reportItem.get('name') || !reportItem.get('templateId');
+      return (<div style={{marginTop: 20}}>
+        <NewFlatButton style={{float: 'right'}} disabled={disabled} primary label={'下一步'} onClick={this._setStep(1)}/>
+      </div>);
+    } else {
+      let disabled = !this.state.reportItem.get('data') || !this.state.reportItem.get('data').size;
+      return (<div style={{marginTop: 20}}>        
+        <NewFlatButton style={{float: 'left'}} secondary label={'上一步'} onClick={this._setStep(0)}/>
+        <NewFlatButton style={{float: 'right'}} disabled={disabled} primary label={'完成'} onClick={this._saveReport}/>
+      </div>);
+    }
+  }
+
   _renderReportInfo(){
     var {reportItem,templateList}=this.state;
     var titleProps = {
@@ -493,9 +553,19 @@ export default class ReportConfig extends Component {
       };
 
       var downloadButton = (<div className='jazz-report-rightpanel-template-download-button' style={{marginBottom:'10px'}}>
-          <FlatButton label={I18N.EM.Report.DownloadTemplate} onClick={this._downloadTemplate} secondary={true} style={{
-            background: 'transparent'
-          }} disabled={reportItem.get('templateId')===null}/>
+          <NewFlatButton secondary 
+            label={I18N.EM.Report.DownloadTemplate} 
+            onClick={this._downloadTemplate} 
+            style={{
+              height: 23,
+              width: 68,
+              lineHeight: '14px',
+            }}
+            labelStyle={{
+              lineHeight: '14px',
+              padding: 0,
+            }}
+            disabled={reportItem.get('templateId')===null}/>
         </div>);
 
       var uploadButton = (<div style={{width:'100px'}}><label ref="fileInputLabel" className="jazz-template-upload-label" htmlFor="fileInput">
@@ -505,36 +575,58 @@ export default class ReportConfig extends Component {
           </div>);
 
       return(
-        <div className="kpi-report-info">
+        <div className={classnames("kpi-report-info", {['jazz-card']: this._isNew()})}>
+        {!this._isNew() && <div style={{fontSize: '14px', fontWeight: 'bold', color: '#0f0f0f'}}>基本设置</div>}
+          <div>
+            <ViewableTextField {...titleProps}/>
+          </div>
+          <div>
             <div>
-              <ViewableTextField {...titleProps}/>
+              <span>{I18N.EM.Report.Template}</span>
+              <a style={{marginLeft: 10}} href="javascript:void(0)" onClick={this._onTemplateOpen}>
+                <FontIcon className='icon-setting' style={{fontSize: '15px', color: '#32ad3d'}}/>
+              </a>
             </div>
-          <div style={{fontSize:'14px'}}>
-            <span>{I18N.EM.Report.Template}</span>
-            <span className="templateMsg" onClick={this._onTemplateOpen}>{I18N.Setting.KPI.Report.TemplateManagement}</span>
+            <CustomDropDownMenu label={
+              reportItem.get('templateId') && ReportStore.getTemplateItems(templateList)
+                .find(item => item.payload === reportItem.get('templateId')).text
+              }>
+              <div style={{color: '#9fa0a4', fontSize: '14px', height: 48, lineHeight: '48px', padding: '0 16px'}}>请选择</div>
+              {ReportStore.getTemplateItems(templateList).map(item => 
+              <MenuItem onTouchTap={() => {
+                this._onExistTemplateChange(item.payload)
+              }} >
+                <div title={item.text} style={{
+                  textOverflow: 'ellipsis',
+                  overflow: 'hidden',
+                }}>{item.text}</div>
+              </MenuItem>
+                )}
+              <a href='javascript:void(0)' style={{
+                color: '#9fa0a4', 
+                fontSize: '14px', 
+                textDecoration: 'underline', 
+                height: 48, 
+                lineHeight: '48px', 
+                margin: '0 16px',
+                position: 'relative',
+              }}>
+                添加报表模板
+                <UploadForm
+                  ref={'upload_tempalte'}
+                  action={'http://sp1.energymost.com/TagImportExcel.aspx?Type=ReportTemplate'}
+                  fileName={'templateFile'}
+                  enctype={'multipart/form-data'}
+                  method={'post'}
+                  onload={this._onUploadDone}
+                  onChangeFile={this._onChangeFile}>
+                  <input type="hidden" name='CustomerId' value={parseInt(customerId)}/>
+                  <input type="hidden" name='IsActive' value={true}/>
+                </UploadForm>
+              </a>
+            </CustomDropDownMenu>
+            {downloadButton}
           </div>
-          <div style={{
-            display: 'flex',
-            flexDirection: 'row',
-						alignItems:'flex-end'
-          }}>
-          <ViewableDropDownMenu  {...templateEditProps}/>
-          {downloadButton}
-          </div>
-          {/*uploadButton*/}
-          <RaisedButton containerElement="label" labelPosition="before" label={I18N.EM.Report.UploadTemplate}>
-          	<UploadForm
-          		ref={'upload_tempalte'}
-          		action={'http://sp1.energymost.com/TagImportExcel.aspx?Type=ReportTemplate'}
-          		fileName={'templateFile'}
-				enctype={'multipart/form-data'}
-				method={'post'}
-				onload={this._onUploadDone}
-				onChangeFile={this._onChangeFile}>
-          		<input type="hidden" name='CustomerId' value={parseInt(customerId)}/>
-          		<input type="hidden" name='IsActive' value={true}/>
-          	</UploadForm>
-          </RaisedButton>
 					{this.state.fileName!=='' && this.state.showUploadConfirm && <UploadConfirmDialog name={this.state.fileName}
 															 onConfirm={()=>{
 																 this.refs.upload_tempalte.upload({IsReplace: true});
@@ -554,69 +646,95 @@ export default class ReportConfig extends Component {
       )
   }
 
+  _renderReportList() {
+    let { reportItem } = this.state,
+    list = [];
+
+    if( reportItem && reportItem.get('data').size > 0 ) {
+      list = reportItem.get('data').map( (item, idx) => 
+      <div className='kpi-report-data-item'>
+        <header className='kpi-report-data-item-header'>
+          <span className='kpi-report-data-item-name'>{item.get('Name')}</span>
+          <span className='kpi-report-data-item-action'>
+            <LinkButton label={'编辑'} onClick={() => {
+              this.setState({
+                dialogEditDataIdx: idx,
+              });
+            }}/>
+            <LinkButton label={'删除'} onClick={() => {
+              this._deleteReportData(idx);
+            }}/>   
+          </span>
+        </header>
+        <dl className='kpi-report-data-item-detail'>
+          <dt className='kpi-report-data-item-detail-name'>{'起始单元格'}</dt>
+          <dd className='kpi-report-data-item-detail-value hiddenEllipsis'>{item.get('StartCell')}</dd>
+          <dt className='kpi-report-data-item-detail-name'>{'数据点'}</dt>
+          <dd className='kpi-report-data-item-detail-value hiddenEllipsis'>{item.get('TagsList').size + '个'}</dd>
+          <dt className='kpi-report-data-item-detail-name'>{'模板Sheet'}</dt>
+          <dd className='kpi-report-data-item-detail-value hiddenEllipsis'>{item.get('TargetSheet')}</dd>
+        </dl>
+      </div>
+       ).toJS();
+    }
+    return list.concat(<button className='kpi-report-add-panel icon-add' onClick={() => {
+      this.setState({
+        dialogEditDataIdx: -1,
+      });
+    }}/>)
+  }
+
+  _renderEditDataDialog() {
+    let index = this.state.dialogEditDataIdx;
+    if( typeof index === 'number' ) {
+      let item = Immutable.fromJS(this._getAddData());
+      if(index >= 0) {
+        item = this.state.reportItem.get('data').get(index);
+      }
+
+      let props = {
+        ref: 'report_data_item',
+        data: item,
+        hierarchyId:this.props.hierarchyId,
+        sheetNames: this.state.sheetNames,
+        settingYear:this.state.reportItem.get('year'),
+        onSave: (item) => {
+          if(index >= 0) {
+            this.setState({
+              dialogEditDataIdx: null,
+              reportItem: this.state.reportItem.setIn(['data', index], item)
+            });
+          } else {
+            let reportData = this.state.reportItem.get('data').unshift(item)
+            this.setState({
+              dialogEditDataIdx: null,
+              reportItem: this.state.reportItem.set('data', reportData)
+            });
+          }
+        },
+        onClose: () => {          
+          this.setState({
+            dialogEditDataIdx: null
+          });
+        }
+      };
+      return (<ReportDataItem {...props}/>);
+    }
+    return null;
+  }
+
 	_renderReportData(){
-		var addReportDataButton = (<div className="kpi-report-add-button">
-				<LinkButton iconName={ "icon-hierarchy-fold" } onClick={this._addReportData}/>
-															</div>);
-		var dataLength = this.state.reportItem.get('data').size;
-		var reportData = this.state.reportItem.get('data').map((item, index)=>{
-		let props = {
-		key: dataLength - index,
-		ref: 'reportData' + (index + 1),
-		hierarchyId:this.props.hierarchyId,
-		disabled: false,
-		startTime: item.get('DataStartTime'),
-		endTime: item.get('DataEndTime'),
-		reportType: item.get('ReportType'),
-		dateType: item.get('DateType'),
-		step: item.get('ExportStep'),
-		numberRule: item.get('NumberRule'),
-		targetSheet: item.get('TargetSheet'),
-		isExportTagName: item.get('IsExportTagName'),
-		isExportTimestamp: item.get('IsExportTimestamp'),
-		startCell: item.get('StartCell'),
-		exportLayoutDirection: item.get('ExportLayoutDirection'),
-		sheetNames: this.state.sheetNames,
-		updateReportData: this._updateReportData,
-		deleteReportData: this._deleteReportData,
-		showStep: item.get('ReportType') === 1 ? false : true,
-		index: index,
-		dataLength: dataLength,
-		id: item.get('Id'),
-		tagList: item.get('TagsList'),
-		addReport: this.state.reportItem.get('id') === 0 ? true : false,
-		settingYear:this.state.reportItem.get('year')
-	};
-	return (
-		<ReportDataItem {...props}></ReportDataItem>
-		);
-});
-		return(
-			<div>
-				<div className="kpi-report-add">
-					<div className="kpi-report-add-text">{I18N.Setting.KPI.Report.Data}</div>
-					{addReportDataButton}
-				</div>
-				<div className="kpi-report-commnet">
-					{I18N.Setting.KPI.Report.DataComment}
-				</div>
-				<div className="kpi-report-data">
-					{reportData}
-				</div>
-			</div>
-
-		)
-	}
-
-	_renderFooter(){
-		return(
-			<div className="kpi-report-footer">
-				<FormBottomBar isShow={true} allowDelete={false} allowEdit={false} enableSave={!this.state.saveDisabled}
-					ref="actionBar" status={formStatus.EDIT} onSave={this._saveReport} onCancel={this.props.onCancel}
-					cancelBtnProps={{label:I18N.Common.Button.Cancel2}}/>
-			</div>
-
-		)
+    let isNew = this._isNew();
+    return (
+      <div className={classnames('kpi-report-data', {['jazz-card']: isNew})}>
+        {isNew ? <div>至少添加一组表格数据</div> :
+        <div style={{fontSize: '14px', fontWeight: 'bold', color: '#0f0f0f'}}>表格数据设置
+          <span style={{fontSize: '12px', color: 'red', marginLeft: 20}}>{'注：至少配置一组表格数据'}</span>
+        </div>}
+        {this._renderReportList()}
+        {this._renderEditDataDialog()}
+      </div>
+    );
 	}
 
   _renderUploadDialog() {
@@ -637,27 +755,7 @@ export default class ReportConfig extends Component {
 				I18N.EM.Report.DuplicatedName.replace(/{\w}/, '(.)*')
 			).test(this.state.errorMsg)
 		) {
-			return null
-			// return (
-			// 	<Dialog open={true} title={I18N.EM.Report.UploadNewTemplate} actions={[
-			// 		(<FlatButton label={I18N.EM.Report.Upload} onClick={() => {
-			// 			this.refs.upload_tempalte.upload({IsReplace: true});
-			// 			this.setState({
-			// 				errorMsg: null,
-			// 			}, () => {
-			// 				this.refs.upload_tempalte.reset();
-			// 			});
-			// 		}}/>),
-			// 		(<FlatButton label={I18N.Common.Button.Cancel2} onClick={() => {
-			// 			this.refs.upload_tempalte.reset();
-			// 			this.setState({
-			// 				errorMsg: null,
-			// 			});
-			// 		}}/>),
-			// 	]}>
-			// 	{this.state.errorMsg}
-			// 	</Dialog>
-			// );
+			return null;
 		} else {
 			var onClose = ()=> {
 				if(this.state.errorMsg===I18N.EM.Report.WrongExcelFile){
@@ -683,6 +781,15 @@ export default class ReportConfig extends Component {
 		}
 	}
 
+  _renderClose() {
+    return (
+      <FontIcon 
+        className='icon-close' 
+        style={{fontSize: '16px', position: 'absolute', right: 20, top: 20, cursor: 'pointer'}} 
+        onClick={this.props.onCancel}/>
+    );
+  }
+
 	componentWillMount(){
 	 customerId=parseInt(this.context.router.params.customerId);
     ReportAction.getTemplateListByCustomerId(customerId, 'Name', 'asc')
@@ -706,29 +813,64 @@ export default class ReportConfig extends Component {
 			return (<div className="noContent flex-center"><CircularProgress  mode="indeterminate" size={80} /></div>)
 		}
 		else {
-				let titleProps={
-					title:I18N.format(I18N.Setting.KPI.Report.ConfigTitle,hierarchyName),
-					contentStyle:{
-						marginLeft:'0'
-					},
-					titleStyle:{
-						fontSize:'16px'
-					},
-					className:'jazz-kpi-config-wrap',
-					style:{
-						paddingLeft:'50px',
-						marginTop:'0px'
-					}
-				};
-				return (
-					<TitleComponent {...titleProps}>
-            {this._renderReportInfo()}
-						{this._renderReportData()}
-						{this._renderFooter()}
+      if( this._isNew() ) {
+        let titleProps={
+          title:I18N.Setting.KPI.Report.ConfigTitle.New,
+          style: {margin: 0},
+          contentStyle:{
+            marginLeft:'0'
+          },
+          titleStyle:{
+            fontSize:'16px',
+            color: '#0f0f0f',
+            fontWeight: 'bold',
+          },
+          className:'jazz-kpi-config-wrap',
+        };
+        return (
+          <TitleComponent {...titleProps}>
+            {this._renderNav()}
+            {this.state.step === 0 && this._renderReportInfo()}
+            {this.state.step === 1 && this._renderReportData()}
+            {/*this._renderFooter()*/}
+            {this._renderStepButtons()}
+
             {this._renderUploadDialog()}
-						{this._renderErrorMsg()}
-					</TitleComponent>
-				);
+            {this._renderErrorMsg()}
+            {this._renderClose()}
+          </TitleComponent>
+        );
+      } else {
+        let titleProps={
+          title:I18N.Setting.KPI.Report.ConfigTitle.Edit,
+          style: {margin: 0},
+          contentStyle:{
+            marginLeft:'0'
+          },
+          titleStyle:{
+            fontSize:'16px',
+            color: '#0f0f0f',
+            fontWeight: 'bold',
+          },
+          className:'jazz-kpi-config-wrap',
+        },
+        reportItem = this.state.reportItem;
+        return (
+          <TitleComponent {...titleProps}>
+            <div className='jazz-card'> 
+              {this._renderReportInfo()}
+              {this._renderReportData()}
+              <div style={{marginTop: 40, marginLeft: 15, width: 450, marginBottom: 25, textAlign: 'right'}}>
+                <NewFlatButton disabled={reportItem.get('data').size === 0 || !reportItem.get('name')} onClick={this._saveReport} label={'保存并退出'} primary/>
+              </div>
+            </div>
+            {this._renderUploadDialog()}
+            {this._renderErrorMsg()}
+            {this._renderClose()}
+
+          </TitleComponent>
+        );        
+      }
 		}
 	}
 }
@@ -741,30 +883,6 @@ ReportConfig.propTypes = {
 };
 
 ReportConfig.defaultProps = {
-  // hierarchyId:React.PropTypes.number,
   hierarchyName:'SOHO China',
   report:null,
-	// Immutable.fromJS({
-	// 	"CreateUser":"",
-	// 	"CriteriaList":[
-	// 		{"ExportStep":1,
-	// 			"ExportLayoutDirection":0,
-	// 			"StartCell":"a1",
-	// 			"DataStartTime":"/Date(1454284800000)/",
-	// 			"NumberRule":0,
-	// 			"IsExportTagName":true,
-	// 			"DateType":33,
-	// 			"TargetSheet":"DataExport",
-	// 			"ReportType":0,
-	// 			"Index":0,
-	// 			"TagsList":[{"TagId":100021,"TagIndex":0}],
-	// 			"IsExportTimestamp":false,
-	// 			"DataEndTime":"/Date(1456790400000)/"}
-	// 		],
-	// 			"HierarchyId":100002,
-	// 			"Id":0,
-	// 			"Name":"1",
-	// 			"TemplateId":112,
-	// 			"Year":2016
-	// 		}),
 };
