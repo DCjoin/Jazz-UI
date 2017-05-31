@@ -149,6 +149,7 @@ let TemplateList = React.createClass({
       if (obj.success === true) {
         ReportAction.getTemplateListByCustomerId(parseInt(me.props.customerId), me.props.sortBy, 'asc');
         me._handleDialogDismiss();
+        this.refs.fileInput.value="";
       } else {
         me.setState({
           showUploadDialog: false,
@@ -294,6 +295,7 @@ let TemplateList = React.createClass({
                                });
                              }}
                              onCancel={()=>{
+                               this.refs.fileInput.value="";
                                this.setState({
                                 showUploadConfirm:false,
                                 fileName:''

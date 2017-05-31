@@ -61,7 +61,7 @@ var MonitorTag = React.createClass({
       page: 1,
       taglist: null,
       isLoading: true,
-      association: this.props.isDim ? 6 : 1,
+      association: this.props.isDim ? 5 : 1,
       addingTags: emptyList(),
       showFilter: false,
       filterObj: this._getInitFilterObj(),
@@ -494,7 +494,7 @@ var MonitorTag = React.createClass({
   },
   componentWillReceiveProps: function(nextProps) {
     var that = this;
-    var viewOption = this.props.isDim ? 6 : 1;
+    var viewOption = this.props.isDim ? 5 : 1;
     var editOption = this.props.isDim ? 12 : 13;
     if (nextProps.formStatus !== this.props.formStatus || nextProps.hierarchyId !== this.props.hierarchyId) {
       this.setState({
