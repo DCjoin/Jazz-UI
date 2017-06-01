@@ -191,12 +191,9 @@ export default class DataPanel extends Component {
 		var modifyData=this.state.modifyData,
 				utcTime=this.state.dataList.getIn([index,'UtcTime']),
 				mIndex=modifyData.find(data=>data.get('UtcTime')===utcTime);
-				if(value===''){
-					modifyData=mIndex>-1?this.state.modifyData.delete(mIndex):modifyData
-				}
-				else {
-					modifyData=mIndex>-1?this.state.modifyData.setIn([mIndex,"DataValue"],value):this.state.modifyData.push(this.state.dataList.getIn([index]).set('DataValue',value))
-				}
+				
+				modifyData=mIndex>-1?this.state.modifyData.setIn([mIndex,"DataValue"],value):this.state.modifyData.push(this.state.dataList.getIn([index]).set('DataValue',value))
+
 		this.setState({
 			dataList:this.state.dataList.setIn([index,'DataValue'],value),
 			modifyData:modifyData
