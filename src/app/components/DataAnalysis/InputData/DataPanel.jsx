@@ -278,7 +278,8 @@ export default class DataPanel extends Component {
 					<span>
 						<NewFlatButton label={I18N.Common.Button.Save} labelstyle={styles.label} secondary={true}
 							icon={saveIcon} style={styles.button}
-							onClick={()=>{this._handleSave()}}/>
+							onClick={()=>{this._handleSave()}}
+							disabled={this.state.isSaving}/>
 						<NewFlatButton label={I18N.Common.Button.Export} labelstyle={styles.label} secondary={true}
 								icon={<FontIcon className="icon-export" style={styles.label}/>} style={styles.button}
 								onClick={()=>{this._handleExport()}}/>
@@ -330,7 +331,7 @@ export default class DataPanel extends Component {
 						              style={{width: 'auto'}}
 						              defaultValue={data.get("DataValue")}
 													regex={Regex.TagRule}
-													errorMessage={'XX'}
+													errorMessage={I18N.Setting.DataAnalysis.InputDataErrorTip}
 													hintText={I18N.Setting.DataAnalysis.InputDataHintText}
 						              didBlur={(val) => {this._onValueChange(val,index)}}
 						            /></span>
