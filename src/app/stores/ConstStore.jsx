@@ -24,6 +24,26 @@ var ConstStore = assign({}, PrototypeStore, {
     this.searchDate = searchDate;
     return this.searchDate;
   },
+  getSearchDateForInputData() {
+    var searchDate = [
+      <MenuItem value='Customerize' primaryText={I18N.Common.DateRange.Customerize} />,
+      <MenuItem value='Last7Day' primaryText={I18N.Common.DateRange.Last7Day} />,
+      <MenuItem value='Last30Day' primaryText={I18N.Common.DateRange.Last30Day} />,
+      <MenuItem value='Last12Month' primaryText={I18N.Common.DateRange.Last12Month} />,
+      <MenuItem value='Today' primaryText={I18N.Common.DateRange.Today} />,
+      <MenuItem value='Yesterday' primaryText={I18N.Common.DateRange.Yesterday} />,
+      <MenuItem value='ThisWeek' primaryText={I18N.Common.DateRange.ThisWeek} />,
+      <MenuItem value='LastWeek' primaryText={I18N.Common.DateRange.LastWeek} />,
+      <MenuItem value='ThisMonth' primaryText={I18N.Common.DateRange.ThisMonth} />,
+      <MenuItem value='LastMonth' primaryText={I18N.Common.DateRange.LastMonth} />,
+      <MenuItem value='ThisYear' primaryText={I18N.Common.DateRange.ThisYear} />,
+      <MenuItem value='LastYear' primaryText={I18N.Common.DateRange.LastYear} />,
+      <MenuItem value='Last5Year' primaryText={I18N.Common.DateRange.Last5Year} />
+    ];
+
+    this.searchDate = searchDate;
+    return this.searchDate;
+  },
   getCarbonTypeItem() {
     var carbonTypeItem = [
       <MenuItem value={2} primaryText={I18N.Common.CarbonUomType.StandardCoal} />,

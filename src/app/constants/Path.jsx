@@ -50,7 +50,8 @@ module.exports = {
     templateReference:'/datareport/TemplateReference/{templateName}/{customerId}'
   },
   DataAnalysis:{
-    getWidgetGatherInfo:'/Widget/GetWidgetGatherInfo'
+    getWidgetGatherInfo:'/Widget/GetWidgetGatherInfo',
+    getLatestRawData:'/energy/Tag/{tagId}/LatestRawData'
   },
   ECM:{
     getEnergysolution:'/energysolution/{hierarchyId}/{status}/{smallSize}/{size}',

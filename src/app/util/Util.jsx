@@ -635,6 +635,11 @@ let CommonFuns = {
         region.start = new Date(now.getFullYear() - 1, 0, 1);
         region.end = firstdateofyear;
         break;
+        case 'last5year':
+          var firstdateofyear = new Date(now.getFullYear(), 0, 1);
+          region.start = new Date(now.getFullYear() - 5, 0, 1);
+          region.end = firstdateofyear;
+          break;
       default:
         break;
     }

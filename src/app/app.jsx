@@ -74,6 +74,8 @@ import HierarchyLog from './components/hierarchySetting/importLog/HierarchyLog.j
 import './less/main.less';
 
 import Diagnose from './components/Diagnose/Diagnose.jsx';
+import InputData from './components/DataAnalysis/InputData/InputDataPanel.jsx';
+import DataPanel from './components/DataAnalysis/InputData/DataPanel.jsx';
 
 
 window.currentUserId = getCookie('UserId');
@@ -229,6 +231,13 @@ ReactDom.render(<Router history={hashHistory} routes={{
         path: 'data_analysis',
         component: DataAnalysis,
         childRoutes: [{path:':nodeId', component: AnalysisPanel} ]
+      },{
+        onEnter: () => {
+          document.title = I18N.MainMenu.InputData;
+        },
+        path: 'input_data',
+        component: InputData,
+        childRoutes: [{path:':nodeId', component: DataPanel} ]
       }, {
         path: 'map',
         component: MapPanel
