@@ -75,7 +75,7 @@ export class Gallery extends Component {
 				<div className='jazz-scheme-gallery-action'>
 					{selectedIdx > 0 && <LinkButton iconName={'icon-arrow-left'} onClick={onLeft}/>}
 				</div>
-				<div className='jazz-scheme-gallery-content' style={{width: SVG_WIDTH}}>
+				<div className='jazz-scheme-gallery-content'>
 					<div className='jazz-scheme-gallery-content-header'>
 						{`(${selectedIdx+1}/${names.length})${names[selectedIdx]}`}
 						{names.length > 1 && <LinkButton className='jazz-scheme-gallery-content-header-delete' label={I18N.Common.Button.Delete} onClick={onDelete}/>}
