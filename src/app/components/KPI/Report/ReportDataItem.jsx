@@ -51,9 +51,9 @@ let ReportDataItem = React.createClass({
       payload: 4,
       text: I18N.Common.AggregationStep.Yearly
     }];
-    var start = this.getRealTime(this.props.data.startTime);
-    var end = this.getRealTime(this.props.data.endTime);
-    stepItems = this._getDisabledStepItems(this.props.data.dateType, Immutable.fromJS(stepItems), start, end);
+    var start = this.getRealTime(this.props.data.get('StartTime'));
+    var end = this.getRealTime(this.props.data.get('EndTime'));
+    stepItems = this._getDisabledStepItems(this.props.data.get('DateType'), Immutable.fromJS(stepItems), start, end);
     return {
       showTagSelectDialog: false,
       stepItems: stepItems,
