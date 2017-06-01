@@ -25,8 +25,8 @@ import EnergyStore from 'stores/Energy/EnergyStore.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
 
-const SVG_WIDTH = 1242;
-const SVG_HEIGHT = 828;
+const SVG_WIDTH = 900;
+const SVG_HEIGHT = 600;
 
 function SolutionFull() {
 	return PrivilegeUtil.isFull(PermissionCode.SOLUTION_FULL, CurrentUserStore.getCurrentPrivilege());
@@ -75,7 +75,7 @@ export class Gallery extends Component {
 				<div className='jazz-scheme-gallery-action'>
 					{selectedIdx > 0 && <LinkButton iconName={'icon-arrow-left'} onClick={onLeft}/>}
 				</div>
-				<div className='jazz-scheme-gallery-content'>
+				<div className='jazz-scheme-gallery-content' style={{width: SVG_WIDTH}}>
 					<div className='jazz-scheme-gallery-content-header'>
 						{`(${selectedIdx+1}/${names.length})${names[selectedIdx]}`}
 						{names.length > 1 && <LinkButton className='jazz-scheme-gallery-content-header-delete' label={I18N.Common.Button.Delete} onClick={onDelete}/>}
@@ -388,7 +388,7 @@ export class GenerateSolution extends Component {
 				open={true}
 				title={I18N.Setting.DataAnalysis.Scheme}
 				actions={[this._renderSubmit(), this._renderCancel()]}
-				wrapperStyle={{maxWidth: '100%', width: '100%'}}
+				wrapperStyle={{maxWidth: SVG_WIDTH + 24 * 2 + 20, width: SVG_WIDTH + 24 * 2 + 20}}
 				contentStyle={{overflowY: 'auto'}}>
 				{this._renderEnergyProblem()}
 				<div style={{margin: '10px 0', flex: 'none'}}>
@@ -431,7 +431,9 @@ export class GenerateSolutionButton extends Component {
 	    let {nodes, preAction, onOpen, disabled} = this.props,
 	    styles={
 	      button:{
-	        marginRight:'10px'
+	        marginRight:'10px',
+	        height: 30,
+	        lineHeight: '30px',
 	      },
 	      label:{
 	        fontSize:'14px'

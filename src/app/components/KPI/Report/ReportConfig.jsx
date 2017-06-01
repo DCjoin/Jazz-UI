@@ -695,6 +695,9 @@ export default class ReportConfig extends Component {
       let props = {
         ref: 'report_data_item',
         data: item,
+        itemsName: this.state.reportItem.get('data')
+                    .filter(data => data.get('Name') !== item.get('Name'))
+                    .map(data => data.get('Name')).toJS(),
         hierarchyId:this.props.hierarchyId,
         sheetNames: this.state.sheetNames,
         settingYear:this.state.reportItem.get('year'),
