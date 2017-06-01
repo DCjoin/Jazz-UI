@@ -81,6 +81,15 @@ module.exports = function(options) {
           }
           fs.writeFileSync(path.join(buildPath, "index.html"), html);
           fs.writeFileSync(path.join(buildPath,"UpdateBrowserTip.html"), fs.readFileSync(path.join(appRoot, "UpdateBrowserTip.html"), "utf-8"));
+
+          (function(){
+            var assetsPath = "/assets/";
+            var html = fs.readFileSync(path.join(appRoot, "DownloadApp.html"), "utf-8");
+            html = html.replace(/FAVICON_ICON/g,assetsPath + 'favicon.png');
+            html = html.replace(/PUBLIC_PATH/g,publicPath);
+            fs.writeFileSync(path.join(buildPath,"DownloadApp.html"), html);
+          })();
+
           console.log("ok");
         });
 
@@ -120,7 +129,7 @@ module.exports = function(options) {
       rules: [
         {
           test: /\.jsx?$/,
-          use: [/*"react-hot-loader", */"babel-loader"],
+          use: ["react-hot-loader", "babel-loader"],
           exclude: /node_modules/
         },
         {

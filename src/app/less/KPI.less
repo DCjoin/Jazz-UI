@@ -101,16 +101,25 @@
 .jazz-kpi-config{
   &-wrap{
     flex:1;
-    padding-top:30px;
+    padding:30px 20px;
     overflow-x: hidden;
     overflow-y: auto;
-    margin-top: -16px !important;
-    background-color: #ffffff;
     position: relative;
     .form-bottom .form-bottom-bar{
       left:170px !important;
     }
   }
+
+  .jazz-kpi-config-stepper {
+    margin-top: 14px;
+    height: 50px;
+    flex: none;
+  }
+}
+.jazz-card {
+  border-radius: 2px;
+  background-color: #ffffff;
+  border: solid 1px @border;  
 }
 .jazz-kpi-calc-month{
   margin-top: 30px;
@@ -197,19 +206,19 @@
   flex: 1;
 
   &-edit, &-overlay {
-    position: absolute;
+    position: fixed;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: #fff;
+    background-color: #f3f5f7;
     z-index: 2;
 		overflow-y: auto;
 		display: flex
   }
 
   &-content {
-    padding: 33px 9.7%;
+    padding: 30px 20px;
     overflow-x: hidden;
     overflow-y: auto;
     background-color: #f3f5f7;
@@ -989,11 +998,15 @@
 .kpi-report{
 	&-commnet{
 		font-size: 14px;
-		color:@schneiderGray;
+		color: red;
 	}
 	&-info{
+    margin-top: 20px;
+    padding: 20px 15px;
 		>div{
-			margin-bottom: 20px;
+      font-size: 15px;
+      color: rgba(0, 0, 0, 0.298039);
+      margin-bottom: 10px;
 		}
 		.templateMsg{
 			margin-left: 10px;
@@ -1004,35 +1017,127 @@
 			}
 		}
 	}
-	&-add{
-		padding: 15px 0px;
-		display: flex;
-		flex-direction: row;
-		margin: 0 auto;
-		border-top: 1px solid #ececec;
-		align-items: center;
-		>div{
-			padding-top: 5px;
-		}
-		&-text{
-			font-size: 14px;
-		}
-		&-button{
-			margin-left: 15px;
-			> button{
-			 border: none !important;
-			 background-color: transparent!important;
-			 &:hover{
-				 color:@schneiderBlue!important;
-				 background-color: '#e1fcff'!important;
-			 }
-			}
-		}
-	}
+
+  &-add-panel {
+    width: 450px;
+    height: 100px;
+    border-radius: 4px;
+    border: dashed 1px @medium-gray;
+
+    outline: none;
+    background-color: rgba(0, 0, 0, 0);
+    cursor: pointer;
+    color: #32ad3d;
+    font-size: 30px;
+    margin-top: 10px;
+  }
+
+  &-edit-data {
+    
+    &-header {
+      display: flex;
+      justify-content: space-between;
+      flex: none;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #d7d7d7;
+      font-size: 16px;
+      font-weight: bold;
+      color: #0f0f0f;
+
+      & .icon-close {
+        width: 20px;
+        height: 20px;
+
+        .pointer;
+      }
+    }
+
+    &-footer {
+      margin-bottom: -20px;
+    }
+
+  }
+/*   &-add{
+  padding: 15px 0px;
+  display: flex;
+  flex-direction: row;
+  margin: 0 auto;
+  border-top: 1px solid #ececec;
+  align-items: center;
+  >div{
+    padding-top: 5px;
+  }
+  &-text{
+    font-size: 14px;
+  }
+  &-button{
+    margin-left: 15px;
+    > button{
+     border: none !important;
+     background-color: transparent!important;
+     &:hover{
+       color:@schneiderBlue!important;
+       background-color: '#e1fcff'!important;
+     }
+    }
+  }
+} */
 	&-data{
-		display: flex;
-		flex-direction: column;
-		margin-left: -20px
+		// display: flex;
+		// flex-direction: column;
+		// margin-left: -20px
+    margin-top: 20px;
+    padding: 20px 15px;
+
+    &-item {
+      width: 450px;
+      height: 100px;
+      border-radius: 4px;
+      border: solid 1px @medium-gray;
+      margin-top: 10px;
+
+      &-header {
+        padding: 20px 10px 10px;
+      }
+
+      &-name {        
+        font-weight: bold;
+      }
+
+      &-action {
+        float: right;
+        display: flex;
+        width: 80px;
+        justify-content: space-between;
+      }
+
+      &-detail {
+        display: flex;
+        margin: 10px;
+
+        &-name {
+          color: #767a7a;
+          flex: none;
+        }
+        &-value {
+          margin-left: 0;
+          margin-right: 20px;
+        }
+      }
+    }
+
+    & .jazz-report-data-content {
+      overflow-y: auto;
+      overflow-x: hidden;
+      width: auto;
+      background-color: transparent;
+      margin: 0;
+      padding: 0;
+    }
+
+    & .jazz-report-data-container {
+      flex: none;
+    }
 	}
 	&-footer{
 		.form-bottom .form-bottom-bar{
