@@ -64,11 +64,16 @@ export default class InputDataPanel extends Component {
 	_renderContent(){
 		var {selectedTag}=this.state;
 		if(selectedTag===null) return null
+		if(this.props.children){
+			return React.cloneElement(this.props.children, {
+	          	selectedTag,
+	            hierarchyId: this.context.hierarchyId,
+	          });
+		}
+		else {
+			return null
+		}
 
-		return React.cloneElement(this.props.children, {
-          	selectedTag,
-            hierarchyId: this.context.hierarchyId,
-          });
 	}
 
 	componentWillMount(){
