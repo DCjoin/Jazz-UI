@@ -23,6 +23,16 @@ var PTagBasic = React.createClass({
       this.props.mergeTag(data);
     }
   },
+  _getCollectionMethodList: function() {
+    let collectionMethodList = [{
+      payload: 1,
+      text: I18N.Setting.Tag.Meter
+    }, {
+      payload: 2,
+      text: I18N.Setting.Tag.Manual
+    }];
+    return collectionMethodList;
+  },
   _getCalculationStepList: function() {
     let calculationStepList = [{
       payload: 6,
@@ -73,8 +83,20 @@ var PTagBasic = React.createClass({
     var me = this;
     var isView = this.props.isViewStatus;
     var selectedTag = this.props.selectedTag,
-      {Code, MeterCode, ChannelId, CalculationStep, CalculationType, Slope, Offset, IsAccumulated, Comment,EnergyLabelId } = selectedTag.toJS();
-    var codeProps = {
+      {CollectionMethod,Code, MeterCode, ChannelId, CalculationStep, CalculationType, Slope, Offset, IsAccumulated, Comment,EnergyLabelId } = selectedTag.toJS();
+    var   collectTypeProps = {
+            ref: 'collect',
+            isViewStatus: isView,
+            title: I18N.Setting.Tag.CollectType,
+            defaultValue: CollectionMethod,
+            dataItems: me._getCollectionMethodList(),
+            didChanged: value => {
+              me.props.mergeTag({
+                value,
+                path: "CollectionMethod"
+              });
+            }
+          },codeProps = {
         ref: 'code',
         isViewStatus: isView,
         title: I18N.Setting.Tag.Code,
@@ -236,6 +258,9 @@ var PTagBasic = React.createClass({
     return (
       <div className={"pop-customer-detail-content jazz-tag-right-panel"}>
         <div className="pop-customer-detail-content-left">
+          <div className="pop-customer-detail-content-left-item">
+            <ViewableDropDownMenu {...collectTypeProps}/>
+          </div>
           <div className="pop-customer-detail-content-left-item">
             <ViewableTextField {...codeProps}/>
           </div>

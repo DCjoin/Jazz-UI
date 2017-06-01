@@ -44,6 +44,7 @@ import MeasuresAction from 'actions/ECM/MeasuresAction.jsx';
 import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
 import {Status} from 'constants/actionType/Measures.jsx';
+import InputDataAction from 'actions/DataAnalysis/InputDataAction.jsx';
 
 function getFirstMenuPathFunc(menu) {
   let firstMenu = menu[0];
@@ -173,6 +174,11 @@ let MainApp = React.createClass({
       DiagnoseAction.getDiagnoseStatic(this.state.hierarchyId);
     }
   },
+  _getInputDataList(){
+    if(this.state.hierarchyId){
+      InputDataAction.getTags(this.props.params.customerId,this.state.hierarchyId,1);
+    }
+  },
   _dataReady: function() {
     let {router, params} = this.props,
     {customerId} = params;
@@ -191,13 +197,14 @@ let MainApp = React.createClass({
           if( initHierarchyId ) {
             hierarchyId = initHierarchyId * 1;
           }
-          
+
           this.setState({
             hierarchyId
           },this.forceUpdate);
 
           this._getECMUnread();
           this._getDiagnoseProblem();
+          this._getInputDataList();
           DiagnoseAction.getConsultant(hierarchyId);
 
         } else {
@@ -262,8 +269,10 @@ let MainApp = React.createClass({
         let {pathname, query} = this.props.router.location;
         query.init_hierarchy_id = hierarchyId;
         this.props.router.push(pathname + '?' + querystring.stringify(query) );
+
         this._getECMUnread();
         this._getDiagnoseProblem();
+        this._getInputDataList();
       });
     };
     let doned = false;
@@ -351,7 +360,7 @@ let MainApp = React.createClass({
               {...DiagnoseStore.getConsultant()}
               HierarchyName={
                 customerId == hierarchyId ? getCustomerById(customerId).Name :
-                (find(HierarchyStore.getBuildingList(), 
+                (find(HierarchyStore.getBuildingList(),
                   hier => hier.Id === this.state.hierarchyId)||{}).Name}
             />}
           </div>
