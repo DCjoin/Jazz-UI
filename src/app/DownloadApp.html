@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html style="height:100%;overflow:hidden;background-color:#fbfbfb;font-family:Lantinghei sc,Microsoft YaHei Light,Microsoft YaHei!important">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link rel="shortcut icon" href="/assets/favicon.png" type="image/x-icon" />
+		<title>下载云能效APP</title>
+		<style type="text/css">
+			/*common*/
+			body {
+				width: 100%;
+				height: 100%;
+				margin: 0px;
+				color: #464949;
+			}
+			.center {
+				text-align: center;
+			}
+			.no-shrink {
+				height: 644px;
+			}
+			/*common end*/
+			.container {
+				width: 100%;
+			  height: 100%;
+			  overflow-x: hidden;
+			}
+
+			.logo {
+				padding-top: 30px;
+				padding-bottom: 16px;
+			}
+			.logo img {
+				width: 168px;
+				height: 168px;
+			}
+
+			.title {
+				padding-bottom: 16px;
+			}
+			.title span {
+				font-size: 32px;
+			}
+
+			.app-info {
+				padding-bottom: 16px;
+				color: #abafae;
+				font-size: 26px;
+			}
+			.app-version {
+				padding-right: 10px;
+			}
+			.app-size {
+				padding-left: 10px;
+			}
+
+			.down-link a {
+				text-decoration: none;
+				text-align: center;
+				color: #03b679;
+				font-size: 40px;
+				font-family: Arial;
+				height: 60px;
+				border: 1px solid #03b679;
+				background-color: #ffffff;
+				border-radius: 10px;
+				width: 202px;
+				display: inline-block;
+				line-height: 60px;
+			}
+
+			.down-other-title {
+				padding-bottom: 16px;
+				font-size: 26px;
+				color: #abafae;
+			}
+			.down-other-links {
+				padding-bottom: 26px;
+			}
+			.down-other-link {
+				width: 33%;
+				float: left;
+			}
+			.link-icon {
+				text-decoration: none;
+				color: inherit;
+			}
+			.download-icon {
+				margin-left: auto;
+				margin-right: auto;
+			}
+			.icon-tencent {
+				width: 80px;
+				height: 80px;
+				background-image: url(/assets/icon_tencent.png);
+				background-repeat: round;
+			}
+			.icon-baidu {
+				width: 80px;
+				height: 80px;
+				background-image: url(/assets/icon_baidu.png);
+				background-repeat: round;
+			}
+			.icon-wandoujia {
+				width: 80px;
+				height: 80px;
+				background-image: url(/assets/icon_wandoujia.png);
+				background-repeat: round;
+			}
+			.link-text {
+				padding-top: 16px;
+				font-size: 26px;
+				text-align: center;
+			}
+			.img-section {
+				border-top: 2px solid #e3e5e4;
+				height: calc(100% - 646px);
+				min-height: 600px;
+				overflow-x: scroll;
+				overflow-y: hidden;
+			}
+			.img-section img {
+				height: auto;
+			}
+
+			.ios-container {
+				padding: 0 145px;
+				height: 100%;
+			}
+			.ios-text {
+				font-size: 36px;
+				text-align: center;
+				display: flex;
+				display: -webkit-box;
+				flex-direction: column;
+				-webkit-box-orient: horizontal;
+			  align-items: center;
+				-webkit-box-align: center;
+			}
+			.mms-text {
+				height: 50px;
+				line-height: 50px;
+				font-size: 16px;
+				color: #f46a58;
+				visibility: hidden;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!-- ios page -->
+		<div id="ios_page" style="display: none" class="ios-container">
+			<div style="height: 30%"></div>
+			<div class="ios-text">由于微信的限制，请点击右上角按钮，选择“在Safari中打开”，下载云能效</div>
+		</div>
+
+		<!-- android page -->
+		<div id="android_page" style="display: none" class="container">
+			<div class="no-shrink">
+				<div id="logo" class="logo center">
+					<img src="/assets/favicon.png"  alt="云能效" />
+				</div>
+				<div id="title" class="title center"><span>云能效</span><span id="test_os"></span></div>
+				<div id="app-info" class="app-info center">
+					<!-- 版本号 -->
+					<span id="app-version" class="app-version">版本：v3.4.12</span>
+					<!-- App文件大小 -->
+					<span id="app-size" class="app-size">大小：9.98M</span>
+				</div>
+				<div class="down-link center">
+					<!-- 本地下载地址 -->
+						<a href="http://energymost-upload.oss-cn-hangzhou.aliyuncs.com/app-prod-release-3.4.12.apk" onclick="localDownload()">本地下载</a>
+					<div id="mms_text" class="mms-text">请选择用其他浏览器打开本页，然后点击本地下载</div>
+				</div>
+				<div class="down-other-title center">其他下载方式</div>
+				<div class="down-other-links center">
+					<div class="down-other-link">
+						<!-- 在应用宝中的下载地址 -->
+						<a class="link-icon" href="http://app.qq.com/#id=detail&appid=1105223377">
+							<div class="icon-tencent download-icon"></div>
+							<div class="link-text">应用宝</div>
+						</a>
+					</div>
+					<div class="down-other-link">
+						<!-- 在豌豆荚中的下载地址 -->
+						<a class="link-icon" href="http://www.wandoujia.com/apps/com.energymost.rock">
+							<div class="icon-wandoujia download-icon"></div>
+							<div class="link-text">豌豆荚</div>
+						</a>
+					</div>
+					<div class="down-other-link">
+						<!-- 在百度应用中的下载地址 -->
+						<a class="link-icon" href="http://shouji.baidu.com/software/9786087.html">
+							<div class="icon-baidu download-icon"></div>
+							<div class="link-text">百度助手</div>
+						</a>
+					</div>
+					<div style="clear:both;"></div>
+				</div>
+			</div>
+			<div id="img_section" class="img-section">
+				<img id="img" src="/assets/appStore.png"/>
+			</div>
+		</div>
+		<script>
+			function iOS() {
+				var iDevices = [
+					'iPad Simulator',
+					'iPhone Simulator',
+					'iPod Simulator',
+					'iPad',
+					'iPhone',
+					'iPod'
+				];
+				if (!!navigator.platform) {
+					while (iDevices.length) {
+						if (navigator.platform === iDevices.pop()){ return true; }
+					}
+				}
+				return false;
+			}
+
+			function isMS() {
+				var ua = window.navigator.userAgent.toLowerCase();
+				return ua.match(/MicroMessenger/i) == 'micromessenger';
+			}
+
+			if(iOS()){
+				if(isMS()){
+					document.getElementById('ios_page').style.display = 'block';
+				} else {
+					location.assign('https://itunes.apple.com/us/app/disco/id1002265425?l=zh&ls=1&mt=8');
+				}
+			} else {
+				if(isMS()){
+					document.getElementById('mms_text').style.visibility = 'visible';
+				}
+				document.getElementById('android_page').style.display = 'block';
+				var imgHeight = document.getElementById('img_section').getBoundingClientRect().height;
+				document.getElementById('img').style.width = Number(imgHeight * (1800 / 740)) + 'px';
+			}
+
+			function localDownload(e) {
+				var xmlhttp;
+				if (window.XMLHttpRequest) {
+				  xmlhttp = new XMLHttpRequest();
+					xmlhttp.open("GET","/api/common/apkdownload");
+					xmlhttp.send();
+				}
+			}
+		</script>
+	</body>
+</html>
