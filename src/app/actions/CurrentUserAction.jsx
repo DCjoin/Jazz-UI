@@ -107,11 +107,6 @@ let CurrentUserAction = {
       }
     });
   },
-  resetMenuFlag(){
-    AppDispatcher.dispatch({
-      type: Action.RESET_MENU_FLAG,
-    });
-  }
 };
 
 module.exports = CurrentUserAction;

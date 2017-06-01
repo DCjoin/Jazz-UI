@@ -186,7 +186,7 @@ var CurrentUserStore = assign({}, PrototypeStore, {
     var _tagList=tagData===null?[]:tagData.Data;
 
     if(_tagList.length!==0){
-      _dataAnalysisMenu=      {
+      _dataAnalysisMenu={
               name: 'dataAnalysis',
               title: I18N.MainMenu.DataAnalysis,
               children: [{
@@ -204,6 +204,12 @@ var CurrentUserStore = assign({}, PrototypeStore, {
                 ]
               }]
             }
+    }
+    else {
+      _dataAnalysisMenu={
+            getPath: RoutePath.dataAnalysis,
+            title: I18N.MainMenu.DataAnalysis
+          }
     }
   },
   getDataAnalysisMenu(){
@@ -481,11 +487,6 @@ CurrentUserStore.dispatchToken = AppDispatcher.register(function(action) {
     //是否添加录入数据二级菜单（数据分析）
     case DataAnalysisAction.GET_MANUAL_TAGS:
         CurrentUserStore.setInputDataMenu(action.tagData);
-        CurrentUserStore.emitCurrentUserChange()
-        break;
-    //切换层级时清空所有标志
-  case DataAnalysisAction.RESET_MENU_FLAG:
-        CurrentUserStore.resetAllFalg();
         CurrentUserStore.emitCurrentUserChange()
         break;
   }

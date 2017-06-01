@@ -290,6 +290,7 @@ I18N.Common.DateRange.LastYear = '去年';
 I18N.Common.DateRange.Customerize = '自定义';
 I18N.Common.DateRange.CustomerizeTime = '自定义';
 I18N.Common.DateRange.RelativedTime = '相对时间';
+I18N.Common.DateRange.Last5Year = '最近5年';
 
 I18N.Common.Glossary.Order = {};
 I18N.Common.Glossary.Order.Ascending = '升序';
@@ -2178,6 +2179,8 @@ I18N.Setting.DataAnalysis.NotagRecommend = '点击“+数据点”按钮，选�
 I18N.Setting.DataAnalysis.SaveTip = '图表未保存，是否保存图表并离开？';
 I18N.Setting.DataAnalysis.LeaveTip = '图表为空，离开将直接删除该图表，是否离开？';
 I18N.Setting.DataAnalysis.SearchHintText = '搜索当前项目下数据点';
+I18N.Setting.DataAnalysis.InputDataHintText = '请输入数据';
+I18N.Setting.DataAnalysis.InputDataLeaveTip = '数据未保存，是否保存数据并离开？';
 
 I18N.Setting.ECM = {};
 I18N.Setting.ECM.EstimatedAnnualCostSavings = '预计年节约成本';

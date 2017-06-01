@@ -13,15 +13,10 @@ var total=0;
 
 export default class TagList extends Component {
 
-	static contextTypes = {
-		hierarchyId: PropTypes.string
-	};
-
   constructor(props) {
     super(props);
     this._onChange = this._onChange.bind(this);
 		this._getTag = this._getTag.bind(this);
-
   }
 
   state={
@@ -37,8 +32,8 @@ export default class TagList extends Component {
     })
   }
 
-  _getTag(){
-    InputDataAction.getTags(this.props.customerId,this.props.hierarchyId,page);
+  _getTag(props=this.props){
+    InputDataAction.getTags(props.customerId,props.hierarchyId,page);
   }
 
   _onPrePage() {
@@ -101,11 +96,12 @@ export default class TagList extends Component {
   }
 
 	componentWillReceiveProps(nextProps, nextContext) {
-		if( !util.shallowEqual(nextContext.hierarchyId, this.context.hierarchyId) ) {
+		if( !util.shallowEqual(nextProps.hierarchyId, this.props.hierarchyId) ) {
 			page=0;
 			this.setState({
 			tagList:null
 			});
+			this._getTag(nextProps)
 		}
 	}
 
