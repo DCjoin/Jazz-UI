@@ -51,9 +51,9 @@ let ReportDataItem = React.createClass({
       payload: 4,
       text: I18N.Common.AggregationStep.Yearly
     }];
-    var start = this.getRealTime(this.props.data.startTime);
-    var end = this.getRealTime(this.props.data.endTime);
-    stepItems = this._getDisabledStepItems(this.props.data.dateType, Immutable.fromJS(stepItems), start, end);
+    var start = this.getRealTime(this.props.data.get('StartTime'));
+    var end = this.getRealTime(this.props.data.get('EndTime'));
+    stepItems = this._getDisabledStepItems(this.props.data.get('DateType'), Immutable.fromJS(stepItems), start, end);
     return {
       showTagSelectDialog: false,
       stepItems: stepItems,
@@ -66,6 +66,9 @@ let ReportDataItem = React.createClass({
   },
   _isValid() {
     var isValid;
+    if( !this.state.data.get('Name') || this.props.itemsName.indexOf(this.state.data.get('Name')) !== -1 ) {
+      return false;
+    }
     if (this.state.data.get('TagsList').size === 0) {
       return false;
     }
@@ -413,16 +416,6 @@ let ReportDataItem = React.createClass({
       </div>
     </NewDialog></div>);
   },
-  // componentWillReceiveProps: function(nextProps) {
-  //   if (nextProps.id !== this.state.data.get('id')) {
-  //     var start = this.getRealTime(nextProps.startTime);
-  //     var end = this.getRealTime(nextProps.endTime);
-  //     var stepItems = this._getDisabledStepItems(nextProps.dateType, this.state.stepItems, start, end);
-  //     this.setState({
-  //       stepItems: stepItems
-  //     });
-  //   }
-  // },
   componentDidUpdate: function() {
       var dateSelector = this.refs.dateTimeSelector;
       if (this.state.data.get('DateType') !== 33) {
@@ -579,7 +572,12 @@ let ReportDataItem = React.createClass({
       ref: 'reportTypeName',
       defaultValue: this.state.data.get('Name'),
       title: '表格数据名称',
-      didChanged: this._onReprtNameChange
+      didChanged: this._onReprtNameChange,
+      regexFn: (val) => {
+        if( this.props.itemsName.indexOf(val) !== -1 ) {
+          return '此名称已存在，请重新输入';
+        }
+      }
     };
     var reportTypeProps = {
       ref: 'reportTypeId',
