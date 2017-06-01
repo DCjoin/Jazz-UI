@@ -24,8 +24,8 @@ module.exports = {
     DELETE_SUPERVISOR_ERROR:null,
     DELETE_SUPERVISOR_SUCCESS:null,
   }),
-  ThumbnailSize:'w_160,h_80',
-  DetailSize:'w_600,h_300',
+  ThumbnailSize:'w_146,h_97',
+  DetailSize:'w_600,h_400',
   Status:{
     NotPush:1,
     ToBe:2,
