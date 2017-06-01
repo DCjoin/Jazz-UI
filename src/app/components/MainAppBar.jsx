@@ -315,26 +315,21 @@ var MainAppBar = React.createClass({
           <div className="sidebar-title" >
               {I18N.Platform.About.Title}
           </div>
-          <div className="sidebar-content">
-            <div className="pop-userprofile-auth">
-              <h3>{I18N.Platform.About.QrCode}</h3>
-              <h3>{I18N.Platform.About.ipadQrCode}</h3>
-                <div className="jazz-ipadQrCode">
-                </div>
-                <h3>{I18N.Platform.About.WeChatQrCode}</h3>
-
-                    <div className="jazz-qrCode">
-                  </div>
+          <div className="sidebar-content" style={{color: '#0d0d0d', paddingLeft: 30}}>
+            <div style={{marginTop: 25}}>
+              <div style={{fontSize: '16px'}}>{'云能效'}</div>
+              <div>{'随时随地查看和分配节能方案'}</div>
+              <div className="jazz-qrCode"/>
+              <div style={{textAlign: 'center', fontSize: '12px'}}>{'扫描下载云能效客户端'}</div>
             </div>
-            <div className="pop-userprofile-auth">
-              <h3>{I18N.Platform.About.ContactUs}</h3>
-              <div><span>云晓旭 商务经理</span></div>
-              <div><span>18611757398</span></div>
-              <div><span>xiaoxu-bean.yun@schneider-electric.com</span></div>
-              <h3></h3>
-              <div><span>郭全 商务经理</span></div>
-              <div><span>18611257740</span></div>
-              <div><span>quan.guo@schneider-electric.com  </span></div>
+            <div style={{position: 'absolute', bottom: 75, fontSize: '12px'}}>
+              <div style={{fontSize: '14px'}}>{I18N.Platform.About.ContactUs}</div>
+              <div style={{marginTop: 10}}><span style={{fontSize: '14px', marginRight: 30}}>郭玉锦</span>商务支持</div>
+              <div>18616885310</div>
+              <div>yujin.guo@schneider-electric.com</div>
+              <div style={{marginTop: 10}}><span style={{fontSize: '14px', marginRight: 30}}>郭玉锦</span>技术支持</div>
+              <div>18616885310</div>
+              <div>yujin.guo@schneider-electric.com</div>
             </div>
           </div>
     </SideNav>);
