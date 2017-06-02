@@ -57,9 +57,11 @@ const SelectCustomer = React.createClass({
   },
   componentWillMount() {
     HierarchyStore.addBuildingListListener(this._onChange);
+    window.addEventListener('resize', this._handleResize);
   },
   componentWillUnmount: function() {
     HierarchyStore.removeBuildingListListener(this._onChange);
+    window.removeEventListener('resize', this._handleResize);
   },
   getInitialState() {
     selectCustomerId = null;
@@ -68,6 +70,9 @@ const SelectCustomer = React.createClass({
       hierarchyList: null,
       selectCustomerId: null,      
     }
+  },
+  _handleResize() {
+    this.forceUpdate();
   },
   _onChange() {
     let hierarchyList = HierarchyStore.getBuildingList();
