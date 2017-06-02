@@ -667,31 +667,45 @@ export default class ReportConfig extends Component {
     list = [];
 
     if( reportItem && reportItem.get('data').size > 0 ) {
-      list = reportItem.get('data').map( (item, idx) => 
-      <div className='kpi-report-data-item'>
-        <header className='kpi-report-data-item-header'>
-          <span className='kpi-report-data-item-name hiddenEllipsis' title={item.get('Name')}>{item.get('Name')}</span>
-          <span className='kpi-report-data-item-action'>
-            <LinkButton label={'编辑'} onClick={() => {
-              this.setState({
-                dialogEditDataIdx: idx,
-              });
-            }}/>
-            <LinkButton label={'删除'} onClick={() => {
-              this._willdeleteReportData(idx);
-              // this._deleteReportData(idx);
-            }}/>   
-          </span>
-        </header>
-        <dl className='kpi-report-data-item-detail'>
-          <dt className='kpi-report-data-item-detail-name'>{'起始单元格'}</dt>
-          <dd className='kpi-report-data-item-detail-value'>{item.get('StartCell')}</dd>
-          <dt className='kpi-report-data-item-detail-name'>{'数据点'}</dt>
-          <dd className='kpi-report-data-item-detail-value'>{item.get('TagsList').size + '个'}</dd>
-          <dt className='kpi-report-data-item-detail-name'>{'模板Sheet'}</dt>
-          <dd className='kpi-report-data-item-detail-value hiddenEllipsis' title={item.get('TargetSheet')}>{item.get('TargetSheet')}</dd>
-        </dl>
-      </div>
+      list = reportItem.get('data').map( (item, idx) => {
+        let noSheet = ReportStore.getSheetNamesByTemplateId(this.state.reportItem.get('templateId'))
+                        .indexOf(item.get('TargetSheet')) === -1,
+        noSheetStyle = noSheet ? {
+          marginBottom: 20
+        } : {},
+        noSheetValStyle = noSheet ? {
+          color: 'red'
+        } : {};
+        return (
+          <div className='kpi-report-data-item' style={noSheetStyle}>
+            <header className='kpi-report-data-item-header'>
+              <span className='kpi-report-data-item-name hiddenEllipsis' title={item.get('Name')}>{item.get('Name')}</span>
+              <span className='kpi-report-data-item-action'>
+                <LinkButton label={'编辑'} onClick={() => {
+                  this.setState({
+                    dialogEditDataIdx: idx,
+                  });
+                }}/>
+                <LinkButton label={'删除'} onClick={() => {
+                  this._willdeleteReportData(idx);
+                  // this._deleteReportData(idx);
+                }}/>   
+              </span>
+            </header>
+            <dl className='kpi-report-data-item-detail'>
+              <dt className='kpi-report-data-item-detail-name'>{'起始单元格'}</dt>
+              <dd className='kpi-report-data-item-detail-value'>{item.get('StartCell')}</dd>
+              <dt className='kpi-report-data-item-detail-name'>{'数据点'}</dt>
+              <dd className='kpi-report-data-item-detail-value'>{item.get('TagsList').size + '个'}</dd>
+              <dt className='kpi-report-data-item-detail-name' style={noSheetValStyle}>{'模板Sheet'}</dt>
+              <dd className='kpi-report-data-item-detail-value hiddenEllipsis' style={noSheetValStyle} title={!noSheet && item.get('TargetSheet')}>{
+                  noSheet ? '-' : item.get('TargetSheet')
+              }</dd>
+            </dl>
+            {noSheet && <footer style={{color: 'red', fontSize: '12px', marginTop: 20}}>模板已被替换，请重新选择</footer>}
+          </div>
+        );
+      }
        ).toJS();
     }
     return list.concat(<button className='kpi-report-add-panel icon-add' onClick={() => {

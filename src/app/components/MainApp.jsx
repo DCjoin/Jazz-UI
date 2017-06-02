@@ -349,7 +349,7 @@ let MainApp = React.createClass({
           <div className='jazz-main'>
             <MainAppBar
               topSelectHierarchy={this._renderTopSelectHierarchy()}
-              disabledSelectCustomer={MainApp.needDefaultReplace(this.props.router)}
+              disabledSelectCustomer={!LoginStore.checkHasSpAdmin() && CurrentUserCustomerStore.getAll().length < 2}
               items={menuItems}
               logoUrl={customerId && 'Logo.aspx?hierarchyId=' + customerId}
               changeHierarchy={this._setHierarchyId}/>
