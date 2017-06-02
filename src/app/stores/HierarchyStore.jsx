@@ -4,6 +4,7 @@ import assign from 'object-assign';
 import Immutable from 'immutable';
 
 import Hierarchy from '../constants/actionType/Hierarchy.jsx';
+import LoginActionType from '../constants/actionType/Login.jsx';
 let HIERARCHY_NODE_EVENT = 'checkallstatus';
 let NODE_LOADING_EVENT = 'nodeloading';
 let BUILDING_LIST_EVENT = 'building_list_event';
@@ -156,6 +157,10 @@ HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
       }
       HierarchyStore.setBuildingListForCustomerId(action.customerId);
       HierarchyStore.emitBuildingListChange();
+      break;
+    case LoginActionType.Action.LOGOUT:
+      HierarchyStore.setBuildingList(null);
+      HierarchyStore.setBuildingListForCustomerId(null);
       break;
 
   }

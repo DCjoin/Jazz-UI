@@ -87,6 +87,9 @@ class CustomDropDownMenu extends Component {
               opened: true,
               anchorEl: ReactDom.findDOMNode(this),
             });
+            if(this.props.onOpen) {
+              this.props.onOpen();
+            }
           }}
           style={{
           position: 'absolute',
@@ -587,7 +590,9 @@ export default class ReportConfig extends Component {
                 <FontIcon className='icon-setting' style={{fontSize: '15px', color: '#32ad3d'}}/>
               </a>
             </div>
-            <CustomDropDownMenu label={
+            <CustomDropDownMenu onOpen={() =>{
+              this.refs.upload_tempalte.reset();
+            }} label={
               reportItem.get('templateId') && ReportStore.getTemplateItems(templateList)
                 .find(item => item.payload === reportItem.get('templateId')).text
               }>
@@ -602,7 +607,7 @@ export default class ReportConfig extends Component {
                 }}>{item.text}</div>
               </MenuItem>
                 )}
-              <a href='javascript:void(0)' style={{
+              <label htmlFor={'upload_tempalte'} style={{
                 color: '#9fa0a4', 
                 fontSize: '14px', 
                 textDecoration: 'underline', 
@@ -610,21 +615,25 @@ export default class ReportConfig extends Component {
                 lineHeight: '48px', 
                 margin: '0 16px',
                 position: 'relative',
+                cursor: 'pointer',
               }}>
                 添加报表模板
-                <UploadForm
-                  ref={'upload_tempalte'}
-                  action={'http://sp1.energymost.com/TagImportExcel.aspx?Type=ReportTemplate'}
-                  fileName={'templateFile'}
-                  enctype={'multipart/form-data'}
-                  method={'post'}
-                  onload={this._onUploadDone}
-                  onChangeFile={this._onChangeFile}>
-                  <input type="hidden" name='CustomerId' value={parseInt(customerId)}/>
-                  <input type="hidden" name='IsActive' value={true}/>
-                </UploadForm>
-              </a>
+              </label>
             </CustomDropDownMenu>
+            <div style={{zIndex: -1, position: 'relative'}}>
+              <UploadForm
+                id={'upload_tempalte'}
+                ref={'upload_tempalte'}
+                action={'http://sp1.energymost.com/TagImportExcel.aspx?Type=ReportTemplate'}
+                fileName={'templateFile'}
+                enctype={'multipart/form-data'}
+                method={'post'}
+                onload={this._onUploadDone}
+                onChangeFile={this._onChangeFile}>
+                <input type="hidden" name='CustomerId' value={parseInt(customerId)}/>
+                <input type="hidden" name='IsActive' value={true}/>
+              </UploadForm>
+            </div>
             {downloadButton}
           </div>
 					{this.state.fileName!=='' && this.state.showUploadConfirm && <UploadConfirmDialog name={this.state.fileName}
