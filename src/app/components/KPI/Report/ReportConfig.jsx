@@ -663,7 +663,7 @@ export default class ReportConfig extends Component {
       list = reportItem.get('data').map( (item, idx) => 
       <div className='kpi-report-data-item'>
         <header className='kpi-report-data-item-header'>
-          <span className='kpi-report-data-item-name'>{item.get('Name')}</span>
+          <span className='kpi-report-data-item-name hiddenEllipsis' title={item.get('Name')}>{item.get('Name')}</span>
           <span className='kpi-report-data-item-action'>
             <LinkButton label={'编辑'} onClick={() => {
               this.setState({
