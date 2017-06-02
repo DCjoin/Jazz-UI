@@ -18,6 +18,7 @@ import ReactDom from 'react-dom';
 import Config from 'config';
 import NewDialog from 'controls/NewDialog.jsx';
 import RefreshIndicator from 'material-ui/RefreshIndicator';
+import {Snackbar} from 'material-ui';
 
 function getRelativeDateByStep(step){
 		switch (step) {
@@ -97,7 +98,8 @@ export default class DataPanel extends Component {
 		relativeDate:null,
 		modifyData:Immutable.fromJS([]),
 		leaveDialogShow:false,
-		isSaving:false
+		isSaving:false,
+		saveSuccessText:null
 	}
 
 	_initDataTime(step,data){
@@ -195,7 +197,8 @@ export default class DataPanel extends Component {
 				...timeRange,
 				dataList:InputDataStore.getDataList(),
 				modifyData:saveSuccessed?Immutable.fromJS([]):this.state.modifyData,
-				isSaving:false
+				isSaving:false,
+				saveSuccessText:saveSuccessed?I18N.Setting.DataAnalysis.InputDataSaveSuccess:null
 			})
 		}
 
@@ -215,14 +218,11 @@ export default class DataPanel extends Component {
 	}
 
 	_handleSave(){
-		if(this.state.modifyData.size!==0){
 			this.setState({
 				isSaving:true
 			},()=>{
 				InputDataAction.saveRawData(this.state.dataList,this.state.modifyData.toJS(),this.props.selectedTag.get('Id'))
 			})
-
-		}
 	}
 
 	_handleExport(){
@@ -435,6 +435,7 @@ export default class DataPanel extends Component {
 					{this._renderDataTable()}
 					{this.state.leaveDialogShow && this._renderLeaveDialog()}
 					<iframe style={{display: 'none'}} ref='exportIframe'></iframe>
+					<Snackbar ref='snackbar' autoHideDuration={4000} open={!!this.state.saveSuccessText} onRequestClose={()=>{this.setState({saveSuccessText:null})}} message={this.state.saveSuccessText}/>
 				</div>
 			)
 		}
