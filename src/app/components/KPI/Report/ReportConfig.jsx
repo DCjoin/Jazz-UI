@@ -677,11 +677,11 @@ export default class ReportConfig extends Component {
         </header>
         <dl className='kpi-report-data-item-detail'>
           <dt className='kpi-report-data-item-detail-name'>{'起始单元格'}</dt>
-          <dd className='kpi-report-data-item-detail-value hiddenEllipsis'>{item.get('StartCell')}</dd>
+          <dd className='kpi-report-data-item-detail-value'>{item.get('StartCell')}</dd>
           <dt className='kpi-report-data-item-detail-name'>{'数据点'}</dt>
-          <dd className='kpi-report-data-item-detail-value hiddenEllipsis'>{item.get('TagsList').size + '个'}</dd>
+          <dd className='kpi-report-data-item-detail-value'>{item.get('TagsList').size + '个'}</dd>
           <dt className='kpi-report-data-item-detail-name'>{'模板Sheet'}</dt>
-          <dd className='kpi-report-data-item-detail-value hiddenEllipsis'>{item.get('TargetSheet')}</dd>
+          <dd className='kpi-report-data-item-detail-value hiddenEllipsis' title={item.get('TargetSheet')}>{item.get('TargetSheet')}</dd>
         </dl>
       </div>
        ).toJS();

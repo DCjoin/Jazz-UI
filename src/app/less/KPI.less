@@ -1114,14 +1114,20 @@
       &-detail {
         display: flex;
         margin: 10px;
+        font-size: 14px;
 
         &-name {
           color: #767a7a;
           flex: none;
         }
         &-value {
+          flex: none;
           margin-left: 0;
           margin-right: 20px;
+
+          &.hiddenEllipsis {
+            flex: 1;
+          }
         }
       }
     }
