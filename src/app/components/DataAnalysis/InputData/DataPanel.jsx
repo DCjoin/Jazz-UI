@@ -55,7 +55,6 @@ function getInitEndDate(data,step){
 		let date= CommonFuns.dateAdd(CommonFuns.DataConverter.JsonToDateTime(data), 30 , 'days');
 		if(date.getTime()<endDate.getTime()) return date
 	}
-
 		return endDate
 
 }
@@ -72,6 +71,10 @@ function getMinusStepDate(date,step){
 
 function getExportDate(date,step){
 	return getMinusStepDate(CommonFuns.DataConverter.JsonToDateTime(date),step)
+}
+
+function validate(data){
+	return data.map(item=>Regex.TagRule.test(item.get('DataValue') || 0)).includes(false)
 }
 
 export default class DataPanel extends Component {
@@ -282,8 +285,7 @@ export default class DataPanel extends Component {
     	position: 'relative',
   		},
 		};
-		var saveIcon=this.state.isSaving?<RefreshIndicator size={20} top={0} status="loading" style={styles.refresh}/>
-																:<FontIcon className="icon-save" style={{fontSize:'14px',marginRight:12}}/>;
+		var saveIcon=<FontIcon className="icon-save" style={{fontSize:'14px',marginRight:12}}/>;
 			return(
 				<div className="jazz-input-data-content-panel-header">
 					<span>{this.props.selectedTag.get('Name')}</span>
@@ -291,7 +293,7 @@ export default class DataPanel extends Component {
 						<NewFlatButton label={I18N.Common.Button.Save} labelstyle={styles.label} secondary={true}
 							icon={saveIcon} style={styles.button}
 							onClick={()=>{this._handleSave()}}
-							disabled={this.state.isSaving}/>
+							disabled={this.state.isSaving || validate(this.state.dataList)}/>
 						<NewFlatButton label={I18N.Common.Button.Export} labelstyle={styles.label} secondary={true}
 								icon={<FontIcon className="icon-export" style={styles.label}/>} style={styles.button}
 								onClick={()=>{this._handleExport()}}/>

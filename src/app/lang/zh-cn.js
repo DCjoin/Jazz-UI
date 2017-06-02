@@ -2184,7 +2184,7 @@ I18N.Setting.DataAnalysis.LeaveTip = '图表为空，离开将直接删除该图
 I18N.Setting.DataAnalysis.SearchHintText = '搜索当前项目下数据点';
 I18N.Setting.DataAnalysis.InputDataHintText = '请输入数据';
 I18N.Setting.DataAnalysis.InputDataLeaveTip = '数据未保存，是否保存数据并离开？';
-I18N.Setting.DataAnalysis.InputDataErrorTip = '格式错误，请从新输入';
+I18N.Setting.DataAnalysis.InputDataErrorTip = '格式错误，请重新输入';
 I18N.Setting.DataAnalysis.InputDataSaveSuccess = '数据保存成功';
 
 I18N.Setting.ECM = {};
