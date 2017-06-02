@@ -388,7 +388,7 @@ export class GenerateSolution extends Component {
 				open={true}
 				title={I18N.Setting.DataAnalysis.Scheme}
 				actions={[this._renderSubmit(), this._renderCancel()]}
-				wrapperStyle={{maxWidth: SVG_WIDTH + 24 * 2 + 20, width: SVG_WIDTH + 24 * 2 + 20}}
+				wrapperStyle={{maxWidth: SVG_WIDTH + 44 * 2 + 20, width: SVG_WIDTH + 44 * 2 + 20}}
 				contentStyle={{overflowY: 'auto'}}>
 				{this._renderEnergyProblem()}
 				<div style={{margin: '10px 0', flex: 'none'}}>
