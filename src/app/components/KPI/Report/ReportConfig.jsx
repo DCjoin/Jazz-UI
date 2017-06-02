@@ -38,8 +38,8 @@ import UploadConfirmDialog from './UploadConfirmDialog.jsx';
 
 function stepLabelProps(stepValue, currentStep) {
   let props = {
-    style: {      
-      height: 50, 
+    style: {
+      height: 50,
       fontSize: 14,
       color: '#0f0f0f',
       fontWeight: 'bold',
@@ -77,7 +77,7 @@ class CustomDropDownMenu extends Component {
   }
   render() {
     return (
-      <div style={{position: 'relative', width: 430,}}>        
+      <div style={{position: 'relative', width: 430,}}>
         <TextField fullWidth={true} hintText='请选择' value={this.props.label} inputStyle={{
           width: 400,
           textOverflow: 'ellipsis',
@@ -123,8 +123,8 @@ class CustomDropDownMenu extends Component {
             <Menu listStyle={{
                 display: 'inline',
                 width: 'auto',
-              }} 
-              style={{width: 430}} 
+              }}
+              style={{width: 430}}
               onClick={() => {
                 this.setState({
                   opened: false,
@@ -172,7 +172,7 @@ export default class ReportConfig extends Component {
     fileName: '',
 		errorMsg:null,
 		isLoading:false,
-		showUploadConfirm:false, 
+		showUploadConfirm:false,
     step: 0,
     willDeleteIndex: null,
 	};
@@ -527,7 +527,7 @@ export default class ReportConfig extends Component {
       </div>);
     } else {
       let disabled = !this.state.reportItem.get('data') || !this.state.reportItem.get('data').size;
-      return (<div style={{marginTop: 20}}>        
+      return (<div style={{marginTop: 20}}>
         <NewFlatButton style={{float: 'left'}} secondary label={'上一步'} onClick={this._setStep(0)}/>
         <NewFlatButton style={{float: 'right'}} disabled={disabled} primary label={'完成'} onClick={this._saveReport}/>
       </div>);
@@ -563,9 +563,9 @@ export default class ReportConfig extends Component {
       };
 
       var downloadButton = (<div className='jazz-report-rightpanel-template-download-button' style={{marginBottom:'10px'}}>
-          <NewFlatButton secondary 
-            label={I18N.EM.Report.DownloadTemplate} 
-            onClick={this._downloadTemplate} 
+          <NewFlatButton secondary
+            label={I18N.EM.Report.DownloadTemplate}
+            onClick={this._downloadTemplate}
             style={{
               height: 23,
               width: 68,
@@ -604,7 +604,7 @@ export default class ReportConfig extends Component {
                 .find(item => item.payload === reportItem.get('templateId')).text
               }>
               <div style={{color: '#9fa0a4', fontSize: '14px', height: 48, lineHeight: '48px', padding: '0 16px'}}>请选择</div>
-              {ReportStore.getTemplateItems(templateList).map(item => 
+              {ReportStore.getTemplateItems(templateList).map(item =>
               <MenuItem onTouchTap={() => {
                 this._onExistTemplateChange(item.payload)
               }} >
@@ -615,11 +615,11 @@ export default class ReportConfig extends Component {
               </MenuItem>
                 )}
               <label htmlFor={'upload_tempalte'} style={{
-                color: '#9fa0a4', 
-                fontSize: '14px', 
-                textDecoration: 'underline', 
-                height: 48, 
-                lineHeight: '48px', 
+                color: '#9fa0a4',
+                fontSize: '14px',
+                textDecoration: 'underline',
+                height: 48,
+                lineHeight: '48px',
                 margin: '0 16px',
                 position: 'relative',
                 cursor: 'pointer',
@@ -631,7 +631,7 @@ export default class ReportConfig extends Component {
               <UploadForm
                 id={'upload_tempalte'}
                 ref={'upload_tempalte'}
-                action={'http://sp1.energymost.com/TagImportExcel.aspx?Type=ReportTemplate'}
+                action={'TagImportExcel.aspx?Type=ReportTemplate'}
                 fileName={'templateFile'}
                 enctype={'multipart/form-data'}
                 method={'post'}
@@ -667,7 +667,7 @@ export default class ReportConfig extends Component {
     list = [];
 
     if( reportItem && reportItem.get('data').size > 0 ) {
-      list = reportItem.get('data').map( (item, idx) => 
+      list = reportItem.get('data').map( (item, idx) =>
       <div className='kpi-report-data-item'>
         <header className='kpi-report-data-item-header'>
           <span className='kpi-report-data-item-name hiddenEllipsis' title={item.get('Name')}>{item.get('Name')}</span>
@@ -680,7 +680,7 @@ export default class ReportConfig extends Component {
             <LinkButton label={'删除'} onClick={() => {
               this._willdeleteReportData(idx);
               // this._deleteReportData(idx);
-            }}/>   
+            }}/>
           </span>
         </header>
         <dl className='kpi-report-data-item-detail'>
@@ -732,7 +732,7 @@ export default class ReportConfig extends Component {
             });
           }
         },
-        onClose: () => {          
+        onClose: () => {
           this.setState({
             dialogEditDataIdx: null
           });
@@ -782,7 +782,7 @@ export default class ReportConfig extends Component {
             willDeleteIndex: null
           });
         }}/>,
-        <NewFlatButton label={I18N.Common.Button.Cancel2} onClick={() => {          
+        <NewFlatButton label={I18N.Common.Button.Cancel2} onClick={() => {
           this.setState({
             willDeleteIndex: null
           });
@@ -833,9 +833,9 @@ export default class ReportConfig extends Component {
 
   _renderClose() {
     return (
-      <FontIcon 
-        className='icon-close' 
-        style={{fontSize: '16px', position: 'absolute', right: 20, top: 20, cursor: 'pointer'}} 
+      <FontIcon
+        className='icon-close'
+        style={{fontSize: '16px', position: 'absolute', right: 20, top: 20, cursor: 'pointer'}}
         onClick={this.props.onCancel}/>
     );
   }
@@ -908,7 +908,7 @@ export default class ReportConfig extends Component {
         reportItem = this.state.reportItem;
         return (
           <TitleComponent {...titleProps}>
-            <div className='jazz-card'> 
+            <div className='jazz-card'>
               {this._renderReportInfo()}
               {this._renderReportData()}
               <div style={{marginTop: 40, marginLeft: 15, width: 450, marginBottom: 25, textAlign: 'right'}}>
@@ -921,7 +921,7 @@ export default class ReportConfig extends Component {
             {this._renderClose()}
 
           </TitleComponent>
-        );        
+        );
       }
 		}
 	}
