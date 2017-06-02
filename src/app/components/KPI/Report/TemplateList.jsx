@@ -90,12 +90,13 @@ let TemplateList = React.createClass({
       <FlatButton
       labelPosition="before"
       label={I18N.EM.Report.Replace}
-      onClick={()=>{ReactDom.findDOMNode(this.refs.fileInput).click()}}
+      containerElement="label"
+      htmlFor={'templateFile'}
       />,
 
       <FlatButton
       label={I18N.Common.Button.Cancel}
-      onClick={this._handleDialogDismiss} />
+      onClick={this._handleDialogDismiss}/>
     ];
 
     return (<NewDialog
@@ -149,8 +150,9 @@ let TemplateList = React.createClass({
       if (obj.success === true) {
         ReportAction.getTemplateListByCustomerId(parseInt(me.props.customerId), me.props.sortBy, 'asc');
         me._handleDialogDismiss();
-        this.refs.fileInput.value="";
+        me.refs.fileInput.value="";
       } else {
+        me.refs.fileInput.value="";
         me.setState({
           showUploadDialog: false,
           fileName: ''
@@ -160,7 +162,7 @@ let TemplateList = React.createClass({
 
     let form = createElement('form', {
       method: 'post',
-      action: 'TagImportExcel.aspx?Type=ReportTemplate',
+      action: 'http://sp1.energymost.com/TagImportExcel.aspx?Type=ReportTemplate',
       target: '_self',
       enctype: 'multipart/form-data',
       name: 'inputForm'
@@ -289,6 +291,7 @@ let TemplateList = React.createClass({
         {this.state.fileName!=='' && this.state.showUploadConfirm && <UploadConfirmDialog name={this.state.fileName}
                              onConfirm={()=>{
                                this._replaceTemplate();
+                               this.refs.fileInput.value="";
                                this.setState({
                                  showUploadConfirm:false,
                                  showUploadDialog: true
@@ -301,7 +304,7 @@ let TemplateList = React.createClass({
                                 fileName:''
                               });
                              }}/>}
-        <input type='file' onChange={this._replaceTemplateConfirm} name='templateFile' ref='fileInput' style={{
+        <input type='file' onChange={this._replaceTemplateConfirm} id="templateFile" name='templateFile' ref='fileInput' style={{
                                cursor: 'pointer',
                                position: 'absolute',
                                top: 0,
