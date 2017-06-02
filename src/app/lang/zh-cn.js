@@ -278,6 +278,7 @@ I18N.Common.Label.ExcelColumnError = '请按照Excel单元格名称填写，如C
 I18N.Common.DateRange = {};
 I18N.Common.DateRange.Last7Day = '最近7天';
 I18N.Common.DateRange.Last30Day = '最近30天';
+I18N.Common.DateRange.Last31Day = '最近31天';
 I18N.Common.DateRange.Last12Month = '最近12月';
 I18N.Common.DateRange.Today = '今天';
 I18N.Common.DateRange.Yesterday = '昨天';

@@ -75,7 +75,7 @@ const InputDataStore = assign({}, PrototypeStore, {
       return([
         <MenuItem value='Customerize' primaryText={I18N.Common.DateRange.Customerize} />,
         <MenuItem value='Last7Day' primaryText={I18N.Common.DateRange.Last7Day} />,
-        <MenuItem value='Last30Day' primaryText={I18N.Common.DateRange.Last30Day} />,
+        <MenuItem value='Last31Day' primaryText={I18N.Common.DateRange.Last31Day} />,
         <MenuItem value='Today' primaryText={I18N.Common.DateRange.Today} />,
         <MenuItem value='Yesterday' primaryText={I18N.Common.DateRange.Yesterday} />,
         <MenuItem value='ThisWeek' primaryText={I18N.Common.DateRange.ThisWeek} />,
@@ -87,7 +87,7 @@ const InputDataStore = assign({}, PrototypeStore, {
       return ([
         <MenuItem value='Customerize' primaryText={I18N.Common.DateRange.Customerize} />,
         <MenuItem value='Last7Day' primaryText={I18N.Common.DateRange.Last7Day} />,
-        <MenuItem value='Last30Day' primaryText={I18N.Common.DateRange.Last30Day} />,
+        <MenuItem value='Last31Day' primaryText={I18N.Common.DateRange.Last31Day} />,
         <MenuItem value='Last12Month' primaryText={I18N.Common.DateRange.Last12Month} />,
         <MenuItem value='Today' primaryText={I18N.Common.DateRange.Today} />,
         <MenuItem value='Yesterday' primaryText={I18N.Common.DateRange.Yesterday} />,

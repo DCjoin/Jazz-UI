@@ -27,7 +27,7 @@ function getRelativeDateByStep(step){
 					 return 'Last7Day';
 					 break;
 			case TimeGranularity.Daily:
-					 return 'Last30Day';
+					 return 'Last31Day';
 					 break;
 			case TimeGranularity.Monthly:
 					 return 'Last12Month';
@@ -176,7 +176,6 @@ export default class DataPanel extends Component {
 	}
 
 	_onChange(saveSuccessed=false){
-		console.log(saveSuccessed);
 		if(this.state.startDate===null){
 			var {CalculationStep}=this.props.selectedTag.toJS(),timeRange=null;
 
