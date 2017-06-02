@@ -18,6 +18,7 @@ import ReactDom from 'react-dom';
 import Config from 'config';
 import NewDialog from 'controls/NewDialog.jsx';
 import RefreshIndicator from 'material-ui/RefreshIndicator';
+import {Snackbar} from 'material-ui';
 
 function getRelativeDateByStep(step){
 		switch (step) {
@@ -27,7 +28,7 @@ function getRelativeDateByStep(step){
 					 return 'Last7Day';
 					 break;
 			case TimeGranularity.Daily:
-					 return 'Last30Day';
+					 return 'Last31Day';
 					 break;
 			case TimeGranularity.Monthly:
 					 return 'Last12Month';
@@ -59,6 +60,20 @@ function getInitEndDate(data,step){
 
 }
 
+function getValidDateFormat(date,step){
+	//date must be millisecond
+	if(step===TimeGranularity.Monthly || step===TimeGranularity.Yearly) return new Date(date)
+	else return date
+}
+
+function getMinusStepDate(date,step){
+	return CommonFuns.DateComputer.MinusStep(getValidDateFormat(date,step),step,CommonFuns.DateComputer.FixedTimes)
+}
+
+function getExportDate(date,step){
+	return getMinusStepDate(CommonFuns.DataConverter.JsonToDateTime(date),step)
+}
+
 export default class DataPanel extends Component {
 
 	static contextTypes = {
@@ -83,14 +98,15 @@ export default class DataPanel extends Component {
 		relativeDate:null,
 		modifyData:Immutable.fromJS([]),
 		leaveDialogShow:false,
-		isSaving:false
+		isSaving:false,
+		saveSuccessText:null
 	}
 
 	_initDataTime(step,data){
 		if(data!==null){
 				return {
 					relativeDate:'Customerize',
-					startDate:CommonFuns.DataConverter.JsonToDateTime(data,false),
+					startDate:getMinusStepDate(CommonFuns.DataConverter.JsonToDateTime(data),step),
 					endDate:getInitEndDate(data,step)
 				}
 		}else {
@@ -181,7 +197,8 @@ export default class DataPanel extends Component {
 				...timeRange,
 				dataList:InputDataStore.getDataList(),
 				modifyData:saveSuccessed?Immutable.fromJS([]):this.state.modifyData,
-				isSaving:false
+				isSaving:false,
+				saveSuccessText:saveSuccessed?I18N.Setting.DataAnalysis.InputDataSaveSuccess:null
 			})
 		}
 
@@ -191,7 +208,7 @@ export default class DataPanel extends Component {
 		var modifyData=this.state.modifyData,
 				utcTime=this.state.dataList.getIn([index,'UtcTime']),
 				mIndex=modifyData.find(data=>data.get('UtcTime')===utcTime);
-				
+
 				modifyData=mIndex>-1?this.state.modifyData.setIn([mIndex,"DataValue"],value):this.state.modifyData.push(this.state.dataList.getIn([index]).set('DataValue',value))
 
 		this.setState({
@@ -201,14 +218,11 @@ export default class DataPanel extends Component {
 	}
 
 	_handleSave(){
-		if(this.state.modifyData.size!==0){
 			this.setState({
 				isSaving:true
 			},()=>{
 				InputDataAction.saveRawData(this.state.dataList,this.state.modifyData.toJS(),this.props.selectedTag.get('Id'))
 			})
-
-		}
 	}
 
 	_handleExport(){
@@ -222,7 +236,8 @@ export default class DataPanel extends Component {
 			var createElement = window.Highcharts.createElement,
 	      discardElement = window.Highcharts.discardElement,
 					frame = ReactDom.findDOMNode(this.refs.exportIframe),
-					doc = frame.contentDocument;
+					doc = frame.contentDocument,
+					{CalculationStep}=this.props.selectedTag.toJS();
 
 			let url = Config.ServeAddress + Config.APIBasePath + `/widget/exportrawdata/${this.props.selectedTag.get('Id')}`;
 			let form = createElement('form', {
@@ -236,7 +251,7 @@ export default class DataPanel extends Component {
 						 createElement('input', {
 								 type: 'hidden',
 								 name: 'startTime',
-								 value: CommonFuns.DataConverter.DatetimeToJson(this.state.startDate)
+								 value: CommonFuns.DataConverter.DatetimeToJson(getExportDate(this.state.dataList.getIn([0,'UtcTime']),CalculationStep))
 						 }, null, form);
 
 						 createElement('input', {
@@ -420,6 +435,7 @@ export default class DataPanel extends Component {
 					{this._renderDataTable()}
 					{this.state.leaveDialogShow && this._renderLeaveDialog()}
 					<iframe style={{display: 'none'}} ref='exportIframe'></iframe>
+					<Snackbar ref='snackbar' autoHideDuration={4000} open={!!this.state.saveSuccessText} onRequestClose={()=>{this.setState({saveSuccessText:null})}} message={this.state.saveSuccessText}/>
 				</div>
 			)
 		}

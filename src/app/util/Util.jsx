@@ -573,6 +573,11 @@ let CommonFuns = {
         region.start = dateAdd(now, -29, 'days');
         region.end = dateAdd(now, 1, 'days');
         break;
+      case 'last31day':
+          now.setHours(0, 0, 0, 0);
+          region.start = dateAdd(now, -30, 'days');
+          region.end = dateAdd(now, 1, 'days');
+          break;
       case 'last12month':
         now.setHours(0, 0, 0, 0);
         now.setDate(1);
