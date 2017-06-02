@@ -544,7 +544,7 @@ let ReportDataItem = React.createClass({
     dataSourceButton =<FlatButton secondary={true} style={{border:'1px solid #abafae',width:'150px'}} label={this.state.data.get('TagsList').size===0 ? I18N.EM.Report.SelectTag : I18N.EM.Report.EditTag} onClick={this._showTagsDialog}/>,
     dateTimeSelector = <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={this._onDateSelectorChanged} showTime={false}/>,
     diplayCom = null;
-    if (this.state.data.get('ReportType') === 1) {
+    if (this.state.data.get('ReportType') === 0) {
       var stepProps = {
         ref: 'stepId',
         dataItems: this.state.stepItems.toJS(),
