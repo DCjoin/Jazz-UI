@@ -174,6 +174,7 @@ export default class ReportConfig extends Component {
 		isLoading:false,
 		showUploadConfirm:false, 
     step: 0,
+    willDeleteIndex: null,
 	};
 
 	_onChange(){
@@ -404,6 +405,12 @@ export default class ReportConfig extends Component {
   		})
   	});
 	}
+
+  _willdeleteReportData(index) {
+    this.setState({
+      willDeleteIndex: index
+    });
+  }
 
 	_onSave(Id){
 		this.setState({
@@ -663,7 +670,7 @@ export default class ReportConfig extends Component {
       list = reportItem.get('data').map( (item, idx) => 
       <div className='kpi-report-data-item'>
         <header className='kpi-report-data-item-header'>
-          <span className='kpi-report-data-item-name'>{item.get('Name')}</span>
+          <span className='kpi-report-data-item-name hiddenEllipsis' title={item.get('Name')}>{item.get('Name')}</span>
           <span className='kpi-report-data-item-action'>
             <LinkButton label={'编辑'} onClick={() => {
               this.setState({
@@ -671,17 +678,18 @@ export default class ReportConfig extends Component {
               });
             }}/>
             <LinkButton label={'删除'} onClick={() => {
-              this._deleteReportData(idx);
+              this._willdeleteReportData(idx);
+              // this._deleteReportData(idx);
             }}/>   
           </span>
         </header>
         <dl className='kpi-report-data-item-detail'>
           <dt className='kpi-report-data-item-detail-name'>{'起始单元格'}</dt>
-          <dd className='kpi-report-data-item-detail-value hiddenEllipsis'>{item.get('StartCell')}</dd>
+          <dd className='kpi-report-data-item-detail-value'>{item.get('StartCell')}</dd>
           <dt className='kpi-report-data-item-detail-name'>{'数据点'}</dt>
-          <dd className='kpi-report-data-item-detail-value hiddenEllipsis'>{item.get('TagsList').size + '个'}</dd>
+          <dd className='kpi-report-data-item-detail-value'>{item.get('TagsList').size + '个'}</dd>
           <dt className='kpi-report-data-item-detail-name'>{'模板Sheet'}</dt>
-          <dd className='kpi-report-data-item-detail-value hiddenEllipsis'>{item.get('TargetSheet')}</dd>
+          <dd className='kpi-report-data-item-detail-value hiddenEllipsis' title={item.get('TargetSheet')}>{item.get('TargetSheet')}</dd>
         </dl>
       </div>
        ).toJS();
@@ -758,6 +766,36 @@ export default class ReportConfig extends Component {
     open={true}
     modal={true}>
       {I18N.format(I18N.EM.Report.UploadingTemplate, this.state.fileName)}
+    </Dialog>);
+  }
+
+  _renderDeleteDialog() {
+    let msg = '';
+    if( this.state.willDeleteIndex !== null ) {
+      msg = `删除表格数据“${this.state.reportItem.getIn(['data', this.state.willDeleteIndex, 'Name'])}”吗？`
+    }
+    return (<Dialog
+      actions={[
+        <NewFlatButton label={I18N.Common.Button.Delete} secondary onClick={() => {
+          this._deleteReportData(this.state.willDeleteIndex);
+          this.setState({
+            willDeleteIndex: null
+          });
+        }}/>,
+        <NewFlatButton label={I18N.Common.Button.Cancel2} onClick={() => {          
+          this.setState({
+            willDeleteIndex: null
+          });
+        }}/>
+      ]}
+      open={this.state.willDeleteIndex !== null}>
+      <div style={{
+        minHeight: '60px',
+        fontSize: '18px',
+        lineHeight: '60px',
+      }}>
+      {msg}
+      </div>
     </Dialog>);
   }
 
@@ -848,6 +886,7 @@ export default class ReportConfig extends Component {
             {this._renderStepButtons()}
 
             {this._renderUploadDialog()}
+            {this._renderDeleteDialog()}
             {this._renderErrorMsg()}
             {this._renderClose()}
           </TitleComponent>
@@ -877,6 +916,7 @@ export default class ReportConfig extends Component {
               </div>
             </div>
             {this._renderUploadDialog()}
+            {this._renderDeleteDialog()}
             {this._renderErrorMsg()}
             {this._renderClose()}
 

@@ -1098,30 +1098,39 @@
 
       &-header {
         padding: 20px 10px 10px;
+        display: flex;
       }
 
       &-name {        
         font-weight: bold;
+        flex: 1;
+        margin-right: 10px;
       }
 
       &-action {
-        float: right;
         display: flex;
         width: 80px;
+        flex: none;
         justify-content: space-between;
       }
 
       &-detail {
         display: flex;
         margin: 10px;
+        font-size: 14px;
 
         &-name {
           color: #767a7a;
           flex: none;
         }
         &-value {
+          flex: none;
           margin-left: 0;
           margin-right: 20px;
+
+          &.hiddenEllipsis {
+            flex: 1;
+          }
         }
       }
     }
