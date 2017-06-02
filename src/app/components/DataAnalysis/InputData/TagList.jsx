@@ -76,7 +76,8 @@ export default class TagList extends Component {
     return(
       <div style={{
             minHeight: '52px',
-            paddingRight: '10px'
+            paddingRight: '10px',
+            marginBottom:'30px'
           }}>
           <Pagination previousPage={()=>{this._onPrePage()}}
             nextPage={()=>{this._onNextPage()}}
