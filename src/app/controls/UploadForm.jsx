@@ -39,12 +39,12 @@ export default class UploadForm extends Component {
 		this.refs.fileInput.value = '';
 	}
 	render() {
-		let {action, fileName, method, onChangeFile} = this.props;
+		let {action, fileName, method, onChangeFile, id} = this.props;
 		return (
 			<form target={UPLOAD_IFRAME} style={{display: 'inline'}}
 				action={action} 
 				method={method} >
-				<input type='file' ref='fileInput' 
+				<input id={id} name={id} type='file' ref='fileInput' 
 					style={{
 					    cursor: 'pointer',
 					    position: 'absolute',
