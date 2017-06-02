@@ -46,7 +46,7 @@ const InputDataStore = assign({}, PrototypeStore, {
   getRawDataList(startDate,endDate,step){
     dataArr=[];
     var startTime=startDate.getTime(),endTime=endDate.getTime();
-    if (_rawData===null) startTime=DateComputer.AddSevralStep(startTime,step,1).getTime();
+    startTime=DateComputer.AddSevralStep(startDate,step,1).getTime();
     while(startTime<=endTime){
         if(_rawData===null){
           dataArr.push({
@@ -62,7 +62,7 @@ const InputDataStore = assign({}, PrototypeStore, {
             DataQuality:startTime===DataConverter.JsonToDateTime(_rawData.UtcTime,true)?_rawData.DataQuality:0,
           });
         }
-      startTime=DateComputer.AddSevralStep(startTime,step,1).getTime();
+      startTime=DateComputer.AddSevralStep(new Date(startTime),step,1).getTime();
     }
     return Immutable.fromJS(dataArr);
 

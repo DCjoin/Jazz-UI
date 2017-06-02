@@ -59,6 +59,20 @@ function getInitEndDate(data,step){
 
 }
 
+function getValidDateFormat(date,step){
+	//date must be millisecond
+	if(step===TimeGranularity.Monthly || step===TimeGranularity.Yearly) return new Date(date)
+	else return date
+}
+
+function getMinusStepDate(date,step){
+	return CommonFuns.DateComputer.MinusStep(getValidDateFormat(date,step),step,CommonFuns.DateComputer.FixedTimes)
+}
+
+function getExportDate(date,step){
+	return getMinusStepDate(CommonFuns.DataConverter.JsonToDateTime(date),step)
+}
+
 export default class DataPanel extends Component {
 
 	static contextTypes = {
@@ -90,7 +104,7 @@ export default class DataPanel extends Component {
 		if(data!==null){
 				return {
 					relativeDate:'Customerize',
-					startDate:CommonFuns.DataConverter.JsonToDateTime(data,false),
+					startDate:getMinusStepDate(CommonFuns.DataConverter.JsonToDateTime(data),step),
 					endDate:getInitEndDate(data,step)
 				}
 		}else {
@@ -162,6 +176,7 @@ export default class DataPanel extends Component {
 	}
 
 	_onChange(saveSuccessed=false){
+		console.log(saveSuccessed);
 		if(this.state.startDate===null){
 			var {CalculationStep}=this.props.selectedTag.toJS(),timeRange=null;
 
@@ -191,7 +206,7 @@ export default class DataPanel extends Component {
 		var modifyData=this.state.modifyData,
 				utcTime=this.state.dataList.getIn([index,'UtcTime']),
 				mIndex=modifyData.find(data=>data.get('UtcTime')===utcTime);
-				
+
 				modifyData=mIndex>-1?this.state.modifyData.setIn([mIndex,"DataValue"],value):this.state.modifyData.push(this.state.dataList.getIn([index]).set('DataValue',value))
 
 		this.setState({
@@ -222,7 +237,8 @@ export default class DataPanel extends Component {
 			var createElement = window.Highcharts.createElement,
 	      discardElement = window.Highcharts.discardElement,
 					frame = ReactDom.findDOMNode(this.refs.exportIframe),
-					doc = frame.contentDocument;
+					doc = frame.contentDocument,
+					{CalculationStep}=this.props.selectedTag.toJS();
 
 			let url = Config.ServeAddress + Config.APIBasePath + `/widget/exportrawdata/${this.props.selectedTag.get('Id')}`;
 			let form = createElement('form', {
@@ -236,7 +252,7 @@ export default class DataPanel extends Component {
 						 createElement('input', {
 								 type: 'hidden',
 								 name: 'startTime',
-								 value: CommonFuns.DataConverter.DatetimeToJson(this.state.startDate)
+								 value: CommonFuns.DataConverter.DatetimeToJson(getExportDate(this.state.dataList.getIn([0,'UtcTime']),CalculationStep))
 						 }, null, form);
 
 						 createElement('input', {
