@@ -64,7 +64,6 @@ const InputDataAction = {
             alldata
           });
         }
-
       },
       error: function(err, res) {
       }

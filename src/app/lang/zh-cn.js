@@ -278,6 +278,7 @@ I18N.Common.Label.ExcelColumnError = '请按照Excel单元格名称填写，如C
 I18N.Common.DateRange = {};
 I18N.Common.DateRange.Last7Day = '最近7天';
 I18N.Common.DateRange.Last30Day = '最近30天';
+I18N.Common.DateRange.Last31Day = '最近31天';
 I18N.Common.DateRange.Last12Month = '最近12月';
 I18N.Common.DateRange.Today = '今天';
 I18N.Common.DateRange.Yesterday = '昨天';
@@ -2184,6 +2185,7 @@ I18N.Setting.DataAnalysis.SearchHintText = '搜索当前项目下数据点';
 I18N.Setting.DataAnalysis.InputDataHintText = '请输入数据';
 I18N.Setting.DataAnalysis.InputDataLeaveTip = '数据未保存，是否保存数据并离开？';
 I18N.Setting.DataAnalysis.InputDataErrorTip = '格式错误，请从新输入';
+I18N.Setting.DataAnalysis.InputDataSaveSuccess = '数据保存成功';
 
 I18N.Setting.ECM = {};
 I18N.Setting.ECM.EstimatedAnnualCostSavings = '预计年节约成本';
