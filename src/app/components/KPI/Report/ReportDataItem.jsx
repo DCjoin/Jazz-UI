@@ -65,20 +65,35 @@ let ReportDataItem = React.createClass({
     this.refs.startCellId.clearErrorText();
   },
   _isValid() {
-    var isValid;
     if( !this.state.data.get('Name') || this.props.itemsName.indexOf(this.state.data.get('Name')) !== -1 ) {
       return false;
     }
     if (this.state.data.get('TagsList').size === 0) {
       return false;
     }
-    if (this.refs.stepId) {
-      isValid = this.refs.stepId.isValid();
-    } else if (this.refs.numberRuleId) {
-      isValid = this.refs.numberRuleId.isValid();
+    if (this.refs.stepId && !this.refs.stepId.isValid()) {
+      return false;
+    } else if (this.refs.numberRuleId && !this.refs.numberRuleId.isValid()) {
+      return false;
     }
-    isValid = isValid && this.refs.reportTypeId.isValid() && this.refs.dateTypeId.isValid() && this.refs.targetSheetId.isValid() && this.refs.startCellId.isValid();
-    return isValid;
+
+    if(this._getSheetItems()
+        .map(item => item.payload)
+        .indexOf(this.state.data.get('TargetSheet')) === -1) {
+      return false;
+    }
+
+    if(this.refs.reportTypeId && !this.refs.reportTypeId.isValid()) {
+      return false;
+    }
+    if(this.refs.dateTypeId && !this.refs.dateTypeId.isValid()) {
+      return false;
+    }
+    if(this.refs.startCellId && !this.refs.startCellId.isValid()) {
+      return false;
+    }
+
+    return true;
   },
   getRealTime(time) {
     var j2d = CommonFuns.DataConverter.JsonToDateTime;
