@@ -106,7 +106,8 @@ let TemplateList = React.createClass({
       ref="replaceDialog"
       open={true}
       actions={dialogActions}
-      modal={true}>
+      modal={true}
+      actionsContainerStyle={{display:"flex"}}>
         {I18N.format(I18N.EM.Report.ReplaceTemplateMessage, this.state.name)}
       </NewDialog>);
   },
@@ -310,6 +311,7 @@ let TemplateList = React.createClass({
                                 fileName:''
                               });
                              }}/>}
+          <div style={{zIndex: -1, position: 'relative'}}>
                              <UploadForm
                                id="templateFile" name='templateFile'
                                ref={'upload_tempalte'}
@@ -322,6 +324,7 @@ let TemplateList = React.createClass({
                                <input type="hidden" name='CustomerId' value={parseInt(this.props.customerId)}/>
                                <input type="hidden" name='IsActive' value={true}/>
                              </UploadForm>
+                           </div>
       </div>
       );
   }
