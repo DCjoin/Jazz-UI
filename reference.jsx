@@ -10,5 +10,5 @@ require("./src/app/lib/multicolor_series.js");
 require("./src/app/less/images/icon_baidu.png");
 require("./src/app/less/images/icon_tencent.png");
 require("./src/app/less/images/icon_wandoujia.png");
-require("./src/app/less/images/appStore.png");
+require("./src/app/less/images/app-store.png");
 require("./src/app/less/images/favicon.png");
