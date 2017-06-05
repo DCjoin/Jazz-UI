@@ -296,7 +296,7 @@ let TemplateList = React.createClass({
         {this._renderErrorMsg()}
         {this.state.fileName!=='' && this.state.showUploadConfirm && <UploadConfirmDialog name={this.state.fileName}
                              onConfirm={()=>{
-                               this.refs.upload_tempalte.upload({IsReplace: true});
+                               this.refs.upload_tempalte.upload({IsReplace: true,Id:this.state.id});
                               //  this.refs.fileInput.value="";
                                this.setState({
                                  showUploadConfirm:false,
