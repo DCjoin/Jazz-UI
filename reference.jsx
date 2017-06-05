@@ -10,9 +10,5 @@ require("./src/app/lib/multicolor_series.js");
 require("./src/app/less/images/icon_baidu.png");
 require("./src/app/less/images/icon_tencent.png");
 require("./src/app/less/images/icon_wandoujia.png");
-require("./src/app/less/images/appStore.jpg");
+require("./src/app/less/images/app-store.png");
 require("./src/app/less/images/favicon.png");
-
-
-// let pkg = require('./package.json');
-// console.log(Object.keys(pkg.dependencies));
