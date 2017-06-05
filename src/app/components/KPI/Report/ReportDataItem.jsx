@@ -623,7 +623,8 @@ let ReportDataItem = React.createClass({
       title: I18N.Setting.KPI.Report.Sheet,
       textField: 'text',
       didChanged: this._handleSelectValueChange.bind(null, 'TargetSheet'),
-      errorText:I18N.Setting.KPI.Report.SheetErrorText
+      errorText:I18N.Setting.KPI.Report.SheetErrorText,      
+      initError: this._getSheetItems().map(item => item.payload).indexOf(this.state.data.get('TargetSheet')) === -1
     };
     var startCellProps = {
       ref: 'startCellId',
@@ -634,7 +635,7 @@ let ReportDataItem = React.createClass({
       hintText:I18N.Setting.KPI.Report.StartCellHintText,
       isRequired: true,
       regex: Regex.ExcelCell,
-      errorMessage: I18N.Common.Label.ExcelColumnError
+      errorMessage: I18N.Common.Label.ExcelColumnError,
     };
     var directTime = null,
       directTag = null;

@@ -31,7 +31,7 @@ var ViewableDropDownMenu = React.createClass({
   },
   getInitialState: function() {
     return {
-      errorText: this.props.errorText || ""
+      errorText: this.props.initError ? this.props.errorText : ""
     };
   },
   isValid: function(props=this.props) {
