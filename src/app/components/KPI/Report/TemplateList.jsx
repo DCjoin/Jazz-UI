@@ -310,6 +310,7 @@ let TemplateList = React.createClass({
                                 fileName:''
                               });
                              }}/>}
+          <div style={{zIndex: -1, position: 'relative'}}>
                              <UploadForm
                                id="templateFile" name='templateFile'
                                ref={'upload_tempalte'}
@@ -322,6 +323,7 @@ let TemplateList = React.createClass({
                                <input type="hidden" name='CustomerId' value={parseInt(this.props.customerId)}/>
                                <input type="hidden" name='IsActive' value={true}/>
                              </UploadForm>
+                           </div>
       </div>
       );
   }
