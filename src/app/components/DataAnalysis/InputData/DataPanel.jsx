@@ -180,7 +180,7 @@ export default class DataPanel extends Component {
 					endDate:timeRange.end,
 					dataList:null
 				},()=>{
-					TagAction.getTagsData(Id, CalculationStep, startDate, endDate)
+					TagAction.getTagsData(Id, CalculationStep, timeRange.start, timeRange.end)
 				})
 	}
 
