@@ -36,6 +36,8 @@ import FormBottomBar from 'controls/FormBottomBar.jsx';
 import { formStatus } from 'constants/FormStatus.jsx';
 import UploadConfirmDialog from './UploadConfirmDialog.jsx';
 
+let verifyItem = true;
+
 function stepLabelProps(stepValue, currentStep) {
   let props = {
     style: {
@@ -529,7 +531,7 @@ export default class ReportConfig extends Component {
       let disabled = !this.state.reportItem.get('data') || !this.state.reportItem.get('data').size;
       return (<div style={{marginTop: 20}}>
         <NewFlatButton style={{float: 'left'}} secondary label={'上一步'} onClick={this._setStep(0)}/>
-        <NewFlatButton style={{float: 'right'}} disabled={disabled} primary label={'完成'} onClick={this._saveReport}/>
+        <NewFlatButton style={{float: 'right'}} disabled={disabled || !verifyItem} primary label={'完成'} onClick={this._saveReport}/>
       </div>);
     }
   }
@@ -667,6 +669,7 @@ export default class ReportConfig extends Component {
     list = [];
 
     if( reportItem && reportItem.get('data').size > 0 ) {
+      verifyItem = true;
       list = reportItem.get('data').map( (item, idx) => {
         let noSheet = ReportStore.getSheetNamesByTemplateId(this.state.reportItem.get('templateId'))
                         .indexOf(item.get('TargetSheet')) === -1,
@@ -676,6 +679,9 @@ export default class ReportConfig extends Component {
         noSheetValStyle = noSheet ? {
           color: 'red'
         } : {};
+        if(noSheet) {
+          verifyItem = false;
+        }
         return (
           <div className='kpi-report-data-item' style={noSheetStyle}>
             <header className='kpi-report-data-item-header'>
@@ -926,7 +932,7 @@ export default class ReportConfig extends Component {
               {this._renderReportInfo()}
               {this._renderReportData()}
               <div style={{marginTop: 40, marginLeft: 15, width: 450, marginBottom: 25, textAlign: 'right'}}>
-                <NewFlatButton disabled={reportItem.get('data').size === 0 || !reportItem.get('name')} onClick={this._saveReport} label={'保存并退出'} primary/>
+                <NewFlatButton disabled={reportItem.get('data').size === 0 || !reportItem.get('name') || !verifyItem} onClick={this._saveReport} label={'保存并退出'} primary/>
               </div>
             </div>
             {this._renderUploadDialog()}
