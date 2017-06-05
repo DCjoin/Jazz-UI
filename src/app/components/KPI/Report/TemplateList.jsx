@@ -106,7 +106,8 @@ let TemplateList = React.createClass({
       ref="replaceDialog"
       open={true}
       actions={dialogActions}
-      modal={true}>
+      modal={true}
+      actionsContainerStyle={{display:"flex"}}>
         {I18N.format(I18N.EM.Report.ReplaceTemplateMessage, this.state.name)}
       </NewDialog>);
   },
