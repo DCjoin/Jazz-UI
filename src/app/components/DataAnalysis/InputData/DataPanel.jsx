@@ -17,7 +17,6 @@ import Immutable from 'immutable';
 import ReactDom from 'react-dom';
 import Config from 'config';
 import NewDialog from 'controls/NewDialog.jsx';
-import RefreshIndicator from 'material-ui/RefreshIndicator';
 import {Snackbar} from 'material-ui';
 
 function getRelativeDateByStep(step){
@@ -46,10 +45,14 @@ function getUom(uomId){
 	return `${uom.Comment}/${uom.Code}`
 }
 
-function getInitEndDate(data,step){
+function getInitEndDate(data,step,startDate){
 	let date = new Date();
 	date.setHours(0, 0, 0);
 	let endDate = CommonFuns.dateAdd(date, 1, 'days');
+
+	if(startDate.getTime()>endDate.getTime()){
+		return CommonFuns.dateAdd(startDate, 6, 'days')
+	}
 
 	if(step===TimeGranularity.Min15 || step===TimeGranularity.Min30 || step===TimeGranularity.Hourly){
 		let date= CommonFuns.dateAdd(CommonFuns.DataConverter.JsonToDateTime(data), 30 , 'days');
@@ -107,10 +110,11 @@ export default class DataPanel extends Component {
 
 	_initDataTime(step,data){
 		if(data!==null){
+			let startDate=getMinusStepDate(CommonFuns.DataConverter.JsonToDateTime(data),step);
 				return {
 					relativeDate:'Customerize',
-					startDate:getMinusStepDate(CommonFuns.DataConverter.JsonToDateTime(data),step),
-					endDate:getInitEndDate(data,step)
+					startDate,
+					endDate:getInitEndDate(data,step,startDate)
 				}
 		}else {
 			var relativeDate=getRelativeDateByStep(step);
