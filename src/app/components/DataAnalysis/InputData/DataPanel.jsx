@@ -348,6 +348,7 @@ export default class DataPanel extends Component {
 													errorMessage={I18N.Setting.DataAnalysis.InputDataErrorTip}
 													hintText={I18N.Setting.DataAnalysis.InputDataHintText}
 						              didBlur={(val) => {this._onValueChange(val,index)}}
+													hintStyle={{marginTop:'-5px'}}
 						            /></span>
 					</div>
 				))}
