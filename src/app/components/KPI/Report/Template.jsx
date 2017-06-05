@@ -316,7 +316,7 @@ var Template = React.createClass({
                 </RaisedButton>
                 {this.state.fileName!=='' && this.state.showUploadConfirm && <UploadConfirmDialog name={this.state.fileName}
                                      onConfirm={()=>{
-                                       this.refs.upload_tempalte.upload({IsReplace: true});
+                                       this.refs.upload_tempalte.upload({IsReplace: false});
                                        this.setState({
                                          showUploadConfirm:false,
                                          showUploadDialog: true
