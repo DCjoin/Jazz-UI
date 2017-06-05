@@ -64,6 +64,7 @@ class AnalysisPanel extends Component {
 
   static contextTypes = {
     router: React.PropTypes.object,
+    hierarchyId: React.PropTypes.string,
   };
 
   isInitial=false;
@@ -1508,7 +1509,7 @@ class AnalysisPanel extends Component {
           <ChartSubToolbar {...props.subToolBar}/>
           {this._renderChartCmp()}
         </div>
-        {<TagDrawer hierarchyId={this.state.hierarchyId}
+        {<TagDrawer hierarchyId={this.context.hierarchyId}
                     isBuilding={this.state.isBuilding}
                     customerId={parseInt(this.context.router.params.customerId)}
                     tagId={this.state.tagId}
