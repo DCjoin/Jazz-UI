@@ -86,7 +86,6 @@ export default class UploadConfirmDialog extends Component {
       if(this.props.name!==nextProps.name){
         ReportAction.templateReference(this.props.name,parseInt(this.context.router.params.customerId))
       }
-
     }
 
     componentWillUnmount(){
