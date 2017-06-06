@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import Pagination from 'controls/paging/Pagination.jsx';
 import InputDataAction from 'actions/DataAnalysis/InputDataAction.jsx';
 import util from 'util/Util.jsx';
+import Immutable from 'immutable';
 
 
 var page = 0;
@@ -105,6 +106,10 @@ export default class TagList extends Component {
 			this._getTag(nextProps)
 		}
 	}
+  // 
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   if(Immutable.is(nextState.tagList,this.state.tagList)) return false
+  // }
 
   componentWillUnmount(){
     InputDataStore.removeChangeListener(this._onChange);
