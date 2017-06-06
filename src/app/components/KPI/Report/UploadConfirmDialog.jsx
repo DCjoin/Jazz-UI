@@ -31,7 +31,7 @@ export default class UploadConfirmDialog extends Component {
         return[
           <FlatButton
             label={I18N.Common.Button.Confirm}
-            onClick={this.props.onConfirm} />,
+            onClick={()=>{this.props.onConfirm(this.state.res.Status)}} />,
             <FlatButton
               label={I18N.Common.Button.Cancel2}
               onClick={this.props.onCancel} />
@@ -97,7 +97,7 @@ export default class UploadConfirmDialog extends Component {
         return null
       }else {
         if(this.state.res.Status===ReportStatus.NotExist){
-          this.props.onConfirm();
+          this.props.onConfirm(this.state.res.Status);
           return null
         }
         else {

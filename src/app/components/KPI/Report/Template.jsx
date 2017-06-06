@@ -12,6 +12,7 @@ import ReportStore from 'stores/KPI/ReportStore.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import PermissionCode from 'constants/PermissionCode.jsx';
 import UploadConfirmDialog from './UploadConfirmDialog.jsx';
+import {ReportStatus} from '../../../constants/actionType/KPI.jsx';
 
 
 var Template = React.createClass({
@@ -315,8 +316,13 @@ var Template = React.createClass({
                   </UploadForm>
                 </RaisedButton>
                 {this.state.fileName!=='' && this.state.showUploadConfirm && <UploadConfirmDialog name={this.state.fileName}
-                                     onConfirm={()=>{
-                                       this.refs.upload_tempalte.upload({IsReplace: true});
+                                     onConfirm={(status)=>{
+                                       if(status===ReportStatus.NotExist){
+                                         this.refs.upload_tempalte.upload({IsReplace: false});
+                                       }else {
+                                         this.refs.upload_tempalte.upload({IsReplace: true});
+                                       }
+
                                        this.setState({
                                          showUploadConfirm:false,
                                          showUploadDialog: true
