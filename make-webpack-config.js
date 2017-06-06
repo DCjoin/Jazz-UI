@@ -31,7 +31,7 @@ module.exports = function(options) {
 
   var publicPath = options.devServer ?
     "http://localhost:3000/build/" :
-    "/assets/"; 
+    "/assets/";
   var output = {
     path: path.join(__dirname, "build", "assets"),
     publicPath: publicPath,
@@ -98,7 +98,7 @@ module.exports = function(options) {
     new webpack.PrefetchPlugin("react"),
   ];
   plugins.push(new webpack.optimize.CommonsChunkPlugin({
-    name: "vendors", 
+    name: "vendors",
     fiulename: "vendors.js" + (options.publish ? "?[chunkhash]" : "")
   }));
   plugins.push(new ExtractTextPlugin({
@@ -129,7 +129,7 @@ module.exports = function(options) {
       rules: [
         {
           test: /\.jsx?$/,
-          use: ["react-hot-loader", "babel-loader"],
+          use: [ "babel-loader"],
           exclude: /node_modules/
         },
         {
@@ -140,7 +140,7 @@ module.exports = function(options) {
             use: [
               {
                 loader: "css-loader"
-              }, 
+              },
               {
                 loader: "less-loader",
                 options: {
