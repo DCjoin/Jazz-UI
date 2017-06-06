@@ -18,7 +18,6 @@ module.exports = {
     SET_SNACKBAR_TEXT:null,
     DELETE_SUPERVISOR_SUCCESS:null,
     DELETE_SUPERVISOR_ERROR:null,
-
   }),
   Msg: keyMirror({
     DELETE_SUPERVISOR_ERROR:null,
