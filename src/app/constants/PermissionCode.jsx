@@ -153,36 +153,36 @@ const PermissionCode = function() {
 		FULL: 1317,
 	},
 
-	MAP_VIEW: {
-		getLabel: () => I18N.Privilege.Common.MapView,
-		READONLY: 1104,
-	},
+	// MAP_VIEW: {
+	// 	getLabel: () => I18N.Privilege.Common.MapView,
+	// 	READONLY: 1104,
+	// },
 
-	ENERGY_MANAGE: {
-		getLabel: () => I18N.Privilege.Common.EnergyManager,
-		FULL: 1222,
-	},
+	// ENERGY_MANAGE: {
+	// 	getLabel: () => I18N.Privilege.Common.EnergyManager,
+	// 	FULL: 1222,
+	// },
 
-	BASELINE_CONFIG: {
-		getLabel: () => I18N.Privilege.Role.BaselineConfiguration,
-		FULL: 1223,
-	},
+	// BASELINE_CONFIG: {
+	// 	getLabel: () => I18N.Privilege.Role.BaselineConfigurationI18N.Privilege.Role.BaselineConfiguration,
+	// 	FULL: 1223,
+	// },
 
-	ENERGY_EXPORT: {
-		getLabel: () => I18N.Privilege.Role.EnergyExport,
-		FULL: 1205,
-	},
+	// ENERGY_EXPORT: {
+	// 	getLabel: () => I18N.Privilege.Role.EnergyExport,
+	// 	FULL: 1205,
+	// },
 
-	ENERGY_ALARM: {
-		getLabel: () => I18N.Privilege.Role.EnergyAlarm,
-		FULL: 1221,
-	},
+	// ENERGY_ALARM: {
+	// 	getLabel: () => I18N.Privilege.Role.EnergyAlarm,
+	// 	FULL: 1221,
+	// },
 
-	DATA_REPORT_MANAGEMENT: {
-		getLabel: () => I18N.Privilege.Role.ReportManagement,
-		READONLY: 1218,
-		FULL: 1219,
-	},
+	// DATA_REPORT_MANAGEMENT: {
+	// 	getLabel: () => I18N.Privilege.Role.ReportManagement,
+	// 	READONLY: 1218,
+	// 	FULL: 1219,
+	// },
 
 	TAG_MANAGEMENT: {
 		getLabel: () => I18N.Privilege.Role.TagManagement,

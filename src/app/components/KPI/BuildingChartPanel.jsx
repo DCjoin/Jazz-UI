@@ -160,6 +160,7 @@ export default class BuildingChartPanel extends Component {
 							<KPIReport
 								currentYearDone={last(period).clone().add(1, 'months').isBefore(new Date())}
 								isGroup={false}
+								buildingId={buildingId}
 								period={period}
 								onRefresh={onRefresh}
 								data={currentTag}

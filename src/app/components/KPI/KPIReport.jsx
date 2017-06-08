@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import {find} from 'lodash';
+import { FontIcon } from 'material-ui';
 
 import NewAppTheme from 'decorator/NewAppTheme.jsx';
 
@@ -10,6 +11,7 @@ import LinkButton from 'controls/LinkButton.jsx';
 
 import util from 'util/Util.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
+import RoutePath from 'util/RoutePath.jsx';
 
 import UOMStore from 'stores/UOMStore.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
@@ -25,6 +27,9 @@ function isFull() {
 
 @NewAppTheme
 export default class KPIReport extends Component {
+	static contextTypes = {
+		router: React.PropTypes.object
+	};
 	/*指标值*/
 	getValueSummaryItem() {
 		let {data, summaryData} = this.props;
@@ -70,8 +75,30 @@ export default class KPIReport extends Component {
 		</div>
 		);
 	}
+	_renderTip() {
+		let hasPermission = !this.props.isGroup && 
+							(
+								privilegeUtil.canView(PermissionCode.PUSH_SOLUTION, CurrentUserStore.getCurrentPrivilege())
+							|| privilegeUtil.isFull(PermissionCode.SENIOR_DATA_ANALYSE, CurrentUserStore.getCurrentPrivilege())
+							);
+		return <div className={classnames('summary-item-tip', {
+			hoverable: hasPermission
+		})} onClick={() => {
+			if( hasPermission ) {
+				util.openTab(RoutePath.ecm(this.context.router.params)+'?init_hierarchy_id='+this.props.buildingId);
+			}
+		}}>
+			<FontIcon style={{fontSize: '14px'}} className='icon-alarm-notification'/>
+			<div>
+				<div>{'预测全年用量将超标，'}</div>
+				<div>{'请及时采取节能措施'}</div>
+			</div>
+			{hasPermission && <FontIcon style={{fontSize: '14px'}} className='icon-arrow-right'/>}
+		</div>
+	}
 	render() {
-		let {data, summaryData, period, onEdit, onRefresh, isGroup} = this.props;
+		let {data, summaryData, period, onEdit, onRefresh, isGroup, currentYearDone} = this.props;
+		let overproof = summaryData.PredictSum && summaryData.IndexValue && summaryData.IndexValue < summaryData.PredictSum ;
 		return (
 			<div className='jazz-kpi-report-wrapper'>
 				<div style={{
@@ -92,6 +119,7 @@ export default class KPIReport extends Component {
 					<div className='jazz-kpi-report-summary'>
 						{this.getValueSummaryItem()}
 						{this.getPredictSummaryItem()}
+						{overproof && !currentYearDone && this._renderTip()}
 					</div>
 				</div>
 			</div>

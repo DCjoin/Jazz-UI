@@ -69,42 +69,42 @@ let ServiceApp = React.createClass({
           ]
         }]
       },
-      {
-        name: 'convert',
-        title: I18N.MainMenu.EnergyConvert,
-        children: [{
-          list: [
-            {
-              name: 'price',
-              getPath: service.price,
-              title: I18N.MainMenu.Price
-            },
-            {
-              name: 'carbon',
-              getPath: service.carbon,
-              title: I18N.MainMenu.Carbon
-            }
-          ]
-        }]
-      },
-      {
-        name: 'statistics',
-        title: I18N.MainMenu.Statistics,
-        children: [{
-          list: [
-            {
-              name: 'benchmark',
-              getPath: service.benchmark,
-              title: I18N.MainMenu.Benchmark
-            },
-            {
-              name: 'labeling',
-              getPath: service.labeling,
-              title: I18N.MainMenu.Labeling
-            }
-          ]
-        }]
-      },
+      // {
+      //   name: 'convert',
+      //   title: I18N.MainMenu.EnergyConvert,
+      //   children: [{
+      //     list: [
+      //       {
+      //         name: 'price',
+      //         getPath: service.price,
+      //         title: I18N.MainMenu.Price
+      //       },
+      //       {
+      //         name: 'carbon',
+      //         getPath: service.carbon,
+      //         title: I18N.MainMenu.Carbon
+      //       }
+      //     ]
+      //   }]
+      // },
+      // {
+      //   name: 'statistics',
+      //   title: I18N.MainMenu.Statistics,
+      //   children: [{
+      //     list: [
+      //       {
+      //         name: 'benchmark',
+      //         getPath: service.benchmark,
+      //         title: I18N.MainMenu.Benchmark
+      //       },
+      //       {
+      //         name: 'labeling',
+      //         getPath: service.labeling,
+      //         title: I18N.MainMenu.Labeling
+      //       }
+      //     ]
+      //   }]
+      // },
       {
         name: 'customer',
         getPath: service.customer,
