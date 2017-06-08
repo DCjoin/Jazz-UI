@@ -10,14 +10,14 @@ import CommonFuns from 'util/Util.jsx';
 import TimeGranularity from 'constants/TimeGranularity.jsx';
 import UOMStore from '../../../stores/UOMStore.jsx';
 import _ from 'lodash';
-import ViewableTextField from '../../../controls/ViewableTextField.jsx';
+// import ViewableTextField from '../../../controls/ViewableTextField.jsx';
+import TextField from 'material-ui/TextField';
 import Regex from '../../../constants/Regex.jsx';
 import TagAction from '../../../actions/customerSetting/TagAction.jsx';
 import Immutable from 'immutable';
 import ReactDom from 'react-dom';
 import Config from 'config';
 import NewDialog from 'controls/NewDialog.jsx';
-import RefreshIndicator from 'material-ui/RefreshIndicator';
 import {Snackbar} from 'material-ui';
 
 function getRelativeDateByStep(step){
@@ -46,10 +46,14 @@ function getUom(uomId){
 	return `${uom.Comment}/${uom.Code}`
 }
 
-function getInitEndDate(data,step){
+function getInitEndDate(data,step,startDate){
 	let date = new Date();
 	date.setHours(0, 0, 0);
 	let endDate = CommonFuns.dateAdd(date, 1, 'days');
+
+	if(startDate.getTime()>endDate.getTime()){
+		return CommonFuns.dateAdd(startDate, 6, 'days')
+	}
 
 	if(step===TimeGranularity.Min15 || step===TimeGranularity.Min30 || step===TimeGranularity.Hourly){
 		let date= CommonFuns.dateAdd(CommonFuns.DataConverter.JsonToDateTime(data), 30 , 'days');
@@ -76,6 +80,35 @@ function getExportDate(date,step){
 function validate(data){
 	return data.map(item=>Regex.TagRule.test(item.get('DataValue') || 0)).includes(false)
 }
+
+class DateTimeItem extends Component {
+
+	render(){
+
+		var {data,CalculationStep}=this.props;
+		return(
+			<div className="jazz-input-data-content-panel-data-table-item">
+				<span>{CommonFuns.formatDateValueForRawData(CommonFuns.DataConverter.JsonToDateTime(data.get("UtcTime")), CalculationStep)}</span>
+				<span><TextField
+														id={data.get("UtcTime")}
+														value={data.get("DataValue")}
+														hintText={I18N.Setting.DataAnalysis.InputDataHintText}
+														onChange={(event)=>{
+															this.props.onValueChange(event.target.value)
+														}}
+														errorText={Regex.TagRule.test(data.get("DataValue") || 0)?null:I18N.Setting.DataAnalysis.InputDataErrorTip}
+														/>
+									</span>
+			</div>
+		)
+	}
+}
+
+DateTimeItem.propTypes = {
+  data:React.PropTypes.object,
+	onValueChange:React.PropTypes.func,
+	CalculationStep:React.PropTypes.number,
+};
 
 export default class DataPanel extends Component {
 
@@ -107,10 +140,11 @@ export default class DataPanel extends Component {
 
 	_initDataTime(step,data){
 		if(data!==null){
+			let startDate=getMinusStepDate(CommonFuns.DataConverter.JsonToDateTime(data),step);
 				return {
 					relativeDate:'Customerize',
-					startDate:getMinusStepDate(CommonFuns.DataConverter.JsonToDateTime(data),step),
-					endDate:getInitEndDate(data,step)
+					startDate,
+					endDate:getInitEndDate(data,step,startDate)
 				}
 		}else {
 			var relativeDate=getRelativeDateByStep(step);
@@ -176,7 +210,7 @@ export default class DataPanel extends Component {
 					endDate:timeRange.end,
 					dataList:null
 				},()=>{
-					TagAction.getTagsData(Id, CalculationStep, startDate, endDate)
+					TagAction.getTagsData(Id, CalculationStep, timeRange.start, timeRange.end)
 				})
 	}
 
@@ -337,20 +371,7 @@ export default class DataPanel extends Component {
 					<span style={{borderLeft:'solid 1px #e6e6e6'}}>{getUom(this.props.selectedTag.get('UomId'))}</span>
 				</div>
 				{this.state.dataList.map((data,index)=>(
-					<div className="jazz-input-data-content-panel-data-table-item">
-						<span>{CommonFuns.formatDateValueForRawData(CommonFuns.DataConverter.JsonToDateTime(data.get("UtcTime")), CalculationStep)}</span>
-						<span><ViewableTextField
-													id={data.get("UtcTime")}
-						              isViewStatus={false}
-						              style={{width: 'auto'}}
-						              defaultValue={data.get("DataValue")}
-													regex={Regex.TagRule}
-													errorMessage={I18N.Setting.DataAnalysis.InputDataErrorTip}
-													hintText={I18N.Setting.DataAnalysis.InputDataHintText}
-						              didBlur={(val) => {this._onValueChange(val,index)}}
-													hintStyle={{marginTop:'-5px'}}
-						            /></span>
-					</div>
+					<DateTimeItem key={data.get("UtcTime")} data={data} onValueChange={(val)=>{this._onValueChange(val,index)}} CalculationStep={CalculationStep}/>
 				))}
 			</div>
 		)

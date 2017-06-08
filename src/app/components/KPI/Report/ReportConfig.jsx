@@ -35,6 +35,7 @@ import ReportDataItem from './ReportDataItem.jsx';
 import FormBottomBar from 'controls/FormBottomBar.jsx';
 import { formStatus } from 'constants/FormStatus.jsx';
 import UploadConfirmDialog from './UploadConfirmDialog.jsx';
+import {ReportStatus} from '../../../constants/actionType/KPI.jsx';
 
 let verifyItem = true;
 
@@ -646,8 +647,12 @@ export default class ReportConfig extends Component {
             {downloadButton}
           </div>
 					{this.state.fileName!=='' && this.state.showUploadConfirm && <UploadConfirmDialog name={this.state.fileName}
-															 onConfirm={()=>{
-																 this.refs.upload_tempalte.upload({IsReplace: true});
+															 onConfirm={(status)=>{
+                                 if(status===ReportStatus.NotExist){
+                                   this.refs.upload_tempalte.upload({IsReplace: false});
+                                 }else {
+                                   this.refs.upload_tempalte.upload({IsReplace: true});
+                                 }
 																 this.setState({
 																	 showUploadConfirm:false,
 																   showUploadDialog: true

@@ -151,7 +151,7 @@ let ReportAction = {
         AppDispatcher.dispatch({
           type: Action.GET_SELECTED_REPORT_TAG_DATA_SUCCESS,
           tagData: ids ? {...tagData, ...{
-                            Data: ids.map(id => tagData.filter(data => data.Id === id)[0])
+                            Data: ids.map(id => tagData.Data.filter(data => data.Id === id)[0])
                           }} : tagData
         });
       },
