@@ -179,21 +179,21 @@ export default class KPIChart extends Component {
 	    			}
 	    		}
 	    	});
-	    	if(data.get('type') === 1 && targetVal ) {
+	    	if( targetVal ) {
 	    		if(currentDataIndex <= currentMonthIndex || currentMonthIndex === -1) {
 	    			title += `<b>${util.replacePathParams(I18N.Kpi.MonthUsaged, (actualVal * 100 / targetVal).toFixed(1) * 1)}</b>`;
 	    		} else {
 	    			title += `<b>${util.replacePathParams(I18N.Kpi.MonthUsagedPrediction, (predictionVal * 100 / targetVal).toFixed(1) * 1)}</b>`;
 	    		}
-	    	} else if(data.get('type') === 2 && ratioMonth/*currentDataIndex === tooltipIndex*/) {
-	    		let value = ratioMonth.get(currentDataIndex) !== null ? ratioMonth.get(currentDataIndex).toFixed(1) * 1 : 0;
-	    		if(currentDataIndex <= currentMonthIndex || currentMonthIndex === -1) {
-	    			title += `<b>${util.replacePathParams(I18N.Kpi.RatioMonthUsaged, value)}</b>`;
-	    		} else {
-	    			title += `<b>${util.replacePathParams(I18N.Kpi.RatioMonthUsagedPrediction, value)}</b>`;
-	    		}
-	    		// title += `<b>${I18N.Kpi.ActualityFractionalEnergySaving + LastMonthRatio.toFixed(1) * 1 + '%'}</b>`;
 	    	}
+	    	// } else if(data.get('type') === 2 && ratioMonth) {
+	    	// 	let value = ratioMonth.get(currentDataIndex) !== null ? ratioMonth.get(currentDataIndex).toFixed(1) * 1 : 0;
+	    	// 	if(currentDataIndex <= currentMonthIndex || currentMonthIndex === -1) {
+	    	// 		title += `<b>${util.replacePathParams(I18N.Kpi.RatioMonthUsaged, value)}</b>`;
+	    	// 	} else {
+	    	// 		title += `<b>${util.replacePathParams(I18N.Kpi.RatioMonthUsagedPrediction, value)}</b>`;
+	    	// 	}
+	    	// }
 	    	return `
 	    	<table>
 	    		<b>${header}</b>

@@ -25,16 +25,16 @@ let CURRENT_USER_EVENT = 'currentuser',
   CURRENT_PRIVILEGE_EVENT = 'currentprivilege';
 
 const PRIVILEGE_ADMIN = [
-  PermissionCode.MAP_VIEW.READONLY,
-  PermissionCode.ENERGY_MANAGE.FULL,
-  PermissionCode.ENERGY_EXPORT.FULL,
-  PermissionCode.DATA_REPORT_MANAGEMENT.FULL,
-  PermissionCode.ENERGY_ALARM.FULL,
+  // PermissionCode.MAP_VIEW.READONLY,
+  // PermissionCode.ENERGY_MANAGE.FULL,
+  // PermissionCode.ENERGY_EXPORT.FULL,
+  // PermissionCode.DATA_REPORT_MANAGEMENT.FULL,
+  // PermissionCode.ENERGY_ALARM.FULL,
   PermissionCode.PLATFORM_MANAGEMENT.FULL,
   PermissionCode.HIERARCHY_MANAGEMENT.FULL,
   PermissionCode.TAG_MANAGEMENT.FULL,
   PermissionCode.CUSTOM_LABELING.FULL,
-  PermissionCode.BASELINE_CONFIG.FULL,
+  // PermissionCode.BASELINE_CONFIG.FULL,
   PermissionCode.INDEX_AND_REPORT.FULL,
   PermissionCode.SENIOR_DATA_ANALYSE.FULL,
   PermissionCode.BUILDING_LIST.FULL,
@@ -82,8 +82,8 @@ var CurrentUserStore = assign({}, PrototypeStore, {
     return ([
       // I18N.Privilege.Common.DashboardView,
       // I18N.Privilege.Common.DashboardManagement,
-      I18N.Privilege.Common.MapView,
-      I18N.Privilege.Common.EnergyManager,
+      // I18N.Privilege.Common.MapView,
+      // I18N.Privilege.Common.EnergyManager,
       I18N.Privilege.Common.PersonalInfoManagement,
     ]);
   },
@@ -119,9 +119,9 @@ var CurrentUserStore = assign({}, PrototypeStore, {
     // role.forEach((item, index) => {
     //   array[1200 + index] = item;
     // });
-    array[1205] = I18N.Privilege.Role.EnergyExport;
+    // array[1205] = I18N.Privilege.Role.EnergyExport;
     array[1218] = I18N.Privilege.Role.ReportView;
-    array[1219] = I18N.Privilege.Role.ReportManagement;
+    // array[1219] = I18N.Privilege.Role.ReportManagement;
     array[1221] = I18N.Privilege.Role.EnergyAlarm;
     array[1206] = I18N.Privilege.Role.SPManagement;
     array[1207] = I18N.Privilege.Role.HierarchyManagement;
@@ -264,14 +264,14 @@ var CurrentUserStore = assign({}, PrototypeStore, {
       );
     }
 
-    if (this.permit(PermissionCode.MAP_VIEW.READONLY)) {
-      menuItems.push(
-        {
-          getPath: RoutePath.map,
-          title: I18N.MainMenu.Map
-        }
-      );
-    }
+    // if (this.permit(PermissionCode.MAP_VIEW.READONLY)) {
+    //   menuItems.push(
+    //     {
+    //       getPath: RoutePath.map,
+    //       title: I18N.MainMenu.Map
+    //     }
+    //   );
+    // }
 
     // if (this.permit(PermissionCode.ENERGY_ALARM.FULL)) {
     //   menuItems.push(
@@ -282,38 +282,38 @@ var CurrentUserStore = assign({}, PrototypeStore, {
     //   );
     // }
 
-    if (this.permit(PermissionCode.ENERGY_MANAGE.FULL)) {
-      menuItems.push(
-        {
-          getPath: RoutePath.setting,
-          title: I18N.MainMenu.Energy
-        }
-      );
-    }
+    // if (this.permit(PermissionCode.ENERGY_MANAGE.FULL)) {
+    //   menuItems.push(
+    //     {
+    //       getPath: RoutePath.setting,
+    //       title: I18N.MainMenu.Energy
+    //     }
+    //   );
+    // }
 
 
-    if (this.permit(PermissionCode.DATA_REPORT_MANAGEMENT.FULL)|| this.permit(PermissionCode.DATA_REPORT_MANAGEMENT.READONLY)) {
-      menuItems.push(
-        {
-          name: 'report',
-          title: I18N.MainMenu.Report,
-          children: [{
-            list: [
-              {
-                name: 'dailyReport',
-                getPath: RoutePath.report.dailyReport,
-                title: I18N.MainMenu.DailyReport
-              },
-              {
-                name: 'template',
-                getPath: RoutePath.report.template,
-                title: I18N.MainMenu.Template
-              }
-            ]
-          }]
-        }
-      );
-    }
+    // if (this.permit(PermissionCode.DATA_REPORT_MANAGEMENT.FULL)|| this.permit(PermissionCode.DATA_REPORT_MANAGEMENT.READONLY)) {
+    //   menuItems.push(
+    //     {
+    //       name: 'report',
+    //       title: I18N.MainMenu.Report,
+    //       children: [{
+    //         list: [
+    //           {
+    //             name: 'dailyReport',
+    //             getPath: RoutePath.report.dailyReport,
+    //             title: I18N.MainMenu.DailyReport
+    //           },
+    //           {
+    //             name: 'template',
+    //             getPath: RoutePath.report.template,
+    //             title: I18N.MainMenu.Template
+    //           }
+    //         ]
+    //       }]
+    //     }
+    //   );
+    // }
     if (this.permit(PermissionCode.TAG_MANAGEMENT.FULL)|| this.permit(PermissionCode.HIERARCHY_MANAGEMENT.FULL) || this.permit(PermissionCode.CUSTOM_LABELING.FULL)) {
       var customerChildren = [];
       if (this.permit(PermissionCode.TAG_MANAGEMENT.FULL)) {
