@@ -720,28 +720,28 @@ let ChartComponentBox = React.createClass({
           flagSeries.push(serieObj);
         }
       }
-      // CurrentUserStore.getCurrentPrivilege().indexOf('1221') > -1
-      if (CurrentUserStore.permit(PermissionCode.ENERGY_ALARM.FULL)) { //will check privilidge for alarm
-        //get and push alarm flag series
-        if (item.EnergyAssociatedData && item.EnergyAssociatedData.AlarmHistories && item.EnergyAssociatedData.AlarmHistories.length > 0) {
-          var index = null;
-          var indexData = null;
-          for (var j = 0; j < convertedData.length; j++) {
-            if (convertedData[j].originalName == item.Target.Name) {
-              index = convertedData[j].id;
-              indexData = convertedData[j];
-              break;
-            }
-          }
-          if (index !== null) {
-            serieObj = factory.createAlarmSeriesByTargetEnergyDataItem(item, index, xaxisMap, item.Target.Step);
-            serieObj.visible = !indexData.graySerie;
-            serieObj.zIndex = 11; //default 10
-            serieObj.option.step = item.Target.Step;
-            alarmSeries.push(serieObj);
-          }
-        }
-      }
+      CurrentUserStore.getCurrentPrivilege().indexOf('1221') > -1
+      // if (CurrentUserStore.permit(PermissionCode.ENERGY_ALARM.FULL)) { //will check privilidge for alarm
+      //   //get and push alarm flag series
+      //   if (item.EnergyAssociatedData && item.EnergyAssociatedData.AlarmHistories && item.EnergyAssociatedData.AlarmHistories.length > 0) {
+      //     var index = null;
+      //     var indexData = null;
+      //     for (var j = 0; j < convertedData.length; j++) {
+      //       if (convertedData[j].originalName == item.Target.Name) {
+      //         index = convertedData[j].id;
+      //         indexData = convertedData[j];
+      //         break;
+      //       }
+      //     }
+      //     if (index !== null) {
+      //       serieObj = factory.createAlarmSeriesByTargetEnergyDataItem(item, index, xaxisMap, item.Target.Step);
+      //       serieObj.visible = !indexData.graySerie;
+      //       serieObj.zIndex = 11; //default 10
+      //       serieObj.option.step = item.Target.Step;
+      //       alarmSeries.push(serieObj);
+      //     }
+      //   }
+      // }
 
       //set type and subtype for this scope
       if (!isNumber(type)) {
