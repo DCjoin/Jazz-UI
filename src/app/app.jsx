@@ -14,6 +14,7 @@ import assign from 'object-assign';
 import BlankPage from './components/BlankPage.jsx';
 import JazzApp from './components/JazzApp.jsx';
 import Login from './components/Login.jsx';
+import NewLogin from './components/NewLogin.jsx';
 import MainApp from './components/MainApp.jsx';
 import resetPSWApp from './components/resetPSWApp.jsx';
 import demoLoginApp from './components/DemoLogin.jsx';
@@ -25,10 +26,10 @@ import KPIConfig from './components/KPI/Group/ConfigMenu.jsx';
 import KPIConfigList from './components/KPI/Group/KPIConfigList.jsx';
 import KPIRanking from './components/KPI/Group/Ranking.jsx';
 import KPITemplate from './components/KPI/Report/Template.jsx';
-import MapPanel from './components/Map/MapPanel.jsx';
+// import MapPanel from './components/Map/MapPanel.jsx';
 import Alarm from './components/alarm/Alarm.jsx';
 import Setting from './components/setting/Setting.jsx';
-import Mail from './components/mail/Mail.jsx';
+// import Mail from './components/mail/Mail.jsx';
 //for Test
 // import Report from './components/Test.jsx';
 import Report from './components/report/Report.jsx';
@@ -41,9 +42,9 @@ import RoutePath from './util/RoutePath.jsx';
 import { Styles } from 'material-ui';
 // let {ThemeManager} = Styles;
 import main from './less/main.less';
-import Platform from './components/platform/Platform.jsx';
+// import Platform from './components/platform/Platform.jsx';
 //import Test from './components/setting/Test.jsx';
-import PlatformApp from './components/platform/PlatformApp.jsx';
+// import PlatformApp from './components/platform/PlatformApp.jsx';
 //for user manage
 import User from './components/userManage/user/User.jsx';
 import Role from './components/userManage/role/Role.jsx';
@@ -53,11 +54,11 @@ import WorkDay from './components/calendar/WorkDay.jsx';
 import WorkTime from './components/calendar/WorkTime.jsx';
 import ColdWarm from './components/calendar/ColdWarm.jsx';
 import DayNight from './components/calendar/DayNight.jsx';
-import Benchmark from './components/statistics/Benchmark.jsx';
-import Labeling from './components/statistics/Labeling.jsx';
+// import Benchmark from './components/statistics/Benchmark.jsx';
+// import Labeling from './components/statistics/Labeling.jsx';
 //for energy conversion
-import Carbon from './components/energyConversion/carbon/Carbon.jsx';
-import Tariff from './components/energyConversion/tariff/Tariff.jsx';
+// import Carbon from './components/energyConversion/carbon/Carbon.jsx';
+// import Tariff from './components/energyConversion/tariff/Tariff.jsx';
 //for customer
 import Customer from './components/customer/Customer.jsx';
 //for customerSetting
@@ -158,7 +159,10 @@ ReactDom.render(<Router history={hashHistory} routes={{
     },
     childRoutes: [{
       path: 'login',
-      component: Login
+      component: NewLogin
+    }, {
+      path: 'new_login',
+      component: NewLogin
     }, {
       path: 'contactus',
       component: contactusApp
@@ -238,7 +242,7 @@ ReactDom.render(<Router history={hashHistory} routes={{
         path: 'input_data',
         component: InputData,
         childRoutes: [{path:':nodeId', component: DataPanel} ]
-      }, {
+      }, /*{
         path: 'map',
         component: MapPanel
       }, {
@@ -254,7 +258,7 @@ ReactDom.render(<Router history={hashHistory} routes={{
       }, {
         path: 'template',
         component: Template
-      }, {
+      },*/ {
         path: 'ptag',
         component: PTag
       }, {
@@ -279,7 +283,7 @@ ReactDom.render(<Router history={hashHistory} routes={{
         path: 'KPICycle',
         component: KPICycle
       }, ]
-    }, {
+    },/* {
       _auth: true,
       path: 'platform',
       component: PlatformApp,
@@ -290,7 +294,7 @@ ReactDom.render(<Router history={hashHistory} routes={{
         path: 'mail',
         component: Mail
       }]
-    }, {
+    },*/ {
       path: 'service/:cusnum',
       component: ServiceApp,
       indexRoute: {
@@ -309,7 +313,7 @@ ReactDom.render(<Router history={hashHistory} routes={{
       }, {
         path: 'daynight',
         component: DayNight
-      }, {
+      },/* {
         path: 'price',
         component: Tariff
       }, {
@@ -321,7 +325,7 @@ ReactDom.render(<Router history={hashHistory} routes={{
       }, {
         path: 'labeling',
         component: Labeling
-      }, {
+      },*/ {
         path: 'customer',
         component: Customer
       }, {

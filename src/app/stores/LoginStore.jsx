@@ -77,6 +77,15 @@ let LoginStore = assign({}, EventEmitter.prototype, {
     }
     return false;
   },
+  getAuthLoginToken: function() {
+    return CookieUtil.get('AuthLoginToken');
+  },
+  hasAuthLoginToken: function() {
+    if (CookieUtil.get('AuthLoginToken')) {
+      return true;
+    }
+    return false;
+  },
   getCurrentUserId: function() {
     return CookieUtil.get('UserId');
   },
