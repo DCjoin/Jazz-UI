@@ -244,7 +244,7 @@ export default class DataPanel extends Component {
 	_onValueChange(value,index){
 		var modifyData=this.state.modifyData,
 				utcTime=this.state.dataList.getIn([index,'UtcTime']),
-				mIndex=modifyData.find(data=>data.get('UtcTime')===utcTime);
+				mIndex=modifyData.findIndex(data=>data.get('UtcTime')===utcTime);
 
 				modifyData=mIndex>-1?this.state.modifyData.setIn([mIndex,"DataValue"],value):this.state.modifyData.push(this.state.dataList.getIn([index]).set('DataValue',value))
 
