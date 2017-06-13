@@ -8,9 +8,8 @@ import Immutable from 'immutable';
 var UserTypeName = null,
   UserType = null;
 let CurrentUserAction = {
-  getInitData: function(userId, spId) {
+  getInitData: function(userId) {
     this.getUser(userId);
-    this.getPrivilege(spId);
     UserAction.getCustomerByUser(userId);
     SelectCustomerActionCreator.getCustomer(userId);
 
@@ -27,6 +26,7 @@ let CurrentUserAction = {
         UserTypeName = userList[0].UserTypeName;
         UserType = userList[0].UserType;
         that.getRoles(userId);
+        that.getPrivilege(userList[0].SpId);
         AppDispatcher.dispatch({
           type: Action.GET_USER,
           userInfo: userList[0]
@@ -60,7 +60,7 @@ let CurrentUserAction = {
   },
   getPrivilege: function(spId) {
     var that = this;
-    Ajax.get('/SP/privileges', {
+    Ajax.post(`/serviceprovider/getspprivilege/${spId}`, {
       success: function(data) {
         AppDispatcher.dispatch({
           type: Action.GET_PRIVILEGE,

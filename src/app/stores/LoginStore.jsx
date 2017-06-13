@@ -73,7 +73,7 @@ let LoginStore = assign({}, EventEmitter.prototype, {
     return _reqTrialUseReset;
   },
   hasLoggedin: function(argument) {
-    if (CookieUtil.get('UserId')) {
+    if (CookieUtil.get('SkipLogin')) {
       return true;
     }
     return false;

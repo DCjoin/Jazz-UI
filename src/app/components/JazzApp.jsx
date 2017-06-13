@@ -134,9 +134,9 @@ let JazzApp = React.createClass({
     LanguageStore.addFirstLanguageNoticeLoadingListener(this._onFirstLanguageNotice);
     AjaxStore.addErrorListener(this._globalError);
 
-    if(LoginStore.hasLoggedin()) {
+    if( LoginStore.hasLoggedin() ) {
       LanguageAction.firstLanguageNotice(this.props.router.params.lang);
-      CurrentUserAction.getInitData(getCookie('UserId'), LoginStore.getCurrentUser().SpId);
+      CurrentUserAction.getInitData(getCookie('UserId'));
     }
     
   },
