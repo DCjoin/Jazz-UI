@@ -123,6 +123,40 @@ body {
     height: 80px;
 
     transition: all 1s;
+    & .contact-us-card {
+        display: none;
+        color: #808080;
+        position: absolute;
+        bottom: 40px;
+        background: #fff;
+        border: 2px solid #979797;
+        border-radius: 4px;
+        width: 230px;
+        padding: 10px;
+        left: -115px;
+
+        &:before {
+            content: '';
+            width: 10px;
+            height: 10px;
+            bottom: -8px;
+            position: absolute;
+            border-right: 2px solid #9c9c9c;
+            border-bottom: 2px solid #9c9c9c;
+            transform: rotateZ(45deg);
+            background-color: #fff;
+            left: 125px;
+        }
+    }
+
+    & .contact-us-link:hover {
+        color: @life-green;
+        position: relative;
+
+        & .contact-us-card {
+            display: block;
+        }
+    }
 }
 #login-nav {
     position: fixed;

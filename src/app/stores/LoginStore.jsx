@@ -106,6 +106,9 @@ let LoginStore = assign({}, EventEmitter.prototype, {
     CookieUtil.set('AuthLoginToken', null, {
       expires: -1
     });
+    CookieUtil.set('SkipLogin', null, {
+      expires: -1
+    });
   },
   getLastError: function(argument) {
     return _lastError;
