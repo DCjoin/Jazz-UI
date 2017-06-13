@@ -111,7 +111,8 @@ function loadLanguage({location, params, routes}, replace, callback) {
   });
 }
 function isLogin(global) {
-  return !!window.currentUserId;
+  console.log(getCookie('SkipLogin'));
+  return getCookie('SkipLogin');
 }
 
 function checkAuth({location, params, routes}, replaceState) {
