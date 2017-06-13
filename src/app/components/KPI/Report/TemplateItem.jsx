@@ -36,7 +36,7 @@ let TemplateItem = React.createClass({
     var templateId = this.props.id;
     var iframe = document.createElement('iframe');
     iframe.style.display = 'none';
-    iframe.src = 'TagImportExcel.aspx?Type=ReportTemplate&Id=' + templateId;
+    iframe.src = 'http://sp1.energymost.com/TagImportExcel.aspx?Type=ReportTemplate&Id=' + templateId;
     iframe.onload = function() {
       document.body.removeChild(iframe);
     };

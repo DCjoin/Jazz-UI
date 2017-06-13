@@ -47,7 +47,8 @@ module.exports = {
 	},
   DataReport: {
     getExportByHierarchyId: '/DataReport/GetExportByHierarchyId',
-    templateReference:'/datareport/TemplateReference/{templateName}/{customerId}'
+    templateReference:'/datareport/TemplateReference/{templateName}/{customerId}',
+    templateReplace:'/datareport/TemplateReplace/{originName}/{replaceName}/{customerId}'
   },
   DataAnalysis:{
     getWidgetGatherInfo:'/Widget/GetWidgetGatherInfo',
