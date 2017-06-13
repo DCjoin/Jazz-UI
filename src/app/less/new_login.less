@@ -1,0 +1,273 @@
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#login-wrapper {
+    position: relative;
+
+    overflow: hidden;
+
+    width: 100%;
+    height: 100%;
+}
+
+#login-header {
+    position: fixed;
+    z-index: 3;
+    top: 0;
+
+    width: 100%;
+    height: 60px;
+
+    transition: all 1s;
+    & .icon-schneider-en {
+        font-size: 120px;
+
+        display: inline-block;
+        overflow: hidden;
+
+        height: 100%;
+
+        color: @life-green;
+        &::before {
+            display: block;
+
+            margin-top: 10px;
+        }
+    }
+    &-actions {
+        display: flex;
+        float: right;
+
+        width: 200px;
+        height: 100%;
+        margin-right: 40px;
+
+        justify-content: space-between;
+        align-items: center;
+        & .jazz-mobile-qr-link {
+            position: relative;
+
+            color: @life-green;
+            & .jazz-mobile-qr {
+                font-size: 12px;
+
+                position: absolute;
+                top: 40px;
+                left: -32px;
+
+                display: none;
+
+                width: 150px;
+                height: 160px;
+                padding: 5px 0;
+
+                text-align: center;
+
+                color: #5c5c5c;
+                border: 2px solid #5c5c5c;
+                border-radius: 4px;
+                background-color: #fff;
+                &::before {
+                    position: absolute;
+                    top: -12px;
+                    left: 65px;
+
+                    width: 20px;
+                    height: 20px;
+
+                    content: '';
+                    transform: rotateZ(45deg);
+
+                    border-top: 2px solid #5c5c5c;
+                    border-left: 2px solid #5c5c5c;
+                    background-color: #fff;
+                }
+                & > img {
+                    width: 140px;
+                    height: 140px;
+                }
+            }
+            &:hover {
+                & .jazz-mobile-qr {
+                    display: block;
+                }
+            }
+        }
+        & .login-button {
+            font-size: 14px;
+
+            box-sizing: initial;
+            padding: 2px 16px;
+
+            cursor: pointer;
+
+            color: @life-green;
+            border: 1px solid @life-green;
+            border-radius: 4px;
+            outline: none;
+            background-color: rgba(0, 0, 0, 0);
+        }
+    }
+}
+#login-footer.jazz-public-footer {
+    position: fixed;
+    z-index: 3;
+    bottom: 0;
+
+    width: 100%;
+    height: 80px;
+
+    transition: all 1s;
+}
+#login-nav {
+    position: fixed;
+    z-index: 3;
+    top: 25%;
+    left: 100px;
+
+    display: flex;
+    flex-direction: column;
+
+    color: #808080;
+
+    align-items: center;
+    & li {
+        margin-top: 30px;
+        &.selected {
+            color: #fff;
+        }
+    }
+}
+
+.login-container {
+    position: absolute;
+
+    width: 100%;
+    height: 100%;
+
+    transition: all 1s;
+    transform: translate3d(0, 100%, 0);
+    text-align: center;
+    &.active {
+        top: 0;
+
+        transform: translate3d(0, 0, 0);
+    }
+    & .background-image {
+        height: 100%;
+    }
+    & .child {
+        transition: all 1s;
+        transform: translate3d(0, 0, 0);
+
+        opacity: 1;
+        &.to-top {
+            transform: translate3d(0, 100%, 0);
+
+            opacity: 0;
+        }
+        &.to-bottom {
+            transform: translate3d(0, -100%, 0);
+
+            opacity: 0;
+        }
+        &.to-right {
+            transform: translate3d(-100%, 0, 0);
+
+            opacity: 0;
+        }
+        &.to-left {
+            transform: translate3d(100%, 0, 0);
+
+            opacity: 0;
+        }
+    }
+}
+
+.jazz-login-dialog {
+    display: flex;
+    overflow: hidden;
+    flex-direction: column;
+    justify-content: center;
+    width: 390px;
+    height: 340px;
+    box-shadow: rgba(0, 0, 0, 0.247059) 0px 14px 45px, rgba(0, 0, 0, 0.219608) 0px 10px 18px;
+    border-radius: 2px;
+    background-color: #fff;
+    position: relative;
+    align-items: center;
+
+    &-wrapper {
+        position: fixed;
+        z-index: 9;
+        top: 0;
+        left: 0;
+
+        display: flex;
+
+        width: 100%;
+        height: 100%;
+
+        background-color: rgba(0, 0, 0, .541176);
+
+        align-items: center;
+        justify-content: center;
+    }
+
+    & .icon-close {
+    	position: absolute;
+    	right: 10px;
+    	top: 10px;
+		cursor: pointer;
+
+		&:hover {
+			color: @life-green;
+		}
+    }
+
+    &-header {
+    	font-size: 24px;
+    	color: @life-green;
+    	margin: 20px;
+    }
+
+    &-content {
+    	width: 290px;
+    	flex: 1;
+    	margin-bottom: 40px;
+    }
+
+    &-input-container {
+    	padding: 10px;
+	    border: 1px solid #a6aaa9;
+	    border-radius: 4px;
+
+	    & input {
+	    	width: 100%;
+	    	padding: 0px;
+	    	font-size: 16px;
+	    	border: 0;
+	    	height: 30px;
+	    	outline: none;
+
+	    	&:-webkit-autofill {
+	    		-webkit-box-shadow: 0 0 0px 1000px white inset;
+	    	}
+	    	&:focus {
+	    		background-color: rgba(0, 0, 0, 0);
+	    	}
+	    }
+    }
+
+    &-err {
+    	height: 20px;
+    	font-size: 12px;
+    	margin-top: 5px;
+    	color: #f00;
+    }
+}

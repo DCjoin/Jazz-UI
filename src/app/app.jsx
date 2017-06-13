@@ -14,6 +14,7 @@ import assign from 'object-assign';
 import BlankPage from './components/BlankPage.jsx';
 import JazzApp from './components/JazzApp.jsx';
 import Login from './components/Login.jsx';
+import NewLogin from './components/NewLogin.jsx';
 import MainApp from './components/MainApp.jsx';
 import resetPSWApp from './components/resetPSWApp.jsx';
 import demoLoginApp from './components/DemoLogin.jsx';
@@ -110,7 +111,8 @@ function loadLanguage({location, params, routes}, replace, callback) {
   });
 }
 function isLogin(global) {
-  return !!window.currentUserId;
+  console.log(getCookie('SkipLogin'));
+  return getCookie('SkipLogin');
 }
 
 function checkAuth({location, params, routes}, replaceState) {
@@ -158,7 +160,10 @@ ReactDom.render(<Router history={hashHistory} routes={{
     },
     childRoutes: [{
       path: 'login',
-      component: Login
+      component: NewLogin
+    }, {
+      path: 'new_login',
+      component: NewLogin
     }, {
       path: 'contactus',
       component: contactusApp
