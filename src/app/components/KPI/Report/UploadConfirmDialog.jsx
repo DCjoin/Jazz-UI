@@ -49,7 +49,7 @@ export default class UploadConfirmDialog extends Component {
     getContent(){
       switch (this.state.res.Status) {
         case ReportStatus.ExistAndCanNotReplaced:
-             return <div className="jazz-kpi-report-upload-confirm-title">{I18N.format(I18N.Setting.KPI.Report.ExistAndCanNotReplaced,this.props.name)}</div>
+             return <div className="jazz-kpi-report-upload-confirm-title">{I18N.format(I18N.Setting.KPI.Report.ExistAndCanNotReplaced,this.props.replaceName?this.props.replaceName:this.props.name)}</div>
           break;
         case ReportStatus.ExistAndNoReference:
             return <div className="jazz-kpi-report-upload-confirm-title">{I18N.format(I18N.Setting.KPI.Report.ExistAndNoReference,this.props.name)}</div>
@@ -79,12 +79,22 @@ export default class UploadConfirmDialog extends Component {
 
     componentDidMount(){
       ReportStore.addTemplateReferenceChangeListener(this._onChange);
-      ReportAction.templateReference(this.props.name,parseInt(this.context.router.params.customerId))
+      if(this.props.replaceName){
+        ReportAction.templateReplace(this.props.name,this.props.replaceName,parseInt(this.context.router.params.customerId))
+      }
+      else {
+        ReportAction.templateReference(this.props.name,parseInt(this.context.router.params.customerId))
+      }
+
     }
 
     componentWillReceiveProps(nextProps, nextContext) {
-      if(this.props.name!==nextProps.name){
-        ReportAction.templateReference(this.props.name,parseInt(this.context.router.params.customerId))
+      if(nextProps.replaceName){
+        if(this.props.name!==nextProps.name || this.props.replaceName!==nextProps.replaceName){
+          ReportAction.templateReplace(nextProps.name,nextProps.replaceName,parseInt(this.context.router.params.customerId))
+        }
+      }else if(this.props.name!==nextProps.name){
+        ReportAction.templateReference(nextProps.name,parseInt(this.context.router.params.customerId))
       }
     }
 
@@ -97,6 +107,9 @@ export default class UploadConfirmDialog extends Component {
         return null
       }else {
         if(this.state.res.Status===ReportStatus.NotExist){
+          this.props.onConfirm(this.state.res.Status);
+          return null
+        }else if(this.state.replaceName && this.state.res.Status===ReportStatus.ExistAndNoReference){
           this.props.onConfirm(this.state.res.Status);
           return null
         }
@@ -127,6 +140,7 @@ export default class UploadConfirmDialog extends Component {
 
   UploadConfirmDialog.propTypes = {
     name:React.PropTypes.object,
+    replaceName:React.PropTypes.object,
     onConfirm:React.PropTypes.func,
     onCancel:React.PropTypes.func
   };

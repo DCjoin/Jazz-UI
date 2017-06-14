@@ -126,6 +126,16 @@ const ReportAction = {
         })
       }
     } );
+  },
+  templateReplace(originName,replaceName,customerId){
+    Ajax.get( util.replacePathParams(Path.DataReport.templateReplace, originName,replaceName,customerId), {
+      success: (res) => {
+        AppDispatcher.dispatch({
+          type: Action.GET_TEMPLATE_REFERENCE,
+          res,
+        })
+      }
+    } );
   }
 }
 

@@ -48,11 +48,11 @@ var Template = React.createClass({
   },
   _getOnlyRead(rivilege) {
     var onlyRead = false;
-    if (rivilege !== null) {
-      if ((rivilege.indexOf(PermissionCode.DATA_REPORT_MANAGEMENT.READONLY+'') > -1) && (rivilege.indexOf(PermissionCode.DATA_REPORT_MANAGEMENT.FULL+'') === -1)) {
-        onlyRead = true;
-      }
-    }
+    // if (rivilege !== null) {
+    //   if ((rivilege.indexOf(PermissionCode.DATA_REPORT_MANAGEMENT.READONLY+'') > -1) && (rivilege.indexOf(PermissionCode.DATA_REPORT_MANAGEMENT.FULL+'') === -1)) {
+    //     onlyRead = true;
+    //   }
+    // }
     return onlyRead;
   },
 

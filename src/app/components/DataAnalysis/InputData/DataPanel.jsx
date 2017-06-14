@@ -11,7 +11,6 @@ import TimeGranularity from 'constants/TimeGranularity.jsx';
 import UOMStore from '../../../stores/UOMStore.jsx';
 import _ from 'lodash';
 // import ViewableTextField from '../../../controls/ViewableTextField.jsx';
-import TextField from 'material-ui/TextField';
 import Regex from '../../../constants/Regex.jsx';
 import TagAction from '../../../actions/customerSetting/TagAction.jsx';
 import Immutable from 'immutable';
@@ -83,21 +82,28 @@ function validate(data){
 
 class DateTimeItem extends Component {
 
+	shouldComponentUpdate(nextProps, nextState) {
+		if(nextProps.data.get("UtcTime")===this.props.data.get("UtcTime") && nextProps.data.get("DataValue")===this.props.data.get("DataValue")) return false
+		return true
+	}
+
 	render(){
 
 		var {data,CalculationStep}=this.props;
+		console.log(data.get("UtcTime"));
+		var errorText=Regex.TagRule.test(data.get("DataValue") || 0)?null:I18N.Setting.DataAnalysis.InputDataErrorTip;
 		return(
 			<div className="jazz-input-data-content-panel-data-table-item">
 				<span>{CommonFuns.formatDateValueForRawData(CommonFuns.DataConverter.JsonToDateTime(data.get("UtcTime")), CalculationStep)}</span>
-				<span><TextField
+				<span><input
 														id={data.get("UtcTime")}
 														value={data.get("DataValue")}
-														hintText={I18N.Setting.DataAnalysis.InputDataHintText}
+														placeholder={I18N.Setting.DataAnalysis.InputDataHintText}
 														onChange={(event)=>{
 															this.props.onValueChange(event.target.value)
 														}}
-														errorText={Regex.TagRule.test(data.get("DataValue") || 0)?null:I18N.Setting.DataAnalysis.InputDataErrorTip}
 														/>
+													<div style={{color:"#dc0a0a",marginLeft:"-20px"}}>{errorText}</div>
 									</span>
 			</div>
 		)
