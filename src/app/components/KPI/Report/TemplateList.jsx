@@ -294,7 +294,7 @@ let TemplateList = React.createClass({
         {this._renderUploadDialog()}
         {this._renderReplaceDialog()}
         {this._renderErrorMsg()}
-        {this.state.fileName!=='' && this.state.showUploadConfirm && <UploadConfirmDialog name={this.state.name}
+        {this.state.fileName!=='' && this.state.showUploadConfirm && <UploadConfirmDialog name={this.state.name} replaceName={this.state.fileName}
                              onConfirm={()=>{
                                this.refs.upload_tempalte.upload({IsReplace: true,Id:this.state.id});
                               //  this.refs.fileInput.value="";
@@ -315,7 +315,7 @@ let TemplateList = React.createClass({
                              <UploadForm
                                id="templateFile" name='templateFile'
                                ref={'upload_tempalte'}
-                               action={'TagImportExcel.aspx?Type=ReportTemplate'}
+                               action={'http://sp1.energymost.com/TagImportExcel.aspx?Type=ReportTemplate'}
                                fileName={'templateFile'}
                                enctype={'multipart/form-data'}
                                method={'post'}
