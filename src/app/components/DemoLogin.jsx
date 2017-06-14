@@ -74,7 +74,7 @@ var DemoLogin = React.createClass({
     return null;
   },
   _goMain() {
-    CurrentUserAction.getInitData(window.currentUserId);
+    CurrentUserAction.getInitData(window.currentUserId, LoginStore.getCurrentUser().SpId);
     this.props.router.push(RoutePath.main(this.props.router.params));
   },
   _goLogin(demoEmail) {

@@ -32,13 +32,14 @@ let LoginStore = assign({}, EventEmitter.prototype, {
     if (success) {
       _lastError = null;
       CookieUtil.set('UserId', data.Id, {
-        expires: 30
+        expires: 365
       });
-      if( data.Token ) {        
+      if( data.Token ) {
         CookieUtil.set('AuthLoginToken', data.Token, {
-          expires: 30
+          expires: 365
         });
       }
+      CookieUtil.set('SkipLogin', 'true');
 
       window.currentUserId = data.Id;
       window.currentUser = data;
@@ -72,7 +73,7 @@ let LoginStore = assign({}, EventEmitter.prototype, {
     return _reqTrialUseReset;
   },
   hasLoggedin: function(argument) {
-    if (CookieUtil.get('UserId')) {
+    if (CookieUtil.get('SkipLogin')) {
       return true;
     }
     return false;
@@ -103,6 +104,9 @@ let LoginStore = assign({}, EventEmitter.prototype, {
       expires: -1
     });
     CookieUtil.set('AuthLoginToken', null, {
+      expires: -1
+    });
+    CookieUtil.set('SkipLogin', null, {
       expires: -1
     });
   },

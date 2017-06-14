@@ -16,6 +16,7 @@ import DataAnalysis from '../constants/actionType/DataAnalysis.jsx';
 let _currentUser = null,
   _error = null,
   _currentPrivilege = null,
+  _spPrivilege = null,
   _ecmHasBubble=false,
   _diagnoseHasBubble=false,
   _dataAnalysisMenu=null;
@@ -52,6 +53,12 @@ var CurrentUserStore = assign({}, PrototypeStore, {
   },
   getCurrentUser: function() {
     return _currentUser;
+  },
+  setSpPrivilege: function(data) {
+    _spPrivilege = data;
+  },
+  getSpPrivilege: function() {
+    return _spPrivilege;
   },
   updateCurrentUser: function(version) {
     _currentUser.Version = version;
@@ -143,7 +150,7 @@ var CurrentUserStore = assign({}, PrototypeStore, {
     }
   },
   getCurrentPrivilege: function() {
-    return _currentPrivilege;
+    return _currentPrivilege && _currentPrivilege.filter(code => this.getSpPrivilege().indexOf(code) !== -1);
   },
   getCurrentPrivilegeByUser: function(user, userRoleList) {
     var privilege = [];
@@ -157,10 +164,10 @@ var CurrentUserStore = assign({}, PrototypeStore, {
         }
       });
     }
-    return privilege;
+    return privilege.filter(code => this.getSpPrivilege().filter(code) !== -1);
   },
   permit:function(code){
-  if (!_currentPrivilege || _currentPrivilege.length===0){
+  if (!_currentPrivilege || this.getCurrentPrivilege().length===0){
     return false;
   }
 
@@ -454,6 +461,10 @@ CurrentUserStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
     case CurrentUserAction.GET_USER:
       CurrentUserStore.setCurrentUser(action.userInfo);
+      CurrentUserStore.emitCurrentUserChange();
+      break;
+    case CurrentUserAction.GET_PRIVILEGE:
+      CurrentUserStore.setSpPrivilege(action.data);
       CurrentUserStore.emitCurrentUserChange();
       break;
     case CurrentUserAction.PASSWORD_ERROR:

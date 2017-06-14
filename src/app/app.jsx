@@ -26,10 +26,8 @@ import KPIConfig from './components/KPI/Group/ConfigMenu.jsx';
 import KPIConfigList from './components/KPI/Group/KPIConfigList.jsx';
 import KPIRanking from './components/KPI/Group/Ranking.jsx';
 import KPITemplate from './components/KPI/Report/Template.jsx';
-// import MapPanel from './components/Map/MapPanel.jsx';
 import Alarm from './components/alarm/Alarm.jsx';
 import Setting from './components/setting/Setting.jsx';
-// import Mail from './components/mail/Mail.jsx';
 //for Test
 // import Report from './components/Test.jsx';
 import Report from './components/report/Report.jsx';
@@ -40,12 +38,7 @@ import Template from './components/report/Template.jsx';
 import { getCookie } from './util/Util.jsx';
 import RoutePath from './util/RoutePath.jsx';
 import { Styles } from 'material-ui';
-// let {ThemeManager} = Styles;
 import main from './less/main.less';
-// import Platform from './components/platform/Platform.jsx';
-//import Test from './components/setting/Test.jsx';
-// import PlatformApp from './components/platform/PlatformApp.jsx';
-//for user manage
 import User from './components/userManage/user/User.jsx';
 import Role from './components/userManage/role/Role.jsx';
 
@@ -54,12 +47,6 @@ import WorkDay from './components/calendar/WorkDay.jsx';
 import WorkTime from './components/calendar/WorkTime.jsx';
 import ColdWarm from './components/calendar/ColdWarm.jsx';
 import DayNight from './components/calendar/DayNight.jsx';
-// import Benchmark from './components/statistics/Benchmark.jsx';
-// import Labeling from './components/statistics/Labeling.jsx';
-//for energy conversion
-// import Carbon from './components/energyConversion/carbon/Carbon.jsx';
-// import Tariff from './components/energyConversion/tariff/Tariff.jsx';
-//for customer
 import Customer from './components/customer/Customer.jsx';
 //for customerSetting
 import VEE from './components/customerSetting/VEERules/VEERules.jsx';
@@ -111,7 +98,8 @@ function loadLanguage({location, params, routes}, replace, callback) {
   });
 }
 function isLogin(global) {
-  return !!window.currentUserId;
+  console.log(getCookie('SkipLogin'));
+  return getCookie('SkipLogin');
 }
 
 function checkAuth({location, params, routes}, replaceState) {
@@ -242,23 +230,7 @@ ReactDom.render(<Router history={hashHistory} routes={{
         path: 'input_data',
         component: InputData,
         childRoutes: [{path:':nodeId', component: DataPanel} ]
-      }, /*{
-        path: 'map',
-        component: MapPanel
       }, {
-        path: 'alarm',
-        component: Alarm
-      }, {
-        path: 'setting',
-        component: Setting
-        //component: KPI
-      }, {
-        path: 'dailyReport',
-        component: Report
-      }, {
-        path: 'template',
-        component: Template
-      },*/ {
         path: 'ptag',
         component: PTag
       }, {
@@ -283,18 +255,7 @@ ReactDom.render(<Router history={hashHistory} routes={{
         path: 'KPICycle',
         component: KPICycle
       }, ]
-    },/* {
-      _auth: true,
-      path: 'platform',
-      component: PlatformApp,
-      childRoutes: [{
-        path: 'config',
-        component: Platform
-      }, {
-        path: 'mail',
-        component: Mail
-      }]
-    },*/ {
+    }, {
       path: 'service/:cusnum',
       component: ServiceApp,
       indexRoute: {
@@ -313,19 +274,7 @@ ReactDom.render(<Router history={hashHistory} routes={{
       }, {
         path: 'daynight',
         component: DayNight
-      },/* {
-        path: 'price',
-        component: Tariff
       }, {
-        path: 'carbon',
-        component: Carbon
-      }, {
-        path: 'benchmark',
-        component: Benchmark
-      }, {
-        path: 'labeling',
-        component: Labeling
-      },*/ {
         path: 'customer',
         component: Customer
       }, {

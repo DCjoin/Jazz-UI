@@ -6,11 +6,13 @@ import PermissionCode, {
 	/*BASELINE_CONFIG, ENERGY_EXPORT, ENERGY_ALARM, DATA_REPORT_MANAGEMENT,*/
 	TAG_MANAGEMENT, HIERARCHY_MANAGEMENT, CUSTOM_LABELING, PLATFORM_MANAGEMENT
 } from 'constants/PermissionCode.jsx';
+import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 
 import {remove} from 'lodash';
 
 const PrivilegeUtil = {
 	getRolePrivilegeList: () => {
+		let spPrivilege = CurrentUserStore.getSpPrivilege();
 		return [
 			BUILDING_LIST,
 			INDEX_AND_REPORT,
@@ -31,7 +33,7 @@ const PrivilegeUtil = {
 			HIERARCHY_MANAGEMENT,
 			CUSTOM_LABELING,
 			PLATFORM_MANAGEMENT,
-		];
+		].filter( privilege => spPrivilege.indexOf(privilege.READONLY) !== -1 || spPrivilege.indexOf(privilege.FULL) !== -1 );
 	},
 
 	findView: (targetCodeObj, privilegeCodes) => privilegeCodes.indexOf(targetCodeObj.READONLY + ''),
