@@ -71,7 +71,7 @@ let Login = React.createClass({
   },
   _onChange: function(argument) {
     if (LoginStore.hasLoggedin()) {
-      CurrentUserAction.getInitData(LoginStore.getCurrentUserId());
+      CurrentUserAction.getInitData(LoginStore.getCurrentUserId(), LoginStore.getCurrentUser().SpId);
       replaceWith(this.props.router, 'main', this.props.params);
     } else {
       this.setState({

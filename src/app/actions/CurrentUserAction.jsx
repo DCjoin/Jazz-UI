@@ -12,6 +12,7 @@ let CurrentUserAction = {
     this.getUser(userId);
     UserAction.getCustomerByUser(userId);
     SelectCustomerActionCreator.getCustomer(userId);
+
   },
   getUser: function(userId) {
     var that = this;
@@ -25,6 +26,7 @@ let CurrentUserAction = {
         UserTypeName = userList[0].UserTypeName;
         UserType = userList[0].UserType;
         that.getRoles(userId);
+        that.getPrivilege(userList[0].SpId);
         AppDispatcher.dispatch({
           type: Action.GET_USER,
           userInfo: userList[0]
@@ -49,6 +51,20 @@ let CurrentUserAction = {
           userId: userId,
           role: list[0],
           userType: UserType
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
+  getPrivilege: function(spId) {
+    var that = this;
+    Ajax.post(`/serviceprovider/getspprivilege/${spId}`, {
+      success: function(data) {
+        AppDispatcher.dispatch({
+          type: Action.GET_PRIVILEGE,
+          data
         });
       },
       error: function(err, res) {

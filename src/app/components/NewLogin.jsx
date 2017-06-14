@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 
+
+import Regex from 'constants/Regex.jsx';
+import RoutePath from 'util/RoutePath.jsx';
+import _lang from '../lang/lang.jsx';
+
+import Dialog from 'controls/NewDialog.jsx';
 import LinkButton from 'controls/LinkButton.jsx';
 import FlatButton from 'controls/NewFlatButton.jsx';
+import ViewableTextField from 'controls/ViewableTextField.jsx';
 
 import CurrentUserAction from 'actions/CurrentUserAction.jsx';
 import LoginAction from 'actions/LoginActionCreator.jsx';
 import LoginStore from 'stores/LoginStore.jsx';
-
-import RoutePath from 'util/RoutePath.jsx';
-import _lang from '../lang/lang.jsx';
-
 var w = window;
 var d = document;
 
@@ -85,6 +88,9 @@ function getComputedStyle(el) {
 
 function checkScrollEnable() {
 	if( getComputedStyle(document.querySelector('.jazz-mobile-qr')).display !== 'none' ) {
+		return false;
+	}
+	if( getComputedStyle(document.querySelector('.contact-us-card')).display !== 'none' ) {
 		return false;
 	}
 	if( document.querySelector('.jazz-login-dialog') ) {
@@ -274,6 +280,7 @@ export default class NewLogin extends Component {
 		this._onChange = this._onChange.bind(this);
 		this._onLogin = this._onLogin.bind(this);
 		this._onClickLogin = this._onClickLogin.bind(this);
+		this._doneForgetPSWDialog = this._doneForgetPSWDialog.bind(this);
 
     LoginStore.addChangeListener(this._onChange);
 
@@ -288,6 +295,7 @@ export default class NewLogin extends Component {
 	}
   componentWillUnmount() {
     LoginStore.removeChangeListener(this._onChange);
+		w.onmousewheel = d.onmousewheel = function() {};
   }
 	_getInitState() {
 		return {
@@ -295,6 +303,8 @@ export default class NewLogin extends Component {
 			username: '',
 			password: '',
 			errorMsg: '',
+			showForgetPSWDialog: false,
+			resetEmail: '',
 		};
 	}
   _onChange() {
@@ -314,6 +324,7 @@ export default class NewLogin extends Component {
     	  errorMsg = errorMsg || error;
     	}
       this.setState({
+      	showLoginDialog: true,
         errorMsg: errorMsg
       });
     }
@@ -333,6 +344,12 @@ export default class NewLogin extends Component {
 			password: this.state.password,
 		})
 	}
+  _doneForgetPSWDialog(resetEmail) {
+    this.setState({
+      showForgetPSWDialog: false,
+      resetEmail: resetEmail,
+    });
+  }
 	_renderLoginDialog() {
 		let {password, username, showLoginDialog, errorMsg} = this.state;
 		return showLoginDialog && (
@@ -361,7 +378,11 @@ export default class NewLogin extends Component {
 						</div>
 						<div className='jazz-login-dialog-err'>{errorMsg}</div>
 						<FlatButton disabled={!password || !username} onClick={this._onLogin} label={'登录'} primary style={{width: '100%', marginTop: 25}}/>
-						<LinkButton labelStyle={{float: 'right', display: 'inline-block', marginTop: 3}} label={'忘记密码'}/>
+						<LinkButton onClick={() => {
+							this.setState({
+								showForgetPSWDialog: true
+							});
+						}} labelStyle={{float: 'right', display: 'inline-block', marginTop: 3}} label={'忘记密码'}/>
 					</content>
 
 				</div>
@@ -372,6 +393,11 @@ export default class NewLogin extends Component {
 		return (
 			<div id='login-wrapper'>
 				{this._renderLoginDialog()}
+				<ForgetPSWDialog open={this.state.showForgetPSWDialog} onDone={this._doneForgetPSWDialog} onCancel={() => {
+					this.setState({
+						showForgetPSWDialog: false
+					});
+				}}/>
 				<header id='login-header'>
 					<em className='icon-schneider-en'/>
 					<div id='login-header-actions'>
@@ -492,12 +518,16 @@ export default class NewLogin extends Component {
 				</Container>
 
 				<footer className="jazz-public-footer" id='login-footer' style={{display: 'none'}}>									  <div className="jazz-public-footer-about">
-				    <a href="http://www.schneider-electric.com/" target="_blank">{I18N.Login.AboutUS}</a>|
-				  	<a href="http://e.weibo.com/schneidercn" target="_blank">{I18N.Login.Weibo}</a>|
-				    <div style={{
-				cursor: 'pointer' }}>{I18N.Login.iPad}</div>|
-				  	<a target="_blank">{I18N.Login.ContactUS}</a>|
-				    <a target="_blank">{I18N.Platform.InEnglish}</a>
+				  	<a className='contact-us-link' href='javascript:void(0)' target="_blank">
+				  		{I18N.Login.ContactUS}
+				  		<div className='contact-us-card'>
+				  			<div>186-1688-5310</div>
+				  			<div>yujin.guo@schneider-electric.com</div>
+				  		</div>
+				  	</a>|
+				    <a href={`#${RoutePath.login({
+				    	lang: (this.props.router.params.lang === 'en-us') ? 'zh-cn' : 'en-us'
+				   })}`} target="_blank">{I18N.Platform.InEnglish}</a>
 				  </div>
 				  <div className="jazz-public-footer-about">
 				    <div style={{ marginRight: "2em" }}>{I18N.Login.Copyright}</div>
@@ -517,3 +547,96 @@ export default class NewLogin extends Component {
 		);
 	}
 }
+
+var ForgetPSWDialog = React.createClass({
+  getInitialState() {
+    return {
+      username: "",
+      email: "",
+      reqResetPSWStatus: null,
+    };
+  },
+  _sendApply: function() {
+    LoginAction.reqPwdReset(this.state.username, this.state.email);
+    this.setState({
+      state: this.getInitialState()
+    });
+    if (this.props.onDone) {
+      this.props.onDone(this.state.email);
+    }
+  },
+  _cancelApply: function() {
+    this.setState({
+      state: this.getInitialState()
+    });
+    this.props.onCancel();
+  },
+  render: function() {
+    let email = this.state.email,
+      username = this.state.username,
+      sendProps = {
+        inDialog: true,
+        highlight: true,
+        key: 'send_email',
+        disabled: !email || !Regex.Email.test(email) || email.length > 254 || !username || username.length > 254,
+        onClick: this._sendApply,
+        label: I18N.Common.Button.GoOn
+      },
+      cancelProps = {
+        key: 'cancel_email',
+        onClick: this._cancelApply,
+        label: I18N.Common.Button.Cancel,
+        style: {
+        	marginLeft: 20
+        }
+      },
+      goonProps = {
+        onClick: this._cancelApply,
+        label: I18N.Common.Button.GoOn
+      },
+      usernameProps = {
+        autoFocus: true,
+        isViewStatus: false,
+        title: I18N.Login.UserName,
+        defaultValue: this.state.username,
+        isRequired: true,
+        maxLen: 254,
+        didChanged: value => {
+          this.setState({
+            username: value
+          })
+        }
+      },
+      emailProps = {
+        autoFocus: false,
+        isViewStatus: false,
+        title: I18N.Login.Email,
+        defaultValue: this.state.email,
+        isRequired: true,
+        regex: Regex.Email,
+        errorMessage: I18N.Login.WrongEmail,
+        maxLen: 254,
+        didChanged: value => {
+          this.setState({
+            email: value
+          })
+        }
+      },
+      actions = [
+        <FlatButton primary {...sendProps} />,
+        <FlatButton {...cancelProps} />
+      ];
+
+    return (
+      <Dialog title={I18N.Login.ForgerPSW} actions={actions} modal={true} open={this.props.open} contentStyle={{
+        width: '590px'
+      }}>
+            <div style={{fontSize:'14px'}}>{I18N.Login.ForgerPSWTips}</div>
+            <br></br>
+            <ViewableTextField {...usernameProps}/>
+            <ViewableTextField {...emailProps}/>
+            <div style={{fontSize:'14px'}}>{I18N.Login.ForgeremailTips}</div>
+        </Dialog>
+      );
+  }
+});

@@ -111,6 +111,7 @@ let MainApp = React.createClass({
       return UOMStore.getUoms() &&
         AllCommodityStore.getAllCommodities() &&
         CurrentUserCustomerStore.getAll() &&
+        CurrentUserStore.getSpPrivilege() &&
         CurrentUserStore.getCurrentPrivilege() &&
         CurrentUserStore.getCurrentUser() &&
         UserStore.getUserCustomers() &&

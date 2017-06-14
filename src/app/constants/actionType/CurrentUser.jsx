@@ -8,6 +8,7 @@ module.exports = {
     GET_ROLE: null,
     RESET_USER_LIST: null,
     SET_BUBBLE_FLAG:null,
-    RESET_MENU_FLAG:null
+    RESET_MENU_FLAG:null,
+    GET_PRIVILEGE:null,
   }),
 };
