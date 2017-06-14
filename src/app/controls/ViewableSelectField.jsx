@@ -4,9 +4,9 @@ import React from 'react';
 import SelectField from 'material-ui/SelectField';
 
 
-import _assign from "lodash/assign";
-import _get from 'lodash/get';
-import _find from 'lodash/find';
+import _assign from "lodash-es/assign";
+import _get from 'lodash-es/get';
+import _find from 'lodash-es/find';
 
 var _ = {get:_get,find:_find,assign:_assign};
 

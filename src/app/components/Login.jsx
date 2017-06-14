@@ -13,7 +13,7 @@ import LanguageAction from '../actions/LanguageAction.jsx';
 import ViewableTextField from '../controls/ViewableTextField.jsx';
 import Regex from '../constants/Regex.jsx';
 import CurrentUserAction from '../actions/CurrentUserAction.jsx';
-import _trimEnd from 'lodash/trimEnd';
+import _trimEnd from 'lodash-es/trimEnd';
 import _lang from '../lang/lang.jsx';
 
 import RoutePath from '../util/RoutePath.jsx';

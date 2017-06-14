@@ -4,13 +4,14 @@ import assign from 'object-assign';
 import Immutable from 'immutable';
 import { List, updater, update, Map } from 'immutable';
 import { dataStatus } from '../constants/DataStatus.jsx';
-import _trim from 'lodash/trim';
-import _isEmpty from 'lodash/isEmpty';
-import _isEqual from 'lodash/isEqual';
-import _isArray from 'lodash/isArray';
+import _trim from 'lodash-es/trim';
+import _isEmpty from 'lodash-es/isEmpty';
+import _isEqual from 'lodash-es/isEqual';
+import _isArray from 'lodash-es/isArray';
 var _ = {
   trim: _trim,
   isEmpty: _isEmpty,
+  // isEqual: function() {},
   isEqual: _isEqual,
   isArray: _isArray
 };

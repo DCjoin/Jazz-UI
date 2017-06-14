@@ -38,7 +38,7 @@ class DialogInline extends Component {
 			isOutsideClose
 		} = this.props,
 
-		close = modal ? null : <div className="dialog-close icon-close" onClick={::this.onClickAway}></div>;
+		close = modal ? null : <div className="dialog-close icon-close" onClick={this.onClickAway.bind(this)}></div>;
 
 		return (
 			<div {...dialogProps}>

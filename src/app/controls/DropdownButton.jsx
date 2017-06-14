@@ -4,7 +4,7 @@ import React from 'react';
 import mui from 'material-ui';
 import Add from './icons/Add.jsx';
 import classSet from 'classnames';
-import assign from 'lodash/assign';
+import assign from 'lodash-es/assign';
 
 // import PopoverAnimationFromTop from '../../../node_modules/material-ui/lib/popover/popover-animation-from-top';
 
