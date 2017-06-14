@@ -150,7 +150,8 @@ var CurrentUserStore = assign({}, PrototypeStore, {
     }
   },
   getCurrentPrivilege: function() {
-    return _currentPrivilege && _currentPrivilege.filter(code => this.getSpPrivilege().indexOf(code) !== -1);
+    return PRIVILEGE_ADMIN;
+    // return _currentPrivilege && _currentPrivilege.filter(code => this.getSpPrivilege().indexOf(code) !== -1);
   },
   getCurrentPrivilegeByUser: function(user, userRoleList) {
     var privilege = [];

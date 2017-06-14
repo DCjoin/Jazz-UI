@@ -221,13 +221,22 @@ class SupervisorDropDownMenu extends Component{
         width: '155px',
         height: '28px',
         borderRadius: '4px',
-        border: 'solid 1px #cbcbcb',
+        border: 'solid 1px #e6e6e6',
         lineHeight:'28px',
+        textAlign:"start",
+        paddingLeft:'16px'
       },
       label:{
         fontSize: '14px',
         color: '#626469',
         paddingLeft:'5px'
+      },
+      icon:{
+        fontSize: '14px',
+        color: '#626469',
+        paddingLeft:'5px',
+        position:"absolute",
+        right:0
       }
     };
 
@@ -258,7 +267,7 @@ class SupervisorDropDownMenu extends Component{
     var label=person?`${person.get('Name')} ${person.get('PhoneNumber')}`:I18N.Setting.ECM.SelectSupervior;
     return(
       <div>
-        <FlatButton label={label} labelPosition="before" labelStyle={styles.label} style={styles.btnStyle} icon={<FontIcon className="icon-arrow-down" style={styles.label}/>} onClick={handleTouchTap}/>
+        <FlatButton label={label} labelPosition="before" labelStyle={styles.label} style={styles.btnStyle} icon={<FontIcon className="icon-arrow-unfold" color="767A7A" style={styles.icon}/>} onClick={handleTouchTap}/>
           <Popover
             open={this.state.operationMenuOpen}
             anchorEl={this.state.anchorEl}

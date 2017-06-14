@@ -8,8 +8,9 @@ import CircularProgress from 'material-ui/CircularProgress';
 import {DataConverter} from 'util/Util.jsx';
 import moment from 'moment';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
-import ViewableTextField from 'controls/ViewableTextField.jsx';
+// import ViewableTextField from 'controls/ViewableTextField.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
+import TextField from 'material-ui/TextField';
 
 function canDelete(canEdit,userId){
   return canEdit && userId===CurrentUserStore.getCurrentUser().Id
@@ -26,16 +27,16 @@ class AddRemark extends Component{
   }
   render(){
     var prop = {
-      isViewStatus: false,
-      didChanged: (value)=>{this.setState({value})},
-      defaultValue: this.state.value,
-      title: I18N.Remark.Label,
+      onChange: (e,value)=>{this.setState({value})},
+      value: this.state.value,
+      hintText:I18N.Setting.ECM.AddRemark,
+      hintStyle:{fontSize:"12px"},
       multiLine:true,
       style:{width:'100%'}
     };
     return(
       <div className="add_remark_item">
-        <ViewableTextField {...prop}/>
+        <TextField {...prop}/>
         <div>
           <FlatButton
             style={{width: '67px',height: '24px',borderRadius: '2px',border: 'solid 1px #3dcd58',lineHeight:'20px',minWidth:"67px"}}
@@ -158,9 +159,8 @@ export default class Remark extends Component {
           <div className="measure-remark">
             <div className="title">
               <div className="name">{I18N.Remark.Label}</div>
-              {this.props.canEdit && <div className={classNames({'addBtn': true,'active':!this.state.addRemark})} onClick={this._onAdd.bind(this)}>{I18N.Common.Button.Add}</div>}
             </div>
-            {this.state.addRemark && <AddRemark onSave={this._onSave.bind(this)} onCancel={this._onCancel.bind(this)}/>}
+            {this.props.canEdit && <AddRemark onSave={this._onSave.bind(this)} onCancel={this._onCancel.bind(this)}/>}
             {this.state.remarkList.map(remark=>(
               <RemarkItem remark={remark} canEdit={this.props.canEdit} onDelete={this._onDelete.bind(this,remark.get('Id'))}/>
             ))}

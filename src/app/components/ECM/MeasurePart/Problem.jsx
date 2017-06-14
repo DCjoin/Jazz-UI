@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import TextField from '../../../controls/CustomTextField.jsx';
+import TextField from 'material-ui/TextField';
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
 
 export default class Problem extends Component {
@@ -13,30 +13,30 @@ export default class Problem extends Component {
       var {EnergyProblem}=measure.toJS();
       var props={
         name:{
-          key:'EnergyProblem'+EnergyProblem.Id+'_Name'+new Date(),
-          isNumber:false,
+          key:'EnergyProblem'+EnergyProblem.Id+'_Name',
+          id:'EnergyProblem'+EnergyProblem.Id+'_Name',
           onChange:(ev,value)=>{
                                 if(value===''){value=EnergyProblem.Name}
                                 this.props.merge(['EnergyProblem','Name'],value)
                               },
           value:EnergyProblem.Name,
-          style:{marginTop:'-5px'},
-          width:'100%',
+          hintText:I18N.Setting.ECM.AddProblemName,
+          hintStyle:{fontSize:"12px"},
+          style:{marginTop:'-5px',width:'100%'},
           multiLine:true,
-          displayFn:MeasuresStore.getDisplayText
         },
         description:{
-          key:'EnergyProblem'+EnergyProblem.Id+'_Description'+new Date(),
-          isNumber:false,
+          key:'EnergyProblem'+EnergyProblem.Id+'_Description',
+          id:'EnergyProblem'+EnergyProblem.Id+'_Description',
           onChange:(ev,value)=>{
                                 if(value===''){value=EnergyProblem.Description}
-                                this.props.merge(['EnergyProblem','Description'],value);
+                                this.props.merge(['EnergyProblem','Description'],value)
                               },
           value:EnergyProblem.Description,
-          style:{marginTop:'-5px'},
-          width:'100%',
+          hintText:I18N.Setting.ECM.AddProblemDescription,
+          hintStyle:{fontSize:"12px"},
+          style:{marginTop:'-5px',width:'100%'},
           multiLine:true,
-          displayFn:MeasuresStore.getDisplayText
         },
       };
       return(
@@ -50,7 +50,7 @@ export default class Problem extends Component {
             </div>
             {canEdit?<TextField {...props.name}/>:<div className="jazz-ecm-measure-viewabletext">{MeasuresStore.getDisplayText(EnergyProblem.Name)}</div>}
           </div>
-          <div className="row">
+          <div className="row" style={{marginTop:"8px"}}>
             <div className="label">
               {I18N.Setting.UserManagement.Comment}
             </div>
