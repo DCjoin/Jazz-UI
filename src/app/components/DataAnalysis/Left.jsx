@@ -131,8 +131,6 @@ export default class Left extends Component {
           	label={I18N.Folder.DataAnalysisWidget}
           />
         </div>
-				<SearchBox onSearchClick={this.props.onSelectNode}/>
-
         <div className="jazz-new-folder-leftpanel-foldertree">
           {this._renderTree()}
         </div>
