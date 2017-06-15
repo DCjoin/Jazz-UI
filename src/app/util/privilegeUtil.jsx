@@ -8,7 +8,7 @@ import PermissionCode, {
 } from 'constants/PermissionCode.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 
-import {remove} from 'lodash';
+import {remove} from 'lodash-es';
 
 const PrivilegeUtil = {
 	getRolePrivilegeList: () => {

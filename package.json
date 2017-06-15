@@ -13,8 +13,8 @@
     "build": "webpack --config webpack-production.config.js --progress --profile --colors > ret.log",
     "start": "supervisor -w ./src/server/ ./src/server/server.js",
     "build-test": "webpack --config webpack-test.config.js --progress --profile --colors > ret-test.log",
-    "dev1": "webpack --config conf/webpack.conf.js --progress --profile --display-modules --json > stats.json",
-    "test": "node conf/webpack.conf.js"
+    "dev1": "webpack --config conf/webpack.conf.js --progress --profile --display-modules",
+    "dll": "webpack --config conf/webpack.dll.conf.js"
   },
   "jest": {
     "scriptPreprocessor": "<rootDir>/node_modules/babel-jest",
@@ -97,7 +97,6 @@
     "flux": "3.1.0",
     "immutable": "3.7.2",
     "keymirror": "0.1.1",
-    "lodash": "4.17.4",
     "lodash-es": "^4.17.4",
     "material-ui": "0.17.4",
     "moment": "2.10.6",

@@ -6,7 +6,7 @@ import PrototypeStore from '../PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
 import Momment from 'moment';
-import _ from 'lodash';
+import _ from 'lodash-es';
 import CommonFuns from '../../util/Util.jsx';
 import { Action } from '../../constants/actionType/Energy.jsx';
 

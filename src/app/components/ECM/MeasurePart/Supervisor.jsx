@@ -10,7 +10,7 @@ import FlatButton from 'controls/FlatButton.jsx';
 import Regex from 'constants/Regex.jsx';
 import ViewableTextField from 'controls/ViewableTextField.jsx';
 import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
-import _ from 'lodash';
+import _ from 'lodash-es';
 import NewDialog from 'controls/NewDialog.jsx';
 import MeasuresAction from 'actions/ECM/MeasuresAction.jsx';
 import RaisedButton from 'material-ui/RaisedButton';

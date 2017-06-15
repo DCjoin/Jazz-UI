@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import {find} from 'lodash';
+import {find} from 'lodash-es';
 import { FontIcon } from 'material-ui';
 
 import NewAppTheme from 'decorator/NewAppTheme.jsx';

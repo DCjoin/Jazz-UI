@@ -12,8 +12,10 @@ import {
     TextField
 } from 'material-ui';
 // import classnames from "classnames";
-import {assign, get, set} from "lodash";
-import {isObject} from "lodash";
+import assign from 'lodash-es/assign';
+import get from 'lodash-es/get';
+import set from 'lodash-es/set';
+import isObject from 'lodash-es/isObject';
 import lang from '../lang/lang.jsx';
 
 import Dialog from 'controls/NewDialog.jsx';

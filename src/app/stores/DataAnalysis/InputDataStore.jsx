@@ -7,7 +7,7 @@ import PrototypeStore from '../PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
 import {DataConverter,DateComputer} from 'util/Util.jsx';
-import _ from 'lodash';
+import _ from 'lodash-es';
 import TimeGranularity from 'constants/TimeGranularity.jsx';
 import MenuItem from 'material-ui/MenuItem';
 import Tag from 'constants/actionType/customerSetting/Tag.jsx';

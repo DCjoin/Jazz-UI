@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import {GenerateSolution} from './GenerateSolution.jsx';
 import ChartBasicComponent from './ChartBasicComponent.jsx';
-import {flowRight, curryRight} from 'lodash';
+import {flowRight, curryRight} from 'lodash-es';
 
 import FolderAction from 'actions/FolderAction.jsx';
 import FolderStore from 'stores/FolderStore.jsx';

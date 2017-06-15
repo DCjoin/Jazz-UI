@@ -10,7 +10,7 @@ import Diagnose from '../constants/actionType/Diagnose.jsx';
 import LoginActionType from '../constants/actionType/Login.jsx';
 import RoutePath from '../util/RoutePath.jsx';
 import PermissionCode from '../constants/PermissionCode.jsx';
-import _ from 'lodash';
+import _ from 'lodash-es';
 import DataAnalysis from '../constants/actionType/DataAnalysis.jsx';
 
 let _currentUser = null,

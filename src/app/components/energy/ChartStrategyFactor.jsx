@@ -2,7 +2,7 @@
 import React from "react";
 import assign from "object-assign";
 import Immutable from 'immutable';
-import _ from 'lodash';
+import _ from 'lodash-es';
 import { FontIcon, IconButton, DropDownMenu, Dialog, RaisedButton, CircularProgress, IconMenu, TextField } from 'material-ui';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';

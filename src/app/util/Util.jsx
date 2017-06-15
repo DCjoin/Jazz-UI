@@ -16,6 +16,13 @@ import GlobalErrorMessageAction from '../actions/GlobalErrorMessageAction.jsx';
 import HierarchyStore from '../stores/HierarchyStore.jsx';
 import LabelMenuStore from '../stores/LabelMenuStore.jsx';
 import SingleKPIStore from '../stores/KPI/SingleKPIStore.jsx';
+// var Momment = {};
+// var Immutable = {};
+// var _ = {};
+// var GlobalErrorMessageAction = {};
+// var HierarchyStore = {};
+// var LabelMenuStore = {};
+// var SingleKPIStore = {};
 const FIXEDTIMES = {
   millisecond: 1,
   second: 1000,

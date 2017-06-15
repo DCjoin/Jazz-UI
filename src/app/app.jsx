@@ -59,7 +59,8 @@ import KPICycle from './components/customerSetting/KPICycle';
 import Hierarchy from './components/hierarchySetting/Hierarchy.jsx';
 import HierarchyLog from './components/hierarchySetting/importLog/HierarchyLog.jsx';
 // var theme = new ThemeManager();
-import './less/main.less';
+// import './less/main.less';
+// main = {};
 
 import Diagnose from './components/Diagnose/Diagnose.jsx';
 import InputData from './components/DataAnalysis/InputData/InputDataPanel.jsx';

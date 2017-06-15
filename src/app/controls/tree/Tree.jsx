@@ -5,7 +5,7 @@ import mui from 'material-ui';
 import { Mixins, TextField } from 'material-ui';
 import assign from 'object-assign';
 import classNames from 'classnames';
-import _ from 'lodash';
+import _ from 'lodash-es';
 import Immutable from 'immutable';
 import TreeNode from './TreeNode.jsx';
 import { treeSource } from '../../constants/TreeSource.jsx';

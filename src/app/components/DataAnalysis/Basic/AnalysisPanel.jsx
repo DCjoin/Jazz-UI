@@ -19,7 +19,7 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import IconButton from 'material-ui/IconButton';
-import _ from 'lodash';
+import _ from 'lodash-es';
 import EnergyStore from 'stores/Energy/EnergyStore.jsx';
 import CommonFuns from 'util/Util.jsx';
 import ChartStatusStore from 'stores/Energy/ChartStatusStore.jsx';

@@ -3,7 +3,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import assign from 'object-assign';
-import {find} from 'lodash';
+import {find} from 'lodash-es';
 import { CircularProgress } from 'material-ui';
 
 import RoutePath from 'util/RoutePath.jsx';

@@ -12,7 +12,7 @@ import Immutable from 'immutable';
 import {nodeType} from 'constants/TreeConstants.jsx';
 import HierarchyStore from '../HierarchyStore.jsx';
 import CurrentUserCustomerStore from '../CurrentUserCustomerStore.jsx';
-import {find} from 'lodash';
+import {find} from 'lodash-es';
 
 var _gatherInfo=null,_widgetDto=null,_dimTree=null;
 const AREA_DIM_EVENT = 'area_dim_event';

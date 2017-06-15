@@ -5,8 +5,8 @@ import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'reac
 import keyMirror from 'keymirror';
 import { CircularProgress } from 'material-ui';
 import assign from 'object-assign';
-import {remove} from 'lodash';
-import {find} from 'lodash';
+import {remove} from 'lodash-es';
+import {find} from 'lodash-es';
 import querystring from 'querystring';
 
 import { viewState } from 'constants/MainAppStatus.jsx';

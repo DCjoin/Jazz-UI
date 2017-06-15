@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import CircularProgress from 'material-ui/CircularProgress';
-import {find} from 'lodash';
+import {find} from 'lodash-es';
 
 import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
 import RoutePath from 'util/RoutePath.jsx';

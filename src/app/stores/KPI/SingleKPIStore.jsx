@@ -17,7 +17,7 @@ import {
   last,
   first,
   every
-} from 'lodash';
+} from 'lodash-es';
 import {
   DataStatus,
   Type

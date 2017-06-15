@@ -593,3 +593,5 @@ var UserStore = assign({}, PrototypeStore, {
 
   });
   module.exports = UserStore;
+
+module.exports = {}

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import classnames from 'classnames';
 import assign from 'object-assign';
-import {findLastIndex, fill, map, some, find, sum, filter} from 'lodash';
+import {findLastIndex, fill, map, some, find, sum, filter} from 'lodash-es';
 import CircularProgress from 'material-ui/CircularProgress';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';

@@ -6,7 +6,7 @@ import FlatButton from 'controls/FlatButton.jsx';
 import NewFlatButton from 'controls/NewFlatButton.jsx';
 import MenuItem from 'material-ui/MenuItem';
 import CommonFuns from 'util/Util.jsx';
-import _ from 'lodash';
+import _ from 'lodash-es';
 
 let {isNumeric} = CommonFuns;
 
