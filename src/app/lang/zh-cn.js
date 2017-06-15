@@ -2252,6 +2252,11 @@ I18N.Setting.ECM.StatusToCancelText='节能方案保存至已取消';
 I18N.Setting.ECM.DeleteSupervior='删除负责人“{0}”吗？';
 I18N.Setting.ECM.DeleteSuperviorError='负责人“{0}”当前有{1}个进行中的节能方案，无法被删除。请先重新分配节能方案后再删除。';
 I18N.Setting.ECM.ErrorSolutionName='节能方案名称：';
+I18N.Setting.ECM.AddSolutionName='添加节能方案名称';
+I18N.Setting.ECM.AddSolutionDescription='添加节能方案描述';
+I18N.Setting.ECM.AddProblemName='添加运行现状名称';
+I18N.Setting.ECM.AddProblemDescription='添加运行现状描述';
+I18N.Setting.ECM.AddRemark='添加备注';
 
 I18N.Setting.Diagnose={};
 I18N.Setting.Diagnose.EnergyLabel='能源标签';
