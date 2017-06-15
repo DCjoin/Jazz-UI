@@ -165,7 +165,7 @@ var CurrentUserStore = assign({}, PrototypeStore, {
         }
       });
     }
-    return privilege.filter(code => this.getSpPrivilege().filter(+code) !== -1);
+    return privilege.filter(code => this.getSpPrivilege().indexOf(+code) !== -1);
   },
   permit:function(code){
   if (!_currentPrivilege || this.getCurrentPrivilege().length===0){
