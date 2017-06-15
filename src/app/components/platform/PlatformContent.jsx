@@ -327,17 +327,6 @@ let PlatformContent = React.createClass({
             path: "Status"
           });
         }
-      },
-      providerCalStatusProps = {
-        checked: CalcStatus || false,
-        disabled: isView,
-        label: I18N.Platform.ServiceProvider.CalcStatus,
-        onCheck: (event, checked) => {
-          PlatformAction.mergeProvider({
-            value: checked,
-            path: "CalcStatus"
-          });
-        }
       };
     return (
       <div className={"pop-user-detail-content"}>
@@ -379,9 +368,6 @@ let PlatformContent = React.createClass({
         "jazz-hide": isView & !LogOutUrl
       })}>
           <ViewableTextField {...providerLogOutUrlProps} />
-        </div>
-        <div className="pop-user-detail-content-item">
-          <Checkbox {...providerCalStatusProps} />
         </div>
         <div className={classnames({
         "pop-user-detail-content-item": true,

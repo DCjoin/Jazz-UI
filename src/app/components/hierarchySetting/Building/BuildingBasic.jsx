@@ -95,17 +95,6 @@ var BuildingBasic = React.createClass({
           });
         }
       },
-      calStatusProps = {
-        checked: (CalcStatus != true && CalcStatus != false) ? true : CalcStatus,
-        disabled: isView,
-        label: I18N.Platform.ServiceProvider.CalcStatus,
-        onCheck: (event, checked) => {
-          this.props.merge({
-            value: checked,
-            path: "CalcStatus"
-          })
-        }
-      },
       parmas = "&width=" + 480 + "&height=" + 320 + "&mode=" + 1,
       imageProps = {
         clip: false,
@@ -240,9 +229,6 @@ var BuildingBasic = React.createClass({
           {locationText || !isView ? <div className="pop-customer-detail-content-left-item">
             {map}
           </div> : null}
-          <div className="pop-user-detail-content-item">
-            <Checkbox {...calStatusProps} />
-          </div>
           {Comment || !isView ? <div className={classnames("pop-user-detail-content-item", "jazz-customer-comment")}>
                     <ViewableTextField {...commentProps}/>
                   </div> : null}
