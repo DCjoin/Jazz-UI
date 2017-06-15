@@ -61,7 +61,7 @@ export default class MainPanel extends Component {
   }
 
   componentWillReceiveProps(nextProps, nextCtx) {
-    if( this.context.hierarchyId && nextCtx.hierarchyId === nextProps.params.customerId * 1 ) {
+    if( this.context.hierarchyId && this.context.hierarchyId !== nextCtx.hierarchyId && nextCtx.hierarchyId === nextProps.params.customerId * 1 ) {
       this.getUnreadFlag();
       nextProps.router.push(
         getFirstMenuPathFunc(CurrentUserStore.getMainMenuItems())(nextProps.params)
