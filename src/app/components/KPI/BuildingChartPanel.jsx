@@ -90,7 +90,7 @@ function RankNumber(props, isThisYear) {
 				<span className={classnames('rank-flag', {
 				['up-index']: DIndex > 0,
 				['down-index']: DIndex < 0,
-			})}>{flag}</span>{DIndex !== 0 ? DIndex : ''}
+			})}>{flag}</span>
 			</span>}
 		</div>
 	);
