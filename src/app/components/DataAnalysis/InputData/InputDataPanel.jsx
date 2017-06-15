@@ -43,6 +43,9 @@ export default class InputDataPanel extends Component {
 				})
 			}
 		}
+		if(InputDataStore.getTagList().size===0){
+			this.props.router.push(RoutePath.dataAnalysis(this.props.params));
+		}
 	}
 
 	_onTagChange(){
@@ -94,6 +97,9 @@ export default class InputDataPanel extends Component {
 			this.setState({
 			selectedTag:null
 		});
+		if(InputDataStore.getTagList().size===0){
+			nextProps.router.push(RoutePath.dataAnalysis(nextProps.params));
+		}else
 			if(this.context.hierarchyId ) {
 				nextProps.router.push(RoutePath.inputData(nextProps.params));
 			}
