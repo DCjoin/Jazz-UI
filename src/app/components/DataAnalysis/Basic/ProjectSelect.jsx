@@ -1,6 +1,6 @@
 'use strict';
 import React, { Component }  from "react";
-import {find} from 'lodash';
+import {find} from 'lodash-es';
 import HierarchyStore from 'stores/HierarchyStore.jsx';
 import CurrentUserCustomerStore from 'stores/CurrentUserCustomerStore.jsx';
 import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';

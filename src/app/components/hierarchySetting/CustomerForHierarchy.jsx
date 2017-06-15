@@ -171,17 +171,6 @@ var CustomerForHierarchy = React.createClass({
         });
       }
     };
-    var calStatusProps = {
-      checked: (CalcStatus !== true && CalcStatus !== false) ? true : CalcStatus,
-      disabled: isView,
-      label: I18N.Platform.ServiceProvider.CalcStatus,
-      onCheck: (event, checked) => {
-        this.props.merge({
-          value: checked,
-          path: "CalcStatus"
-        });
-      }
-    };
 
     if (!isView || (LinkMans && LinkMans.length > 0)) {
       var adminProps = {
@@ -218,9 +207,6 @@ var CustomerForHierarchy = React.createClass({
         </div>
         <div className="pop-customer-detail-content-left-item">
           <ViewableDatePicker {...customerStartTimeProps} />
-        </div>
-        <div className="pop-user-detail-content-item">
-          <Checkbox {...calStatusProps} />
         </div>
         {Comment || !isView ? <div className={classnames("pop-user-detail-content-item", "jazz-customer-comment")}>
                   <ViewableTextField {...userCommentProps}/>

@@ -27,11 +27,11 @@ import UserStore from 'stores/UserStore.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 
 
-import _isFunction from "lodash/isFunction";
-import _isNumber from "lodash/isNumber";
-import _trim from 'lodash/trim';
-import find from 'lodash/find';
-import curry from 'lodash/curry';
+import _isFunction from "lodash-es/isFunction";
+import _isNumber from "lodash-es/isNumber";
+import _trim from 'lodash-es/trim';
+import find from 'lodash-es/find';
+import curry from 'lodash-es/curry';
 
 function isConsultantStr(str) {
   return str === '咨询顾问' || str === 'Consultant';

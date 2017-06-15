@@ -2,7 +2,7 @@
 
 import React from 'react';
 import assign from 'object-assign';
-import _ from 'lodash';
+import _ from 'lodash-es';
 import Highstock from '../../highcharts/Highstock.jsx';
 import ChartXAxisSetter from '../../energy/ChartXAxisSetter.jsx';
 import EnergyCommentFactory from '../../energy/EnergyCommentFactory.jsx';

@@ -2,7 +2,7 @@
 
 import React from "react";
 import classnames from "classnames";
-import { isFunction } from "lodash";
+import isFunction from 'lodash-es/isFunction';
 import Panel from '../../../controls/MainContentPanel.jsx';
 import ViewableTextField from '../../../controls/ViewableTextField.jsx';
 import ViewableTextFieldUtil from '../../../controls/ViewableTextFieldUtil.jsx';

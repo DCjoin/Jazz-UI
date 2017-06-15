@@ -2,7 +2,8 @@
 
 import React from "react";
 import classnames from "classnames";
-import { isFunction, isObject } from "lodash";
+import isFunction from 'lodash-es/isFunction';
+import isObject from 'lodash-es/isObject';
 import RoleList from './RoleList.jsx';
 import RoleDetail from './RoleDetail.jsx';
 import { formStatus } from '../../../constants/FormStatus.jsx';

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import assign from 'object-assign';
-import _ from 'lodash';
+import _ from 'lodash-es';
 import Immutable from 'immutable';
 import {Dialog, FlatButton, Checkbox} from 'material-ui';
 import Highstock from '../highcharts/Highstock.jsx';

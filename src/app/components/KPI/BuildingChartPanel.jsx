@@ -2,9 +2,9 @@ import React, { Component, PropTypes } from 'react';
 import Immutable from 'immutable';
 import moment from 'moment';
 import classnames from 'classnames';
-import {first, last} from 'lodash';
-import {find} from 'lodash';
-import {isNull, isUndefined} from 'lodash';
+import {first, last} from 'lodash-es';
+import {find} from 'lodash-es';
+import {isNull, isUndefined} from 'lodash-es';
 
 import KPIType from 'constants/actionType/KPI.jsx';
 import util from 'util/Util.jsx';
@@ -90,7 +90,7 @@ function RankNumber(props, isThisYear) {
 				<span className={classnames('rank-flag', {
 				['up-index']: DIndex > 0,
 				['down-index']: DIndex < 0,
-			})}>{flag}</span>{DIndex !== 0 ? DIndex : ''}
+			})}>{flag}</span>
 			</span>}
 		</div>
 	);

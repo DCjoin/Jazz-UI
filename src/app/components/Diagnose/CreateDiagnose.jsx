@@ -15,9 +15,9 @@ import SvgIcon from 'material-ui/SvgIcon';
 import moment from 'moment';
 import Immutable from 'immutable';
 import classnames from 'classnames';
-import { curry } from 'lodash';
-import { divide } from 'lodash';
-import _ from 'lodash';
+import { curry } from 'lodash-es';
+import { divide } from 'lodash-es';
+import _ from 'lodash-es';
 
 import TimeGranularity from 'constants/TimeGranularity.jsx';
 import {DIAGNOSE_MODEL} from 'constants/actionType/Diagnose.jsx';

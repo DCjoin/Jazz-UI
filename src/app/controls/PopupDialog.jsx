@@ -7,7 +7,7 @@ import { Dialog } from 'material-ui';
 import util from '../util/Util.jsx';
 
 import FlatButton from './FlatButton.jsx';
-import _assign from "lodash/assign";
+import _assign from "lodash-es/assign";
 var _ = {
   assign: _assign
 };

@@ -268,17 +268,6 @@ var CustomerDetail = React.createClass({
         })
       }
     };
-    var calStatusProps = {
-      checked: (CalcStatus != true && CalcStatus != false) ? true : CalcStatus,
-      disabled: isView,
-      label: I18N.Platform.ServiceProvider.CalcStatus,
-      onCheck: (event, checked) => {
-        CustomerAction.merge({
-          value: checked,
-          path: "CalcStatus"
-        })
-      }
-    };
 
     if (!isView || (LinkMans && LinkMans.length > 0)) {
       var adminProps = {
@@ -319,9 +308,6 @@ var CustomerDetail = React.createClass({
           {!isAdd && (!isView || ConsultantId ) && consultants.length !== 0 && <div className="pop-customer-detail-content-left-item">
             <ViewableDropDownMenu {...customerConsultantsProps} />
           </div>}
-          <div className="pop-user-detail-content-item">
-            <Checkbox {...calStatusProps} />
-          </div>
           {Comment || !isView ? <div className={classnames("pop-user-detail-content-item", "jazz-customer-comment")}>
                     <ViewableTextField {...userCommentProps}/>
                   </div> : null}

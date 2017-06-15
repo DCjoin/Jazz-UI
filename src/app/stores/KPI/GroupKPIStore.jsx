@@ -6,9 +6,9 @@ import { Action,Type,KpiSettingsModel,SettingStatus,KpiType,DataStatus} from '..
 import PrototypeStore from '../PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
-import _ from 'lodash';
-import {remove, findIndex, flatten} from 'lodash';
-import {orderBy, map, find,filter} from 'lodash';
+import _ from 'lodash-es';
+import {remove, findIndex, flatten} from 'lodash-es';
+import {orderBy, map, find,filter} from 'lodash-es';
 import { Map,List} from 'immutable';
 import SingleKPIStore from './SingleKPIStore.jsx';
 // import UOMStore from 'stores/UOMStore.jsx';

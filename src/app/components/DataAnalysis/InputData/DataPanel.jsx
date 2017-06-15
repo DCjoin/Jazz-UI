@@ -9,7 +9,7 @@ import DateTimeSelector from 'controls/DateTimeSelector.jsx';
 import CommonFuns from 'util/Util.jsx';
 import TimeGranularity from 'constants/TimeGranularity.jsx';
 import UOMStore from '../../../stores/UOMStore.jsx';
-import _ from 'lodash';
+import _ from 'lodash-es';
 // import ViewableTextField from '../../../controls/ViewableTextField.jsx';
 import Regex from '../../../constants/Regex.jsx';
 import TagAction from '../../../actions/customerSetting/TagAction.jsx';

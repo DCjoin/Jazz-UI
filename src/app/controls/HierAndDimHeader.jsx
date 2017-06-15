@@ -1,6 +1,6 @@
 'use strict';
 import React from "react";
-import _ from 'lodash';
+import _ from 'lodash-es';
 import HierarchyButton from '../components/Hierarchy/HierarchyButton.jsx';
 import DimButton from '../components/Dim/DimButton.jsx';
 import {nodeType} from 'constants/TreeConstants.jsx';

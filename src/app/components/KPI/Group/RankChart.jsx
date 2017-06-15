@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import moment from 'moment';
-import {slice, fill} from 'lodash';
-import {isNull, isUndefined} from 'lodash';
+import {slice, fill} from 'lodash-es';
+import {isNull, isUndefined} from 'lodash-es';
 import Chip from 'material-ui/Chip';
 
 import KPIType from 'constants/actionType/KPI.jsx';

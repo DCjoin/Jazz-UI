@@ -6,7 +6,7 @@ import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
 import CircularProgress from 'material-ui/CircularProgress';
 import MenuItem from 'material-ui/MenuItem';
-import _isBoolean from 'lodash/isBoolean';
+import _isBoolean from 'lodash-es/isBoolean';
 import CustomDropDownMenu from './CustomDropDownMenu.jsx';
 
 

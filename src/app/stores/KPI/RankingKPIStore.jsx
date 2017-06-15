@@ -8,7 +8,7 @@ import PrototypeStore from '../PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
 import {List} from 'immutable';
-import _ from 'lodash';
+import _ from 'lodash-es';
 import CommonFuns from 'util/Util.jsx';
 import moment from 'moment';
 

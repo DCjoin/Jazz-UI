@@ -57,7 +57,8 @@ let NodeContent = React.createClass({
       I18N.Setting.User.Manager,
       I18N.Setting.User.BusinessPerson,
       I18N.Setting.User.Sales,
-      I18N.Setting.User.ServerManager
+      I18N.Setting.User.ServerManager,
+      I18N.Setting.User.RegisterEngr,
     ];
     var name = this.props.nodeData.get('Name') + userTitle[this.props.nodeData.get('Title')];
     return (

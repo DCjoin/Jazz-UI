@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classnames from "classnames";
 import {CircularProgress, Snackbar} from 'material-ui';
-import find from 'lodash/find';
+import find from 'lodash-es/find';
 import LabelList from './LabelList.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';

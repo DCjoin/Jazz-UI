@@ -4,7 +4,7 @@ import AppDispatcher from '../../dispatcher/AppDispatcher.jsx';
 import PrototypeStore from '../PrototypeStore.jsx';
 import ChartStatusStore from '../Energy/ChartStatusStore.jsx';
 import assign from 'object-assign';
-import _ from 'lodash';
+import _ from 'lodash-es';
 import Immutable from 'immutable';
 import CommonFuns from '../../util/Util.jsx';
 import { Action } from '../../constants/actionType/Energy.jsx';

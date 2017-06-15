@@ -10,7 +10,7 @@ import Diagnose from '../constants/actionType/Diagnose.jsx';
 import LoginActionType from '../constants/actionType/Login.jsx';
 import RoutePath from '../util/RoutePath.jsx';
 import PermissionCode from '../constants/PermissionCode.jsx';
-import _ from 'lodash';
+import _ from 'lodash-es';
 import DataAnalysis from '../constants/actionType/DataAnalysis.jsx';
 
 let _currentUser = null,
@@ -82,7 +82,8 @@ var CurrentUserStore = assign({}, PrototypeStore, {
       I18N.Setting.User.Manager,
       I18N.Setting.User.BusinessPerson,
       I18N.Setting.User.Sales,
-      I18N.Setting.User.ServerManager
+      I18N.Setting.User.ServerManager,
+      I18N.Setting.User.RegisterEngr,
     ]);
   },
   getCommonPrivilegeList: function() {
@@ -164,7 +165,7 @@ var CurrentUserStore = assign({}, PrototypeStore, {
         }
       });
     }
-    return privilege.filter(code => this.getSpPrivilege().filter(+code) !== -1);
+    return privilege.filter(code => this.getSpPrivilege().indexOf(+code) !== -1);
   },
   permit:function(code){
   if (!_currentPrivilege || this.getCurrentPrivilege().length===0){

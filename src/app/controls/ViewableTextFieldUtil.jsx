@@ -1,5 +1,5 @@
 import React from 'react';
-import _forEach from 'lodash/forEach';
+import _forEach from 'lodash-es/forEach';
 
 var _ = {forEach:_forEach};
 var ViewableTextFieldUtil = {
