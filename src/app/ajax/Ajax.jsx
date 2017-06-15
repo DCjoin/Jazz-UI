@@ -5,6 +5,8 @@ import Path from 'constants/Path.jsx';
 import Util from 'util/Util.jsx';
 import Config from 'config';
 import AjaxAction from '../actions/Ajax.jsx';
+import remove from 'lodash-es/remove';
+
 
 /**
  *
@@ -76,7 +78,7 @@ var _ajax = function(url, options) {
         .set('httpWebRequest.MediaType', dataType)
         .set('Content-Type', dataType)
         .end(function(err, res){
-          // _.remove(reqList, (reqObj) => {
+          // remove(reqList, (reqObj) => {
           //   return reqObj.key === options.tag;
           // });
         	if (res.ok && Util.isSuccess(res.body)) {
@@ -115,7 +117,7 @@ var _abort = function (tag, startMatch) {
       if (p.test(item.key)) {
         if (item.value && item.value.abort) {
           item.value.abort();
-          _.remove(reqList, (reqObj) => {
+          remove(reqList, (reqObj) => {
             return reqObj == item;
           });
           // hide loading dialog
@@ -130,7 +132,7 @@ var _abort = function (tag, startMatch) {
       if (item.key === tag) {
         if (item.value && item.value.abort) {
           item.value.abort();
-          _.remove(reqList, (reqObj) => {
+          remove(reqList, (reqObj) => {
             return reqObj == item;
           });
           // hide loading dialog
