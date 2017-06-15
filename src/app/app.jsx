@@ -37,7 +37,6 @@ import ECM from './components/ECM/MainPanel.jsx';
 import Template from './components/report/Template.jsx';
 import { getCookie } from './util/Util.jsx';
 import RoutePath from './util/RoutePath.jsx';
-import { Styles } from 'material-ui';
 import main from './less/main.less';
 import User from './components/userManage/user/User.jsx';
 import Role from './components/userManage/role/Role.jsx';

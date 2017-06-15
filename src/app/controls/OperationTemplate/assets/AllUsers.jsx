@@ -39,7 +39,8 @@ var UserItem = React.createClass({
       I18N.Setting.User.Manager,
       I18N.Setting.User.BusinessPerson,
       I18N.Setting.User.Sales,
-      I18N.Setting.User.ServerManager
+      I18N.Setting.User.ServerManager,
+      I18N.Setting.User.RegisterEngr,
     ];
     return (
       <div className='jazz-folder-alluser-useritem' onClick={this._onClick}>

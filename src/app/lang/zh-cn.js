@@ -858,6 +858,7 @@ I18N.Setting.User.Manager = '管理层';
 I18N.Setting.User.BusinessPerson = '业务人员';
 I18N.Setting.User.Sales = '销售人员';
 I18N.Setting.User.ServerManager = '服务商管理员';
+I18N.Setting.User.RegisterEngr = '注册工程师';
 I18N.Setting.User.SendEmailSuccess = '重置密码邮件已发送!';
 I18N.Setting.User.WholeCustomer = '全部层级节点数据权限';
 I18N.Setting.User.WholeCustomerTip = '建议对具备“层级结构管理”功能权限的用户勾选此项。';

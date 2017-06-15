@@ -851,6 +851,7 @@ I18N.Setting.User.Manager = 'Managers';
 I18N.Setting.User.BusinessPerson = 'Business Person';
 I18N.Setting.User.Sales = 'Sales';
 I18N.Setting.User.ServerManager = 'SP Manager';
+I18N.Setting.User.RegisterEngr = 'Register Engineer';
 I18N.Setting.User.SendEmailSuccess = 'Password reset mail already sent';
 I18N.Setting.User.WholeCustomer = 'All hierarchy privilege';
 I18N.Setting.User.WholeCustomerTip = 'Suggest select "hierarchy management" who has this privilege';
