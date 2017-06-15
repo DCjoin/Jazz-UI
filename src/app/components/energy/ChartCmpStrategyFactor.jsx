@@ -1,7 +1,7 @@
 'use strict';
 import React from "react";
 import assign from "object-assign";
-import _ from 'lodash';
+import _ from 'lodash-es';
 import CommonFuns from '../../util/Util.jsx';
 
 let {dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon} = CommonFuns;

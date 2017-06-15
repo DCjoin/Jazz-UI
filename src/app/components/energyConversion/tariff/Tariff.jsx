@@ -1,7 +1,7 @@
 'use strict';
 
 import React from "react";
-import { isFunction } from "lodash";
+import isFunction from 'lodash-es/isFunction';
 import TariffList from './TariffList.jsx';
 import TariffDetail from './TariffDetail.jsx';
 import { formStatus } from '../../../constants/FormStatus.jsx';

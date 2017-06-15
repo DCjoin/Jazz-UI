@@ -3,7 +3,7 @@
 import PopAppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import PrototypeStore from './PrototypeStore.jsx';
 import assign from 'object-assign';
-import {find} from 'lodash';
+import {find} from 'lodash-es';
 import {Action} from '../constants/actionType/Main.jsx';
 
 let _uoms = null;

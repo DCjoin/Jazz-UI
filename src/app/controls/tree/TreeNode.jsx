@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 import TreeConstants from '../../constants/TreeConstants.jsx';
 import assign from 'object-assign';
 import classNames from 'classnames';
-import _ from 'lodash';
+import _ from 'lodash-es';
 import Immutable from 'immutable';
 import { List, includes } from 'immutable';
 import FolderAction from '../../actions/FolderAction.jsx';

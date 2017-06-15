@@ -5,7 +5,7 @@ import React from 'react';
 import getLessVar from '../util/GetLessVar.jsx';
 
 import FlatButton from 'material-ui/FlatButton';
-import _assign from "lodash/assign";
+import _assign from "lodash-es/assign";
 var _ = {
   assign: _assign
 };

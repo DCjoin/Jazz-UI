@@ -3,7 +3,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import assign from 'object-assign';
-import {find} from 'lodash';
+import {find} from 'lodash-es';
 import { CircularProgress } from 'material-ui';
 
 import RoutePath from 'util/RoutePath.jsx';
@@ -176,7 +176,7 @@ const SelectCustomer = React.createClass({
     let {step} = this.state;
     return (
       <div className='jazz-select-customer'>
-        {this._hasClose() && <em onClick={this._onClose} className='icon-close'/>}
+        {this._hasClose() && <em onClick={this._onClose.bind('')} className='icon-close'/>}
         <header className="jazz-select-customer-header">
           <div>
             <span className={classnames('step', {link: step === 2})} onClick={() => {

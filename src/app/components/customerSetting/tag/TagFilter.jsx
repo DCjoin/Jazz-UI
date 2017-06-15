@@ -7,8 +7,8 @@ import LinkButton from '../../../controls/LinkButton.jsx';
 import FlatButton from '../../../controls/FlatButton.jsx';
 
 
-import _isObject from "lodash/isObject";
-import _get from 'lodash/get';
+import _isObject from "lodash-es/isObject";
+import _get from 'lodash-es/get';
 
 var _ = {
   isObject: _isObject,

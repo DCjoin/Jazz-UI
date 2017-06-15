@@ -2,7 +2,7 @@
 
 import moment from 'moment';
 import assign from 'object-assign';
-import _ from 'lodash';
+import _ from 'lodash-es';
 import CommonFuns from '../../util/Util.jsx';
 
 let {DataConverter, formatDateValue} = CommonFuns;

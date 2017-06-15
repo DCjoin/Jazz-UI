@@ -2,7 +2,7 @@
 
 import React from "react";
 import RuleList from './VEEList.jsx';
-import { isFunction } from "lodash";
+import isFunction from 'lodash-es/isFunction';
 import Immutable from 'immutable';
 import Detail from './VEEDetail.jsx';
 import { formStatus } from '../../../constants/FormStatus.jsx';

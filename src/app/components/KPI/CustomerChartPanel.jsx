@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Immutable from 'immutable';
-import {isNull, isUndefined, find, last} from 'lodash';
+import {isNull, isUndefined, find, last} from 'lodash-es';
 
 import KPIReport from './KPIReport.jsx';
 import RankChart from './Group/RankChart.jsx';

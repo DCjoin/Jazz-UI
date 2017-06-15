@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import get from 'lodash/get';
+import get from 'lodash-es/get';
 import { CircularProgress, Snackbar } from 'material-ui';
 import LoginActionCreator from '../actions/LoginActionCreator.jsx';
 import LoginStore from '../stores/LoginStore.jsx';

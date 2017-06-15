@@ -1,7 +1,7 @@
 import React from "react";
 import classnames from "classnames";
 import CalendarI18N from './CalendarI18N.jsx';
-import _ from 'lodash';
+import _ from 'lodash-es';
 
 function daysInMonth(year, month) {
 	return new Date(year, month + 1, 0).getDate();
