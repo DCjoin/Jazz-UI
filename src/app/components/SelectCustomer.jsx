@@ -5,8 +5,13 @@ import classnames from 'classnames';
 import assign from 'object-assign';
 import {find} from 'lodash-es';
 import { CircularProgress } from 'material-ui';
+import remove from 'lodash-es/remove';
+
+import PermissionCode from 'constants/PermissionCode.jsx';
 
 import RoutePath from 'util/RoutePath.jsx';
+import PrivilegeUtil from 'util/privilegeUtil.jsx';
+
 
 import NewAppTheme from 'decorator/NewAppTheme.jsx';
 import BackgroudImage from 'controls/BackgroundImage.jsx';
@@ -97,8 +102,22 @@ const SelectCustomer = React.createClass({
   _getCusNum() {
     return this.context.currentRoute.params.cusnum || '';
   },
-  _getMenuItems() {
-    return CurrentUserStore.getMainMenuItems();
+  _getMenuItems(customerId, hierarchyId) {
+    let menuItems = CurrentUserStore.getMainMenuItems();
+
+    if( !hierarchyId || customerId == hierarchyId ||
+      ( !PrivilegeUtil.canView(PermissionCode.PUSH_SOLUTION, CurrentUserStore.getCurrentPrivilege())
+          && !PrivilegeUtil.isFull(PermissionCode.SOLUTION_FULL, CurrentUserStore.getCurrentPrivilege()) ) ) {
+      remove(menuItems, (item) => {
+        return item.title === I18N.MainMenu.SaveSchemeTab
+      });
+    }
+    if(!hierarchyId || customerId == hierarchyId){
+      remove(menuItems, (item) => {
+        return item.title === I18N.MainMenu.SmartDiagnose
+      });
+    }
+    return menuItems;
   },
   _onClose(hierarchyId) {
     if(this.props.onClose) {
@@ -119,12 +138,20 @@ const SelectCustomer = React.createClass({
   _selectCustomerDone(customerId, hierarchyId) {
     CommodityStore.resetHierInfo();
     HierarchyAction.resetAll();
-
-    this.context.router.replace(getFirstMenuPathFunc( this._getMenuItems() )(
-      assign({}, this.context.currentRoute.params, {
-        customerId
-      })
-    ) + '?init_hierarchy_id=' + hierarchyId);
+    let mainItems = this._getMenuItems(customerId, hierarchyId);
+    if( mainItems.length === 0 ) {
+      this.context.router.replace(RoutePath.blankPage(
+        assign({}, this.context.currentRoute.params, {
+          customerId
+        })
+      ) + '?init_hierarchy_id=' + hierarchyId);
+    } else {      
+      this.context.router.replace(getFirstMenuPathFunc( mainItems )(
+        assign({}, this.context.currentRoute.params, {
+          customerId
+        })
+      ) + '?init_hierarchy_id=' + hierarchyId);
+    }
     this._onClose(hierarchyId);
   },
 
