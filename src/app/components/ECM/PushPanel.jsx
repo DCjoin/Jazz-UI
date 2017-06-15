@@ -428,13 +428,13 @@ export default class PushPanel extends Component {
         modal={false}
         isOutsideClose={false}
         onRequestClose={onClose}
-        titleStyle={{margin:'0 24px'}}
-        contentStyle={{overflowY: 'auto',paddingRight:'5px',display:'block'}}>
+        titleStyle={{margin:'0 7px',paddingTop:"7px"}}
+        contentStyle={{overflowY: 'auto',paddingRight:'5px',display:'block',margin:"0 32px"}}>
         {this._renderOperation()}
         <SolutionLabel {...props.solution}/>
         <Solution {...props.solution}/>
         <Problem {...props.problem}/>
-        <SolutionGallery {...props.gallery}/>
+        <div style={{marginTop:"46px"}}><SolutionGallery {...props.gallery}/></div>
         <div style={{display:"flex"}}>
           <div className="jazz-ecm-push-operation-label">{`${I18N.Setting.ECM.PushPanel.CreateUser} : `}</div>
           <div style={{fontSize:'14px',color:'#0f0f0f',marginLeft:'5px'}}>{user || '-'}</div>
@@ -456,8 +456,8 @@ export default class PushPanel extends Component {
         modal={false}
         isOutsideClose={false}
         onRequestClose={onClose}
-        titleStyle={{margin:'0 24px'}}
-        contentStyle={{overflowY: 'auto',paddingRight:'5px',display:'block'}}>
+        titleStyle={{margin:'0 7px',paddingTop:"7px"}}
+        contentStyle={{overflowY: 'auto',paddingRight:'5px',display:'block',margin:"0 32px"}}>
         <div>
           {this.state.deleteSupervisorErrorMsg.supervisor}
         </div>

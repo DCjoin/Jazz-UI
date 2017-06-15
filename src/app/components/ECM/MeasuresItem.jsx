@@ -19,11 +19,11 @@ export class IconText extends Component{
       <div style={{marginLeft:'50px'}}>
         <div style={{display:'flex',flexDirection:'row'}}>
           {this.props.icon}
-          <div style={{fontSize:'12px',marginLeft:'5px'}}>{this.props.label}</div>
+          <div style={{fontSize:'12px',marginLeft:'5px',color:"#626469"}}>{this.props.label}</div>
         </div>
 				{(this.props.value || this.props.uom) && <div style={{display:'flex',flexDirection:'row',marginTop:'10px',alignItems:'baseline'}}>
-					<div style={{fontSize: '25px',fontWeight: '500',color: '#626469'}}>{this.props.value}</div>
-					<div style={{fontSize: '14px',color: '#626469',marginLeft:'10px'}}>{this.props.uom}</div>
+					<div style={{fontSize: '25px',fontWeight: '500',color: '#0f0f0f'}}>{this.props.value}</div>
+					<div style={{fontSize: '14px',color: '#0f0f0f',marginLeft:'10px'}}>{this.props.uom}</div>
 				</div>}
 				{this.props.children}
       </div>
@@ -84,9 +84,9 @@ export class MeasuresItem extends Component {
           fontSize: '18px',
           marginTop:'-5px'
         };
-      var costIcon=<FontIcon className="icon-cost_saving" iconStyle ={iconStyle} style = {style} />,
-          sumIcon=<FontIcon className="icon-investment" iconStyle ={iconStyle} style = {style} />,
-          periodIcon=<FontIcon className="icon-roi" iconStyle ={iconStyle} style = {style} />;
+      var costIcon=<FontIcon className="icon-cost_saving" iconStyle ={iconStyle} color="#626469" style = {style} />,
+          sumIcon=<FontIcon className="icon-investment" iconStyle ={iconStyle} color="#626469" style = {style} />,
+          periodIcon=<FontIcon className="icon-roi" iconStyle ={iconStyle} color="#626469" style = {style} />;
       return(
         <div className="measuresItem-content">
           <div className="side">
@@ -126,7 +126,7 @@ export class MeasuresItem extends Component {
 																									}}/>}
             {this.getName()}
           </div>
-          <div style={{fontSize:'14px',color: '#0f0f0f'}}>{MeasuresStore.getEnergySys(EnergyProblem.EnergySys)}</div>
+          <div style={{fontSize:'14px',color: '#626469'}}>{MeasuresStore.getEnergySys(EnergyProblem.EnergySys)}</div>
         </div>
       )
     }

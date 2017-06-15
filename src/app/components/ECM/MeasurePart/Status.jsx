@@ -38,10 +38,9 @@ export default class StatusCmp extends Component {
 
     _renderEditStatus(){
       return(
-        <DropDownMenu style={{marginTop:'-10px',border:'1px solid #d7d7d7',height:'30px',borderRadius:'4px',width: '95px',
-                              height: '28px'}}
-                      labelStyle={{lineHeight:'30px',paddingLeft:'5px',paddingRight:'0'}}
-                      iconStyle={{marginTop:'-10px',padding:'0',right:'0',width:'24px'}}
+        <DropDownMenu style={{height: '28px'}}
+                      labelStyle={{fontSize:'14px',color:"#505559",border:"1px solid #e6e6e6",borderRadius: "4px",lineHeight:'28px',height:'28px',paddingLeft:'11px',paddingRight:'28px'}}
+                      iconStyle={{marginTop:'-12px',padding:'0',right:'0',width:'24px'}}
                       underlineStyle={{border:'none'}}
                       value={this.props.status}
                       onChange={(e, selectedIndex, value)=>{
