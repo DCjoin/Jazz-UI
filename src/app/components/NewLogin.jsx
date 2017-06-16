@@ -449,7 +449,7 @@ export default class NewLogin extends Component {
 				}}>
 					<div style={{
 						top: '30%',
-						left: '12%',
+						right: '12%',
 						position: 'absolute',
 						color: '#fff'
 					}}>
@@ -465,7 +465,7 @@ export default class NewLogin extends Component {
 				}}>
 					<div style={{
 						top: '30%',
-						left: '12%',
+						right: '12%',
 						position: 'absolute',
 						color: '#fff'
 					}}>
