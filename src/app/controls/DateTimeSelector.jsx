@@ -41,7 +41,7 @@ let DateTimeSelector = React.createClass({
       endDate: endDate,
       startTime: startTime,
       endTime: endTime
-    }, () => {
+    }, () => {      
       if (callback)
         callback(startDate, endDate, startTime, endTime);
     });

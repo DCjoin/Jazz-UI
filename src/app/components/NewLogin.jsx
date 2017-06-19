@@ -99,6 +99,18 @@ function checkScrollEnable() {
 	return true;
 }
 
+function go(targetIdx) {
+	return () => {		
+		let type = ANIMATION_TYPE.UP;
+		if(targetIdx < currentIdx) {
+			type = ANIMATION_TYPE.DOWN;
+		}
+		deactive(currentIdx, type);
+		currentIdx = targetIdx;
+		active(targetIdx, type);
+	}
+}
+
 function scrollListener(e) {
 	if( checkScrollEnable() && animationed ) {	
 		if( e.wheelDelta < 0 ) {
@@ -176,17 +188,17 @@ function scrollDown() {
 function toggleContainer(type) {
 	var containers = getContainers();
 
-	deactive(containers[currentIdx], type);
+	deactive(currentIdx, type);
 
 	if( type === ANIMATION_TYPE.UP) {
-		active(containers[++currentIdx], type);	
+		active(++currentIdx, type);	
 	} else {
-		active(containers[--currentIdx], type);	
+		active(--currentIdx, type);	
 	}
 }
 
-function deactive(el, type) {
-
+function deactive(currentIdx, type) {
+	let el = getContainers()[currentIdx];
 	removeClassName(getNav().children[currentIdx], 'selected');
 	removeClassName(el, ACTIVE_CLASS_NAME);
 	el.style.zIndex = 1;
@@ -218,8 +230,9 @@ function deactive(el, type) {
 
 	}, DEACTIVE_ANIMATION_DURATION)
 }
-function active(el, type) {		
+function active(currentIdx, type) {		
 
+	let el = getContainers()[currentIdx];
 	addClassName(getNav().children[currentIdx], 'selected');
 
 	el.style.zIndex = 2;
@@ -247,6 +260,9 @@ function active(el, type) {
 
 function init() {
 	var containers = getContainers();
+	containers.map(el => {
+		el.style.transform = 'translate3d(0, 100%, 0)';
+	});
 	containers.map(initTransition);
 	animationTime = containers.map(calcAnimationTime);
 }
@@ -291,7 +307,7 @@ export default class NewLogin extends Component {
 	}
 	componentDidMount() {		
 		init();
-		active(getContainers()[currentIdx], ANIMATION_TYPE.UP);
+		active(currentIdx, ANIMATION_TYPE.UP);
 	}
   componentWillUnmount() {
     LoginStore.removeChangeListener(this._onChange);
@@ -399,7 +415,7 @@ export default class NewLogin extends Component {
 					});
 				}}/>
 				<header id='login-header'>
-					<em className='icon-schneider-en'/>
+					<img style={{height: 33, width: 226, marginTop: 20}} src={require('../less/images/logo.png')} />
 					<div id='login-header-actions'>
 						<a className='jazz-mobile-qr-link' href="javascript:void(0)">
 						云能效客户端
@@ -412,7 +428,7 @@ export default class NewLogin extends Component {
 					</div>
 				</header>
 
-				<Container imageUrl={require('../less/images/step1.png')} style={{
+				<Container imageUrl={require('../less/images/step2.png')} style={{
 					backgroundColor: '#fff'
 				}}>
 					<div style={{
@@ -510,11 +526,11 @@ export default class NewLogin extends Component {
 				</footer>
 
 				<nav id='login-nav'>
-					<li>{'智能方案'}</li>
-					<li>{'方案追踪'}</li>
-					<li>{'集团指标'}</li>
-					<li>{'节能效果'}</li>
-					<li>{'最佳方案'}</li>
+					<li onClick={go(0)}>{'智能方案'}</li>
+					<li onClick={go(1)}>{'方案追踪'}</li>
+					<li onClick={go(2)}>{'集团指标'}</li>
+					<li onClick={go(3)}>{'节能效果'}</li>
+					<li onClick={go(4)}>{'最佳方案'}</li>
 				</nav>
 
 			</div>

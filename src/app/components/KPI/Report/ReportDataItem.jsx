@@ -51,8 +51,8 @@ let ReportDataItem = React.createClass({
       payload: 4,
       text: I18N.Common.AggregationStep.Yearly
     }];
-    var start = this.getRealTime(this.props.data.get('StartTime'));
-    var end = this.getRealTime(this.props.data.get('EndTime'));
+    var start = this.getRealTime(this.props.data.get('DataStartTime'));
+    var end = this.getRealTime(this.props.data.get('DataEndTime'));
     stepItems = this._getDisabledStepItems(this.props.data.get('DateType'), Immutable.fromJS(stepItems), start, end);
     return {
       showTagSelectDialog: false,
@@ -165,7 +165,6 @@ let ReportDataItem = React.createClass({
         }
       }
     }
-
     this.setState({
       data: reportData
     }/*, () => {
@@ -315,9 +314,10 @@ let ReportDataItem = React.createClass({
     }
 
     this._updateReportData('DateType', dateType, stepValue, startTime, endTime);
+
     this.setState({
       stepItems: stepItems
-    });
+    });   
   },
   _onReprtNameChange(value) {
     this._handleSelectValueChange('Name', value);
@@ -359,8 +359,8 @@ let ReportDataItem = React.createClass({
       var timeregion = CommonFuns.GetDateRegion(dateType);
       str = this.getDisplayDate(timeregion.start, false) + '-' + this.getDisplayDate(timeregion.end, true);
     } else {
-      var startTime = this.getRealTime(this.state.data.get('StartTime'));
-      var endTime = this.getRealTime(this.state.data.get('EndTime'));
+      var startTime = this.getRealTime(this.state.data.get('DataStartTime'));
+      var endTime = this.getRealTime(this.state.data.get('DataEndTime'));
       str = this.getDisplayDate(startTime, false) + '-' + this.getDisplayDate(endTime, true);
     }
     return str;
@@ -452,8 +452,8 @@ let ReportDataItem = React.createClass({
         if (dateTypeChanged) {
           dateTypeChanged = false;
         } else {
-          var startTime = this.getRealTime(this.state.data.get('StartTime'));
-          var endTime = this.getRealTime(this.state.data.get('EndTime'));
+          var startTime = this.getRealTime(this.state.data.get('DataStartTime'));
+          var endTime = this.getRealTime(this.state.data.get('DataEndTime'));
           dateSelector.setDateField(startTime, endTime);
         }
       }
@@ -476,8 +476,8 @@ let ReportDataItem = React.createClass({
       }
       dateSelector.setDateField(startTime, endTime);
     } else {
-      var startTime = moment(this.getRealTime(this.state.data.get('StartTime')));
-      var endTime = moment(this.getRealTime(this.state.data.get('EndTime')));
+      var startTime = moment(this.getRealTime(this.state.data.get('DataStartTime')));
+      var endTime = moment(this.getRealTime(this.state.data.get('DataEndTime')));
       // var currentYear=(new Date()).getFullYear();
       // var settingYear=this.state.data.get('settingYear');
       // startTime=startTime.add(currentYear-settingYear, 'y');
