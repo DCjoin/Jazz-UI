@@ -41,8 +41,9 @@ function getRelativeDateByStep(step){
 }
 
 function getUom(uomId){
-	var uom=_.find(UOMStore.getUoms(),item=>item.Id===uomId);
-	return `${uom.Comment}/${uom.Code}`
+	var uomObj=_.find(UOMStore.getUoms(),item=>item.Id===uomId),uom="";
+	if(uomObj.Code!=="null") {uom=`(${uomObj.Code})`}
+	return `${I18N.Setting.DataAnalysis.InputDataUom}${uom}`
 }
 
 function getInitEndDate(data,step,startDate){
