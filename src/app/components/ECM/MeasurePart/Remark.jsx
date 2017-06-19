@@ -43,12 +43,22 @@ class AddRemark extends Component{
             labelStyle={{color:'#3dcd58',fontSize:'14px'}}
             label={I18N.Common.Button.Save}
             disabled={this.state.value===''}
-            onClick={()=>{this.props.onSave(this.state.value)}} />
+            onClick={()=>{
+                          this.props.onSave(this.state.value);
+                          this.setState({
+                            value:""
+                          })
+                        }} />
           <FlatButton
             style={{width: '67px',height: '24px',borderRadius: '2px',lineHeight:'20px',minWidth:"67px",marginLeft:'15px'}}
             labelStyle={{color:'#626469',fontSize:'14px'}}
             label={I18N.Common.Button.Cancel2}
-            onClick={this.props.onCancel} />
+            onClick={()=>{
+              this.props.onCancel();
+              this.setState({
+                value:""
+              })
+            }} />
           </div>
       </div>
     )
