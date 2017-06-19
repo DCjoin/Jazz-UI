@@ -297,7 +297,9 @@ export default class TagDrawer extends Component {
         total=0;
         this.setState({
           searchFilter:value,
-          tagList:[]
+          tagList:[],
+          tagId:this.state.selectedHierId,
+          optionType:nodeType.Hierarchy
         })
       }
       if (timeoutID) {
@@ -324,12 +326,16 @@ export default class TagDrawer extends Component {
   _onCleanButtonClick() {
     ReactDom.findDOMNode(this.refs.cleanIcon).style.display = 'none';
     //this.refs.searchText.setValue("");
-    filters = null;
-    //TagAction.loadData(this.props.customerId,this.state.selectedHierId, nodeType.Hierarchy, page, null, filters);
-    this.setState({
-      searchFilter:'',
-      tagList:[]
-    })
+    // page=1;
+    // filters = null;
+    // TagAction.loadData(this.props.customerId,this.state.selectedHierId, nodeType.Hierarchy, page, null, filters);
+    // this.setState({
+    //   searchFilter:'',
+    //   tagList:[],
+    //   optionType:nodeType.Hierarchy,
+    //   tagId:this.state.selectedHierId
+    // })
+    this._onSearch({target:{value:""}})
   }
   _renderSearchTag(){
     var searchIconStyle = {
