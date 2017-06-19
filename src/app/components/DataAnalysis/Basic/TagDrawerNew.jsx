@@ -116,6 +116,7 @@ export default class TagDrawer extends Component {
     else {
       filters=null;
       page = 1;
+      TagAction.setCurrentDimentionInfo(node.get("Id"),node.get("Name"));
       TagAction.loadData(this.props.customerId,node.get("Id"), nodeType.DimensionOnly, 1, null, filters);
       this.setState({
           tagId: node.get("Id"),
