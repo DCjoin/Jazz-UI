@@ -191,9 +191,9 @@ function toggleContainer(type) {
 	deactive(currentIdx, type);
 
 	if( type === ANIMATION_TYPE.UP) {
-		active(containers[++currentIdx], type);	
+		active(++currentIdx, type);	
 	} else {
-		active(containers[--currentIdx], type);	
+		active(--currentIdx, type);	
 	}
 }
 
@@ -415,7 +415,7 @@ export default class NewLogin extends Component {
 					});
 				}}/>
 				<header id='login-header'>
-					<em className='icon-schneider-en'/>
+					<img style={{height: 33, width: 226, marginTop: 20}} src={require('../less/images/logo.png')} />
 					<div id='login-header-actions'>
 						<a className='jazz-mobile-qr-link' href="javascript:void(0)">
 						云能效客户端
@@ -428,7 +428,7 @@ export default class NewLogin extends Component {
 					</div>
 				</header>
 
-				<Container imageUrl={require('../less/images/step1.png')} style={{
+				<Container imageUrl={require('../less/images/step2.png')} style={{
 					backgroundColor: '#fff'
 				}}>
 					<div style={{
