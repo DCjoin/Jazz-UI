@@ -24,6 +24,9 @@ let _reqTrialUseReset = null;
 let LoginStore = assign({}, EventEmitter.prototype, {
   checkHasSpAdmin: function() {
     if (CurrentUserStore.getCurrentUser().UserType === -1 || (CurrentUserStore.permit(PermissionCode.PLATFORM_MANAGEMENT.FULL) )) {
+      if( !CurrentUserStore.getSpPrivilege() || CurrentUserStore.getSpPrivilege().length === 0 ) {
+        return false;
+      }
       return true;
     }
     return false;

@@ -416,21 +416,15 @@ export default class NewLogin extends Component {
 					backgroundColor: '#fff'
 				}}>
 					<div style={{
-						top: '38%',
-						left: 206,
+						top: '30%',
+						left: '12%',
 						position: 'absolute',
 						color: '#fff'
 					}}>
-						<div className='child' data-to='top' data-index='1' >无需手动分析，节能方案即可无忧直达</div>
-						<h1 className='child' data-to='top' data-index='2' style={{
-							marginTop: 12
-						}}>人工智能诊断模块，覆盖数百种能效问题</h1>
-						<h1 className='child' data-to='top' data-index='3' style={{
-							marginTop: 12
-						}}>专家顾问分析，解决方案直接推送</h1>
-						<h1 className='child' data-to='top' data-index='4' style={{
-							marginTop: 12
-						}}>投资回报率，节能量，投资金额，节约成本一目了然</h1>
+						<div className='child content-title' data-to='top' data-index='1' >无需手动分析，节能方案即可无忧直达</div>
+						<div className='child content-text' data-to='top' data-index='2' >人工智能诊断模块，覆盖数百种能效问题</div>
+						<div className='child content-text' data-to='top' data-index='3' >专家顾问分析，解决方案直接推送</div>
+						<div className='child content-text' data-to='top' data-index='4' >投资回报率，节能量，投资金额，节约成本一目了然</div>
 					</div>					
 				</Container>
 
@@ -438,21 +432,15 @@ export default class NewLogin extends Component {
 					backgroundColor: '#fff'
 				}}>
 					<div style={{
-						top: '38%',
-						left: 206,
+						top: '30%',
+						left: '12%',
 						position: 'absolute',
 						color: '#fff'
 					}}>
-						<div className='child' data-to='top' data-index='1' >线上线下互动，方案全程追踪</div>
-						<h1 className='child' data-to='top' data-index='2' style={{
-							marginTop: 12
-						}}>web端与app协同工作</h1>
-						<h1 className='child' data-to='top' data-index='3' style={{
-							marginTop: 12
-						}}>方案分配到人，让执行更高效</h1>
-						<h1 className='child' data-to='top' data-index='4' style={{
-							marginTop: 12
-						}}>节能方案全生命周期管理-从推送方案到方案执行到成本降低全程掌握</h1>
+						<div className='child content-title' data-to='top' data-index='1' >线上线下互动，方案全程追踪</div>
+						<div className='child content-text' data-to='top' data-index='2' >web端与app协同工作</div>
+						<div className='child content-text' data-to='top' data-index='3' >方案分配到人，让执行更高效</div>
+						<div className='child content-text' data-to='top' data-index='4' >节能方案全生命周期管理-从推送方案到方案执行到成本降低全程掌握</div>
 					</div>
 				</Container>
 
@@ -460,21 +448,15 @@ export default class NewLogin extends Component {
 					backgroundColor: '#fff'
 				}}>
 					<div style={{
-						top: '38%',
-						left: 206,
+						top: '30%',
+						right: '12%',
 						position: 'absolute',
 						color: '#fff'
 					}}>
-						<div className='child' data-to='top' data-index='1' >ISO50001能源管理方法，助力节能达成</div>
-						<h1 className='child' data-to='top' data-index='2' style={{
-							marginTop: 12
-						}}>自上而下分解集团目标至建筑目标，同尺度排名让目标管理清晰统一</h1>
-						<h1 className='child' data-to='top' data-index='3' style={{
-							marginTop: 12
-						}}>智能预测全年目标达成情况，实时掌握能源使用状态</h1>
-						<h1 className='child' data-to='top' data-index='4' style={{
-							marginTop: 12
-						}}>智能细分建筑月度目标，助力目标达成</h1>
+						<div className='child content-title' data-to='top' data-index='1' >ISO50001能源管理方法，助力节能达成</div>
+						<div className='child content-text' data-to='top' data-index='2' >自上而下分解集团目标至建筑目标，同尺度排名让目标管理清晰统一</div>
+						<div className='child content-text' data-to='top' data-index='3' >智能预测全年目标达成情况，实时掌握能源使用状态</div>
+						<div className='child content-text' data-to='top' data-index='4' >智能细分建筑月度目标，助力目标达成</div>
 					</div>					
 				</Container>
 
@@ -482,18 +464,14 @@ export default class NewLogin extends Component {
 					backgroundColor: '#fff'
 				}}>
 					<div style={{
-						top: '38%',
-						left: 206,
+						top: '30%',
+						right: '12%',
 						position: 'absolute',
 						color: '#fff'
 					}}>
-						<div className='child' data-to='top' data-index='1' >无需手动对比，节能效果轻松呈现</div>
-						<h1 className='child' data-to='top' data-index='2' style={{
-							marginTop: 12
-						}}>智能计算已实施节能方案节能量，让数据更加精确</h1>
-						<h1 className='child' data-to='top' data-index='3' style={{
-							marginTop: 12
-						}}>动态呈现所有方案节能效果，让成本降低实时可见</h1>
+						<div className='child content-title' data-to='top' data-index='1' >无需手动对比，节能效果轻松呈现</div>
+						<div className='child content-text' data-to='top' data-index='2' >智能计算已实施节能方案节能量，让数据更加精确</div>
+						<div className='child content-text' data-to='top' data-index='3' >动态呈现所有方案节能效果，让成本降低实时可见</div>
 					</div>					
 				</Container>
 
@@ -502,18 +480,14 @@ export default class NewLogin extends Component {
 					backgroundColor: '#fff'
 				}}>
 					<div style={{
-						top: '38%',
-						left: 206,
+						top: '30%',
+						left: '12%',
 						position: 'absolute',
 						color: '#fff'
 					}}>
-						<div className='child' data-to='top' data-index='1' >展示集团最佳方案，让节能可复制可粘贴</div>
-						<h1 className='child' data-to='top' data-index='2' style={{
-							marginTop: 12
-						}}>智能筛选所有建筑节能方案，让投入少，回报高的方案脱颖而出</h1>
-						<h1 className='child' data-to='top' data-index='3' style={{
-							marginTop: 12
-						}}>最佳方案直接推送，让决策更轻松更高效</h1>
+						<div className='child content-title' data-to='top' data-index='1' >展示集团最佳方案，让节能可复制可粘贴</div>
+						<div className='child content-text' data-to='top' data-index='2' >智能筛选所有建筑节能方案，让投入少，回报高的方案脱颖而出</div>
+						<div className='child content-text' data-to='top' data-index='3' >最佳方案直接推送，让决策更轻松更高效</div>
 					</div>					
 				</Container>
 

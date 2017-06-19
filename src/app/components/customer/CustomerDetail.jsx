@@ -147,10 +147,6 @@ var CustomerDetail = React.createClass({
           "pop-user-detail-tabs-tab": true,
           "selected": that.props.infoTab
         })} data-tab-index="1" onClick={that._handlerSwitchTab}>{I18N.Setting.TOUTariff.BasicProperties}</span>
-      <span className={classnames({
-          "pop-user-detail-tabs-tab": true,
-          "selected": !that.props.infoTab
-        })} data-tab-index="2" onClick={that._handlerSwitchTab}>{I18N.Setting.CustomerManagement.Label.MapPageInfo}</span>
     </div>
       }
       </div>
@@ -323,70 +319,10 @@ var CustomerDetail = React.createClass({
       )
 
   },
-  _renderMapInfoTab: function() {
-    var isView = this.props.formStatus === formStatus.VIEW;
-    if (!!this.state.energyInfo) {
-      let infos = [];
-      let flag = CustomerStore.getUpdatingEnergyInfo().get('EnergyInfoIds').size < 5;
-      this.state.energyInfo.forEach((info) => {
-        var liStyle = {};
-
-        if (isView && !info.isChecked) {
-          liStyle.display = "none";
-        }
-        infos.push(
-          <li className="pop-user-detail-customer-subcheck-block-item" style={liStyle}>
-        <div className="pop-user-detail-customer-subcheck-block-item-left" id={info.Id} onClick={this._handleEnergyInfoClick}>
-          <Checkbox
-          ref=""
-          defaultChecked={info.isChecked}
-          disabled={isView || !(flag || info.isChecked)}
-          style={{
-            width: "auto",
-            display: "block"
-          }}
-          />
-          <label
-          title={info.Name}
-          className={classnames("pop-user-detail-customer-subcheck-block-item-label", {
-            "disabled": isView
-          })}>
-            {info.Name}
-          </label>
-        </div>
-      </li>
-        );
-      });
-      return (
-        <div className="pop-role-detail-content-permission">
-          <div className='jazz-tariff-infoTab-notice'>
-            {I18N.Setting.CustomerManagement.Label.SelectTip}
-          </div>
-          <div className='jazz-tariff-infoTab-notice' style={{
-          marginTop: '10px',
-          marginBottom: '25px'
-        }}>
-            {I18N.Setting.CustomerManagement.Label.AtleastOneAtMostFive}
-          </div>
-    <ul className="pop-role-detail-content-permission-content">
-      <ul className="pop-user-detail-customer-subcheck-block">
-      {infos}
-    </ul>
-    </ul>
-  </div>
-        )
-
-    } else {
-      return (
-        <CircularProgress  mode="indeterminate" size={80} />
-        )
-    }
-
-  },
   _renderContent: function() {
     return (
       <div className="pop-manage-detail-content">
-        {this.props.infoTab ? this._renderInfoTab() : this._renderMapInfoTab()}
+        {this._renderInfoTab()}
       </div>
 
       )

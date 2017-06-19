@@ -103,6 +103,10 @@ export default class Actuality extends Component {
 		this._getInitialState(this.props);
 		this._loadInitData(this.props, this.context);
 
+		if(!UserStore.getUserCustomers() || UserStore.getUserCustomers().size === 0) {
+			UserAction.getCustomerByUser(CurrentUserStore.getCurrentUser().Id);
+		}
+
 	}
 	componentWillReceiveProps(nextProps, nextContext) {
 		if( !util.shallowEqual(nextContext.hierarchyId, this.context.hierarchyId) ) {
