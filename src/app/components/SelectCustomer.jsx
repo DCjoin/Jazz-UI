@@ -25,6 +25,7 @@ import HierarchyStore from 'stores/HierarchyStore.jsx';
 
 import HierarchyAction from 'actions/hierarchySetting/HierarchyAction.jsx';
 import BaseHierarchyAction from 'actions/HierarchyAction.jsx';
+import LoginActionCreator from 'actions/LoginActionCreator.jsx';
 
 function getCustomerPrivilageById(customerId) {
   return UserStore.getUserCustomers().find(customer => customer.get('CustomerId') === customerId * 1 );
@@ -164,6 +165,18 @@ const SelectCustomer = React.createClass({
 
   _renderContent() {
     let {step, hierarchyList, selectCustomerId} = this.state;
+    if( CurrentUserCustomerStore.getAll().length === 0 && !LoginStore.checkHasSpAdmin() ) {
+      return (
+        <div className='jazz-select-customer-no-pril-tip'>
+          <div>抱歉，您没有任何查看权限，</div>
+          <div>请退出后联系您的管理员</div>
+          <button onClick={() => {
+            LoginActionCreator.logout();
+            window.location.reload();
+          }}>退出</button>
+        </div>
+      );
+    }
     if( step === 1 ) {
       return (
         <ul className='jazz-select-customer-list' style={{height: document.body.clientHeight - 82}}>
