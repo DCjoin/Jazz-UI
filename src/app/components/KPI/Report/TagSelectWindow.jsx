@@ -272,14 +272,14 @@ let TagSelectWindow = React.createClass({
   },
   _onSearchCleanButtonClick: function() {
     ReactDom.findDOMNode(this.refs.cleanIcon).style.display = 'none';
-    filters = null;
-    this.setState({
-      searchValue:'',
-      tagList:[]
-    },()=>{
-      //ReportAction.getTagData(customerId,this.state.nodeId, this.state.optionType, filters,this.props.type);
-    })
-
+    // filters = null;
+    // this.setState({
+    //   searchValue:'',
+    //   tagList:[]
+    // },()=>{
+    //   //ReportAction.getTagData(customerId,this.state.nodeId, this.state.optionType, filters,this.props.type);
+    // })
+    this._onSearch({target:{value:""}})
   },
   _onSearchBlur(e) {
   if (!e.target.value) {
