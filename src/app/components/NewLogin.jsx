@@ -415,7 +415,7 @@ export default class NewLogin extends Component {
 					});
 				}}/>
 				<header id='login-header'>
-					<img style={{height: 33, width: 226, marginTop: 20}} src={require('../less/images/logo.png')} />
+					<img style={{height: 33, width: 226, marginTop: 25, marginLeft: 30}} src={require('../less/images/logo.png')} />
 					<div id='login-header-actions'>
 						<a className='jazz-mobile-qr-link' href="javascript:void(0)">
 						云能效客户端
