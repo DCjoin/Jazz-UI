@@ -106,14 +106,14 @@ const PermissionCode = function() {
 	},
 	SENIOR_SMART_DIACRISIS_LIST: {
 		getLabel: () => I18N.Privilege.Role.SeniorSmartDiacrisisList,
-		FULL: 1325,
+		FULL: 1327,
 	},
 
 	BASIC_DATA_ANALYSE: {
 		getLabel: () => I18N.Privilege.Role.BasicDataAnalyse,
 		FULL: 1313,
 	},
-	
+
 	SENIOR_DATA_ANALYSE: {
 		getLabel: () => I18N.Privilege.Role.SeniorDataAnalyse,
 		FULL: 1313,
@@ -124,12 +124,12 @@ const PermissionCode = function() {
 		FULL: 1303,
 		getLabel: () => I18N.Privilege.Role.PushSolution
 	},
-	
+
 	SOLUTION_FULL: {
 		getLabel: () => I18N.Privilege.Role.SolutionFull,
 		FULL: 1321,
 	},
-	
+
 	BUILDING_LIST: {
 		getLabel: () => I18N.Privilege.Role.BuildingList,
 		FULL: 1319,

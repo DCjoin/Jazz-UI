@@ -18,6 +18,11 @@ function privilegeWithSeniorSmartDiagnose( privilegeCheck ) {
 	return privilegeCheck(PermissionCode.SENIOR_SMART_DIACRISIS, CurrentUserStore.getCurrentPrivilege());
 }
 
+function privilegeWithSeniorSmartDiagnoseList( privilegeCheck ) {
+  //  return false
+	return privilegeCheck(PermissionCode.SENIOR_SMART_DIACRISIS_LIST, CurrentUserStore.getCurrentPrivilege());
+}
+
 function isFull() {
 	return privilegeWithSeniorSmartDiagnose(privilegeUtil.isFull.bind(privilegeUtil));
 }
@@ -26,8 +31,13 @@ function isView() {
 	return privilegeWithSeniorSmartDiagnose(privilegeUtil.isView.bind(privilegeUtil));
 }
 
-function noPrivilege(){
-  return !isFull() && !isView()
+function isListFull() {
+	return privilegeWithSeniorSmartDiagnoseList(privilegeUtil.isFull.bind(privilegeUtil));
+}
+
+function noPrivilege(isFromProbem){
+  if(isFromProbem) return !isFull() && !isView()
+  else return !isListFull()
 }
 
 

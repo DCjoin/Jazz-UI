@@ -16,12 +16,25 @@ function isFull() {
 	return privilegeWithSeniorSmartDiagnose(privilegeUtil.isFull.bind(privilegeUtil));
 }
 
+function privilegeWithSeniorSmartDiagnoseList( privilegeCheck ) {
+  //  return false
+	return privilegeCheck(PermissionCode.SENIOR_SMART_DIACRISIS_LIST, CurrentUserStore.getCurrentPrivilege());
+}
+
+function isListFull() {
+	return privilegeWithSeniorSmartDiagnoseList(privilegeUtil.isFull.bind(privilegeUtil));
+}
+
 function isView() {
 	return privilegeWithSeniorSmartDiagnose(privilegeUtil.isView.bind(privilegeUtil));
 }
 
 function noPrivilege(){
   return !isFull() && !isView()
+}
+
+function noListPrivilege(){
+  return !isListFull()
 }
 
 
@@ -74,6 +87,9 @@ export default class LabelDetail extends Component {
 
 		if(this.props.isFromProbem && !this.props.isBasic && noPrivilege()){
       text=I18N.Setting.Diagnose.NoPrivilege
+    }
+    if(!this.props.isFromProbem && !this.props.isBasic && noListPrivilege()){
+      text=I18N.Setting.Diagnose.NoListPrivilege
     }
 		if(text!==''){
       content=<div className="flex-center">

@@ -138,11 +138,12 @@ const MeasuresStore = assign({}, PrototypeStore, {
     }
     else {
       var cycle=amount/cost;
+      cycle=parseFloat(cycle.toFixed(1));
       if(cycle===0){
         return I18N.Setting.ECM.InvestmentReturnCycle.ImmediateRecovery
       }
       else {
-        return parseFloat(cycle.toFixed(1))
+        return cycle
       }
     }
   },
@@ -251,6 +252,7 @@ const MeasuresStore = assign({}, PrototypeStore, {
     }
   },
   getSupervisorListByEnergySys(list,energySys){
+    if(list===null) return null;
     var list1=list.filter(item=>(item.get('EnergySys')===energySys)),
         list2=list.filter(item=>(item.get('EnergySys')!==energySys));
         return list1.concat(list2)
