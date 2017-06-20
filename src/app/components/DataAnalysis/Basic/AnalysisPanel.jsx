@@ -604,7 +604,14 @@ class AnalysisPanel extends Component {
         };
         viewOption.DataOption = dataOption;
 
-        let pagingObj = this.refs.ChartComponent.refs.chart.getPageObj();
+        let pagingObj;
+        if(this.refs.ChartComponent){
+          pagingObj=this.refs.ChartComponent.refs.chart.getPageObj()
+        }else {
+          pagingObj={
+            pageIdx:0
+           }
+         }
         let pagingOrder = {
           PageSize: 20,
           PageIdx: pagingObj.pageIdx,
