@@ -429,7 +429,7 @@ export default class PushPanel extends Component {
         isOutsideClose={false}
         onRequestClose={onClose}
         titleStyle={{margin:'0 7px',paddingTop:"7px"}}
-        contentStyle={{overflowY: 'auto',paddingRight:'5px',display:'block',margin:"0 32px"}}>
+        contentStyle={{overflowY: 'auto',paddingRight:'5px',display:'block',margin:"0 32px",paddingBottom:'10px'}}>
         {this._renderOperation()}
         <SolutionLabel {...props.solution}/>
         <Solution {...props.solution}/>
