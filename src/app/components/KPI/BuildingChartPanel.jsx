@@ -195,6 +195,7 @@ export default class BuildingChartPanel extends Component {
 								isGroup={false}
 								period={period}
 								onRefresh={onRefresh}
+								buildingId={buildingId}
 								data={currentTag}
 								summaryData={currentSummaryData}
 								key={currentKPIId}/>
