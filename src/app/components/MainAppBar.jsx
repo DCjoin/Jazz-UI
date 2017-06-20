@@ -326,9 +326,9 @@ var MainAppBar = React.createClass({
             </div>
             <div style={{position: 'absolute', bottom: 75, fontSize: '12px'}}>
               <div style={{fontSize: '14px'}}>{I18N.Platform.About.ContactUs}</div>
-              <div style={{marginTop: 10}}><span style={{fontSize: '14px', marginRight: 30}}>郭玉锦</span>商务支持</div>
-              <div>18616885310</div>
-              <div>yujin.guo@schneider-electric.com</div>
+              <div style={{marginTop: 10}}><span style={{fontSize: '14px', marginRight: 30}}>孙琳</span>商务支持</div>
+              <div>18611763140</div>
+              <div>lin-lynn.sun@schneider-electric.com</div>
               <div style={{marginTop: 10}}><span style={{fontSize: '14px', marginRight: 30}}>郭玉锦</span>技术支持</div>
               <div>18616885310</div>
               <div>yujin.guo@schneider-electric.com</div>

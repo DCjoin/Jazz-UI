@@ -174,7 +174,7 @@ export default class DataAnalysis extends Component {
 
 	_onSelectedNodeChange() {
     if( !Immutable.is(this.state.selectedNode, FolderStore.getSelectedNode()) ) {
-  		this._onSelectNode(FolderStore.getSelectedNode());
+  		this._onSelectNode(FolderStore.getSelectedNode(), true);
     }
 	}
 
@@ -209,9 +209,12 @@ export default class DataAnalysis extends Component {
     });
   }
 
-	_onSelectNode(node) {
+	_onSelectNode(node, fromDispatch) {
     let {widgetDto, selectedNode} = this.state;
-    let callback = (widgetIsInit) => {
+    let callback = (widgetIsInit, fromDispatch) => {
+    	if(fromDispatch) {
+    		return ;
+    	}
       if( widgetIsInit ) {
         FolderAction.deleteItem(selectedNode, selectedNode.get('Id') === node.get('Id'));
         if( selectedNode.get('Id') === node.get('Id') ) {
@@ -238,10 +241,10 @@ export default class DataAnalysis extends Component {
         this._changeNodeId(node.get('Id'));
       });
     };
-    if( selectedNode && isWidget(selectedNode) ) {
+    if( selectedNode && isWidget(selectedNode) && !fromDispatch ) {
       FolderAction.checkWidgetUpdate(callback);
     } else {
-      callback();
+      callback(false, fromDispatch);
     }
 	}
 
