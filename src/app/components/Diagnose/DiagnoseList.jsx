@@ -13,9 +13,8 @@ import DiagnoseChart from './DiagnoseChart.jsx';
 
 function privilegeWithSmartDiagnoseList( privilegeCheck ) {
   //  return false
-	return 
-  privilegeCheck(PermissionCode.BASIC_SMART_DIACRISIS_LIST, CurrentUserStore.getCurrentPrivilege())
-  || privilegeCheck(PermissionCode.SENIOR_SMART_DIACRISIS_LIST, CurrentUserStore.getCurrentPrivilege());
+	return (privilegeCheck(PermissionCode.BASIC_SMART_DIACRISIS_LIST, CurrentUserStore.getCurrentPrivilege())
+  || privilegeCheck(PermissionCode.SENIOR_SMART_DIACRISIS_LIST, CurrentUserStore.getCurrentPrivilege()));
 }
 
 function isFull() {
