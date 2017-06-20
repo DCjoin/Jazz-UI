@@ -219,10 +219,10 @@ class SupervisorDropDownMenu extends Component{
     var styles={
       btnStyle:{
         width: '155px',
-        height: '28px',
+        height: '31px',
         borderRadius: '4px',
         border: 'solid 1px #e6e6e6',
-        lineHeight:'28px',
+        lineHeight:'31px',
         textAlign:"start",
         paddingLeft:'16px'
       },
