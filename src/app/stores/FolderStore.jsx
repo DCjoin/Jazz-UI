@@ -471,7 +471,7 @@ var FolderStore = assign({}, PrototypeStore, {
       this.dispose();
     },
     emitCreateFolderOrWidgetChange: function() {
-      this.emit(CREATE_FOLDER_EVENT);
+      this.emit(CREATE_FOLDER_EVENT, true);
     },
     addCreateFolderOrWidgetListener: function(callback) {
       this.on(CREATE_FOLDER_EVENT, callback);
