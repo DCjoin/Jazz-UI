@@ -101,7 +101,7 @@ export default class LabelList extends Component {
         infoTabNo:no,
         list:null
       },()=>{
-        if(this.state.infoTabNo===1 || !noPrivilege()){
+        if(this.state.infoTabNo===1 || !noPrivilege(this.props.isFromProbem)){
           this._getList(this.context.hierarchyId)
         }else {
           this.setState({
