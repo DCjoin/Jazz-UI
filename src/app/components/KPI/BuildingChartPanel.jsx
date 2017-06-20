@@ -171,7 +171,7 @@ export default class BuildingChartPanel extends Component {
 					<div className='jazz-building-kpi-rank-wrapper'>
 						<div className='jazz-building-kpi-rank'>
 							<header className='jazz-building-kpi-rank-header'>
-								<em className='jazz-building-kpi-rank-icon icon-humidity'/>
+								<em className='jazz-building-kpi-rank-icon .icon-energy_saving'/>
 								<div className='jazz-building-kpi-rank-name hiddenEllipsis'>{currentTag.get('name')}</div>
 								<div className='jazz-building-kpi-rank-time'>{
 									this.context.router.location.query.groupKpiId ?
@@ -195,6 +195,7 @@ export default class BuildingChartPanel extends Component {
 								isGroup={false}
 								period={period}
 								onRefresh={onRefresh}
+								buildingId={buildingId}
 								data={currentTag}
 								summaryData={currentSummaryData}
 								key={currentKPIId}/>
