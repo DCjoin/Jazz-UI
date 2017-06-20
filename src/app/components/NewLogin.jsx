@@ -456,7 +456,7 @@ export default class NewLogin extends Component {
 						<div style={{marginBottom: 20}} className='child content-title' data-to='top' data-index='1' >线上线下互动，方案全程追踪</div>
 						<div style={{marginBottom: 6}} className='child content-text' data-to='top' data-index='2' >Web端与App协同工作</div>
 						<div style={{marginBottom: 6}} className='child content-text' data-to='top' data-index='3' >方案分配到人，让执行更高效</div>
-						<div className='child content-text' data-to='top' data-index='4' >节能方案全生命周期管理-从推送方案到方案执行到成本降低全程掌握</div>
+						<div className='child content-text' data-to='top' data-index='4' ><span style={{display: 'inline-block'}}>节能方案全生命周期管理——<br/>从推送方案到方案执行到成本降低全程掌握</span></div>
 					</div>
 				</Container>
 
