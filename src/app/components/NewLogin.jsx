@@ -428,7 +428,7 @@ export default class NewLogin extends Component {
 					</div>
 				</header>
 
-				<Container imageUrl={require('../less/images/step2.png')} style={{
+				<Container imageUrl={require('../less/images/step1.png')} style={{
 					backgroundColor: '#fff'
 				}}>
 					<div style={{
@@ -451,12 +451,13 @@ export default class NewLogin extends Component {
 						top: '30%',
 						left: '12%',
 						position: 'absolute',
-						color: '#fff'
+						color: '#fff',
+						textAlign: 'center'
 					}}>
-						<div className='child content-title' data-to='top' data-index='1' >线上线下互动，方案全程追踪</div>
-						<div className='child content-text' data-to='top' data-index='2' >web端与app协同工作</div>
-						<div className='child content-text' data-to='top' data-index='3' >方案分配到人，让执行更高效</div>
-						<div className='child content-text' data-to='top' data-index='4' >节能方案全生命周期管理-从推送方案到方案执行到成本降低全程掌握</div>
+						<div style={{marginBottom: 20}} className='child content-title' data-to='top' data-index='1' >线上线下互动，方案全程追踪</div>
+						<div style={{textAlign: 'center', marginBottom: 6}} className='child content-text' data-to='top' data-index='2' >Web端与App协同工作</div>
+						<div style={{textAlign: 'center', marginBottom: 6}} className='child content-text' data-to='top' data-index='3' >方案分配到人，让执行更高效</div>
+						<div style={{textAlign: 'center'}} className='child content-text' data-to='top' data-index='4' >节能方案全生命周期管理-从推送方案到方案执行到成本降低全程掌握</div>
 					</div>
 				</Container>
 
