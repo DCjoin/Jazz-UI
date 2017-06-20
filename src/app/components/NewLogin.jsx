@@ -415,7 +415,7 @@ export default class NewLogin extends Component {
 					});
 				}}/>
 				<header id='login-header'>
-					<img style={{height: 33, width: 226, marginTop: 25, marginLeft: 30}} src={require('../less/images/logo.png')} />
+					<img style={{height: 33, width: 266, marginTop: 25, marginLeft: 30}} src={require('../less/images/logo.png')} />
 					<div id='login-header-actions'>
 						<a className='jazz-mobile-qr-link' href="javascript:void(0)">
 						云能效客户端
@@ -451,13 +451,12 @@ export default class NewLogin extends Component {
 						top: '30%',
 						left: '12%',
 						position: 'absolute',
-						color: '#fff',
-						textAlign: 'center'
+						color: '#fff'
 					}}>
 						<div style={{marginBottom: 20}} className='child content-title' data-to='top' data-index='1' >线上线下互动，方案全程追踪</div>
-						<div style={{textAlign: 'center', marginBottom: 6}} className='child content-text' data-to='top' data-index='2' >Web端与App协同工作</div>
-						<div style={{textAlign: 'center', marginBottom: 6}} className='child content-text' data-to='top' data-index='3' >方案分配到人，让执行更高效</div>
-						<div style={{textAlign: 'center'}} className='child content-text' data-to='top' data-index='4' >节能方案全生命周期管理-从推送方案到方案执行到成本降低全程掌握</div>
+						<div style={{marginBottom: 6}} className='child content-text' data-to='top' data-index='2' >Web端与App协同工作</div>
+						<div style={{marginBottom: 6}} className='child content-text' data-to='top' data-index='3' >方案分配到人，让执行更高效</div>
+						<div className='child content-text' data-to='top' data-index='4' >节能方案全生命周期管理-从推送方案到方案执行到成本降低全程掌握</div>
 					</div>
 				</Container>
 

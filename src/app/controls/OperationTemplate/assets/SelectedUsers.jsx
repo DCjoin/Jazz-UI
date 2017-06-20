@@ -57,7 +57,7 @@ var UserItem = React.createClass({
           <div style={{
         float: 'right'
       }}> 
-            <a href="" onClick={this._onCleanButtonClick}>X</a>
+            <a href="javascript:void(0)" onClick={this._onCleanButtonClick}>X</a>
             
 
           </div>
