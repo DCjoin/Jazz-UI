@@ -451,7 +451,7 @@ export default class NewLogin extends Component {
 						top: '30%',
 						left: '12%',
 						position: 'absolute',
-						color: '#fff'
+						color: '#000'
 					}}>
 						<div style={{marginBottom: 20}} className='child content-title' data-to='top' data-index='1' >线上线下互动，方案全程追踪</div>
 						<div style={{marginBottom: 6}} className='child content-text' data-to='top' data-index='2' >Web端与App协同工作</div>
@@ -465,13 +465,13 @@ export default class NewLogin extends Component {
 				}}>
 					<div style={{
 						top: '30%',
-						right: '12%',
+						right: '4%',
 						position: 'absolute',
 						color: '#fff'
 					}}>
 						<div className='child content-title' data-to='top' data-index='1' >ISO50001能源管理方法，助力节能达成</div>
-						<div className='child content-text' data-to='top' data-index='2' >自上而下分解集团目标至建筑目标，同尺度排名让目标管理清晰统一</div>
-						<div className='child content-text' data-to='top' data-index='3' >智能预测全年目标达成情况，实时掌握能源使用状态</div>
+						<div style={{marginBottom: 6}} className='child content-text' data-to='top' data-index='2' >自上而下分解集团目标至建筑目标，同尺度排名让目标管理清晰统一</div>
+						<div style={{marginBottom: 6}} className='child content-text' data-to='top' data-index='3' >智能预测全年目标达成情况，实时掌握能源使用状态</div>
 						<div className='child content-text' data-to='top' data-index='4' >智能细分建筑月度目标，助力目标达成</div>
 					</div>					
 				</Container>
