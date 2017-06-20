@@ -43,7 +43,8 @@ const PRIVILEGE_ADMIN = [
   PermissionCode.SOLUTION_FULL.FULL,
   PermissionCode.BASIC_SMART_DIACRISIS.FULL,
   PermissionCode.SENIOR_SMART_DIACRISIS.FULL,
-  PermissionCode.SMART_DIACRISIS_LIST.FULL,
+  PermissionCode.BASIC_SMART_DIACRISIS_LIST.FULL,
+  PermissionCode.SENIOR_SMART_DIACRISIS_LIST.FULL,
 ].map( code => '' + code );
 
 var CurrentUserStore = assign({}, PrototypeStore, {
@@ -255,7 +256,9 @@ var CurrentUserStore = assign({}, PrototypeStore, {
     }
 
     if ( this.permit(PermissionCode.BASIC_SMART_DIACRISIS.FULL) || this.permit(PermissionCode.BASIC_SMART_DIACRISIS.READONLY)
-        || this.permit(PermissionCode.SMART_DIACRISIS_LIST.FULL)) {
+        || this.permit(PermissionCode.BASIC_SMART_DIACRISIS_LIST.FULL)
+        || this.permit(PermissionCode.SENIOR_SMART_DIACRISIS_LIST.FULL)
+        ) {
       menuItems.push(
         {
           getPath: RoutePath.smartDiagnose,
