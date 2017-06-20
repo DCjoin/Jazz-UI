@@ -755,8 +755,8 @@ class AnalysisPanel extends Component {
   _renderMoreOperation(){
     var styles={
       iconBtn:{
-        width:'30px',
-        height:'30px',
+        width:'29px',
+        height:'29px',
         backgroundColor:'#ffffff',
         border:'solid 1px #e3e3e3',
         padding:'0'
@@ -1471,7 +1471,7 @@ class AnalysisPanel extends Component {
     AlarmTagStore.removeChangeListener(this._onTagChanged);
     FolderStore.removeCheckWidgetUpdateChangeListener(this._onCheckWidgetUpdate);
     this.resetCalendarType();
-    TagAction.clearAlarmSearchTagList();
+    // TagAction.clearAlarmSearchTagList();
     TagAction.setCurrentHierarchyId(null);
     CommodityAction.setCurrentHierarchyInfo({Id:null,name:null});//清空hierarchy 信息，否则会影响能源
     MultipleTimespanStore.clearMultiTimespan('both');
