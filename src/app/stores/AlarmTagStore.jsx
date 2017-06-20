@@ -134,6 +134,8 @@ var AlarmTagStore = assign({}, PrototypeStore, {
     interData = iaData;
   },
   doWidgetDtos: function(widgetDto) {
+    AlarmTagStore.setUseTagListSelect(true);
+    searchTagList.length = 0;
     let that = this;
     if (widgetDto.WidgetType == 'Labelling' || widgetDto.WidgetType == 'Ratio' || widgetDto.BizType == 'Energy' || widgetDto.BizType == 'UnitEnergy') {
       let convertWidgetOptions2TagOption = function(WidgetOptions) {
