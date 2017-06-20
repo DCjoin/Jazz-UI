@@ -6,7 +6,8 @@ const BlankItem=React.createClass({
     var styles={
       height:'180px',
       position:'absolute',
-      backgroundColor:'white'
+      backgroundColor:'white',
+      zIndex:"1000"
     };
     var style=assign({},styles,this.props.style);
     return(

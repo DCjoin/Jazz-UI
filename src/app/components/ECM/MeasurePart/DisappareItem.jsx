@@ -50,7 +50,8 @@ export default class DisappareItem extends Component {
         backgroundColor:'white',
         display:'flex',
         justifyContent:'center',
-        alignItems:'center'
+        alignItems:'center',
+        zIndex:"1001"
       };
     return(
       <div className="disappareitem">
@@ -64,7 +65,7 @@ export default class DisappareItem extends Component {
                   this.setState({ecmIconShow:true})
                 }}/>
         </div>}
-        {true && <FontIcon className="icon-to-ecm" iconStyle ={iconStyle} style = {style} />}
+        {!this.state.disappare && <FontIcon className="icon-to-ecm" iconStyle ={iconStyle} style = {style} />}
         {this.state.disappare && this.state.x &&  this.state.y &&<Move {...this._getMoveProps()}/>}
       </div>
     )
