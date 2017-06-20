@@ -2306,6 +2306,7 @@ I18N.Setting.Diagnose.HasNoList='未配置诊断，在能源标签下添加新�
 I18N.Setting.Diagnose.SelectProblemTip='在左侧选择要查看的问题';
 I18N.Setting.Diagnose.SelectListTip='在左侧选择要查看的诊断';
 I18N.Setting.Diagnose.NoPrivilege='想获得更多智能诊断方式，请购买高级咨询服务';
+I18N.Setting.Diagnose.NoListPrivilege='想获得更多智能诊断方式，请购买高级产品';
 I18N.Setting.Diagnose.Resume='恢复诊断';
 I18N.Setting.Diagnose.DeleteDiagnoseList='删除诊断"{0}"吗？';
 I18N.Setting.Diagnose.ResumeDiagnoseList='恢复诊断"{0}"吗？';
