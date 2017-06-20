@@ -45,7 +45,7 @@ var CustomFlatButton = React.createClass({
           props.style.backgroundColor = getLessVar("warningRedBackground");
         } else {
           props.style.color = getLessVar("schneiderBlue");
-          props.style.backgroundColor = getLessVar("schneiderBlueBackground");
+          // props.style.backgroundColor = getLessVar("schneiderBlueBackground");
         }
 
       }
