@@ -148,7 +148,7 @@ const MeasuresStore = assign({}, PrototypeStore, {
     }
   },
   getDisplayText(text){
-    return text===null?'-':text
+    return text===null?' — ':text
   },
   validateNumber(number){
     //null
