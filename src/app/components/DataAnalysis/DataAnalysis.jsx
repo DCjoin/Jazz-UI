@@ -172,10 +172,14 @@ export default class DataAnalysis extends Component {
 		}
 	}
 
-	_onSelectedNodeChange() {
-    if( !Immutable.is(this.state.selectedNode, FolderStore.getSelectedNode()) ) {
-  		this._onSelectNode(FolderStore.getSelectedNode(), true);
-    }
+	_onSelectedNodeChange(forceUpdate) {
+		let fromDispatch = true;
+		if(forceUpdate) {
+			fromDispatch = false;
+		}
+		if( !Immutable.is(this.state.selectedNode, FolderStore.getSelectedNode()) ) {
+	  		this._onSelectNode(FolderStore.getSelectedNode(), fromDispatch);
+	    }
 	}
 
   _onModifyNameError() {
