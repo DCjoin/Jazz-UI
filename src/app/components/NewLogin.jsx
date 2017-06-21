@@ -100,7 +100,26 @@ function checkScrollEnable() {
 }
 
 function go(targetIdx) {
-	return () => {		
+	return () => {
+		if( targetIdx === currentIdx ) {
+			return false;
+		}
+		var header = getHeader();
+		if( targetIdx === 0 ) {
+			if(header.style.display === 'none') {
+				header.style.display = 'block';
+				setTimeout(() => {
+					header.style.transform = '';
+				}, 1000);
+			}
+		} else {			
+			if(header.style.display !== 'none') {
+				header.style.transform = 'translate3d(0, -100%, 0)';
+				setTimeout(function() {
+					header.style.display = 'none';
+				}, 1000);
+			}
+		}
 		let type = ANIMATION_TYPE.UP;
 		if(targetIdx < currentIdx) {
 			type = ANIMATION_TYPE.DOWN;
@@ -454,8 +473,8 @@ export default class NewLogin extends Component {
 						color: '#000'
 					}}>
 						<div style={{marginBottom: 20}} className='child content-title' data-to='top' data-index='1' >线上线下互动，方案全程追踪</div>
-						<div style={{marginBottom: 6}} className='child content-text' data-to='top' data-index='2' >Web端与App协同工作</div>
-						<div style={{marginBottom: 6}} className='child content-text' data-to='top' data-index='3' >方案分配到人，让执行更高效</div>
+						<div className='child content-text' data-to='top' data-index='2' >Web端与App协同工作</div>
+						<div className='child content-text' data-to='top' data-index='3' >方案分配到人，让执行更高效</div>
 						<div className='child content-text' data-to='top' data-index='4' ><span style={{display: 'inline-block'}}>节能方案全生命周期管理——<br/>从推送方案到方案执行到成本降低全程掌握</span></div>
 					</div>
 				</Container>
@@ -470,8 +489,8 @@ export default class NewLogin extends Component {
 						color: '#fff'
 					}}>
 						<div className='child content-title' data-to='top' data-index='1' >ISO50001能源管理方法，助力节能达成</div>
-						<div style={{marginBottom: 6}} className='child content-text' data-to='top' data-index='2' >自上而下分解集团目标至建筑目标，同尺度排名让目标管理清晰统一</div>
-						<div style={{marginBottom: 6}} className='child content-text' data-to='top' data-index='3' >智能预测全年目标达成情况，实时掌握能源使用状态</div>
+						<div className='child content-text' data-to='top' data-index='2' >自上而下分解集团目标至建筑目标，同尺度排名让目标管理清晰统一</div>
+						<div className='child content-text' data-to='top' data-index='3' >智能预测全年目标达成情况，实时掌握能源使用状态</div>
 						<div className='child content-text' data-to='top' data-index='4' >智能细分建筑月度目标，助力目标达成</div>
 					</div>					
 				</Container>
