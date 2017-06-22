@@ -21,8 +21,8 @@ var currentIdx = 0;
 var animationTime;
 
 const ACTIVE_CLASS_NAME = 'active';
-const CHILD_ANIMATION_TIME = 1000;
-const DEACTIVE_ANIMATION_DURATION = 1000;
+const CHILD_ANIMATION_TIME = 600;
+const DEACTIVE_ANIMATION_DURATION = 600;
 
 const ANIMATION_TYPE = {
 	UP: 0,
@@ -100,7 +100,26 @@ function checkScrollEnable() {
 }
 
 function go(targetIdx) {
-	return () => {		
+	return () => {
+		if( !animationed || targetIdx === currentIdx ) {
+			return false;
+		}
+		var header = getHeader();
+		if( targetIdx === 0 ) {
+			if(header.style.display === 'none') {
+				header.style.display = 'block';
+				setTimeout(() => {
+					header.style.transform = '';
+				}, DEACTIVE_ANIMATION_DURATION);
+			}
+		} else {			
+			if(header.style.display !== 'none') {
+				header.style.transform = 'translate3d(0, -100%, 0)';
+				setTimeout(function() {
+					header.style.display = 'none';
+				}, DEACTIVE_ANIMATION_DURATION);
+			}
+		}
 		let type = ANIMATION_TYPE.UP;
 		if(targetIdx < currentIdx) {
 			type = ANIMATION_TYPE.DOWN;
@@ -131,14 +150,9 @@ function scrollUp() {
 		containers[containers.length - 1].style.transform = 'translate3d(0, 0, 0)';
 		setTimeout(function() {
 			footer.style.display = 'none';
-		}, 1000);
+		}, DEACTIVE_ANIMATION_DURATION);
 
 	} else if(currentIdx > 0) {	
-
-		animationed = false;
-		setTimeout(function() {
-			animationed = true;
-		}, animationTime[currentIdx]);
 
 		toggleContainer(ANIMATION_TYPE.DOWN);
 
@@ -147,7 +161,7 @@ function scrollUp() {
 			header.style.display = 'block';
 			setTimeout(() => {
 				header.style.transform = '';
-			}, 1000);
+			}, DEACTIVE_ANIMATION_DURATION);
 		}
 	}
 
@@ -156,11 +170,6 @@ function scrollDown() {
 	var containers = getContainers();
 	if( currentIdx < containers.length - 1) {
 
-		animationed = false;
-		setTimeout(function() {
-			animationed = true;
-		}, animationTime[currentIdx]);
-
 		toggleContainer(ANIMATION_TYPE.UP);
 
 		var header = getHeader();
@@ -168,7 +177,7 @@ function scrollDown() {
 			header.style.transform = 'translate3d(0, -100%, 0)';
 			setTimeout(function() {
 				header.style.display = 'none';
-			}, 1000);
+			}, DEACTIVE_ANIMATION_DURATION);
 		}
 
 	} else {	
@@ -231,6 +240,11 @@ function deactive(currentIdx, type) {
 	}, DEACTIVE_ANIMATION_DURATION)
 }
 function active(currentIdx, type) {		
+
+	animationed = false;
+	setTimeout(function() {
+		animationed = true;
+	}, animationTime[currentIdx]);
 
 	let el = getContainers()[currentIdx];
 	addClassName(getNav().children[currentIdx], 'selected');
@@ -454,8 +468,8 @@ export default class NewLogin extends Component {
 						color: '#000'
 					}}>
 						<div style={{marginBottom: 20}} className='child content-title' data-to='top' data-index='1' >线上线下互动，方案全程追踪</div>
-						<div style={{marginBottom: 6}} className='child content-text' data-to='top' data-index='2' >Web端与App协同工作</div>
-						<div style={{marginBottom: 6}} className='child content-text' data-to='top' data-index='3' >方案分配到人，让执行更高效</div>
+						<div className='child content-text' data-to='top' data-index='2' >Web端与App协同工作</div>
+						<div className='child content-text' data-to='top' data-index='3' >方案分配到人，让执行更高效</div>
 						<div className='child content-text' data-to='top' data-index='4' ><span style={{display: 'inline-block'}}>节能方案全生命周期管理——<br/>从推送方案到方案执行到成本降低全程掌握</span></div>
 					</div>
 				</Container>
@@ -470,8 +484,8 @@ export default class NewLogin extends Component {
 						color: '#fff'
 					}}>
 						<div className='child content-title' data-to='top' data-index='1' >ISO50001能源管理方法，助力节能达成</div>
-						<div style={{marginBottom: 6}} className='child content-text' data-to='top' data-index='2' >自上而下分解集团目标至建筑目标，同尺度排名让目标管理清晰统一</div>
-						<div style={{marginBottom: 6}} className='child content-text' data-to='top' data-index='3' >智能预测全年目标达成情况，实时掌握能源使用状态</div>
+						<div className='child content-text' data-to='top' data-index='2' >自上而下分解集团目标至建筑目标，同尺度排名让目标管理清晰统一</div>
+						<div className='child content-text' data-to='top' data-index='3' >智能预测全年目标达成情况，实时掌握能源使用状态</div>
 						<div className='child content-text' data-to='top' data-index='4' >智能细分建筑月度目标，助力目标达成</div>
 					</div>					
 				</Container>
