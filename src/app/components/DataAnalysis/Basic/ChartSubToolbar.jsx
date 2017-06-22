@@ -33,7 +33,9 @@ export default class ChartSubToolbar extends Component {
           padding:'0 20px',
           alignItems:'center',
           border:'solid 1px #e6e6e6',
-          borderBottom:'none'
+          borderBottom:'none',
+          borderTopLeftRadius: '5px',
+          borderTopRightRadius: '5px'
         }}>
         <div style={{display:'flex'}}>
           <DropDownMenu ref="relativeDate" style={{

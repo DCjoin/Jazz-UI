@@ -1035,7 +1035,6 @@ class AnalysisPanel extends Component {
   _renderSearchBar(){
     var styles={
       button:{
-        border:'1px solid #efefef',
         marginRight:'15px',
         height:'30px',
         lineHeight:'30px'
@@ -1101,7 +1100,8 @@ class AnalysisPanel extends Component {
           let tagList=AlarmTagStore.getSearchTagList();
           if(tagList.length===0){
             return (
-              <div className="flex-center">
+              <div className="flex-center" style={{flexDirection:"column",marginBottom: "119px",backgroundColor: "#ffffff",borderBottomRightRadius: "5px",borderBottomLeftRadius: "5px",border: "solid 1px #e6e6e6",borderTop:"none"}}>
+                <FontIcon className="icon-chart1" color="#32ad3d" style={{fontSize:'50px'}}/>
                 {I18N.Setting.DataAnalysis.NotagRecommend}
               </div>
             )

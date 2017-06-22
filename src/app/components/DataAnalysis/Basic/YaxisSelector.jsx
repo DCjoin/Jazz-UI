@@ -260,7 +260,7 @@ var YaxisDialog = React.createClass({
     let titleStyle ={
       fontSize: '16px',
       color:'#0d0d0d',
-      fontWeight: 'bold',
+      fontWeight: '500',
       padding: '0',
       height:'72px',
       lineHeight:'72px',
