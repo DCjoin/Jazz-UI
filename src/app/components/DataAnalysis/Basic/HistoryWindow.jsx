@@ -266,7 +266,7 @@ export default class HistoryWindow extends Component {
                     padding: '24px 0 0 50px'
                     }} actions={_buttonActions} modal={true} open={true}
                     contentClassName='jazz-add-interval-dialog' style={{
-                    overflow: 'auto'
+                    overflowY: 'auto'
                     }}>
                       <div style={{
                               height: '418px'

@@ -34,6 +34,8 @@ module.exports = {
         DomesticWater:112,
         TransformerLoadRate:110,
         Demand:111,
+        KitchenFumeExhaust:1234,
+        AirCompressorLoadingRate:1235,
         WaterChillingUnit:201,
         WaterChillingUnitCOP:202,
         FreshAirUnit:203,

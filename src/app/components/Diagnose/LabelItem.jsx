@@ -84,7 +84,7 @@ class Group extends Component{
       <div className={classnames({"item":true,"canSelect":ChildrenCount>0})} style={{justifyContent:'space-between'}} onClick={()=>{this.setState({collapsed:!this.state.collapsed})}}>
         <div className="side">
           {collapsedIcon}
-          <FontIcon className="icon-add" style={{fontSize:'14px',color:'#626469',marginRight:'5px'}}/>
+          <FontIcon className="icon-label" style={{fontSize:'14px',color:'#626469',marginRight:'5px'}}/>
           <div className="text">{Name}</div>
           {this.props.isFromProbem && count}
         </div>
@@ -110,7 +110,7 @@ class Group extends Component{
                                   'canSelect':true
                                 })}
            style={{paddingLeft:'50px'}} onClick={()=>{this.props.onItemTouchTap(data)}}>
-           <FontIcon className="icon-add" style={styles.icon}/>
+           <FontIcon className="icon-operating-data" style={styles.icon}/>
         <div className="text">{data.get('Name')}</div>
         {!this.props.isFromProbem && data.get('Status')===DiagnoseStatus.Suspend && <div className="suspend-font" style={{marginLeft:'5px'}}>{I18N.Setting.Diagnose.Suspend}</div>}
       </div>
