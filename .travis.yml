@@ -29,7 +29,10 @@ script:
   - cd ..
 
 before_deploy:
-  - curl -o upload.sh --header "Authorization: ${GHAT}" --remote-name --location https://raw.githubusercontent.com/SE-REM/Jenkins/master/shell/travis_upload.sh
+  - curl -o upload.sh \
+    --header "Authorization: ${GHAT}" \
+    --remote-name \
+    --location https://raw.githubusercontent.com/SE-REM/Jenkins/master/shell/travis_upload.sh
   - chmod a+x ./upload.sh
   - cat upload.sh
   - file="${PROJECT}-${ROLE}-${TRAVIS_BRANCH}-${PACKAGE_VERSION}.zip"
