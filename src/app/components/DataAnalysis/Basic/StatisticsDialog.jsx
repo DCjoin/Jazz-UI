@@ -35,7 +35,8 @@ class TableHeader extends Component{
 
   render(){
     var defaultStyle={
-      height:'29px',minHeight:'29px',lineHeight:'29px',border:'1px solid #e6e6e6',display:'flex',fontSize:'10px',color:'#626469'
+      height:'29px',minHeight:'29px',lineHeight:'29px',border:'1px solid #e6e6e6',display:'flex',fontSize:'10px',color:'#626469',
+      borderTopLeftRadius: '2px',borderTopRightRadius: '2px'
     };
     var style=assign({},defaultStyle,this.props.style);
     return(
@@ -118,7 +119,7 @@ export default class StatisticsDialog extends Component {
         typeName:I18N.SumWindow.Sum,
         hasTime:false
       };
-      content=SumGroup[0].Items.map(item=>{
+      content=SumGroup[0].Items.map((item,index)=>{
         var {UomName,TimeRange,ItemGatherValue}=item;
         var {StartTime,EndTime}=TimeRange;
         var j2d = CommonFuns.DataConverter.JsonToDateTime;
@@ -128,6 +129,12 @@ export default class StatisticsDialog extends Component {
           typeValue:ItemGatherValue+''+UomName,
           time:null,
         };
+        if(index===SumGroup[0].Items.length-1){
+          props.style={
+            borderBottomRightRadius: '2px',
+            borderBottomLeftRadius: '2px'
+          }
+        }
         return <TableRow {...props}/>
       })
     }else {
@@ -137,7 +144,7 @@ export default class StatisticsDialog extends Component {
         hasTime:false,
         style:{'marginBottom':'none'}
       };
-      content=SumGroup.map(sum=>{
+      content=SumGroup.map((sum,sunIndex)=>{
         var {CommodityId,UomName,Items,GatherValue}=sum;
         var commodity=CommonFuns.getCommodityById(CommodityId).Comment;
         var title=(
@@ -145,12 +152,18 @@ export default class StatisticsDialog extends Component {
             {I18N.Common.Glossary.Commodity+":"+commodity+" "+I18N.Common.Glossary.UOM+':'+UomName}
           </div>
         );
-        var group=Items.map(item=>{
+        var group=Items.map((item,index)=>{
           var {TagName,UomName,ItemGatherValue}=item;
           var props={
             columnValue:TagName,
             typeValue:ItemGatherValue+' '+UomName,
             time:null,
+          }
+          if(index===Items.length-1 && sunIndex===SumGroup.length-1 && !GatherValue){
+            props.style={
+              borderBottomRightRadius: '2px',
+              borderBottomLeftRadius: '2px'
+            }
           }
           return <TableRow {...props}/>
         })
@@ -158,7 +171,11 @@ export default class StatisticsDialog extends Component {
           group.push(
             <TableRow columnValue={I18N.SumWindow.Sum}
                       typeValue={GatherValue+' '+UomName}
-                      time={null}/>
+                      time={null}
+                      style={
+                        sunIndex===SumGroup.length-1?{borderBottomRightRadius: '2px',
+                        borderBottomLeftRadius: '2px'}:{}
+                      }/>
           )
         }
         return(
@@ -188,7 +205,7 @@ export default class StatisticsDialog extends Component {
         typeName:I18N.Common.CaculationType.Avg,
         hasTime:false
       };
-      content=AvgGroup.map(item=>{
+      content=AvgGroup.map((item,index)=>{
         var {UomName,TimeRange,ItemGatherValue}=item;
         var {StartTime,EndTime}=TimeRange;
         var j2d = CommonFuns.DataConverter.JsonToDateTime;
@@ -198,6 +215,12 @@ export default class StatisticsDialog extends Component {
           typeValue:ItemGatherValue+' '+UomName,
           time:null,
         };
+        if(index===AvgGroup.length-1){
+          props.style={
+            borderBottomRightRadius: '2px',
+            borderBottomLeftRadius: '2px'
+          }
+        }
         return <TableRow {...props}/>
       })
     }
@@ -207,13 +230,19 @@ export default class StatisticsDialog extends Component {
         typeName:I18N.Common.CaculationType.Avg,
         hasTime:false
       };
-      content=AvgGroup.map(item=>{
+      content=AvgGroup.map((item,index)=>{
         var {UomName,TagName,ItemGatherValue}=item;
         let props={
           columnValue:TagName,
           typeValue:ItemGatherValue+' '+UomName,
           time:null,
         };
+        if(index===AvgGroup.length-1){
+          props.style={
+            borderBottomRightRadius: '2px',
+            borderBottomLeftRadius: '2px'
+          }
+        }
         return <TableRow {...props}/>
       })
     }
@@ -235,7 +264,7 @@ export default class StatisticsDialog extends Component {
         typeName:I18N.Common.CaculationType.Max,
         hasTime:true
       };
-      content=MaxGroup.map(item=>{
+      content=MaxGroup.map((item,index)=>{
         var {UomName,TimeRange,ItemGatherValue,ItemTime}=item;
         var {StartTime,EndTime}=TimeRange;
         var j2d = CommonFuns.DataConverter.JsonToDateTime;
@@ -245,6 +274,12 @@ export default class StatisticsDialog extends Component {
           typeValue:ItemGatherValue+' '+UomName,
           time:DataAnalysisStore.getDisplayDate(new Date(j2d(ItemTime)),false),
         };
+        if(index===MaxGroup.length-1){
+          props.style={
+            borderBottomRightRadius: '2px',
+            borderBottomLeftRadius: '2px'
+          }
+        }
         return <TableRow {...props}/>
       })
     }
@@ -254,7 +289,7 @@ export default class StatisticsDialog extends Component {
         typeName:I18N.Common.CaculationType.Max,
         hasTime:true
       };
-      content=MaxGroup.map(item=>{
+      content=MaxGroup.map((item,index)=>{
         var {UomName,TagName,ItemGatherValue,ItemTime}=item;
         var j2d = CommonFuns.DataConverter.JsonToDateTime;
         let props={
@@ -262,6 +297,12 @@ export default class StatisticsDialog extends Component {
           typeValue:ItemGatherValue+' '+UomName,
           time:DataAnalysisStore.getDisplayDate(new Date(j2d(ItemTime)),false),
         };
+        if(index===MaxGroup.length-1){
+          props.style={
+            borderBottomRightRadius: '2px',
+            borderBottomLeftRadius: '2px'
+          }
+        }
         return <TableRow {...props}/>
       })
     }
@@ -350,7 +391,7 @@ export default class StatisticsDialog extends Component {
     var style={
       title:{
         fontSize:'16px',
-        fontWeight:'bold',
+        fontWeight:'500',
         color:'#0f0f0f',
         height:'52px',
         borderBottom:'1px solid #e6e6e6',

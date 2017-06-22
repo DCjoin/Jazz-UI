@@ -191,9 +191,7 @@ let GridComponent = React.createClass({
     };
 
     // Table component
-    return <div className='jazz-energy-gridcomponent-wrap' style={{
-        marginLeft: '30px'
-      }}>
+    return <div className='jazz-energy-gridcomponent-wrap'>
       <Table
       height={this.state.height}
       fixedHeader={this.state.fixedHeader}
