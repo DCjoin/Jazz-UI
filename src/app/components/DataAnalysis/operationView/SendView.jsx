@@ -2,8 +2,6 @@
 import React, {Component, PropTypes} from "react";
 import {Dialog, CircularProgress} from 'material-ui';
 
-import NewAppTheme from 'decorator/NewAppTheme.jsx';
-
 import {nodeType} from 'constants/TreeConstants.jsx';
 
 import NewFlatButton from 'controls/NewFlatButton.jsx';
@@ -13,7 +11,6 @@ import UserAction from 'actions/UserAction.jsx';
 import FolderAction from 'actions/FolderAction.jsx';
 import UserStore from 'stores/UserStore.jsx';
 
-@NewAppTheme
 export default class SendView extends Component {
   static propTypes = {
     userId: PropTypes.number,

@@ -23,7 +23,6 @@ import TimeGranularity from 'constants/TimeGranularity.jsx';
 import {DIAGNOSE_MODEL} from 'constants/actionType/Diagnose.jsx';
 
 import ReduxDecorator from 'decorator/ReduxDecorator.jsx';
-import NewAppTheme from 'decorator/NewAppTheme.jsx';
 
 import {isEmptyStr, isNumeric, getDateTimeItemsByStepForVal, getDateTimeItemsByStep, pow10} from 'util/Util.jsx';
 
@@ -1009,7 +1008,6 @@ function CreateStep3({
 	);
 }
 
-@NewAppTheme
 @ReduxDecorator
 class CreateDiagnose extends Component {
 	static getStores() {

@@ -16,7 +16,7 @@ import NewDialog from '../controls/NewDialog.jsx';
 import LinkButton from '../controls/LinkButton.jsx';
 import ViewableTextField from '../controls/ViewableTextField.jsx';
 import ViewableDropDownMenu from '../controls/ViewableDropDownMenu.jsx';
-import CustomFlatButton from '../controls/FlatButton.jsx';
+import CustomFlatButton from 'controls/FlatButton.jsx';
 import GlobalErrorMessageAction from '../actions/GlobalErrorMessageAction.jsx';
 import CurrentUserStore from '../stores/CurrentUserStore.jsx';
 import CurrentUserAction from '../actions/CurrentUserAction.jsx';
@@ -322,7 +322,7 @@ var MainAppBar = React.createClass({
               <div style={{fontSize: '16px'}}>{'云能效'}</div>
               <div>{'随时随地查看和分配节能方案'}</div>
               <div className="jazz-qrCode"/>
-              <div style={{textAlign: 'center', fontSize: '12px'}}>{'扫描下载云能效客户端'}</div>
+              <div style={{fontSize: '12px'}}>{'扫描下载云能效客户端'}</div>
             </div>
             <div style={{position: 'absolute', bottom: 75, fontSize: '12px'}}>
               <div style={{fontSize: '14px'}}>{I18N.Platform.About.ContactUs}</div>

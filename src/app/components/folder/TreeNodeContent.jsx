@@ -89,10 +89,15 @@ var TreeNodeContent = React.createClass({
     var text;
     if (this.props.nodeData.get('Id') < -1) {
       text = <div className='jazz-foldertree-node-textfield'>
-        <TextField ref="textField" 
+        <input ref="textField" 
           style={textStyle} 
           value={this.state.text} 
-          onChange={this._onChanged}/>
+          onChange={this._onChanged}
+          onKeyPress={(e) => {
+            if( e.charCode === 13 ) {
+              this.onClickAway();
+            }
+          }}/>
         </div>
     } else {
       text = (!this.state.isSelect || this.props.nodeData !== this.props.selectedNode || this.props.nodeData.get('Id') === -1 ?
@@ -100,10 +105,15 @@ var TreeNodeContent = React.createClass({
           color: '#ffffff'
         }} title={this.state.text}>{this.state.text}</div> :
         <div className='jazz-foldertree-node-textfield'>
-          <TextField ref="textField" 
+          <input ref="textField" 
             style={textStyle} 
             value={this.state.text} 
-            onChange={this._onChanged}/>
+            onChange={this._onChanged}
+            onKeyPress={(e) => {
+              if( e.charCode === 13 ) {
+                this.onClickAway();
+              }
+            }}/>
         </div>
       );
     }
@@ -128,14 +138,6 @@ var TreeNodeContent = React.createClass({
                {isSenderCopyIcon}
         </div>
       )
-      // return (
-      //   <div className="tree-node-content" style={{
-      //     color: '#ffffff'
-      //   }}>
-      //           <div className='jazz-foldertree-node-textfield'><TextField ref="textField" style={textStyle} defaultValue='XX' /></div>
-      //         </div>
-      //   )
-
   }
 });
 

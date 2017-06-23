@@ -27,10 +27,10 @@ module.exports = {
   // },
   fontFamily: 'Lantinghei sc,Microsoft YaHei Light,Microsoft YaHei',
   palette: {
-    primary1Color: Colors.cyan500,
+    primary1Color: getLessVar('medium-green'),
     primary2Color: Colors.cyan700,
     primary3Color: Colors.lightBlack,
-    accent1Color: '#1ca8dd',
+    accent1Color: getLessVar('medium-green'),
     accent2Color: Colors.grey100,
     accent3Color: Colors.grey500,
     textColor: getLessVar('schneiderNormal'),

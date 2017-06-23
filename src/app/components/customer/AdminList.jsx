@@ -5,7 +5,7 @@ import React from 'react';
 import assign from 'object-assign';
 import ViewableTextField from '../../controls/ViewableTextField.jsx';
 import NewDialog from '../../controls/NewDialog.jsx';
-import FlatButton from '../../controls/FlatButton.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
 import SectionPanel from '../../controls/SectionPanel.jsx';
 import Regex from '../../constants/Regex.jsx';
 import { formStatus } from '../../constants/FormStatus.jsx';

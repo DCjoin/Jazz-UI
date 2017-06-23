@@ -9,7 +9,7 @@ import { Map, List } from 'immutable';
 import HierarchyAction from '../../actions/hierarchySetting/HierarchyAction.jsx';
 import HierarchyStore from '../../stores/hierarchySetting/HierarchyStore.jsx';
 import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
-import FlatButton from '../../controls/FlatButton.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
 import YearPicker from '../../controls/YearPicker.jsx';
 import SideNav from '../../controls/SideNav.jsx';
 import Dialog from '../../controls/NewDialog.jsx';

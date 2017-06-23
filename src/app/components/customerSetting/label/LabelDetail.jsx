@@ -7,7 +7,7 @@ import ViewableTextField from '../../../controls/ViewableTextField.jsx';
 import { formStatus } from '../../../constants/FormStatus.jsx';
 import FormBottomBar from '../../../controls/FormBottomBar.jsx';
 import Dialog from '../../../controls/NewDialog.jsx';
-import FlatButton from '../../../controls/FlatButton.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
 import LabelBasic from './LabelBasic.jsx';
 import GradeContainer from './GradeContainer.jsx';
 import ChartComponent from './ChartComponent.jsx';

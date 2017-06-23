@@ -3,7 +3,7 @@ import React from "react";
 import CircularProgress from 'material-ui/CircularProgress';
 import MailAction from '../../../actions/MailAction.jsx';
 import NewDialog from '../../../controls/NewDialog.jsx';
-import FlatButton from '../../../controls/FlatButton.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
 
 var Send = React.createClass({
   propTypes: {

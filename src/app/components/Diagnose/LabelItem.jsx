@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classnames from "classnames";
 import {Type,DiagnoseStatus,ItemType} from '../../constants/actionType/Diagnose.jsx';
-import FlatButton from '../../controls/FlatButton.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
 import FontIcon from 'material-ui/FontIcon';
 import BubbleIcon from '../BubbleIcon.jsx';
 import Immutable from 'immutable';

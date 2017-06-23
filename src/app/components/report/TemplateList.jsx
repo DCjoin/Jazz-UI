@@ -4,7 +4,7 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import { CircularProgress, FontIcon, SelectField, TextField, RadioButton, Dialog, LinkButton } from 'material-ui';
 import NewDialog from '../../controls/NewDialog.jsx';
-import FlatButton from '../../controls/FlatButton.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
 import TemplateItem from './TemplateItem.jsx';
 import ReportAction from '../../actions/ReportAction.jsx';
 import ReportStore from '../../stores/ReportStore.jsx';

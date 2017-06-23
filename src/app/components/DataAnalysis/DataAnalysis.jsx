@@ -216,18 +216,17 @@ export default class DataAnalysis extends Component {
 	_onSelectNode(node, fromDispatch) {
     let {widgetDto, selectedNode} = this.state;
     let callback = (widgetIsInit, fromDispatch) => {
-    	if(fromDispatch) {
-    		return ;
+    	if(!fromDispatch) {
+	      if( widgetIsInit ) {
+	        FolderAction.deleteItem(selectedNode, selectedNode.get('Id') === node.get('Id'));
+	        if( selectedNode.get('Id') === node.get('Id') ) {
+	          FolderAction.alwaysUncheckSameWidget();
+	          return;
+	          //node = FolderStore.getSelectedNode();
+	        }
+	      }
+	      FolderAction.setSelectedNode(node);
     	}
-      if( widgetIsInit ) {
-        FolderAction.deleteItem(selectedNode, selectedNode.get('Id') === node.get('Id'));
-        if( selectedNode.get('Id') === node.get('Id') ) {
-          FolderAction.alwaysUncheckSameWidget();
-          return;
-          //node = FolderStore.getSelectedNode();
-        }
-      }
-      FolderAction.setSelectedNode(node);
       if( node ) {
         if( isWidget(node) ) {
           FolderAction.GetWidgetDtos([node.get('Id')], node, true);

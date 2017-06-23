@@ -4,7 +4,7 @@ import React from 'react';
 import SideNav from '../../../controls/SideNav.jsx';
 import ViewableDropDownMenu from '../../../controls/ViewableDropDownMenu.jsx';
 import LinkButton from '../../../controls/LinkButton.jsx';
-import FlatButton from '../../../controls/FlatButton.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
 
 
 import _isObject from "lodash-es/isObject";

@@ -7,7 +7,7 @@ import { CircularProgress } from 'material-ui';
 import CommonFuns from '../../../util/Util.jsx';
 import SearchAndFilterBar from '../../../controls/SearchAndFilterBar.jsx';
 import Pagination from '../../../controls/paging/Pagination.jsx';
-import FlatButton from '../../../controls/FlatButton.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
 import Dialog from '../../../controls/NewDialog.jsx';
 import TagAction from '../../../actions/customerSetting/TagAction.jsx';
 

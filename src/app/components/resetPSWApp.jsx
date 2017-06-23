@@ -21,7 +21,7 @@ import lang from '../lang/lang.jsx';
 
 import ResetPasswordAction from '../actions/ResetPasswordAction.jsx';
 import ResetPasswordStore from '../stores/ResetPasswordStore.jsx';
-import CusFlatButton from '../controls/FlatButton.jsx';
+import CusFlatButton from 'controls/FlatButton.jsx';
 import Dialog from 'controls/NewDialog.jsx';
 import RoutePath from 'util/RoutePath.jsx';
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';

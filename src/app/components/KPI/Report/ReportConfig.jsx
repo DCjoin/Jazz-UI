@@ -18,7 +18,6 @@ import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import TextField from 'material-ui/TextField';
 
-import NewAppTheme from 'decorator/NewAppTheme.jsx';
 import Dialog from 'controls/NewDialog.jsx';
 import TitleComponent from 'controls/TitleComponent.jsx';
 import Immutable from 'immutable';
@@ -142,7 +141,6 @@ class CustomDropDownMenu extends Component {
   }
 }
 
-@NewAppTheme
 export default class ReportConfig extends Component {
 
 	static contextTypes = {
