@@ -85,8 +85,8 @@ export class MeasuresItem extends Component {
           marginTop:'-5px'
         };
       var costIcon=<FontIcon className="icon-cost_saving" iconStyle ={iconStyle} color="#626469" style = {style} />,
-          sumIcon=<FontIcon className="icon-investment" iconStyle ={iconStyle} color="#626469" style = {style} />,
-          periodIcon=<FontIcon className="icon-repay" iconStyle ={iconStyle} color="#626469" style = {style} />;
+          sumIcon=<FontIcon className="icon-investment-amount" iconStyle ={iconStyle} color="#626469" style = {style} />,
+          periodIcon=<FontIcon className="icon-pay-back-period" iconStyle ={iconStyle} color="#626469" style = {style} />;
       return(
         <div className="measuresItem-content">
           <div className="side">

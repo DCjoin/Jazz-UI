@@ -119,10 +119,10 @@ let GridComponent = React.createClass({
         hieName = option.hierName.split('\\');
         hieName = hieName[hieName.length - 1];
         uom = getUomById(target.UomId);
-        uomName = uom.Code;
+        uomName = uom.Code==="null"?"":'/'+uom.Code;
         commodity = getCommodityById(target.CommodityId);
         commodityName = commodity.Comment;
-        commodityAndUomName = commodityName + '/' + uomName;
+        commodityAndUomName = commodityName +  uomName;
         return {
           hieName: hieName,
           tagName: option.tagName,
