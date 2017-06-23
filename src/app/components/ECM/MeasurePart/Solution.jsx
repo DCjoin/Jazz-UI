@@ -78,7 +78,7 @@ export class SolutionLabel extends Component {
       },
       cycleIcon:{
         key:'EnergySolution'+EnergySolution.Id+'_CycleIcon',
-        icon:<FontIcon className="icon-roi" color="#3dcd58" iconStyle ={iconStyle} style = {style} />,
+        icon:<FontIcon className="icon-repay" color="#3dcd58" iconStyle ={iconStyle} style = {style} />,
         label:I18N.Setting.ECM.InvestmentReturn,
       },
       saving:{

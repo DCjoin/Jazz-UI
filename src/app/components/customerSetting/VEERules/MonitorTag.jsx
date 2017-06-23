@@ -379,7 +379,7 @@ var MonitorTag = React.createClass({
               {I18N.Setting.VEEMonitorRule.TagList}
             </div>
             <div className="jazz-vee-tag-search-filter-bar">
-            <SearchAndFilterBar onFilter={this._onFilter}
+            <SearchAndFilterBar onFilter={this._onFilter} value={this.state.filterObj.LikeCodeOrName}
       onSearch={this._onSearch} onSearchCleanButtonClick={this._onSearchCleanButtonClick}
       isFilter={this.state.isFilter}/>
     </div>

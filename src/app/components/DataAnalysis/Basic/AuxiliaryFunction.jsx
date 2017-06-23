@@ -186,7 +186,7 @@ export default class AuxiliaryFunction extends Component {
       <div>
         <div style={{display:'flex'}}>
           <FlatButton disabled={this.getHistoryBtnStatus()} label={I18N.EM.Tool.HistoryCompare} labelStyle={styles.label}
-            icon={<FontIcon className="icon-marker" style={styles.label}/>}
+            icon={<FontIcon className="icon-historical-comparison" style={styles.label}/>}
             onClick={()=>{this.setState({showAddIntervalDialog:true})}}/>
           {this.getAuxiliaryCompareBtn()}
         </div>

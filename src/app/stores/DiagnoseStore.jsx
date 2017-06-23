@@ -88,9 +88,11 @@ const DiagnoseStore = assign({}, PrototypeStore, {
         {value:I18N.Setting.Diagnose.ParkingFan,Id:EnergyLabel.ParkingFan},
         {value:I18N.Setting.Diagnose.ElectricTracing,Id:EnergyLabel.ElectricTracing},
         {value:I18N.Setting.Diagnose.TransformerPowerFactor,Id:EnergyLabel.TransformerPowerFactor},
-        {value:I18N.Setting.Diagnose.DomesticWater,Id:EnergyLabel.DomesticWater},
         {value:I18N.Setting.Diagnose.TransformerLoadRate,Id:EnergyLabel.TransformerLoadRate},
         {value:I18N.Setting.Diagnose.Demand,Id:EnergyLabel.Demand},
+        {value:I18N.Setting.Diagnose.DomesticWater,Id:EnergyLabel.DomesticWater},
+        {value:I18N.Setting.Diagnose.KitchenFumeExhaust,Id:EnergyLabel.KitchenFumeExhaust},
+        {value:I18N.Setting.Diagnose.AirCompressorLoadingRate,Id:EnergyLabel.AirCompressorLoadingRate},
       ],
       HVAC:[
         {value:I18N.Setting.Diagnose.WaterChillingUnit,Id:EnergyLabel.WaterChillingUnit},

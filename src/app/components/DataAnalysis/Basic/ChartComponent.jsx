@@ -229,7 +229,8 @@ export default class ChartComponent extends Component {
           display: 'flex',
           flexDirection: 'column',
           marginBottom: '20px',
-          overflow: 'hidden'
+          overflow: 'hidden',
+          borderRadius: '5px'
         }}>
 
                   <GridComponent {...properties}></GridComponent>
@@ -255,7 +256,9 @@ export default class ChartComponent extends Component {
                   flexDirection: 'column',
                   marginBottom: '0px',
                   border:'solid 1px #e6e6e6',
-                  borderTop:'none'
+                  borderTop:'none',
+                  borderBottomRightRadius: '5px',
+                  borderBottomLeftRadius: '5px'
                 }}>
                  <ChartComponentBox
                     {...analysisPanel.state.paramsObj}

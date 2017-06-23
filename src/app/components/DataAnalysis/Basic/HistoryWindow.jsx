@@ -66,6 +66,7 @@ class TimespanItem extends Component{
             style: {
               width: '60px'
             },
+            iconStyle:{width:12,height:12,padding:0},
             value: me.props.relativeValue,
             onChange: me._onRelativeValueChange
           }, '62px')}
@@ -113,6 +114,7 @@ class TimespanItem extends Component{
                 style: {
                   width: '92px'
                 },
+                iconStyle:{width:12,height:12,padding:0},
                 value: me.props.relativeType,
                 onChange: me._onRelativeTypeChange
               }, '100px');
@@ -264,7 +266,7 @@ export default class HistoryWindow extends Component {
                     padding: '24px 0 0 50px'
                     }} actions={_buttonActions} modal={true} open={true}
                     contentClassName='jazz-add-interval-dialog' style={{
-                    overflow: 'auto'
+                    overflowY: 'auto'
                     }}>
                       <div style={{
                               height: '418px'

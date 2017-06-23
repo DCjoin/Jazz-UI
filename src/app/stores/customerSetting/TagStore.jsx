@@ -229,9 +229,10 @@ var TagStore = assign({}, PrototypeStore, {
 
     if (differenceData && differenceData.EnergyData && differenceData.EnergyData.length > 0 && differenceData.EnergyData[0].DataValue !== null) {
       var differenceValue = (firstItem.DataValue * 10 * 10 - differenceData.EnergyData[0].DataValue * 10 * 10) / 100;
-      if (differenceValue >= 0) {
+      //2017-6-22 nobody know why first differenceValue should >=0 so // temporarily
+      // if (differenceValue >= 0) {
         difItem.DataValue = differenceValue;
-      }
+      // }
     }
     return difItem;
 
