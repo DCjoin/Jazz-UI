@@ -200,9 +200,11 @@ export default class Actuality extends Component {
 			{!singleKPI && !reportHide && <div className='jazz-actuality-item'>
 				<div className='jazz-actuality-item-title'>{'报表'}</div>
 				{isFull() &&
-				<a href="javascript:void(0)" className='icon-add' onClick={() => {
-			      	this._showReportEdit();
-			      }}/>
+				<div style={{display: 'inline-block', height: 23, verticalAlign: 'top'}}>
+					<a href="javascript:void(0)" className='icon-add' onClick={() => {
+				      	this._showReportEdit();
+				      }}/>
+			    </div>
 		    	}
 				<ReportPreview 
 					configCB={isOnlyView() && this._configCB}

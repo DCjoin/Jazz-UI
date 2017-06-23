@@ -896,7 +896,7 @@ export default class ReportConfig extends Component {
           titleStyle:{
             fontSize:'16px',
             color: '#0f0f0f',
-            fontWeight: 'bold',
+            fontWeight: 500,
           },
           className:'jazz-kpi-config-wrap',
         };
