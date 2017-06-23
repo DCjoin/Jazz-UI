@@ -997,6 +997,7 @@ I18N.Setting.Tag.PTagRawData.normal = '正常值';
 I18N.Setting.Tag.PTagRawData.abnormal = '异常值';
 I18N.Setting.Tag.PTagRawData.repair = '修复值';
 I18N.Setting.Tag.PTagRawData.RollBack = '撤销修复';
+I18N.Setting.Tag.PTagRawData.ErrorMsg = '非法字符';
 
 I18N.ServerError = {};
 I18N.ServerError.BtnLabel = '好';

@@ -12,6 +12,7 @@ import { List} from 'immutable';
 import Regex from '../../../constants/Regex.jsx';
 
 function isValid(number){
+  if(number===null || number==="") return true;
   //非数字
   if(!CommonFuns.isNumeric(number)) return false;
 
@@ -89,7 +90,7 @@ let ListItem = React.createClass({
 
                   }else {
                     this.setState({
-                      errorText:'xxx'
+                      errorText:I18N.Setting.Tag.PTagRawData.ErrorMsg
                     })
                   }
 
