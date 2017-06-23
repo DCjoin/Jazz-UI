@@ -73,12 +73,12 @@ export class SolutionLabel extends Component {
       },
       amountIcon:{
         key:'EnergySolution'+EnergySolution.Id+'_AmountIcon',
-        icon:<FontIcon className="icon-investment" color="#3dcd58" iconStyle ={iconStyle} style = {style} />,
+        icon:<FontIcon className="icon-investment-amount" color="#3dcd58" iconStyle ={iconStyle} style = {style} />,
         label:I18N.Setting.ECM.InvestmentAmount,
       },
       cycleIcon:{
         key:'EnergySolution'+EnergySolution.Id+'_CycleIcon',
-        icon:<FontIcon className="icon-repay" color="#3dcd58" iconStyle ={iconStyle} style = {style} />,
+        icon:<FontIcon className="icon-pay-back-period" color="#3dcd58" iconStyle ={iconStyle} style = {style} />,
         label:I18N.Setting.ECM.InvestmentReturn,
       },
       saving:{
