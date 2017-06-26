@@ -50,6 +50,7 @@ import CommodityAction from 'actions/CommodityAction.jsx';
 import AuxiliaryFunction from './AuxiliaryFunction.jsx';
 import ChartAction from 'actions/ChartAction.jsx';
 import NewFlatButton from 'controls/NewFlatButton.jsx';
+import Remark from './Remark.jsx';
 
 const DIALOG_TYPE = {
   SWITCH_WIDGET: "switchwidget",
@@ -1116,9 +1117,7 @@ class AnalysisPanel extends Component {
   _renderRemark(){
     var remarkTextArea = null;
       if (this.state.remarkDisplay) {
-        remarkTextArea = <div className='jazz-energy-remark-text'><TextField hintText={I18N.Remark.DefaultText} value={this.state.remarkText} onChange={this.getRemarck} hintStyle={{
-            color: '#abafae'
-          }} multiLine={true} underlineShow={false}></TextField></div>;
+        remarkTextArea = <div className='jazz-energy-remark-text'><Remark remarkText={this.state.remarkText} onChange={this.getRemarck}/></div>;
         }
     var remarkDiv = null;
         remarkDiv = <div className='jazz-energy-remark-expand' style={{display:'flex',flexDirection:'column',marginTop:'40px',marginLeft:'-20px'}}>

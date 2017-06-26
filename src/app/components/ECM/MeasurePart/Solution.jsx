@@ -132,25 +132,25 @@ export class SolutionLabel extends Component {
         <div className="row">
           <div className="jazz-ecm-measure-solution-iconrow" style={{justifyContent: 'space-between'}}>
             <IconLabelField {...props.savingIcon}>
-              <div className="jazz-ecm-measure-solution-iconrow">
+              <div className="jazz-ecm-measure-solution-iconrow" style={{height:"30px"}}>
                 {canEdit?<NativeTextField {...props.saving}/>:MeasuresStore.getDisplayText(ExpectedAnnualEnergySaving)}
                 {canEdit?<NativeTextField {...props.savingUnit}/>:MeasuresStore.getDisplayText(EnergySavingUnit)}
               </div>
             </IconLabelField>
             <IconLabelField {...props.costIcon}>
-              <div className="jazz-ecm-measure-solution-iconrow">
+              <div className="jazz-ecm-measure-solution-iconrow" style={{height:"30px"}}>
                 {canEdit?<NativeTextField {...props.cost}/>:MeasuresStore.getDisplayText(ExpectedAnnualCostSaving)}
                 {"RMB"}
               </div>
             </IconLabelField>
             <IconLabelField {...props.amountIcon}>
-              <div className="jazz-ecm-measure-solution-iconrow">
+              <div className="jazz-ecm-measure-solution-iconrow" style={{height:"30px"}}>
                 {canEdit?<NativeTextField {...props.amount}/>:MeasuresStore.getDisplayText(InvestmentAmount)}
                 {"RMB"}
               </div>
             </IconLabelField>
             <IconLabelField {...props.cycleIcon}>
-              {`${InvestmentReturnCycle || ' — '} ${uom}`}
+              <div style={{height:"30px",marginTop:"4px"}}>{`${InvestmentReturnCycle || ' — '} ${uom}`}</div>
             </IconLabelField>
           </div>
         </div>
@@ -171,11 +171,36 @@ export class Solution extends Component {
     constructor(props) {
       super(props);
     }
+    
+    state={
+      Name:"",
+      Description:""
+    }
+
+    componentDidMount(){
+      var {canEdit,measure}=this.props;
+      var {EnergySolution}=measure.toJS();
+      var {Description,Name}=EnergySolution;
+      this.setState({
+        Name,Description
+      })
+    }
+
+    componentWillReceiveProps(nextProps){
+      var {canEdit,measure}=nextProps;
+      var {EnergySolution}=measure.toJS();
+      var {Description,Name}=EnergySolution;
+      this.setState({
+        Description,Name
+      })
+    }
 
     render(){
       var {canEdit,measure}=this.props;
       var {EnergySolution}=measure.toJS();
-      var {Description,Name}=EnergySolution;
+      var {Description,Name}=this.state;
+
+      console.log(Name);
 
       var props={
         name:{

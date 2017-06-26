@@ -51,7 +51,7 @@ var ViewableTextField = React.createClass({
     v = this.props.defaultValue;
     return {
       errorText: "",
-      value: v
+      value: ""
     };
   },
 
@@ -75,13 +75,29 @@ var ViewableTextField = React.createClass({
       text.focus();
       text.setSelectionRange(text.value.length, text.value.length);
     }
+    var v = this.props.defaultValue;
+    this.setState({
+      value: v
+    })
   },
 
   componentWillReceiveProps: function(nextProps, nextState) {
-    this.setState({
-      value: nextProps.defaultValue,
-      errorText:this._getError(nextProps.defaultValue)
-    });
+    if(this.props.isViewStatus !== nextProps.isViewStatus){
+      this.setState({
+        value:"",
+      },()=>{
+        this.setState({
+          value: nextProps.defaultValue,
+          errorText:this._getError(nextProps.defaultValue)
+        });
+      })
+    }else {
+      this.setState({
+        value: nextProps.defaultValue,
+        errorText:this._getError(nextProps.defaultValue)
+      });
+    }
+
     // if (nextProps.errorText != this.state.errorText) {
     //   this.setState({
     //     errorText: nextProps.errorText,
@@ -238,6 +254,7 @@ var ViewableTextField = React.createClass({
           width: 430
         }, this.props.style),
         multiLine: this.props.multiLine ? true : false,
+        // rows:this.state.value?this.state.value.split('\n').length:1,
         floatingLabelText: this.props.title,
         type: this.props.type
       };
