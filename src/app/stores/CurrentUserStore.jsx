@@ -236,9 +236,23 @@ var CurrentUserStore = assign({}, PrototypeStore, {
 
     if (this.permit(PermissionCode.INDEX_AND_REPORT.READONLY) || this.permit(PermissionCode.INDEX_AND_REPORT.FULL)) {
       menuItems.push(
-        {
-          getPath: RoutePath.Actuality,
+        {          
+          name: 'actuality',
           title: I18N.MainMenu.KPI,
+          children: [{
+            list: [
+              {
+                name: 'kpi',
+                getPath: RoutePath.report.actualityKpi,
+                title: I18N.MainMenu.ActualityKPI
+              },
+              {
+                name: 'report',
+                getPath: RoutePath.report.actualityReport,
+                title: I18N.MainMenu.ActualityReport
+              }
+            ]
+          }]
         }
       );
     }

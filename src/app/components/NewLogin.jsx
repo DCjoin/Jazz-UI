@@ -127,6 +127,18 @@ function go(targetIdx) {
 		deactive(currentIdx, type);
 		currentIdx = targetIdx;
 		active(targetIdx, type);
+	
+		
+		var footer = getFooter();
+		if(footer.style.display !== 'none') {
+
+			footer.style.transform = 'translate3d(0, 100%, 0)';
+			containers[containers.length - 1].style.transform = 'translate3d(0, 0, 0)';
+			setTimeout(function() {
+				footer.style.display = 'none';
+			}, DEACTIVE_ANIMATION_DURATION);
+
+		}
 	}
 }
 
@@ -153,16 +165,14 @@ function scrollUp() {
 		}, DEACTIVE_ANIMATION_DURATION);
 
 	} else if(currentIdx > 0) {	
-
 		toggleContainer(ANIMATION_TYPE.DOWN);
-
-		var header = getHeader();
-		if(header.style.display === 'none') {
-			header.style.display = 'block';
-			setTimeout(() => {
-				header.style.transform = '';
-			}, DEACTIVE_ANIMATION_DURATION);
-		}
+	}
+	var header = getHeader();
+	if(header.style.display === 'none') {
+		header.style.display = 'block';
+		setTimeout(() => {
+			header.style.transform = '';
+		}, DEACTIVE_ANIMATION_DURATION);
 	}
 
 }
@@ -429,7 +439,7 @@ export default class NewLogin extends Component {
 					});
 				}}/>
 				<header id='login-header'>
-					<img style={{height: 33, width: 266, marginTop: 25, marginLeft: 30}} src={require('../less/images/logo.png')} />
+					<img style={{height: 33, width: 266, marginTop: 20, marginLeft: 30}} src={require('../less/images/logo.png')} />
 					<div id='login-header-actions'>
 						<a className='jazz-mobile-qr-link' href="javascript:void(0)">
 						云能效客户端
@@ -452,9 +462,11 @@ export default class NewLogin extends Component {
 						color: '#fff'
 					}}>
 						<div className='child content-title' data-to='top' data-index='1' >无需手动分析，节能方案即可无忧直达</div>
-						<div className='child content-text' data-to='top' data-index='2' >人工智能诊断模块，覆盖数百种能效问题</div>
-						<div className='child content-text' data-to='top' data-index='3' >专家顾问分析，解决方案直接推送</div>
-						<div className='child content-text' data-to='top' data-index='4' >投资回报率，节能量，投资金额，节约成本一目了然</div>
+						<div className='child' data-to='top' data-index='2' >
+							<div className='content-text'>人工智能诊断模块，覆盖数百种能效问题</div>
+							<div className='content-text'>专家顾问分析，解决方案直接推送</div>
+							<div className='content-text'>投资回报率，节能量，投资金额，节约成本一目了然</div>
+						</div>
 					</div>					
 				</Container>
 
@@ -468,9 +480,11 @@ export default class NewLogin extends Component {
 						color: '#000'
 					}}>
 						<div style={{marginBottom: 20}} className='child content-title' data-to='top' data-index='1' >线上线下互动，方案全程追踪</div>
-						<div className='child content-text' data-to='top' data-index='2' >Web端与App协同工作</div>
-						<div className='child content-text' data-to='top' data-index='3' >方案分配到人，让执行更高效</div>
-						<div className='child content-text' data-to='top' data-index='4' ><span style={{display: 'inline-block'}}>节能方案全生命周期管理——<br/>从推送方案到方案执行到成本降低全程掌握</span></div>
+						<div className='child' data-to='top' data-index='2' >
+							<div className='content-text'>Web端与App协同工作</div>
+							<div className='content-text'>方案分配到人，让执行更高效</div>
+							<div className='content-text'><span style={{display: 'inline-block'}}>节能方案全生命周期管理——<br/>从推送方案到方案执行到成本降低全程掌握</span></div>
+						</div>
 					</div>
 				</Container>
 
@@ -484,9 +498,11 @@ export default class NewLogin extends Component {
 						color: '#fff'
 					}}>
 						<div className='child content-title' data-to='top' data-index='1' >ISO50001能源管理方法，助力节能达成</div>
-						<div className='child content-text' data-to='top' data-index='2' >自上而下分解集团目标至建筑目标，同尺度排名让目标管理清晰统一</div>
-						<div className='child content-text' data-to='top' data-index='3' >智能预测全年目标达成情况，实时掌握能源使用状态</div>
-						<div className='child content-text' data-to='top' data-index='4' >智能细分建筑月度目标，助力目标达成</div>
+						<div className='child' data-to='top' data-index='2' >
+							<div className='content-text'>自上而下分解集团目标至建筑目标，同尺度排名让目标管理清晰统一</div>
+							<div className='content-text'>智能预测全年目标达成情况，实时掌握能源使用状态</div>
+							<div className='content-text'>智能细分建筑月度目标，助力目标达成</div>
+						</div>
 					</div>					
 				</Container>
 
@@ -500,8 +516,10 @@ export default class NewLogin extends Component {
 						color: '#fff'
 					}}>
 						<div className='child content-title' data-to='top' data-index='1' >无需手动对比，节能效果轻松呈现</div>
-						<div className='child content-text' data-to='top' data-index='2' >智能计算已实施节能方案节能量，让数据更加精确</div>
-						<div className='child content-text' data-to='top' data-index='3' >动态呈现所有方案节能效果，让成本降低实时可见</div>
+						<div className='child' data-to='top' data-index='2' >
+							<div className='content-text'>智能计算已实施节能方案节能量，让数据更加精确</div>
+							<div className='content-text'>动态呈现所有方案节能效果，让成本降低实时可见</div>
+						</div>
 					</div>					
 				</Container>
 
@@ -516,8 +534,10 @@ export default class NewLogin extends Component {
 						color: '#fff'
 					}}>
 						<div className='child content-title' data-to='top' data-index='1' >展示集团最佳方案，让节能可复制可粘贴</div>
-						<div className='child content-text' data-to='top' data-index='2' >智能筛选所有建筑节能方案，让投入少，回报高的方案脱颖而出</div>
-						<div className='child content-text' data-to='top' data-index='3' >最佳方案直接推送，让决策更轻松更高效</div>
+						<div className='child' data-to='top' data-index='2' >
+							<div className='content-text'>智能筛选所有建筑节能方案，让投入少，回报高的方案脱颖而出</div>
+							<div className='content-text'>最佳方案直接推送，让决策更轻松更高效</div>
+						</div>
 					</div>					
 				</Container>
 

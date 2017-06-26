@@ -17,7 +17,7 @@ function getCustomerById(customerId) {
 	return find(CurrentUserCustomerStore.getAll(), customer => customer.Id === customerId * 1 );
 }
 
-export default class ReportActuality extends Component {
+export default class BuildingReportActuality extends Component {
 	static contextTypes = {
 		hierarchyId: PropTypes.string
 	};
@@ -43,7 +43,7 @@ export default class ReportActuality extends Component {
 	}
 	componentWillReceiveProps(nextProps, nextContext) {
 		if(nextContext.hierarchyId !== nextProps.params.customerId*1) {
-			nextProps.router.push(RoutePath.Actuality(nextProps.params));
+			nextProps.router.push(RoutePath.report.actualityKpi(nextProps.params));
 		}
 	}
 	_onChange() {

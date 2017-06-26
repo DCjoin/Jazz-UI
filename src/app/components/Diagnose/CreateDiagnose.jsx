@@ -521,12 +521,7 @@ export function DiagnoseRange({
 						payload: item.step,
 						text: item.text,
 					}
-				})/* [
-					{payload: TimeGranularity.Minite, text: I18N.EM.Raw},
-					{payload: TimeGranularity.Hourly, text: I18N.EM.Hour},
-					{payload: TimeGranularity.Daily, text: I18N.EM.Day},
-					{payload: TimeGranularity.Daily, text: I18N.EM.Day},
-				]*/}
+				})}
 			/>
 			<AdditiveComp
 				className={'diagnose-range-time'}

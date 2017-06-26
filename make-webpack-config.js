@@ -132,7 +132,7 @@ module.exports = function(options) {
           use: [ "babel-loader"],
           exclude: [
             /node_modules/,
-            path.join(__dirname, "src", "app", "lang")
+            // path.join(__dirname, "src", "app", "lang")
           ]
         },
         {
