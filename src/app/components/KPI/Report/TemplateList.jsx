@@ -315,7 +315,7 @@ let TemplateList = React.createClass({
                              <UploadForm
                                id="templateFile" name='templateFile'
                                ref={'upload_tempalte'}
-                               action={'http://sp1.energymost.com/TagImportExcel.aspx?Type=ReportTemplate'}
+                               action={'TagImportExcel.aspx?Type=ReportTemplate'}
                                fileName={'templateFile'}
                                enctype={'multipart/form-data'}
                                method={'post'}
