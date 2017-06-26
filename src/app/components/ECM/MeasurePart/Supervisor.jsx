@@ -409,7 +409,7 @@ export default class Supervisor extends Component {
       return(
         <div className="indetail">
           <div className="jazz-ecm-push-operation-label">{I18N.Setting.CustomerManagement.Principal+':'}</div>
-          <div style={{fontSize:'14px',color:'#0f0f0f',marginLeft:'5px'}}>{this.props.person===null?'-':`${this.props.person.get('Name')} ${this.props.person.get('PhoneNumber')}`}</div>
+          <div style={{fontSize:'14px',color:'#0f0f0f',marginLeft:'5px'}}>{this.props.person===null?'—':`${this.props.person.get('Name')} ${this.props.person.get('PhoneNumber')}`}</div>
         </div>
       )
     }
@@ -424,9 +424,9 @@ export default class Supervisor extends Component {
           fontSize: '18px',
           marginTop:'-5px'
         };
-        var costIcon=<FontIcon className="icon-cost_saving" iconStyle ={iconStyle} style = {style} />;
+        var costIcon=<FontIcon className="icon-user" iconStyle ={iconStyle} style = {style} />;
       return(
-        <IconText icon={costIcon} label={I18N.Setting.CustomerManagement.Principal} uom={this.props.person===null?'-':`${this.props.person.get('Name')} ${this.props.person.get('PhoneNumber')}`}/>
+        <IconText icon={costIcon} label={I18N.Setting.CustomerManagement.Principal} uom={this.props.person===null?'—':`${this.props.person.get('Name')} ${this.props.person.get('PhoneNumber')}`}/>
       )
     }
 

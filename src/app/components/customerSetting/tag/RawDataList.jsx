@@ -12,6 +12,7 @@ import { List} from 'immutable';
 import Regex from '../../../constants/Regex.jsx';
 
 function isValid(number){
+  if(number===null || number==="") return true;
   //非数字
   if(!CommonFuns.isNumeric(number)) return false;
 
@@ -89,7 +90,7 @@ let ListItem = React.createClass({
 
                   }else {
                     this.setState({
-                      errorText:'xxx'
+                      errorText:I18N.Setting.Tag.PTagRawData.ErrorMsg
                     })
                   }
 
@@ -321,6 +322,10 @@ let RawDataList = React.createClass({
   render: function() {
     var data = this.props.isRawData ? TagStore.getRawData() : TagStore.getDifferenceData(),
       uom = data.getIn(['TargetEnergyData', 0, 'Target', 'Uom']);
+
+      if(uom==="null") uom=""
+          else uom='(' + uom + ')'
+
     var label = this.props.isRawData ? I18N.EM.Ratio.RawValue : I18N.Setting.Tag.PTagRawData.DifferenceValue;
     if(this.state.isLoading){
       return (<div className="jazz-ptag-rawdata-list flex-center"><CircularProgress  mode="indeterminate" size={80} /></div>)
@@ -331,7 +336,7 @@ let RawDataList = React.createClass({
             <div>{I18N.RawData.Time}</div>
             <div style={{
           marginLeft: '90px'
-        }}>{label + '(' + uom + ')'}</div>
+        }}>{label + uom }</div>
           </div>
           <div className="date" ref='header' style={{
           display: 'none'

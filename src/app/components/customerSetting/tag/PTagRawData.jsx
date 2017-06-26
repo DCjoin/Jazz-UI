@@ -271,8 +271,8 @@ let PTagRawData = React.createClass({
     var autoRepairBtn = <FlatButton key={'autoRepairBtn'} label={I18N.Setting.VEEMonitorRule.AutoRepair}
     style={pauseBtnStyle} labelStyle={labelStyle} onClick={() => {
       TagAction.manualScanTag(
-        this.props.selectedTag.get('Id'), 
-        moment(this.state.start).subtract(8, 'hours').format('YYYY-MM-DDTHH:mm:ss'), 
+        this.props.selectedTag.get('Id'),
+        moment(this.state.start).subtract(8, 'hours').format('YYYY-MM-DDTHH:mm:ss'),
         moment(this.state.end).subtract(8, 'hours').format('YYYY-MM-DDTHH:mm:ss'),
       )
     }}/>;
@@ -283,12 +283,15 @@ let PTagRawData = React.createClass({
   style={pauseBtnStyle} labelStyle={labelStyle} onClick={this._onRollBack}/>
 
     var label = this.state.isRawData ? I18N.EM.Ratio.RawValue : I18N.Setting.Tag.PTagRawData.DifferenceValue;
+    var uom=this.state.tagData.getIn(['TargetEnergyData', 0, 'Target', 'Uom']);
+    if(uom==="null") uom=""
+        else uom='(' + uom + ')'
     return (
       <div className='jazz-ptag-rawdata-toolbar'>
         <div className='leftside'>
         <div className='switch-accumulated'>
           <div className='label'>
-            {label + '(' + this.state.tagData.getIn(['TargetEnergyData', 0, 'Target', 'Uom']) + ')'}
+            {label + uom}
           </div>
           {this.props.selectedTag.get('IsAccumulated') ? <FontIcon className='icon-sync' style={switchIconStyle} ref="switchIcon" onClick={this._onSwitchRawDataView}/> : null}
         </div>

@@ -23,7 +23,7 @@ export class IconText extends Component{
         </div>
 				{(this.props.value || this.props.uom) && <div style={{display:'flex',flexDirection:'row',marginTop:'10px',alignItems:'baseline'}}>
 					<div style={{fontSize: '25px',fontWeight: '500',color: '#0f0f0f'}}>{this.props.value}</div>
-					<div style={{fontSize: '14px',color: '#0f0f0f',marginLeft:'10px'}}>{this.props.uom}</div>
+					<div style={{fontSize: '14px',color: '#0f0f0f',marginLeft:this.props.value?'10px':'0px'}}>{this.props.uom}</div>
 				</div>}
 				{this.props.children}
       </div>
@@ -85,8 +85,8 @@ export class MeasuresItem extends Component {
           marginTop:'-5px'
         };
       var costIcon=<FontIcon className="icon-cost_saving" iconStyle ={iconStyle} color="#626469" style = {style} />,
-          sumIcon=<FontIcon className="icon-investment" iconStyle ={iconStyle} color="#626469" style = {style} />,
-          periodIcon=<FontIcon className="icon-repay" iconStyle ={iconStyle} color="#626469" style = {style} />;
+          sumIcon=<FontIcon className="icon-investment-amount" iconStyle ={iconStyle} color="#626469" style = {style} />,
+          periodIcon=<FontIcon className="icon-pay-back-period" iconStyle ={iconStyle} color="#626469" style = {style} />;
       return(
         <div className="measuresItem-content">
           <div className="side">
