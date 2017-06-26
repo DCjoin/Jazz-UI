@@ -8,9 +8,34 @@ export default class Problem extends Component {
       super(props);
     }
 
+    state={
+      Name:"",
+      Description:""
+    }
+
+    componentDidMount(){
+      var {canEdit,measure}=this.props;
+      var {EnergyProblem}=measure.toJS();
+      var {Description,Name}=EnergyProblem;
+      this.setState({
+        Name,Description
+      })
+    }
+
+    componentWillReceiveProps(nextProps){
+      var {canEdit,measure}=this.props;
+      var {EnergyProblem}=measure.toJS();
+      var {Description,Name}=EnergyProblem;
+      this.setState({
+        Description,Name
+      })
+    }
+
+
     render(){
       var {canEdit,measure}=this.props;
       var {EnergyProblem}=measure.toJS();
+      var {Description,Name}=this.state;
       var props={
         name:{
           key:'EnergyProblem'+EnergyProblem.Id+'_Name',
@@ -19,7 +44,7 @@ export default class Problem extends Component {
                                 if(value===''){value=EnergyProblem.Name}
                                 this.props.merge(['EnergyProblem','Name'],value)
                               },
-          value:EnergyProblem.Name,
+          value:Name,
           hintText:I18N.Setting.ECM.AddProblemName,
           hintStyle:{fontSize:"12px"},
           style:{marginTop:'-5px',width:'100%'},
@@ -32,7 +57,7 @@ export default class Problem extends Component {
                                 if(value===''){value=EnergyProblem.Description}
                                 this.props.merge(['EnergyProblem','Description'],value)
                               },
-          value:EnergyProblem.Description,
+          value:Description,
           hintText:I18N.Setting.ECM.AddProblemDescription,
           hintStyle:{fontSize:"12px"},
           style:{marginTop:'-5px',width:'100%'},

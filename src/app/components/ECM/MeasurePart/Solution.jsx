@@ -171,11 +171,36 @@ export class Solution extends Component {
     constructor(props) {
       super(props);
     }
+    
+    state={
+      Name:"",
+      Description:""
+    }
+
+    componentDidMount(){
+      var {canEdit,measure}=this.props;
+      var {EnergySolution}=measure.toJS();
+      var {Description,Name}=EnergySolution;
+      this.setState({
+        Name,Description
+      })
+    }
+
+    componentWillReceiveProps(nextProps){
+      var {canEdit,measure}=nextProps;
+      var {EnergySolution}=measure.toJS();
+      var {Description,Name}=EnergySolution;
+      this.setState({
+        Description,Name
+      })
+    }
 
     render(){
       var {canEdit,measure}=this.props;
       var {EnergySolution}=measure.toJS();
-      var {Description,Name}=EnergySolution;
+      var {Description,Name}=this.state;
+
+      console.log(Name);
 
       var props={
         name:{

@@ -1118,7 +1118,7 @@ class AnalysisPanel extends Component {
       if (this.state.remarkDisplay) {
         remarkTextArea = <div className='jazz-energy-remark-text'><TextField hintText={I18N.Remark.DefaultText} value={this.state.remarkText} onChange={this.getRemarck} hintStyle={{
             color: '#abafae'
-          }} multiLine={true} underlineShow={false}></TextField></div>;
+          }} multiLine={true} underlineShow={false} rows={this.state.remarkText?this.state.remarkText.split('\n').length:1}></TextField></div>;
         }
     var remarkDiv = null;
         remarkDiv = <div className='jazz-energy-remark-expand' style={{display:'flex',flexDirection:'column',marginTop:'40px',marginLeft:'-20px'}}>
