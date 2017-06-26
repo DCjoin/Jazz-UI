@@ -585,7 +585,6 @@ let ChartCmpStrategyFactor = {
   initYaxisFnStrategy: {
     empty: function() {},
     initYaxis(data, config, yAxisOffset, cmpBox) {
-      console.log('initYaxis');
       if (!isArray(data)) return;
       var yList = [],
         dic = {},
@@ -604,7 +603,6 @@ let ChartCmpStrategyFactor = {
           let yconfig = cmpBox.props.getYaxisConfig();
           for (let j = 0; j < yconfig.length; j++) {
             if (yconfig[j].uom == name) {
-              console.log('min=',yconfig[j].val[1],'max=',yconfig[j].val[0]);
               min = yconfig[j].val[1];
               max = yconfig[j].val[0];
               break;

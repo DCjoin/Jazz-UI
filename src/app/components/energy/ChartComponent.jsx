@@ -815,7 +815,6 @@ let ChartComponent = React.createClass({
       return max;
    },
    initYaxis: function (data, config) {
-     console.log("initYaxis");
         if (!isArray(data)) return;
         var yList = [], dic = {}, count = 0, offset = yAxisOffset;
 
