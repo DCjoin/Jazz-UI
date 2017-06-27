@@ -1054,7 +1054,7 @@ I18N.Message.PictureUploadFailed = '图片上传失败，请稍后再试。';
 /******
 Energy Error Code
 *******/
-I18N.Message.M02004 = '聚合粒度非法';
+I18N.Message.M02004 = '数据点步长错误';
 I18N.Message.M02007 = '开始时间不能大于结束时间';
 I18N.Message.M02008 = '介质不同，不能绘制饼图。';
 I18N.Message.M02011 = '计算数据V类型的数据点不支持原始数据查看功能';
