@@ -88,7 +88,9 @@ function loadLanguage({location, params, routes}, replace, callback) {
     } else if( location.query.langNum === '1' ) {
       lang = 'en-us';
     } else {
-      lang = window.navigator.language.toLowerCase();
+      // lang = window.navigator.language.toLowerCase();
+      // first login must be zh-cn 2017-6-27 by product team
+      lang= 'zh-cn';
     }
   }
   require(['./lang/' + lang + '.js'], function(i18n) {
@@ -175,7 +177,7 @@ ReactDom.render(<Router history={hashHistory} routes={{
           component: BlankPage
         },{
           path: 'actuality',
-          indexRoute: {            
+          indexRoute: {
             onEnter: (router, replaceState) => {
               replaceState(RoutePath.report.actualityKpi(router.params));
             },
