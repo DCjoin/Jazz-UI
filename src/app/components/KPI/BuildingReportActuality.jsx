@@ -136,7 +136,7 @@ export default class BuildingReportActuality extends Component {
 			return (<div className='jazz-margin-up-main flex-center'><CircularProgress mode="indeterminate" size={80} /></div>);
 		}
 		return (
-			<div className='jazz-margin-up-main jazz-report-actuality'>
+			<div className='jazz-margin-up-main jazz-report-actuality' style={{overflowX: 'hidden', overflowY: 'auto',}}>
 				{this._renderHeader()}
 				{this._renderContent()}
 				{this._renderEdit()}

@@ -142,6 +142,7 @@ function postNewConfig(data, isEdit, newConfig) {
       }
     }
   }
+  console.log('Step = ' + Step );
   if( Step !== Daily && Step !== Monthly && Calendars && Calendars.size > 0 ) {
     let {CalendarType, CalendarTimeRanges} = Calendars.get(0).toJS();
     if( CalendarType === CALENDAR_TYPE_WORKTIME || CalendarType === CALENDAR_TYPE_NO_WORKTIME 

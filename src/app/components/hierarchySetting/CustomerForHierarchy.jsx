@@ -5,19 +5,20 @@ import classnames from "classnames";
 import moment from "moment";
 import Detail from '../customer/CustomerDetail.jsx';
 import { CircularProgress, Checkbox } from 'material-ui';
-import Regex from '../../constants/Regex.jsx';
-import { formStatus } from '../../constants/FormStatus.jsx';
-import HierarchyAction from '../../actions/hierarchySetting/HierarchyAction.jsx';
-import HierarchyStore from '../../stores/hierarchySetting/HierarchyStore.jsx';
-import ViewableTextField from '../../controls/ViewableTextField.jsx';
-import ViewableDatePicker from '../../controls/ViewableDatePickerByStatus.jsx';
-import CommonFuns from '../../util/Util.jsx';
-import ImageUpload from '../../controls/ImageUpload.jsx';
+import Regex from 'constants/Regex.jsx';
+import { formStatus } from 'constants/FormStatus.jsx';
+import HierarchyAction from 'actions/hierarchySetting/HierarchyAction.jsx';
+import HierarchyStore from 'stores/hierarchySetting/HierarchyStore.jsx';
+import ViewableTextField from 'controls/ViewableTextField.jsx';
+import ViewableDatePicker from 'controls/ViewableDatePickerByStatus.jsx';
+import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
+import CommonFuns from 'util/Util.jsx';
+import ImageUpload from 'controls/ImageUpload.jsx';
 import AdminList from '../customer/AdminList.jsx';
-import Panel from '../../controls/MainContentPanel.jsx';
-import FormBottomBar from '../../controls/FormBottomBar.jsx';
+import Panel from 'controls/MainContentPanel.jsx';
+import FormBottomBar from 'controls/FormBottomBar.jsx';
 import MonitorTag from './MonitorTag.jsx';
-import Dialog from '../../controls/NewDialog.jsx';
+import Dialog from 'controls/NewDialog.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
 import Calendar from './Calendar.jsx';
 
@@ -33,6 +34,7 @@ var CustomerForHierarchy = React.createClass({
     handlerSwitchTab: React.PropTypes.func,
     merge: React.PropTypes.func,
     infoTabNo: React.PropTypes.number,
+    consultants: React.PropTypes.array,
   },
   getInitialState: function() {
     return {
@@ -90,6 +92,8 @@ var CustomerForHierarchy = React.createClass({
   },
   _renderInfoTab: function() {
     var {customer} = this.state,
+      consultants = this.props.consultants,
+      ConsultantId = this.props.selectedNode.get('ConsultantId'),
       adminList = null,
       isView = this.props.formStatus === formStatus.VIEW,
       {Code, Address, StartTime, LinkMans, Comment, CalcStatus} = customer.toJS();
@@ -170,6 +174,23 @@ var CustomerForHierarchy = React.createClass({
           path: "Comment"
         });
       }
+    },
+    consultantsProps = {
+      isViewStatus: true,
+      title: I18N.Setting.Building.Consultant,
+      defaultValue: ConsultantId || 0,
+      valueField: 'Key',
+      textField: 'Value',
+      dataItems: consultants.unshift({
+        Key: 0,
+        Value: I18N.Common.Label.CommoEmptyText
+      }).toJS(),
+      didChanged: (value) => {
+        this.props.merge({
+          value,
+          path: 'ConsultantId'
+        })
+      }
     };
 
     if (!isView || (LinkMans && LinkMans.length > 0)) {
@@ -208,6 +229,9 @@ var CustomerForHierarchy = React.createClass({
         <div className="pop-customer-detail-content-left-item">
           <ViewableDatePicker {...customerStartTimeProps} />
         </div>
+        {!ConsultantId || consultants.length === 0 ? null : <div className="pop-customer-detail-content-left-item">
+          <ViewableDropDownMenu {...consultantsProps}/>
+        </div>}
         {Comment || !isView ? <div className={classnames("pop-user-detail-content-item", "jazz-customer-comment")}>
                   <ViewableTextField {...userCommentProps}/>
                 </div> : null}

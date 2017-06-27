@@ -298,7 +298,6 @@ export default class Actuality extends Component {
 				{!hierarchyId && (<div className='flex-center'><b>{I18N.Kpi.Error.SelectBuilding}</b></div>)}
 				{this._renderActuality()}
 				{this._renderEditPage()}
-				{ (!show || Object.keys(show).length !== 2) && this._renderOverlay()}
 			</div>
 		);
 	}
