@@ -149,7 +149,7 @@ class AnalysisPanel extends Component {
   }
 
   pieEnergyDataLoad(timeRanges, step, tagOptions, relativeDate) {
-    EnergyAction.getPieEnergyData(timeRanges, step, tagOptions, relativeDate);
+    EnergyAction.getPieEnergyData(timeRanges, step, tagOptions, relativeDate,this.props.widgetDto.Id);
   }
 
   getEnergyRawData(timeRanges, step, tagOptions, relativeDate, pageNum, pageSize) {
@@ -961,7 +961,8 @@ class AnalysisPanel extends Component {
     if (this.canShareDataWith(curChartType, nextChartType) && !!this.state.energyData) {
         ChartStatusAction.modifyChartType(nextChartType);
         this.setState({
-          selectedChartType: nextChartType
+          selectedChartType: nextChartType,
+          energyData: null
         });
       } else { //if(nextChartType === 'pie'){
       ChartStatusAction.clearStatus();

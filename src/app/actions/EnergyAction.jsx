@@ -17,7 +17,7 @@ let getTagIdsFromTagOptions = function(tagOptions) {
 
 let EnergyAction = {
   //for select tags from taglist and click search button.
-  getPieEnergyData(date, step, tagOptions, relativeDate) {
+  getPieEnergyData(date, step, tagOptions, relativeDate,widgetId) {
     var timeRange = date;
 
     var tagIds = getTagIdsFromTagOptions(tagOptions);
@@ -35,7 +35,8 @@ let EnergyAction = {
       type: Action.GET_ENERGY_DATA_LOADING,
       submitParams: submitParams,
       tagOptions: tagOptions,
-      relativeDate: relativeDate
+      relativeDate: relativeDate,
+      widgetId
     });
     let path = '/Energy/AggregateTagsData';
     if (timeRange.length > 1) {
@@ -49,7 +50,8 @@ let EnergyAction = {
         AppDispatcher.dispatch({
           type: Action.GET_ENERGY_DATA_SUCCESS,
           energyData: energyData,
-          submitParams: submitParams
+          submitParams: submitParams,
+          widgetId
         });
       },
       error: function(err, res) {
