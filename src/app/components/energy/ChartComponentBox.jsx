@@ -490,7 +490,6 @@ let ChartComponentBox = React.createClass({
     }
   },
   _onSwitchChartTypeButtonClick(nextType, seriesItem) {
-    console.log(nextType, seriesItem);
     ChartStatusAction.modifySingleStatus(seriesItem.options.id, 'ChartType', nextType);
   },
   _afterChartCreated(chartObj) {

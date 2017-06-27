@@ -1,5 +1,6 @@
 'use strict';
 import React, { Component }  from "react";
+import moment from 'moment';
 import assign from "object-assign";
 import Dialog from 'controls/NewDialog.jsx';
 import DataAnalysisStore from 'stores/DataAnalysis/DataAnalysisStore.jsx';
@@ -13,6 +14,14 @@ import ChartStatusStore from 'stores/Energy/ChartStatusStore.jsx';
 import MultipleTimespanStore from 'stores/Energy/MultipleTimespanStore.jsx';
 // import {GatherInfo} from '../../../../../mockData/DataAnalysis.js';
 var isMultiTime;
+
+function getTime(time){
+  if (time !== null) {
+    return moment(time).format('YYYY-MM-DD HH:mm')
+  } else {
+    return '';
+  }
+}
 class ItemComponent extends Component{
   render(){
     return(
@@ -295,7 +304,7 @@ export default class StatisticsDialog extends Component {
         let props={
           columnValue:TagName,
           typeValue:ItemGatherValue+' '+UomName,
-          time:DataAnalysisStore.getDisplayDate(new Date(j2d(ItemTime)),false),
+          time:getTime(new Date(j2d(ItemTime))),
         };
         if(index===MaxGroup.length-1){
           props.style={
