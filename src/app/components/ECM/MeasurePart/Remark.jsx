@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import classNames from 'classnames';
+import ReactDom from 'react-dom';
 import FontIcon from 'material-ui/FontIcon';
-import IconButton from 'material-ui/IconButton';
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
 import MeasuresAction from 'actions/ECM/MeasuresAction.jsx';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -14,6 +13,10 @@ import TextField from 'material-ui/TextField';
 
 function canDelete(canEdit,userId){
   return canEdit && userId===CurrentUserStore.getCurrentUser().Id
+}
+
+function getNewRemarkHeight(el){
+  return Array.prototype.slice.call(el.querySelectorAll('.remarkItem'))[0].clientHeight
 }
 
 class AddRemark extends Component{
@@ -153,6 +156,12 @@ export default class Remark extends Component {
       MeasuresAction.getRemarkList(this.props.problemId);
     }
 
+    componentDidUpdate(prevProps,prevState){
+      if(prevState.remarkList!==null && prevState.remarkList.size<this.state.remarkList.size){
+        this.props.onScroll(getNewRemarkHeight(ReactDom.findDOMNode(this)))
+      }
+    }
+
     componentWillUnmount(){
       MeasuresStore.removeChangeListener(this._onChanged.bind(this));
     }
@@ -183,4 +192,5 @@ export default class Remark extends Component {
   Remark.propTypes = {
     problemId:React.PropTypes.number,
     canEdit:React.PropTypes.bool,
+    onScroll:React.PropTypes.func,
   };

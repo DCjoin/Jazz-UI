@@ -1046,7 +1046,7 @@ I18N.Message.PictureUploadFailed = 'Image upload failed.Please try again later.'
 /******
 Energy Error Code
 *******/
-I18N.Message.M02004 = 'Polymer granularity illegal';
+I18N.Message.M02004 = '数据点步长错误';
 I18N.Message.M02007 = 'Start time cannot be earlier than the end time';
 I18N.Message.M02008 = 'Pie chart cannot be drawn due to different commodities.';
 I18N.Message.M02011 = 'Viewing raw data is not supported for virtual tag.';

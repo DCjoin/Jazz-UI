@@ -43,7 +43,7 @@ function isSeniorFull() {
 
 function privilegeWithSmartDiagnoseList( privilegeCheck ) {
   //  return false
-	return 
+	return
 	privilegeCheck(PermissionCode.BASIC_SMART_DIACRISIS_LIST, CurrentUserStore.getCurrentPrivilege())
 	|| privilegeCheck(PermissionCode.SENIOR_SMART_DIACRISIS_LIST, CurrentUserStore.getCurrentPrivilege());
 }
@@ -90,8 +90,10 @@ export default class DiagnoseProblem extends Component {
 
 			let timeRange=chart.getIn(['EnergyViewData','TargetEnergyData',0,'Target','TimeSpan']).toJS(),
 					step=chart.getIn(['EnergyViewData','TargetEnergyData',0,'Target','Step']),
-					startDate=MinusStep(j2d(timeRange.StartTime),step,fixedTimes),
-					endDate=MinusStep(j2d(timeRange.EndTime),step,fixedTimes);
+					startTimeTmp=(step===3||step===4)?j2d(timeRange.StartTime,false):j2d(timeRange.StartTime),
+					endTimeTmp=(step===3||step===4)?j2d(timeRange.EndTime,false):j2d(timeRange.EndTime),
+					startDate=MinusStep(startTimeTmp,step,fixedTimes),
+					endDate=MinusStep(endTimeTmp,step,fixedTimes);
 
 			let startTime = startDate.getHours(),
 				endTime = endDate.getHours();

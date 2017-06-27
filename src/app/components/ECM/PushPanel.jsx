@@ -419,7 +419,8 @@ export default class PushPanel extends Component {
      },
      remark:{
        problemId:currentSolution.getIn(['EnergyProblem','Id']),
-       canEdit:PushIsFull() || PushAndNotPushIsFull()
+       canEdit:PushIsFull() || PushAndNotPushIsFull(),
+       onScroll:(height)=>{ReactDom.findDOMNode(this).querySelector(".dialog-content").scrollTop+=height+15}
      }
    }
     return(
