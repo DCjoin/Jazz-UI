@@ -436,7 +436,8 @@ export class GenerateSolutionButton extends Component {
 	        lineHeight: '30px',
 	      },
 	      label:{
-	        fontSize:'14px'
+	        fontSize:'14px',
+	        marginTop: -2,
 	      }
 	    };
 		return (
@@ -447,7 +448,7 @@ export class GenerateSolutionButton extends Component {
 					label={I18N.Setting.DataAnalysis.Scheme}
 					labelstyle={styles.label}
 					icon={
-						<FontIcon className="icon-to-ecm" style={styles.label}/>
+						<FontIcon className="icon-add" style={styles.label}/>
 					}
 					onClick={() => {
 						onOpen({

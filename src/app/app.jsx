@@ -21,7 +21,9 @@ import demoLoginApp from './components/DemoLogin.jsx';
 import initChangePSWApp from './components/initChangePSW.jsx';
 import contactusApp from './components/ContactUS.jsx';
 import Actuality from './components/KPI/Actuality.jsx';
-import ReportActuality from './components/KPI/ReportActuality.jsx';
+import KPIActuality from './components/KPI/KPIActuality.jsx';
+import ReportPreview from './components/KPI/ReportPreview.jsx';
+import BuildingReportActuality from './components/KPI/BuildingReportActuality.jsx';
 import KPIConfig from './components/KPI/Group/ConfigMenu.jsx';
 import KPIConfigList from './components/KPI/Group/KPIConfigList.jsx';
 import KPIRanking from './components/KPI/Group/Ranking.jsx';
@@ -173,15 +175,17 @@ ReactDom.render(<Router history={hashHistory} routes={{
           component: BlankPage
         },{
           path: 'actuality',
-          indexRoute: {
-            component: Actuality,
+          indexRoute: {            
+            onEnter: (router, replaceState) => {
+              replaceState(RoutePath.report.actualityKpi(router.params));
+            },
           },
           onEnter: () => {
             document.title = I18N.MainMenu.KPI;
           },
           childRoutes: [{
-            path: 'report',
-            component: ReportActuality,
+            path: 'building_report',
+            component: BuildingReportActuality,
           }, {
             path: 'config',
             component: KPIConfig,
@@ -203,6 +207,9 @@ ReactDom.render(<Router history={hashHistory} routes={{
           {
             path: 'template',
             component: KPITemplate
+          }, {
+            path: ':type',
+            component: Actuality,
           }]
       }, {
         onEnter: () => {

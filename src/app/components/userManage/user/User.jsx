@@ -12,7 +12,7 @@ import UserList from './UserList.jsx';
 import UserFilter from './UserFilter.jsx';
 import UserDetail from './UserDetail.jsx';
 import NewDialog from '../../../controls/NewDialog.jsx';
-import FlatButton from '../../../controls/FlatButton.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
 
 var User = React.createClass({
   getInitialState: function() {

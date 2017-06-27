@@ -336,7 +336,7 @@
 
   }
   &-tip {
-    font-weight: bold;
+    font-weight: 500;
     color: #32ad3d;
     font-size: 9px;
     width: 38px;
@@ -472,6 +472,13 @@
 
   &:checked ~ .consultant-card-widgets {
     transform: translateX(0);
+
+    & .card-icon:before{
+      content: "\f10e";
+      color: @slate-grey;
+      font-size: 21px;
+      font-weight: bold;
+    }
   }
   &:checked ~ .card-overlay {
     position: fixed;
@@ -484,10 +491,10 @@
 .consultant-card-widgets {
   position: fixed;
   right: 0;
-  bottom: 30px;
+  bottom: 40px;
   transition: transform 0.32s ease 0s;
   transform: translateX(100%);
-  background-color: #fff;
+  filter: drop-shadow(0 0 7px rgba(0,0,0,.2));
 
   & .card-overlay {
     display: none;
@@ -495,49 +502,76 @@
 
   & .card-icon {
     position: absolute;
-    right: 100%;
-    height: 40px;
-    width: 40px;
-    background: #808080;
-    border-radius: 20px 0px 0px 20px;
+    right: calc(~'100% - 2px');
+    bottom: 0;
+    width: 74px;
+    height: 74px;
+    border-radius: 37px 0px 0px 37px;
+    background-color: #fff;
+    color: @slate-grey;
+    line-height: 74px;
+    z-index: 1;
+    border: 2px solid #e7e7e7;
+    border-right: 0;
     text-align: center;
-    line-height: 40px;
+
+    &:before {
+      font-size: 36px;
+      content: "\f132";
+      color: #32ad3d;
+      font-family: "fontcustom";
+      .pointer;
+    }
   }
 
   & .card-info{
     position: relative;
-    width: 350px;
-    height: 180px;
     display: flex;
-    border: 1px solid #000;
     align-items: center;
     padding: 20px 10px;
+    border: 2px solid #e7e7e7;
+    width: 400px;
+    height: 135px;
+    border-top-left-radius: 8px;
+    background: #fff;
+    color: @slate-grey;
 
     &-photo {
-      width: 120px;
-      height: 160px;
-      margin-right: 10px;
+      width: 94px;
+      height: 125px;
+      margin-right: 20px;
+      margin-left: 10px;
       flex: none;
     }
 
     &-title {
-      color: #808080;
+      font-size: 12px;
       margin-bottom: 5px;
     }
 
     &-name {
-      font-size: 18px;
-      color: #000;
-      margin-right: 5px;
+      font-size: 17px;
+      margin-bottom: 5px;
+      font-weight: 500;
     }
 
     &-desc {
-      color: #808080;
+      color: @medium-gray;
       margin-bottom: 5px;
     }
 
     &-email {
-      color: #000;
+      text-decoration: underline;
+      font-size: 12px;
+    }
+
+    & .icon-email {
+      width: 14px;
+      height: 8px;
+
+      &:before {
+        position: absolute;
+      }
     }
   }
 }

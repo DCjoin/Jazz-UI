@@ -3,7 +3,7 @@
 import React from 'react';
 
 //import Dialog from '../../../controls/PopupDialog.jsx';
-import FlatButton from '../../../controls/FlatButton.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
 import SectionPanel from '../../../controls/SectionPanel.jsx';
 import { formStatus } from '../../../constants/FormStatus.jsx';
 import { dataStatus } from '../../../constants/DataStatus.jsx';

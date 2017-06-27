@@ -46,6 +46,8 @@ I18N.MainMenu.DeviceTemplate = 'Ledger template ';
 I18N.MainMenu.ParameterTemplate = 'Parameter template';
 
 I18N.MainMenu.KPI = 'KPI · Report';
+I18N.MainMenu.ActualityKPI = 'KPI';
+I18N.MainMenu.ActualityReport = 'Report';
 I18N.MainMenu.SaveSchemeTab = 'Energy Saving Scheme';
 I18N.MainMenu.SmartDiagnose = 'Smart Diagnosis';
 I18N.MainMenu.DataAnalysis = 'Data Analysis';

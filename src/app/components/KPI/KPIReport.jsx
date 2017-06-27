@@ -3,8 +3,6 @@ import classnames from 'classnames';
 import {find} from 'lodash-es';
 import { FontIcon } from 'material-ui';
 
-import NewAppTheme from 'decorator/NewAppTheme.jsx';
-
 import PermissionCode from 'constants/PermissionCode.jsx';
 
 import LinkButton from 'controls/LinkButton.jsx';
@@ -25,7 +23,6 @@ function isFull() {
 	return privilegeUtil.isFull(PermissionCode.INDEX_AND_REPORT, CurrentUserStore.getCurrentPrivilege());
 }
 
-@NewAppTheme
 export default class KPIReport extends Component {
 	static contextTypes = {
 		router: React.PropTypes.object

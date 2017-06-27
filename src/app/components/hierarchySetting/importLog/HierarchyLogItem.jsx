@@ -2,7 +2,7 @@
 
 import React from 'react';
 import CommonFuns from '../../../util/Util.jsx';
-import FlatButton from '../../../controls/FlatButton.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
 
 let HierarchyLogItem = React.createClass({
   getInitialState: function() {

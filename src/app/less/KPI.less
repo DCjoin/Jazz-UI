@@ -218,6 +218,7 @@
   }
 
   &-content {
+    flex: 1;
     padding: 30px 20px;
     overflow-x: hidden;
     overflow-y: auto;
@@ -246,7 +247,7 @@
       align-items: center;
     }
 
-    &>.icon-add {
+    & .icon-add {
       width: 16px;
       height: 16px;
       font-size: 12px;
@@ -695,12 +696,12 @@
     color: blue;
   }
 
-  &.up-index:before {
+  &.up-index {
     color: red;
   }
-  &.down-index:before {
-    color: @medium-green;
-  }
+  // &.down-index {
+  //   color: @medium-green;
+  // }
 }
 
 .jazz-building-kpi-rank {
@@ -924,8 +925,7 @@
   }
 
   & .current-label {
-    margin-left: 7px;
-    margin-right: 10px;
+    margin: 0 15px;
     color: @slate-grey;
   }
 }

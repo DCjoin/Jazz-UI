@@ -405,7 +405,7 @@ let ReportDataItem = React.createClass({
       modal={true}
       titleStyle={{
         fontSize:'16px',
-        fontWeight:'bold',
+        fontWeight:500,
         color:'#0f0f0f',
         paddingBottom:'25px',
         borderBottom:'1px solid #e6e6e6',

@@ -9,7 +9,7 @@ import TreeConstants from '../../constants/TreeConstants.jsx';
 import CommonFuns from '../../util/Util.jsx';
 import classNames from 'classnames';
 import Tree from '../../controls/tree/Tree.jsx';
-import FlatButton from '../../controls/FlatButton.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
 import Dialog from '../../controls/NewDialog.jsx';
 import HierarchyStore from '../../stores/hierarchySetting/HierarchyStore.jsx';
 import DropdownButton from '../../controls/DropdownButton.jsx';

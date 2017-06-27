@@ -23,7 +23,6 @@ import TimeGranularity from 'constants/TimeGranularity.jsx';
 import {DIAGNOSE_MODEL} from 'constants/actionType/Diagnose.jsx';
 
 import ReduxDecorator from 'decorator/ReduxDecorator.jsx';
-import NewAppTheme from 'decorator/NewAppTheme.jsx';
 
 import {isEmptyStr, isNumeric, getDateTimeItemsByStepForVal, getDateTimeItemsByStep, pow10} from 'util/Util.jsx';
 
@@ -95,7 +94,11 @@ function getCanSelectTimeGranularity(tags) {
 	let maxTime = Math.max(tags.map(tag => TIME_GRANULARITY_MAP_VAL[tag.Step]));
 	return Object.keys(TIME_GRANULARITY_MAP_VAL)
           .filter( step => TIME_GRANULARITY_MAP_VAL[step] >= maxTime )
-          .filter( step => step*1===TimeGranularity.Minite || step*1===TimeGranularity.Hourly || step*1===TimeGranularity.Daily);
+          .filter( step => 
+          	step*1===TimeGranularity.Minite || 
+          	step*1===TimeGranularity.Hourly || 
+          	step*1===TimeGranularity.Daily || 
+          	step*1===TimeGranularity.Monthly);
 }
 function getSupportStepItems(){
 	return [{
@@ -107,7 +110,10 @@ function getSupportStepItems(){
 	}, {
 		step: TimeGranularity.Daily,
 		text: I18N.EM.Day
-  }];
+	}, {
+		step: TimeGranularity.Monthly,
+		text: I18N.EM.Month
+	}];
 }
 function getStepItems(){
 	return [{
@@ -145,7 +151,7 @@ function getStepItems(){
 		text: I18N.Common.AggregationStep.Weekly
 	},{
 		step: TimeGranularity.Monthly,
-		text: I18N.Common.AggregationStep.Monthly
+		text: I18N.EM.Month
 	},{
 		step: TimeGranularity.Yearly,
 		text: I18N.Common.AggregationStep.Yearly
@@ -510,11 +516,12 @@ export function DiagnoseRange({
 				title={'步长'}
 				defaultValue={Step}
 				didChanged={onUpdateStep}
-				dataItems={[
-					{payload: TimeGranularity.Minite, text: I18N.EM.Raw},
-					{payload: TimeGranularity.Hourly, text: I18N.EM.Hour},
-					{payload: TimeGranularity.Daily, text: I18N.EM.Day},
-				]}
+				dataItems={getSupportStepItems().map(item => {
+					return {
+						payload: item.step,
+						text: item.text,
+					}
+				})}
 			/>
 			<AdditiveComp
 				className={'diagnose-range-time'}
@@ -1009,7 +1016,6 @@ function CreateStep3({
 	);
 }
 
-@NewAppTheme
 @ReduxDecorator
 class CreateDiagnose extends Component {
 	static getStores() {

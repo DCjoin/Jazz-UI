@@ -5,7 +5,7 @@ import { CircularProgress, FontIcon, IconButton, IconMenu, DropDownMenu, Checkbo
 import classnames from "classnames";
 import moment from 'moment';
 import Regex from '../../constants/Regex.jsx';
-import FlatButton from '../../controls/FlatButton.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
 import PlatformAction from '../../actions/PlatformAction.jsx';
 import PlatformStore from '../../stores/PlatformStore.jsx';
 import OrigamiPanel from '../../controls/OrigamiPanel.jsx';

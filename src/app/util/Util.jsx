@@ -1,6 +1,5 @@
 'use strict';
 import Momment from 'moment';
-import Immutable from 'immutable';
 import _every from 'lodash-es/every';
 import _forEach from 'lodash-es/forEach';
 import _isArray from 'lodash-es/isArray';
@@ -16,13 +15,6 @@ import GlobalErrorMessageAction from '../actions/GlobalErrorMessageAction.jsx';
 import HierarchyStore from '../stores/HierarchyStore.jsx';
 import LabelMenuStore from '../stores/LabelMenuStore.jsx';
 import SingleKPIStore from '../stores/KPI/SingleKPIStore.jsx';
-// var Momment = {};
-// var Immutable = {};
-// var _ = {};
-// var GlobalErrorMessageAction = {};
-// var HierarchyStore = {};
-// var LabelMenuStore = {};
-// var SingleKPIStore = {};
 const FIXEDTIMES = {
   millisecond: 1,
   second: 1000,

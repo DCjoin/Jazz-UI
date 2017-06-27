@@ -76,10 +76,11 @@ function RankNumber(props, isThisYear) {
 		flag = '→';
 	}
 	if(DIndex > 0) {
-		flag = '↑ ' + DIndex;
+		flag = '↑ ';
 	}
 	if(DIndex < 0) {
-		flag = '↓ ' + DIndex * -1;
+		flag = '↓ ';
+		DIndex = DIndex * -1
 	}
 
 	return (
@@ -91,6 +92,7 @@ function RankNumber(props, isThisYear) {
 				['up-index']: DIndex > 0,
 				['down-index']: DIndex < 0,
 			})}>{flag}</span>
+				{ DIndex !== 0 && DIndex}
 			</span>}
 		</div>
 	);
@@ -171,7 +173,7 @@ export default class BuildingChartPanel extends Component {
 					<div className='jazz-building-kpi-rank-wrapper'>
 						<div className='jazz-building-kpi-rank'>
 							<header className='jazz-building-kpi-rank-header'>
-								<em className='jazz-building-kpi-rank-icon .icon-energy_saving'/>
+								<em className='jazz-building-kpi-rank-icon icon-energy_saving'/>
 								<div className='jazz-building-kpi-rank-name hiddenEllipsis'>{currentTag.get('name')}</div>
 								<div className='jazz-building-kpi-rank-time'>{
 									this.context.router.location.query.groupKpiId ?
@@ -183,6 +185,7 @@ export default class BuildingChartPanel extends Component {
 								{RankNumber(currentRank, isThisYear)}
 							</content>
 							<LinkButton
+								labelStyle={{color: '#0cad04'}}
 								className='jazz-building-kpi-rank-footer'
 								label={(isThisYear ? I18N.Setting.KPI.Rank.ShowHistory : I18N.Setting.KPI.Rank.ShowByMonth) + '>>'}
 								onClick={() => {

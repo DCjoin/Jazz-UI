@@ -65,7 +65,8 @@ function mapSeriesDataWithMax(isTriggerVal, isIgnoreVal, isEdit, isHistory, ener
 
 function postNewConfig(data, isEdit, newConfig) {
   let triggerVal = data.get('TriggerValue'),
-  Calendars = data.getIn(['EnergyViewData', 'Calendars']);
+  Calendars = data.getIn(['EnergyViewData', 'Calendars']),
+  Step = data.getIn(['EnergyViewData', 'TargetEnergyData', 0, 'Target', 'Step']);
   newConfig.series = newConfig.series.map(
     curry(mapSeriesDataWithMax)(
       (serieIdx, dataIdx) => data.getIn([
@@ -141,7 +142,7 @@ function postNewConfig(data, isEdit, newConfig) {
       }
     }
   }
-  if( Calendars && Calendars.size > 0 ) {
+  if( Step !== Daily && Step !== Monthly && Calendars && Calendars.size > 0 ) {
     let {CalendarType, CalendarTimeRanges} = Calendars.get(0).toJS();
     if( CalendarType === CALENDAR_TYPE_WORKTIME || CalendarType === CALENDAR_TYPE_NO_WORKTIME 
       && CalendarTimeRanges && CalendarTimeRanges.length > 0 ) {

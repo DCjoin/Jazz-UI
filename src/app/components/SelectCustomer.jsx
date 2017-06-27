@@ -12,8 +12,6 @@ import PermissionCode from 'constants/PermissionCode.jsx';
 import RoutePath from 'util/RoutePath.jsx';
 import PrivilegeUtil from 'util/privilegeUtil.jsx';
 
-
-import NewAppTheme from 'decorator/NewAppTheme.jsx';
 import BackgroudImage from 'controls/BackgroundImage.jsx';
 
 import CurrentUserCustomerStore from 'stores/CurrentUserCustomerStore.jsx';
@@ -249,4 +247,4 @@ const SelectCustomer = React.createClass({
   }
 });
 
-module.exports = NewAppTheme(SelectCustomer);
+module.exports = SelectCustomer;

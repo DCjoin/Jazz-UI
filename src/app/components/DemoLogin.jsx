@@ -7,7 +7,7 @@ import LoginActionCreator from '../actions/LoginActionCreator.jsx';
 import LoginStore from '../stores/LoginStore.jsx';
 import LinkButton from '../controls/LinkButton.jsx';
 import Regex from '../constants/Regex.jsx';
-import CusFlatButton from '../controls/FlatButton.jsx';
+import CusFlatButton from 'controls/FlatButton.jsx';
 import { FlatButton } from 'material-ui';
 import Dialog from 'controls/NewDialog.jsx';
 import RoutePath from 'util/RoutePath.jsx';

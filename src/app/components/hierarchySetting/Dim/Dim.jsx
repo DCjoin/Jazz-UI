@@ -8,7 +8,7 @@ import ViewableTextFieldUtil from '../../../controls/ViewableTextFieldUtil.jsx';
 import { formStatus } from '../../../constants/FormStatus.jsx';
 import FormBottomBar from '../../../controls/FormBottomBar.jsx';
 import Dialog from '../../../controls/NewDialog.jsx';
-import FlatButton from '../../../controls/FlatButton.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
 import Basic from './DimBasic.jsx';
 import MonitorTag from '../MonitorTag.jsx';
 

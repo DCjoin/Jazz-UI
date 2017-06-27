@@ -9,7 +9,7 @@ import SideNav from '../../../controls/SideNav.jsx';
 import ViewableTextField from '../../../controls/ViewableTextField.jsx';
 import ViewableDropDownMenu from '../../../controls/ViewableDropDownMenu.jsx';
 import LinkButton from '../../../controls/LinkButton.jsx';
-import FlatButton from '../../../controls/FlatButton.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
 
 import UserAction from '../../../actions/UserAction.jsx';
 import UserStore from '../../../stores/UserStore.jsx';
