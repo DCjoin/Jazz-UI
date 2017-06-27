@@ -4,7 +4,7 @@ import ReactDom from 'react-dom';
 import { CircularProgress, FontIcon, SelectField, TextField, RadioButton, RaisedButton} from 'material-ui';
 import classSet from 'classnames';
 import CommonFuns from '../../util/Util.jsx';
-import FlatButton from '../../controls/FlatButton.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
 import UploadForm from 'controls/UploadForm.jsx';
 import ViewableTextField from '../../controls/ViewableTextField.jsx';
 import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';

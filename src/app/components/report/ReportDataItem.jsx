@@ -10,7 +10,7 @@ import ViewableTextField from '../../controls/ViewableTextField.jsx';
 import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
 import TagSelectWindow from './TagSelectWindow.jsx';
 import { FontIcon, SelectField, TextField, RadioButton, RadioButtonGroup, Checkbox} from 'material-ui';
-import FlatButton from '../../controls/FlatButton.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
 import NewDialog from '../../controls/NewDialog.jsx';
 import Immutable from 'immutable';
 

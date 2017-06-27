@@ -1,5 +1,5 @@
 import React, { Component, Children } from 'react';
-import FlatButton from '../../../controls/FlatButton.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
 import FontIcon from 'material-ui/FontIcon';
 import {Popover, PopoverAnimationVertical} from 'material-ui/Popover';
 import DiagnoseStore from '../../../stores/DiagnoseStore.jsx';

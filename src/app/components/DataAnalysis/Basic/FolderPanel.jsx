@@ -118,7 +118,15 @@ export default class FolderPanel extends Component {
 	_renderContent() {
 		let {node} = this.props;
 		if( !node.get('Children') || node.get('Children').size === 0 ) {
-			return (<div className="content flex-center"><b>{I18N.Folder.EmptyFolder}</b></div>);
+			return (<div style={{flexDirection: 'column'}} className="content flex-center">
+				<em className='icon-folder1' style={{
+					fontSize: '40px',
+					color: '#fdbb00',
+					marginBottom: 20,
+					marginTop: -100,
+				}}/>
+				<div>{I18N.Folder.EmptyFolder}</div>
+			</div>);
 		}
 		return (<ul className='jazz-analysis-folder-panel-content'>{node.get('Children').map(this._renderChildrenItem).toJS()}</ul>);
 	}

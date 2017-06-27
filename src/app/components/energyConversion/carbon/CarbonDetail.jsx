@@ -14,7 +14,7 @@ import { formStatus } from '../../../constants/FormStatus.jsx';
 import FormBottomBar from '../../../controls/FormBottomBar.jsx';
 import DeletableItem from '../../../controls/DeletableItem.jsx';
 import NewDialog from '../../../controls/NewDialog.jsx';
-import FlatButton from '../../../controls/FlatButton.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
 
 var CarbonDetail = React.createClass({
   propTypes: {

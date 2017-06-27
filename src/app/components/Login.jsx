@@ -7,7 +7,8 @@ import Snackbar from 'material-ui/Snackbar';
 import RaisedButton from 'material-ui/RaisedButton';
 import LoginActionCreator from '../actions/LoginActionCreator.jsx';
 import LoginStore from '../stores/LoginStore.jsx';
-import CusFlatButton from '../controls/FlatButton.jsx';
+// import CusFlatButton from 'controls/FlatButton.jsx';
+let CusFlatButton = {};
 import NewDialog from '../controls/NewDialog.jsx';
 import LanguageAction from '../actions/LanguageAction.jsx';
 import ViewableTextField from '../controls/ViewableTextField.jsx';
@@ -15,7 +16,6 @@ import Regex from '../constants/Regex.jsx';
 import CurrentUserAction from '../actions/CurrentUserAction.jsx';
 import _trimEnd from 'lodash-es/trimEnd';
 import _lang from '../lang/lang.jsx';
-
 import RoutePath from '../util/RoutePath.jsx';
 
 var _ = {

@@ -18,7 +18,7 @@ import Panel from '../../controls/MainContentPanel.jsx';
 import FormBottomBar from '../../controls/FormBottomBar.jsx';
 import MonitorTag from './MonitorTag.jsx';
 import Dialog from '../../controls/NewDialog.jsx';
-import FlatButton from '../../controls/FlatButton.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
 import Calendar from './Calendar.jsx';
 
 var CustomerForHierarchy = React.createClass({

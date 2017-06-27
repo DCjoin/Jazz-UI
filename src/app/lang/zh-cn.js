@@ -46,6 +46,8 @@ I18N.MainMenu.DeviceTemplate = '台账模板';
 I18N.MainMenu.ParameterTemplate = '参数模板';
 
 I18N.MainMenu.KPI = '指标·报表';
+I18N.MainMenu.ActualityKPI = '指标';
+I18N.MainMenu.ActualityReport = '报表';
 I18N.MainMenu.SaveSchemeTab = '节能方案';
 I18N.MainMenu.SmartDiagnose = '智能诊断';
 I18N.MainMenu.DataAnalysis = '数据分析';

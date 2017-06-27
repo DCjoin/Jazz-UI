@@ -48,19 +48,20 @@ var UserItem = React.createClass({
     ];
     return (
       <div className='jazz-folder-selectedusers-useritem' onMouseOver={this._onMouserOver} onMouseOut={this._onMouserOut}>
-          <div className='name' title={this.props.user.get('RealName')}>
-            {this.props.user.get('RealName')}
+          <div style={{display: 'flex'}}>
+            <div className='name' title={this.props.user.get('RealName')}>
+              {this.props.user.get('RealName')}
+            </div>
+            <div className='type' title={userTitle[this.props.user.get('Title')]}>
+              {userTitle[this.props.user.get('Title')]}
+            </div>
           </div>
-          <div className='type' title={userTitle[this.props.user.get('Title')]}>
-            {userTitle[this.props.user.get('Title')]}
-          </div>
-          <div style={{
-        float: 'right'
-      }}> 
-            <a href="javascript:void(0)" onClick={this._onCleanButtonClick}>X</a>
-            
-
-          </div>
+          <a style={{
+              float: 'right'
+            }} 
+            href="javascript:void(0)" 
+            onClick={this._onCleanButtonClick} 
+            className='icon-close'/>
 
       </div>
       )

@@ -151,7 +151,8 @@
   display: flex;
   flex-direction: row;
   align-items:center;
-  padding-left:10px;
+  justify-content: space-between;
+  padding: 0 10px;
   &:hover{
     background-color: #32ad3d;
     color: #ffffff;
@@ -245,19 +246,20 @@
 
 }
 .jazz-folder-detail-item{
-  height:160px;
-  width:240px;
+  height:150px;
+  width:170px;
   background-color: #ffffff;
   border:1px solid #ececec;
-  margin:2px;
+  margin-right: 60px;
+  margin-bottom: 30px;
   .icon{
     height:103px;
     border-bottom: 1px solid #ececec;
     cursor: pointer;
   }
   .title{
-    margin-left:10px;
-    margin-top:8px;
+    padding-left:10px;
+    padding-top:8px;
     display: flex;
 
     .name{
@@ -301,14 +303,18 @@
   }
 }
 .jazz-foldertree-node-textfield{
-  >div{
-    >input{
-      color:#ffffff !important;
-    }
-    >div{
-      >hr{
-      border-bottom:1px solid transparent !important
-      }
+  >input{
+    margin-left: 8px;
+    font-size: 14px;
+    background-color: rgba(0, 0, 0, 0);
+    border: 0;
+    padding: 0;
+    outline: none;
+    color: #fff;
+    width: 100%;
+
+    &:focus {
+      background-color: gray;
     }
   }
 

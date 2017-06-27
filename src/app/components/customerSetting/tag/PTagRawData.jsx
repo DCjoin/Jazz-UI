@@ -9,7 +9,7 @@ import DateTimeSelector from '../../../controls/DateTimeSelector.jsx';
 import CommonFuns from '../../../util/Util.jsx';
 import Dialog from '../../../controls/NewDialog.jsx';
 import ChartPanel from './RawDataChartPanel.jsx';
-import FlatButton from '../../../controls/FlatButton.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
 import Immutable from 'immutable';
 import moment from 'moment';
 let {dateAdd} = CommonFuns;

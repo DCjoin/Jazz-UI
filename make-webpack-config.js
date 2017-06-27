@@ -130,7 +130,10 @@ module.exports = function(options) {
         {
           test: /\.jsx?$/,
           use: [ "babel-loader"],
-          exclude: /node_modules/
+          exclude: [
+            /node_modules/,
+            // path.join(__dirname, "src", "app", "lang")
+          ]
         },
         {
           test: /\.less$/,

@@ -216,7 +216,7 @@ export default class ReportPreview extends Component {
 										iconName={'icon-eye'}
 										label={'查看各建筑报表'}
 										onClick={() => {
-											util.openTab(RoutePath.report.actualityReport(this.props.router.params));
+											util.openTab(RoutePath.report.actualityBuildingReport(this.props.router.params));
 										}}/>}
 					</div>
 					<ReportChart 

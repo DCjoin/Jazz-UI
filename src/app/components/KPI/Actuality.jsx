@@ -74,6 +74,10 @@ const TipMessage = (props, context, updater) => {
 	return (<div className='jazz-actuality flex-center'><b>{props.message}</b></div>)
 }
 
+function isReport(props) {
+	return props.router.params.type === 'report';
+}
+
 
 @ReduxDecorator
 export default class Actuality extends Component {
@@ -128,7 +132,7 @@ export default class Actuality extends Component {
 		});
 	}
 	_loadInitData(props, context) {
-		if( canView() ) {
+		if( isReport(props) && canView() ) {
 			this.setState({
 				buildingList: null,
 				userCustomers: null,
@@ -189,7 +193,7 @@ export default class Actuality extends Component {
     			this.props.router.location.query.kpiName + '-';
 		}
 		return (<div className='jazz-actuality-content'>
-			{!kpiHide && <div className='jazz-actuality-item'>
+			{!isReport(this.props) && !kpiHide && <div className='jazz-actuality-item'>
 				<div className='jazz-actuality-item-title'>{prefixTitle + I18N.Kpi.KPIActual}</div>
 				{hasKPIEdit && !singleKPI &&
 		    	<IconButton iconClassName='icon-setting' iconStyle={{color: '#32ad3d'}} onClick={() => {
@@ -197,12 +201,14 @@ export default class Actuality extends Component {
 			      }}/>}
 				<KPIActuality configCB={isOnlyView() && this._configCB} router={this.props.router} hierarchyId={this._getHierarchyId(this.props.router, this.context)}/>
 			</div>}
-			{!singleKPI && !reportHide && <div className='jazz-actuality-item'>
+			{isReport(this.props) && !singleKPI && !reportHide && <div className='jazz-actuality-item'>
 				<div className='jazz-actuality-item-title'>{'报表'}</div>
 				{isFull() &&
-				<a href="javascript:void(0)" className='icon-add' onClick={() => {
-			      	this._showReportEdit();
-			      }}/>
+				<div style={{display: 'inline-block', height: 23, verticalAlign: 'top'}}>
+					<a href="javascript:void(0)" className='icon-add' onClick={() => {
+				      	this._showReportEdit();
+				      }}/>
+			    </div>
 		    	}
 				<ReportPreview 
 					configCB={isOnlyView() && this._configCB}
@@ -279,9 +285,9 @@ export default class Actuality extends Component {
 				}				
 			}
 		}
-		if( show.kpi === false && show.report === false ) {
-			message = I18N.Kpi.Error.NonKPIConguredSingleBuilding;
-		}
+		// if( show.kpi === false && show.report === false ) {
+		// 	message = I18N.Kpi.Error.NonKPIConguredSingleBuilding;
+		// }
 		if( message ) {
 			return (<TipMessage message={message}/>);
 		}

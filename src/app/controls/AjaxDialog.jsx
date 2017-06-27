@@ -4,8 +4,8 @@ import React from 'react';
 import mui from 'material-ui';
 import classSet from 'classnames';
 import keyMirror from 'keymirror';
-import NewDialog from "../controls/NewDialog.jsx";
-import FlatButton from "../controls/FlatButton.jsx";
+import NewDialog from "controls/NewDialog.jsx";
+import FlatButton from "controls/FlatButton.jsx";
 
 var viewState = keyMirror({
   EMPTY: null,

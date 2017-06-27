@@ -9,7 +9,7 @@ import { Map, List } from 'immutable';
 import HierarchyAction from '../../../actions/hierarchySetting/HierarchyAction.jsx';
 import HierarchyStore from '../../../stores/hierarchySetting/HierarchyStore.jsx';
 import ViewableNumberField from '../../../controls/ViewableNumberField.jsx';
-import FlatButton from '../../../controls/FlatButton.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
 import YearMonthItem from '../../../controls/YearMonthItem.jsx';
 import CommonFuns from '../../../util/Util.jsx';
 import Regex from '../../../constants/Regex.jsx';

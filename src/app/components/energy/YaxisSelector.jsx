@@ -2,7 +2,7 @@
 import React from "react";
 import {Dialog, DropDownMenu, TextField, FontIcon, IconButton} from 'material-ui';
 import NewDialog from '../../controls/NewDialog.jsx';
-import FlatButton from '../../controls/FlatButton.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
 
 import CommonFuns from '../../util/Util.jsx';
 

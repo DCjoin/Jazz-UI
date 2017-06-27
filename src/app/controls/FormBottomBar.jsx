@@ -4,7 +4,7 @@ import React from 'react';
 
 import { formStatus } from '../constants/FormStatus.jsx';
 //import { FlatButton } from 'material-ui';
-import FlatButton from '../controls/FlatButton.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
 import _assign from 'lodash-es/assign';
 
 
