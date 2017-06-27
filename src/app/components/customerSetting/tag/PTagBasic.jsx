@@ -132,7 +132,7 @@ var PTagBasic = React.createClass({
         title: I18N.Setting.Tag.Channel,
         defaultValue: ChannelId || '',
         maxLen: 9,
-        regex: Regex.ConsecutiveHoursRule,
+        regex: Regex.Channel,
         errorMessage: I18N.Setting.VEEMonitorRule.ConsecutiveHoursError,
         isRequired: true,
         didChanged: value => {

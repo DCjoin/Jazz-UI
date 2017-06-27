@@ -79,7 +79,6 @@ let YaxisSelector = React.createClass({
   redraw: function() {
     var chart = _currentChartObj,
       yaxis = chart.yAxis;
-
     for (var i = 0, len = yaxis.length; i < len; i++) {
       //don't check navigator
       if (yaxis[i].series && yaxis[i].series.length == 1 && yaxis[i].series[0].name == 'Navigator') continue;
@@ -88,8 +87,8 @@ let YaxisSelector = React.createClass({
       for (let j = 0; j < _storedConfig.length; j++) {
         if (yaxis[i].options.yname == _storedConfig[j].uom) { //navigator's yaxis donot have yTitle
           yaxis[i].update({
-            max: _storedConfig[j].val[0]==='' || _storedConfig[j].val[0]===null?yaxis[i].max:_storedConfig[j].val[0],
-            min: _storedConfig[j].val[1]==='' || _storedConfig[j].val[1]===null?yaxis[i].min:_storedConfig[j].val[1]
+            max: _storedConfig[j].val[0]==='' || _storedConfig[j].val[0]===null?null:_storedConfig[j].val[0],
+            min: _storedConfig[j].val[1]==='' || _storedConfig[j].val[1]===null?null:_storedConfig[j].val[1]
           }, false);
           up = true;
         }
