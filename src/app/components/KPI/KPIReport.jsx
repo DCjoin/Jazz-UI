@@ -106,7 +106,7 @@ export default class KPIReport extends Component {
 				    {isFull() && !isGroup &&
 				    	<LinkButton iconName="icon-edit" onClick={() => {
 					      	onRefresh(data.get('id'));
-					      }} label={'编辑'}/>}
+					      }} label={I18N.Common.Button.Edit}/>}
 				</div>
 				<div className='jazz-kpi-report-header'>{data.get('name')}</div>
 				<div className='jazz-kpi-report'>

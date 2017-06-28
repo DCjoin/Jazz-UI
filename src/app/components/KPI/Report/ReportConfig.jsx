@@ -80,7 +80,7 @@ class CustomDropDownMenu extends Component {
   render() {
     return (
       <div style={{position: 'relative', width: 430,}}>
-        <TextField fullWidth={true} hintText='请选择' value={this.props.label} inputStyle={{
+        <TextField fullWidth={true} hintText={I18N.Common.Label.CommoEmptyText} value={this.props.label} inputStyle={{
           width: 400,
           textOverflow: 'ellipsis',
         }}/>
@@ -509,10 +509,10 @@ export default class ReportConfig extends Component {
       <nav className='jazz-kpi-config-stepper jazz-card'>
         <Stepper activeStep={step} style={{width: '40%'}}>
           <Step>
-            <StepLabel {...stepLabelProps(0, step)}>{' 基础设置 '}</StepLabel>
+            <StepLabel {...stepLabelProps(0, step)}>{I18N.Setting.KPI.Config.Step0}</StepLabel>
           </Step>
           <Step>
-            <StepLabel {...stepLabelProps(1, step)}>{' 表格数据设置 '}</StepLabel>
+            <StepLabel {...stepLabelProps(1, step)}>{I18N.Setting.KPI.Config.Step1}</StepLabel>
           </Step>
         </Stepper>
       </nav>
@@ -524,13 +524,13 @@ export default class ReportConfig extends Component {
     if( step === 0 ) {
       let disabled = !reportItem.get('name') || !reportItem.get('templateId');
       return (<div style={{marginTop: 20}}>
-        <NewFlatButton style={{float: 'right'}} disabled={disabled} primary label={'下一步'} onClick={this._setStep(1)}/>
+        <NewFlatButton style={{float: 'right'}} disabled={disabled} primary label={I18N.Paging.Button.NextStep} onClick={this._setStep(1)}/>
       </div>);
     } else {
       let disabled = !this.state.reportItem.get('data') || !this.state.reportItem.get('data').size;
       return (<div style={{marginTop: 20}}>
-        <NewFlatButton style={{float: 'left'}} secondary label={'上一步'} onClick={this._setStep(0)}/>
-        <NewFlatButton style={{float: 'right'}} disabled={disabled || !verifyItem} primary label={'完成'} onClick={this._saveReport}/>
+        <NewFlatButton style={{float: 'left'}} secondary label={I18N.Paging.Button.PreStep} onClick={this._setStep(0)}/>
+        <NewFlatButton style={{float: 'right'}} disabled={disabled || !verifyItem} primary label={I18N.Platform.Password.Confirm} onClick={this._saveReport}/>
       </div>);
     }
   }
@@ -587,7 +587,7 @@ export default class ReportConfig extends Component {
 
       return(
         <div className={classnames("kpi-report-info", {['jazz-card']: this._isNew()})}>
-        {!this._isNew() && <div style={{fontSize: '14px', fontWeight: 'bold', color: '#0f0f0f'}}>基本设置</div>}
+        {!this._isNew() && <div style={{fontSize: '14px', fontWeight: 'bold', color: '#0f0f0f'}}>{I18N.Setting.KPI.Config.BaseConfig}</div>}
           <div>
             <ViewableTextField {...titleProps}/>
           </div>
@@ -604,7 +604,7 @@ export default class ReportConfig extends Component {
               reportItem.get('templateId') && ReportStore.getTemplateItems(templateList)
                 .find(item => item.payload === reportItem.get('templateId')).text
               }>
-              <div style={{color: '#9fa0a4', fontSize: '14px', height: 48, lineHeight: '48px', padding: '0 16px'}}>请选择</div>
+              <div style={{color: '#9fa0a4', fontSize: '14px', height: 48, lineHeight: '48px', padding: '0 16px'}}>{I18N.Common.Label.CommoEmptyText}</div>
               {ReportStore.getTemplateItems(templateList).map(item =>
               <MenuItem onTouchTap={() => {
                 this._onExistTemplateChange(item.payload)
@@ -625,7 +625,7 @@ export default class ReportConfig extends Component {
                 position: 'relative',
                 cursor: 'pointer',
               }}>
-                添加报表模板
+                {I18N.Setting.KPI.Config.AddReportTemplet}
               </label>
             </CustomDropDownMenu>
             <div style={{zIndex: -1, position: 'relative'}}>
@@ -690,23 +690,23 @@ export default class ReportConfig extends Component {
             <header className='kpi-report-data-item-header'>
               <span className='kpi-report-data-item-name hiddenEllipsis' title={item.get('Name')}>{item.get('Name')}</span>
               <span className='kpi-report-data-item-action'>
-                <LinkButton label={'编辑'} onClick={() => {
+                <LinkButton label={I18N.Common.Button.Edit} onClick={() => {
                   this.setState({
                     dialogEditDataIdx: idx,
                   });
                 }}/>
-                <LinkButton label={'删除'} onClick={() => {
+                <LinkButton label={I18N.Common.Button.Delete} onClick={() => {
                   this._willdeleteReportData(idx);
                   // this._deleteReportData(idx);
                 }}/>
               </span>
             </header>
             <dl className='kpi-report-data-item-detail'>
-              <dt className='kpi-report-data-item-detail-name'>{'起始单元格'}</dt>
+              <dt className='kpi-report-data-item-detail-name'>{I18N.Setting.KPI.Config.StartCell}</dt>
               <dd className='kpi-report-data-item-detail-value'>{item.get('StartCell')}</dd>
-              <dt className='kpi-report-data-item-detail-name'>{'数据点'}</dt>
-              <dd className='kpi-report-data-item-detail-value'>{item.get('TagsList').size + '个'}</dd>
-              <dt className='kpi-report-data-item-detail-name' style={noSheetValStyle}>{'模板Sheet'}</dt>
+              <dt className='kpi-report-data-item-detail-name'>{I18N.Setting.KPI.Config.Tag}</dt>
+              <dd className='kpi-report-data-item-detail-value'>{item.get('TagsList').size + I18N.Setting.KPI.Config.TagUnit}</dd>
+              <dt className='kpi-report-data-item-detail-name' style={noSheetValStyle}>{I18N.Setting.KPI.Config.TempletSheet}</dt>
               <dd className='kpi-report-data-item-detail-value hiddenEllipsis' style={noSheetValStyle} title={!noSheet && item.get('TargetSheet')}>{
                   noSheet ? '-' : item.get('TargetSheet')
               }</dd>
@@ -770,9 +770,10 @@ export default class ReportConfig extends Component {
     let isNew = this._isNew();
     return (
       <div className={classnames('kpi-report-data', {['jazz-card']: isNew})}>
-        {isNew ? <div>至少添加一组表格数据</div> :
-        <div style={{fontSize: '14px', fontWeight: 'bold', color: '#0f0f0f'}}>表格数据设置
-          <span style={{fontSize: '12px', color: 'red', marginLeft: 20}}>{'注：至少配置一组表格数据'}</span>
+        {isNew ? <div>{I18N.Setting.KPI.Config.TableDataNewTip}</div> :
+        <div style={{fontSize: '14px', fontWeight: 'bold', color: '#0f0f0f'}}>{I18N.Setting.KPI.Config.TableDataConfig}
+          <span style={{fontSize: '12px', color: 'red', marginLeft: 20}}>{I18N.Setting.KPI.Config.TableDataTitleTip}</span>
+        }
         </div>}
         {this._renderReportList()}
         {this._renderEditDataDialog()}
@@ -795,7 +796,7 @@ export default class ReportConfig extends Component {
   _renderDeleteDialog() {
     let msg = '';
     if( this.state.willDeleteIndex !== null ) {
-      msg = `删除表格数据“${this.state.reportItem.getIn(['data', this.state.willDeleteIndex, 'Name'])}”吗？`
+      msg = I18N.format(I18N.Setting.KPI.Config.DeleteTableData, this.state.reportItem.getIn(['data', this.state.willDeleteIndex, 'Name']));
     }
     return (<Dialog
       actions={[
@@ -935,7 +936,7 @@ export default class ReportConfig extends Component {
               {this._renderReportInfo()}
               {this._renderReportData()}
               <div style={{marginTop: 40, marginLeft: 15, width: 450, marginBottom: 25, textAlign: 'right'}}>
-                <NewFlatButton disabled={reportItem.get('data').size === 0 || !reportItem.get('name') || !verifyItem} onClick={this._saveReport} label={'保存并退出'} primary/>
+                <NewFlatButton disabled={reportItem.get('data').size === 0 || !reportItem.get('name') || !verifyItem} onClick={this._saveReport} label={I18N.Setting.KPI.Config.SaveAndExit} primary/>
               </div>
             </div>
             {this._renderUploadDialog()}

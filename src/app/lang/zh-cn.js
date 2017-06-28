@@ -2158,6 +2158,24 @@ I18N.Setting.KPI.Report.ExistAndNoReference = '名称为“{0}”模板已存在
 I18N.Setting.KPI.Report.ExistAndHaveReference = '名称为“{0}”模板已被引用，确定覆盖替换吗？';
 I18N.Setting.KPI.Report.SheetErrorText = '模板已被替换，请选择新的模板Sheet';
 
+I18N.Setting.KPI.Config = {};
+I18N.Setting.KPI.Config.BaseConfig = '基本设置';
+I18N.Setting.KPI.Config.TableDataConfig = '表格数据设置';
+I18N.Setting.KPI.Config.TableDataNewTip = '至少添加一组表格数据';
+I18N.Setting.KPI.Config.TableDataTitleTip = '注：至少配置一组表格数据';
+I18N.Setting.KPI.Config.SaveAndExit = '保存并退出';
+I18N.Setting.KPI.Config.StartCell = '起始单元格';
+I18N.Setting.KPI.Config.Tag = '数据点';
+I18N.Setting.KPI.Config.TagUnit = '个';
+I18N.Setting.KPI.Config.TempletSheet = '模板Sheet';
+I18N.Setting.KPI.Config.AddReportTemplet = '添加报表模板';
+I18N.Setting.KPI.Config.Step0 = ' 基础设置 ';
+I18N.Setting.KPI.Config.Step1 = ' 表格数据设置 ';
+I18N.Setting.KPI.Config.DeleteTableData = '删除表格数据“{0}”吗？';
+I18N.Setting.KPI.Config.NewTableData = '添加表格数据';
+I18N.Setting.KPI.Config.TableDataName = '表格数据名称';
+I18N.Setting.KPI.Config.TableDataNameTip = '此名称已存在，请重新输入';
+
 
 I18N.Setting.DataAnalysis = {};
 I18N.Setting.DataAnalysis.Scheme = '生成方案';
