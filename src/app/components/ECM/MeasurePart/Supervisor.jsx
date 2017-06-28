@@ -303,7 +303,7 @@ class SupervisorDropDownMenu extends Component{
                                           })}>
                                                 <div className="name" onClick={()=>{handleMenuItemClick(supervisor)}}>{`${Name} ${PhoneNumber}`}</div>
                                                 <div className="operate">
-                                                  <IconButton iconClassName="icon-edit"
+                                                  <IconButton iconClassName="icon-modify"
                                                     style={{padding:0,width:'24px',height:'24px'}}
                                                     iconStyle={{color:"#ffffff",fontSize:'14px'}} onTouchTap={(e)=>{
                                                       this.setState({
