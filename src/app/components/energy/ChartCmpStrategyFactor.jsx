@@ -4,7 +4,7 @@ import assign from "object-assign";
 import _ from 'lodash-es';
 import CommonFuns from '../../util/Util.jsx';
 
-let {dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon} = CommonFuns;
+let {dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon, getUomById} = CommonFuns;
 
 let tooltipPattern = '<span style="color:{0}">{1}: <b>{2}{3}</b></span><br/>';
 let dataLabelFormatter = function(format) {
@@ -693,7 +693,7 @@ let ChartCmpStrategyFactor = {
           var getStr = function(p) {
             var series = p.series,
               opt = series.options.option,
-              uom = opt.uom,
+              uom = getUomById(opt.uom).Code,
               start = opt.start,
               end = opt.end,
               step = opt.targetStep || opt.step;
@@ -793,7 +793,7 @@ let ChartCmpStrategyFactor = {
               name = series.name,
               color = series.color;
 
-            uom = series.options.option.uom;
+            uom = getUomById(series.options.option.uomId).Code;
             if (isStack) {
               str += I18N.format('<span style="color:{0}">{1}: <b>{2}{3}</b>{4}</span><br/>',
                 color, name, dataLabelFormatter.call({

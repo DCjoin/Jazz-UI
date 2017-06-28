@@ -5,6 +5,7 @@ import assign from 'object-assign';
 import _ from 'lodash-es';
 import Immutable from 'immutable';
 import { Dialog, FlatButton, Checkbox } from 'material-ui';
+import util from 'util/Util.jsx';
 import Highstock from '../highcharts/Highstock.jsx';
 import ChartXAxisSetter from './ChartXAxisSetter.jsx';
 import AlarmIgnoreWindow from './AlarmIgnoreWindow.jsx';
@@ -466,7 +467,7 @@ let ChartComponent = React.createClass({
                 name = series.name,
                 color = series.color;
 
-                uom = series.options.option.uom;
+                uom = util.getUomById(series.options.option.uom).Code;
             str += I18N.format('<span style="color:{0}">{1}: <b>{2}{3}</b></span><br/>',
                 color, name, dataLabelFormatter.call({ value: point.y }, false), uom);
             if (isNumber(point.y)) {
