@@ -208,7 +208,6 @@ export default class ChartComponent extends Component {
   }
 
   getYaxisConfig(){
-    console.log("getYaxisConfig");
     return analysisPanel.state.yaxisConfig
   }
   componentWillMount(){
