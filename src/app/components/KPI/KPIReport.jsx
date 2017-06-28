@@ -51,7 +51,7 @@ export default class KPIReport extends Component {
 	getPredictSummaryItem() {
 		let {data, summaryData, currentYearDone} = this.props;
 		let isIndex = data.get('type') === 1;
-		let overproof = summaryData.PredictSum && summaryData.IndexValue && summaryData.IndexValue < summaryData.PredictSum ;
+		let overproof = util.isNumber(summaryData.PredictSum) && util.isNumber(summaryData.IndexValue) && summaryData.IndexValue < summaryData.PredictSum ;
 		return (
 		<div className={classnames('summary-item', {overproof: overproof})}>
 			<div className='summary-title'>{
@@ -116,7 +116,7 @@ export default class KPIReport extends Component {
 					<div className='jazz-kpi-report-summary'>
 						{this.getValueSummaryItem()}
 						{this.getPredictSummaryItem()}
-						{overproof && !currentYearDone && this._renderTip()}
+						{!!overproof && !currentYearDone && this._renderTip()}
 					</div>
 				</div>
 			</div>
