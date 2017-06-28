@@ -3,7 +3,8 @@ import classnames from 'classnames';
 import CalendarI18N from './CalendarI18N.jsx';
 
 const CalendarMonthView = ({currentDate, onChange, locale})=>{
-	var i18 = CalendarI18N(locale);
+	// var i18 = CalendarI18N(locale);
+	var i18 = I18N.Setting.Calendar;
 	var onSelectMonth = (month)=>{
 		var date = new Date(currentDate);
 		date.setMonth(month);

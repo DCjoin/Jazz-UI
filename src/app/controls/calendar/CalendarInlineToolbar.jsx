@@ -53,7 +53,8 @@ export default class CalendarInlineToolbar extends React.Component {
   }
 
   render() {
-    var i18 = CalendarI18N(this.props.locale);
+    // var i18 = CalendarI18N(this.props.locale);
+    var i18 = I18N.Setting.Calendar;
   	var year = this.props.currentDate.getFullYear();
     var month = this.props.currentDate.getMonth();
     var yearLabel = year + i18["year"];
