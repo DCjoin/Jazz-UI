@@ -24,7 +24,7 @@ import {DIAGNOSE_MODEL} from 'constants/actionType/Diagnose.jsx';
 
 import ReduxDecorator from 'decorator/ReduxDecorator.jsx';
 
-import {isEmptyStr, isNumeric, getDateTimeItemsByStepForVal, getDateTimeItemsByStep, pow10} from 'util/Util.jsx';
+import {isEmptyStr, isNumeric, getDateTimeItemsByStepForVal, getDateTimeItemsByStep, pow10, getUomById} from 'util/Util.jsx';
 
 import FlatButton from 'controls/FlatButton.jsx';
 import ViewableTextField from 'controls/ViewableTextField.jsx';
@@ -903,7 +903,7 @@ export class CreateStep2 extends Component {
 		} = this.props,
 		disabledPreview = step2NeedRequire(DiagnoseModel, TriggerType, TriggerValue);
 		if(chartData) {
-			_firstUom = chartData.getIn(['EnergyViewData', 'TargetEnergyData', 0, 'Target', 'Uom']);
+			_firstUom = getUomById(chartData.getIn(['EnergyViewData', 'TargetEnergyData', 0, 'Target', 'UomId'])).Code;
 		}
 		return (
 			<section className='diagnose-create-content diagnose-create-step'>
