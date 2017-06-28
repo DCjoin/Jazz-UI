@@ -113,7 +113,7 @@ export default class Actuality extends Component {
 
 	}
 	componentWillReceiveProps(nextProps, nextContext) {
-		if( !util.shallowEqual(nextContext.hierarchyId, this.context.hierarchyId) ) {
+		if( !util.shallowEqual(nextContext.hierarchyId, this.context.hierarchyId) || this.props.params.type !== nextProps.params.type ) {
 			this._getInitialState(nextProps);
 			this._loadInitData(nextProps, nextContext);
 		}

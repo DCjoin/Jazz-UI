@@ -177,7 +177,7 @@ ReactDom.render(<Router history={hashHistory} routes={{
           path: 'actuality',
           indexRoute: {            
             onEnter: (router, replaceState) => {
-              replaceState(RoutePath.report.actualityKpi(router.params));
+                replaceState(RoutePath.report.actualityKpi(router.params) + router.location.search);
             },
           },
           onEnter: () => {
@@ -191,7 +191,7 @@ ReactDom.render(<Router history={hashHistory} routes={{
             component: KPIConfig,
             indexRoute: {
                 onEnter: (router, replaceState) => {
-                  replaceState(RoutePath.KPIConfig(router.params));
+                    replaceState(RoutePath.KPIConfig(router.params));
                 },
             },
             childRoutes: [
