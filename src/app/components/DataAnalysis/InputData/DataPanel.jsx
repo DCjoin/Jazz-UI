@@ -337,7 +337,8 @@ export default class DataPanel extends Component {
 							disabled={this.state.isSaving || validate(this.state.dataList)}/>
 						<NewFlatButton label={I18N.Common.Button.Export} labelstyle={styles.label} secondary={true}
 								icon={<FontIcon className="icon-export" style={styles.label}/>} style={styles.button}
-								onClick={()=>{this._handleExport()}}/>
+								onClick={()=>{this._handleExport()}}
+								disabled={this.state.isSaving || validate(this.state.dataList)}/>
 					</span>
 				</div>
 			)

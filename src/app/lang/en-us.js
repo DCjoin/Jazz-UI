@@ -188,7 +188,11 @@ I18N.Common.Commodity.ReclaimedWater = 'Recycled water';
 I18N.Common.Commodity.LightWater = 'Light water';
 I18N.Common.Commodity.DieselOil = 'Diesel oil';
 I18N.Common.Commodity.Unspecified = 'Not specified';
-
+I18N.Common.Commodity.Cost = '成本';
+I18N.Common.Commodity.LiquidGas = '液化气';
+I18N.Common.Commodity.HeavyOil = '重油';
+I18N.Common.Commodity.Carbon = '碳';
+I18N.Common.Commodity.StandardCoal = '标准煤';
 I18N.Common.Glossary = {};
 I18N.Common.Glossary.HierarchyNode = 'Hierarchy node';
 I18N.Common.Glossary.Max = 'Max';
@@ -275,6 +279,7 @@ I18N.Common.Label.ExcelColumnError = 'Please fill in the cell name as C1，AB23'
 I18N.Common.DateRange = {};
 I18N.Common.DateRange.Last7Day = 'Last 7d';
 I18N.Common.DateRange.Last30Day = 'Last 30d';
+I18N.Common.DateRange.Last31Day = '最近31天';
 I18N.Common.DateRange.Last12Month = 'Last 12m';
 I18N.Common.DateRange.Today = 'Today';
 I18N.Common.DateRange.Yesterday = 'Yesterday';
@@ -287,6 +292,7 @@ I18N.Common.DateRange.LastYear = 'Last year';
 I18N.Common.DateRange.Customerize = 'Custom';
 I18N.Common.DateRange.CustomerizeTime = 'Custom';
 I18N.Common.DateRange.RelativedTime = 'Relative time';
+I18N.Common.DateRange.Last5Year = '最近5年';
 
 I18N.Common.Glossary.Order = {};
 I18N.Common.Glossary.Order.Ascending = 'Ascending';
@@ -719,6 +725,11 @@ I18N.Setting.Calendar.NightContent = 'Time except daytime is all night time.'
 I18N.Setting.Calendar.DayTitle = 'Daytime:'
 I18N.Setting.Calendar.AddCalendarInfo = 'No calendar,click edit to set';
 
+I18N.Setting.Calendar.shortMonthList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep','Oct', 'Nov', 'Dec'];
+I18N.Setting.Calendar.shortDayList= ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+I18N.Setting.Calendar.year = '';
+I18N.Setting.Calendar.today="Today";
+
 //hierarchy population/area
 I18N.Setting.DynamicProperty = {};
 
@@ -992,6 +1003,7 @@ I18N.Setting.Tag.PTagRawData.normal = 'Normal';
 I18N.Setting.Tag.PTagRawData.abnormal = 'Abnormal';
 I18N.Setting.Tag.PTagRawData.repair = 'Modify';
 I18N.Setting.Tag.PTagRawData.RollBack = 'Undo Modification';
+I18N.Setting.Tag.PTagRawData.ErrorMsg = '非法字符';
 
 I18N.ServerError = {};
 I18N.ServerError.BtnLabel = 'OK';
@@ -1046,7 +1058,7 @@ I18N.Message.PictureUploadFailed = 'Image upload failed.Please try again later.'
 /******
 Energy Error Code
 *******/
-I18N.Message.M02004 = 'Polymer granularity illegal';
+I18N.Message.M02004 = '数据点步长错误';
 I18N.Message.M02007 = 'Start time cannot be earlier than the end time';
 I18N.Message.M02008 = 'Pie chart cannot be drawn due to different commodities.';
 I18N.Message.M02011 = 'Viewing raw data is not supported for virtual tag.';
@@ -1952,6 +1964,7 @@ I18N.Setting.VEEMonitorRule.TagList = 'Tag list';
 I18N.Setting.VEEManualScan = 'Manual scan';
 I18N.Setting.VEEScan = 'Scan';
 I18N.Setting.VEEManualScanTime = 'Scaning time'
+I18N.Setting.VEEManualScanError = '结束时间不能早于开始时间';
 
 I18N.Setting.Organization = {};
 I18N.Setting.Organization.AssociateTag = 'Associate';
@@ -2196,6 +2209,12 @@ I18N.Setting.DataAnalysis.SaveScheme.FullTip = 'Saving Scheme Successfully Saved
 I18N.Setting.DataAnalysis.SaveScheme.TipAction = 'Click to View';
 I18N.Setting.DataAnalysis.To = 'to';
 I18N.Setting.DataAnalysis.NotagRecommend = 'Click the \"+data point\"，and choose to view data points';
+I18N.Setting.DataAnalysis.SearchHintText = '搜索当前项目下数据点';
+I18N.Setting.DataAnalysis.InputDataHintText = '请输入数据';
+I18N.Setting.DataAnalysis.InputDataLeaveTip = '数据未保存，是否保存数据并离开？';
+I18N.Setting.DataAnalysis.InputDataErrorTip = '格式错误，请重新输入';
+I18N.Setting.DataAnalysis.InputDataSaveSuccess = '数据保存成功';
+I18N.Setting.DataAnalysis.InputDataUom = '数值';
 I18N.Setting.DataAnalysis.SaveTip = 'Chart not saved，save and quit？';
 I18N.Setting.DataAnalysis.LeaveTip = 'Empty chart will be deleted if you quit，confirm to quit？';
 
@@ -2221,7 +2240,8 @@ I18N.Setting.ECM.BatchPushContent ='Confirm to batch push energy saving schemes{
 I18N.Setting.ECM.DeleteContent = 'Confirm to delete energy saving scheme{0}？';
 I18N.Setting.ECM.PushSuccess = 'Scheme successfully pushed';
 I18N.Setting.ECM.Solution = 'Energy Saving Scheme';
-I18N.Setting.ECM.ProblemDetail = 'Energy Problem Details';
+I18N.Setting.ECM.ProblemDetail = '运行现状';
+I18N.Setting.ECM.ProblemDetailName = '问题';
 I18N.Setting.ECM.SolutionDetail = 'Energy Saving Scheme Details';
 I18N.Setting.ECM.ExpectedAnnualEnergySaving = 'Expected Annual Energy Saving';
 I18N.Setting.ECM.ExpectedAnnualCostSaving = 'Expected Annual Cost Saving';
@@ -2247,6 +2267,7 @@ I18N.Setting.ECM.InputSuperviorNameHintText='Enter Supervisor Name';
 I18N.Setting.ECM.InputSuperviorTeleHintText='Enter Supervisor Phone Number';
 I18N.Setting.ECM.TelephoneErrorMsg='Please Enter the Correct Phone Number';
 I18N.Setting.ECM.SysTitle='Engergy Efficiency Identification System';
+I18N.Setting.ECM.SysLabel='所属能效';
 I18N.Setting.ECM.SaveAndAssign='Save and Assign';
 I18N.Setting.ECM.SuperviorInfo='Supervisor Information';
 I18N.Setting.ECM.NoSupervior='Temporarily No Supervisor';
@@ -2258,6 +2279,14 @@ I18N.Setting.ECM.StatusToCancel='Confirm to cancel energy saving scheme?';
 I18N.Setting.ECM.StatusToBeText='Restore the status of energy saving scheme to awaiting assignment';
 I18N.Setting.ECM.StatusToDoneText='Save the status of energy saving scheme to Done';
 I18N.Setting.ECM.StatusToCancelText='Save the status of energy saving scheme to Cancled';
+I18N.Setting.ECM.DeleteSupervior='删除负责人“{0}”吗？';
+I18N.Setting.ECM.DeleteSuperviorError='负责人“{0}”当前有{1}个进行中的节能方案，无法被删除。请先重新分配节能方案后再删除。';
+I18N.Setting.ECM.ErrorSolutionName='节能方案名称：';
+I18N.Setting.ECM.AddSolutionName='添加节能方案名称';
+I18N.Setting.ECM.AddSolutionDescription='添加节能方案描述';
+I18N.Setting.ECM.AddProblemName='添加运行现状名称';
+I18N.Setting.ECM.AddProblemDescription='添加运行现状描述';
+I18N.Setting.ECM.AddRemark='添加备注';
 
 I18N.Setting.Diagnose={};
 I18N.Setting.Diagnose.EnergyLabel='Energy Label';
@@ -2276,6 +2305,8 @@ I18N.Setting.Diagnose.DomesticWater='Domestic Water';
 I18N.Setting.Diagnose.TransformerPowerFactor='Transformer Power Factor';
 I18N.Setting.Diagnose.TransformerLoadRate='Transformer Load Rate';
 I18N.Setting.Diagnose.Demand='Demand';
+I18N.Setting.Diagnose.KitchenFumeExhaust='厨房排油烟';
+I18N.Setting.Diagnose.AirCompressorLoadingRate='空压机加载率';
 I18N.Setting.Diagnose.WaterChillingUnit='Water Chilling Unit';
 I18N.Setting.Diagnose.WaterChillingUnitCOP='Water Chilling Unit COP';
 I18N.Setting.Diagnose.FreshAirUnit='Fresh Air Unit';
@@ -2348,6 +2379,7 @@ I18N.Setting.Diagnose.HasNoList='No diagnosis list, please add new diagnosis und
 I18N.Setting.Diagnose.SelectProblemTip='Select problem tip on the left';
 I18N.Setting.Diagnose.SelectListTip='Select list tip on the left';
 I18N.Setting.Diagnose.NoPrivilege='Please purchase senior consultant service for more smart diagnosis ways';
+I18N.Setting.Diagnose.NoListPrivilege='想获得更多智能诊断方式，请购买高级产品';
 I18N.Setting.Diagnose.Resume='Resume';
 I18N.Setting.Diagnose.DeleteDiagnoseList='Delete Diagnosis List "{0}"?';
 I18N.Setting.Diagnose.ResumeDiagnoseList='Resume Diagnosis List"{0}"?';

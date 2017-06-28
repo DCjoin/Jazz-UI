@@ -59,7 +59,7 @@ module.exports = {
     pushProblem:'/energysolution/problem/push',
     deleteProblem:'/energysolution/problem/delete/{problemId}',
     updateSolution:'/energysolution/update',
-    getSupervisor:'/energysolution/supervisor/{hierarchyId}',
+    getSupervisor:'/energysolution/supervisor/{hierarchyId}/{energySys}',
     saveSupervisor:'/energysolution/supervisor',
     assignSupervisor:'/energysolution/problem/supervisor/assignation/{problemId}/{supervisorId}',
     activecounts:'/energysolution/problem/activecounts/{hierarchyId}',

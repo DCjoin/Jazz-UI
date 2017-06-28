@@ -213,9 +213,9 @@ export default class HistoryWindow extends Component {
   _removeCompareItem(compareIndex) {
     MultiTimespanAction.removeMultiTimespanData(compareIndex);
     var multiTimespanList=MultipleTimespanStore.getRelativeList();
-    if(multiTimespanList.length===1){
-      MultiTimespanAction.clearMultiTimespan('both');
-    }
+    // if(multiTimespanList.length===1){
+    //   MultiTimespanAction.clearMultiTimespan('both');
+    // }
   }
 
   state= {

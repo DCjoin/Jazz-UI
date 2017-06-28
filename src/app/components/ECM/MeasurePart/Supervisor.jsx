@@ -14,6 +14,7 @@ import _ from 'lodash-es';
 import NewDialog from 'controls/NewDialog.jsx';
 import MeasuresAction from 'actions/ECM/MeasuresAction.jsx';
 import RaisedButton from 'material-ui/RaisedButton';
+import IconButton from 'material-ui/IconButton';
 import {IconText} from '../MeasuresItem.jsx';
 
 class SupervisorDialog extends Component{
@@ -299,25 +300,29 @@ class SupervisorDropDownMenu extends Component{
                                               <div className={classNames({
                                             'person-item': true,
                                             'selected':person && person.get('Id')===Id
-                                          })} onClick={()=>{handleMenuItemClick(supervisor)}}>
-                                                <div className="name">{`${Name} ${PhoneNumber}`}</div>
+                                          })}>
+                                                <div className="name" onClick={()=>{handleMenuItemClick(supervisor)}}>{`${Name} ${PhoneNumber}`}</div>
                                                 <div className="operate">
-                                                  <span className="edit" onClick={(e)=>{
+                                                  <IconButton iconClassName="icon-modify"
+                                                    style={{padding:0,width:'24px',height:'24px'}}
+                                                    iconStyle={{color:"#ffffff",fontSize:'14px'}} onTouchTap={(e)=>{
                                                       this.setState({
                                                         editDialogShow:true,
                                                         editPerson:Immutable.fromJS(supervisor),
                                                         operationMenuOpen: false,
                                                       });
                                                       e.stopPropagation();
-                                                    }}>{I18N.Common.Button.Edit}</span>
-                                                  <span className="delete" onClick={(e)=>{
-                                                        this.setState({
-                                                          deleteDialogShow:true,
-                                                          editPerson:Immutable.fromJS(supervisor),
-                                                          operationMenuOpen: false,
-                                                        });
-                                                        e.stopPropagation();
-                                                      }}>{I18N.Common.Button.Delete}</span>
+                                                    }}/>
+                                                    <IconButton iconClassName="icon-delete"
+                                                      style={{padding:0,width:'24px',height:'24px',marginRight:"10px"}}
+                                                      iconStyle={{color:"#ffffff",fontSize:'14px'}} onTouchTap={(e)=>{
+                                                          this.setState({
+                                                            deleteDialogShow:true,
+                                                            editPerson:Immutable.fromJS(supervisor),
+                                                            operationMenuOpen: false,
+                                                          });
+                                                          e.stopPropagation();
+                                                        }}/>
                                                 </div>
 
                                               </div>

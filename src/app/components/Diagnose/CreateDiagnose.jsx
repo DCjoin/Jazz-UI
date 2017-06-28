@@ -91,13 +91,13 @@ function checkStep(tags, step) {
 	return tags.filter(tag => TIME_GRANULARITY_MAP_VAL[step] < TIME_GRANULARITY_MAP_VAL[filterSpecialStep(tag.Step)] ).length === 0;
 }
 function getCanSelectTimeGranularity(tags) {
-	let maxTime = Math.max(tags.map(tag => TIME_GRANULARITY_MAP_VAL[tag.Step]));
+	let maxTime = Math.max(tags.map(tag => TIME_GRANULARITY_MAP_VAL[filterSpecialStep(tag.Step)]));
 	return Object.keys(TIME_GRANULARITY_MAP_VAL)
           .filter( step => TIME_GRANULARITY_MAP_VAL[step] >= maxTime )
-          .filter( step => 
-          	step*1===TimeGranularity.Minite || 
-          	step*1===TimeGranularity.Hourly || 
-          	step*1===TimeGranularity.Daily || 
+          .filter( step =>
+          	step*1===TimeGranularity.Minite ||
+          	step*1===TimeGranularity.Hourly ||
+          	step*1===TimeGranularity.Daily ||
           	step*1===TimeGranularity.Monthly);
 }
 function getSupportStepItems(){
@@ -192,8 +192,8 @@ function step2NeedRequire(DiagnoseModel, TriggerType, TriggerValue) {
 
 function stepLabelProps(stepValue, currentStep) {
 	let props = {
-		style: {			
-			height: 50, 
+		style: {
+			height: 50,
 			fontSize: 14,
 			color: '#0f0f0f',
 			fontWeight: 'bold',

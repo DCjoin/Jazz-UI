@@ -42,6 +42,12 @@ export default class BuildingItem extends Component {
         }
       }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if(this.props.buildingInfo.AnnualQuota===nextProps.buildingInfo.AnnualQuota
+      && this.props.buildingInfo.AnnualSavingRate===nextProps.buildingInfo.AnnualSavingRate) return false;
+      return true;
+  }
+
 	render() {
     let {buildingInfo,onMonthConfigShow,IndicatorType,onCalcSum}=this.props;
     let {AnnualQuota,AnnualSavingRate}=buildingInfo;

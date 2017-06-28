@@ -726,6 +726,10 @@ I18N.Setting.Calendar.NightContent = '白昼时间以外均为黑夜时间';
 I18N.Setting.Calendar.DayTitle = '白昼时间：';
 I18N.Setting.Calendar.AddCalendarInfo = '暂无日历属性，点击编辑进行设置';
 
+I18N.Setting.Calendar.shortMonthList = ["01月","02月","03月","04月","05月","06月","07月","08月","09月","10月","11月","12月"];
+I18N.Setting.Calendar.shortDayList= ['日', '一', '二', '三', '四', '五', '六'];
+I18N.Setting.Calendar.year = '年';
+I18N.Setting.Calendar.today="今天";
 //hierarchy population/area
 I18N.Setting.DynamicProperty = {};
 
@@ -1054,7 +1058,7 @@ I18N.Message.PictureUploadFailed = '图片上传失败，请稍后再试。';
 /******
 Energy Error Code
 *******/
-I18N.Message.M02004 = '聚合粒度非法';
+I18N.Message.M02004 = '数据点步长错误';
 I18N.Message.M02007 = '开始时间不能大于结束时间';
 I18N.Message.M02008 = '介质不同，不能绘制饼图。';
 I18N.Message.M02011 = '计算数据V类型的数据点不支持原始数据查看功能';
