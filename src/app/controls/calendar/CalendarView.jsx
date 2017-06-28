@@ -53,7 +53,7 @@ const CalendarView = ({currentDate, selectedDate, onChange, locale, events})=>{
 			key={date.getFullYear() + "_" + date.getMonth() + "_" + dayOfMonth} />
 		);
 	}
-	var dayListLabel = CalendarI18N(locale)["shortDayList"];
+	var dayListLabel = I18N.Setting.Calendar.shortDayList;
 	return (<div className="calendar-view">
 				<div className="label-box">
 				{
