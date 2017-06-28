@@ -82,7 +82,7 @@ const MeasuresAction = {
     });
   },
   getSupervisor(hierarchyId=_hierarchyId){
-    Ajax.get(util.replacePathParams(Path.ECM.getSupervisor, hierarchyId), {
+    Ajax.get(util.replacePathParams(Path.ECM.getSupervisor, hierarchyId,null), {
       success: (res) => {
         AppDispatcher.dispatch({
           type: Action.GET_SUPERVISOR_SUCCESS,
