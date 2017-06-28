@@ -467,7 +467,7 @@ let ChartComponent = React.createClass({
                 name = series.name,
                 color = series.color;
 
-                uom = util.getUomById(series.options.option.uom).Code;
+                uom = util.getUomById(series.options.option.uomId).Code;
             str += I18N.format('<span style="color:{0}">{1}: <b>{2}{3}</b></span><br/>',
                 color, name, dataLabelFormatter.call({ value: point.y }, false), uom);
             if (isNumber(point.y)) {
