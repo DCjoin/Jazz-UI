@@ -98,7 +98,7 @@ function postNewConfig(data, isEdit, newConfig) {
     newConfig.series.push({
         lockLegend: true,
         enableDelete: false,
-        name: '触发值',
+        name: I18N.Setting.Diagnose.TriggerValue,
         color: ALARM_COLOR, 
         lineWidth: 2,
         dashStyle: 'shortdash',
@@ -150,7 +150,7 @@ function postNewConfig(data, isEdit, newConfig) {
       newConfig.series.unshift({
           lockLegend: true,
           enableDelete: false,
-          name: CalendarType === CALENDAR_TYPE_WORKTIME ? '运行时间' : '非运行时间',
+          name: CalendarType === CALENDAR_TYPE_WORKTIME ? I18N.Setting.Diagnose.Runtime : I18N.Setting.Diagnose.Resttime,
           color: PLOT_BACKGROUND_COLOR, 
           lineWidth: 12,
           marker: {

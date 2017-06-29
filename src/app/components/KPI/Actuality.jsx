@@ -113,7 +113,7 @@ export default class Actuality extends Component {
 
 	}
 	componentWillReceiveProps(nextProps, nextContext) {
-		if( !util.shallowEqual(nextContext.hierarchyId, this.context.hierarchyId) ) {
+		if( !util.shallowEqual(nextContext.hierarchyId, this.context.hierarchyId) || this.props.params.type !== nextProps.params.type ) {
 			this._getInitialState(nextProps);
 			this._loadInitData(nextProps, nextContext);
 		}
@@ -298,7 +298,6 @@ export default class Actuality extends Component {
 				{!hierarchyId && (<div className='flex-center'><b>{I18N.Kpi.Error.SelectBuilding}</b></div>)}
 				{this._renderActuality()}
 				{this._renderEditPage()}
-				{ (!show || Object.keys(show).length !== 2) && this._renderOverlay()}
 			</div>
 		);
 	}

@@ -126,7 +126,8 @@ let JazzApp = React.createClass({
       loading: true
     });
   },
-  componentWillMount() {this._setHighchartConfig();
+  componentWillMount() {
+    this._setHighchartConfig();
     GlobalErrorMessageStore.addChangeListener(this._onErrorMessageChanged);
     GlobalErrorMessageStore.addClearGlobalErrorListener(this._onClearGlobalError);
     LanguageStore.addSwitchLanguageListener(this._onLanguageSwitch);
@@ -134,11 +135,17 @@ let JazzApp = React.createClass({
     LanguageStore.addFirstLanguageNoticeLoadingListener(this._onFirstLanguageNotice);
     AjaxStore.addErrorListener(this._globalError);
 
+    LanguageAction.firstLanguageNotice(this.props.router.params.lang);
     if( LoginStore.hasLoggedin() ) {
-      LanguageAction.firstLanguageNotice(this.props.router.params.lang);
       CurrentUserAction.getInitData(getCookie('UserId'));
     }
     
+  },
+
+  componentWillReceiveProps(nextProps) {
+    if(this.props.router.params.lang !== nextProps.router.params.lang) {
+      LanguageAction.firstLanguageNotice(this.props.router.params.lang);
+    }
   },
 
   _globalError:function(httpStatusCode){

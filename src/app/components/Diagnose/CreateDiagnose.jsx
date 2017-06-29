@@ -24,7 +24,7 @@ import {DIAGNOSE_MODEL} from 'constants/actionType/Diagnose.jsx';
 
 import ReduxDecorator from 'decorator/ReduxDecorator.jsx';
 
-import {isEmptyStr, isNumeric, getDateTimeItemsByStepForVal, getDateTimeItemsByStep, pow10} from 'util/Util.jsx';
+import {isEmptyStr, isNumeric, getDateTimeItemsByStepForVal, getDateTimeItemsByStep, pow10, getUomById} from 'util/Util.jsx';
 
 import FlatButton from 'controls/FlatButton.jsx';
 import ViewableTextField from 'controls/ViewableTextField.jsx';
@@ -288,10 +288,10 @@ function Right(props) {
 	return (<div style={{float: 'right', display: 'flex'}}>{props.children}</div>);
 }
 function PrevButton(props) {
-	return (<NewFlatButton {...props} secondary={true} label={'<上一步'}/>);
+	return (<NewFlatButton {...props} secondary={true} label={I18N.Paging.Button.PreStep}/>);
 }
 function NextButton(props) {
-	return (<NewFlatButton {...props} label={'下一步'}  primary={true}/>);
+	return (<NewFlatButton {...props} label={I18N.Paging.Button.NextStep}  primary={true}/>);
 }
 function utcFormat(dateStr) {
 	return moment(dateStr).subtract(8, 'hours').format(DATE_FORMAT + 'THH:mm:ss');
@@ -377,7 +377,7 @@ function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime
 			didChanged={(val) => {
 				onChangeStartTime(moment(StartTime).format(DATE_FORMAT) + 'T' + val + ':00');
 			}}/>
-		<div style={{margin: '0 10px', alignSelf: 'center'}}>{'至'}</div>
+		<div style={{margin: '0 10px', alignSelf: 'center'}}>{I18N.Setting.DataAnalysis.To}</div>
 		<ViewableDatePicker
 			isPopover={isPopover}
 			datePickerClassName={'diagnose-date-picker'}
@@ -433,7 +433,7 @@ function TagList({tags, onCheck, checkedTags}) {
 						</div>
 						{tag.get('Status') !== 0 &&
 						<div className='diagnose-create-checkbox-label-tip'>
-							{'诊断中'}
+							{I18N.Setting.Diagnose.Diagnoseing}
 						</div>}
 					</div>
 				</li>
@@ -442,7 +442,7 @@ function TagList({tags, onCheck, checkedTags}) {
 		);
 	}
 	return (<section className='diagnose-create-tag-list'>
-		<hgroup className='diagnose-create-tag-list-title diagnose-create-title'>{'诊断数据点'}</hgroup>
+		<hgroup className='diagnose-create-tag-list-title diagnose-create-title'>{I18N.Setting.Diagnose.DiagnoseTags}</hgroup>
 		{content}
 	</section>)
 }
@@ -459,7 +459,7 @@ onChangeEndTime: 修改结束时间 :: String(YYYY-MM-DDTHH:mm:ss) -> ?
 **/
 function ChartPreview({chartData, chartDataLoading, onUpdateStep, Step, onDeleteLegendItem, ...other}) {
 	return (<section className='diagnose-create-chart-preview'>
-		<hgroup className='diagnose-range-title diagnose-create-title'>{'图表预览'}</hgroup>
+		<hgroup className='diagnose-range-title diagnose-create-title'>{I18N.Setting.Diagnose.ChartPreview}</hgroup>
 		<div className='diagnose-create-chart-action'>
 			<ChartDateFilter
 				disabled={!chartData}
@@ -470,22 +470,22 @@ function ChartPreview({chartData, chartDataLoading, onUpdateStep, Step, onDelete
 		</div>
 		{chartDataLoading ? <div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div> :
 		(chartData ?  <div className='diagnose-create-chart'><DiagnoseChart isEdit={true} data={chartData} onDeleteButtonClick={onDeleteLegendItem}/></div> :
-		<div className='flex-center'>{'在左侧选择数据点'}</div>)}
+		<div className='flex-center'>{I18N.Setting.Diagnose.SelectTagsFromLeft}</div>)}
 	</section>)
 }
 
 function ChartPreviewStep2({chartData, chartDataLoading, getChartData, disabledPreview, onDeleteLegendItem, ...other}) {
 	return (<section className='diagnose-create-chart-preview-step2'>
-		<hgroup className='diagnose-create-title'>{'图表预览'}</hgroup>
+		<hgroup className='diagnose-create-title'>{I18N.Setting.Diagnose.ChartPreview}</hgroup>
 		<div className='diagnose-create-chart-action'>
 			<ChartDateFilter
 				disabled={!chartData}
 				{...other}/>
-			<NewFlatButton secondary={true} label={'预览'} disabled={disabledPreview} onClick={getChartData} icon={<ActionVisibility/>}/>
+			<NewFlatButton secondary={true} label={I18N.Setting.Diagnose.PreviewButton} disabled={disabledPreview} onClick={getChartData} icon={<ActionVisibility/>}/>
 		</div>
 		{chartDataLoading ? <div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div> :
 		(chartData ?  <div className='diagnose-create-chart'><DiagnoseChart isEdit={true} data={chartData} onDeleteButtonClick={onDeleteLegendItem}/></div> :
-		<div className='flex-center'>{'在左侧选择数据点'}</div>)}
+		<div className='flex-center'>{I18N.Setting.Diagnose.SelectTagsFromLeft}</div>)}
 	</section>)
 
 }
@@ -508,12 +508,12 @@ export function DiagnoseRange({
 	onUpdateDateRange
 }) {
 	return (<section className='diagnose-range'>
-		<hgroup className='diagnose-range-title diagnose-create-title'>{'诊断范围'}</hgroup>
+		<hgroup className='diagnose-range-title diagnose-create-title'>{I18N.Setting.Diagnose.DiagnoseRange}</hgroup>
 		<div className='diagnose-range-content'>
 			<ViewableDropDownMenu
 				disabled={disabled}
 				style={{width: 116}}
-				title={'步长'}
+				title={I18N.EM.Report.Step}
 				defaultValue={Step}
 				didChanged={onUpdateStep}
 				dataItems={getSupportStepItems().map(item => {
@@ -526,7 +526,7 @@ export function DiagnoseRange({
 			<AdditiveComp
 				className={'diagnose-range-time'}
 				contentClassName={'diagnose-range-time-content'}
-				title={'时间范围'}
+				title={I18N.Setting.Diagnose.TimeRange}
 				limit={disabled ? 0 : 2}
 				data={Timeranges}
 				onAdd={onAddDateRange}
@@ -542,7 +542,7 @@ export function DiagnoseRange({
 						onMonthDayItemChange={(type, val) => {
 							onUpdateDateRange(idx, 'StartTime', type, val);
 						}}/>
-					至
+					{I18N.Setting.DataAnalysis.To}
 					<MonthDayItem
 						type={1}
 						disabled={disabled}
@@ -590,7 +590,7 @@ function RuntimeComp({
 						}
 						onChangeWorkTime(idx, 'StartTime', val);
 					}}/>
-				{'至'}
+				{I18N.Setting.DataAnalysis.To}
 				<ViewableDropDownMenu
 					autoWidth={false}
 					iconStyle={{display: 'none'}}
@@ -614,14 +614,14 @@ function RuntimeComp({
 
 function ModelACondition({TriggerValue, onUpdateTriggerValue, uom}) {
 	return (<div className='diagnose-condition-model-a'>
-		<span className='diagnose-condition-subtitle'>{`非运行时间触发值(${uom})`}</span>
+		<span className='diagnose-condition-subtitle'>{I18N.format(I18N.Setting.Diagnose.HolidayRuningTimesTrigger,uom)}</span>
 		<ViewableTextField
 			regex={/^(\-?)\d{1,9}([.]\d{1,6})?$/}
-			errorMessage={'请输入正确的格式'}
-			hintText={'输入触发值'}
+			errorMessage={I18N.Setting.Diagnose.FormatVaildTip}
+			hintText={I18N.Setting.Diagnose.InputTriggerValue}
 			defaultValue={TriggerValue}
 			didChanged={onUpdateTriggerValue}/>
-		<span style={{fontSize: 12, color: '#9c9c9c'}}>{'注： 高于触发值时触发诊断'}</span>
+		<span style={{fontSize: 12, color: '#9c9c9c'}}>{I18N.Setting.Diagnose.TriggerValueTip}</span>
 	</div>)
 }
 
@@ -644,7 +644,7 @@ function ModelBCondition({
 }) {
 	return (<div className='diagnose-condition-model-b'>
 		<div className='diagnose-condition-model-b-item'>
-			<div className='diagnose-condition-subtitle'>{'触发条件'}</div>
+			<div className='diagnose-condition-subtitle'>{I18N.Setting.Diagnose.TriggerCondition}</div>
 			<RadioButtonGroup
 				className={'diagnose-condition-radio-group'}
 				name="ConditionType"
@@ -654,21 +654,21 @@ function ModelBCondition({
 			}}>
 				<RadioButton
 					value={CONDITION_TYPE.Larger}
-					label={'大于触发值'}
+					label={I18N.Setting.Diagnose.MoreThenTrigger}
 				/>
 				<RadioButton
 					value={CONDITION_TYPE.Smaller}
-					label={'小于触发值'}
+					label={I18N.Setting.Diagnose.LessThenTrigger}
 				/>
 			</RadioButtonGroup>
 		</div>
 		<div className='diagnose-condition-model-b-item'>
 			<div>
-				<div className='diagnose-condition-subtitle'>{'基准值属性'}</div>
+				<div className='diagnose-condition-subtitle'>{I18N.Setting.Diagnose.BaseValueProperty}</div>
 				<div style={{fontSize: 10, color: '#9c9c9c', marginTop: 5}}>
 					{TriggerType === TRIGGER_TYPE.HistoryValue
-					 ? '(选择历史值采用历史值曲线作为基准值)'
-					 : '(历史值仅支持单个数据点)'}
+					 ? I18N.Setting.Diagnose.BaseValueByHistoryTip
+					 : I18N.Setting.Diagnose.BaseValueByFixedTip}
 				</div>
 			</div>
 			<RadioButtonGroup
@@ -680,28 +680,28 @@ function ModelBCondition({
 			}}>
 				<RadioButton
 					value={TRIGGER_TYPE.FixedValue}
-					label={'固定值'}
+					label={I18N.Setting.Diagnose.FixedValue}
 				/>
 				<RadioButton
 					disabled={disabledHistory}
 					value={TRIGGER_TYPE.HistoryValue}
-					label={'历史值'}
+					label={I18N.Setting.Diagnose.HistoryValue}
 				/>
 			</RadioButtonGroup>
 		</div>
 		{ TriggerType === TRIGGER_TYPE.FixedValue &&
 		<div style={{marginTop: 15}}>
-			<span className='diagnose-condition-subtitle'>{`基准值(${uom})`}</span>
+			<span className='diagnose-condition-subtitle'>{I18N.format(I18N.Setting.Diagnose.BaseValueTitle,uom)}</span>
 			<ViewableTextField
 				regex={/^(\-?)\d{1,9}([.]\d{1,6})?$/}
-				errorMessage={'请输入正确的格式'}
-				hintText={'填写基准值'}
+				errorMessage={I18N.Setting.Diagnose.FormatVaildTip}
+				hintText={I18N.Setting.Diagnose.InputBaseValue}
 				defaultValue={TriggerValue}
 				didChanged={onUpdateTriggerValue}/>
 		</div>}
 		{ TriggerType === TRIGGER_TYPE.HistoryValue &&
 		<div style={{marginTop: 15}}>
-			<span className='diagnose-condition-subtitle'>{'基准值历史时间范围'}</span>
+			<span className='diagnose-condition-subtitle'>{I18N.Setting.Diagnose.BaseValueTimeRange}</span>
 			<ChartDateFilter
 				style={{
 					flexWrap: 'wrap'
@@ -713,14 +713,14 @@ function ModelBCondition({
 				onChangeEndTime={onUpdateHistoryEndTime}/>
 		</div>}
 		<div style={{marginTop: 15, marginBottom: 15}}>
-			<span className='diagnose-condition-subtitle'>{'敏感值(%)'}</span>
+			<span className='diagnose-condition-subtitle'>{I18N.Setting.Diagnose.ToleranceRatioTitle}</span>
 			<ViewableTextField
 				regex={/^(\-?)\d{1,9}([.]\d{1,6})?$/}
-				errorMessage={'请输入正确的格式'}
-				hintText={'填写敏感值'}
+				errorMessage={I18N.Setting.Diagnose.FormatVaildTip}
+				hintText={I18N.Setting.Diagnose.InputToleranceRatio}
 				defaultValue={isNumeric(ToleranceRatio) ? pow10(ToleranceRatio, 2) : ToleranceRatio}
 				didChanged={onUpdateToleranceRatio}/>
-			<span style={{fontSize: 12, color: '#ff4b00'}}>{'注：触发值=基准值*（1+／-敏感值)'}</span>
+			<span style={{fontSize: 12, color: '#ff4b00'}}>{I18N.Setting.Diagnose.ToleranceRatioTip}</span>
 		</div>
 	</div>)
 }
@@ -748,11 +748,11 @@ function DiagnoseCondition({
 	let workRuningTimes = WorkTimes.filter(time => time.TimeType === CALENDAR_ITEM_TYPE.WorkDay),
 	holidayRuningTimes = WorkTimes.filter(time => time.TimeType === CALENDAR_ITEM_TYPE.Holiday);
 	return (<section className='diagnose-condition'>
-		<hgroup className='diagnose-create-title'>{'诊断条件'}</hgroup>
+		<hgroup className='diagnose-create-title'>{I18N.Setting.Diagnose.DiagnoseCondition}</hgroup>
 		<div className='diagnose-condition-content'>
 			<RuntimeComp
 				workRuningTimes={workRuningTimes}
-				title={'工作日运行时间'}
+				title={I18N.Setting.Diagnose.WorkRuningTimes}
 				type={CALENDAR_ITEM_TYPE.WorkDay}
 				onAddWorkTime={() => {
 					workRuningTimes.push({
@@ -772,7 +772,7 @@ function DiagnoseCondition({
 				}}/>
 			<RuntimeComp
 				workRuningTimes={holidayRuningTimes}
-				title={'休息日运行时间'}
+				title={I18N.Setting.Diagnose.HolidayRuningTimes}
 				type={CALENDAR_ITEM_TYPE.Holiday}
 				onAddWorkTime={() => {
 					holidayRuningTimes.push({
@@ -903,7 +903,7 @@ export class CreateStep2 extends Component {
 		} = this.props,
 		disabledPreview = step2NeedRequire(DiagnoseModel, TriggerType, TriggerValue);
 		if(chartData) {
-			_firstUom = chartData.getIn(['EnergyViewData', 'TargetEnergyData', 0, 'Target', 'Uom']);
+			_firstUom = getUomById(chartData.getIn(['EnergyViewData', 'TargetEnergyData', 0, 'Target', 'UomId'])).Code;
 		}
 		return (
 			<section className='diagnose-create-content diagnose-create-step'>
@@ -997,13 +997,13 @@ function CreateStep3({
 }) {
 	return (
 		<section className='diagnose-create-content diagnose-create-names'>
-			<hgroup className='diagnose-create-title'>{'诊断名称'}</hgroup>
+			<hgroup className='diagnose-create-title'>{I18N.Setting.Diagnose.DiagnoseName}</hgroup>
 			<div style={{paddingLeft: 15, paddingBottom: 25}}>
 				{checkedTags && checkedTags.map((tag, idx) =>
 				<div style={{paddingTop: 25}}>
-					<div className={'diagnose-condition-subtitle'}>{'诊断名称'}</div>
+					<div className={'diagnose-condition-subtitle'}>{I18N.Setting.Diagnose.DiagnoseName}</div>
 					<ViewableTextField
-					hintText={'请输入诊断名称'}
+					hintText={I18N.Setting.Diagnose.InputDiagnoseName}
 					defaultValue={tag.DiagnoseName}
 					didChanged={(val) => {
 						checkedTags[idx].DiagnoseName = val;
@@ -1378,7 +1378,7 @@ class CreateDiagnose extends Component {
 		if(tmpFilterDiagnoseTags) {
 			return (<Dialog onRequestClose={() => {this.setState({tmpFilterDiagnoseTags: null, tmpFilterStep: null});}} open={true} modal={false} actions={
 				getCanSelectTimeGranularity(tmpFilterDiagnoseTags).map(time =>
-					<FlatButton key={time} label={'按' + _.find(getStepItems(),item => item.step === time * 1).text}
+					<FlatButton key={time} label={I18N.Setting.Diagnose.By + _.find(getStepItems(),item => item.step === time * 1).text}
 						onClick={() => {
 							this.setState({
 								checkedTags: tmpFilterDiagnoseTags,
@@ -1388,7 +1388,7 @@ class CreateDiagnose extends Component {
 							}, this._getChartData);
 						}}/>)
 			}>
-				{`所选数据点不支持按“${_.find(getStepItems(),item => item.step === tmpFilterStep).text}”`}
+				{I18N.format(I18N.Setting.Diagnose.SelectTagsUnsupportSteps,_.find(getStepItems(),item => item.step === tmpFilterStep).text)}
 			</Dialog>);
 		}
 		return null;
@@ -1410,7 +1410,7 @@ class CreateDiagnose extends Component {
 						margin: 'auto'}}>
 						<FontIcon className='icon-information'
 							style={{fontSize: 12, color: '#adafae', }}/>
-						{'请选择诊断数据点'}
+						{I18N.Setting.Diagnose.SelectDiagnoseTags}
 					</div>}
 					<NextButton disabled={!checkedTags || checkedTags.length === 0} onClick={this._setStep(1)}/></Right>);
 				break;
@@ -1424,7 +1424,7 @@ class CreateDiagnose extends Component {
 						margin: 'auto'}}>
 						<FontIcon className='icon-information'
 							style={{fontSize: 12, color: '#adafae', }}/>
-						{'请填写诊断条件'}
+						{I18N.Setting.Diagnose.InputDiagnoseCondition}
 					</div>}
 					<NextButton disabled={disabledNext} onClick={this._setStep(2)}/></Right>);
 				break;
@@ -1432,8 +1432,8 @@ class CreateDiagnose extends Component {
 				buttons.push(<Left><PrevButton onClick={this._setStep(1)}/></Left>);
 				buttons.push(
 					<Right>
-						<NewFlatButton secondary={true} disabled={needAddNames} onClick={this._onSaveBack} label={'保存并返回诊断列表'}/>
-						<NewFlatButton primary={true} disabled={needAddNames} onClick={this._onSaveRenew} label={'保存并继续添加'} style={{marginLeft: 10}} primary={true}/>
+						<NewFlatButton secondary={true} disabled={needAddNames} onClick={this._onSaveBack} label={I18N.Setting.Diagnose.SaveThenReturn}/>
+						<NewFlatButton primary={true} disabled={needAddNames} onClick={this._onSaveRenew} label={I18N.Setting.Diagnose.SaveThenRenew} style={{marginLeft: 10}} primary={true}/>
 					</Right>
 				);
 				break;
@@ -1447,7 +1447,7 @@ class CreateDiagnose extends Component {
 			<div className='diagnose-overlay'>
 				<header className='diagnose-overlay-header'>
 					<div>
-						<span>{'新建诊断'}</span>
+						<span>{I18N.Setting.Diagnose.CreateDiagnose}</span>
 						<span style={{marginLeft: 14}}>
 							{[isBasic?I18N.Setting.Diagnose.Basic:I18N.Setting.Diagnose.Senior, DiagnoseItem.get('Name'), EnergyLabel.get('Name')].join(SEPARTOR)}
 						</span>
@@ -1457,13 +1457,13 @@ class CreateDiagnose extends Component {
 				<nav className='diagnose-create-stepper'>
 			        <Stepper activeStep={step} style={{width: '80%'}}>
 			          <Step>
-			            <StepLabel {...stepLabelProps(0, step)}>{'选择诊断数据点并配置诊断范围 '}</StepLabel>
+			            <StepLabel {...stepLabelProps(0, step)}>{I18N.Setting.Diagnose.SaveDiagnoseStep0}</StepLabel>
 			          </Step>
 			          <Step>
-			            <StepLabel {...stepLabelProps(1, step)}>{' 编辑诊断条件 '}</StepLabel>
+			            <StepLabel {...stepLabelProps(1, step)}>{I18N.Setting.Diagnose.SaveDiagnoseStep1}</StepLabel>
 			          </Step>
 			          <Step>
-			            <StepLabel {...stepLabelProps(2, step)}>{' 保存诊断 '}</StepLabel>
+			            <StepLabel {...stepLabelProps(2, step)}>{I18N.Setting.Diagnose.SaveDiagnoseStep2}</StepLabel>
 			          </Step>
 			        </Stepper>
 		        </nav>

@@ -586,11 +586,11 @@ let ReportDataItem = React.createClass({
     var reportNameProps = {
       ref: 'reportTypeName',
       defaultValue: this.state.data.get('Name'),
-      title: '表格数据名称',
+      title: I18N.Setting.KPI.Config.TableDataName,
       didChanged: this._onReprtNameChange,
       regexFn: (val) => {
         if( this.props.itemsName.indexOf(val) !== -1 ) {
-          return '此名称已存在，请重新输入';
+          return I18N.Setting.KPI.Config.TableDataNameTip;
         }
       }
     };
@@ -662,7 +662,7 @@ let ReportDataItem = React.createClass({
 
     <NewDialog open>
       <header className='kpi-report-edit-data-header'>
-        <div>{'添加表格数据'}</div>
+        <div>{I18N.Setting.KPI.Config.NewTableData}</div>
         <FontIcon className='icon-close' style={{fontSize: '16px'}} onClick={this.props.onClose}/>
       </header>
       <div className='jazz-report-data-content'>
@@ -713,10 +713,10 @@ let ReportDataItem = React.createClass({
         {tagDialog}
       </div>
       <footer className='kpi-report-edit-data-footer'>            
-        <NewFlatButton onClick={this.props.onClose} label={'取消'} secondary/>
+        <NewFlatButton onClick={this.props.onClose} label={I18N.Common.Button.Cancel2} secondary/>
         <NewFlatButton onClick={() => {
           this.props.onSave(this.state.data);
-        }} disabled={!this._isValid()} style={{marginLeft: 20}} label={'添加'} primary/>
+        }} disabled={!this._isValid()} style={{marginLeft: 20}} label={I18N.Common.Button.Add} primary/>
       </footer>
     </NewDialog>
       );

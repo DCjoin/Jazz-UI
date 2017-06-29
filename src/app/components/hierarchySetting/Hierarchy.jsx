@@ -77,7 +77,7 @@ var Hierarchy = React.createClass({
     document.body.appendChild(iframe);
   },
   _getConsultants: function(hierarchyId, type) {
-    if( type === 2 && _currentConsultantsHierarchyId !== hierarchyId ) {
+    if( ( type === -1 || type === 2) && _currentConsultantsHierarchyId !== hierarchyId ) {
       HierarchyAction.getConsultants(hierarchyId);
       _currentConsultantsHierarchyId = hierarchyId;
     }
@@ -304,7 +304,17 @@ var Hierarchy = React.createClass({
     switch (type) {
       case -1:
         detailProps.ref = 'jazz_hierarchy_customer_detail';
-        detail = <Customer {...detailProps}/>;
+        let consultants1 = HierarchyStore.getConsultants();
+        detail = consultants1 ? <Customer {...detailProps} consultants={consultants1}/>: 
+
+          <div style={{
+            display: 'flex',
+            flex: 1,
+            'alignItems': 'center',
+            'justifyContent': 'center'
+          }}>
+            <CircularProgress  mode="indeterminate" size={80} />
+          </div>;
         break;
       case 0:
       case 1:
