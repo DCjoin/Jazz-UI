@@ -78,7 +78,7 @@ const TIME_GRANULARITY_MAP_VAL = {
 	[TimeGranularity.Hour12]: 12 * 60 * 60,
 	[TimeGranularity.Daily]: 24 * 60 * 60,
 	[TimeGranularity.Weekly]: 7 * 24 * 60 * 60,
-	[TimeGranularity.Monthly]: 30 * 24 * 60 * 60,
+	[TimeGranularity.Monthly]: 100 * 24 * 60 * 60,
 	[TimeGranularity.Yearly]: 365 * 24 * 60 * 60,
 };
 function filterSpecialStep(step){

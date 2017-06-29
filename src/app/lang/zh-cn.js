@@ -1649,6 +1649,12 @@ I18N.Paging.Button.NextPage = '下一页';
 I18N.Paging.Button.PreStep = '上一步';
 I18N.Paging.Button.NextStep = '下一步';
 
+I18N.Consultant = {
+  SeniorConsultant: '资深咨询顾问',
+  Description1: '“您好， 我是{0}的专职节能咨询顾问，',
+  Description2: '有任何问题欢迎通过以下方式和我联系”',
+};
+
 I18N.Kpi = {
   Month: '{0}月',
   YearMonth: '{0}年{1}月',
