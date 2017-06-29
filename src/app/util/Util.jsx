@@ -1861,11 +1861,15 @@ let CommonFuns = {
         case 3: //monthly, minus one month, this is not a fixed value, need construct
           var year = time.getFullYear(),
             month = time.getMonth(),
+            day=time.getDate(),
             totalMonths = year * 12 + month - 1;
-          let newtime1 = new Date(Math.floor(totalMonths / 12), totalMonths % 12, 1, 0, 0, 0, 0);
-          return new Date(newtime1 - (newtime1.getTimezoneOffset() * 60000));
+          let newtime1 = new Date(Math.floor(totalMonths / 12), totalMonths % 12, day, 0, 0, 0, 0);
+          return new Date(newtime1);
         case 4: //yearly, minus one year, this is not a fixed value, need construct
-          let newtime = new Date(time.getFullYear() - 1, 0, 1, 0, 0, 0, 0);
+        var year = time.getFullYear(),
+          month = time.getMonth(),
+          day=time.getDate(),
+         newtime = new Date(year - 1, month, day, 0, 0, 0, 0);
           return new Date(newtime - (newtime.getTimezoneOffset() * 60000));
         case 6:
           return new Date(ticks - fixedTimes.minute * 15);
