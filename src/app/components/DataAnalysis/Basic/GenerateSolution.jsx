@@ -181,7 +181,9 @@ export class GenerateSolution extends Component {
 		if( this.state.idx >= this.state.nodes.length - 1 ) {
 			this._setStateValue('idx')(this.state.idx - 1);
 		}
-		this.setState({showDelete: false});
+		this.setState({
+			showDelete: false
+		});
 	}
 
 	_getAPIDataFormat() {
@@ -198,7 +200,7 @@ export class GenerateSolution extends Component {
 			SaveDesc,
 		} = this.state;
 		return {
-			verified: ProblemName && ProblemMark && nodes.length === Object.keys(svgStrings).length,
+			verified: ProblemName && ProblemMark && nodes.length <= Object.keys(svgStrings).length,
 			data: {
 				EnergyProblem: {
 					HierarchyId: this.context.hierarchyId,
