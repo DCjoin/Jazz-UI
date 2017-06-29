@@ -1109,8 +1109,8 @@ class CreateDiagnose extends Component {
 			chartData: null
 		});
 	}
-	_getTimeRangeStep() {
-		if( this.state.filterObj.get('Step') === TimeGranularity.Monthly ) {
+	_getTimeRangeStep(step) {
+		if( (step || this.state.filterObj.get('Step')) ===  TimeGranularity.Monthly ) {
 			return 100;
 		}
 		return 30;
@@ -1278,7 +1278,17 @@ class CreateDiagnose extends Component {
 						Step={Step}
 						onUpdateStep={(val) => {
 							if( checkStep(checkedTags, val) ) {
-								this._setFilterObjThenUpdataChart('Step', val);
+								let startTime = moment(StartTime),
+								endTime = moment(EndTime),
+								afterDays = moment(startTime).add(this._getTimeRangeStep(val), 'days');
+								if( afterDays < endTime ) {
+									this._setFilterObj( 'EndTime', afterDays.format('YYYY-MM-DDTHH:mm:ss'), () => {
+										this._setFilterObjThenUpdataChart('Step', val);
+									} );
+								} else {
+									this._setFilterObjThenUpdataChart('Step', val);
+								}
+								
 							} else {
 								this.setState({
 									tmpFilterDiagnoseTags: checkedTags,
