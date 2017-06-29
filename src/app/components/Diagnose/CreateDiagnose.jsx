@@ -920,8 +920,8 @@ export class CreateStep2 extends Component {
 						};
 						if(endTime < moment(startTime).add(1, 'hours')) {
 							endTime = moment(startTime).add(1, 'hours');
-						} else if( moment(startTime).add(30, 'days') < endTime ) {
-							endTime = moment(startTime).add(30, 'days');
+						} else if( moment(startTime).add(this._getTimeRangeStep(), 'days') < endTime ) {
+							endTime = moment(startTime).add(this._getTimeRangeStep(), 'days');
 						}
 						if(endTime.format('YYYY-MM-DDTHH:mm:ss') !== EndTime) {
 							onUpdateFilterObj('EndTime')(endTime.format('YYYY-MM-DDTHH:mm:ss'), setStartTime );
@@ -938,8 +938,8 @@ export class CreateStep2 extends Component {
 						};
 						if(moment(endTime).subtract(1, 'hours') < startTime) {
 							startTime = moment(endTime).subtract(1, 'hours');
-						} else if( moment(endTime).subtract(30, 'days') > startTime ) {
-							startTime = moment(endTime).subtract(30, 'days');
+						} else if( moment(endTime).subtract(this._getTimeRangeStep(), 'days') > startTime ) {
+							startTime = moment(endTime).subtract(this._getTimeRangeStep(), 'days');
 						}
 						if(startTime.format('YYYY-MM-DDTHH:mm:ss') !== StartTime) {
 							onUpdateFilterObj( 'StartTime')(startTime.format('YYYY-MM-DDTHH:mm:ss'), setEndTime );
@@ -1109,6 +1109,12 @@ class CreateDiagnose extends Component {
 			chartData: null
 		});
 	}
+	_getTimeRangeStep() {
+		if( this.state.filterObj.get('Step') === TimeGranularity.Monthly ) {
+			return 100;
+		}
+		return 30;
+	}
 	_setStep(step) {
 		return () => {
 			this.setState({step}, () => {
@@ -1242,8 +1248,8 @@ class CreateDiagnose extends Component {
 							};
 							if(endTime < moment(startTime).add(1, 'hours')) {
 								endTime = moment(startTime).add(1, 'hours');
-							} else if( moment(startTime).add(30, 'days') < endTime ) {
-								endTime = moment(startTime).add(30, 'days');
+							} else if( moment(startTime).add(this._getTimeRangeStep(), 'days') < endTime ) {
+								endTime = moment(startTime).add(this._getTimeRangeStep(), 'days');
 							}
 							if(endTime.format('YYYY-MM-DDTHH:mm:ss') !== EndTime) {
 								this._setFilterObj( 'EndTime', endTime.format('YYYY-MM-DDTHH:mm:ss'), setStartTime );
@@ -1260,8 +1266,8 @@ class CreateDiagnose extends Component {
 							};
 							if(moment(endTime).subtract(1, 'hours') < startTime) {
 								startTime = moment(endTime).subtract(1, 'hours');
-							} else if( moment(endTime).subtract(30, 'days') > startTime ) {
-								startTime = moment(endTime).subtract(30, 'days');
+							} else if( moment(endTime).subtract(this._getTimeRangeStep(), 'days') > startTime ) {
+								startTime = moment(endTime).subtract(this._getTimeRangeStep(), 'days');
 							}
 							if(startTime.format('YYYY-MM-DDTHH:mm:ss') !== StartTime) {
 								this._setFilterObj( 'StartTime', startTime.format('YYYY-MM-DDTHH:mm:ss'), setEndTime );
