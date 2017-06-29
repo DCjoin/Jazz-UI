@@ -153,6 +153,7 @@ export default class RankChart extends Component {
 
 		util.openTab(RoutePath.KPIActuality(this.context.router.params)
 						+ '?buildingId='+BuildingId
+						+ '&init_hierarchy_id='+BuildingId
 						+ '&hierarchyId='+BuildingId
 						+ '&groupKpiId='+GroupKpiId
 						+ '&kpiName='+this.props.RankName.split('-')[0]
