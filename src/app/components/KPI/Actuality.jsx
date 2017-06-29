@@ -157,7 +157,7 @@ export default class Actuality extends Component {
 		return this.props.router.params.customerId;
 	}
 	_getHierarchyId(router, context) {
-		return +router.location.query.hierarchyId || +context.hierarchyId || null;
+		return +router.location.query.init_hierarchy_id || +context.hierarchyId || null;
 	}
 	_getSelectedHierarchy() {
 		let selectedHierarchyId = this._getHierarchyId(this.props.router, this.context);
