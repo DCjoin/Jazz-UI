@@ -572,8 +572,8 @@ let ChartReaderStrategyFactor = {
             }
           }
           item = {};
-          this.setItemByTargetFn4MultiplespanFn(item, t, i);
-          item.uid = timeRange.StartTime + '-' + timeRange.EndTime;
+          this.setItemByTargetFn4MultiplespanFn(item, t, j);
+          item.uid = timeRange.StartTime + '-' + timeRange.EndTime+'Index'+j;
           if (!item.option)
             item.option = {};
           if (t.Uom) {
