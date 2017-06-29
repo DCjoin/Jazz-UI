@@ -687,13 +687,15 @@ let ChartCmpStrategyFactor = {
   },
   mergeConfigFnStrategy: {
     energyChartCmpMergeConfig(defaultConfig, chartComponentBox) {
+      console.log("energyChartCmpMergeConfig");
       var commonTooltipFormatter;
       if (chartComponentBox.props.timeRanges.length > 1) {
         commonTooltipFormatter = function() {
           var getStr = function(p) {
             var series = p.series,
               opt = series.options.option,
-              uom = getUomById(opt.uom).Code,
+              // uom = getUomById(opt.uom).Code,
+              uom = opt.uom,
               start = opt.start,
               end = opt.end,
               step = opt.targetStep || opt.step;
@@ -949,10 +951,18 @@ let ChartCmpStrategyFactor = {
         //            color, names[0], names[1], cmp.dataLabelFormatter.call({ value: y }, false), uom));
         //     }
         // }
+        if(name.indexOf('<br/>')>-1){
+        return I18N.format(
+                        '<span style="color:{0}">{1}</span>: <b>{2}{3}</b>',
+                        color, name.replace(/<br\/>/, I18N.Setting.DataAnalysis.To), dataLabelFormatter.call({
+                            value: y
+                          }, false), uom);
+        }else {
+          return (str + I18N.format(tooltipPattern, color, name, dataLabelFormatter.call({
+              value: y
+            }, false), uom));
+        }
 
-        return (str + I18N.format(tooltipPattern, color, name, dataLabelFormatter.call({
-            value: y
-          }, false), uom));
       };
 
       defaultConfig.tooltip.shared = false;
