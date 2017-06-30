@@ -8,6 +8,7 @@ import {DiagnoseRange,CreateStep2} from './CreateDiagnose.jsx';
 import Immutable from 'immutable';
 import NewDialog from 'controls/NewDialog.jsx';
 import {DataConverter, isEmptyStr} from 'util/Util.jsx';
+import TimeGranularity from 'constants/TimeGranularity.jsx';
 import {DIAGNOSE_MODEL} from 'constants/actionType/Diagnose.jsx';
 
 function getFirstDateByThisYear(formatStr) {
@@ -23,6 +24,12 @@ const SEPARTOR = '-';
 const TRIGGER_TYPE = {
 	FixedValue: 1,
 	HistoryValue: 2,
+}
+function _getTimeRangeStep(step) {
+	if( step ===  TimeGranularity.Monthly ) {
+		return 100;
+	}
+	return 30;
 }
 
 export default class EditDiagnose extends Component {
@@ -100,10 +107,21 @@ export default class EditDiagnose extends Component {
 	}
 
   _renderRange(){
-    var {Step,Timeranges}=this.state.diagnoseData.toJS()
+    var {Step,Timeranges, StartTime, EndTime}=this.state.diagnoseData.toJS()
     var props={
       Step,
-      onUpdateStep:(val)=>{this._merge('Step',val)},
+      onUpdateStep:(val)=>{
+		let startTime = moment(StartTime),
+		endTime = moment(EndTime),
+		afterDays = moment(startTime).add(_getTimeRangeStep(val), 'days');
+		if( afterDays < endTime ) {
+			this._merge( 'EndTime', afterDays.format('YYYY-MM-DDTHH:mm:ss'), () => {
+				this._merge(['Timeranges', idx, 'EndTime'], afterDays);
+			} );
+		} else {
+      		this._merge('Step',val);
+		}
+      },
       Timeranges,
       onUpdateDateRange:(idx, type, startOrEnd, val) => {
 							val = new Date().getFullYear() + SEPARTOR + val.join(SEPARTOR);

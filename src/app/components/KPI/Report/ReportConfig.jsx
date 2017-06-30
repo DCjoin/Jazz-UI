@@ -773,7 +773,6 @@ export default class ReportConfig extends Component {
         {isNew ? <div>{I18N.Setting.KPI.Config.TableDataNewTip}</div> :
         <div style={{fontSize: '14px', fontWeight: 'bold', color: '#0f0f0f'}}>{I18N.Setting.KPI.Config.TableDataConfig}
           <span style={{fontSize: '12px', color: 'red', marginLeft: 20}}>{I18N.Setting.KPI.Config.TableDataTitleTip}</span>
-        }
         </div>}
         {this._renderReportList()}
         {this._renderEditDataDialog()}
