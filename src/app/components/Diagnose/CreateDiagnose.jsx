@@ -735,7 +735,6 @@ function DiagnoseCondition({
 	onChangeWorkTime,
 	DiagnoseModel,
 	WorkTimes,
-
 	...other
 
 	// TriggerValue,
@@ -956,8 +955,9 @@ export class CreateStep2 extends Component {
 					}}
 				/>
 				<DiagnoseCondition
+					Step={Step}
 					uom={_firstUom}
-					disabledHistory={disabledHistory}
+					disabledHistory={disabledHistory && Step !== TimeGranularity.Monthly}
 					DiagnoseModel={DiagnoseModel}
 					WorkTimes={WorkTimes}
 					onChangeWorkTime={onUpdateFilterObj('WorkTimes')}
