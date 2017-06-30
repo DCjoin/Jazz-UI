@@ -905,6 +905,7 @@ export class CreateStep2 extends Component {
 			HistoryEndTime,
 			disabledHistory,
 			chartData,
+			Step,
 			...other,
 		} = this.props,
 		disabledPreview = step2NeedRequire(DiagnoseModel, TriggerType, TriggerValue);
