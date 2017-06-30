@@ -358,9 +358,6 @@ export default class NotPushPanel extends Component {
         modal={false}
         isOutsideClose={false}
         onRequestClose={onClose}
-        overlayStyle={{overflowY:"auto"}}
-        style={{overflow:"visible"}}
-        wrapperStyle={{overflow:"visible"}}
         titleStyle={{margin:'0 7px',paddingTop:"7px"}}
         contentStyle={{overflowY:"auto",display:'block',padding:"6px 28px 10px 32px",margin:0}}
         >
