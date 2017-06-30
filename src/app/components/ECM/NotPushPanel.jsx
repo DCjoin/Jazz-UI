@@ -93,8 +93,8 @@ export default class NotPushPanel extends Component {
     }else {
       var styles={
         icon:{
-          width: '16px',
-          height: '16px',
+          width: '18px',
+          height: '18px',
           color:'#9fa0a4',
           marginRight:'10px',
           marginTop:'1px'
@@ -114,7 +114,7 @@ export default class NotPushPanel extends Component {
           width: '100px',
           height: '25px',
           borderRadius: '2px',
-          border: 'solid 1px #9fa0a4',
+          border: 'solid 1px #dfdfdf',
           lineHeight:'15px'
         },
         btnIcon:{
@@ -129,7 +129,7 @@ export default class NotPushPanel extends Component {
       return(
         <div className="action">
           <Checkbox disabled={MeasuresStore.IsAllCheckDisabled()} iconStyle={styles.icon} labelStyle={styles.label} checked={MeasuresStore.getAllSelectedStatus()} onCheck={this._onAllCheck} label={I18N.Tag.SelectAll} style={styles.box}/>
-          <FlatButton label={I18N.Setting.ECM.PushAll} icon={<FontIcon className="icon-battery-full" color="#0f0f0f"style={styles.btnIcon}/>}
+          <FlatButton label={I18N.Setting.ECM.PushAll} icon={<FontIcon className="icon-volume-push" color="#0f0f0f"style={styles.btnIcon}/>}
                 style={styles.btn} labelStyle={styles.btnlabel}
                 disabled={MeasuresStore.IsPushAllDisabled()} onClick={()=>{
               this.setState({
@@ -148,19 +148,33 @@ export default class NotPushPanel extends Component {
     var styles={
       pushlabel:{
         fontSize:'14px',
-        color:disabled?'#9fa0a4':'#32ad3c'
+        color:disabled?'#9fa0a4':'#32ad3d',
+        paddingLeft:"5px",
+        paddingRight:"0",
+        marginLeft:"0"
       },
       deletelabel:{
         fontSize:'14px',
-        color:'#0f0f0f'
+        color:'#0f0f0f',
+        paddingLeft:"5px",
+        paddingRight:"0",
+        marginLeft:"0"
       },
-      button:{
-        marginLeft:'15px'
+      pushBtn:{
+        minWidth:"59px",
+        height:'21px',
+        lineHeight:'21px',
+        marginRight:'15px'
+      },
+      deleteButton:{
+        minWidth:"59px",
+        height:'21px',
+        lineHeight:'21px'
       }
     };
     return(
       <div style={{display:'inline-block'}} onClick={(e)=>{e.stopPropagation()}}>
-        <FlatButton disabled={disabled} label={I18N.Setting.ECM.Push}
+        <FlatButton disabled={disabled} label={I18N.Setting.ECM.Push} style={styles.pushBtn}
                     onClick={(e)=>{
                       e.stopPropagation();
                         this.setState({
@@ -168,7 +182,7 @@ export default class NotPushPanel extends Component {
                           handleIndex:index
                         })
                     }} labelStyle={styles.pushlabel} icon={<FontIcon className="icon-to-ecm" color="#32ad3c" style={styles.pushlabel}/>}/>
-        <FlatButton label={I18N.Common.Button.Delete}
+                  <FlatButton label={I18N.Common.Button.Delete} style={styles.deleteButton}
                     onClick={(e)=>{
                       e.stopPropagation();
                       this.setState({
@@ -344,8 +358,11 @@ export default class NotPushPanel extends Component {
         modal={false}
         isOutsideClose={false}
         onRequestClose={onClose}
+        overlayStyle={{overflowY:"auto"}}
+        style={{overflow:"visible"}}
+        wrapperStyle={{overflow:"visible"}}
         titleStyle={{margin:'0 7px',paddingTop:"7px"}}
-        contentStyle={{overflowY: 'auto',paddingRight:'5px',display:'block',margin:"0 32px",paddingBottom:'10px'}}
+        contentStyle={{overflow:"visible",paddingRight:'5px',display:'block',margin:"0 32px",paddingBottom:'10px',maxHeight:'100%'}}
         >
         <div className="jazz-ecm-push-operation">
           {this._renderOperation(this.state.measureIndex)}

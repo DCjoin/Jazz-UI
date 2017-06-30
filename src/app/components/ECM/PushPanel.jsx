@@ -429,8 +429,11 @@ export default class PushPanel extends Component {
         modal={false}
         isOutsideClose={false}
         onRequestClose={onClose}
+        overlayStyle={{overflowY:"auto"}}
+        style={{overflow:"visible"}}
+        wrapperStyle={{overflow:"visible"}}
         titleStyle={{margin:'0 7px',paddingTop:"7px"}}
-        contentStyle={{overflowY: 'auto',paddingRight:'5px',display:'block',margin:"0 32px",paddingBottom:'10px'}}>
+        contentStyle={{overflow:"visible",paddingRight:'5px',display:'block',margin:"0 32px",paddingBottom:'10px',maxHeight:'100%'}}>
         {this._renderOperation()}
         <SolutionLabel {...props.solution}/>
         <Solution {...props.solution}/>
