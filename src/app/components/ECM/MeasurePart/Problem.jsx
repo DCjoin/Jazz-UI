@@ -23,7 +23,7 @@ export default class Problem extends Component {
     }
 
     componentWillReceiveProps(nextProps){
-      var {canEdit,measure}=this.props;
+      var {canEdit,measure}=nextProps;
       var {EnergyProblem}=measure.toJS();
       var {Description,Name}=EnergyProblem;
       this.setState({
@@ -41,7 +41,7 @@ export default class Problem extends Component {
           key:'EnergyProblem'+EnergyProblem.Id+'_Name',
           id:'EnergyProblem'+EnergyProblem.Id+'_Name',
           onChange:(ev,value)=>{
-                                if(value===''){value=EnergyProblem.Name}
+                                if(value===''){value=Name}
                                 this.props.merge(['EnergyProblem','Name'],value)
                               },
           value:Name,
@@ -54,7 +54,7 @@ export default class Problem extends Component {
           key:'EnergyProblem'+EnergyProblem.Id+'_Description',
           id:'EnergyProblem'+EnergyProblem.Id+'_Description',
           onChange:(ev,value)=>{
-                                if(value===''){value=EnergyProblem.Description}
+                                if(value===''){value=Description}
                                 this.props.merge(['EnergyProblem','Description'],value)
                               },
           value:Description,
