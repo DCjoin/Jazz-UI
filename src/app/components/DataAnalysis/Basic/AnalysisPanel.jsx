@@ -962,7 +962,7 @@ class AnalysisPanel extends Component {
         ChartStatusAction.modifyChartType(nextChartType);
         this.setState({
           selectedChartType: nextChartType,
-          energyData: null
+          // energyData: null
         });
       } else { //if(nextChartType === 'pie'){
       ChartStatusAction.clearStatus();

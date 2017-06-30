@@ -88,9 +88,9 @@ class NewDialog extends Component {
 
 		contentProps = {
 			className: getContentClassName(contentClassName),
-			style: assign({}, contentStyle, {
+			style: assign({},{
 				maxHeight: 'calc(100% - ' + ( (title || !modal ? 32 + 24 + 20 : 24) + (actions && actions.length > 0 ? 36 + 8 * 2 : 0) + 1 ) + 'px)'
-			}),
+			}, contentStyle ),
 		},
 		titleProps = {
 			className: getTitleClassName(titleClassName),

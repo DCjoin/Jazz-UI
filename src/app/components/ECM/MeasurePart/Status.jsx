@@ -3,6 +3,7 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
 import {Status} from 'constants/actionType/Measures.jsx';
+import IconButton from 'material-ui/IconButton';
 
 function getItems(status){
   switch (status) {
@@ -38,9 +39,10 @@ export default class StatusCmp extends Component {
 
     _renderEditStatus(){
       return(
-        <DropDownMenu style={{height: '28px'}}
-                      labelStyle={{fontSize:'14px',color:"#505559",border:"1px solid #e6e6e6",borderRadius: "4px",lineHeight:'28px',height:'28px',paddingLeft:'11px',paddingRight:'28px'}}
-                      iconStyle={{marginTop:'-12px',padding:'0',right:'0',width:'24px'}}
+        <DropDownMenu style={{height: '26px',marginLeft:'5px'}}
+                      labelStyle={{fontSize:'14px',color:"#626469",border:"1px solid #e6e6e6",borderRadius: "4px",lineHeight:'26px',height:'26px',paddingLeft:'11px',paddingRight:'28px'}}
+                      iconButton={<IconButton iconClassName="icon-arrow-down" iconStyle={{fontSize:"10px"}} style={{width:14,height:14}}/>}
+                      iconStyle={{marginTop:'-12px',padding:'0',right:'15',width:'24px',top:'2px'}}
                       underlineStyle={{border:'none'}}
                       value={this.props.status}
                       onChange={(e, selectedIndex, value)=>{

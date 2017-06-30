@@ -429,16 +429,19 @@ export default class PushPanel extends Component {
         modal={false}
         isOutsideClose={false}
         onRequestClose={onClose}
+        overlayStyle={{overflowY:"auto"}}
+        style={{overflow:"visible"}}
+        wrapperStyle={{overflow:"visible"}}
         titleStyle={{margin:'0 7px',paddingTop:"7px"}}
-        contentStyle={{overflowY: 'auto',paddingRight:'5px',display:'block',margin:"0 32px",paddingBottom:'10px'}}>
-        {this._renderOperation()}
+        contentStyle={{overflowY:"auto",display:'block',padding:"6px 28px 10px 32px",margin:0}}>
+        <div style={{paddingLeft:'9px',borderBottom:"1px solid #e6e6e6",paddingRight:'19px'}}>{this._renderOperation()}</div>
         <SolutionLabel {...props.solution}/>
         <Solution {...props.solution}/>
         <Problem {...props.problem}/>
         <div style={{marginTop:"46px"}}><SolutionGallery {...props.gallery}/></div>
-        <div style={{display:"flex"}}>
-          <div className="jazz-ecm-push-operation-label">{`${I18N.Setting.ECM.PushPanel.CreateUser} : `}</div>
-          <div style={{fontSize:'14px',color:'#0f0f0f',marginLeft:'5px'}}>{user || '-'}</div>
+        <div style={{display:"flex",alignItems:"flex-end"}}>
+          <div className="jazz-ecm-push-operation-label">{`${I18N.Setting.ECM.PushPanel.CreateUser}：`}</div>
+          <div style={{fontSize:'12px',color:'#9fa0a4',marginLeft:'5px'}}>{user || '-'}</div>
         </div>
         <Remark {...props.remark}/>
       </NewDialog>
