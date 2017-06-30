@@ -12,13 +12,13 @@ export class EnergySys extends Component {
     var energySysList=MeasuresStore.getAllEnergySys();
     return(
       <DropDownMenu
-                    style={{height: '28px'}}
-                    // style={{marginTop:'-10px',border:'1px solid #d7d7d7',height:'30px',borderRadius:'4px',width: '95px',
+                    style={{height: '26px'}}
+                    // style={{marginTop:'-10px',border:'1px solid #d7d7d7',height:'26px',borderRadius:'4px',width: '95px',
                     //                 height: '28px'}}
-                    labelStyle={{fontSize:'14px',color:"#505559",border:"1px solid #e6e6e6",borderRadius: "4px",lineHeight:'28px',height:'28px',paddingLeft:'11px',paddingRight:'28px'}}
+                    labelStyle={{fontSize:'14px',color:"#626469",border:"1px solid #e6e6e6",borderRadius: "4px",lineHeight:'26px',height:'26px',paddingLeft:'11px',paddingRight:'28px'}}
                     iconButton={<IconButton iconClassName="icon-arrow-down" iconStyle={{fontSize:"10px"}} style={{width:14,height:14}}/>}
                     // iconStyle={styles.icon}
-                    iconStyle={{marginTop:'-12px',padding:'0',right:'10',width:'24px'}}
+                    iconStyle={{marginTop:'-12px',padding:'0',right:'15px',width:'24px',top:"2px"}}
                     // underlineStyle={{border:'none'}}
                     value={EnergySys}
                     underlineStyle={{display:"none"}}

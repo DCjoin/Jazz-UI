@@ -230,6 +230,8 @@ class SupervisorDropDownMenu extends Component{
       label:{
         fontSize: '14px',
         color: '#626469',
+        top:"-2px",
+        paddingLeft:"0"
       },
       icon:{
         fontSize: '10px',
@@ -381,7 +383,7 @@ export default class Supervisor extends Component {
     if(this.props.usedInDetail){
       return(
         <div className="indetail">
-          <div className="jazz-ecm-push-operation-label">{I18N.Setting.CustomerManagement.Principal+':'}</div>
+          <div className="jazz-ecm-push-operation-label" style={{marginRight:"5px"}}>{I18N.Setting.CustomerManagement.Principal+'：'}</div>
           <SupervisorDropDownMenu {...prop}/>
         </div>
       )

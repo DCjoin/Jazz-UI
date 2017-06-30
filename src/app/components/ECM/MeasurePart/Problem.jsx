@@ -47,6 +47,7 @@ export default class Problem extends Component {
           value:Name,
           hintText:I18N.Setting.ECM.AddProblemName,
           hintStyle:{fontSize:"12px"},
+          inputStyle:{fontSize:"14px",color:"#626469"},
           style:{marginTop:'-5px',width:'100%'},
           multiLine:true,
         },
@@ -60,6 +61,7 @@ export default class Problem extends Component {
           value:Description,
           hintText:I18N.Setting.ECM.AddProblemDescription,
           hintStyle:{fontSize:"12px"},
+          inputStyle:{fontSize:"14px",color:"#626469"},
           style:{marginTop:'-5px',width:'100%'},
           multiLine:true,
         },
@@ -69,13 +71,13 @@ export default class Problem extends Component {
           <div className="name">
             {I18N.Setting.ECM.ProblemDetail}
           </div>
-          <div className="row">
+          <div className="row" style={{paddingLeft:'8px',paddingRight:'42px'}}>
             <div className="label">
               {I18N.Setting.ECM.ProblemDetailName}
             </div>
             {canEdit?<TextField {...props.name}/>:<div className="jazz-ecm-measure-viewabletext">{MeasuresStore.getDisplayText(EnergyProblem.Name)}</div>}
           </div>
-          <div className="row" style={{marginTop:"8px"}}>
+          <div className="row" style={{marginTop:"8px",paddingLeft:'8px',paddingRight:'42px'}}>
             <div className="label">
               {I18N.Setting.UserManagement.Comment}
             </div>
