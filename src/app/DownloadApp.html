@@ -152,6 +152,10 @@
 			<div style="height: 30%"></div>
 			<div class="ios-text">由于微信的限制，请点击右上角按钮，选择“在Safari中打开”，下载云能效</div>
 		</div>
+		<div id="ios_page_unsupport" style="display: none" class="ios-container">
+			<div style="height: 30%"></div>
+			<div style="text-align: center; font-size: 36px;">IOS系统暂时不支持下载</div>
+		</div>
 
 		<!-- android page -->
 		<div id="android_page" style="display: none" class="container">
@@ -228,7 +232,8 @@
 				if(isMS()){
 					document.getElementById('ios_page').style.display = 'block';
 				} else {
-					location.assign('https://itunes.apple.com/us/app/disco/id1002265425?l=zh&ls=1&mt=8');
+					document.getElementById('ios_page_unsupport').style.display = 'block';
+					// location.assign('https://itunes.apple.com/us/app/disco/id1002265425?l=zh&ls=1&mt=8');
 				}
 			} else {
 				if(isMS()){
