@@ -17,7 +17,7 @@ const IGNORE_DATA_QUALITY = 11;
 const CALENDAR_TYPE_WORKTIME = 2;
 const CALENDAR_TYPE_NO_WORKTIME = 3;
 
-function mapSeriesDataWithMax(isTriggerVal, isIgnoreVal, isEdit, isHistory, energyData, serie, serieIdx, series) {
+function mapSeriesDataWithMax(isEdit, isHistory, energyData, serie, serieIdx, series) {
   let history = isHistory(serieIdx),
   enableDelete = isEdit;
   if( enableDelete ) {
@@ -32,31 +32,28 @@ function mapSeriesDataWithMax(isTriggerVal, isIgnoreVal, isEdit, isHistory, ener
     color: history ? ALARM_COLOR : undefined,
     stacking: null,
     data: serie.data.map(
-      (data, dataIdx) => {
-        // 由于API返回的数据为请求时间的后一个步长，所以为了数据点可以正常显示，图表会自动往前加一个步长的空数据
-        // 所以从原数据获取状态时，index会比原数据的index多1，故-1
-        // 为什么不在根源上解决这个问题？
-        // 最古老的代码中有这样的逻辑，没有时间重新整理这么复杂的逻辑，我也是受害者
-        // Law 2017/04/20
-        let isTrigger = isTriggerVal(serieIdx, dataIdx - 1);
-        let isIgnore = isIgnoreVal(serieIdx, dataIdx - 1);
-        if( isTrigger || isIgnore ) {
-          let color = ALARM_COLOR;
-          if(isIgnore) {
-            color = GRAY_COLOR;
-          }
-          return {
-            x: data[0],
-            y: data[1],
-            color: color,
-            marker: {
-              states: {
-                hover: {
-                  fillColor: color,
+      data => {
+        if( data && data.length > 2 ) {
+          let isTrigger = data[2].DataQuality === TRIGGER_DATA_QUALITY;
+          let isIgnore = data[2].DataQuality === IGNORE_DATA_QUALITY;
+          if( isTrigger || isIgnore ) {
+            let color = ALARM_COLOR;
+            if(isIgnore) {
+              color = GRAY_COLOR;
+            }
+            return {
+              x: data[0],
+              y: data[1],
+              color: color,
+              marker: {
+                states: {
+                  hover: {
+                    fillColor: color,
+                  }
                 }
               }
-            }
-          }          
+            }          
+          }
         }
         return data;
       })
@@ -69,22 +66,8 @@ function postNewConfig(data, isEdit, newConfig) {
   Step = data.getIn(['EnergyViewData', 'TargetEnergyData', 0, 'Target', 'Step']);
   newConfig.series = newConfig.series.map(
     curry(mapSeriesDataWithMax)(
-      (serieIdx, dataIdx) => data.getIn([
-      'EnergyViewData', 
-      'TargetEnergyData', 
-      serieIdx,
-      'EnergyData',
-      dataIdx, 
-      'DataQuality']) === TRIGGER_DATA_QUALITY, 
-      (serieIdx, dataIdx) => data.getIn([
-      'EnergyViewData', 
-      'TargetEnergyData', 
-      serieIdx,
-      'EnergyData',
-      dataIdx, 
-      'DataQuality']) === IGNORE_DATA_QUALITY, 
       isEdit,
-      (serieIdx, dataIdx) => data.getIn([
+      serieIdx => data.getIn([
       'EnergyViewData', 
       'TargetEnergyData', 
       serieIdx,

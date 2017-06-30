@@ -327,7 +327,7 @@ let ChartReaderStrategyFactor = {
         }
         for (var j = 0; j < navigatorData.EnergyData.length; j++) {
           d = navigatorData.EnergyData[j];
-          arr.push([energyStore.readerStrategy.translateDateFn(d.UtcTime, null, step), d.DataValue]);
+          arr.push([energyStore.readerStrategy.translateDateFn(d.UtcTime, null, step), d.DataValue, d]);
         }
         nav = arr;
       } else {
@@ -401,7 +401,7 @@ let ChartReaderStrategyFactor = {
         var navArr = [];
         for (let j = 0; j < navigatorData.EnergyData.length; j++) {
           d = navigatorData.EnergyData[j];
-          navArr.push([energyStore.readerStrategy.translateDateFn(d.UtcTime, null, step), d.DataValue]);
+          navArr.push([energyStore.readerStrategy.translateDateFn(d.UtcTime, null, step), d.DataValue, d]);
         }
         nav = navArr;
       }
@@ -471,7 +471,7 @@ let ChartReaderStrategyFactor = {
             standardStart = timeRange.StartTime;
             for (let j = 0, len = navData.length; j < len; j++) {
               orgintime = j2d(navData[j].UtcTime);
-              arr.push([energyStore.readerStrategy.translateDateFn(orgintime, null, step), navData[j].DataValue]);
+              arr.push([energyStore.readerStrategy.translateDateFn(orgintime, null, step), navData[j].DataValue, navData[j]]);
             }
           } else {
             var timeSpace = CommonFuns.DateComputer.firstValueTime(timeRange.StartTime, step) - CommonFuns.DateComputer.firstValueTime(standardStart, step);
@@ -481,7 +481,7 @@ let ChartReaderStrategyFactor = {
             for (let j = 0, len = navData.length; j < len; j++) {
               orgintime = CommonFuns.DateComputer.AddSevralStep(new Date(j2d(navData[j].UtcTime)), step, -stepSpan) - 0;
               xAxisdate = energyStore.readerStrategy.translateDateFn(orgintime, null, step);
-              arr.push([xAxisdate, navData[j].DataValue]);
+              arr.push([xAxisdate, navData[j].DataValue, navData[j]]);
 
               if (returndata[0].data[j]) {
                 timeTable.push({
@@ -494,7 +494,7 @@ let ChartReaderStrategyFactor = {
         } else {
           for (let j = 0; j < eData.length; j++) {
             orgintime = j2d(eData[j].UtcTime);
-            arr.push([energyStore.readerStrategy.translateDateFn(orgintime, null, step), eData[j].DataValue]);
+            arr.push([energyStore.readerStrategy.translateDateFn(orgintime, null, step), eData[j].DataValue, eData[j]]);
             if (i > 0) {
               if (returndata[0].data[j]) {
                 timeTable.push({
@@ -662,7 +662,7 @@ let ChartReaderStrategyFactor = {
         if (series.EnergyData) {
           for (var j = 0; j < series.EnergyData.length; j++) {
             eData = series.EnergyData[j];
-            arr.push([energyStore.readerStrategy.translateDateFn(eData.UtcTime, null, eStep), eData.DataValue]);
+            arr.push([energyStore.readerStrategy.translateDateFn(eData.UtcTime, null, eStep), eData.DataValue, eData]);
           }
         }
         obj = seriesConstructorFn(series.Target);
