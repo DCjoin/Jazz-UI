@@ -83,7 +83,7 @@ var MainAppBar = React.createClass({
   _onChange: function() {},
   _onError: function() {
     var error = CurrentUserStore.getError();
-    if (error.indexOf('12003') > -1) {
+    if (error.indexOf('12003') > -1 || error.indexOf('050001212111') > -1) {
       this.setState({
         customError: error
       });
@@ -157,7 +157,7 @@ var MainAppBar = React.createClass({
   },
   _saveUser: function() {
     CurrentUserAction.modifyProfile(this.state.tempData);
-    this._onClose();
+    // this._onClose();
   },
   _logout: function() {
     LoginActionCreator.logout();
@@ -186,6 +186,7 @@ var MainAppBar = React.createClass({
   },
   _onRefresh: function() {
     window.currentUser=currentUser();
+    this._onClose();
     this.forceUpdate();
   },
   // ************* Change State Start *************
@@ -560,6 +561,10 @@ var MainAppBar = React.createClass({
       textField: "text",
       dataItems: titleItems
     };
+    let mobilePhoneError = null
+    if (this.state.customError) {
+      mobilePhoneError = I18N.Message.M12111;
+    }
     return (<NewDialog actions={actions} open={DIALOG_TYPE.MODIIFY_INFO === this.state.dialogType} title={I18N.Platform.User.EditPersonalInfo} modal={true} >
       <ul className={classnames("pop-userprofile-edit", 'jazz-userprofile-edit')}>
           <li>
@@ -574,7 +579,11 @@ var MainAppBar = React.createClass({
       }} {...titleProps} />
           </li>
           {isSuperAdmin ? null : <li>
-                        <ViewableTextField didChanged={this._bindMergeTemp("Telephone")} maxLen={200} ref="telephone"  isViewStatus={false} title={I18N.Platform.User.Telephone} defaultValue={user.Telephone} />
+                        <ViewableTextField 
+        regexFn={() => {
+          return this.state.customError && I18N.Message.M12111;
+        }}
+        errorText={mobilePhoneError} didChanged={this._bindMergeTemp("Telephone")} maxLen={200} ref="telephone"  isViewStatus={false} title={I18N.Platform.User.Telephone} defaultValue={user.Telephone} />
                     </li>}
 
           <li>

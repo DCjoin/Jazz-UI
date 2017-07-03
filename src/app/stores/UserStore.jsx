@@ -372,6 +372,9 @@ var UserStore = assign({}, PrototypeStore, {
     getDataPrivilege: function() {
       return _userPrivilege;
     },
+    mergeDataPrivilege: function(data) {
+      _userPrivilege[data[0]] = data[1];
+    },
     resetFilterObj: function() {
       _updatingFilterObj = _filterObj;
     },
@@ -542,9 +545,16 @@ var UserStore = assign({}, PrototypeStore, {
         UserStore.mergeCustomer(action.data);
         UserStore.emitChange();
         break;
+      case UserAction.MERGE_DATA_PRIVILEGE:
+        UserStore.mergeDataPrivilege(action.data);
+        UserStore.emitChange();
+        break;
       case UserAction.GET_CUSTOMER_BY_USER:
         UserStore.setUserCustomers(action.data);
         UserStore.emitChange(action.data.UserId);
+        break;
+      case UserAction.MERGE_CUSTOMER_BY_USER:
+        UserStore.mergeUserCustomers(action.data);
         break;
       case UserAction.GET_CUSTOMER_PERMISSION_BY_USER:
         if (action.data) {

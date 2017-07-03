@@ -151,6 +151,12 @@ let UserAction = {
       data: data
     });
   },
+  mergeDataPrivilege(data) {
+    AppDispatcher.dispatch({
+      type: Action.MERGE_DATA_PRIVILEGE,
+      data: data
+    });
+  },
   getCustomerByUser(userId) {
     var that = this;
     Ajax.post('/AccessControl/GetDataPrivilege', {

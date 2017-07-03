@@ -73,11 +73,6 @@ var User = React.createClass({
     });
   },
   _setAddStatus: function() {
-    var userDetail = this.refs.pop_user_detail;
-    if (userDetail && isFunction(userDetail.clearErrorTextBatchViewbaleTextFiled)) {
-      userDetail.clearErrorTextBatchViewbaleTextFiled();
-    }
-
     this.setState({
       infoTab: true,
       formStatus: formStatus.ADD,
