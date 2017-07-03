@@ -21,7 +21,7 @@ export class IconText extends Component{
           {this.props.icon}
           <div style={{fontSize:'12px',marginLeft:'5px',color:"#626469"}}>{this.props.label}</div>
         </div>
-				{(this.props.value || this.props.uom) && <div style={{display:'flex',flexDirection:'row',marginTop:'10px',alignItems:'baseline'}}>
+				{(this.props.value || this.props.uom) && <div style={{display:'flex',flexDirection:'row',marginTop:'10px',alignItems:'center',height:"32px"}}>
 					<div style={{fontSize: '25px',fontWeight: '500',color: '#0f0f0f'}}>{this.props.value}</div>
 					<div style={{fontSize: '14px',color: '#0f0f0f',marginLeft:this.props.value?'10px':'0px'}}>{this.props.uom}</div>
 				</div>}
@@ -64,7 +64,7 @@ export class MeasuresItem extends Component {
         return <div style={{display:"flex",flexDirection:'row',alignItems:'center',marginTop:'-3px'}}>
                 <FontIcon className="icon-no_ecm" color="#dc0a0a" iconStyle ={iconStyle} style = {style} />
                 <div style={{color:'#dc0a0a',fontSize:'14px'}}>{I18N.Setting.ECM.NoECM}</div>
-                <div style={{color:'#505559',marginLeft:'10px',fontSize:'10px'}}>{`(${I18N.Setting.ECM.EnergyProblem}:${EnergyProblem.Name})`}</div>
+                <div style={{color:'#4f5156',marginLeft:'10px',fontSize:'10px'}}>{`(${I18N.Setting.ECM.EnergyProblem}:${EnergyProblem.Name})`}</div>
               </div>
       }
     }
@@ -95,7 +95,7 @@ export class MeasuresItem extends Component {
             <IconText icon={sumIcon} label={I18N.Setting.ECM.InvestmentAmount} value={validValue(InvestmentAmount)} uom="RMB"/>
             <IconText icon={periodIcon} label={I18N.Setting.ECM.PaybackPeriod} value={InvestmentReturnCycle || '-'}
 											uom={CommonFuns.isNumber(InvestmentReturnCycle)?I18N.EM.Year:''}/>
-            <div style={{marginLeft:'100px'}}>{this.props.personInCharge}</div>
+            <div>{this.props.personInCharge}</div>
           </div>
           <div className="side">
             {this.props.action}
@@ -108,9 +108,9 @@ export class MeasuresItem extends Component {
       var {EnergyProblem}=this.props.measure.toJS();
 			var styles={
 				box:{
-					width: '16px',
-  				height: '16px',
-					color: '#9fa0a4',
+					width: '18px',
+  				height: '18px',
+					color: '#626469',
 					marginRight:'10px'
 				}
 			}

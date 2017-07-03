@@ -33,14 +33,14 @@ class AddRemark extends Component{
       onChange: (e,value)=>{this.setState({value})},
       value: this.state.value,
       hintText:I18N.Setting.ECM.AddRemark,
-      hintStyle:{fontSize:"12px"},
+      hintStyle:{fontSize:"12px",paddingLeft:"8px"},
       multiLine:true,
       style:{width:'100%'}
     };
     return(
       <div className="add_remark_item">
         <TextField {...prop}/>
-        <div>
+        <div style={{marginTop:'15px'}}>
           <FlatButton
             style={{width: '67px',height: '24px',borderRadius: '2px',border: 'solid 1px #3dcd58',lineHeight:'20px',minWidth:"67px"}}
             labelStyle={{color:'#3dcd58',fontSize:'14px'}}
@@ -53,7 +53,7 @@ class AddRemark extends Component{
                           })
                         }} />
           <FlatButton
-            style={{width: '67px',height: '24px',borderRadius: '2px',lineHeight:'20px',minWidth:"67px",marginLeft:'15px'}}
+            style={{width: '67px',height: '24px',borderRadius: '2px',lineHeight:'20px',minWidth:"67px",marginLeft:'25px'}}
             labelStyle={{color:'#626469',fontSize:'14px'}}
             label={I18N.Common.Button.Cancel2}
             onClick={()=>{
@@ -94,13 +94,19 @@ class RemarkItem extends Component{
   render(){
     var j2d=DataConverter.JsonToDateTime;
     let {Remark,CreateUserName,CreateUserId,CreateTime}=this.props.remark.toJS();
+    var date=moment(j2d(CreateTime)).format('YYYY-MM-DD'),
+        time=moment(j2d(CreateTime)).format('HH:mm')
     var info=`${moment(j2d(CreateTime)).format('YYYY-MM-DD HH:mm')} ${CreateUserName}`;
     return(
       <div className="remarkItem">
         <div className="text">{this.displayText(Remark)}</div>
         <div className="info">
-          <div className="time_name">{info}</div>
-          {canDelete(this.props.canEdit,CreateUserId) && <FontIcon className="icon-delete" style={{marginLeft:'5px',fontSize:'14px'}} onClick={this.props.onDelete}/>}
+          <div className="time_name">
+          {date}
+          <span style={{marginLeft:'10px',marginRight:'10px'}}>{time}</span>
+          {CreateUserName}
+        </div>
+          {canDelete(this.props.canEdit,CreateUserId) && <FontIcon className="icon-delete" color='#505559' style={{marginLeft:'10px',fontSize:'14px'}} onClick={this.props.onDelete}/>}
         </div>
       </div>
     )
