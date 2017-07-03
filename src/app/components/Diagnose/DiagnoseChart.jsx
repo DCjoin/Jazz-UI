@@ -158,6 +158,7 @@ function postNewConfig(data, isEdit, newConfig) {
   }
 
   newConfig.stacking = null;
+  newConfig.legendSwitchList = ['line', 'column'];
 }
 
 export default function DiagnoseChart(props) {
