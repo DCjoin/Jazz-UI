@@ -2256,6 +2256,10 @@ let CommonFuns = {
 
   pow10(num, pow) {
     num = (num + '');
+    let minus = num.indexOf('-') === 0;
+    if( minus ) {
+      num = num.substr(1);
+    }
     let floatIdx = num.indexOf('.'),
     arr = num.replace('.', '').split('');
     if(floatIdx === -1) {
@@ -2276,7 +2280,7 @@ let CommonFuns = {
         arr.push('0');
       }
     }
-    return arr.join('') * 1;
+    return ((minus ? '-' : '') + arr.join('') ) * 1;
   }
 
 };
