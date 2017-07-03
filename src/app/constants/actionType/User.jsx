@@ -25,6 +25,7 @@ module.exports = {
     DELETE_USER_SUCCESS: null,
     RESET_USER_AND_CUSTOMER: null,
     USER_ERROR: null,
-    CLEAR_ALL_USERS: null
+    CLEAR_ALL_USERS: null,
+    MERGE_DATA_PRIVILEGE: null,
   })
 };

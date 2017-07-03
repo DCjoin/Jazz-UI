@@ -5,7 +5,7 @@ export default {
 
   // ServeAddress: "http://w7cnbjqh1011219/webapihost",
   // ServeAddress: "http://dev.energymost.com",
-  ServeAddress: "http://sp1.energymost.com",
+  ServeAddress: "http://donut0703.energymost.com",
   // ServeAddress: "http://mirror.energymost.com",
   // ServeAddress: "http://localhost:8080",
 
