@@ -95,7 +95,7 @@ var UserDetail = React.createClass({
         }
       });
       if (roleData.Privileges.length === that.props.customers.size) {
-        roleData.WholeSystem = true;
+        roleData.WholeSystem = UserStore.getDataPrivilege().WholeSystem;
       }
     }
 
@@ -108,6 +108,9 @@ var UserDetail = React.createClass({
 
   _handlerChangeCheckbox: function(isCheckallBox, customerId, event) {
 
+    if (isCheckallBox) {
+      UserAction.mergeDataPrivilege(['WholeSystem', event.target.checked]);
+    }
     var customers = this.props.customers.map(customer => {
       if (isCheckallBox) {
         customer = customer.set("Privileged", event.target.checked);
@@ -340,7 +343,7 @@ var UserDetail = React.createClass({
 
   _renderPermissionTab: function() {
     var that = this,
-      checkAll = true,
+      checkAll = UserStore.getDataPrivilege().WholeSystem,
       {customers} = that.props,
       isView = that.props.formStatus === formStatus.VIEW;
     // if (customers.size < 1) {
@@ -353,15 +356,15 @@ var UserDetail = React.createClass({
     //     }}><CircularProgress  mode="indeterminate" size={2} /></div>
     //     );
     // }
-    if (customers.size === 0) {
-      checkAll = false;
-    } else {
-      customers.forEach((customer) => {
-        if (!customer.get("Privileged")) {
-          checkAll = false;
-        }
-      });
-    }
+    // if (customers.size === 0) {
+    //   checkAll = false;
+    // } else {
+    //   customers.forEach((customer) => {
+    //     if (!customer.get("Privileged")) {
+    //       checkAll = false;
+    //     }
+    //   });
+    // }
 
 
     var _renderDataPermissionLink = function(showPermissionProps) {
