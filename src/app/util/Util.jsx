@@ -838,6 +838,11 @@ let CommonFuns = {
     return interval;
   },
   getUomById(id) {
+    if( id === 32 ) { // 无单位
+      return {
+        Code: ''
+      };
+    }
     let uomArray = window.uoms;
     let uom;
     if (uomArray && uomArray.length > 0) {

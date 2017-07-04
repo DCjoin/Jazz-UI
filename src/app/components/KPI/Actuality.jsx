@@ -3,7 +3,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import IconButton from 'material-ui/IconButton';
 import {find} from 'lodash-es';
 
-import ReduxDecorator from '../../decorator/ReduxDecorator.jsx';
+import ReduxDecorator from 'decorator/ReduxDecorator.jsx';
 
 import PermissionCode from 'constants/PermissionCode.jsx';
 
@@ -196,7 +196,7 @@ export default class Actuality extends Component {
 			{!isReport(this.props) && !kpiHide && <div className='jazz-actuality-item'>
 				<div className='jazz-actuality-item-title'>{prefixTitle + I18N.Kpi.KPIActual}</div>
 				{hasKPIEdit && !singleKPI &&
-		    	<IconButton iconClassName='icon-setting' iconStyle={{color: '#32ad3d'}} onClick={() => {
+		    	<IconButton iconClassName='icon-setting' iconStyle={{color: '#32ad3d', fontSize: '20px'}} onClick={() => {
 			      	this.props.router.push(RoutePath.KPIGroupConfig(this.props.router.params));
 			      }}/>}
 				<KPIActuality configCB={isOnlyView() && this._configCB} router={this.props.router} hierarchyId={this._getHierarchyId(this.props.router, this.context)}/>

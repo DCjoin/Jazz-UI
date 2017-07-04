@@ -159,6 +159,7 @@ function postNewConfig(data, isEdit, newConfig) {
 
   newConfig.stacking = null;
   newConfig.legendSwitchList = ['line', 'column'];
+  newConfig.chart.backgroundColor = '#ffffff';
 
   if( triggerVal ) {    
     let oldTooltipFormatter = newConfig.tooltip.formatter;
