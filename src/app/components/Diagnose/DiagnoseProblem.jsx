@@ -162,7 +162,9 @@ export default class DiagnoseProblem extends Component {
 	}
 
 	_getStepDaysLimit() {
-		if( this.state.chartData.getIn(['EnergyViewData', 'TargetEnergyData', 0, 'Target', 'Step']) === TimeGranularity.Monthly )
+		if( this.state.chartData.getIn(['EnergyViewData', 'TargetEnergyData', 0, 'Target', 'Step']) === TimeGranularity.Monthly ) {
+			return 100;
+		}
 		return 30;
 	}
 
