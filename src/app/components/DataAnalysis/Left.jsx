@@ -101,6 +101,7 @@ export default class Left extends Component {
 		buttonStyle = {
 			height: 32,
 			lineHeight: '32px',
+			flex: 1,
 		};
 
 		if( !disabledButton ) {
