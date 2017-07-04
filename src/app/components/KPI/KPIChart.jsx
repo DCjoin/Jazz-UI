@@ -38,7 +38,8 @@ const DEFAULT_OPTIONS = {
               	}
           	}
       	},
-      	height: 220
+      	height: 220,
+      	backgroundColor: '#ffffff',
     },
     title: null,
     legend: {
@@ -108,6 +109,7 @@ const DEFAULT_OPTIONS = {
         pointPlacement: 0,
         color: '#0cad04',
         pointWidth: 30,
+        borderWidth: 1,
     }, {
         type: 'column',
         pointPadding: 0.2,
