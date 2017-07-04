@@ -9,7 +9,7 @@ import {find} from 'lodash-es';
 
 import util from 'util/Util.jsx';
 
-import {SettingStatus} from 'constants/actionType/KPI.jsx';
+import {SettingStatus, Type} from 'constants/actionType/KPI.jsx';
 
 import FlatButton from 'controls/FlatButton.jsx';
 import LinkButton from 'controls/LinkButton.jsx';
@@ -132,6 +132,7 @@ class KPIConfigItem extends Component {
 		this._onChangeState = this._onChangeState.bind(this);
 		this.state = {
 			opened: false,
+			rolongDisabled: true
 		};
 	}
 	_onChangeState(data) {
@@ -139,12 +140,24 @@ class KPIConfigItem extends Component {
 		this.props.onChangeState(assign({}, data, {refYear: Year}));
 	}
 	render() {
-		let {Year, GroupKpiItems, onChangeState, add} = this.props;
+		let {Year, GroupKpiItems, onChangeState, add, CustomerId} = this.props;
 		return (
 			<section className='year-item'>
 				<header className='year-item-header'>
 					<span>{util.replacePathParams(I18N.Setting.KPI.Group.HeaderYear, Year)}</span>
 					{add && <LinkButton ref='add_icon'
+						onMouseOver={() => {
+							var info={
+									CustomerId,
+									Year,
+									IndicatorType:Type.Quota
+								};
+							GroupKPIAction.getGroupByYear(CustomerId, Year, info, (data) => {
+								this.setState({
+									rolongDisabled: !data || data.length === 0
+								});		
+							});
+						}}
 						className={classnames('fa icon-add btn-icon', {
 							opened: this.state.opened
 						})} onClick={() => {
@@ -166,7 +179,10 @@ class KPIConfigItem extends Component {
 									settingStatus: SettingStatus.New
 								});
 							}} />
-							<MenuItem primaryText={I18N.Setting.KPI.Prolong} onClick={() => {
+							<MenuItem disabled={this.state.rolongDisabled} primaryText={I18N.Setting.KPI.Prolong} onClick={() => {
+								if(this.state.rolongDisabled) {
+									return;
+								}
 								this._onChangeState({
 									settingStatus: SettingStatus.Prolong
 								});
@@ -283,6 +299,7 @@ export default class KPIConfigList extends Component<void, Props, State> {
 					{GroupKPIStore.getGroupSettingsList().map( data => (
 					<KPIConfigItem
 						key={data.Year}
+						CustomerId={parseInt(this.props.router.params.customerId)}
 						onChangeState={(state) => {
 							this.setState(state);
 						}}
