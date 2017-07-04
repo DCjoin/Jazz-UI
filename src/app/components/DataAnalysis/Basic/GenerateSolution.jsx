@@ -387,7 +387,6 @@ export class GenerateSolution extends Component {
 		});
 		return (
 			<Dialog
-				modal={false}
 				open={true}
 				title={I18N.Setting.DataAnalysis.Scheme}
 				actions={[this._renderSubmit(), this._renderCancel()]}
