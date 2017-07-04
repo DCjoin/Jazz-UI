@@ -2373,6 +2373,7 @@ I18N.Setting.Diagnose.DiagnoseName='诊断名称';
 I18N.Setting.Diagnose.InputDiagnoseName='请输入诊断名称';
 I18N.Setting.Diagnose.By='按';
 I18N.Setting.Diagnose.HolidayRuningTimesTrigger='非运行时间触发值({0})';
+I18N.Setting.Diagnose.HolidayRuningTimesTriggerWithoutData='非运行时间触发值';
 I18N.Setting.Diagnose.BaseValueTitle='基准值({0})';
 I18N.Setting.Diagnose.SelectTagsUnsupportSteps='所选数据点不支持按“{0}”';
 I18N.Setting.Diagnose.Runtime='运行时间';

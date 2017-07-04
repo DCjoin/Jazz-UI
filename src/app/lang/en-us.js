@@ -2374,6 +2374,7 @@ I18N.Setting.Diagnose.DiagnoseName='Diagnosis Name';
 I18N.Setting.Diagnose.InputDiagnoseName='Please Input Diagnosis Name';
 I18N.Setting.Diagnose.By='By';
 I18N.Setting.Diagnose.HolidayRuningTimesTrigger='Non-runtime Trigger Value({0})';
+I18N.Setting.Diagnose.HolidayRuningTimesTriggerWithoutData='Non-runtime Trigger Value';
 I18N.Setting.Diagnose.BaseValueTitle='Base Value({0})';
 I18N.Setting.Diagnose.SelectTagsUnsupportSteps='"{0}" for Unsupported Selected Data Points';
 I18N.Setting.Diagnose.Runtime='Runtime';
