@@ -1852,6 +1852,8 @@ let CommonFuns = {
     MinusStep: function(time, step,fixedTimes) {
       var ticks = time - 0;
       switch (step) {
+        case 0: //hourly, minus one hour, this is a fixed value
+          return new Date(ticks - fixedTimes.minute);
         case 1: //hourly, minus one hour, this is a fixed value
           return new Date(ticks - fixedTimes.hour);
         case 2: //daily, minus one day, this is a fixed value
