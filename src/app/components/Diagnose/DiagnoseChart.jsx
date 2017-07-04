@@ -3,7 +3,7 @@ import Immutable from 'immutable';
 import {curry, flowRight} from 'lodash-es'
 import moment from 'moment';
 
-import {isNumber, isEmptyStr} from 'util/Util.jsx';
+import {isNumber, isEmptyStr, getUomById, convertDataByUom} from 'util/Util.jsx';
 import {Minite,Min15,Min30,Hourly,Hour2,Hour4,Hour6,Hour8,Hour12,Daily,Weekly,Monthly,Yearly} from 'constants/TimeGranularity.jsx';
 
 import ChartBasicComponent from 'components/DataAnalysis/Basic/ChartBasicComponent.jsx'
@@ -159,6 +159,15 @@ function postNewConfig(data, isEdit, newConfig) {
 
   newConfig.stacking = null;
   newConfig.legendSwitchList = ['line', 'column'];
+
+  if( triggerVal ) {    
+    let oldTooltipFormatter = newConfig.tooltip.formatter;
+    newConfig.tooltip.formatter = function() {
+      let uomId = data.getIn(['EnergyViewData', 'TargetEnergyData', 0, 'Target', 'UomId']);
+      return oldTooltipFormatter.call(this) + 
+      `<span style="color:${ALARM_COLOR}">${I18N.Setting.Diagnose.TriggerValue}: <b>${convertDataByUom(triggerVal)+getUomById(uomId).Code}</b></span><br/>`;
+    }
+  }
 }
 
 export default function DiagnoseChart(props) {
