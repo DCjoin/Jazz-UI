@@ -9,7 +9,11 @@ import UOMStore from 'stores/UOMStore.jsx';
 import Highcharts from '../highcharts/Highcharts.jsx';
 
 function getUnit(id) {
-	return find(UOMStore.getUoms(), uom => uom.Id === id).Code;
+	let code = find(UOMStore.getUoms(), uom => uom.Id === id).Code;
+	if( code === 'null' ) {
+		return '';
+	}
+	return code;
 }
 
 function changeLegendStyle(item) {

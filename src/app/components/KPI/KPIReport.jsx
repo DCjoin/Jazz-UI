@@ -17,7 +17,11 @@ import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import KPIChart from './KPIChart.jsx';
 
 function getUnit(id) {
-	return find(UOMStore.getUoms(), uom => uom.Id === id).Code;
+	let code = find(UOMStore.getUoms(), uom => uom.Id === id).Code;
+	if( code === 'null' ) {
+		return '';
+	}
+	return code;
 }
 function isFull() {
 	return privilegeUtil.isFull(PermissionCode.INDEX_AND_REPORT, CurrentUserStore.getCurrentPrivilege());

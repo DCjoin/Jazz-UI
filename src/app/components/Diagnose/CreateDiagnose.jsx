@@ -620,7 +620,7 @@ function RuntimeComp({
 
 function ModelACondition({TriggerValue, onUpdateTriggerValue, uom}) {
 	return (<div className='diagnose-condition-model-a'>
-		<span className='diagnose-condition-subtitle'>{I18N.format(I18N.Setting.Diagnose.HolidayRuningTimesTrigger,uom)}</span>
+		<span className='diagnose-condition-subtitle'>{uom ? I18N.format(I18N.Setting.Diagnose.HolidayRuningTimesTrigger,uom) : I18N.Setting.Diagnose.HolidayRuningTimesTriggerWithoutData}</span>
 		<ViewableTextField
 			regex={/^(\-?)\d{1,9}([.]\d{1,6})?$/}
 			errorMessage={I18N.Setting.Diagnose.FormatVaildTip}
@@ -697,7 +697,7 @@ function ModelBCondition({
 		</div>
 		{ TriggerType === TRIGGER_TYPE.FixedValue &&
 		<div style={{marginTop: 15}}>
-			<span className='diagnose-condition-subtitle'>{I18N.format(I18N.Setting.Diagnose.BaseValueTitle,uom)}</span>
+			<span className='diagnose-condition-subtitle'>{uom ? I18N.format(I18N.Setting.Diagnose.BaseValueTitle,uom) : I18N.EM.Ratio.BaseValue}</span>
 			<ViewableTextField
 				regex={/^(\-?)\d{1,9}([.]\d{1,6})?$/}
 				errorMessage={I18N.Setting.Diagnose.FormatVaildTip}

@@ -230,11 +230,11 @@
   }
 
   &-content {
-    border: 1px solid #000;
-    border-top: none;
+    border: 1px solid @border;
+    border-radius: 4px;
     &-header {
-      background-color: #000;
-      color: #fff;
+      background-color: @border;
+      color: #505559;
       display: flex;
       position: relative;
       justify-content: center;
@@ -247,6 +247,10 @@
         top: 5px;
       }
     }
+  }
+
+  & .dialog-title .dialog-close {
+    display: none;
   }
 }
 
