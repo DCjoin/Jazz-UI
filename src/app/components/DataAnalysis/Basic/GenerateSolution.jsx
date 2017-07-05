@@ -352,7 +352,8 @@ export class GenerateSolution extends Component {
 	}
 
 	_renderSubmit() {
-		return (<FlatButton
+		return (<NewFlatButton
+			secondary
 			disabled={!this._getAPIDataFormat().verified}
 			label={I18N.Setting.DataAnalysis.SchemeSubmit}
 			onClick={() => {
@@ -364,7 +365,8 @@ export class GenerateSolution extends Component {
 	}
 
 	_renderCancel() {
-		return (<FlatButton
+		return (<NewFlatButton
+			style={{marginLeft: 10}}
 			label={I18N.Common.Button.Cancel2}
 			onClick={() => {
 				this.props.onRequestClose();
