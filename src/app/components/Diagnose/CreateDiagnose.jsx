@@ -183,10 +183,10 @@ function AddIcon(props) {
 
 function step2NeedRequire(DiagnoseModel, TriggerType, TriggerValue) {
 	if( DiagnoseModel === DIAGNOSE_MODEL.A ) {
-		return isEmptyStr( TriggerValue );
+		return !(new RegExp(/^(\-?)\d{1,9}([.]\d{1,6})?$/).test(TriggerValue));
 	} else if(DiagnoseModel === DIAGNOSE_MODEL.B) {
 		if( TriggerType === TRIGGER_TYPE.FixedValue ) {
-			return isEmptyStr( TriggerValue );
+			return !(new RegExp(/^(\-?)\d{1,9}([.]\d{1,6})?$/).test(TriggerValue));
 		}
 		if( TriggerType === TRIGGER_TYPE.HistoryValue ) {
 			return false;
@@ -202,7 +202,6 @@ function stepLabelProps(stepValue, currentStep) {
 			height: 50,
 			fontSize: 14,
 			color: '#0f0f0f',
-			fontWeight: 'bold',
 		},
 	},
 	iconColor = '#32ad3d';
@@ -219,7 +218,7 @@ function stepLabelProps(stepValue, currentStep) {
 		      color: iconColor,
 		  }}>
 		<circle cx={12} cy={12} r={10}/>
-		<text x={12} y={16} fill='#ffffff' fontSize='12px' textAnchor='middle'>{stepValue + 1}</text>
+		<text x={12} y={17} fill='#ffffff' fontSize='12px' textAnchor='middle'>{stepValue + 1}</text>
 	</SvgIcon>);
 	return props;
 }
