@@ -42,5 +42,3 @@ deploy:
   script:
     - ./upload.sh ./${file} ${PROJECT} ${TRAVIS_BRANCH} ${ROLE} ${PACKAGE_VERSION} ${BASKET} ${BOB} ${JOHN} 
 
-
-
