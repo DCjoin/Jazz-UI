@@ -41,4 +41,4 @@ deploy:
     all_branches: true
   script:
     - ./upload.sh ./${file} ${PROJECT} ${TRAVIS_BRANCH} ${ROLE} ${PACKAGE_VERSION} ${BASKET} ${BOB} ${JOHN}
-    curl -X POST "http://114.215.253.133:8081/job/Jazz/buildWithParameters?environment=test&ui_version=latest&main_version=latest&branch=dev" --user ${auth_info}
+    - curl -X POST "http://114.215.253.133:8081/job/Jazz/buildWithParameters?environment=test&ui_version=latest&main_version=latest&branch=dev" --user ${auth_info}
