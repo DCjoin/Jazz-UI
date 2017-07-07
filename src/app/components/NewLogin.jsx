@@ -400,29 +400,29 @@ export default class NewLogin extends Component {
 						this.setState(this._getInitState);
 					}}/>
 
-					<header className='jazz-login-dialog-header'>{'云能效'}</header>
+					<header className='jazz-login-dialog-header'>{I18N.Login.Energymost}</header>
 					<content className='jazz-login-dialog-content'>
 
 						<div className='jazz-login-dialog-input-container'>
-							<input value={username} type="text" placeholder={'用户名'} onChange={(e) => {
+							<input value={username} type="text" placeholder={I18N.Login.UserName} onChange={(e) => {
 								this.setState({
 									username: e.target.value
 								});
 							}}/>
 							<hr/>
-							<input value={password} type="password" placeholder={'密码'} onChange={(e) => {
+							<input value={password} type="password" placeholder={I18N.Login.Password} onChange={(e) => {
 								this.setState({
 									password: e.target.value
 								});
 							}}/>
 						</div>
 						<div className='jazz-login-dialog-err'>{errorMsg}</div>
-						<FlatButton disabled={!password || !username} onClick={this._onLogin} label={'登录'} primary style={{width: '100%', marginTop: 25}}/>
+						<FlatButton disabled={!password || !username} onClick={this._onLogin} label={I18N.Login.Login} primary style={{width: '100%', marginTop: 25}}/>
 						<LinkButton onClick={() => {
 							this.setState({
 								showForgetPSWDialog: true
 							});
-						}} labelStyle={{float: 'right', display: 'inline-block', marginTop: 3}} label={'忘记密码'}/>
+						}} labelStyle={{float: 'right', display: 'inline-block', marginTop: 3}} label={I18N.Login.forgetPSW}/>
 					</content>
 
 				</div>
@@ -442,17 +442,17 @@ export default class NewLogin extends Component {
 					<img style={{height: 33, width: 266, marginTop: 20, marginLeft: 30}} src={require('../less/images/logo.png')} />
 					<div id='login-header-actions'>
 						<a className='jazz-mobile-qr-link' href="javascript:void(0)">
-						云能效客户端
+							{I18N.Login.APP}
 							<div className='jazz-mobile-qr'>
 								<img src={require('../less/images/QRIcon.png')}/>
-								<div>扫描下载云能效客户端</div>
+								<div>{I18N.Login.ScanDownloadAPP}</div>
 							</div>
 						</a>
-						<button className='login-button' onClick={this._onClickLogin}>登录</button>
+						<button className='login-button' onClick={this._onClickLogin}>{I18N.Login.Login}</button>
 					</div>
 				</header>
 
-				<Container imageUrl={require('../less/images/step1.png')} style={{
+				<Container imageUrl={require(`../less/images/step1-${'zh-cn'||this.props.params.lang}.png`)} style={{
 					backgroundColor: '#fff'
 				}}>
 					<div style={{
@@ -461,34 +461,34 @@ export default class NewLogin extends Component {
 						position: 'absolute',
 						color: '#fff'
 					}}>
-						<div className='child content-title' data-to='top' data-index='1' >无需手动分析，节能方案即可无忧直达</div>
+						<div className='child content-title' data-to='top' data-index='1' >{I18N.Login.Step1.Title}</div>
 						<div className='child' data-to='top' data-index='2' >
-							<div className='content-text'>人工智能诊断模块，覆盖数百种能效问题</div>
-							<div className='content-text'>专家顾问分析，解决方案直接推送</div>
-							<div className='content-text'>投资回报率，节能量，投资金额，节约成本一目了然</div>
+							<div className='content-text'>{I18N.Login.Step1.Line1}</div>
+							<div className='content-text'>{I18N.Login.Step1.Line2}</div>
+							<div className='content-text'>{I18N.Login.Step1.Line3}</div>
 						</div>
 					</div>					
 				</Container>
 
-				<Container imageUrl={require('../less/images/step2.png')} style={{
+				<Container imageUrl={require(`../less/images/step2-${'zh-cn'||this.props.params.lang}.png`)} style={{
 					backgroundColor: '#fff'
 				}}>
 					<div style={{
 						top: '30%',
 						left: '12%',
 						position: 'absolute',
-						color: '#000'
+						color: '#c11329'
 					}}>
-						<div style={{marginBottom: 20}} className='child content-title' data-to='top' data-index='1' >线上线下互动，方案全程追踪</div>
+						<div style={{marginBottom: 20}} className='child content-title' data-to='top' data-index='1' >{I18N.Login.Step2.Title}</div>
 						<div className='child' data-to='top' data-index='2' >
-							<div className='content-text'>Web端与App协同工作</div>
-							<div className='content-text'>方案分配到人，让执行更高效</div>
-							<div className='content-text'><span style={{display: 'inline-block'}}>节能方案全生命周期管理——<br/>从推送方案到方案执行到成本降低全程掌握</span></div>
+							<div className='content-text'>{I18N.Login.Step2.Line1}</div>
+							<div className='content-text'>{I18N.Login.Step2.Line2}</div>
+							<div className='content-text'><span style={{display: 'inline-block'}}>{I18N.Login.Step2.Line3}——<br/>{I18N.Login.Step2.Line4}</span></div>
 						</div>
 					</div>
 				</Container>
 
-				<Container imageUrl={require('../less/images/step3.png')} style={{
+				<Container imageUrl={require(`../less/images/step3-${'zh-cn'||this.props.params.lang}.png`)} style={{
 					backgroundColor: '#fff'
 				}}>
 					<div style={{
@@ -497,16 +497,16 @@ export default class NewLogin extends Component {
 						position: 'absolute',
 						color: '#fff'
 					}}>
-						<div className='child content-title' data-to='top' data-index='1' >ISO50001能源管理方法，助力节能达成</div>
+						<div className='child content-title' data-to='top' data-index='1' >{I18N.Login.Step3.Title}</div>
 						<div className='child' data-to='top' data-index='2' >
-							<div className='content-text'>自上而下分解集团目标至建筑目标，同尺度排名让目标管理清晰统一</div>
-							<div className='content-text'>智能预测全年目标达成情况，实时掌握能源使用状态</div>
-							<div className='content-text'>智能细分建筑月度目标，助力目标达成</div>
+							<div className='content-text'>{I18N.Login.Step3.Line1}</div>
+							<div className='content-text'>{I18N.Login.Step3.Line2}</div>
+							<div className='content-text'>{I18N.Login.Step3.Line3}</div>
 						</div>
 					</div>					
 				</Container>
 
-				<Container imageUrl={require('../less/images/step4.png')} style={{
+				<Container imageUrl={require(`../less/images/step4-${'zh-cn'||this.props.params.lang}.png`)} style={{
 					backgroundColor: '#fff'
 				}}>
 					<div style={{
@@ -515,16 +515,16 @@ export default class NewLogin extends Component {
 						position: 'absolute',
 						color: '#fff'
 					}}>
-						<div className='child content-title' data-to='top' data-index='1' >无需手动对比，节能效果轻松呈现</div>
+						<div className='child content-title' data-to='top' data-index='1' >{I18N.Login.Step4.Title}</div>
 						<div className='child' data-to='top' data-index='2' >
-							<div className='content-text'>智能计算已实施节能方案节能量，让数据更加精确</div>
-							<div className='content-text'>动态呈现所有方案节能效果，让成本降低实时可见</div>
+							<div className='content-text'>{I18N.Login.Step4.Line1}</div>
+							<div className='content-text'>{I18N.Login.Step4.Line2}</div>
 						</div>
 					</div>					
 				</Container>
 
 
-				<Container imageUrl={require('../less/images/step5.png')} style={{
+				<Container imageUrl={require(`../less/images/step5-${'zh-cn'||this.props.params.lang}.png`)} style={{
 					backgroundColor: '#fff'
 				}}>
 					<div style={{
@@ -533,15 +533,16 @@ export default class NewLogin extends Component {
 						position: 'absolute',
 						color: '#fff'
 					}}>
-						<div className='child content-title' data-to='top' data-index='1' >展示集团最佳方案，让节能可复制可粘贴</div>
+						<div className='child content-title' data-to='top' data-index='1' >{I18N.Login.Step5.Title}</div>
 						<div className='child' data-to='top' data-index='2' >
-							<div className='content-text'>智能筛选所有建筑节能方案，让投入少，回报高的方案脱颖而出</div>
-							<div className='content-text'>最佳方案直接推送，让决策更轻松更高效</div>
+							<div className='content-text'>{I18N.Login.Step5.Line1}</div>
+							<div className='content-text'>{I18N.Login.Step5.Line2}</div>
 						</div>
 					</div>					
 				</Container>
 
-				<footer className="jazz-public-footer" id='login-footer' style={{display: 'none'}}>									  <div className="jazz-public-footer-about">
+				<footer className="jazz-public-footer" id='login-footer' style={{display: 'none'}}>
+					<div className="jazz-public-footer-about">
 				  	<a className='contact-us-link' href='javascript:void(0)' target="_blank">
 				  		{I18N.Login.ContactUS}
 				  		<div className='contact-us-card'>
@@ -560,11 +561,11 @@ export default class NewLogin extends Component {
 				</footer>
 
 				<nav id='login-nav'>
-					<li onClick={go(0)}>{'智能方案'}</li>
-					<li onClick={go(1)}>{'方案追踪'}</li>
-					<li onClick={go(2)}>{'集团指标'}</li>
-					<li onClick={go(3)}>{'节能效果'}</li>
-					<li onClick={go(4)}>{'最佳方案'}</li>
+					<li onClick={go(0)}>{I18N.Login.Step1.Nav}</li>
+					<li onClick={go(1)}>{I18N.Login.Step2.Nav}</li>
+					<li onClick={go(2)}>{I18N.Login.Step3.Nav}</li>
+					<li onClick={go(3)}>{I18N.Login.Step4.Nav}</li>
+					<li onClick={go(4)}>{I18N.Login.Step5.Nav}</li>
 				</nav>
 
 			</div>
