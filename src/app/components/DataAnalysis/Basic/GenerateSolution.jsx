@@ -390,6 +390,7 @@ export class GenerateSolution extends Component {
 		return (
 			<Dialog
 				open={true}
+				modal={false}
 				title={I18N.Setting.DataAnalysis.Scheme}
 				actions={[this._renderSubmit(), this._renderCancel()]}
 				onRequestClose={this.props.onRequestClose}
