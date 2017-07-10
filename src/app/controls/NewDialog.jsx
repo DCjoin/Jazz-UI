@@ -75,6 +75,9 @@ class NewDialog extends Component {
 
 		dialogWrapperProps = {
 			style: wrapperStyle,
+			onClick: (e) => {
+				e.stopPropagation();
+			}
 		},
 
 		actionsContainerProps = {
@@ -99,13 +102,18 @@ class NewDialog extends Component {
 		overlayProps = {
 			className: getOverlayClassName(overlayClassName),
 			style: overlayStyle,
+			onClick: () => {
+				if( !modal ) {
+					this.props.onRequestClose();
+				}
+			}
 		},
 		dialogInlineProps = { dialogProps, contentProps, titleProps, actionsContainerProps, title, actions,modal, onRequestClose,isOutsideClose};
 
 		let HighOrderDialogInline = DialogInline;
-		if( !modal  && isOutsideClose) {
-			HighOrderDialogInline = ClickAwayListener(HighOrderDialogInline);
-		}
+		// if( !modal  && isOutsideClose) {
+		// 	HighOrderDialogInline = ClickAwayListener(HighOrderDialogInline);
+		// }
 
 		return (
 		<ReactCSSTransitionGroup transitionName="dialog-transition-group" transitionEnterTimeout={animatinsTime} transitionLeaveTimeout={animatinsTime}>

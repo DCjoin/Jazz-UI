@@ -230,7 +230,7 @@ export class GenerateSolution extends Component {
 	_renderEnergyProblem() {
 		let {ProblemName, ProblemMark, ProblemDesc} = this.state;
 		return (<div style={{flex: 'none'}}>
-			<div><b>{I18N.Setting.DataAnalysis.EnergyProblem.Title}</b></div>
+			<div style={{fontSize: '16px', fontWeight: 500}}>{I18N.Setting.DataAnalysis.EnergyProblem.Title}</div>
 			<ViewableTextField title={I18N.Common.Glossary.Name}
 				defaultValue={ProblemName}
 				didChanged={this._setStateValue('ProblemName')}/>
@@ -300,7 +300,7 @@ export class GenerateSolution extends Component {
 		return (
 			<OnceHidePanel label={I18N.Setting.DataAnalysis.SaveScheme.AddDesc}>
 				<div style={{flex: 'none'}}>
-					<b>{I18N.Setting.DataAnalysis.SaveScheme.Title}</b>
+					<div style={{fontSize: '16px', fontWeight: 500}}>{I18N.Setting.DataAnalysis.SaveScheme.Title}</div>
 					<div>
 						<ViewableTextField title={I18N.Common.Glossary.Name}
 							defaultValue={SaveName}
@@ -352,7 +352,8 @@ export class GenerateSolution extends Component {
 	}
 
 	_renderSubmit() {
-		return (<FlatButton
+		return (<NewFlatButton
+			secondary
 			disabled={!this._getAPIDataFormat().verified}
 			label={I18N.Setting.DataAnalysis.SchemeSubmit}
 			onClick={() => {
@@ -364,7 +365,8 @@ export class GenerateSolution extends Component {
 	}
 
 	_renderCancel() {
-		return (<FlatButton
+		return (<NewFlatButton
+			style={{marginLeft: 10}}
 			label={I18N.Common.Button.Cancel2}
 			onClick={() => {
 				this.props.onRequestClose();
@@ -388,8 +390,10 @@ export class GenerateSolution extends Component {
 		return (
 			<Dialog
 				open={true}
+				modal={false}
 				title={I18N.Setting.DataAnalysis.Scheme}
 				actions={[this._renderSubmit(), this._renderCancel()]}
+				onRequestClose={this.props.onRequestClose}
 				wrapperStyle={{maxWidth: SVG_WIDTH + 44 * 2 + 20, width: SVG_WIDTH + 44 * 2 + 20}}
 				contentStyle={{overflowY: 'auto'}}>
 				{this._renderEnergyProblem()}
@@ -440,6 +444,8 @@ export class GenerateSolutionButton extends Component {
 	      label:{
 	        fontSize:'14px',
 	        marginTop: -2,
+	        height: 30,
+	        lineHeight: '30px',
 	      }
 	    };
 		return (
@@ -448,7 +454,11 @@ export class GenerateSolutionButton extends Component {
 					secondary={true}
 					disabled={disabled}
 					label={I18N.Setting.DataAnalysis.Scheme}
-					labelstyle={styles.label}
+					labelStyle={{...styles.label, ...{
+							top: -1,
+							verticalAlign: 'top',
+						}
+					}}
 					icon={
 						<FontIcon className="icon-add" style={styles.label}/>
 					}

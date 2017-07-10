@@ -79,11 +79,13 @@ var resetPSW = React.createClass({
     _getEditPasswordDialog: function() {
         let {newPassword, confirmNewPassword} = this.state.tempData,
             newPasswordProps = {
+                type: 'password',
                 floatingLabelText: I18N.Platform.Password.NewPassword,
                 value: newPassword,
                 onChange: this._bindMergeTemp("newPassword")
             },
             confirmNewPasswordProps = {
+                type: 'password',
                 floatingLabelText: I18N.Platform.Password.confirmNewPassword,
                 value: confirmNewPassword,
                 onChange: this._bindMergeTemp("confirmNewPassword")
@@ -117,14 +119,10 @@ var resetPSW = React.createClass({
                 <div>{I18N.ResetPassword.Welcome1} {this.props.params.user} {I18N.ResetPassword.Welcome2}</div>
                 <ul className="pop-userprofile-edit">
                     <li>
-                        <TextField {...newPasswordProps}>
-                            <input type="password"/>
-                        </TextField>
+                        <TextField {...newPasswordProps} />
                     </li>
                     <li>
-                        <TextField {...confirmNewPasswordProps}>
-                            <input type="password"/>
-                        </TextField>
+                        <TextField {...confirmNewPasswordProps} />
                     </li>
                 </ul>
             </Dialog>

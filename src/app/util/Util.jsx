@@ -838,6 +838,11 @@ let CommonFuns = {
     return interval;
   },
   getUomById(id) {
+    if( id === 32 ) { // 无单位
+      return {
+        Code: ''
+      };
+    }
     let uomArray = window.uoms;
     let uom;
     if (uomArray && uomArray.length > 0) {
@@ -1852,6 +1857,8 @@ let CommonFuns = {
     MinusStep: function(time, step,fixedTimes) {
       var ticks = time - 0;
       switch (step) {
+        case 0: //hourly, minus one hour, this is a fixed value
+          return new Date(ticks - fixedTimes.minute);
         case 1: //hourly, minus one hour, this is a fixed value
           return new Date(ticks - fixedTimes.hour);
         case 2: //daily, minus one day, this is a fixed value
@@ -2256,6 +2263,10 @@ let CommonFuns = {
 
   pow10(num, pow) {
     num = (num + '');
+    let minus = num.indexOf('-') === 0;
+    if( minus ) {
+      num = num.substr(1);
+    }
     let floatIdx = num.indexOf('.'),
     arr = num.replace('.', '').split('');
     if(floatIdx === -1) {
@@ -2276,7 +2287,7 @@ let CommonFuns = {
         arr.push('0');
       }
     }
-    return arr.join('') * 1;
+    return ((minus ? '-' : '') + arr.join('') ) * 1;
   }
 
 };

@@ -4,11 +4,11 @@
 
 @font-face {
   font-family: "fontcustom";
-  src: url("./fontcustom_91f5fd8b37d4e6d8175bb69ba9647179.eot");
-  src: url("./fontcustom_91f5fd8b37d4e6d8175bb69ba9647179.eot?#iefix") format("embedded-opentype"),
-       url("./fontcustom_91f5fd8b37d4e6d8175bb69ba9647179.woff") format("woff"),
-       url("./fontcustom_91f5fd8b37d4e6d8175bb69ba9647179.ttf") format("truetype"),
-       url("./fontcustom_91f5fd8b37d4e6d8175bb69ba9647179.svg#fontcustom") format("svg");
+  src: url("./fontcustom_a989372f49c011e28b769a240553a80c.eot");
+  src: url("./fontcustom_a989372f49c011e28b769a240553a80c.eot?#iefix") format("embedded-opentype"),
+       url("./fontcustom_a989372f49c011e28b769a240553a80c.woff") format("woff"),
+       url("./fontcustom_a989372f49c011e28b769a240553a80c.ttf") format("truetype"),
+       url("./fontcustom_a989372f49c011e28b769a240553a80c.svg#fontcustom") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -16,7 +16,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: "fontcustom";
-    src: url("./fontcustom_91f5fd8b37d4e6d8175bb69ba9647179.svg#fontcustom") format("svg");
+    src: url("./fontcustom_a989372f49c011e28b769a240553a80c.svg#fontcustom") format("svg");
   }
 }
 
@@ -101,6 +101,7 @@
 .icon-folder:before,
 .icon-folder1:before,
 .icon-folder2:before,
+.icon-happy:before,
 .icon-hide:before,
 .icon-hierarchy:before,
 .icon-hierarchy-fold:before,
@@ -207,6 +208,7 @@
 .icon-tickets-processing:before,
 .icon-time-ration:before,
 .icon-to-ecm:before,
+.icon-unhappy:before,
 .icon-unit-index:before,
 .icon-uploading:before,
 .icon-user:before,
@@ -317,6 +319,7 @@
 .icon-folder:before { content: "\f157"; }
 .icon-folder1:before { content: "\f1be"; }
 .icon-folder2:before { content: "\f1c7"; }
+.icon-happy:before { content: "\f1d1"; }
 .icon-hide:before { content: "\f168"; }
 .icon-hierarchy:before { content: "\f143"; }
 .icon-hierarchy-fold:before { content: "\f119"; }
@@ -423,6 +426,7 @@
 .icon-tickets-processing:before { content: "\f171"; }
 .icon-time-ration:before { content: "\f15f"; }
 .icon-to-ecm:before { content: "\f196"; }
+.icon-unhappy:before { content: "\f1d2"; }
 .icon-unit-index:before { content: "\f160"; }
 .icon-uploading:before { content: "\f179"; }
 .icon-user:before { content: "\f132"; }

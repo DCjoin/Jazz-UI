@@ -88,7 +88,7 @@ let defaultConfig = {
     zoomType: 'x',
     panning: false,
     animation: true,
-    backgroundColor: "#FBFBFB",
+    backgroundColor: "#ffffff",
     plotBackgroundColor: null,
     plotBorderWidth: null,
     plotShadow: false,

@@ -183,10 +183,10 @@ function AddIcon(props) {
 
 function step2NeedRequire(DiagnoseModel, TriggerType, TriggerValue) {
 	if( DiagnoseModel === DIAGNOSE_MODEL.A ) {
-		return isEmptyStr( TriggerValue );
+		return !(new RegExp(/^(\-?)\d{1,9}([.]\d{1,6})?$/).test(TriggerValue));
 	} else if(DiagnoseModel === DIAGNOSE_MODEL.B) {
 		if( TriggerType === TRIGGER_TYPE.FixedValue ) {
-			return isEmptyStr( TriggerValue );
+			return !(new RegExp(/^(\-?)\d{1,9}([.]\d{1,6})?$/).test(TriggerValue));
 		}
 		if( TriggerType === TRIGGER_TYPE.HistoryValue ) {
 			return false;
@@ -202,7 +202,6 @@ function stepLabelProps(stepValue, currentStep) {
 			height: 50,
 			fontSize: 14,
 			color: '#0f0f0f',
-			fontWeight: 'bold',
 		},
 	},
 	iconColor = '#32ad3d';
@@ -219,7 +218,7 @@ function stepLabelProps(stepValue, currentStep) {
 		      color: iconColor,
 		  }}>
 		<circle cx={12} cy={12} r={10}/>
-		<text x={12} y={16} fill='#ffffff' fontSize='12px' textAnchor='middle'>{stepValue + 1}</text>
+		<text x={12} y={17} fill='#ffffff' fontSize='12px' textAnchor='middle'>{stepValue + 1}</text>
 	</SvgIcon>);
 	return props;
 }
@@ -620,7 +619,7 @@ function RuntimeComp({
 
 function ModelACondition({TriggerValue, onUpdateTriggerValue, uom}) {
 	return (<div className='diagnose-condition-model-a'>
-		<span className='diagnose-condition-subtitle'>{I18N.format(I18N.Setting.Diagnose.HolidayRuningTimesTrigger,uom)}</span>
+		<span className='diagnose-condition-subtitle'>{uom ? I18N.format(I18N.Setting.Diagnose.HolidayRuningTimesTrigger,uom) : I18N.Setting.Diagnose.HolidayRuningTimesTriggerWithoutData}</span>
 		<ViewableTextField
 			regex={/^(\-?)\d{1,9}([.]\d{1,6})?$/}
 			errorMessage={I18N.Setting.Diagnose.FormatVaildTip}
@@ -697,7 +696,7 @@ function ModelBCondition({
 		</div>
 		{ TriggerType === TRIGGER_TYPE.FixedValue &&
 		<div style={{marginTop: 15}}>
-			<span className='diagnose-condition-subtitle'>{I18N.format(I18N.Setting.Diagnose.BaseValueTitle,uom)}</span>
+			<span className='diagnose-condition-subtitle'>{uom ? I18N.format(I18N.Setting.Diagnose.BaseValueTitle,uom) : I18N.EM.Ratio.BaseValue}</span>
 			<ViewableTextField
 				regex={/^(\-?)\d{1,9}([.]\d{1,6})?$/}
 				errorMessage={I18N.Setting.Diagnose.FormatVaildTip}
@@ -957,7 +956,7 @@ export class CreateStep2 extends Component {
 				<DiagnoseCondition
 					Step={Step}
 					uom={_firstUom}
-					disabledHistory={disabledHistory && Step !== TimeGranularity.Monthly}
+					disabledHistory={disabledHistory || Step === TimeGranularity.Monthly}
 					DiagnoseModel={DiagnoseModel}
 					WorkTimes={WorkTimes}
 					onChangeWorkTime={onUpdateFilterObj('WorkTimes')}

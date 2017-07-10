@@ -15,7 +15,11 @@ var UOMStore = assign({},PrototypeStore,{
     return _uoms; 
   },
   getUomById(id) {
-    return find(UOMStore.getUoms(), uom => uom.Id === id).Code;
+    let code = find(UOMStore.getUoms(), uom => uom.Id === id).Code;
+    if( code === 'null' ) {
+      return '';
+    }
+    return code;
   }
 });
 

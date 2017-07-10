@@ -269,7 +269,7 @@ let MainApp = React.createClass({
         DiagnoseAction.getConsultant(hierarchyId);
         let {pathname, query} = this.props.router.location;
         query.init_hierarchy_id = hierarchyId;
-        this.props.router.push(pathname + '?' + querystring.stringify(query) );
+        this.props.router.push(pathname + '?init_hierarchy_id=' + hierarchyId/* + querystring.stringify(query) */);
 
         this._getECMUnread();
         this._getDiagnoseProblem();

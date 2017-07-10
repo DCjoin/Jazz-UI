@@ -687,7 +687,6 @@ let ChartCmpStrategyFactor = {
   },
   mergeConfigFnStrategy: {
     energyChartCmpMergeConfig(defaultConfig, chartComponentBox) {
-      console.log("energyChartCmpMergeConfig");
       var commonTooltipFormatter;
       if (chartComponentBox.props.timeRanges.length > 1) {
         commonTooltipFormatter = function() {

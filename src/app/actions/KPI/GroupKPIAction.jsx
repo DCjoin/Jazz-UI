@@ -31,11 +31,15 @@ const GroupKPIAction = {
       error: function() {}
     });
   },
-  getGroupByYear(customerId,year,info){
+  getGroupByYear(customerId,year,info, cb){
     Ajax.get(util.replacePathParams(Path.KPI.Group.getGroupByYear,customerId,year),
     {
       success: function(resBody) {
-        SingleKPIAction.getKPIPeriodByYear(customerId,year);
+        if( cb ) {
+          cb(resBody);
+        } else {
+          SingleKPIAction.getKPIPeriodByYear(customerId,year);
+        }
         AppDispatcher.dispatch({
           type: Action.GET_KPI_GROUP_BY_YEAR,
           data: resBody,

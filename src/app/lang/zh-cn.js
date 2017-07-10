@@ -96,7 +96,7 @@ I18N.Login.Logout = '注销';
 I18N.Login.Login = '登录';
 I18N.Login.Title = '云能效管理平台';
 I18N.Login.Title2 = '用户名密码登录';
-I18N.Login.forgetPSW = '忘记密码？';
+I18N.Login.forgetPSW = '忘记密码';
 I18N.Login.tryProduct = '产品试用';
 I18N.Login.AboutUS = '关于施耐德电气';
 I18N.Login.Weibo = '施耐德电气官方微博';
@@ -119,6 +119,39 @@ I18N.Login.TrialUseSussTip2 = '点击邮件中的链接以试用云能效管理�
 I18N.Login.NoPriTitle = '无法登录云能效管理平台';
 I18N.Login.NoPriDetail = '您的帐号没有任何数据权限，请联系您的服务商管理员。';
 I18N.Login.NoPriButton = '返回登录页面';
+
+I18N.Login.Energymost = '云能效';
+I18N.Login.APP = '云能效客户端';
+I18N.Login.ScanDownloadAPP = '扫描下载云能效客户端';
+I18N.Login.Step1 = {};
+I18N.Login.Step1.Nav = '智能方案';
+I18N.Login.Step1.Title = '无需手动分析，节能方案即可无忧直达';
+I18N.Login.Step1.Line1 = '人工智能诊断模块，覆盖数百种能效问题';
+I18N.Login.Step1.Line2 = '专家顾问分析，解决方案直接推送';
+I18N.Login.Step1.Line3 = '投资回报率，节能量，投资金额，节约成本一目了然';
+I18N.Login.Step2 = {};
+I18N.Login.Step2.Nav = '方案追踪';
+I18N.Login.Step2.Title = '线上线下互动，方案全程追踪';
+I18N.Login.Step2.Line1 = 'Web端与App协同工作';
+I18N.Login.Step2.Line2 = '方案分配到人，让执行更高效';
+I18N.Login.Step2.Line3 = '节能方案全生命周期管理';
+I18N.Login.Step2.Line4 = '从推送方案到方案执行到成本降低全程掌握';
+I18N.Login.Step3 = {};
+I18N.Login.Step3.Nav = '集团指标';
+I18N.Login.Step3.Title = 'ISO50001能源管理方法，助力节能达成';
+I18N.Login.Step3.Line1 = '自上而下分解集团目标至建筑目标，同尺度排名让目标管理清晰统一';
+I18N.Login.Step3.Line2 = '智能预测全年目标达成情况，实时掌握能源使用状态';
+I18N.Login.Step3.Line3 = '智能细分建筑月度目标，助力目标达成';
+I18N.Login.Step4 = {};
+I18N.Login.Step4.Nav = '节能效果';
+I18N.Login.Step4.Title = '无需手动对比，节能效果轻松呈现';
+I18N.Login.Step4.Line1 = '智能计算已实施节能方案节能量，让数据更加精确';
+I18N.Login.Step4.Line2 = '动态呈现所有方案节能效果，让成本降低实时可见';
+I18N.Login.Step5 = {};
+I18N.Login.Step5.Nav = '最佳方案';
+I18N.Login.Step5.Title = '展示集团最佳方案，让节能可复制可粘贴';
+I18N.Login.Step5.Line1 = '智能筛选所有建筑节能方案，让投入少，回报高的方案脱颖而出';
+I18N.Login.Step5.Line2 = '最佳方案直接推送，让决策更轻松更高效';
 
 I18N.ContactUS = {};
 I18N.ContactUS.Tips = '如有任何问题或需要，欢迎随时联系我们。';
@@ -1671,12 +1704,12 @@ I18N.Kpi = {
   ActualityFractionalEnergySaving: '截止上月节能率',
   KPIActual: '指标现状',
   GroupProject: '集团',
-  IndexValue: '全年定额指标值',
-  SavingValue: '全年节能率指标值',
-  ActualSum: '全年用量实际值',
-  PredictSum: '全年用量预测值',
-  ActualSaving: '全年节能率实际值',
-  PredictSaving: '全年节能率预测值',
+  IndexValue: '年度定额指标值',
+  SavingValue: '年度节能率指标值',
+  ActualSum: '年度用量实际值',
+  PredictSum: '年度用量预测值',
+  ActualSaving: '年度节能率实际值',
+  PredictSaving: '年度节能率预测值',
   Error:{
     SelectBuilding: '请点击上方按钮，选择要查看或配置项目吧～',
     NonKPIConguredInThisYear: '本年度未配置指标，切换其他年份看看～',
@@ -2374,6 +2407,7 @@ I18N.Setting.Diagnose.DiagnoseName='诊断名称';
 I18N.Setting.Diagnose.InputDiagnoseNlocalame='请输入诊断名称';
 I18N.Setting.Diagnose.By='按';
 I18N.Setting.Diagnose.HolidayRuningTimesTrigger='非运行时间触发值({0})';
+I18N.Setting.Diagnose.HolidayRuningTimesTriggerWithoutData='非运行时间触发值';
 I18N.Setting.Diagnose.BaseValueTitle='基准值({0})';
 I18N.Setting.Diagnose.SelectTagsUnsupportSteps='所选数据点不支持按“{0}”';
 I18N.Setting.Diagnose.Runtime='运行时间';

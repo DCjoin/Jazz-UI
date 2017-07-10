@@ -15,6 +15,8 @@ import DiagnoseChart from './DiagnoseChart.jsx';
 import {DiagnoseStatus} from 'constants/actionType/Diagnose.jsx';
 import {GenerateSolutionButton,GenerateSolution} from '../DataAnalysis/Basic/GenerateSolution.jsx';
 
+import TimeGranularity from 'constants/TimeGranularity.jsx';
+
 function getFromImmu(key) {
 	return function(immuObj) {
 		return immuObj.get(key);
@@ -159,18 +161,25 @@ export default class DiagnoseProblem extends Component {
 		})
 	}
 
+	_getStepDaysLimit() {
+		if( this.state.chartData.getIn(['EnergyViewData', 'TargetEnergyData', 0, 'Target', 'Step']) === TimeGranularity.Monthly ) {
+			return 100;
+		}
+		return 30;
+	}
+
 	_onDateSelectorChanged(startDate, endDate, startTime, endTime) {
 		let that = this,
 			dateSelector = this.refs.dateTimeSelector,
 			timeRange = dateSelector.getDateTime();
-		if (timeRange.end - timeRange.start > 30 * 24 * 60 * 60 * 1000) {
+		if (timeRange.end - timeRange.start > this._getStepDaysLimit() * 24 * 60 * 60 * 1000) {
 			let isStart = dateSelector.getTimeType();
 			if (isStart) {
-				endDate = dateAdd(startDate, 30, 'days');
+				endDate = dateAdd(startDate, this._getStepDaysLimit(), 'days');
 				endTime = startTime;
 				timeRange.end = new Date(endDate.setHours(endTime, 0, 0, 0));
 			} else {
-				startDate = dateAdd(endDate, -30, 'days');
+				startDate = dateAdd(endDate, -1*this._getStepDaysLimit(), 'days');
 				startTime = endTime;
 				if(endTime===24)
 				{

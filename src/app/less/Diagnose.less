@@ -223,9 +223,8 @@
 .diagnose-create-title {
   flex: none;
   padding-left: 15px;
-  border-bottom: 1px solid #d7d7d7;
+  border-bottom: 1px solid #e6e6e6;
   font-size: 15px;
-  font-weight: bold;
   color: #1b1f2c;
   height: 50px;
   line-height: 50px;
@@ -253,8 +252,11 @@
     align-items: center;
     margin-left: 15px;
     font-size: 15px;
-    font-weight: bold;
     color: #1b1f2c;
+
+    & .icon-close:before {
+      font-weight: bold;
+    }
   }
 
   & .pop-viewableTextField .pop-viewable-title  {
@@ -266,7 +268,7 @@
   margin-top: 14px;
   height: 50px;
   background-color: #fff;
-  border: solid 1px #d7d7d7;
+  border: solid 1px #e6e6e6;
   border-radius: 2px;
   flex: none;
 }
@@ -283,7 +285,7 @@
   display: flex;
   flex-direction: column;
   background-color: #fff;
-  border: solid 1px #d7d7d7;
+  border: solid 1px #e6e6e6;
   border-radius: 2px;
   width: 21%;
   flex: none;
@@ -378,7 +380,7 @@
 }
 .diagnose-create-chart-preview {
   background-color: #fff;
-  border: solid 1px #d7d7d7;
+  border: solid 1px #e6e6e6;
   border-radius: 2px;
   flex: 1;
   display: flex;
@@ -400,7 +402,7 @@
   margin-top: 10px;
   border-radius: 2px;
   background-color: #ffffff;
-  border: solid 1px #d7d7d7;
+  border: solid 1px #e6e6e6;
   &-content {
     padding: 20px;
     display: flex;
@@ -427,7 +429,7 @@
 
 .diagnose-condition {
   background-color: #fff;
-  border: solid 1px #d7d7d7;
+  border: solid 1px #e6e6e6;
   border-radius: 2px;
   display: flex;
   flex-direction: column;
@@ -452,7 +454,7 @@
   }
 
   &-run-time {
-    border-bottom: 1px solid #d7d7d7;
+    border-bottom: 1px solid #e6e6e6;
     padding-bottom: 15px;
     color: #202622;
     margin-top: 20px;
@@ -464,7 +466,7 @@
 
   &-model-b-item {
     margin-top: 15px;
-    border-bottom: 1px solid #d7d7d7;
+    border-bottom: 1px solid #e6e6e6;
   }
 }
 
@@ -477,7 +479,7 @@
 
 .diagnose-create-chart-preview-step2 {
   background-color: #fff;
-  border: solid 1px #d7d7d7;
+  border: solid 1px #e6e6e6;
   border-radius: 2px;
   width: 78%;
   flex: none;
@@ -487,7 +489,7 @@
 
 .diagnose-create-names {
   background-color: #fff;
-  border: solid 1px #d7d7d7;
+  border: solid 1px #e6e6e6;
   border-radius: 2px;
 }
 
@@ -538,7 +540,6 @@
     color: @slate-grey;
     line-height: 74px;
     z-index: 1;
-    border: 2px solid #e7e7e7;
     border-right: 0;
     text-align: center;
 
@@ -556,7 +557,6 @@
     display: flex;
     align-items: center;
     padding: 20px 10px;
-    border: 2px solid #e7e7e7;
     width: 400px;
     height: 135px;
     border-top-left-radius: 8px;
@@ -638,6 +638,8 @@
     width: 237px;
     display: flex;
     flex-direction: column;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1;
   }
 
   &-header {
