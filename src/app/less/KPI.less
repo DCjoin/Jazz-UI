@@ -1008,6 +1008,33 @@
   }
 }
 .kpi-report{
+  &-tooltip {
+    position: absolute;
+    display: none;
+    right: -30px;
+    bottom: 20px;
+    // width: 240px;
+    background-color: #fff;
+    border: 1px #000 solid;
+    border-radius: 4px;
+    // background-color: #717171;
+    &-title {
+      color: #000;
+      white-space:nowrap;
+    }
+
+    &-icon {
+      float: right;
+      top: -40px;
+      position: relative;
+      right: 20px;
+      
+      &:hover .kpi-report-tooltip {        
+        display: block;
+      }
+
+    }
+  }
 	&-commnet{
 		font-size: 14px;
 		color: red;

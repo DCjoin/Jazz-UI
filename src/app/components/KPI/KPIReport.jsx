@@ -16,6 +16,11 @@ import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 
 import KPIChart from './KPIChart.jsx';
 
+const IndicatorClass = {
+	Dosage: 1,
+	Ratio: 2,
+}
+
 function getUnit(id) {
 	let code = find(UOMStore.getUoms(), uom => uom.Id === id).Code;
 	if( code === 'null' ) {
@@ -25,6 +30,13 @@ function getUnit(id) {
 }
 function isFull() {
 	return privilegeUtil.isFull(PermissionCode.INDEX_AND_REPORT, CurrentUserStore.getCurrentPrivilege());
+}
+
+function getValueWithUnit(value, unit) {
+	if( !util.isNumber(value) ) {
+		return '';
+	}
+	return util.getLabelData(value) + getUnit(unit);
 }
 
 export default class KPIReport extends Component {
@@ -45,8 +57,6 @@ export default class KPIReport extends Component {
 			</div>) : /*节能率指标值*/
 			(<div className='summary-value'>
 				{summaryData.RatioValue !== null && <span>{(summaryData.RatioValue || 0).toFixed(1) * 1 + '%'}</span>}
-				{summaryData.IndexValue !== null && <span>{util.getLabelData(summaryData.IndexValue)}</span>}
-				{summaryData.IndexValue !== null && <span title={getUnit(data.get('unit'))}>{getUnit(data.get('unit'))}</span>}
 			</div>)}
 		</div>
 		);
@@ -66,18 +76,62 @@ export default class KPIReport extends Component {
 			(<div className='summary-value'>
 				<span>{util.getLabelData(summaryData.PredictSum)}</span>
 				<span>{summaryData.PredictSum !== null && getUnit(data.get('unit'))}</span>
-				<span title={(!summaryData.PredictRatio ? 0 : summaryData.PredictRatio).toFixed(1) * 1 + '%'}>{(!summaryData.PredictRatio ? 0 : summaryData.PredictRatio).toFixed(1) * 1 + '%'}</span>
 			</div>) :/*节能率预测值*/
 			(<div className='summary-value'>
 				<span>{(typeof summaryData.PredictRatio !== 'number' ? 0 : summaryData.PredictRatio).toFixed(1) * 1 + '%'}</span>
-				<span>{util.getLabelData(summaryData.PredictSum)}</span>
-				{util.isNumber(summaryData.PredictSum) && <span title={getUnit(data.get('unit'))}>{getUnit(data.get('unit'))}</span>}
 			</div>)}
+			{this._renderTooltip(overproof, isIndex)}
 		</div>
 		);
 	}
+	_renderTooltip(overproof, isIndex) {
+		let iconProps = {
+			style: {
+				fontSize: 18,
+				color: overproof ? '#FF0000' : '#25C61D'
+			},
+			className: 'kpi-report-tooltip-icon ' + (overproof ? 'icon-unhappy' : 'icon-happy')
+		}
+		return (
+			<FontIcon {...iconProps} >
+				{isIndex ? this._renderIndexTooltip(overproof) : this._renderSavingTooltip(overproof) }
+			</FontIcon>
+		);
+	}
+	_renderIndexTooltip(overproof) {
+		let {summaryData} = this.props;
+		return (<div className='kpi-report-tooltip'>
+			<div className='kpi-report-tooltip-title'>{'年度预测指标使用量'}</div>
+			<div>{(!summaryData.PredictRatio ? 0 : summaryData.PredictRatio).toFixed(1) * 1 + '%'}</div>
+		</div>);
+	}
+	_renderSavingTooltip(overproof) {
+		let {data, summaryData, currentYearDone} = this.props,
+		{IndexValue, PredictSum} = summaryData,
+		actualSum = data.get('actual').toJS().reduce((prev, curr) => prev + +curr, 0),
+		unit = data.get('unit'),
+		indicatorClass = data.get('IndicatorClass');
+		return (
+			<div className='kpi-report-tooltip'>
+				<div>
+					<div className='kpi-report-tooltip-title'>{'年度节能量'}</div>
+					<div>{getValueWithUnit(IndexValue - actualSum, unit)}</div>
+				</div>
+				<div style={{display: 'flex'}}>
+					<div>
+						<div className='kpi-report-tooltip-title'>{'年度目标用量'}</div>
+						<div>{getValueWithUnit(IndexValue, unit)}</div>
+					</div>
+					{indicatorClass === IndicatorClass.Dosage && <div>
+						<div className='kpi-report-tooltip-title'>{'年度预测用量'}</div>
+						<div>{getValueWithUnit(PredictSum, unit)}</div>
+					</div>}
+				</div>
+			</div>
+		);
+	}
 	_renderTip() {
-		let hasPermission = !this.props.isGroup && 
+		let hasPermission = false && !this.props.isGroup && 
 							(
 								privilegeUtil.canView(PermissionCode.PUSH_SOLUTION, CurrentUserStore.getCurrentPrivilege())
 							|| privilegeUtil.isFull(PermissionCode.SENIOR_DATA_ANALYSE, CurrentUserStore.getCurrentPrivilege())
@@ -120,7 +174,7 @@ export default class KPIReport extends Component {
 					<div className='jazz-kpi-report-summary'>
 						{this.getValueSummaryItem()}
 						{this.getPredictSummaryItem()}
-						{false && !!overproof && !currentYearDone && this._renderTip()}
+						{!!overproof && !currentYearDone && this._renderTip()}
 					</div>
 				</div>
 			</div>
