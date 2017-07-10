@@ -102,7 +102,7 @@ class Group extends Component{
         color:'#626469',
         marginRight:'5px'
       },
-    }
+    };
     return this.props.nodeData.get('Children').map(data=>(
       <div title={data.get('Name')} className={classnames({
                                   "item":true,
@@ -111,6 +111,7 @@ class Group extends Component{
                                 })}
            style={{paddingLeft:'50px'}} onClick={()=>{this.props.onItemTouchTap(data)}}>
            <FontIcon className="icon-operating-data" style={styles.icon}/>
+           {this.props.selectedNode && data.get('Id')===this.props.selectedNode.get('Id') && <em/>}
         <div className="text">{data.get('Name')}</div>
         {!this.props.isFromProbem && data.get('Status')===DiagnoseStatus.Suspend && <div className="suspend-font" style={{marginLeft:'5px'}}>{I18N.Setting.Diagnose.Suspend}</div>}
       </div>
@@ -152,8 +153,8 @@ export default class LabelItem extends Component {
   _renderGroupTitle(){
     var {Name}=this.props.nodeData.toJS();
     return (
-      <div className="item" style={{borderBottom:'1px solid #e6e6e6'}}>
-        <div className="text" style={{fontWeight:'bold'}}>{Name}</div>
+      <div className="group-item" style={{borderBottom:'1px solid #e6e6e6'}}>
+        <div className="text">{Name}</div>
       </div>
     )
   }

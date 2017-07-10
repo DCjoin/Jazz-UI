@@ -57,7 +57,7 @@ export default class StatusCmp extends Component {
       return(
         <div className="measure-status">
           <div className='jazz-ecm-push-operation-label'>{`${I18N.Setting.ECM.PushPanel.Status}：`}</div>
-          {this.props.canEdit && status!==Status.Done?this._renderEditStatus():MeasuresStore.getStatusText(this.props.status)}
+          {this.props.canEdit && status!==Status.Done?this._renderEditStatus():<div style={{marginLeft:'5px',fontSize:'14px',color:"#626469"}}>{MeasuresStore.getStatusText(this.props.status)}</div>}
         </div>
       )
 

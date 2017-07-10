@@ -843,6 +843,7 @@ class AnalysisPanel extends Component {
   }
 
   _renderHeader(){
+
     var styles={
       button:{
         marginRight:'12px',
@@ -850,7 +851,9 @@ class AnalysisPanel extends Component {
         lineHeight:'30px'
       },
       label:{
-        fontSize:'14px'
+        fontSize:'14px',
+        lineHeight:'14px',
+        verticalAlign:'baseline'
       }
     }
     return(
@@ -880,7 +883,7 @@ class AnalysisPanel extends Component {
           <div className="description">{this.props.sourceUserName && `(${I18N.format(I18N.Folder.Detail.SubTitile,this.props.sourceUserName)})`}</div>
         </div>
         <div className="operation">
-          <NewFlatButton label={I18N.Common.Button.Save} disabled={!this.state.energyData} labelstyle={styles.label} secondary={true}
+          <NewFlatButton label={I18N.Common.Button.Save} disabled={!this.state.energyData} labelStyle={styles.label} secondary={true}
             icon={<FontIcon className="icon-save" style={styles.label}/>} style={styles.button}
             onClick={()=>{this._handleSave()}}/>
           {this.props.isBuilding && <GenerateSolutionButton preAction={{
@@ -1042,7 +1045,9 @@ class AnalysisPanel extends Component {
         lineHeight:'30px'
       },
       label:{
-        fontSize:'14px'
+        fontSize:'14px',
+        lineHeight:'14px',
+        verticalAlign:'baseline'
       }
     };
     var props={
@@ -1068,7 +1073,7 @@ class AnalysisPanel extends Component {
           height: '38px',
           marginTop: '-4px'
         }}>
-         <NewFlatButton label={I18N.Setting.Tag.Tag} labelstyle={styles.label} secondary={true}
+         <NewFlatButton label={I18N.Setting.Tag.Tag} labelStyle={styles.label} secondary={true}
                      icon={<FontIcon className="icon-add" style={styles.label}/>} style={styles.button}
                      onClick={()=>{
                        this.setState({

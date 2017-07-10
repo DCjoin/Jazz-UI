@@ -148,7 +148,7 @@ const MeasuresStore = assign({}, PrototypeStore, {
     }
   },
   getDisplayText(text){
-    return text===null?' — ':text
+    return text===null?' — ':CommonFuns.getLabelData(text*1)
   },
   validateNumber(number){
     //null

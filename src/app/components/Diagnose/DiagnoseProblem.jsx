@@ -353,7 +353,7 @@ export default class DiagnoseProblem extends Component {
                       </div>}
         </div>
 				<div className="detail-content-content-problem-chart">
-					{this.state.timeselectorShow && <div style={{height:'60px',display:'flex'}}>
+					{this.state.timeselectorShow && <div style={{height:'60px',display:'flex',backgroundColor:'#f7f7f7'}}>
 						<DateTimeSelector ref='dateTimeSelector' showTime={true} endLeft='-100px'
 						startDate= {this.state.startDate}
 						endDate={this.state.endDate}
