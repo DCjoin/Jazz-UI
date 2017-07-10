@@ -8,6 +8,11 @@ import UOMStore from 'stores/UOMStore.jsx';
 
 import Highcharts from '../highcharts/Highcharts.jsx';
 
+const IndicatorClass = {
+	Dosage: 1,
+	Ratio: 2,
+}
+
 function getUnit(id) {
 	let code = find(UOMStore.getUoms(), uom => uom.Id === id).Code;
 	if( code === 'null' ) {
@@ -213,10 +218,36 @@ export default class KPIChart extends Component {
 
 		options.series[0].data = data.get('target') && data.get('target').toJS().slice(0, 12);
 		options.series[0].name = I18N.Kpi.TargetValues;
-		options.series[1].data = data.get('actual') && data.get('actual').toJS().slice(0, 12);
+		options.series[1].data = data.get('actual') && data.get('actual').toJS().slice(0, 12).map((data, i) => {
+			// if(i === 5) {
+			// 	return {
+			// 		x: i,
+			// 		y: data,
+			// 		color: "#FF00FF",
+			// 	};
+			// }
+			return {
+				x: i,
+				y: data,
+			};
+		});
 		options.series[1].name = I18N.Kpi.ActualValues;
-		options.series[2].data = data.get('prediction') && fill(data.get('prediction').toJS(), null, 0, currentMonthIndex === -1 ? 0 : currentMonthIndex).slice(0, 12);
-		options.series[2].name = I18N.Kpi.PredictionValues;
+		if(data.get('IndicatorClass') === IndicatorClass.Dosage) {
+			options.series[2].data = data.get('prediction') && fill(data.get('prediction').toJS(), null, 0, currentMonthIndex === -1 ? 0 : currentMonthIndex).slice(0, 12).map((data, i) => {
+				// if(i === 10) {
+				// 	return {
+				// 		x: i,
+				// 		y: data,
+				// 		borderColor: "#FF00FF",
+				// 	};
+				// }
+				return {
+					x: i,
+					y: data,
+				};
+			});
+			options.series[2].name = I18N.Kpi.PredictionValues;
+		}
 
 		return options;
 	}
