@@ -19,14 +19,38 @@ export default class GroupConfig extends Component {
     return !SingleKPIStore.validateSavingRate(value) && I18N.Setting.KPI.Parameter.SavingRateErrorText
   }
 
+  getUom(){
+    let {IndicatorClass,UomId,RatioUomId}=this.props.kpiInfo.toJS();
+    if(IndicatorClass===Type.Dosage){
+      let uom=CommonFuns.getUomById(UomId).Code;
+      if(UomId) return `(${uom})`
+      else return ''
+    }
+    else if(UomId && RatioUomId){
+      let uom=CommonFuns.getUomById(UomId).Code;
+      let ratioUom=CommonFuns.getUomById(RatioUomId).Code;
+      if(UomId===RatioUomId) return ''
+      if(uom==='null') return `(/${ratioUom})`
+      if(RatioUomId==='null') return `(${uom}/)`
+      return `(${uom}/${ratioUom})`
+    }
+    else return ''
+  }
+
   _renderConfig(){
-    let {UomId,IndicatorType,AnnualQuota,AnnualSavingRate}=this.props.kpiInfo.toJS();
-    let uom=CommonFuns.getUomById(UomId).Code;
+    let {IndicatorType,AnnualQuota,AnnualSavingRate}=this.props.kpiInfo.toJS();
     let type=IndicatorType===Type.Quota?I18N.Setting.KPI.Quota:I18N.Setting.KPI.SavingRate,
         annualTitle=I18N.format(I18N.Setting.KPI.Group.GroupConfig.Annual,type),
         annualHint=I18N.format(I18N.Setting.KPI.Group.GroupConfig.InputAnnual,type),
-        title=IndicatorType===Type.Quota?`${annualTitle} (${uom})`:`${annualTitle} (%)`,
+        title,
+        // title=IndicatorType===Type.Quota?`${annualTitle} (${uom})`:`${annualTitle} (%)`,
         value=IndicatorType===Type.Quota?AnnualQuota:AnnualSavingRate;
+
+        if(IndicatorType===Type.Quota){
+          title=`${annualTitle} (${this.getUom()})`
+        }else {
+          title=`${annualTitle} (%)`
+        }
     let  annualProps={
           ref: 'annual',
           isViewStatus: false,

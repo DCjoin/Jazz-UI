@@ -31,10 +31,22 @@ export default class MonthConfig extends Component {
 	}
 
 	_onSave(){
-		GroupKPIAction.merge([{
-			path:`Buildings.${this.props.index}`,
-			value:this.state.buildingInfo
-		}]);
+    let {UomId}=this.props.kpiInfo.toJS();
+    if(UomId){
+      GroupKPIAction.merge([{
+        path:`Buildings.${this.props.index}`,
+        value:this.state.buildingInfo
+      }]);
+    }else {
+      GroupKPIAction.merge([{
+        path:`Buildings.${this.props.index}`,
+        value:this.state.buildingInfo
+      },{
+        path:`UomId`,
+        value:this.state.buildingInfo.get('UomId')
+      }]);
+    }
+
 		this.props.onSave();
 	}
 

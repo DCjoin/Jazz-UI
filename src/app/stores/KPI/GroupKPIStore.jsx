@@ -63,10 +63,10 @@ const GroupKPIStore = assign({}, PrototypeStore, {
   setKpiInfo(data){
     _rawData=Immutable.fromJS(data);
     let {CustomerId,UomId,CommodityId,IndicatorName,AdvanceSettings}=data.GroupKpiSetting;
-    let {Year,IndicatorType,AnnualQuota,AnnualSavingRate}=AdvanceSettings;
+    let {Year,IndicatorType,AnnualQuota,AnnualSavingRate,IndicatorClass}=AdvanceSettings;
 
     _kpiInfo=Immutable.fromJS({
-      CustomerId,Year,IndicatorType,AnnualQuota,AnnualSavingRate,UomId,IndicatorName,CommodityId,
+      CustomerId,Year,IndicatorType,AnnualQuota,AnnualSavingRate,UomId,IndicatorName,CommodityId,IndicatorClass,
       Buildings:data.BuildingKpiSettingsList.length?
                 data.BuildingKpiSettingsList.map(building=>{
                   let {HierarchyId,HierarchyName,ActualTagId,ActualTagName,AdvanceSettings}=building;
@@ -179,6 +179,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     _kpiInfo=_kpiInfo.set('AnnualSavingRate',null);
     if(type==='CommodityId'){
       _kpiInfo=_kpiInfo.set('IndicatorType',Type.Quota);
+      _kpiInfo=_kpiInfo.set('IndicatorClass',null);
       _kpiInfo=_kpiInfo.set('IndicatorName',null);
     }
     _kpiInfo.get('Buildings').forEach((building,index)=>{
@@ -197,6 +198,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
       let {path,status,value}=el;
       let paths = path.split(".");
       refresh= path.indexOf('IndicatorType')>-1?'IndicatorType':refresh;
+      refresh= path.indexOf('IndicatorClass')>-1?'IndicatorClass':refresh;
       refresh= path.indexOf('CommodityId')>-1?'CommodityId':refresh;
       if(status===DataStatus.ADD){
         let {index,length}=el;
@@ -254,8 +256,8 @@ const GroupKPIStore = assign({}, PrototypeStore, {
   IsActive(status,kpiInfo){
     switch (status) {
       case SettingStatus.New:
-            var {CommodityId}=kpiInfo.toJS();
-            return CommodityId?true:false;
+            var {CommodityId,IndicatorClass}=kpiInfo.toJS();
+            return CommodityId && IndicatorClass?true:false;
       case SettingStatus.Edit:
           return true;
       case SettingStatus.Prolong:
@@ -494,6 +496,19 @@ const GroupKPIStore = assign({}, PrototypeStore, {
       }
     ])
   },
+  clearAllBuildingInfo(){
+    let values=_KpiSettings.getIn(['AdvanceSettings','TargetMonthValues']).toJS();
+    _buildings.forEach((building,index)=>{
+      let defaultBuilding={
+        HierarchyId:building.Id,
+        HierarchyName:building.Name,
+        TargetMonthValues:assign([],values),
+        TagSavingRates:[],
+        MonthPredictionValues:assign([],values),
+      }
+      _kpiInfo=_kpiInfo.setIn(["Buildings",index],Immutable.fromJS(defaultBuilding));
+    })
+  },
     dispose(){
       _kpiInfo=null;
       _groupInfo=[];
@@ -574,6 +589,10 @@ GroupKPIStore.dispatchToken = AppDispatcher.register(function(action) {
   	GroupKPIStore.mergeMonthValue(action.data);
       GroupKPIStore.emitChange();
       break;
+    case Action.CLEAR_ALL_BUILDING_INFO:
+    	GroupKPIStore.clearAllBuildingInfo();
+        GroupKPIStore.emitChange();
+        break;
 
       default:
     }

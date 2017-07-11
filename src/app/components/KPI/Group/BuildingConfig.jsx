@@ -2,33 +2,37 @@ import React, { Component } from 'react';
 import TitleComponent from 'controls/TitleComponent.jsx';
 import {SettingStatus,Type} from 'constants/actionType/KPI.jsx';
 import GroupKPIStore from "stores/KPI/GroupKPIStore.jsx";
-import CommonFuns from 'util/Util.jsx';
+// import CommonFuns from 'util/Util.jsx';
 import BuildingItem from './BuildingItem.jsx';
+import GroupKPIAction from 'actions/KPI/GroupKPIAction.jsx';
 
 export default class BuildingConfig extends Component {
 
   constructor(props) {
     super(props);
-    this._onCalcSum = this._onCalcSum.bind(this);
+    // this._onCalcSum = this._onCalcSum.bind(this);
   }
 
   state={
-    calcSum:this.props.status!==SettingStatus.New,
+    // calcSum:this.props.status!==SettingStatus.New,
     buildingItem:null
     };
 
-  _onCalcSum(calcSum){
-    this.setState({
-      calcSum
-    })
+  // _onCalcSum(calcSum){
+  //   this.setState({
+  //     calcSum
+  //   })
+  // }
+
+  _onClearAll(){
+    GroupKPIAction.clearAllBuildingInfo()
   }
 
-
-  _renderBuildingTable(uom){
+  _renderBuildingTable(){
     let {IndicatorType,Buildings}=this.props.kpiInfo.toJS();
     let type=IndicatorType===Type.Quota?I18N.Setting.KPI.Quota:I18N.Setting.KPI.SavingRate;
-    let indicator=IndicatorType===Type.Quota?I18N.format(I18N.Setting.KPI.Group.BuildingConfig.Value,type,uom)
-                                    :I18N.format(I18N.Setting.KPI.Group.BuildingConfig.Value,type,'%')
+    let indicator=I18N.format(I18N.Setting.KPI.Group.BuildingConfig.Value,type);
+
     var header=(
       <table className="jazz-kpi-group-buildings-header">
         <tbody>
@@ -49,7 +53,6 @@ export default class BuildingConfig extends Component {
                                                     IndicatorType,index,
                                                     buildingInfo:building,
                                                     onMonthConfigShow:()=>{this.props.onMonthConfig(true,index)},
-                                                    onCalcSum:this._onCalcSum
                                                   }
                                                   return(
                                                     <BuildingItem {...props}/>
@@ -58,6 +61,7 @@ export default class BuildingConfig extends Component {
                                 }
                               </tbody>
                             </table>
+    var footer=<div className="jazz-kpi-group-buildings-footer" onClick={this._onClearAll}>{I18N.Setting.KPI.Tag.ClearAll}</div>
 
     return(
       <div className='jazz-kpi-group-buildings'>
@@ -68,22 +72,17 @@ export default class BuildingConfig extends Component {
   }
 
   _renderConfig(){
-    let {IndicatorType,UomId}=this.props.kpiInfo.toJS();
-    let uom=CommonFuns.getUomById(UomId).Code;
-    let sumProps={
-            title:I18N.format(I18N.Setting.KPI.Group.BuildingConfig.SumTitle,uom),
-            contentStyle:{
-              margin:'15px 0 30px 0'
-            }
-          };
+    // let {UomId}=this.props.kpiInfo.toJS();
+    // let uom=CommonFuns.getUomById(UomId).Code;
+    // let sumProps={
+    //         title:I18N.format(I18N.Setting.KPI.Group.BuildingConfig.SumTitle,uom),
+    //         contentStyle:{
+    //           margin:'15px 0 30px 0'
+    //         }
+    //       };
     return(
         <div>
-          {IndicatorType===Type.Quota &&
-            <TitleComponent {...sumProps}>
-              {CommonFuns.toThousands(GroupKPIStore.getBuildingSum(this.state.calcSum)) || '-'}
-            </TitleComponent>
-            }
-          {this._renderBuildingTable(uom)}
+          {this._renderBuildingTable()}
         </div>
     )
   }

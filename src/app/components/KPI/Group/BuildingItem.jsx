@@ -30,7 +30,7 @@ export default class BuildingItem extends Component {
       path:`Buildings.${this.props.index}.${path}`,
       value
     }]);
-    this.props.onCalcSum(false)
+    // this.props.onCalcSum(false)
   }
 
   getError(value){
@@ -49,7 +49,7 @@ export default class BuildingItem extends Component {
   }
 
 	render() {
-    let {buildingInfo,onMonthConfigShow,IndicatorType,onCalcSum}=this.props;
+    let {buildingInfo,onMonthConfigShow,IndicatorType}=this.props;
     let {AnnualQuota,AnnualSavingRate}=buildingInfo;
     let type=IndicatorType===Type.Quota?I18N.Setting.KPI.Quota:I18N.Setting.KPI.SavingRate,
         hint=I18N.format(I18N.Setting.KPI.Group.BuildingConfig.Input,type),
@@ -62,7 +62,7 @@ export default class BuildingItem extends Component {
           errorText:this.getError(value),
           style:{width:'150px',minWidth:'150px'},
           onChange:this._onValueChange,
-          onBlur:onCalcSum.bind(this,true)
+          // onBlur:onCalcSum.bind(this,true)
                 };
     return(
       <tr>
@@ -82,5 +82,5 @@ BuildingItem.propTypes = {
 	buildingInfo:React.PropTypes.object,
   onMonthConfigShow:React.PropTypes.func,
   IndicatorType:React.PropTypes.number,
-  onCalcSum:React.PropTypes.func,
+  // onCalcSum:React.PropTypes.func,
 };
