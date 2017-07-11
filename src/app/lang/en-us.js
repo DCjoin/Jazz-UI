@@ -459,6 +459,7 @@ I18N.DateTimeFormat.IntervalFormat.RawDate.RangeFull24Minute = 'YYYY/MM/DD 24:00
 
 I18N.EM = {};
 I18N.EM.To = 'To';
+I18N.EM.To2= 'To';
 I18N.EM.Week = 'Week';
 I18N.EM.Raw = 'Minute';
 I18N.EM.Hour = 'Hour';

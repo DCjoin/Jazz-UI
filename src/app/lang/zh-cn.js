@@ -460,6 +460,7 @@ I18N.DateTimeFormat.IntervalFormat.RawDate.RangeFull24Minute = 'YYYY/MM/DD 24:00
 
 I18N.EM = {};
 I18N.EM.To = '到';
+I18N.EM.To2 = '至';
 I18N.EM.Week = '周';
 I18N.EM.Raw = '分钟';
 I18N.EM.Hour = '小时';
@@ -2403,7 +2404,7 @@ I18N.Setting.Diagnose.DiagnoseCondition='诊断条件';
 I18N.Setting.Diagnose.WorkRuningTimes='工作日运行时间';
 I18N.Setting.Diagnose.HolidayRuningTimes='休息日运行时间';
 I18N.Setting.Diagnose.DiagnoseName='诊断名称';
-I18N.Setting.Diagnose.InputDiagnoseName='请输入诊断名称';
+I18N.Setting.Diagnose.InputDiagnoseNlocalame='请输入诊断名称';
 I18N.Setting.Diagnose.By='按';
 I18N.Setting.Diagnose.HolidayRuningTimesTrigger='非运行时间触发值({0})';
 I18N.Setting.Diagnose.HolidayRuningTimesTriggerWithoutData='非运行时间触发值';

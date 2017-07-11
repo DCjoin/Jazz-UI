@@ -35,6 +35,7 @@ class NativeTextField extends Component{
       inputStyle:{width:"45px",height:"28px"},
       style:{width:"45px",height:"28px",border:"1px solid #e6e6e6",borderRadius:4,marginRight:'5px'},
       errorText:this.props.getErrorText?this.props.getErrorText(this.state.value):null,
+      errorStyle:{width:"110px"},
       onChange:(e,value)=>{this.setState({value})},
       onBlur:()=>{this.props.onBlur(this.state.value)},
     }
@@ -54,10 +55,8 @@ export class SolutionLabel extends Component {
       },
       style = {
         padding: '0px',
-        height: '24px',
-        width: '24px',
         fontSize: '24px',
-        marginTop:'-5px'
+        lineHeight:"24px"
       };
 
     var props={
@@ -132,21 +131,21 @@ export class SolutionLabel extends Component {
         <div className="row">
           <div className="jazz-ecm-measure-solution-iconrow" style={{justifyContent: 'space-between',paddingLeft:"14px",paddingRight:"50px"}}>
             <IconLabelField {...props.savingIcon}>
-              <div className="jazz-ecm-measure-solution-iconrow" style={{height:"30px"}}>
+              <div className="jazz-ecm-measure-solution-iconrow">
                 {canEdit?<NativeTextField {...props.saving}/>:MeasuresStore.getDisplayText(ExpectedAnnualEnergySaving)}
-                {canEdit?<NativeTextField {...props.savingUnit}/>:MeasuresStore.getDisplayText(EnergySavingUnit)}
+                {canEdit?<NativeTextField {...props.savingUnit}/>:<div style={{marginLeft:'5px'}}>{MeasuresStore.getDisplayText(EnergySavingUnit)}</div>}
               </div>
             </IconLabelField>
             <IconLabelField {...props.costIcon}>
-              <div className="jazz-ecm-measure-solution-iconrow" style={{height:"30px"}}>
+              <div className="jazz-ecm-measure-solution-iconrow">
                 {canEdit?<NativeTextField {...props.cost}/>:MeasuresStore.getDisplayText(ExpectedAnnualCostSaving)}
-                {"RMB"}
+                <div style={{marginLeft:'5px'}}>RMB</div>
               </div>
             </IconLabelField>
             <IconLabelField {...props.amountIcon}>
-              <div className="jazz-ecm-measure-solution-iconrow" style={{height:"30px"}}>
+              <div className="jazz-ecm-measure-solution-iconrow">
                 {canEdit?<NativeTextField {...props.amount}/>:MeasuresStore.getDisplayText(InvestmentAmount)}
-                {"RMB"}
+                <div style={{marginLeft:'5px'}}>RMB</div>
               </div>
             </IconLabelField>
             <IconLabelField {...props.cycleIcon}>
@@ -176,6 +175,19 @@ export class Solution extends Component {
       Name:"",
       Description:""
     }
+
+    _renderMultiText(text){
+      if(text===null) return ' — ';
+      var arr = text.split('\n');
+
+      if (arr.length > 1) {
+        text = arr.map(item => {
+          return <div>{item}</div>;
+        });
+      }
+
+      return text
+      }
 
     componentDidMount(){
       var {canEdit,measure}=this.props;
@@ -212,7 +224,7 @@ export class Solution extends Component {
                               },
           value:Name,
           hintText:I18N.Setting.ECM.AddSolutionName,
-          hintStyle:{fontSize:"12px"},
+          hintStyle:{fontSize:"12px",color:'#626469'},
           inputStyle:{fontSize:"16px",color:"#626469",fontWeight:"bold"},
           style:{marginTop:'-5px',width:'100%'},
           multiLine:true,
@@ -226,7 +238,7 @@ export class Solution extends Component {
                               },
           value:Description,
           hintText:I18N.Setting.ECM.AddSolutionDescription,
-          hintStyle:{fontSize:"12px"},
+          hintStyle:{fontSize:"12px",color:'#626469'},
           inputStyle:{fontSize:"14px",color:"#626469"},
           style:{marginTop:'-5px',width:'100%'},
           multiLine:true,
@@ -241,13 +253,13 @@ export class Solution extends Component {
             <div className="label">
               {I18N.EM.Report.Name}
             </div>
-            {canEdit?<TextField {...props.name}/>:<div className="jazz-ecm-measure-viewabletext" stlye={{fontSize:"16px",color:"#626469"}}>{MeasuresStore.getDisplayText(Name)}</div>}
+            {canEdit?<TextField {...props.name}/>:<div className="jazz-ecm-measure-viewabletext" stlye={{fontSize:"16px",color:"#626469"}}>{this._renderMultiText(Name)}</div>}
           </div>
           <div className="row" style={{marginTop:"8px",paddingLeft:"8px",paddingRight:'42px'}}>
             <div className="label">
               {I18N.Setting.UserManagement.Comment}
             </div>
-            {canEdit?<TextField {...props.description}/>:<div className="jazz-ecm-measure-viewabletext">{MeasuresStore.getDisplayText(Description)}</div>}
+            {canEdit?<TextField {...props.description}/>:<div className="jazz-ecm-measure-viewabletext">{this._renderMultiText(Description)}</div>}
           </div>
         </div>
       )

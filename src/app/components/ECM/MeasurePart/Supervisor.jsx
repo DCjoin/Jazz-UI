@@ -415,7 +415,7 @@ export default class Supervisor extends Component {
     if(this.props.usedInDetail){
       return(
         <div className="indetail">
-          <div className="jazz-ecm-push-operation-label">{I18N.Setting.CustomerManagement.Principal+':'}</div>
+          <div className="jazz-ecm-push-operation-label">{I18N.Setting.CustomerManagement.Principal+'：'}</div>
           <div style={{fontSize:'14px',color:'#0f0f0f',marginLeft:'5px'}}>{this.props.person===null?'—':`${this.props.person.get('Name')} ${this.props.person.get('PhoneNumber')}`}</div>
         </div>
       )

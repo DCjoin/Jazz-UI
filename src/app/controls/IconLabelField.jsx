@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 const style={
   label:{
     fontSize:'12px',
-    color:'#cbcbcb'
+    color:'#626469'
   }
 }
 export default class IconLabelField extends Component {

@@ -41,7 +41,7 @@ let DateTimeSelector = React.createClass({
       endDate: endDate,
       startTime: startTime,
       endTime: endTime
-    }, () => {      
+    }, () => {
       if (callback)
         callback(startDate, endDate, startTime, endTime);
     });
@@ -209,7 +209,7 @@ let DateTimeSelector = React.createClass({
       dateFormatStr: 'YYYY-MM-DD',
       value: this.state.startDate && moment(this.state.startDate).format("YYYY-MM-DD"),
       isViewStatus:false,
-      width: '100px',
+      width:'92px',
       onChange: function(value) {
         value=moment(value)._d;
         me._onChangeDateTime(value, null, null, null);
@@ -227,7 +227,7 @@ let DateTimeSelector = React.createClass({
       value: this.state.endDate && moment(this.state.endDate).format("YYYY-MM-DD"),
       timeType: 1,
       //left: this.props.endLeft,
-      width: '100px',
+      width:'92px',
       onChange: function(value) {
         value=moment(value)._d;
         me._onChangeDateTime(null, null, value, null);
@@ -244,7 +244,7 @@ let DateTimeSelector = React.createClass({
         <ViewableDatePicker {...startDateProps}/>
         {showTime &&  <CalendarTime ref='startTime' {...startTimeProps}/>}
       </div>
-      <span>{I18N.EM.To}</span>
+      <span>{I18N.EM.To2}</span>
       <div className='jazz-full-border-datepicker-container'>
         <ViewableDatePicker {...endDateProps}/>
         {this.props.showTime && <CalendarTime ref='endTime' {...endTimeProps}/>}

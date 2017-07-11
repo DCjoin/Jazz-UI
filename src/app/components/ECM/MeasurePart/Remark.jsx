@@ -42,8 +42,8 @@ class AddRemark extends Component{
         <TextField {...prop}/>
         <div style={{marginTop:'15px'}}>
           <FlatButton
-            style={{width: '67px',height: '24px',borderRadius: '2px',border: 'solid 1px #3dcd58',lineHeight:'20px',minWidth:"67px"}}
-            labelStyle={{color:'#3dcd58',fontSize:'14px'}}
+            style={{width: '67px',height: '24px',borderRadius: '2px',border: 'solid 1px #3dcd58',lineHeight:'22px',minWidth:"67px"}}
+            labelStyle={{color:'#3dcd58',fontSize:'14px',padding:'0px',verticalAlign:'baseline'}}
             label={I18N.Common.Button.Save}
             disabled={this.state.value===''}
             onClick={()=>{
@@ -53,8 +53,8 @@ class AddRemark extends Component{
                           })
                         }} />
           <FlatButton
-            style={{width: '67px',height: '24px',borderRadius: '2px',lineHeight:'20px',minWidth:"67px",marginLeft:'25px'}}
-            labelStyle={{color:'#626469',fontSize:'14px'}}
+            style={{width: '67px',height: '24px',borderRadius: '2px',lineHeight:'22px',minWidth:"67px",marginLeft:'25px'}}
+            labelStyle={{color:'#626469',fontSize:'14px',padding:'0px',verticalAlign:'baseline'}}
             label={I18N.Common.Button.Cancel2}
             onClick={()=>{
               this.props.onCancel();

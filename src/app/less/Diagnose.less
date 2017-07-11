@@ -49,6 +49,22 @@
   }
   .label-group{
     border-bottom: 1px solid #ffffff;
+    .group-item{
+      height:36px;
+      min-height: 36px;
+      color:@dark-gray;
+      padding:0 9px 0 13px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding-left: 13px;
+      font-size: 14px;
+      .text{
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+    }
     .item{
       height:36px;
       min-height: 36px;
@@ -59,6 +75,7 @@
       align-items: center;
       padding-left: 13px;
       font-size: 14px;
+
       .side{
         display: flex;
         flex-direction: row;
@@ -70,7 +87,16 @@
       &.selected {
         background-color: #32ad3d !important;
         color:#ffffff;
+        position:relative;
+        >em{
+          position: absolute;
+          width: 4px;
+          height: 100%;
+          background-color: #25842e;
+          left: 0px
+        }
       }
+
       &:hover {
         color:#32ad3d !important;
         &.selected{
@@ -112,7 +138,7 @@
   flex-direction: row;
   // align-items: center;
   // padding:0 12px 17px 12px;
-  background-color: @ultra-light-gray;
+  background-color: #f3f5f7;
   .content{
     flex:1;
     display: flex;
@@ -174,7 +200,7 @@
         .name{
           font-size: 17px;
           color:@normal-black;
-          font-weight: bold;
+          // font-weight: bold;
         }
       }
       &-problem-chart{
@@ -182,6 +208,7 @@
         display: flex;
         margin-top:20px;
         margin-bottom: 45px;
+        border-radius: 5px;
         border:1px solid @border-gray;
         flex-direction: column;
       }
