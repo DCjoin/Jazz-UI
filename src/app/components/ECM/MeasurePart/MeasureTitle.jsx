@@ -42,7 +42,7 @@ export class EnergySys extends Component {
     return(
       <div style={{display:'flex',justifyContent:'cneter'}}>
         {canEnergySysEdit?this._renderEnergySys()
-                         :<div style={{fontSize:'16px',minWidth:'40px'}}>{MeasuresStore.getEnergySys(EnergyProblem.EnergySys)}</div>}
+                         :<div style={{fontSize:'14px',color:'#626469',marginRight:'28px'}}>{MeasuresStore.getEnergySys(EnergyProblem.EnergySys)}</div>}
       </div>
     )
   }

@@ -120,7 +120,7 @@ class DatePicker extends React.Component {
 
   _renderPopup(dateObject){
     if (this.state.popup){
-      if( this.props.isPopover ) {        
+      if( this.props.isPopover ) {
         return (<Popover
           open={true}
           anchorEl={ReactDOM.findDOMNode(this)}
@@ -132,7 +132,7 @@ class DatePicker extends React.Component {
         >
           <Calendar onChange={this._onDateChange} value={dateObject}/>
         </Popover>);
-      } else {        
+      } else {
         return (
             <div className="datepicker-popup"  >
                 <Calendar onChange={this._onDateChange} value={dateObject}/>

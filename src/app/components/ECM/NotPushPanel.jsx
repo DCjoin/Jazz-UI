@@ -359,7 +359,7 @@ export default class NotPushPanel extends Component {
         isOutsideClose={false}
         onRequestClose={onClose}
         titleStyle={{margin:'0 7px',paddingTop:"7px"}}
-        contentStyle={{overflowY:"auto",display:'block',padding:"6px 28px 10px 32px",margin:0}}
+        contentStyle={{overflowY:"auto",display:'block',padding:"6px 28px 14px 32px",margin:0}}
         >
         <div className="jazz-ecm-push-operation" style={{paddingRight:'19px',borderBottom:"1px solid #e6e6e6"}}>
           {this._renderOperation(this.state.measureIndex)}
