@@ -2139,13 +2139,17 @@ let CommonFuns = {
     if( value * 1 !== value ) {
       return null;
     }
-    let abbreviations = [
+    let isPlus = value >= 0,
+    abbreviations = [
       // {label: '兆', value: Math.pow(10, 12)},
       {label: '亿', value: Math.pow(10, 8)},
       {label: '万', value: Math.pow(10, 4)},
       {label: '', value: Math.pow(10, 0)},
-    ];
-    let label = '';
+    ],
+    label = '';
+    if( !isPlus ) {
+      value *= -1;
+    }
     for(let i = 0; i < abbreviations.length; i++) {
       let abbreviation = abbreviations[i];
       if( value/abbreviation.value >= 1 || i === abbreviations.length - 1 ) {
@@ -2160,6 +2164,9 @@ let CommonFuns = {
         }
         break;
       }
+    }
+    if(!isPlus) {
+      value *= -1;
     }
     return value + label;
   },

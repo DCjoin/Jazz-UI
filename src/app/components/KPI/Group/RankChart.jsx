@@ -40,7 +40,8 @@ const DEFAULT_OPTIONS = {
             	verticalAlign: 'top',
                 inside: true,
                 enabled: true
-            }
+            },
+            pointWidth: 60,
         }
     },
 
