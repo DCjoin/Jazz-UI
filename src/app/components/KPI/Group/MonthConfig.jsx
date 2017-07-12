@@ -31,10 +31,22 @@ export default class MonthConfig extends Component {
 	}
 
 	_onSave(){
-		GroupKPIAction.merge([{
-			path:`Buildings.${this.props.index}`,
-			value:this.state.buildingInfo
-		}]);
+    let {UomId}=this.props.kpiInfo.toJS();
+    if(UomId){
+      GroupKPIAction.merge([{
+        path:`Buildings.${this.props.index}`,
+        value:this.state.buildingInfo
+      }]);
+    }else {
+      GroupKPIAction.merge([{
+        path:`Buildings.${this.props.index}`,
+        value:this.state.buildingInfo
+      },{
+        path:`UomId`,
+        value:this.state.buildingInfo.get('UomId')
+      }]);
+    }
+
 		this.props.onSave();
 	}
 
@@ -49,15 +61,15 @@ export default class MonthConfig extends Component {
   }
 
 	_renderPrediction(){
-		var {HierarchyId,HierarchyName,MonthPredictionValues,TagSavingRates,ActualTagId,ActualTagName}=this.state.buildingInfo.toJS();
-		var {Year,UomId,CommodityId}=this.props.kpiInfo.toJS();
-		var uom=CommonFuns.getUomById(this.props.kpiInfo.get('UomId')).Code;
+		var {HierarchyId,HierarchyName,UomId,MonthPredictionValues,TagSavingRates,ActualTagId,ActualTagName}=this.state.buildingInfo.toJS();
+		var {Year,CommodityId}=this.props.kpiInfo.toJS();
+		// var uom=CommonFuns.getUomById(this.props.kpiInfo.get('UomId')).Code;
 		var props={
 			PredictionSetting:{
 				TagSavingRates,MonthPredictionValues
 			},
 	    Year:Year,
-	    uom,
+	    uomId:UomId,
 			tag:Immutable.fromJS({
 				Id:ActualTagId,
 				Name:ActualTagName,
