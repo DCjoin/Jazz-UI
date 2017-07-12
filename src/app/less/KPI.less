@@ -624,6 +624,7 @@
   flex-direction: column;
   width: 640px;
   border:1px solid #e4e7e9;
+	position: relative;
   &-header{
     background-color: #f2f2f2;
     height: 40px;
@@ -661,8 +662,12 @@
 		font-size: 14px;
 		color: @dark-gray;
 		text-decoration: underline;
+		position: absolute;
+		bottom: -25px;
+		right: 0;
 		&:hover{
-			color:@life-green
+			color:@life-green;
+			cursor: pointer;
 		}
 	}
   .column1{

@@ -11,6 +11,15 @@ import MonthValueGroup from '../Single/MonthValueGroup.jsx';
 import MonthKPIAction from 'actions/KPI/MonthKPIAction.jsx';
 import MonthKPIStore from 'stores/KPI/MonthKPIStore.jsx';
 
+function getUom(uomId){
+  if(uomId){
+    let uom=CommonFuns.getUomById(uomId).Code;
+    if(uom==='null') return ''
+    else return ` (${uom})`
+  }
+  return ''
+}
+
 var customerId=null;
 export default class MonthValue extends Component {
 
@@ -97,7 +106,7 @@ export default class MonthValue extends Component {
   _renderMonth(uom){
     let {TargetMonthValues}=this.props.buildingInfo.toJS();
     let monthProps={
-      title:`${I18N.Setting.KPI.Parameter.MonthValue} (${uom})`,
+      title:`${I18N.Setting.KPI.Parameter.MonthValue}${uom}`,
       contentStyle:{
         marginLeft:'0'
       }
@@ -199,7 +208,7 @@ export default class MonthValue extends Component {
           marginTop:'15px'
           },
         };
-      let uom=CommonFuns.getUomById(this.props.kpiInfo.get('UomId')).Code;
+      let uom=getUom(this.props.buildingInfo.get('UomId'));
       return(
         <TitleComponent {...props}>
           {this._renderIndicator(uom)}

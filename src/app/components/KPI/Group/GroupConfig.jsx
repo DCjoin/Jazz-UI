@@ -22,8 +22,10 @@ export default class GroupConfig extends Component {
   getUom(){
     let {IndicatorClass,UomId,RatioUomId}=this.props.kpiInfo.toJS();
     if(IndicatorClass===Type.Dosage){
-      let uom=CommonFuns.getUomById(UomId).Code;
-      if(UomId) return `(${uom})`
+      if(UomId) {
+        let uom=CommonFuns.getUomById(UomId).Code;
+        return `(${uom})`
+      }
       else return ''
     }
     else if(UomId && RatioUomId){
@@ -47,7 +49,7 @@ export default class GroupConfig extends Component {
         value=IndicatorType===Type.Quota?AnnualQuota:AnnualSavingRate;
 
         if(IndicatorType===Type.Quota){
-          title=`${annualTitle} (${this.getUom()})`
+          title=`${annualTitle}${this.getUom()}`
         }else {
           title=`${annualTitle} (%)`
         }

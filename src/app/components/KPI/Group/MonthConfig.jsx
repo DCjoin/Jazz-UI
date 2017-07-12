@@ -61,15 +61,15 @@ export default class MonthConfig extends Component {
   }
 
 	_renderPrediction(){
-		var {HierarchyId,HierarchyName,MonthPredictionValues,TagSavingRates,ActualTagId,ActualTagName}=this.state.buildingInfo.toJS();
-		var {Year,UomId,CommodityId}=this.props.kpiInfo.toJS();
-		var uom=CommonFuns.getUomById(this.props.kpiInfo.get('UomId')).Code;
+		var {HierarchyId,HierarchyName,UomId,MonthPredictionValues,TagSavingRates,ActualTagId,ActualTagName}=this.state.buildingInfo.toJS();
+		var {Year,CommodityId}=this.props.kpiInfo.toJS();
+		// var uom=CommonFuns.getUomById(this.props.kpiInfo.get('UomId')).Code;
 		var props={
 			PredictionSetting:{
 				TagSavingRates,MonthPredictionValues
 			},
 	    Year:Year,
-	    uom,
+	    uomId:UomId,
 			tag:Immutable.fromJS({
 				Id:ActualTagId,
 				Name:ActualTagName,

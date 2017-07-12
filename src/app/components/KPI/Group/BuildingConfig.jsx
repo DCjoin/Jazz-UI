@@ -67,6 +67,7 @@ export default class BuildingConfig extends Component {
       <div className='jazz-kpi-group-buildings'>
         {header}
         {content}
+        {footer}
       </div>
     )
   }
