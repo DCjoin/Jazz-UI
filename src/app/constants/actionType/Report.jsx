@@ -18,6 +18,7 @@ module.exports = {
     GET_SELECTED_REPORT_PREVIEW_URL_SUCCESS: null,
     GET_SELECTED_REPORT_PREVIEW_URL_ERROR: null,
     ALL_BUILDINGS_EXISTENCE: null,
+    SET_FIRST: null,
   })
 
 };

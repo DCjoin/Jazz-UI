@@ -204,7 +204,7 @@ export default class Actuality extends Component {
 			{isReport(this.props) && !singleKPI && !reportHide && <div className='jazz-actuality-item'>
 				<div className='jazz-actuality-item-title'>{'报表'}</div>
 				{isFull() &&
-				<div style={{display: 'inline-block', height: 23, verticalAlign: 'top'}}>
+				<div style={{marginLeft: 5, display: 'inline-block', height: 23, verticalAlign: 'top'}}>
 					<a href="javascript:void(0)" className='icon-add' onClick={() => {
 				      	this._showReportEdit();
 				      }}/>
