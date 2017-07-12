@@ -169,7 +169,6 @@ export default class Actuality extends Component {
 		this._cancleRefreshDialog = this._cancleRefreshDialog.bind(this);
 		this._onPreAction = this._onPreAction.bind(this);
 		this._getKPIRank = this._getKPIRank.bind(this);
-		this.state = this._getInitialState();
 	}
 	componentWillMount() {
 		document.title = I18N.MainMenu.KPI;
@@ -241,6 +240,7 @@ export default class Actuality extends Component {
 		return !!find(HierarchyStore.getBuildingList(), building => building.Id === buildingId);
 	}
 	_preAction(customerId) {
+		this.setState(this._getInitialState());
 		if( canView() ) {
 			SingleKPIAction.customerCurrentYear(customerId);
 		}
