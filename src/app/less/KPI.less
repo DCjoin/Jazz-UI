@@ -219,7 +219,7 @@
 
   &-content {
     flex: 1;
-    padding: 30px 20px;
+    padding: 30px 9.7%;
     overflow-x: hidden;
     overflow-y: auto;
     background-color: #f3f5f7;
@@ -462,7 +462,7 @@
   display: flex;
   position: relative;
   background-color: #ffffff;
-  padding: 20px;
+  padding: 0 20px;
   padding-right: 0;
 
   &-wrapper {
@@ -485,29 +485,39 @@
 
   &-chart {
     flex: 1;
+    margin: 20px 0;
   }
 
   &-summary {
-    width: 225px;
     display: flex;
     flex-direction: column;
-    // justify-content: center;
+    justify-content: space-around;
     background-color: #ffffff;
+
+    width: 208px;
+    height: 195px;
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    margin-left: 30px;
+    margin-right: 44px;
+    margin-top: 28px;
+    padding-top: 13px;
 
     & .summary {
       &-item {
-        padding: 10px 20px;
+        padding: 0 20px;
 
         &.overproof {
           color: red;
         }
 
         &-tip {
-          font-size: 14px;
+          font-size: 10px;
           margin: 10px 20px;
           display: flex;
           align-items: center;
-          justify-content: space-between;
+          color: #ff0f0f;
+          text-decoration: underline;
 
           &.hoverable {
             .pointer;
@@ -516,14 +526,12 @@
       }
       &-title {
         font-size: 12px;
+        margin-bottom: 5px;
       }
       &-value {
-        height: 60px;
-        line-height: 60px;
+        height: 40px;
+        line-height: 40px;
         font-size: 14px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
         &>span:first-of-type {
           font-size: 25px;
           font-weight: bold;
@@ -1024,23 +1032,47 @@
   &-tooltip {
     position: absolute;
     display: none;
-    right: -30px;
-    bottom: 20px;
-    // width: 240px;
+
     background-color: #fff;
-    border: 1px #000 solid;
-    border-radius: 4px;
-    // background-color: #717171;
+    color: @slate-grey;
+    line-height: normal;
+    font-size: 14px;
+    top: 0;
+    left: 44px;
+    width: 162px;
+    padding: 10px;
+    border: solid 1px @border;
+    border-radius: 6px;
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+    z-index: 1;
+
+    &:before {
+      content: '';
+      border: solid 1px @border;
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      left: -7px;
+      top: 24px;
+      transform: rotateZ(-45deg);
+      border-right: none;
+      border-bottom: none;
+      background-color: #fff;
+    }
+
     &-title {
       color: #000;
+      font-size: 10px;
       white-space:nowrap;
+      margin-bottom: 5px;
+    }
+    & &-title:not(:first-of-type) {
+      margin-top: 10px;
     }
 
     &-icon {
-      float: right;
-      top: -40px;
       position: relative;
-      right: 20px;
+      margin-left: 5px;
 
       &:hover .kpi-report-tooltip {
         display: block;

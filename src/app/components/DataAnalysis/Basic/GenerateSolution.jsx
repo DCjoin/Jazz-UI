@@ -455,7 +455,6 @@ export class GenerateSolutionButton extends Component {
 					disabled={disabled}
 					label={I18N.Setting.DataAnalysis.Scheme}
 					labelStyle={{...styles.label, ...{
-							top: -1,
 							verticalAlign: 'top',
 						}
 					}}
