@@ -76,18 +76,19 @@ export default class KPIReport extends Component {
 			(<div className='summary-value'>
 				<span>{util.getLabelData(summaryData.PredictSum)}</span>
 				<span>{summaryData.PredictSum !== null && getUnit(data.get('unit'))}</span>
+				{this._renderTooltip(overproof, isIndex)}
 			</div>) :/*节能率预测值*/
 			(<div className='summary-value'>
 				<span>{(typeof summaryData.PredictRatio !== 'number' ? 0 : summaryData.PredictRatio).toFixed(1) * 1 + '%'}</span>
+				{this._renderTooltip(overproof, isIndex)}
 			</div>)}
-			{this._renderTooltip(overproof, isIndex)}
 		</div>
 		);
 	}
 	_renderTooltip(overproof, isIndex) {
 		let iconProps = {
 			style: {
-				fontSize: 18,
+				fontSize: 24,
 				color: overproof ? '#FF0000' : '#25C61D'
 			},
 			className: 'kpi-report-tooltip-icon ' + (overproof ? 'icon-unhappy' : 'icon-happy')
@@ -102,7 +103,7 @@ export default class KPIReport extends Component {
 		let {summaryData} = this.props;
 		return (<div className='kpi-report-tooltip'>
 			<div className='kpi-report-tooltip-title'>{'年度预测指标使用量'}</div>
-			<div>{(!summaryData.PredictRatio ? 0 : summaryData.PredictRatio).toFixed(1) * 1 + '%'}</div>
+			<div style={{fontSize: '18px', color: overproof ? '#dc0a0a' : '#0f0f0f'}}>{(!summaryData.PredictRatio ? 0 : summaryData.PredictRatio).toFixed(1) * 1 + '%'}</div>
 		</div>);
 	}
 	_renderSavingTooltip(overproof) {
@@ -113,20 +114,18 @@ export default class KPIReport extends Component {
 		indicatorClass = data.get('IndicatorClass');
 		return (
 			<div className='kpi-report-tooltip'>
-				<div>
+				<div style={{paddingBottom: 5, borderBottom: '1px solid #cbcbcb'}}>
 					<div className='kpi-report-tooltip-title'>{'年度节能量'}</div>
-					<div>{getValueWithUnit(IndexValue - actualSum, unit)}</div>
+					<div style={{fontSize: '18px', color: overproof ? '#dc0a0a' : '#0f0f0f'}}>{getValueWithUnit(IndexValue - actualSum, unit)}</div>
 				</div>
-				<div style={{display: 'flex'}}>
-					<div>
-						<div className='kpi-report-tooltip-title'>{'年度目标用量'}</div>
-						<div>{getValueWithUnit(IndexValue, unit)}</div>
-					</div>
-					{indicatorClass === IndicatorClass.Dosage && <div>
-						<div className='kpi-report-tooltip-title'>{'年度预测用量'}</div>
-						<div>{getValueWithUnit(PredictSum, unit)}</div>
-					</div>}
+				<div style={{marginTop: 10}}>
+					<div className='kpi-report-tooltip-title'>{'年度目标用量'}</div>
+					<div>{getValueWithUnit(IndexValue, unit)}</div>
 				</div>
+				{indicatorClass === IndicatorClass.Dosage && <div style={{marginTop: 10}}>
+					<div className='kpi-report-tooltip-title'>{'年度预测用量'}</div>
+					<div>{getValueWithUnit(PredictSum, unit)}</div>
+				</div>}
 			</div>
 		);
 	}
@@ -143,9 +142,9 @@ export default class KPIReport extends Component {
 				util.openTab(RoutePath.ecm(this.context.router.params)+'?init_hierarchy_id='+this.props.buildingId);
 			}
 		}}>
-			<FontIcon style={{fontSize: '14px'}} className='icon-alarm-notification'/>
+			<FontIcon style={{fontSize: '18px', color: '#ff0f0f', marginRight: 15}} className='icon-alarm-notification'/>
 			<div>
-				<div>{'预测全年用量将超标，'}</div>
+				<div>{'预测全年用量将超标'}</div>
 				<div>{'请及时采取节能措施'}</div>
 			</div>
 			{hasPermission && <FontIcon style={{fontSize: '14px'}} className='icon-arrow-right'/>}
