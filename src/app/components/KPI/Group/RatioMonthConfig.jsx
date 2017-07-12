@@ -1,5 +1,6 @@
 'use strict';
 import React, {Component} from 'react';
+import {IconButton} from 'material-ui';
 import Immutable from 'immutable';
 import MonthKPIAction from 'actions/KPI/MonthKPIAction.jsx';
 import GroupKPIAction from 'actions/KPI/GroupKPIAction.jsx';
@@ -7,12 +8,12 @@ import MonthKPIStore from 'stores/KPI/MonthKPIStore.jsx'
 import TitleComponent from 'controls/TitleComponent.jsx';
 import FormBottomBar from 'controls/FormBottomBar.jsx';
 import { formStatus } from 'constants/FormStatus.jsx';
-import ActualTag from './ActualTag.jsx';
+import ActualTag from './RatioActualTag.jsx';
 import MonthValue from './MonthValue.jsx';
 import Prediction from './GroupPrediction.jsx';
 import CommonFuns from 'util/Util.jsx';
 
-export default class MonthConfig extends Component {
+export default class RatioMonthConfig extends Component {
 
   constructor(props) {
     super(props);
@@ -44,6 +45,15 @@ export default class MonthConfig extends Component {
       },{
         path:`UomId`,
         value:this.state.buildingInfo.get('UomId')
+      },{
+        path:`RatioUomId`,
+        value:this.state.buildingInfo.get('RatioUomId')
+      },{
+        path:`RatioCommodityId`,
+        value:this.state.buildingInfo.get('RatioCommodityId')
+      },{
+        path:`NumeratorCommodityId`,
+        value:this.state.buildingInfo.get('NumeratorCommodityId')
       }]);
     }
 
@@ -59,29 +69,6 @@ export default class MonthConfig extends Component {
 			<MonthValue {...props}/>
 		)
   }
-
-	_renderPrediction(){
-		var {HierarchyId,HierarchyName,UomId,MonthPredictionValues,TagSavingRates,ActualTagId,ActualTagName}=this.state.buildingInfo.toJS();
-		var {Year,CommodityId}=this.props.kpiInfo.toJS();
-		// var uom=CommonFuns.getUomById(this.props.kpiInfo.get('UomId')).Code;
-		var props={
-			PredictionSetting:{
-				TagSavingRates,MonthPredictionValues
-			},
-	    Year:Year,
-	    uomId:UomId,
-			tag:Immutable.fromJS({
-				Id:ActualTagId,
-				Name:ActualTagName,
-				UomId,CommodityId
-			}),
-	    hierarchyId:HierarchyId,
-	    hierarchyName:HierarchyName,
-		};
-		return(
-			<Prediction {...props}/>
-		)
-	}
 
 	componentDidMount(){
 		MonthKPIStore.addChangeListener(this._onChange);
@@ -99,39 +86,29 @@ export default class MonthConfig extends Component {
     }
     let {isCreate}=this.props;
 	  let {HierarchyName}=this.state.buildingInfo.toJS();
-    let titleProps={
-			title:`${HierarchyName}-${I18N.Setting.KPI.Group.MonthConfig.Title}`,
-			contentStyle:{
-				marginLeft:'0'
-			},
-			titleStyle:{
-				fontSize:'16px'
-			},
-      style:{
-        marginTop:'0px'
-      }
-			// className:'jazz-kpi-config-wrap'
-		},
-    tagProps={
+    let tagProps={
       kpiInfo:this.props.kpiInfo,
       buildingInfo:this.state.buildingInfo,
       isCreate:isCreate,
     };
 
     return(
-      <TitleComponent {...titleProps}>
+      <div className='diagnose-overlay'>
+        <header className='diagnose-overlay-header'>
+            <span>{`${HierarchyName}-${I18N.Setting.KPI.Group.MonthConfig.Title}`}</span>
+        </header>
+        <div style={{marginLeft:'15px'}}>
         <ActualTag {...tagProps}/>
-        {this._renderMonthValue()}
-				{this._renderPrediction()}
-				  <FormBottomBar isShow={true} saveBtnProps={{label:I18N.Platform.Password.Confirm}} allowDelete={false} allowEdit={false} enableSave={MonthKPIStore.validateMonthInfo(this.state.buildingInfo)}
-				ref="actionBar" status={formStatus.EDIT} onSave={this._onSave} onCancel={this.props.onCancel}
-				cancelBtnProps={{label:I18N.Common.Button.Cancel2}}/>
-      </TitleComponent>
+        {this._renderMonthValue()}</div>
+      <FormBottomBar isShow={true} saveBtnProps={{label:I18N.Platform.Password.Confirm}} allowDelete={false} allowEdit={false} enableSave={MonthKPIStore.validateRatioMonthInfo(this.state.buildingInfo)}
+      ref="actionBar" status={formStatus.EDIT} onSave={this._onSave} onCancel={this.props.onCancel}
+      cancelBtnProps={{label:I18N.Common.Button.Cancel2}}/>
+    </div>
     )
   }
 }
 
-MonthConfig.propTypes = {
+RatioMonthConfig.propTypes = {
 	kpiInfo:React.PropTypes.object,
   index:React.PropTypes.number,
 	isCreate:React.PropTypes.bool,

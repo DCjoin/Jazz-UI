@@ -32,8 +32,6 @@ export default class GroupConfig extends Component {
       let uom=CommonFuns.getUomById(UomId).Code;
       let ratioUom=CommonFuns.getUomById(RatioUomId).Code;
       if(UomId===RatioUomId) return ''
-      if(uom==='null') return `(/${ratioUom})`
-      if(RatioUomId==='null') return `(${uom}/)`
       return `(${uom}/${ratioUom})`
     }
     else return ''

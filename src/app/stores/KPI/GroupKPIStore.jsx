@@ -174,7 +174,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
 
   clearParam(type){
     _annualSum='-';
-    let values=_KpiSettings.getIn(['AdvanceSettings','TargetMonthValues']).toJS();
+    // let values=_KpiSettings.getIn(['AdvanceSettings','TargetMonthValues']).toJS();
     _kpiInfo=_kpiInfo.set('AnnualQuota',null);
     _kpiInfo=_kpiInfo.set('AnnualSavingRate',null);
     if(type==='CommodityId'){
@@ -182,14 +182,15 @@ const GroupKPIStore = assign({}, PrototypeStore, {
       _kpiInfo=_kpiInfo.set('IndicatorClass',null);
       _kpiInfo=_kpiInfo.set('IndicatorName',null);
     }
-    _kpiInfo.get('Buildings').forEach((building,index)=>{
-      _kpiInfo=_kpiInfo.mergeIn(['Buildings',index],Map({
-        AnnualQuota:null,
-        AnnualSavingRate:null,
-        TargetMonthValues:Immutable.fromJS(assign([],values)),
-        MonthPredictionValues:Immutable.fromJS(assign([],values))
-      }))
-    })
+    // _kpiInfo.get('Buildings').forEach((building,index)=>{
+    //   _kpiInfo=_kpiInfo.mergeIn(['Buildings',index],Map({
+    //     AnnualQuota:null,
+    //     AnnualSavingRate:null,
+    //     TargetMonthValues:Immutable.fromJS(assign([],values)),
+    //     MonthPredictionValues:Immutable.fromJS(assign([],values))
+    //   }))
+    // })
+    this.clearAllBuildingInfo();
   },
 
   merge(data){
@@ -437,7 +438,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
       })
     }
     let GroupKpiSetting=result.get('GroupKpiSetting');
-    var {CustomerId,Year,IndicatorName,UomId,CommodityId,IndicatorType,AnnualQuota,AnnualSavingRate,Buildings}=_kpiInfo.toJS();
+    var {CustomerId,Year,IndicatorName,UomId,CommodityId,IndicatorType,AnnualQuota,AnnualSavingRate,Buildings,IndicatorClass}=_kpiInfo.toJS();
     //for GroupKpiSetting
     result=result.set('GroupKpiSetting',GroupKpiSetting.mergeDeep(
       {
@@ -445,7 +446,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
         HierarchyId:CustomerId,
         CustomerId,IndicatorName,UomId,CommodityId,
         AdvanceSettings:{
-          Year,IndicatorType,AnnualQuota,AnnualSavingRate
+          Year,IndicatorType,AnnualQuota,AnnualSavingRate,IndicatorClass
         }
         }
       )
@@ -453,13 +454,13 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     //for BuildingKpiSettingsList
     Buildings.forEach((building,index)=>{
       var kpi=result.getIn(['BuildingKpiSettingsList',index]);
-      var {HierarchyId,HierarchyName,ActualTagId,ActualTagName,AnnualQuota,AnnualSavingRate,TargetMonthValues,
+      var {HierarchyId,HierarchyName,ActualTagId,ActualTagName,ActualRatioTagId,ActualRatioTagName,AnnualQuota,AnnualSavingRate,TargetMonthValues,
         TagSavingRates,MonthPredictionValues}=building;
       var setting={
         KpiType:KpiType.single,
-        HierarchyId,HierarchyName,ActualTagId,ActualTagName,
+        HierarchyId,HierarchyName,ActualTagId,ActualTagName,ActualRatioTagId,ActualRatioTagName,
         AdvanceSettings:{
-          IndicatorType,AnnualQuota,AnnualSavingRate,
+          IndicatorType,AnnualQuota,AnnualSavingRate,IndicatorClass,
           TargetMonthValues,
           PredictionSetting:{
             TagSavingRates,MonthPredictionValues

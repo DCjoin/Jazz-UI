@@ -11,15 +11,6 @@ import MonthValueGroup from '../Single/MonthValueGroup.jsx';
 import MonthKPIAction from 'actions/KPI/MonthKPIAction.jsx';
 import MonthKPIStore from 'stores/KPI/MonthKPIStore.jsx';
 
-function getUom(uomId){
-  if(uomId){
-    let uom=CommonFuns.getUomById(uomId).Code;
-    if(uom==='null') return ''
-    else return ` (${uom})`
-  }
-  return ''
-}
-
 var customerId=null;
 export default class MonthValue extends Component {
 
@@ -56,21 +47,59 @@ export default class MonthValue extends Component {
   }
 
   _init(props){
-    var {ActualTagId,AnnualSavingRate}=props.buildingInfo.toJS(),
-        {Year,IndicatorType}=props.kpiInfo.toJS();
-    if(ActualTagId){
-      SingleKPIAction.IsAutoCalculable(customerId,ActualTagId,Year);
-      if(IndicatorType===Type.SavingRate){
-        var params={
-          TagId:ActualTagId,
-          CustomerId:customerId,
-          Year,
-          QuotaType:IndicatorType,
-          RatioValue:AnnualSavingRate
-        };
-        MonthKPIAction.getCalcSumValue(params);
+    var {ActualTagId,AnnualSavingRate,ActualRatioTagId}=props.buildingInfo.toJS(),
+        {Year,IndicatorType,IndicatorClass}=props.kpiInfo.toJS();
+        if(IndicatorClass===Type.Dosage){
+          if(ActualTagId){
+            SingleKPIAction.IsAutoCalculable(customerId,ActualTagId,Year);
+            if(IndicatorType===Type.SavingRate){
+              var params={
+                TagId:ActualTagId,
+                CustomerId:customerId,
+                IndicatorClass,
+                Year,
+                QuotaType:IndicatorType,
+                RatioValue:AnnualSavingRate
+              };
+              MonthKPIAction.getCalcSumValue(params);
+            }
+          }
+        }else {
+          if(ActualTagId && ActualRatioTagId){
+            if(IndicatorType===Type.SavingRate){
+              var params={
+                TagId:ActualTagId,
+                DenominatorTagId:ActualRatioTagId,
+                CustomerId:customerId,
+                IndicatorClass,
+                Year,
+                QuotaType:IndicatorType,
+                RatioValue:AnnualSavingRate
+              };
+              MonthKPIAction.getCalcSumValue(params);
+            }
+          }
+        }
+
+  }
+
+  getUom(){
+    let {IndicatorClass}=this.props.kpiInfo.toJS();
+    let {UomId,RatioUomId}=this.props.buildingInfo.toJS();
+    if(IndicatorClass===Type.Dosage){
+      if(UomId) {
+        let uom=CommonFuns.getUomById(UomId).Code;
+        return `(${uom})`
       }
+      else return ''
     }
+    else if(UomId && RatioUomId){
+      let uom=CommonFuns.getUomById(UomId).Code;
+      let ratioUom=CommonFuns.getUomById(RatioUomId).Code;
+      if(UomId===RatioUomId) return ''
+      return `(${uom}/${ratioUom})`
+    }
+    else return ''
   }
 
   _onCalcValue(){
@@ -104,6 +133,7 @@ export default class MonthValue extends Component {
   }
 
   _renderMonth(uom){
+    let {IndicatorClass}=this.props.kpiInfo.toJS();
     let {TargetMonthValues}=this.props.buildingInfo.toJS();
     let monthProps={
       title:`${I18N.Setting.KPI.Parameter.MonthValue}${uom}`,
@@ -126,15 +156,15 @@ export default class MonthValue extends Component {
 
     return(
           <TitleComponent {...monthProps}>
-            <FlatButton
+            {IndicatorClass===Type.Dosage && <FlatButton
               label={this.state.hasHistory?I18N.Setting.KPI.Parameter.CalcViaHistory:I18N.Setting.KPI.Parameter.NoCalcViaHistory}
               onTouchTap={this._onCalcValue}
               disabled={!this.state.hasHistory}
               style={{border:'1px solid #e4e7e9'}}
-            />
-            <TitleComponent {...sumProps}>
+            />}
+          {IndicatorClass===Type.Dosage && <TitleComponent {...sumProps}>
               {CommonFuns.toThousands(MonthKPIStore.getValueSum(this.state.isCalc,this.props.buildingInfo.get('TargetMonthValues').toJS())) || '-'}
-            </TitleComponent>
+            </TitleComponent>}
             <MonthValueGroup {...monthGroupProps}/>
           </TitleComponent>
     )
@@ -157,7 +187,7 @@ export default class MonthValue extends Component {
       }
       else {
         let valueProps={
-          title:`${I18N.format(I18N.Setting.KPI.Group.BuildingConfig.Value,I18N.Setting.KPI.SavingRate,'%')}`,
+          title:`${I18N.format(I18N.Setting.KPI.Group.BuildingConfig.Value,I18N.Setting.KPI.SavingRate,' (%)')}`,
           contentStyle:{
             marginLeft:'0'
           }
@@ -191,9 +221,19 @@ export default class MonthValue extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.buildingInfo.get('ActualTagId')!==this.props.buildingInfo.get('ActualTagId')){
-      this._init(nextProps)
+    let {IndicatorClass}=nextProps.kpiInfo.toJS();
+    if(IndicatorClass===Type.Dosage){
+      if(nextProps.buildingInfo.get('ActualTagId')!==this.props.buildingInfo.get('ActualTagId')){
+        this._init(nextProps)
+      }
+    }else {
+      if(nextProps.buildingInfo.get('ActualTagId') && nextProps.buildingInfo.get('ActualRatioTagId') &&
+        (nextProps.buildingInfo.get('ActualTagId')!==this.props.buildingInfo.get('ActualTagId') ||
+        nextProps.buildingInfo.get('ActualRatioTagId')!==this.props.buildingInfo.get('ActualRatioTagId'))){
+        this._init(nextProps)
+      }
     }
+
   }
 
   componentWillUnmount(){
@@ -208,7 +248,8 @@ export default class MonthValue extends Component {
           marginTop:'15px'
           },
         };
-      let uom=getUom(this.props.buildingInfo.get('UomId'));
+      let uom=this.getUom();
+
       return(
         <TitleComponent {...props}>
           {this._renderIndicator(uom)}

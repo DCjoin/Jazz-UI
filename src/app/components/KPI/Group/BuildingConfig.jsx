@@ -29,7 +29,7 @@ export default class BuildingConfig extends Component {
   }
 
   _renderBuildingTable(){
-    let {IndicatorType,Buildings}=this.props.kpiInfo.toJS();
+    let {IndicatorType,IndicatorClass,Buildings}=this.props.kpiInfo.toJS();
     let type=IndicatorType===Type.Quota?I18N.Setting.KPI.Quota:I18N.Setting.KPI.SavingRate;
     let indicator=I18N.format(I18N.Setting.KPI.Group.BuildingConfig.Value,type);
 
@@ -50,7 +50,7 @@ export default class BuildingConfig extends Component {
                                               {
                                                 Buildings.map((building,index)=>{
                                                   var props={
-                                                    IndicatorType,index,
+                                                    IndicatorType,index,IndicatorClass,
                                                     buildingInfo:building,
                                                     onMonthConfigShow:()=>{this.props.onMonthConfig(true,index)},
                                                   }

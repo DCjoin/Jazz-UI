@@ -11,7 +11,8 @@ import BuildingConfig from './BuildingConfig.jsx';
 import FormBottomBar from 'controls/FormBottomBar.jsx';
 import { formStatus } from 'constants/FormStatus.jsx';
 import Dialog from 'controls/NewDialog.jsx';
-import MonthConfig from './MonthConfig.jsx';
+import DosageMonthConfig from './DosageMonthConfig.jsx';
+import RatioMonthConfig from './RatioMonthConfig.jsx';
 
 var customerId=null;
 export default class KPIConfig extends Component {
@@ -138,7 +139,8 @@ export default class KPIConfig extends Component {
 	}
 
 	_renderMonthConfig(){
-		let isCeate=this.state.kpiInfo.getIn(["Buildings",this.state.monthIndex,'ActualTagName'])?false:true;
+		let isCeate=this.state.kpiInfo.getIn(["Buildings",this.state.monthIndex,'ActualTagName'])?false:true,
+				isDosage=this.state.kpiInfo.get('IndicatorClass')===Type.Dosage;
 		let props={
 			kpiInfo:this.state.kpiInfo,
 			index:this.state.monthIndex,
@@ -151,7 +153,7 @@ export default class KPIConfig extends Component {
 			},
 		}
 		return(
-			<MonthConfig {...props}/>
+			isDosage?<DosageMonthConfig {...props}/>:<RatioMonthConfig {...props}/>
 		)
 	}
 
