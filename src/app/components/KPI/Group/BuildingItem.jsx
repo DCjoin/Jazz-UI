@@ -42,9 +42,18 @@ export default class BuildingItem extends Component {
         }
       }
 
+  getTagName(){
+    let {IndicatorClass,buildingInfo}=this.props;
+    if(IndicatorClass===Type.Dosage) return buildingInfo.ActualTagName
+    else return(
+      <div>{buildingInfo.ActualTagName}<br/>{buildingInfo.ActualRatioTagName}</div>
+    )
+  }
+
   shouldComponentUpdate(nextProps, nextState) {
     if(this.props.buildingInfo.AnnualQuota===nextProps.buildingInfo.AnnualQuota
-      && this.props.buildingInfo.AnnualSavingRate===nextProps.buildingInfo.AnnualSavingRate) return false;
+      && this.props.buildingInfo.AnnualSavingRate===nextProps.buildingInfo.AnnualSavingRate
+      && this.props.IndicatorType===nextProps.IndicatorType) return false;
       return true;
   }
 
@@ -68,7 +77,7 @@ export default class BuildingItem extends Component {
       <tr>
         <td className="column1" title={buildingInfo.HierarchyName}>{buildingInfo.HierarchyName}</td>
         <td className="column2"><TextField {...props}/></td>
-        <td className="column3" title={buildingInfo.ActualTagName}>{buildingInfo.ActualTagName}</td>
+        <td className="column3" title={buildingInfo.ActualTagName}>{this.getTagName()}</td>
         <td className="column4" onClick={valueIsActive?onMonthConfigShow.bind(this,true):()=>{}}>
           <div className={classNames({'active':valueIsActive})}>{I18N.Setting.KPI.Group.BuildingConfig.MonthConfig}</div>
           </td>
@@ -82,5 +91,6 @@ BuildingItem.propTypes = {
 	buildingInfo:React.PropTypes.object,
   onMonthConfigShow:React.PropTypes.func,
   IndicatorType:React.PropTypes.number,
+  IndicatorClass:React.PropTypes.number,
   // onCalcSum:React.PropTypes.func,
 };

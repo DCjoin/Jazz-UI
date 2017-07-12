@@ -17,7 +17,7 @@ import CommonFuns from 'util/Util.jsx';
 function getUom(uomId){
   if(uomId){
     let uom=CommonFuns.getUomById(uomId).Code;
-    if(uom==='null') return ''
+    if(uom==='') return ''
     else return `(${uom})`
   }
   return ''
