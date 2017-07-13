@@ -130,11 +130,8 @@ export default class KPIReport extends Component {
 		);
 	}
 	_renderTip() {
-		let hasPermission = false && !this.props.isGroup && 
-							(
-								privilegeUtil.canView(PermissionCode.PUSH_SOLUTION, CurrentUserStore.getCurrentPrivilege())
-							|| privilegeUtil.isFull(PermissionCode.SENIOR_DATA_ANALYSE, CurrentUserStore.getCurrentPrivilege())
-							);
+		let hasPermission = privilegeUtil.canView(PermissionCode.PUSH_SOLUTION, CurrentUserStore.getCurrentPrivilege())
+							|| privilegeUtil.isFull(PermissionCode.SENIOR_DATA_ANALYSE, CurrentUserStore.getCurrentPrivilege());
 		return <div className={classnames('summary-item-tip', {
 			hoverable: hasPermission
 		})} onClick={() => {
@@ -173,7 +170,7 @@ export default class KPIReport extends Component {
 					<div className='jazz-kpi-report-summary'>
 						{this.getValueSummaryItem()}
 						{this.getPredictSummaryItem()}
-						{!!overproof && !currentYearDone && this._renderTip()}
+						{!!overproof && !currentYearDone && !isGroup && this._renderTip()}
 					</div>
 				</div>
 			</div>
