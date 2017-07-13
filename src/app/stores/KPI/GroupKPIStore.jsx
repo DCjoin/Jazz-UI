@@ -62,18 +62,19 @@ const GroupKPIStore = assign({}, PrototypeStore, {
 
   setKpiInfo(data){
     _rawData=Immutable.fromJS(data);
-    let {CustomerId,UomId,CommodityId,IndicatorName,AdvanceSettings}=data.GroupKpiSetting;
+    let {CustomerId,UomId,CommodityId,IndicatorName,RatioUomId,AdvanceSettings}=data.GroupKpiSetting;
     let {Year,IndicatorType,AnnualQuota,AnnualSavingRate,IndicatorClass}=AdvanceSettings;
 
     _kpiInfo=Immutable.fromJS({
-      CustomerId,Year,IndicatorType,AnnualQuota,AnnualSavingRate,UomId,IndicatorName,CommodityId,IndicatorClass,
+      CustomerId,Year,IndicatorType,AnnualQuota,AnnualSavingRate,UomId,IndicatorName,CommodityId,IndicatorClass,RatioUomId,
       Buildings:data.BuildingKpiSettingsList.length?
                 data.BuildingKpiSettingsList.map(building=>{
-                  let {HierarchyId,HierarchyName,ActualTagId,ActualTagName,AdvanceSettings}=building;
+                  let {HierarchyId,HierarchyName,ActualTagId,ActualTagName,AdvanceSettings,ActualRatioTagId,ActualRatioTagName,RatioUomId,UomId
+                  }=building;
                   let {AnnualQuota,AnnualSavingRate,TargetMonthValues,PredictionSetting}=AdvanceSettings;
                   let {TagSavingRates,MonthPredictionValues}=PredictionSetting;
                   return{
-                    HierarchyId,HierarchyName,ActualTagId,ActualTagName,AnnualQuota,AnnualSavingRate,
+                    HierarchyId,HierarchyName,ActualTagId,ActualTagName,AnnualQuota,AnnualSavingRate,ActualRatioTagId,ActualRatioTagName,RatioUomId,UomId,
                     TargetMonthValues,TagSavingRates,MonthPredictionValues
                   }
                 }):[]
@@ -200,7 +201,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
       let paths = path.split(".");
       refresh= path.indexOf('IndicatorType')>-1?'IndicatorType':refresh;
       refresh= path.indexOf('IndicatorClass')>-1?'IndicatorClass':refresh;
-      refresh= path.indexOf('CommodityId')>-1?'CommodityId':refresh;
+      refresh= paths[paths.length-1]==='CommodityId'?'CommodityId':refresh;
       if(status===DataStatus.ADD){
         let {index,length}=el;
         var children = _kpiInfo.getIn(paths);
@@ -398,11 +399,13 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     savingRateValidator = SingleKPIStore.validateSavingRate){
 
     // var validDate=true;
-    var {IndicatorName,CommodityId,AnnualQuota,AnnualSavingRate,Buildings}=kpiInfo.toJS();
+    var {IndicatorName,CommodityId,IndicatorClass,AnnualQuota,AnnualSavingRate,Buildings}=kpiInfo.toJS();
 
     if(!CommodityId || CommodityId===-1) return false;
 
     if(!IndicatorName || IndicatorName==='') return false;
+
+    if(!IndicatorClass) return false;
 
     if(AnnualQuota && !quotaValidator(AnnualQuota)) return false;
 
@@ -438,13 +441,14 @@ const GroupKPIStore = assign({}, PrototypeStore, {
       })
     }
     let GroupKpiSetting=result.get('GroupKpiSetting');
-    var {CustomerId,Year,IndicatorName,UomId,CommodityId,IndicatorType,AnnualQuota,AnnualSavingRate,Buildings,IndicatorClass}=_kpiInfo.toJS();
+    var {CustomerId,Year,IndicatorName,UomId,CommodityId,IndicatorType,AnnualQuota,AnnualSavingRate,Buildings,IndicatorClass,
+        RatioUomId,NumeratorCommodityId,RatioCommodityId}=_kpiInfo.toJS();
     //for GroupKpiSetting
     result=result.set('GroupKpiSetting',GroupKpiSetting.mergeDeep(
       {
         KpiType:KpiType.group,
         HierarchyId:CustomerId,
-        CustomerId,IndicatorName,UomId,CommodityId,
+        CustomerId,IndicatorName,UomId,CommodityId,RatioUomId,NumeratorCommodityId,RatioCommodityId,
         AdvanceSettings:{
           Year,IndicatorType,AnnualQuota,AnnualSavingRate,IndicatorClass
         }
@@ -455,10 +459,11 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     Buildings.forEach((building,index)=>{
       var kpi=result.getIn(['BuildingKpiSettingsList',index]);
       var {HierarchyId,HierarchyName,ActualTagId,ActualTagName,ActualRatioTagId,ActualRatioTagName,AnnualQuota,AnnualSavingRate,TargetMonthValues,
-        TagSavingRates,MonthPredictionValues}=building;
+        TagSavingRates,MonthPredictionValues,UomId,RatioUomId,NumeratorCommodityId,RatioCommodityId}=building;
       var setting={
         KpiType:KpiType.single,
         HierarchyId,HierarchyName,ActualTagId,ActualTagName,ActualRatioTagId,ActualRatioTagName,
+        UomId,RatioUomId,NumeratorCommodityId,RatioCommodityId,
         AdvanceSettings:{
           IndicatorType,AnnualQuota,AnnualSavingRate,IndicatorClass,
           TargetMonthValues,
@@ -498,6 +503,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     ])
   },
   clearAllBuildingInfo(){
+    _kpiInfo=_kpiInfo.set('UomId',null);
     let values=_KpiSettings.getIn(['AdvanceSettings','TargetMonthValues']).toJS();
     _buildings.forEach((building,index)=>{
       let defaultBuilding={

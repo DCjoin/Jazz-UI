@@ -99,7 +99,7 @@ export default class BasicConfig extends Component {
   }
 
   _renderProlongBasic(){
-    let {IndicatorType}=this.props.kpiInfo.toJS();
+    let {IndicatorType,IndicatorClass}=this.props.kpiInfo.toJS();
     let prolongkpiProps={
       ref: 'Prolongkpi',
       isViewStatus: false,
@@ -114,7 +114,9 @@ export default class BasicConfig extends Component {
     typeProps={
       status:SettingStatus.Prolong,
       type:IndicatorType || Type.Quota,
+      indicatorClass:IndicatorClass,
       onTypeChange:this._onTypeChange,
+      onClassChange:this._onClassChange
     };
     return(
       <div>
