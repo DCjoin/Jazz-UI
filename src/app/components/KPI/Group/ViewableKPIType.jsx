@@ -18,7 +18,7 @@ export default class ViewableKPIType extends Component {
     if(status===SettingStatus.Edit){
 			var typeTitle=type===Type.Quota?I18N.Setting.KPI.YearAndType.Quota:I18N.Setting.KPI.YearAndType.SavingRate,
 					classTitle=indicatorClass===Type.Dosage?I18N.Setting.KPI.YearAndType.Dosage:I18N.Setting.KPI.YearAndType.Ratio;
-      content=`${typeTitle} — ${classTitle}`
+      content=`${classTitle} — ${typeTitle}`
     }
     else {
       // content= <RadioButtonGroup name="type" valueSelected={type}
