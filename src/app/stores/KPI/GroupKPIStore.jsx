@@ -505,16 +505,30 @@ const GroupKPIStore = assign({}, PrototypeStore, {
   clearAllBuildingInfo(){
     _kpiInfo=_kpiInfo.set('UomId',null);
     let values=_KpiSettings.getIn(['AdvanceSettings','TargetMonthValues']).toJS();
-    _buildings.forEach((building,index)=>{
-      let defaultBuilding={
-        HierarchyId:building.Id,
-        HierarchyName:building.Name,
-        TargetMonthValues:assign([],values),
-        TagSavingRates:[],
-        MonthPredictionValues:assign([],values),
-      }
-      _kpiInfo=_kpiInfo.setIn(["Buildings",index],Immutable.fromJS(defaultBuilding));
-    })
+    if(_buildings){
+      _buildings.forEach((building,index)=>{
+        let defaultBuilding={
+          HierarchyId:building.Id,
+          HierarchyName:building.Name,
+          TargetMonthValues:assign([],values),
+          TagSavingRates:[],
+          MonthPredictionValues:assign([],values),
+        }
+        _kpiInfo=_kpiInfo.setIn(["Buildings",index],Immutable.fromJS(defaultBuilding));
+      })
+    }else {
+      _kpiInfo.get('Buildings').forEach((building,index)=>{
+        let defaultBuilding={
+          HierarchyId:building.get('HierarchyId'),
+          HierarchyName:building.get('HierarchyName'),
+          TargetMonthValues:assign([],values),
+          TagSavingRates:[],
+          MonthPredictionValues:assign([],values),
+        }
+        _kpiInfo=_kpiInfo.setIn(["Buildings",index],Immutable.fromJS(defaultBuilding));
+      })
+    }
+
   },
     dispose(){
       _kpiInfo=null;
