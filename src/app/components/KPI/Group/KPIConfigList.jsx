@@ -44,14 +44,17 @@ function getUnit(id) {
 }
 
 function getConfigSummary(item) {
+	let indicatorClassLabel = item.IndicatorClass === 1 ? I18N.Setting.KPI.YearAndType.Dosage : I18N.Setting.KPI.YearAndType.Ratio;
 	if(item.IndicatorType === 1) {
 		return [
+			indicatorClassLabel,
 			I18N.Setting.KPI.YearAndType.Quota,
 			typeof item.AnnualQuota === 'number' ? I18N.Setting.KPI.GroupQuotaType : '',
 			getAnnualQuotaForUnit(item),
 		].join(' ');
 	}
 	return [
+		indicatorClassLabel,
 		I18N.Setting.KPI.YearAndType.SavingRate,
 		typeof item.AnnualSavingRate === 'number' ? I18N.Setting.KPI.GroupSavingRateType : '',
 		typeof item.AnnualSavingRate === 'number' ? item.AnnualSavingRate.toFixed(1) * 1 + '%' : ''
