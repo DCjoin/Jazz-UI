@@ -98,9 +98,9 @@ function ActualityHeader(props) {
 
 class ActualityContent extends Component {
 	render() {
-		let {data, summaryData, period, year, onChangeYear, customerId, hierarchyId, onEdit, onRefresh, chartReady} = this.props,
+		let {data, summaryData, period, year, onChangeYear, customerId, hierarchyId, onEdit, onRefresh, chartReady, groupKPIId} = this.props,
 		message;
-		if( !chartReady || ( 
+		if( !chartReady || ( groupKPIId &&
 				hierarchyId === customerId && 
 				year !== SingleKPIStore.getKPIDefaultYear() && 
 				filter(SingleKPIStore.getKPIRank(), rank => rank).some(rank => !rank.YearRank ) ) ) {
@@ -169,7 +169,6 @@ export default class Actuality extends Component {
 		this._cancleRefreshDialog = this._cancleRefreshDialog.bind(this);
 		this._onPreAction = this._onPreAction.bind(this);
 		this._getKPIRank = this._getKPIRank.bind(this);
-		this.state = this._getInitialState();
 	}
 	componentWillMount() {
 		document.title = I18N.MainMenu.KPI;
@@ -241,6 +240,7 @@ export default class Actuality extends Component {
 		return !!find(HierarchyStore.getBuildingList(), building => building.Id === buildingId);
 	}
 	_preAction(customerId) {
+		this.setState(this._getInitialState());
 		if( canView() ) {
 			SingleKPIAction.customerCurrentYear(customerId);
 		}
@@ -340,6 +340,7 @@ export default class Actuality extends Component {
 		return (
 			<MinHeight400 className='jazz-kpi-actuality'>
 				<ActualityContent
+					groupKPIId={this._getGroupKpiId()}
 					chartReady={SingleKPIStore.chartReady()}
 					period={SingleKPIStore.getYearQuotaperiod()}
 					customerId={+this._getCustomerId()}

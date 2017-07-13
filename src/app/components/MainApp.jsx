@@ -185,7 +185,7 @@ let MainApp = React.createClass({
     {customerId} = params;
     if( MainApp.prepareShow(customerId) ) {
       let defaultReplace = MainApp.needDefaultReplace(router);
-      if(defaultReplace && !router.isActive(defaultReplace)) {
+      if(defaultReplace && !router.isActive(defaultReplace) && router.routes.length < 4 ) {
         router.replace(defaultReplace);
       } else {
         if(customerId && !this.state.hierarchyId) {
