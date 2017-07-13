@@ -11,6 +11,36 @@ import Highcharts from '../highcharts/Highcharts.jsx';
 const IndicatorClass = {
 	Dosage: 1,
 	Ratio: 2,
+};
+const CommodityMap = {
+	ElectricOther: 1,
+	Water: 2,
+	Gas: 3,
+	StandardCoal: 17,
+	HeatQ: 8,
+};
+
+function getColorByCommodityId(commodityId) {
+	switch(commodityId) {
+		case CommodityMap.ElectricOther:
+			return '#0cad04';
+			break;
+		case CommodityMap.Water:
+			return '#4aafe2';
+			break;
+		case CommodityMap.Gas:
+			return '#4a7ae2';
+			break;
+		case CommodityMap.StandardCoal:
+			return '#f3f5f7';
+			break;
+		case CommodityMap.HeatQ:
+			return '#ff9a1a';
+			break;
+		default:
+			return '#437506';
+			break;
+	}
 }
 
 function getUnit(id) {
@@ -21,115 +51,118 @@ function getUnit(id) {
 	return code;
 }
 
-function changeLegendStyle(item) {
+function changeLegendStyle(item, color) {
 	item.setAttribute('width', 16);
 	item.setAttribute('height', 12);
 	item.setAttribute('y', 5);
-	item.setAttribute('stroke', '#0cad04');
+	item.setAttribute('stroke', color);
 	item.setAttribute('stroke-width', 1);
 	item.setAttribute('stroke-dasharray', '4,3');
 }
 
-const DEFAULT_OPTIONS = {
-    credits: {
-        enabled: false
-    },
-    chart: {
-    	spacingBottom: 0,
-      	events: {
-          	load: function () {
-              	let lastLegendItems = document.querySelectorAll('.highcharts-legend .highcharts-legend-item:nth-of-type(3) rect');
-              	if(lastLegendItems ) {
-              		for(let i = 0; i < lastLegendItems.length; i++) {
-              			let item = lastLegendItems[i];
-              			changeLegendStyle(item);
-              		}
-              	}
-          	}
-      	},
-      	height: 220,
-      	backgroundColor: '#ffffff',
-    },
-    title: null,
-    legend: {
-        align: 'top',
-        verticalAlign: 'top',
-        layout: 'horizontal',
-        y: -15,
-        x: 200,
-    },
-    xAxis: {
-    	tickLength: 0,
-    	lineColor: '#9fa0a4',
-    },
-    yAxis: {
-    	lineColor: '#9fa0a4',
-    	lineWidth: 1,
-    	labels: {
-	    	formatter: function() {
-	    		return util.getLabelData(this.value)
-	    	},
-    	},
-    	type: 'column',
-        min: 0,
-        gridLineWidth: 0,
-        title: {
-            align: 'high',
-            rotation: 0,
-            offset: 0,
-            y: -20,
-            x: -10,
-        }
-    },
-    tooltip: {
-        crosshairs: {
-            width: 1.5,
-            color: 'black',
-        	zIndex: 3
-        },
-	    borderWidth: 0,
-	    backgroundColor: "rgba(255,255,255,0)",
-	    borderRadius: 0,
-        shared: true,
-        useHTML: true,
-        shadow: false,
-    },
-    plotOptions: {
-        column: {
-            grouping: false,
-            pointPadding: 0.2,
-            borderWidth: 0
-        }
-    },
-    series: [ {
-        type: 'line',
-        marker: {
-	        lineWidth: 1,
-	        lineColor: '#0cad04',//window.Highcharts.getOptions().colors[0],
-	        fillColor: 'white',
-	        radius: 2,
+function getOptions(color){
+	return util.merge(true, {}, {
+	    credits: {
+	        enabled: false
 	    },
-        zIndex: 2,
-        color: '#0cad04',
-        lineWidth: 1,
-    },{
-        type: 'column',
-        pointPadding: 0.4,
-        pointPlacement: 0,
-        color: '#0cad04',
-        pointWidth: 40,
-        borderWidth: 1,
-    }, {
-        type: 'column',
-        pointPadding: 0.2,
-        pointPlacement: 0,
-		borderColor: '#0cad04',
-        borderWidth: 1,
-		dashStyle: 'dash',
-		color: 'rgba(255, 255, 255, 0)',
-        pointWidth: 44,
-    },]
-};
+	    chart: {
+	    	spacingBottom: 0,
+	      	events: {
+	          	load: function () {
+	              	let lastLegendItems = document.querySelectorAll('.highcharts-legend .highcharts-legend-item:nth-of-type(3) rect');
+	              	console.log(arguments);
+	              	if(lastLegendItems ) {
+	              		for(let i = 0; i < lastLegendItems.length; i++) {
+	              			let item = lastLegendItems[i];
+	              			changeLegendStyle(item);
+	              		}
+	              	}
+	          	}
+	      	},
+	      	height: 220,
+	      	backgroundColor: '#ffffff',
+	    },
+	    title: null,
+	    legend: {
+	        align: 'top',
+	        verticalAlign: 'top',
+	        layout: 'horizontal',
+	        y: -15,
+	        x: 200,
+	    },
+	    xAxis: {
+	    	tickLength: 0,
+	    	lineColor: '#9fa0a4',
+	    },
+	    yAxis: {
+	    	lineColor: '#9fa0a4',
+	    	lineWidth: 1,
+	    	labels: {
+		    	formatter: function() {
+		    		return util.getLabelData(this.value)
+		    	},
+	    	},
+	    	type: 'column',
+	        min: 0,
+	        gridLineWidth: 0,
+	        title: {
+	            align: 'high',
+	            rotation: 0,
+	            offset: 0,
+	            y: -20,
+	            x: -10,
+	        }
+	    },
+	    tooltip: {
+	        crosshairs: {
+	            width: 1.5,
+	            color: 'black',
+	        	zIndex: 3
+	        },
+		    borderWidth: 0,
+		    backgroundColor: "rgba(255,255,255,0)",
+		    borderRadius: 0,
+	        shared: true,
+	        useHTML: true,
+	        shadow: false,
+	    },
+	    plotOptions: {
+	        column: {
+	            grouping: false,
+	            pointPadding: 0.2,
+	            borderWidth: 0
+	        }
+	    },
+	    series: [ {
+	        type: 'line',
+	        marker: {
+		        lineWidth: 1,
+		        lineColor: color,//window.Highcharts.getOptions().colors[0],
+		        fillColor: 'white',
+		        radius: 2,
+		    },
+	        zIndex: 2,
+	        color: color,
+	        lineWidth: 1,
+	    },{
+	        type: 'column',
+	        pointPadding: 0.4,
+	        pointPlacement: 0,
+	        color: color,
+	        pointWidth: 40,
+	        borderWidth: 1,
+	    }, {
+	        type: 'column',
+	        pointPadding: 0.2,
+	        pointPlacement: 0,
+			borderColor: color,
+	        borderWidth: 1,
+			dashStyle: 'dash',
+			color: 'rgba(255, 255, 255, 0)',
+	        pointWidth: 44,
+	    },]
+	});
+}
 
 export default class KPIChart extends Component {
 	_generatorOptions() {
@@ -141,8 +174,9 @@ export default class KPIChart extends Component {
 
 		let ratioMonth = data.get('ratioMonth');
 
-		let options = util.merge(true, {}, DEFAULT_OPTIONS, {
-		});
+		// let options = util.merge(true, {}, DEFAULT_OPTIONS, {
+		// });
+		let options = getOptions(getColorByCommodityId(data.get('CommodityId')));
 
 		let unit = getUnit(data.get('unit'));
 		options.xAxis.categories = util.getDateLabelsFromMomentToKPI(period);

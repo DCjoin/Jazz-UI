@@ -168,7 +168,7 @@ export default class KPIReport extends Component {
 				<div className='jazz-kpi-report-header'>{data.get('name')}</div>
 				<div className='jazz-kpi-report'>
 					<div className='jazz-kpi-report-chart'>
-						<KPIChart  LastMonthRatio={summaryData && summaryData.LastMonthRatio} period={period} data={data}/>
+						<KPIChart LastMonthRatio={summaryData && summaryData.LastMonthRatio} period={period} data={data}/>
 					</div>
 					<div className='jazz-kpi-report-summary'>
 						{this.getValueSummaryItem()}
