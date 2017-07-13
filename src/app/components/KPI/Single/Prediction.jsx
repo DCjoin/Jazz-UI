@@ -12,6 +12,16 @@ import MonthValueGroup from './MonthValueGroup.jsx';
 import ViewableTextField from 'controls/ViewableTextField.jsx';
 import TagSelect from './TagSelect.jsx';
 import {DataConverter} from 'util/Util.jsx';
+import CommonFuns from 'util/Util.jsx';
+
+function getUom(uomId){
+  if(uomId){
+    let uom=CommonFuns.getUomById(uomId).Code;
+    if(uom==='') return ''
+    else return `(${uom})`
+  }
+  return ''
+}
 
 export default class Prediction extends Component {
 
@@ -164,7 +174,7 @@ export default class Prediction extends Component {
   }
 
   render(){
-    let {PredictionSetting,hierarchyId,hierarchyName,tag}=this.props;
+    let {PredictionSetting,hierarchyId,hierarchyName,tag,uomId}=this.props;
     PredictionSetting=PredictionSetting || {};
     let {MonthPredictionValues,TagSavingRates}=PredictionSetting;
     let savingRateProps={
@@ -176,7 +186,7 @@ export default class Prediction extends Component {
       }
     },
     monthProps={
-      title:`${I18N.Setting.KPI.Parameter.MonthPrediction} (${this.props.uom})`,
+      title:`${I18N.Setting.KPI.Parameter.MonthPrediction} ${getUom(uomId)}`,
       contentStyle:{
         marginLeft:'0'
       }
@@ -222,7 +232,7 @@ export default class Prediction extends Component {
 Prediction.propTypes={
     PredictionSetting:PropTypes.object,
     Year:PropTypes.number,
-    uom:PropTypes.string,
+    uomId:PropTypes.number || any,
     tag:PropTypes.object,
     hierarchyId:React.PropTypes.number,
     hierarchyName:React.PropTypes.string,

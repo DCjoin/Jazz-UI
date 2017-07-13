@@ -49,14 +49,17 @@ module.exports = {
     SAVE_KPI_REPORT_ERROR:null,
     CLEAN_ACTUALITY:null,
     GET_KPI_RANK_BY_YEAR:null,
-    GET_TEMPLATE_REFERENCE:null
+    GET_TEMPLATE_REFERENCE:null,
+    CLEAR_ALL_BUILDING_INFO:null
   }),
 
   Type:{
     Quota:1,
     SavingRate:2,
     MonthValue:3,
-    MonthPrediction:4
+    MonthPrediction:4,
+    Dosage:1,
+    Ratio:2
   },
   DataStatus:keyMirror({
     ADD:null,
@@ -85,6 +88,7 @@ module.exports = {
     "AdvanceSettings": {
       "Year": null,
       "IndicatorType": null,
+      "IndicatorClass": null,
       "AnnualQuota": null,
       "AnnualSavingRate": null,
       "TargetTagId": null,

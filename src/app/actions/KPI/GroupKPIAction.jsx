@@ -161,6 +161,11 @@ const GroupKPIAction = {
       }
     });
   },
+  clearAllBuildingInfo(){
+    AppDispatcher.dispatch({
+      type: Action.CLEAR_ALL_BUILDING_INFO,
+    });
+  }
 }
 
 export default GroupKPIAction;

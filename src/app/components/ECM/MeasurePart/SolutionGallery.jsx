@@ -43,7 +43,7 @@ export default class SolutionGallery extends Component {
 		});
 	}
 	_renderChart() {
-		return (<img src={this._getImages()[this.state.idx].ImageUrl}/>);
+		return (<img src={this._getImages()[this.state.idx].ImageUrl} width="100%"/>);
 	}
 	_renderDeleteDialog() {
 		let {showDelete, idx} = this.state;
@@ -57,7 +57,7 @@ export default class SolutionGallery extends Component {
 	render() {
 		return (
 			<div style={{margin: '10px 0'}}>
-				<Gallery 
+				<Gallery
 					names={this._getImages().map(image => image.Name)}
 					selectedIdx={this.state.idx}
 					onLeft={this._setIdx(this.state.idx - 1)}

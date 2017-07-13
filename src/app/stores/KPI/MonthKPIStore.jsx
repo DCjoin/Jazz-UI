@@ -127,6 +127,21 @@ const MonthKPIStore = assign({}, PrototypeStore, {
      return true
     },
 
+    validateRatioMonthInfo(
+      month,
+      quotaValidator = SingleKPIStore.validateQuota,
+      savingRateValidator = SingleKPIStore.validateSavingRate){
+        let {TargetMonthValues,ActualTagId,ActualRatioTagId}=month.toJS();
+
+
+        if(!_.isNumber(ActualTagId) || !_.isNumber(ActualRatioTagId)) return false;
+
+        let res=_.filter(TargetMonthValues,({Value})=>quotaValidator(Value)===false);
+        if(res.length!==0) return false;
+
+       return true
+      },
+
   dispose(){
         _monthKpi=null;
         _hasHistory=false;

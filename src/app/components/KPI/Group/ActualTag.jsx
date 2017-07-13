@@ -33,6 +33,9 @@ export default class ActualTag extends Component {
       },{
         path:'ActualTagId',
         value:tag.get('Id')
+      },{
+        path:'UomId',
+        value:tag.get('UomId')
       }])
     })
 

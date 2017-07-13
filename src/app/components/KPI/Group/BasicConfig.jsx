@@ -18,10 +18,6 @@ export default class BasicConfig extends Component {
     GroupKPIAction.merge([{
       path:'CommodityId',
       value
-    },
-    {
-      path:'UomId',
-      value:GroupKPIStore.getUomByCommodityId(value)
     }])
     }
 
@@ -39,21 +35,31 @@ export default class BasicConfig extends Component {
     // })
   }
 
-  _onTypeChange(ev,value){
+  _onTypeChange(value){
     GroupKPIAction.merge([{
       path:'IndicatorType',
       value
     }])
   }
 
+  _onClassChange(ev,value){
+    GroupKPIAction.merge([{
+      path:'IndicatorClass',
+      value
+    },{
+      path:'IndicatorType',
+      value:1
+    }])
+  }
+
   _renderNewBasic(){
-    let {CommodityId,IndicatorName,IndicatorType}=this.props.kpiInfo.toJS();
+    let {CommodityId,IndicatorName,IndicatorType,IndicatorClass}=this.props.kpiInfo.toJS();
     let commodityProps={
       ref: 'commodity',
       isViewStatus: false,
       title: I18N.Setting.KPI.Group.Commodity,
       defaultValue: CommodityId || -1,
-      dataItems: GroupKPIStore.getCurrentCommodityList(),
+      dataItems: GroupKPIStore.getCommodityList(),// 2017/7/11 support all commodities
       didChanged:this._onCommodityChange
     },
     nameProps={
@@ -72,7 +78,9 @@ export default class BasicConfig extends Component {
     typeProps={
       status:SettingStatus.New,
       type:IndicatorType,
+      indicatorClass:IndicatorClass,
       onTypeChange:this._onTypeChange,
+      onClassChange:this._onClassChange
     };
     return(
       <div style={{display:'flex','flexDirection':'column'}}>
