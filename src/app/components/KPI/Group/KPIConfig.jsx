@@ -219,18 +219,26 @@ export default class KPIConfig extends Component {
 					titleStyle:{
 						fontSize:'16px'
 					},
-					className:'jazz-kpi-config-wrap'
+					style:{
+						display:'flex',
+						flexDirection:'column',
+						flex:'1',
+						overflowY:'auto'
+					}
+					// className:'jazz-kpi-config-wrap'
 				};
-				return (
+				return (<div className="jazz-kpi-config-wrap">
 					<TitleComponent {...titleProps}>
 						{this._renderBasic()}
 						{this._renderGroupConfig()}
 						{this._renderBuildingConfig()}
-						<FormBottomBar isShow={true} allowDelete={false} allowEdit={false} enableSave={GroupKPIStore.validateKpiInfo(this.state.kpiInfo)}
-							ref="actionBar" status={formStatus.EDIT} onSave={this._onSave} onCancel={this.props.onCancel}
-							cancelBtnProps={{label:I18N.Common.Button.Cancel2}}/>
 						{this._renderErrorDialog()}
 					</TitleComponent>
+					<FormBottomBar isShow={true} allowDelete={false} allowEdit={false} enableSave={GroupKPIStore.validateKpiInfo(this.state.kpiInfo)}
+						ref="actionBar" status={formStatus.EDIT} onSave={this._onSave} onCancel={this.props.onCancel}
+						cancelBtnProps={{label:I18N.Common.Button.Cancel2}}/>
+				</div>
+
 				);
 			}
 			else {
