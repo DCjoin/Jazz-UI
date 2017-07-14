@@ -45,7 +45,7 @@ export default class BuildingConfig extends Component {
         </tbody>
       </table>
     );
-    var content=<table className='jazz-kpi-group-buildings-body'>
+    var content=Buildings?<table className='jazz-kpi-group-buildings-body'>
                                           <tbody>
                                               {
                                                 Buildings.map((building,index)=>{
@@ -61,6 +61,7 @@ export default class BuildingConfig extends Component {
                                 }
                               </tbody>
                             </table>
+                            :null;
     var footer=<div className="jazz-kpi-group-buildings-footer" onClick={this._onClearAll}>{I18N.Setting.KPI.Tag.ClearAll}</div>
 
     return(

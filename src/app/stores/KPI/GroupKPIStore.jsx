@@ -579,7 +579,7 @@ GroupKPIStore.dispatchToken = AppDispatcher.register(function(action) {
           break;
     case Action.GET_KPI_BUILDING_LIST_BY_CUSTOMER_ID:
         GroupKPIStore.setBuildings(action.data,action.info);
-        //GroupKPIStore.emitChange();
+        if(_kpiInfo!==null) GroupKPIStore.emitChange();
         break;
     case Action.GET_GROUP_KPIS:
         GroupKPIStore.setGroupKpis(action.data);
