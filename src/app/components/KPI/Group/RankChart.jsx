@@ -193,7 +193,7 @@ export default class RankChart extends Component {
 		let jsonstring = this._getCurrentMonthRank().Date,
 		date = new Date(moment.utc(jsonstring));
 		if(this.state.byYear) {
-			return date.getFullYear() + I18N.Baseline.BaselineModify.YearValue;
+			return this.props.year + I18N.Baseline.BaselineModify.YearValue;
 		}
 		return util.replacePathParams(I18N.Kpi.YearMonth, date.getFullYear(), date.getMonth() + 1);
 	}
