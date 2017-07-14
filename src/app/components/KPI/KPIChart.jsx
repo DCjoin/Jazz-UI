@@ -32,7 +32,7 @@ function getColorByCommodityId(commodityId) {
 			return '#4a7ae2';
 			break;
 		case CommodityMap.StandardCoal:
-			return '#f3f5f7';
+			return '#476372';
 			break;
 		case CommodityMap.HeatQ:
 			return '#ff9a1a';
