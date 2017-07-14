@@ -24,7 +24,7 @@ const safeImmuArr = safeValue(Immutable.fromJS([]));
 const safeImmuObj = safeValue(Immutable.fromJS({}));
 
 export default function CustomerChartPanel(props) {
-	let {period, tags, isGroup, summaryData, ranks} = props;
+	let {period, tags, isGroup, summaryData, ranks, year} = props;
 
 	return (
 		<div>
@@ -37,7 +37,7 @@ export default function CustomerChartPanel(props) {
 					summaryData={find(summaryData, sum => sum.KpiId === tag.get('id')) || {}}
 					key={tag.get('id')}/> ) :
 			<div className='jazz-kpi-report flex-center' style={{height: 400}}><b>{I18N.Kpi.Error.NonKPIConguredInThisYear}</b></div>}
-			{safeArr(ranks).map(rank => rank && (<RankChart {...rank}/>) )}
+			{safeArr(ranks).map(rank => rank && (<RankChart year={year} {...rank}/>) )}
 		</div>
 	);
 }

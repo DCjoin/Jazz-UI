@@ -1710,6 +1710,21 @@ I18N.Kpi = {
   PredictSum: '年度用量预测值',
   ActualSaving: '年度节能率实际值',
   PredictSaving: '年度节能率预测值',
+
+  ByYearUntilNowValue: '年度迄今实际值',
+  ByYearValue: '年度实际值',
+  ByYearUntilNowSavingValue: '年度迄今节能率实际值',
+  ByYearSavingRatioValue: '年度节能率实际值',
+  ByYearKPIUsagedPredict: '年度指标使用量预测值',
+  ByYearKPIUsagedValue: '年度指标使用量实际值',
+  ByYearUsagedTarget: '年度用量目标值',
+  ByYearUsagedPredict: '年度用量预测值',
+  ByYearSavingPredict: '年度节能量预测值',
+  ByYearUsagedValue: '年度用量实际值',
+  ByYearSavingValue: '年度节能量实际值',
+  ByYearKPI: '年度指标值',
+  ByYearUntilNowKPIUsaged: '年度迄今指标使用量',
+
   Error:{
     SelectBuilding: '请点击上方按钮，选择要查看或配置项目吧～',
     NonKPIConguredInThisYear: '本年度未配置指标，切换其他年份看看～',
