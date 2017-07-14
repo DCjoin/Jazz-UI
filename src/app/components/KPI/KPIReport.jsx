@@ -324,7 +324,7 @@ export default class KPIReport extends Component {
     				right: 20,
     				top: 10,
 				}}>
-				    {isFull() && !isGroup &&
+				    {isFull() && !isGroup && data.get('IndicatorClass') === IndicatorClass.Dosage &&
 				    	<LinkButton iconName="icon-edit" onClick={() => {
 					      	onRefresh(data.get('id'));
 					      }} label={I18N.Common.Button.Edit}/>}
