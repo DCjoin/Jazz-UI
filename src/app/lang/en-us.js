@@ -1711,6 +1711,21 @@ I18N.Kpi = {
   PredictSum: 'Annual Prediction Value',
   ActualSaving: 'Annual Actual Energy Saving Rate',
   PredictSaving: 'Annual Prediction Energy Saving Rate',
+
+  ByYearUntilNowValue: '年度迄今实际值',
+  ByYearValue: '年度实际值',
+  ByYearUntilNowSavingValue: '年度迄今节能率实际值',
+  ByYearSavingRatioValue: '年度节能率实际值',
+  ByYearKPIUsagedPredict: '年度指标使用量预测值',
+  ByYearKPIUsagedValue: '年度指标使用量实际值',
+  ByYearUsagedTarget: '年度用量目标值',
+  ByYearUsagedPredict: '年度用量预测值',
+  ByYearSavingPredict: '年度节能量预测值',
+  ByYearUsagedValue: '年度用量实际值',
+  ByYearSavingValue: '年度节能量实际值',
+  ByYearKPI: '年度指标值',
+  ByYearUntilNowKPIUsaged: '年度迄今指标使用量',
+
   Error:{
     SelectBuilding: 'Please click the icon above to select or configure projects.',
     NonKPIConguredInThisYear: 'No KPI is set for this year, please check other periods.',
