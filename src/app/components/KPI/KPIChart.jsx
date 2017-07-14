@@ -43,10 +43,16 @@ function getColorByCommodityId(commodityId) {
 	}
 }
 
-function getUnit(id) {
+function getUnit(id, RatioUomId) {
 	let code = find(UOMStore.getUoms(), uom => uom.Id === id).Code;
 	if( code === 'null' ) {
 		return '';
+	}
+	if( RatioUomId ) {
+		let rationCode = find(UOMStore.getUoms(), uom => uom.Id === RatioUomId).Code;
+		if(rationCode) {
+			return code + '/' + rationCode;
+		}
 	}
 	return code;
 }
@@ -186,7 +192,7 @@ export default class KPIChart extends Component {
 			data.get('IndicatorClass') === IndicatorClass.Dosage
 		);
 
-		let unit = getUnit(data.get('unit'));
+		let unit = getUnit(data.get('unit'), data.get('RatioUomId'));
 		options.xAxis.categories = util.getDateLabelsFromMomentToKPI(period);
 		options.yAxis.title.text = unit;
 	    options.tooltip.formatter = function() {

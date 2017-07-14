@@ -70,6 +70,7 @@ function coverageRawToHighChartData(data) {
         unit: indicator.UomId,
         name: indicator.IndicatorName,
         IndicatorClass: indicator.IndicatorClass,
+        RatioUomId: indicator.RatioUomId,
         CommodityId: indicator.CommodityId,
         id: indicator.KpiId,
         lastMonthSaving: indicator.LstMonthSaving,

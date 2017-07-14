@@ -21,10 +21,16 @@ const IndicatorClass = {
 	Ratio: 2,
 }
 
-function getUnit(id) {
+function getUnit(id, RatioUomId) {
 	let code = find(UOMStore.getUoms(), uom => uom.Id === id).Code;
 	if( code === 'null' ) {
 		return '';
+	}
+	if( RatioUomId ) {
+		let rationCode = find(UOMStore.getUoms(), uom => uom.Id === RatioUomId).Code;
+		if(rationCode) {
+			return code + '/' + rationCode;
+		}
 	}
 	return code;
 }
@@ -32,11 +38,11 @@ function isFull() {
 	return privilegeUtil.isFull(PermissionCode.INDEX_AND_REPORT, CurrentUserStore.getCurrentPrivilege());
 }
 
-function getValueWithUnit(value, unit) {
+function getValueWithUnit(value, unit, RatioUomId) {
 	if( !util.isNumber(value) ) {
 		return '';
 	}
-	return util.getLabelData(value) + getUnit(unit);
+	return util.getLabelData(value) + getUnit(unit, RatioUomId);
 }
 
 export default class KPIReport extends Component {
@@ -53,7 +59,7 @@ export default class KPIReport extends Component {
 			{isIndex ?/*定额指标值*/
 			(<div className='summary-value'>
 				{summaryData.IndexValue !== null && <span>{util.getLabelData(summaryData.IndexValue)}</span>}
-				{summaryData.IndexValue !== null && <span>{getUnit(data.get('unit'))}</span>}
+				{summaryData.IndexValue !== null && <span>{getUnit(data.get('unit'), data.get('RatioUomId'))}</span>}
 			</div>) : /*节能率指标值*/
 			(<div className='summary-value'>
 				{summaryData.RatioValue !== null && <span>{(summaryData.RatioValue || 0).toFixed(1) * 1 + '%'}</span>}
@@ -75,7 +81,7 @@ export default class KPIReport extends Component {
 			{isIndex ?/*定额预测值*/
 			(<div className='summary-value'>
 				<span>{util.getLabelData(summaryData.PredictSum)}</span>
-				<span>{summaryData.PredictSum !== null && getUnit(data.get('unit'))}</span>
+				<span>{summaryData.PredictSum !== null && getUnit(data.get('unit'), data.get('RatioUomId'))}</span>
 				{this._renderTooltip(overproof, isIndex)}
 			</div>) :/*节能率预测值*/
 			(<div className='summary-value'>
@@ -111,20 +117,21 @@ export default class KPIReport extends Component {
 		{IndexValue, PredictSum} = summaryData,
 		actualSum = data.get('actual').toJS().reduce((prev, curr) => prev + +curr, 0),
 		unit = data.get('unit'),
+		RatioUomId = data.get('RatioUomId'),
 		indicatorClass = data.get('IndicatorClass');
 		return (
 			<div className='kpi-report-tooltip'>
 				<div style={{paddingBottom: 5, borderBottom: '1px solid #cbcbcb'}}>
 					<div className='kpi-report-tooltip-title'>{'年度节能量'}</div>
-					<div style={{fontSize: '18px', color: overproof ? '#dc0a0a' : '#0f0f0f'}}>{getValueWithUnit(IndexValue - actualSum, unit)}</div>
+					<div style={{fontSize: '18px', color: overproof ? '#dc0a0a' : '#0f0f0f'}}>{getValueWithUnit(IndexValue - actualSum, unit, RatioUomId)}</div>
 				</div>
 				<div style={{marginTop: 10}}>
 					<div className='kpi-report-tooltip-title'>{'年度目标用量'}</div>
-					<div>{getValueWithUnit(IndexValue, unit)}</div>
+					<div>{getValueWithUnit(IndexValue, unit, RatioUomId)}</div>
 				</div>
 				{indicatorClass === IndicatorClass.Dosage && <div style={{marginTop: 10}}>
 					<div className='kpi-report-tooltip-title'>{'年度预测用量'}</div>
-					<div>{getValueWithUnit(PredictSum, unit)}</div>
+					<div>{getValueWithUnit(PredictSum, unit, RatioUomId)}</div>
 				</div>}
 			</div>
 		);
