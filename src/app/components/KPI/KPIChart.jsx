@@ -60,7 +60,40 @@ function changeLegendStyle(item, color) {
 	item.setAttribute('stroke-dasharray', '4,3');
 }
 
-function getOptions(color){
+function getOptions(color, hasPrediction){
+	let seriesOptions = [
+		{
+	        type: 'line',
+	        marker: {
+		        lineWidth: 1,
+		        lineColor: color,//window.Highcharts.getOptions().colors[0],
+		        fillColor: 'white',
+		        radius: 2,
+		    },
+	        zIndex: 2,
+	        color: color,
+	        lineWidth: 1,
+	    }, {
+	        type: 'column',
+	        pointPadding: 0.4,
+	        pointPlacement: 0,
+	        color: color,
+	        pointWidth: 40,
+	        borderWidth: 1,
+	    }
+	];
+	if(hasPrediction) {
+		seriesOptions.push({
+	        type: 'column',
+	        pointPadding: 0.2,
+	        pointPlacement: 0,
+			borderColor: color,
+	        borderWidth: 1,
+			dashStyle: 'dash',
+			color: 'rgba(255, 255, 255, 0)',
+	        pointWidth: 44,
+	    });
+	}
 	return util.merge(true, {}, {
 	    credits: {
 	        enabled: false
@@ -70,11 +103,10 @@ function getOptions(color){
 	      	events: {
 	          	load: function () {
 	              	let lastLegendItems = document.querySelectorAll('.highcharts-legend .highcharts-legend-item:nth-of-type(3) rect');
-	              	console.log(arguments);
 	              	if(lastLegendItems ) {
 	              		for(let i = 0; i < lastLegendItems.length; i++) {
 	              			let item = lastLegendItems[i];
-	              			changeLegendStyle(item);
+	              			changeLegendStyle(item, color);
 	              		}
 	              	}
 	          	}
@@ -133,34 +165,7 @@ function getOptions(color){
 	            borderWidth: 0
 	        }
 	    },
-	    series: [ {
-	        type: 'line',
-	        marker: {
-		        lineWidth: 1,
-		        lineColor: color,//window.Highcharts.getOptions().colors[0],
-		        fillColor: 'white',
-		        radius: 2,
-		    },
-	        zIndex: 2,
-	        color: color,
-	        lineWidth: 1,
-	    },{
-	        type: 'column',
-	        pointPadding: 0.4,
-	        pointPlacement: 0,
-	        color: color,
-	        pointWidth: 40,
-	        borderWidth: 1,
-	    }, {
-	        type: 'column',
-	        pointPadding: 0.2,
-	        pointPlacement: 0,
-			borderColor: color,
-	        borderWidth: 1,
-			dashStyle: 'dash',
-			color: 'rgba(255, 255, 255, 0)',
-	        pointWidth: 44,
-	    },]
+	    series: seriesOptions
 	});
 }
 
@@ -176,7 +181,10 @@ export default class KPIChart extends Component {
 
 		// let options = util.merge(true, {}, DEFAULT_OPTIONS, {
 		// });
-		let options = getOptions(getColorByCommodityId(data.get('CommodityId')));
+		let options = getOptions(
+			getColorByCommodityId(data.get('CommodityId')),
+			data.get('IndicatorClass') === IndicatorClass.Dosage
+		);
 
 		let unit = getUnit(data.get('unit'));
 		options.xAxis.categories = util.getDateLabelsFromMomentToKPI(period);
