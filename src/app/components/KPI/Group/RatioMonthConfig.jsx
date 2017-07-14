@@ -94,12 +94,15 @@ export default class RatioMonthConfig extends Component {
 
     return(
       <div className='diagnose-overlay'>
-        <header className='diagnose-overlay-header'>
-            <span>{`${HierarchyName}-${I18N.Setting.KPI.Group.MonthConfig.Title}`}</span>
-        </header>
-        <div style={{marginLeft:'15px'}}>
-        <ActualTag {...tagProps}/>
-        {this._renderMonthValue()}</div>
+        <div style={{overflowY:'auto',overflowX:'hidden',marginBottom:'20px',flex:'1'}}>
+          <header className='diagnose-overlay-header'>
+              <span>{`${HierarchyName}-${I18N.Setting.KPI.Group.MonthConfig.Title}`}</span>
+          </header>
+          <div style={{marginLeft:'15px'}}>
+          <ActualTag {...tagProps}/>
+          {this._renderMonthValue()}</div>
+        </div>
+
       <FormBottomBar isShow={true} saveBtnProps={{label:I18N.Platform.Password.Confirm}} allowDelete={false} allowEdit={false} enableSave={MonthKPIStore.validateRatioMonthInfo(this.state.buildingInfo)}
       ref="actionBar" status={formStatus.EDIT} onSave={this._onSave} onCancel={this.props.onCancel}
       cancelBtnProps={{label:I18N.Common.Button.Cancel2}}/>
