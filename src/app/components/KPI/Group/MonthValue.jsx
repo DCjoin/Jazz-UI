@@ -136,7 +136,7 @@ export default class MonthValue extends Component {
     let {IndicatorClass}=this.props.kpiInfo.toJS();
     let {TargetMonthValues}=this.props.buildingInfo.toJS();
     let monthProps={
-      title:`${I18N.Setting.KPI.Parameter.MonthValue}${uom}`,
+      title:`${I18N.Kpi.TargetValues}${uom}`,
       contentStyle:{
         marginLeft:'0'
       }

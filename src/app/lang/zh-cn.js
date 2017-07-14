@@ -2159,6 +2159,7 @@ I18N.Setting.KPI.Group.BuildingConfig.Tag='引用数据点';
 I18N.Setting.KPI.Group.BuildingConfig.Operation='操作';
 I18N.Setting.KPI.Group.BuildingConfig.MonthConfig='配置逐月值';
 I18N.Setting.KPI.Group.BuildingConfig.Input='输入建筑{0}';
+I18N.Setting.KPI.Group.BuildingConfig.ClearAllTip='确认全部清空建筑上配置的所有指标数据吗？';
 I18N.Setting.KPI.Group.MonthConfig = {};
 I18N.Setting.KPI.Group.MonthConfig.Title='配置逐月值';
 I18N.Setting.KPI.Group.MonthConfig.TagSelect='引用实际值数据点';

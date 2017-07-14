@@ -5,17 +5,22 @@ import GroupKPIStore from "stores/KPI/GroupKPIStore.jsx";
 // import CommonFuns from 'util/Util.jsx';
 import BuildingItem from './BuildingItem.jsx';
 import GroupKPIAction from 'actions/KPI/GroupKPIAction.jsx';
+import NewDialog from 'controls/NewDialog.jsx';
+import FlatButton from 'controls/NewFlatButton.jsx';
 
 export default class BuildingConfig extends Component {
 
   constructor(props) {
     super(props);
-    // this._onCalcSum = this._onCalcSum.bind(this);
+    this._onClearAllConfim = this._onClearAllConfim.bind(this);
+    this._onClearAll = this._onClearAll.bind(this);
+
   }
 
   state={
     // calcSum:this.props.status!==SettingStatus.New,
-    buildingItem:null
+    buildingItem:null,
+    clearAllDiaglogShow:false
     };
 
   // _onCalcSum(calcSum){
@@ -25,7 +30,18 @@ export default class BuildingConfig extends Component {
   // }
 
   _onClearAll(){
-    GroupKPIAction.clearAllBuildingInfo()
+    this.setState({
+      clearAllDiaglogShow:false
+    },()=>{
+      GroupKPIAction.clearAllBuildingInfo()
+    })
+
+  }
+
+  _onClearAllConfim(){
+    this.setState({
+      clearAllDiaglogShow:true
+    })
   }
 
   _renderBuildingTable(){
@@ -45,7 +61,7 @@ export default class BuildingConfig extends Component {
         </tbody>
       </table>
     );
-    var content=<table className='jazz-kpi-group-buildings-body'>
+    var content=Buildings?<table className='jazz-kpi-group-buildings-body'>
                                           <tbody>
                                               {
                                                 Buildings.map((building,index)=>{
@@ -61,17 +77,37 @@ export default class BuildingConfig extends Component {
                                 }
                               </tbody>
                             </table>
-    var footer=<div className="jazz-kpi-group-buildings-footer" onClick={this._onClearAll}>{I18N.Setting.KPI.Tag.ClearAll}</div>
+                            :null;
+    var footer=<div className="jazz-kpi-group-buildings-footer" onClick={this._onClearAllConfim}>{I18N.Setting.KPI.Tag.ClearAll}</div>
 
     return(
       <div className='jazz-kpi-group-buildings'>
         {header}
         {content}
-        {footer}
       </div>
     )
   }
 
+  _renderClearAllDialog(){
+    return(
+      <NewDialog
+        open={this.state.clearAllDiaglogShow}
+        actions={[
+            <FlatButton
+              label={I18N.Common.Button.Confirm}
+              inDialog={true}
+              primary={true}
+              onClick={this._onClearAll} />,
+
+            <FlatButton
+              label={I18N.Common.Button.Cancel2}
+              onClick={() => {this.setState({
+                clearAllDiaglogShow:false
+              })}} />
+          ]}
+      >{I18N.Setting.KPI.Group.BuildingConfig.ClearAllTip}</NewDialog>
+    )
+  }
   _renderConfig(){
     // let {UomId}=this.props.kpiInfo.toJS();
     // let uom=CommonFuns.getUomById(UomId).Code;
@@ -97,6 +133,7 @@ export default class BuildingConfig extends Component {
         return(
           <TitleComponent {...props}>
             {this._renderConfig()}
+            {this.state.clearAllDiaglogShow && this._renderClearAllDialog()}
           </TitleComponent>
         )
 

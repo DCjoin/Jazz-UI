@@ -30,6 +30,7 @@ const TagSelectAction = {
       params: {
           filter:{
             AlarmStatus:null,
+            CalculationSteps:[0,1,2,6,7,8,9,10,11,12],
             Association:{
               AssociationId:associationId===-1?hierarchyId:associationId,
               AssociationOption:associationId===-1?2:6
