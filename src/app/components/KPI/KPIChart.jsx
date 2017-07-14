@@ -252,7 +252,7 @@ export default class KPIChart extends Component {
 		options.series[0].data = data.get('target') && data.get('target').toJS().slice(0, 12);
 		options.series[0].name = I18N.Kpi.TargetValues;
 		options.series[1].data = data.get('actual') && data.get('actual').toJS().slice(0, 12).map((itemData, i) => {
-			if(itemData > (data.get('target') && data.get('target').get(i))) {
+			if( data.get('target') && util.isNumber(data.get('target').get(i)) && itemData > data.get('target').get(i) ) {
 				return {
 					x: i,
 					y: itemData,
@@ -265,7 +265,7 @@ export default class KPIChart extends Component {
 			};
 		});
 		options.series[1].name = I18N.Kpi.ActualValues;
-		// if(data.get('IndicatorClass') === IndicatorClass.Dosage) {
+		if(data.get('IndicatorClass') === IndicatorClass.Dosage) {
 			options.series[2].data = data.get('prediction') && fill(data.get('prediction').toJS(), null, 0, currentMonthIndex === -1 ? 0 : currentMonthIndex).slice(0, 12).map((data, i) => {
 				// if(i === 10) {
 				// 	return {
@@ -280,7 +280,7 @@ export default class KPIChart extends Component {
 				};
 			});
 			options.series[2].name = I18N.Kpi.PredictionValues;
-		// }
+		}
 
 		return options;
 	}

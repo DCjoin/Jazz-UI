@@ -555,6 +555,9 @@
         }
         & span {
           margin-right: 10px;
+          &:last-of-type {
+            margin-right: 0;
+          }
         };
       }
     }
@@ -610,6 +613,7 @@
 
   & .year-item {
     margin-bottom: 40px;
+    flex: none;
 
     &-header {
       font-size: 18px;
