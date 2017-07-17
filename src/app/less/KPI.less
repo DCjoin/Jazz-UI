@@ -97,7 +97,6 @@
     flex-direction: row;
     align-items: center;
 		margin-top:27px;
-		color: @medium-gray;
 		font-size: 14px;
 		>span{
 			margin-right:30px;
@@ -713,7 +712,12 @@
   .column3{
     width: 200px;
     min-width: 200px;
+		display: flex !important;
+		flex-direction: column;
     .hiddenEllipsis();
+		>div{
+			.hiddenEllipsis();
+		}
   }
   .column4{
     width: 108px;
