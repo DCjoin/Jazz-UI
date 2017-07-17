@@ -100,13 +100,13 @@ class ActualityContent extends Component {
 	render() {
 		let {data, summaryData, period, year, onChangeYear, customerId, hierarchyId, onEdit, onRefresh, chartReady, groupKPIId} = this.props,
 		message;
-		if( !chartReady || ( groupKPIId &&
+		if( !period || !chartReady || ( groupKPIId &&
 				hierarchyId === customerId && 
 				year !== SingleKPIStore.getKPIDefaultYear() && 
 				filter(SingleKPIStore.getKPIRank(), rank => rank).some(rank => !rank.YearRank ) ) ) {
 			return (<div className="content flex-center"><CircularProgress  mode="indeterminate" size={80} /></div>);
 		}
-		if( isFull() ) {
+		// if( isFull() ) {
 			if( !data ) {
 				if( hierarchyId === customerId ) {
 					message = I18N.Kpi.Error.NonKPICongured;
@@ -114,7 +114,7 @@ class ActualityContent extends Component {
 					message = I18N.Kpi.Error.NonKPIConguredInBuilding;
 				}
 			}
-		}
+		// }
 		if( message ) {
 			return (<TipMessage message={message}/>);
 		}
@@ -200,20 +200,20 @@ export default class Actuality extends Component {
 		}
 	}
 	_onChange() {
-		let configCB = this.props.configCB,
+		let /*configCB = this.props.configCB,*/
 		year = this.state.year || SingleKPIStore.getKPIDefaultYear();
-		if( configCB ) {
+		/*if( configCB ) {
 			if( SingleKPIStore.chartReady() && !SingleKPIStore.getKPIChart() ) {
 				configCB('kpi', false);
 			} else {
 				configCB('kpi', true);
 			}
-		} else if(SingleKPIStore.getCustomerCurrentYear() !== year 
+		} else */if(SingleKPIStore.getCustomerCurrentYear() !== year 
 			&& SingleKPIStore.getKPIRank()
 			&& some(SingleKPIStore.getKPIRank(), rank => !rank || !rank.YearRank)) {
 			SingleKPIStore.getKPIRank().forEach( (rank, i) => {
 				if( rank && rank.GroupKpiId ) {
-					SingleKPIAction.getKpiRankByYear(this._getCustomerId(), rank.GroupKpiId, year, rank.RankType, i);
+					return SingleKPIAction.getKpiRankByYear(this._getCustomerId(), rank.GroupKpiId, year, rank.RankType, i);
 				}
 			} )
 		}

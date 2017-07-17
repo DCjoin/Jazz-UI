@@ -65,10 +65,10 @@ function getTextByFilter(isHover, isDosage, isIndex, isThisYear) {
 
 				// 今年
 				if( isThisYear ) {
-					return [ByYearKPIUsagedPredict];
+					return [];
 				// 往年
 				} else {
-					return [ByYearKPIUsagedValue];
+					return [];
 				}
 
 			// 节能率
@@ -278,11 +278,15 @@ export default class KPIReport extends Component {
 		actualSum = data.get('actual').toJS().reduce((prev, curr) => prev + +curr, 0),
 		unit = data.get('unit'),
 		RatioUomId = data.get('RatioUomId'),
-		indicatorClass = data.get('IndicatorClass');
+		indicatorClass = data.get('IndicatorClass'),
+		firstTitle = getTextByHoverSaving(isDosage, !currentYearDone)[0];
+		if(!firstTitle) {
+			return null;
+		}
 		return (
 			<div className='kpi-report-tooltip'>
 				<div style={{paddingBottom: 5, borderBottom: '1px solid #cbcbcb'}}>
-					<div className='kpi-report-tooltip-title'>{getTextByHoverSaving(isDosage, !currentYearDone)[0]}</div>
+					<div className='kpi-report-tooltip-title'>{firstTitle}</div>
 					<div style={{fontSize: '18px', color: overproof ? '#dc0a0a' : '#0f0f0f'}}>{getValueWithUnit(IndexValue - actualSum, unit, RatioUomId)}</div>
 				</div>
 				<div style={{marginTop: 10}}>
