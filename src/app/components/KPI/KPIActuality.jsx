@@ -104,7 +104,7 @@ class ActualityContent extends Component {
 				hierarchyId === customerId && 
 				year !== SingleKPIStore.getKPIDefaultYear() && 
 				filter(SingleKPIStore.getKPIRank(), rank => rank).some(rank => !rank.YearRank ) ) ) {
-			return (<div className="content flex-center"><CircularProgress  mode="indeterminate" size={80} /></div>);
+			return (<div style={{height: 400}} className="content flex-center"><CircularProgress  mode="indeterminate" size={80} /></div>);
 		}
 		// if( isFull() ) {
 			if( !data ) {
@@ -330,7 +330,7 @@ export default class Actuality extends Component {
 	render() {
 		if( this.state.loading ) {
 			return (
-				<MinHeight400 className='jazz-kpi-actuality flex-center'><CircularProgress  mode="indeterminate" size={80} /></MinHeight400>
+				<div style={{height: 400}} className='jazz-kpi-actuality flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>
 			);
 		}
 		if( !canView() ) {
