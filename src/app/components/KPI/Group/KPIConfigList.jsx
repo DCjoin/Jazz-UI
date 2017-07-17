@@ -154,15 +154,16 @@ class KPIConfigItem extends Component {
 					<span>{util.replacePathParams(I18N.Setting.KPI.Group.HeaderYear, Year)}</span>
 					{add && <LinkButton ref='add_icon'
 						onMouseOver={() => {
-							var info={
-									CustomerId,
-									Year,
-									IndicatorType:Type.Quota
-								};
+							// var info={
+							// 		CustomerId,
+							// 		Year,
+							// 		IndicatorType:Type.Quota
+							// 	};
+							var info=null;
 							GroupKPIAction.getGroupByYear(CustomerId, Year, info, (data) => {
 								this.setState({
 									rolongDisabled: !data || data.length === 0
-								});		
+								});
 							});
 						}}
 						className={classnames('fa icon-add btn-icon', {
@@ -269,7 +270,7 @@ export default class KPIConfigList extends Component<void, Props, State> {
 			refYear: null,
 		});
 		HierarchyAction.getBuildingListByCustomerId(props.router.params.customerId);
-		
+
 	}
 	_deleteKPISetting() {
 		GroupKPIAction.deleteGroupSettings(this.state.refId, this.props.router.params.customerId);

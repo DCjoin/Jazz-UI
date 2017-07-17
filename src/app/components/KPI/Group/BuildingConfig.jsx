@@ -49,6 +49,7 @@ export default class BuildingConfig extends Component {
     let type=IndicatorType===Type.Quota?I18N.Setting.KPI.Quota:I18N.Setting.KPI.SavingRate;
     let indicator=I18N.format(I18N.Setting.KPI.Group.BuildingConfig.Value,type);
 
+    console.log(Buildings);
     var header=(
       <table className="jazz-kpi-group-buildings-header">
         <tbody>
