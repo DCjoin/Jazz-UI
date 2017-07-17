@@ -92,9 +92,9 @@ export default class BasicConfig extends Component {
   }
 
   _renderEditBasic(){
-    let {IndicatorType}=this.props.kpiInfo.toJS();
+    let {IndicatorType,IndicatorClass}=this.props.kpiInfo.toJS();
     return(
-      <ViewableKPIType status={SettingStatus.Edit} type={IndicatorType}/>
+      <ViewableKPIType status={SettingStatus.Edit} type={IndicatorType} indicatorClass={IndicatorClass}/>
     )
   }
 
