@@ -171,13 +171,20 @@ function getTextByFilter(isHover, isDosage, isIndex, isThisYear) {
 	}
 }
 
+
 function getUnit(id, RatioUomId) {
 	let code = find(UOMStore.getUoms(), uom => uom.Id === id).Code;
 	if( code === 'null' ) {
-		return '';
+		code = '';
 	}
 	if( RatioUomId ) {
 		let rationCode = find(UOMStore.getUoms(), uom => uom.Id === RatioUomId).Code;
+		if( rationCode === 'null' ) {
+			rationCode = '';
+		}
+		if( rationCode === code ) {
+			return '';
+		}
 		if(rationCode) {
 			return code + '/' + rationCode;
 		}

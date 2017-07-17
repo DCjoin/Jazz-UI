@@ -364,6 +364,7 @@ function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime
 		<ViewableDropDownMenu
 			disabled={disabled}
 			autoWidth={false}
+			itemLabelStyle={{overflow: 'visible'}}
 			style={{
 				width: 50,
 				height: 26,
@@ -399,6 +400,7 @@ function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime
 		<ViewableDropDownMenu
 			disabled={disabled}
 			autoWidth={false}
+			itemLabelStyle={{overflow: 'visible'}}
 			style={{
 				width: 50,
 				height: 26,
