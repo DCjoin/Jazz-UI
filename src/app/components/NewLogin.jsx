@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import ReactDOM from 'react-dom';
 
 import Regex from 'constants/Regex.jsx';
 import RoutePath from 'util/RoutePath.jsx';
@@ -322,7 +322,7 @@ export default class NewLogin extends Component {
 		this._onClickLogin = this._onClickLogin.bind(this);
 		this._doneForgetPSWDialog = this._doneForgetPSWDialog.bind(this);
 
-    LoginStore.addChangeListener(this._onChange);
+		LoginStore.addChangeListener(this._onChange);
 
 		if(d.addEventListener){
 			d.addEventListener('DOMMouseScroll', scrollListener, false);
@@ -455,19 +455,21 @@ export default class NewLogin extends Component {
 				<Container imageUrl={require(`../less/images/step1-${'zh-cn'||this.props.params.lang}.png`)} style={{
 					backgroundColor: '#fff'
 				}}>
-					<div style={{
+				<div style={{
 						top: '30%',
 						left: '12%',
 						position: 'absolute',
 						color: '#fff'
 					}}>
+					<div>
 						<div className='child content-title' data-to='top' data-index='1' >{I18N.Login.Step1.Title}</div>
 						<div className='child' data-to='top' data-index='2' >
 							<div className='content-text'>{I18N.Login.Step1.Line1}</div>
 							<div className='content-text'>{I18N.Login.Step1.Line2}</div>
 							<div className='content-text'>{I18N.Login.Step1.Line3}</div>
 						</div>
-					</div>					
+					</div>
+					</div>	
 				</Container>
 
 				<Container imageUrl={require(`../less/images/step2-${'zh-cn'||this.props.params.lang}.png`)} style={{
@@ -665,3 +667,39 @@ var ForgetPSWDialog = React.createClass({
       );
   }
 });
+
+function mouseMoveParallax() {
+	console.log(arguments, this);
+}
+
+class Parallax extends Component {
+
+	componentDidMount() {
+		this._mouseMoveParallax = this._mouseMoveParallax.bind(this);
+		if(d.addEventListener){
+			d.addEventListener('mousemove', this._mouseMoveParallax);
+		}
+	}
+	componentWillUnmount() {
+		if(d.removeEventListener){
+			d.removeEventListener('mousemove', this._mouseMoveParallax);
+		}		
+	}
+	_mouseMoveParallax(e) {
+		let horizontal = (e.x / d.body.clientWidth) * 100,
+		vertical = (e.y / d.body.clientHeight) * 100;
+
+		ReactDOM.findDOMNode(this).style['perspective-origin'] = `${horizontal}% ${vertical}%`;
+	}
+	render() {
+		return (
+			<div className style={{...this.props.style, ...{perspective: 100}}}>
+				{React.cloneElement(this.props.children, {
+					style: {...this.props.children.props.style, ...{
+						transform: 'translateZ(1px) scale(0.99)'
+					}}
+				})}
+			</div>
+		);
+	}
+}

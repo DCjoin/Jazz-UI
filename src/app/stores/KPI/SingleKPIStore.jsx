@@ -248,7 +248,10 @@ const SingleKPIStore = assign({}, PrototypeStore, {
   },
 
   getYearQuotaperiod() {
-    return _quotaperiodYear || _KPIConfigured;
+    if(!_quotaperiodYear && _KPIConfigured) {
+      return [];
+    }
+    return _quotaperiodYear;
   },
 
 
