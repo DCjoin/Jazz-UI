@@ -61,6 +61,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
   },
 
   setKpiInfo(data){
+    // console.log(data);
     _rawData=Immutable.fromJS(data);
     let {CustomerId,UomId,CommodityId,IndicatorName,RatioUomId,AdvanceSettings}=data.GroupKpiSetting;
     let {Year,IndicatorType,AnnualQuota,AnnualSavingRate,IndicatorClass}=AdvanceSettings;
@@ -86,6 +87,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
   },
 
   setGroupByYear(data,info){
+
     _groupInfo=Immutable.fromJS(data || []);
     // var thisYearKpiList=Immutable.fromJS(_groupSettingsList).filter(item=>(item.get('Year')===info.Year && item.get('GroupKpiItems').size>0)).first();
     // if(thisYearKpiList){
@@ -96,7 +98,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     //     }
     //   })
     // }
-    _info=info;
+    if(info!==null) _info=info;
     //this.init(info);
   },
 
@@ -509,6 +511,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     ])
   },
   clearAllBuildingInfo(){
+    // console.log("clearAllBuildingInfo");
     _kpiInfo=_kpiInfo.set('UomId',null);
     let values=_KpiSettings.getIn(['AdvanceSettings','TargetMonthValues']).toJS();
     if(_buildings){

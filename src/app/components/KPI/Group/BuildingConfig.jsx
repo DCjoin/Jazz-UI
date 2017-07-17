@@ -7,6 +7,7 @@ import BuildingItem from './BuildingItem.jsx';
 import GroupKPIAction from 'actions/KPI/GroupKPIAction.jsx';
 import NewDialog from 'controls/NewDialog.jsx';
 import FlatButton from 'controls/NewFlatButton.jsx';
+import CommonFuns from 'util/Util.jsx';
 
 export default class BuildingConfig extends Component {
 
@@ -44,17 +45,35 @@ export default class BuildingConfig extends Component {
     })
   }
 
+  getUom(){
+    let {IndicatorClass,UomId,RatioUomId}=this.props.kpiInfo.toJS();
+    if(IndicatorClass===Type.Dosage){
+      if(UomId) {
+        let uom=CommonFuns.getUomById(UomId).Code;
+        return `(${uom})`
+      }
+      else return ''
+    }
+    else if(UomId && RatioUomId){
+      let uom=CommonFuns.getUomById(UomId).Code;
+      let ratioUom=CommonFuns.getUomById(RatioUomId).Code;
+      if(UomId===RatioUomId) return ''
+      return `(${uom}/${ratioUom})`
+    }
+    else return ''
+  }
+
   _renderBuildingTable(){
     let {IndicatorType,IndicatorClass,Buildings}=this.props.kpiInfo.toJS();
     let type=IndicatorType===Type.Quota?I18N.Setting.KPI.Quota:I18N.Setting.KPI.SavingRate;
     let indicator=I18N.format(I18N.Setting.KPI.Group.BuildingConfig.Value,type);
-
+    let uom=IndicatorType===Type.Quota?this.getUom():' (%)';
     var header=(
       <table className="jazz-kpi-group-buildings-header">
         <tbody>
           <tr>
             <td className="column1">{I18N.Setting.KPI.Group.BuildingConfig.Name}</td>
-            <td className="column2">{indicator}</td>
+            <td className="column2">{`${indicator}${uom}`}</td>
             <td className="column3">{I18N.Setting.KPI.Group.BuildingConfig.Tag}</td>
             <td className="column4">{I18N.Setting.KPI.Group.BuildingConfig.Operation}</td>
           </tr>
