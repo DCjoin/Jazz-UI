@@ -185,9 +185,7 @@ function getUnit(id, RatioUomId) {
 		if( rationCode === code ) {
 			return '';
 		}
-		if(rationCode) {
-			return code + '/' + rationCode;
-		}
+		return code + '/' + rationCode;
 	}
 	return code;
 }
@@ -274,6 +272,9 @@ export default class KPIReport extends Component {
 	}
 	_renderIndexTooltip(overproof, isDosage, currentYearDone) {
 		let {summaryData} = this.props;
+		if( !isDosage ) {
+			return null;
+		}
 		return (<div className='kpi-report-tooltip'>
 			<div className='kpi-report-tooltip-title'>{getTextByHoverIndex(isDosage, !currentYearDone)}</div>
 			<div style={{fontSize: '18px', color: overproof ? '#dc0a0a' : '#0f0f0f'}}>{(!summaryData.PredictRatio ? 0 : summaryData.PredictRatio).toFixed(1) * 1 + '%'}</div>

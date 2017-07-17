@@ -56,9 +56,7 @@ function getUnit(id, RatioUomId) {
 		if( rationCode === code ) {
 			return '';
 		}
-		if(rationCode) {
-			return code + '/' + rationCode;
-		}
+		return code + '/' + rationCode;
 	}
 	return code;
 }
