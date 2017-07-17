@@ -142,11 +142,11 @@ const SingleKPIAction = {
     this.initKPIChartData();
     Ajax.get(util.replacePathParams(Path.KPI.getKPIConfigured, GroupKpiId?null:HierarchyId, GroupKpiId), {
       success: function(resBody) {
+        AppDispatcher.dispatch({
+          type: Action.GET_KPI_CONFIGURED,
+          data: resBody
+        });
         if(resBody && resBody.length > 0) {
-          AppDispatcher.dispatch({
-            type: Action.GET_KPI_CONFIGURED,
-            data: resBody
-          });
           let year = Year || SingleKPIStore.getKPIDefaultYear();
           getKPIChart(GroupKpiId, year, HierarchyId);
           getKPIChartSummary(CustomerId, year, HierarchyId, GroupKpiId);
