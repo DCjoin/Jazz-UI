@@ -233,7 +233,6 @@ export default class MonthValue extends Component {
         this._init(nextProps)
       }
     }
-
   }
 
   componentWillUnmount(){
