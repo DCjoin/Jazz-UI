@@ -217,7 +217,9 @@ const SingleKPIStore = assign({}, PrototypeStore, {
     return _KPIRank;
   },
   setKpiRankByYear(data, idx) {
-    _KPIRank[idx].YearRank = data;
+    if(_KPIRank[idx]) {
+      _KPIRank[idx].YearRank = data;
+    }
   },
   _initKpiChartData() {
     _KPIChartSummaryLoading = true;
