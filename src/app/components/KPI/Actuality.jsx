@@ -99,7 +99,7 @@ export default class Actuality extends Component {
 	};
 
 	componentWillMount() {
-		this._configCB = this._configCB.bind(this);
+		// this._configCB = this._configCB.bind(this);
 		this._showReportEdit = this._showReportEdit.bind(this);
 		this._removeEditPage = this._removeEditPage.bind(this);
 
@@ -121,14 +121,14 @@ export default class Actuality extends Component {
 	_getInitialState(props) {
 		this.setState({
 			edit: null,
-			show: isFull() ? {
-					kpi: true,
-					report: true,
-				} : (
-					props.router.location.query.kpiId ? {
-						report: false,
-					} : {}
-				),
+			// show: isFull() ? {
+			// 		kpi: true,
+			// 		report: true,
+			// 	} : (
+			// 		props.router.location.query.kpiId ? {
+			// 			report: false,
+			// 		} : {}
+			// 	),
 		});
 	}
 	_loadInitData(props, context) {
@@ -141,15 +141,15 @@ export default class Actuality extends Component {
 			ReportAction.allBuildingsExistence(props.router.params.customerId);
 		}
 	}
-	_configCB(type, value) {
-		if( this.state.show[type] !== value ) {
-			this.setState({
-				show: {...this.state.show, ...{
-					[type]: value
-				}}
-			});			
-		}
-	}
+	// _configCB(type, value) {
+	// 	if( this.state.show[type] !== value ) {
+	// 		this.setState({
+	// 			show: {...this.state.show, ...{
+	// 				[type]: value
+	// 			}}
+	// 		});			
+	// 	}
+	// }
 	_getParams(props) {
 		return props.router.params;
 	}
@@ -182,8 +182,8 @@ export default class Actuality extends Component {
 		let singleKPI = this._isSingleKPI();
 		let title = I18N.Kpi.KPIActual;
 		let prefixTitle = '';
-		let kpiHide = this.state.show.kpi === false;
-		let reportHide = this.state.show.report === false;
+		// let kpiHide = this.state.show.kpi === false;
+		// let reportHide = this.state.show.report === false;
 		let isCustomer = this._isCustomer();
 		let hasKPIEdit = isCustomer && isFull();
 		if(singleKPI) {
@@ -193,15 +193,15 @@ export default class Actuality extends Component {
     			this.props.router.location.query.kpiName + '-';
 		}
 		return (<div className='jazz-actuality-content'>
-			{!isReport(this.props) && !kpiHide && <div className='jazz-actuality-item'>
+			{!isReport(this.props) && <div className='jazz-actuality-item'>
 				<div className='jazz-actuality-item-title'>{prefixTitle + I18N.Kpi.KPIActual}</div>
 				{hasKPIEdit && !singleKPI &&
 		    	<IconButton iconClassName='icon-setting' iconStyle={{color: '#32ad3d', fontSize: '20px'}} onClick={() => {
 			      	this.props.router.push(RoutePath.KPIGroupConfig(this.props.router.params));
 			      }}/>}
-				<KPIActuality configCB={isOnlyView() && this._configCB} router={this.props.router} hierarchyId={this._getHierarchyId(this.props.router, this.context)}/>
+				<KPIActuality router={this.props.router} hierarchyId={this._getHierarchyId(this.props.router, this.context)}/>
 			</div>}
-			{isReport(this.props) && !singleKPI && !reportHide && <div className='jazz-actuality-item'>
+			{isReport(this.props) && <div className='jazz-actuality-item'>
 				<div className='jazz-actuality-item-title'>{'报表'}</div>
 				{isFull() &&
 				<div style={{marginLeft: 5, display: 'inline-block', height: 23, verticalAlign: 'top'}}>
@@ -211,8 +211,8 @@ export default class Actuality extends Component {
 			    </div>
 		    	}
 				<ReportPreview 
-					configCB={isOnlyView() && this._configCB}
 					ref={'report_preview'}
+					isFull={isFull()}
 					preview={true}
 					showAll={isCustomer}
 					hasAll={this.state.allBuildingsExistence}
@@ -258,7 +258,7 @@ export default class Actuality extends Component {
 		});
 	}
 	render() {
-		let {buildingList, userCustomers, show} = this.state,
+		let {buildingList, userCustomers} = this.state,
 		message;
 		if( !buildingList || !userCustomers || userCustomers.size === 0 ) {
 			return (<div className='jazz-actuality flex-center'><CircularProgress mode="indeterminate" size={80} /></div>); 
