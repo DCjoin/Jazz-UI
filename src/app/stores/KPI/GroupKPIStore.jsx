@@ -175,7 +175,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
 
   clearParam(type){
     _annualSum='-';
-    // let values=_KpiSettings.getIn(['AdvanceSettings','TargetMonthValues']).toJS();
+    let values=_KpiSettings.getIn(['AdvanceSettings','TargetMonthValues']).toJS();
     _kpiInfo=_kpiInfo.set('AnnualQuota',null);
     _kpiInfo=_kpiInfo.set('AnnualSavingRate',null);
     if(type==='CommodityId'){
@@ -183,25 +183,31 @@ const GroupKPIStore = assign({}, PrototypeStore, {
       _kpiInfo=_kpiInfo.set('IndicatorClass',null);
       _kpiInfo=_kpiInfo.set('IndicatorName',null);
     }
-    // _kpiInfo.get('Buildings').forEach((building,index)=>{
-    //   _kpiInfo=_kpiInfo.mergeIn(['Buildings',index],Map({
-    //     AnnualQuota:null,
-    //     AnnualSavingRate:null,
-    //     TargetMonthValues:Immutable.fromJS(assign([],values)),
-    //     MonthPredictionValues:Immutable.fromJS(assign([],values))
-    //   }))
-    // })
-    this.clearAllBuildingInfo();
+    if(type==='IndicatorClass'){
+      this.clearAllBuildingInfo();
+    }else {
+      _kpiInfo.get('Buildings').forEach((building,index)=>{
+        _kpiInfo=_kpiInfo.mergeIn(['Buildings',index],Map({
+          AnnualQuota:null,
+          AnnualSavingRate:null,
+          TargetMonthValues:Immutable.fromJS(assign([],values)),
+          MonthPredictionValues:Immutable.fromJS(assign([],values))
+        }))
+      })
+    }
+
+    // this.clearAllBuildingInfo();
   },
 
   merge(data){
-    let refresh=false;
+    let refresh=false,hasIndicatorClass=false;
     data.forEach(el=>{
       let {path,status,value}=el;
       let paths = path.split(".");
       refresh= path.indexOf('IndicatorType')>-1?'IndicatorType':refresh;
       refresh= path.indexOf('IndicatorClass')>-1?'IndicatorClass':refresh;
       refresh= paths[paths.length-1]==='CommodityId'?'CommodityId':refresh;
+      if(path.indexOf('IndicatorClass')>-1) hasIndicatorClass=true;
       if(status===DataStatus.ADD){
         let {index,length}=el;
         var children = _kpiInfo.getIn(paths);
@@ -233,7 +239,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
       }
     })
     if(refresh){
-      this.clearParam(refresh);
+      this.clearParam(hasIndicatorClass?'IndicatorClass':refresh);
     }
   },
 
@@ -579,7 +585,7 @@ GroupKPIStore.dispatchToken = AppDispatcher.register(function(action) {
           break;
     case Action.GET_KPI_BUILDING_LIST_BY_CUSTOMER_ID:
         GroupKPIStore.setBuildings(action.data,action.info);
-        //GroupKPIStore.emitChange();
+        if(_kpiInfo!==null) GroupKPIStore.emitChange();
         break;
     case Action.GET_GROUP_KPIS:
         GroupKPIStore.setGroupKpis(action.data);
