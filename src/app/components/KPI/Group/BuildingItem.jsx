@@ -44,9 +44,14 @@ export default class BuildingItem extends Component {
 
   getTagName(){
     let {IndicatorClass,buildingInfo}=this.props;
-    if(IndicatorClass===Type.Dosage) return buildingInfo.ActualTagName
+    if(IndicatorClass===Type.Dosage) return(
+      <td className="column3" title={buildingInfo.ActualTagName}>{buildingInfo.ActualTagName}</td>
+    )
     else return(
-      <div>{buildingInfo.ActualTagName}<br/>{buildingInfo.ActualRatioTagName}</div>
+      <td className="column3">
+        <div title={buildingInfo.ActualTagName}>{buildingInfo.ActualTagName}</div>
+        <div title={buildingInfo.ActualRatioTagName}>{buildingInfo.ActualRatioTagName}</div>
+      </td>
     )
   }
 
@@ -77,7 +82,7 @@ export default class BuildingItem extends Component {
       <tr>
         <td className="column1" title={buildingInfo.HierarchyName}>{buildingInfo.HierarchyName}</td>
         <td className="column2"><TextField {...props}/></td>
-        <td className="column3" title={buildingInfo.ActualTagName}>{this.getTagName()}</td>
+        {this.getTagName()}
         <td className="column4" onClick={valueIsActive?onMonthConfigShow.bind(this,true):()=>{}}>
           <div className={classNames({'active':valueIsActive})}>{I18N.Setting.KPI.Group.BuildingConfig.MonthConfig}</div>
           </td>

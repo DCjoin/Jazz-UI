@@ -84,7 +84,7 @@ export default class RatioActualTag extends Component {
       }
     }
     return(
-      <div className="jazz-kpi-tag-wrap">
+      <div className="jazz-kpi-tag-wrap" style={{color:'#9fa0a4'}}>
         <span>{IndicatorName}</span>
         <span>=</span>
         <span>
@@ -101,7 +101,7 @@ export default class RatioActualTag extends Component {
     let {ActualTagName,ActualRatioTagName}=this.props.buildingInfo.toJS();
 
     return(
-      <div className="jazz-kpi-tag-wrap">
+      <div className="jazz-kpi-tag-wrap" style={{color:'#9fa0a4'}}>
         <span>{IndicatorName}</span>
         <span>=</span>
         <span>
