@@ -683,7 +683,7 @@ var FolderStore = assign({}, PrototypeStore, {
       case FolderAction.MODIFY_NAME_SECCESS:
         FolderStore.modifyName(Immutable.fromJS(action.newNode));
         FolderStore.emitModifyNameSuccessChange();
-        FolderStore.emitSelectedNodeChange();
+        // FolderStore.emitSelectedNodeChange();
         break;
       case FolderAction.MODIFY_NAME_ERROR:
         FolderStore.setModifyNameError(action.res.text, action.newName, action.stype);

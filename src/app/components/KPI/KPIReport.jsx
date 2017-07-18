@@ -65,10 +65,16 @@ function getTextByFilter(isHover, isDosage, isIndex, isThisYear) {
 
 				// 今年
 				if( isThisYear ) {
-					return [];
+					return [{
+						key: 'PredicteScale',
+						label: ByYearKPIUsagedPredict
+					}];
 				// 往年
 				} else {
-					return [];
+					return [{
+						key: 'ActualScale',
+						label: ByYearKPIUsagedValue
+					}];
 				}
 
 			// 节能率
@@ -76,10 +82,28 @@ function getTextByFilter(isHover, isDosage, isIndex, isThisYear) {
 
 				// 今年
 				if( isThisYear ) {
-					return [ByYearUsagedTarget, ByYearUsagedPredict, ByYearSavingPredict];
+					return [{
+						key: 'TargetValue',
+						label: ByYearUsagedTarget
+					}, {
+						key: 'PredicteValue',
+						label: ByYearUsagedPredict
+					}, {
+						key: 'PredicteSave',
+						label: ByYearSavingPredict
+					}];
 				// 往年
 				} else {
-					return [ByYearUsagedTarget, ByYearUsagedValue, ByYearSavingValue];
+					return [{
+						key: 'TargetValue',
+						label: ByYearUsagedTarget
+					}, {
+						key: 'ActualValue',
+						label: ByYearUsagedValue,
+					}, {
+						key: 'ActualSave',
+						label: ByYearSavingValue,
+					}];
 				}
 
 			}
@@ -92,10 +116,10 @@ function getTextByFilter(isHover, isDosage, isIndex, isThisYear) {
 
 				// 今年
 				if( isThisYear ) {
-					return [ByYearUntilNowKPIUsaged];
+					return [];
 				// 往年
 				} else {
-					return [ByYearUntilNowKPIUsaged];
+					return [];
 				}
 
 			// 节能率
@@ -103,10 +127,22 @@ function getTextByFilter(isHover, isDosage, isIndex, isThisYear) {
 
 				// 今年
 				if( isThisYear ) {
-					return [ByYearKPI, ByYearUntilNowValue];
+					return [{
+						key: 'TargetValue',
+						label: ByYearKPI,
+					}, {
+						key: 'ActualValue',
+						label: ByYearUntilNowValue,
+					}];
 				// 往年
 				} else {
-					return [ByYearKPI, ByYearValue];
+					return [{
+						key: 'TargetValue',
+						label: ByYearKPI,
+					}, {
+						key: 'ActualValue',
+						label: ByYearValue,
+					}];
 				}
 
 			}
@@ -122,10 +158,22 @@ function getTextByFilter(isHover, isDosage, isIndex, isThisYear) {
 
 				// 今年
 				if( isThisYear ) {
-					return [IndexValue, PredictSum];
+					return [{
+						key: 'TargetValue',
+						label: IndexValue,
+					}, {
+						key: 'PredicteValue',
+						label: PredictSum,
+					}];
 				// 往年
 				} else {
-					return [IndexValue, ActualSum];
+					return [{
+						key: 'TargetValue',
+						label: IndexValue,
+					}, {
+						key: 'ActualValue',
+						label: ActualSum,
+					}];
 				}
 
 			// 节能率
@@ -133,10 +181,22 @@ function getTextByFilter(isHover, isDosage, isIndex, isThisYear) {
 
 				// 今年
 				if( isThisYear ) {
-					return [SavingValue, PredictSaving];
+					return [{
+						key: 'SaveRatio',
+						label: SavingValue,
+					}, {
+						key: 'PredictRatio',
+						label: PredictSaving,
+					}];
 				// 往年
 				} else {
-					return [SavingValue, ActualSaving];
+					return [{
+						key: 'SaveRatio',
+						label: SavingValue,
+					}, {
+						key: 'ActualRatio',
+						label: ActualSaving,
+					}];
 				}
 
 			}
@@ -149,10 +209,22 @@ function getTextByFilter(isHover, isDosage, isIndex, isThisYear) {
 
 				// 今年
 				if( isThisYear ) {
-					return [IndexValue, ByYearUntilNowValue];
+					return [{
+						key: 'TargetValue',
+						label: IndexValue,
+					}, {
+						key: 'ActualValue',
+						label: ByYearUntilNowValue,
+					}];
 				// 往年
 				} else {
-					return [IndexValue, ByYearValue];
+					return [{
+						key: 'TargetValue',
+						label: IndexValue,
+					}, {
+						key: 'ActualValue',
+						label: ByYearValue,
+					}];
 				}
 
 			// 节能率
@@ -160,10 +232,22 @@ function getTextByFilter(isHover, isDosage, isIndex, isThisYear) {
 
 				// 今年
 				if( isThisYear ) {
-					return [SavingValue, ByYearUntilNowSavingValue];
+					return [{
+						key: 'SaveRatio',
+						label: SavingValue,
+					}, {
+						key: 'ActualRatio',
+						label: ByYearUntilNowSavingValue,
+					}];
 				// 往年
 				} else {
-					return [SavingValue, ByYearSavingRatioValue];
+					return [{
+						key: 'SaveRatio',
+						label: SavingValue,
+					}, {
+						key: 'ActualRatio',
+						label: ByYearSavingRatioValue,
+					}];
 				}
 
 			}
@@ -211,19 +295,21 @@ export default class KPIReport extends Component {
 		let isIndex = data.get('type') === 1,
 		isDosage = data.get('IndicatorClass') === IndicatorClass.Dosage;
 
+		let {label, key} = getTextByNoHover(isDosage, isIndex, !currentYearDone)[0],
+		value = summaryDatap[key];
 		return (
 		<div className='summary-item'>
 			<div className='summary-title'>{
-				getTextByNoHover(isDosage, isIndex, !currentYearDone)[0]
+				label
 				/*isIndex ? I18N.Kpi.IndexValue : I18N.Kpi.SavingValue*/
 			}</div>
 			{isIndex ?/*定额指标值*/
 			(<div className='summary-value'>
-				{summaryData.IndexValue !== null && <span>{util.getLabelData(summaryData.IndexValue)}</span>}
-				{summaryData.IndexValue !== null && <span>{getUnit(data.get('unit'), data.get('RatioUomId'))}</span>}
+				{value !== null && <span>{util.getLabelData(value)}</span>}
+				{value !== null && <span>{getUnit(data.get('unit'), data.get('RatioUomId'))}</span>}
 			</div>) : /*节能率指标值*/
 			(<div className='summary-value'>
-				{summaryData.RatioValue !== null && <span>{(summaryData.RatioValue || 0).toFixed(1) * 1 + '%'}</span>}
+				{value !== null && <span>{(value || 0).toFixed(1) * 1 + '%'}</span>}
 			</div>)}
 		</div>
 		);
@@ -233,24 +319,27 @@ export default class KPIReport extends Component {
 		let {data, summaryData, currentYearDone} = this.props;
 
 		let isIndex = data.get('type') === 1,
-		isDosage = data.get('IndicatorClass') === IndicatorClass.Dosage;
+		isDosage = data.get('IndicatorClass') === IndicatorClass.Dosage,
+
+		{label, key} = getTextByNoHover(isDosage, isIndex, !currentYearDone)[0],
+		value = summaryDatap[key];
 
 		let overproof = util.isNumber(summaryData.PredictSum) && util.isNumber(summaryData.IndexValue) && summaryData.IndexValue < summaryData.PredictSum ;
 		return (
 		<div className={classnames('summary-item', {overproof: overproof})}>
 			<div className='summary-title'>{
-				getTextByNoHover(isDosage, isIndex, !currentYearDone)[1]
+				label
 				/*isIndex ? 
 					(currentYearDone ? I18N.Kpi.ActualSum : I18N.Kpi.PredictSum) :
 					(currentYearDone ? I18N.Kpi.ActualSaving : I18N.Kpi.PredictSaving)*/}</div>
 			{isIndex ?/*定额预测值*/
 			(<div className='summary-value'>
-				<span>{util.getLabelData(summaryData.PredictSum)}</span>
-				<span>{summaryData.PredictSum !== null && getUnit(data.get('unit'), data.get('RatioUomId'))}</span>
+				<span>{util.getLabelData(value)}</span>
+				<span>{value !== null && getUnit(data.get('unit'), data.get('RatioUomId'))}</span>
 				{this._renderTooltip(overproof, isIndex, isDosage, currentYearDone)}
 			</div>) :/*节能率预测值*/
 			(<div className='summary-value'>
-				<span>{(typeof summaryData.PredictRatio !== 'number' ? 0 : summaryData.PredictRatio).toFixed(1) * 1 + '%'}</span>
+				<span>{(typeof value !== 'number' ? 0 : value).toFixed(1) * 1 + '%'}</span>
 				{this._renderTooltip(overproof, isIndex, isDosage, currentYearDone)}
 			</div>)}
 		</div>
@@ -275,35 +364,39 @@ export default class KPIReport extends Component {
 		if( !isDosage ) {
 			return null;
 		}
+		let {key,label} = getTextByHoverIndex(isDosage, !currentYearDone)[0],
+		value = summaryData[key];
 		return (<div className='kpi-report-tooltip'>
-			<div className='kpi-report-tooltip-title'>{getTextByHoverIndex(isDosage, !currentYearDone)}</div>
-			<div style={{fontSize: '18px', color: overproof ? '#dc0a0a' : '#0f0f0f'}}>{(!summaryData.PredictRatio ? 0 : summaryData.PredictRatio).toFixed(1) * 1 + '%'}</div>
+			<div className='kpi-report-tooltip-title'>{label}</div>
+			<div style={{fontSize: '18px', color: overproof ? '#dc0a0a' : '#0f0f0f'}}>{(!value ? 0 : value).toFixed(1) * 1 + '%'}</div>
 		</div>);
 	}
 	_renderSavingTooltip(overproof, isDosage, currentYearDone) {
 		let {data, summaryData} = this.props,
-		{IndexValue, PredictSum} = summaryData,
-		actualSum = data.get('actual').toJS().reduce((prev, curr) => prev + +curr, 0),
+		// {IndexValue, PredictSum} = summaryData,
+		// actualSum = data.get('actual').toJS().reduce((prev, curr) => prev + +curr, 0),
 		unit = data.get('unit'),
 		RatioUomId = data.get('RatioUomId'),
 		indicatorClass = data.get('IndicatorClass'),
-		firstTitle = getTextByHoverSaving(isDosage, !currentYearDone)[0];
-		if(!firstTitle) {
+		firstData = getTextByHoverSaving(isDosage, !currentYearDone)[0],
+		secondData = getTextByHoverSaving(isDosage, !currentYearDone)[1],
+		thirdData = getTextByHoverSaving(isDosage, !currentYearDone)[2];
+		if(!firstData) {
 			return null;
 		}
 		return (
 			<div className='kpi-report-tooltip'>
 				<div style={{paddingBottom: 5, borderBottom: '1px solid #cbcbcb'}}>
-					<div className='kpi-report-tooltip-title'>{firstTitle}</div>
-					<div style={{fontSize: '18px', color: overproof ? '#dc0a0a' : '#0f0f0f'}}>{getValueWithUnit(IndexValue - actualSum, unit, RatioUomId)}</div>
+					<div className='kpi-report-tooltip-title'>{firstData.label}</div>
+					<div style={{fontSize: '18px', color: overproof ? '#dc0a0a' : '#0f0f0f'}}>{getValueWithUnit(summaryData[firstData.key], unit, RatioUomId)}</div>
 				</div>
 				<div style={{marginTop: 10}}>
-					<div className='kpi-report-tooltip-title'>{getTextByHoverSaving(isDosage, !currentYearDone)[1]}</div>
-					<div>{getValueWithUnit(IndexValue, unit, RatioUomId)}</div>
+					<div className='kpi-report-tooltip-title'>{summaryData[secondData.key].label}</div>
+					<div>{getValueWithUnit(summaryData[secondData.key], unit, RatioUomId)}</div>
 				</div>
 				{indicatorClass === IndicatorClass.Dosage && <div style={{marginTop: 10}}>
-					<div className='kpi-report-tooltip-title'>{getTextByHoverSaving(isDosage, !currentYearDone)[2]}</div>
-					<div>{getValueWithUnit(PredictSum, unit, RatioUomId)}</div>
+					<div className='kpi-report-tooltip-title'>{summaryData[secondData.key].label}</div>
+					<div>{getValueWithUnit(summaryData[thirdData.key], unit, RatioUomId)}</div>
 				</div>}
 			</div>
 		);

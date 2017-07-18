@@ -7,12 +7,17 @@ import GroupKPIStore from 'stores/KPI/GroupKPIStore.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import UserAction from 'actions/UserAction.jsx';
 import UserStore from 'stores/UserStore.jsx';
+import RoutePath from 'util/RoutePath.jsx';
 
 function getCustomerPrivilageById(customerId) {
 	return UserStore.getUserCustomers().find(customer => customer.get('CustomerId') === customerId * 1 );
 }
 
 export default class ConfigMenu extends Component {
+
+  static contextTypes = {
+    hierarchyId: React.PropTypes.string
+  };
 
   constructor(props) {
     super(props);
@@ -37,6 +42,12 @@ export default class ConfigMenu extends Component {
   componentDidMount(){
     UserStore.addChangeListener(this._onChange);
     UserAction.getCustomerByUser(CurrentUserStore.getCurrentUser().Id);
+  }
+
+  componentWillReceiveProps({router}, nextContext) {
+    if( nextContext.hierarchyId !== router.params.customerId * 1 ) {
+      router.replace( RoutePath.report.actualityKpi(router.params) + router.location.search );
+    }
   }
 
   componentWillUnmount(){
