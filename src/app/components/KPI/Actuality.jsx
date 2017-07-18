@@ -104,7 +104,7 @@ export default class Actuality extends Component {
 		this._removeEditPage = this._removeEditPage.bind(this);
 
 
-		this._getInitialState(this.props);
+		this._getInitialState(this.props, this.context);
 		this._loadInitData(this.props, this.context);
 
 		if(!UserStore.getUserCustomers() || UserStore.getUserCustomers().size === 0) {
@@ -113,14 +113,15 @@ export default class Actuality extends Component {
 
 	}
 	componentWillReceiveProps(nextProps, nextContext) {
-		if( !util.shallowEqual(nextContext.hierarchyId, this.context.hierarchyId) || this.props.params.type !== nextProps.params.type ) {
-			this._getInitialState(nextProps);
+		if( nextContext.hierarchyId && !util.shallowEqual(nextContext.hierarchyId, this.context.hierarchyId) || this.props.params.type !== nextProps.params.type ) {
+			this._getInitialState(nextProps, nextContext);
 			this._loadInitData(nextProps, nextContext);
 		}
 	}
-	_getInitialState(props) {
+	_getInitialState(props, ctx) {
 		this.setState({
 			edit: null,
+			isCustomer: props.router.params.customerId*1 === ctx.hierarchyId
 			// show: isFull() ? {
 			// 		kpi: true,
 			// 		report: true,
@@ -169,9 +170,6 @@ export default class Actuality extends Component {
 	_isSingleKPI() {
 		return this.props.router.location.query.kpiId;
 	}
-	_isCustomer() {
-		return this.props.router.params.customerId*1 === this.context.hierarchyId;
-	}
 	_routerPush(path) {
 		this.props.router.push(path);
 	}
@@ -184,7 +182,7 @@ export default class Actuality extends Component {
 		let prefixTitle = '';
 		// let kpiHide = this.state.show.kpi === false;
 		// let reportHide = this.state.show.report === false;
-		let isCustomer = this._isCustomer();
+		let isCustomer = this.state.isCustomer;
 		let hasKPIEdit = isCustomer && isFull();
 		if(singleKPI) {
     		prefixTitle = 
