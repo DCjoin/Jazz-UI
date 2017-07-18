@@ -1521,7 +1521,7 @@ class AnalysisPanel extends Component {
           <ChartSubToolbar {...props.subToolBar}/>
           {this._renderChartCmp()}
         </div>
-        {<TagDrawer hierarchyId={this.context.hierarchyId}
+        {<TagDrawer hierarchyId={this.state.hierarchyId}
                     isBuilding={this.state.isBuilding}
                     customerId={parseInt(this.context.router.params.customerId)}
                     tagId={this.state.tagId}
