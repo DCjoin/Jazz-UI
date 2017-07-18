@@ -179,7 +179,7 @@ export default class Ranking extends Component {
               {this._renderKpiRanking()}
               {this._renderUpRanking()}
               <FlatButton
-                    style={{width:'88px',border:'1px solid #e4e7e9',marginTop:"30px"}}
+                    style={{width:'88px',border:'1px solid #e4e7e9',marginTop:"30px",marginBottom:'40px'}}
                     label={I18N.Common.Button.Save}
                     onTouchTap={this._onSave}
                      />
