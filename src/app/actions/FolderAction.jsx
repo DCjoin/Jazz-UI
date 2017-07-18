@@ -205,12 +205,12 @@ let FolderAction = {
     });
   },
   GetWidgetDtos(widgetIds, selectedNode, isNew = false) {
-    setTimeout(() => {
+    // setTimeout(() => {
       AppDispatcher.dispatch({
         type: Action.GET_WIDGETDTOS_LOADING,
         selectedNode: selectedNode
       });
-    }, 0);
+    // }, 0);
 
     Ajax.post('/Dashboard/GetWidgetDtos', {
       params: {
