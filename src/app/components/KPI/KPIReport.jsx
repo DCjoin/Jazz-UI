@@ -296,7 +296,7 @@ export default class KPIReport extends Component {
 		isDosage = data.get('IndicatorClass') === IndicatorClass.Dosage;
 
 		let {label, key} = getTextByNoHover(isDosage, isIndex, !currentYearDone)[0],
-		value = summaryDatap[key];
+		value = summaryData[key];
 		return (
 		<div className='summary-item'>
 			<div className='summary-title'>{
@@ -322,7 +322,7 @@ export default class KPIReport extends Component {
 		isDosage = data.get('IndicatorClass') === IndicatorClass.Dosage,
 
 		{label, key} = getTextByNoHover(isDosage, isIndex, !currentYearDone)[0],
-		value = summaryDatap[key];
+		value = summaryData[key];
 
 		let overproof = util.isNumber(summaryData.PredictSum) && util.isNumber(summaryData.IndexValue) && summaryData.IndexValue < summaryData.PredictSum ;
 		return (
