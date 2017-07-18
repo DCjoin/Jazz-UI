@@ -296,7 +296,7 @@ export default class KPIReport extends Component {
 		isDosage = data.get('IndicatorClass') === IndicatorClass.Dosage;
 
 		let {label, key} = getTextByNoHover(isDosage, isIndex, !currentYearDone)[0],
-		value = summaryDatap[key];
+		value = summaryData[key];
 		return (
 		<div className='summary-item'>
 			<div className='summary-title'>{
@@ -322,7 +322,7 @@ export default class KPIReport extends Component {
 		isDosage = data.get('IndicatorClass') === IndicatorClass.Dosage,
 
 		{label, key} = getTextByNoHover(isDosage, isIndex, !currentYearDone)[0],
-		value = summaryDatap[key];
+		value = summaryData[key];
 
 		let overproof = util.isNumber(summaryData.PredictSum) && util.isNumber(summaryData.IndexValue) && summaryData.IndexValue < summaryData.PredictSum ;
 		return (
@@ -391,11 +391,11 @@ export default class KPIReport extends Component {
 					<div style={{fontSize: '18px', color: overproof ? '#dc0a0a' : '#0f0f0f'}}>{getValueWithUnit(summaryData[firstData.key], unit, RatioUomId)}</div>
 				</div>
 				<div style={{marginTop: 10}}>
-					<div className='kpi-report-tooltip-title'>{summaryData[secondData.key].label}</div>
+					<div className='kpi-report-tooltip-title'>{secondData.label}</div>
 					<div>{getValueWithUnit(summaryData[secondData.key], unit, RatioUomId)}</div>
 				</div>
 				{indicatorClass === IndicatorClass.Dosage && <div style={{marginTop: 10}}>
-					<div className='kpi-report-tooltip-title'>{summaryData[secondData.key].label}</div>
+					<div className='kpi-report-tooltip-title'>{thirdData.label}</div>
 					<div>{getValueWithUnit(summaryData[thirdData.key], unit, RatioUomId)}</div>
 				</div>}
 			</div>
