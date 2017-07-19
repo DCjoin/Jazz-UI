@@ -416,12 +416,13 @@ export default class KPIReport extends Component {
 				<div>{'预测全年用量将超标'}</div>
 				<div>{'请及时采取节能措施'}</div>
 			</div>
-			{hasPermission && <FontIcon style={{fontSize: '14px'}} className='icon-arrow-right'/>}
 		</div>
 	}
 	render() {
 		let {data, summaryData, period, onEdit, onRefresh, isGroup, currentYearDone} = this.props;
 		let overproof = util.isNumber(summaryData.PredictSum) && util.isNumber(summaryData.IndexValue) && summaryData.IndexValue < summaryData.PredictSum ;
+		let showTip = !!overproof && !currentYearDone && !isGroup;
+
 		return (
 			<div className='jazz-kpi-report-wrapper'>
 				<div style={{
@@ -440,9 +441,11 @@ export default class KPIReport extends Component {
 						<KPIChart LastMonthRatio={summaryData && summaryData.LastMonthRatio} period={period} data={data}/>
 					</div>
 					<div className='jazz-kpi-report-summary'>
+						{!showTip && <div style={{height: 10}}/>}
 						{this.getValueSummaryItem()}
 						{this.getPredictSummaryItem()}
-						{!!overproof && !currentYearDone && !isGroup && this._renderTip()}
+						{!showTip && <div style={{height: 10}}/>}
+						{showTip && this._renderTip()}
 					</div>
 				</div>
 			</div>
