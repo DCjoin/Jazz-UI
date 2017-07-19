@@ -157,7 +157,7 @@ class ActualityContent extends Component {
 }
 
 const TipMessage = (props, context, updater) => {
-	return (<MinHeight400 className='jazz-kpi-actuality flex-center'><b>{props.message}</b></MinHeight400>)
+	return (<div style={{height: 400, flex: 'none'}} className='jazz-kpi-actuality flex-center'><b>{props.message}</b></div>)
 }
 
 export default class Actuality extends Component {
