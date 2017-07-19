@@ -69,6 +69,7 @@ export default class DataAnalysis extends Component {
     this._onCopyItemSuccess = this._onCopyItemSuccess.bind(this);
     this._didDrag = this._didDrag.bind(this);
     this._modifyFolderName = this._modifyFolderName.bind(this);
+    this._onModifyNameSuccess = this._onModifyNameSuccess.bind(this);
 
 		this._onSelectNode = this._onSelectNode.bind(this);
 		this._createFolderOrWidget = this._createFolderOrWidget.bind(this);
@@ -84,7 +85,7 @@ export default class DataAnalysis extends Component {
     FolderStore.addMoveItemErrorListener(this._onMoveItemError);
     FolderStore.addSendStatusListener(this._onSendStatusChange);
     FolderStore.addShareStatusListener(this._onShareStatusChange);
-    FolderStore.addModifyNameSuccessListener(this._onSelectedNodeChange);
+    FolderStore.addModifyNameSuccessListener(this._onModifyNameSuccess);
     FolderStore.addDeleteItemSuccessListener(this._onDeleteNode);
     FolderStore.addMoveItemSuccessListener(this._onMoveItemSuccess);
     FolderStore.addModfiyReadingStatusListener(this._onSelectedNodeChange);
@@ -117,7 +118,7 @@ export default class DataAnalysis extends Component {
 		FolderStore.removeMoveItemErrorListener(this._onMoveItemError);
 		FolderStore.removeSendStatusListener(this._onSendStatusChange);
 		FolderStore.removeShareStatusListener(this._onShareStatusChange);
-    FolderStore.removeModifyNameSuccessListener(this._onSelectedNodeChange);
+    FolderStore.removeModifyNameSuccessListener(this._onModifyNameSuccess);
     FolderStore.removeDeleteItemSuccessListener(this._onDeleteNode);
     FolderStore.removeMoveItemSuccessListener(this._onMoveItemSuccess);
     FolderStore.removeModfiyReadingStatusListener(this._onSelectedNodeChange);
@@ -266,6 +267,13 @@ export default class DataAnalysis extends Component {
     // FolderAction.alwaysUncheckSameWidget();
     this._onSelectedNodeChange();
   }
+
+	_onModifyNameSuccess() {
+		this.setState({
+			treeList: FolderStore.getFolderTree(),
+			selectedNode: FolderStore.getSelectedNode(),
+		});
+	}
 
 	_modifyFolderName(newName) {
 		FolderAction.modifyFolderName(this.state.selectedNode, newName);

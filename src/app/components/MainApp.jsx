@@ -198,7 +198,7 @@ let MainApp = React.createClass({
           if( initHierarchyId ) {
             hierarchyId = initHierarchyId * 1;
           }
-
+          console.log(hierarchyId);
           this.setState({
             hierarchyId
           },this.forceUpdate);
@@ -256,6 +256,7 @@ let MainApp = React.createClass({
     if(customerId !== HierarchyStore.getBuildingListForCustomerId()) {
       HierarchyAction.getBuildingListByCustomerId(customerId);
     }
+          console.log(null);
     this.setState({
       hierarchyId: null
     });
