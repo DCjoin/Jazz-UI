@@ -24,7 +24,7 @@ export default class GroupConfig extends Component {
     if(IndicatorClass===Type.Dosage){
       if(UomId) {
         let uom=CommonFuns.getUomById(UomId).Code;
-        return `(${uom})`
+        return uom===''?'':`(${uom})`
       }
       else return ''
     }
