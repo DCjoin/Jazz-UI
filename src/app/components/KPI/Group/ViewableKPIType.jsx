@@ -62,7 +62,7 @@ export default class ViewableKPIType extends Component {
 						value={Type.Dosage}
 						label={I18N.Setting.KPI.YearAndType.Dosage}
 						style={{width:'200px'}}
-						onChange={onClassChange.bind(Type.Dosage)}
+						onCheck={onClassChange.bind(Type.Dosage)}
 						disabled={status===SettingStatus.Prolong && indicatorClass!==Type.Dosage}
 						/>
 						{indicatorClass===Type.Dosage && <div style={styles.group}>
@@ -77,7 +77,7 @@ export default class ViewableKPIType extends Component {
 						value={Type.Ratio}
 						label={I18N.Setting.KPI.YearAndType.Ratio}
 						style={{width:'200px'}}
-						onChange={onClassChange.bind(Type.Ratio)}
+						onCheck={onClassChange.bind(Type.Ratio)}
 						disabled={status===SettingStatus.Prolong && indicatorClass!==Type.Ratio}
 						/>
 						{indicatorClass===Type.Ratio && <div style={styles.group}>
