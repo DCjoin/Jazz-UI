@@ -16,7 +16,7 @@ function validValue(value) {
 export class IconText extends Component{
   render(){
     return(
-      <div style={{marginLeft:'50px',width:"132px"}}>
+      <div style={{marginLeft:'50px',width:"145px"}}>
         <div style={{display:'flex',flexDirection:'row'}}>
           {this.props.icon}
           <div style={{fontSize:'12px',marginLeft:'5px',color:"#626469"}}>{this.props.label}</div>
