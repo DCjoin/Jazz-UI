@@ -118,6 +118,8 @@ var SubMainMenu = React.createClass({
       menu = <Paper zDepth={1}>{listItems}</Paper>;
     }
 
+    var style=this.props.node.children.length>1?{}:{alignItems:'center'};
+
     return (
       <div
       ref="root"
@@ -126,7 +128,7 @@ var SubMainMenu = React.createClass({
           <a className={classnames({
         "jazz-mainmenu-main": true,
         "active": isActive
-      })} onMouseEnter={this._showSubMenu} onMouseLeave={this._dismissSubMain}>
+      })} onMouseEnter={this._showSubMenu} onMouseLeave={this._dismissSubMain}style={style}>
             <div>{node.title}</div>
             <div className="jazz-mainmenu-main-title">{activeTitle}</div>
             {menu}
