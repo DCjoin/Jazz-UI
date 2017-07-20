@@ -11,7 +11,7 @@ var _ = {
 };
 const disabledColor = "#abafae";
 const grayColor = "#767a7a";
-const blueColor = "#1ca8dd";
+const blueColor = "#32ad3c";
 const blueColorBackgroundColor = "#e1fcff";
 const redColor = "#f46a58";
 const redColorBackgroundColor = "#fcd2cd";

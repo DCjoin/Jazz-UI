@@ -77,7 +77,7 @@ var NodeButtonBar = React.createClass({
     }
     var saveButton = <FlatButton style={{
       borderRight: '1px solid #ececec',
-      color: '#1ca8dd'
+      color: '#32ad3c'
     }} onClick={this._handleSaveBtn} {...saveBtnProps} secondary={true}/>;
     // delete button
     var deleteBtnProps = {};
@@ -99,7 +99,7 @@ var NodeButtonBar = React.createClass({
 
     var editButton = <FlatButton label={I18N.Baseline.Button.Edit} style={{
       borderRight: '1px solid #ececec',
-      color: '#1ca8dd'
+      color: '#32ad3c'
     }} onClick={this._handleEditBtn} {...editBtnProps} secondary={true}/>;
     var cancelButton = <FlatButton label={I18N.Baseline.Button.Cancel} onClick={this._handleCancelBtn} {...cancelBtnProps}   />;
 

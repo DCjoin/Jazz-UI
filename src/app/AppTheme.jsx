@@ -49,7 +49,7 @@ module.exports = {
 //       primary1Color: Colors.cyan500,
 //       primary2Color: Colors.cyan700,
 //       primary3Color: Colors.cyan100,
-//       accent1Color: '#1ca8dd',
+//       accent1Color: '#32ad3c',
 //       accent2Color: Colors.pinkA400,
 //       accent3Color: Colors.pinkA100,
 //       textColor: Colors.darkBlack,
@@ -92,10 +92,10 @@ module.exports = {
 //       flatButton: {
 //         color: palette.canvasColor,
 //         disabledTextColor:'#c2c5c4',
-//         textColor: "#1ca8dd",
+//         textColor: "#32ad3c",
 //         backgroundColor:'transparent',
 //         primaryTextColor:"#ff4081",
-//         secondaryTextColor: "#1ca8dd"
+//         secondaryTextColor: "#32ad3c"
 //       },
 //       floatingActionButton: {
 //         buttonSize: 56,

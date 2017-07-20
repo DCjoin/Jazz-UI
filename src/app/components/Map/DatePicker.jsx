@@ -105,7 +105,7 @@ let DatePicker = React.createClass({
             labelStyle={{
               color: '#767a7a'
             }} onClick={this._onDateMenuClick}
-            icon={<FontIcon className="icon-arrow-down" hoverColor='#1ca8dd'
+            icon={<FontIcon className="icon-arrow-down" hoverColor='#32ad3c'
             style={{
               fontSize: '12px',
               marginLeft: '-6px'
