@@ -369,7 +369,7 @@ export default class NotPushPanel extends Component {
         <SolutionLabel {...props.solution}/>
         <Solution {...props.solution}/>
         <Problem {...props.problem}/>
-        <div style={{marginTop:"46px"}}><SolutionGallery {...props.gallery}/></div>
+        <div style={{margin:"46px 20px 0 16px"}}><SolutionGallery {...props.gallery}/></div>
 
       </NewDialog>
     )

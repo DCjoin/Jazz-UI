@@ -84,13 +84,13 @@ export default class Problem extends Component {
           <div className="name">
             {I18N.Setting.ECM.ProblemDetail}
           </div>
-          <div className="row" style={{paddingLeft:'8px',paddingRight:'42px'}}>
+          <div className="row" style={{paddingLeft:'11px',paddingRight:'42px'}}>
             <div className="label">
               {I18N.Setting.ECM.ProblemDetailName}
             </div>
             {canEdit?<TextField {...props.name}/>:<div className="jazz-ecm-measure-viewabletext" stlye={{fontSize:"16px",color:"#626469"}}>{this._renderMultiText(EnergyProblem.Name)}</div>}
           </div>
-          <div className="row" style={{marginTop:"8px",paddingLeft:'8px',paddingRight:'42px'}}>
+          <div className="row" style={{marginTop:"8px",paddingLeft:'11px',paddingRight:'42px'}}>
             <div className="label">
               {I18N.Setting.UserManagement.Comment}
             </div>

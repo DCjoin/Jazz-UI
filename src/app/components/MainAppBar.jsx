@@ -137,7 +137,7 @@ var MainAppBar = React.createClass({
         this.setState({
           showCustomerList: true
         });
-      }      
+      }
     }
   },
 
@@ -218,7 +218,7 @@ var MainAppBar = React.createClass({
     }));
   },
   _showLogout: function() {
-    let doned = false   
+    let doned = false
     FolderAction.checkWidgetUpdate(() => {
       this.setState(assign({}, this.getInitialState(), {
         dialogType: DIALOG_TYPE.LOGOUT
@@ -579,7 +579,7 @@ var MainAppBar = React.createClass({
       }} {...titleProps} />
           </li>
           {isSuperAdmin ? null : <li>
-                        <ViewableTextField 
+                        <ViewableTextField
         regexFn={() => {
           return this.state.customError && I18N.Message.M12111;
         }}
@@ -694,7 +694,9 @@ var MainAppBar = React.createClass({
         paddingRight: '10px',
       },
       configStyle = {
-        cursor: 'pointer'
+        cursor: 'pointer',
+        paddingLeft:'3px',
+        paddingRight:'3px'
       };
     var logo = (!!this.props.logoUrl)
       ? <div className='jazz_logo_img' style={{
