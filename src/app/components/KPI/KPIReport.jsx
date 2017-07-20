@@ -185,7 +185,7 @@ function getTextByFilter(isHover, isDosage, isIndex, isThisYear) {
 						key: 'SaveRatio',
 						label: SavingValue,
 					}, {
-						key: 'PredictRatio',
+						key: 'PredicteRatio',
 						label: PredictSaving,
 					}];
 				// 往年
@@ -324,7 +324,7 @@ export default class KPIReport extends Component {
 		{label, key} = getTextByNoHover(isDosage, isIndex, !currentYearDone)[1],
 		value = summaryData[key];
 
-		let overproof = util.isNumber(summaryData.PredictSum) && util.isNumber(summaryData.IndexValue) && summaryData.IndexValue < summaryData.PredictSum ;
+		let overproof = util.isNumber(summaryData.PredicteValue) && util.isNumber(summaryData.TargetValue) && summaryData.TargetValue < summaryData.PredicteValue ;
 		return (
 		<div className={classnames('summary-item', {overproof: overproof})}>
 			<div className='summary-title'>{
@@ -420,7 +420,7 @@ export default class KPIReport extends Component {
 	}
 	render() {
 		let {data, summaryData, period, onEdit, onRefresh, isGroup, currentYearDone} = this.props;
-		let overproof = util.isNumber(summaryData.PredictSum) && util.isNumber(summaryData.IndexValue) && summaryData.IndexValue < summaryData.PredictSum ;
+		let overproof = util.isNumber(summaryData.PredicteValue) && util.isNumber(summaryData.TargetValue) && summaryData.TargetValue < summaryData.PredicteValue ;
 		let showTip = !!overproof && !currentYearDone && !isGroup;
 
 		return (
