@@ -25,8 +25,8 @@ import EnergyStore from 'stores/Energy/EnergyStore.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
 
-const SVG_WIDTH = 900;
-const SVG_HEIGHT = 600;
+const SVG_WIDTH = 718;
+const SVG_HEIGHT = 359;
 
 function SolutionFull() {
 	return PrivilegeUtil.isFull(PermissionCode.SOLUTION_FULL, CurrentUserStore.getCurrentPrivilege());
@@ -394,7 +394,6 @@ export class GenerateSolution extends Component {
 				title={I18N.Setting.DataAnalysis.Scheme}
 				actions={[this._renderSubmit(), this._renderCancel()]}
 				onRequestClose={this.props.onRequestClose}
-				wrapperStyle={{maxWidth: SVG_WIDTH + 44 * 2 + 20, width: SVG_WIDTH + 44 * 2 + 20}}
 				contentStyle={{overflowY: 'auto'}}>
 				{this._renderEnergyProblem()}
 				<div style={{margin: '10px 0', flex: 'none'}}>

@@ -438,7 +438,7 @@ export default class PushPanel extends Component {
         <SolutionLabel {...props.solution}/>
         <Solution {...props.solution}/>
         <Problem {...props.problem}/>
-        <div style={{marginTop:"46px"}}><SolutionGallery {...props.gallery}/></div>
+        <div style={{margin:"46px 20px 0 16px"}}><SolutionGallery {...props.gallery}/></div>
         <div style={{display:"flex",alignItems:"flex-end",marginTop:'36px'}}>
           <div className="jazz-ecm-push-operation-label">{`${I18N.Setting.ECM.PushPanel.CreateUser}：`}</div>
           <div style={{fontSize:'12px',color:'#9fa0a4',marginLeft:'5px'}}>{user || '-'}</div>

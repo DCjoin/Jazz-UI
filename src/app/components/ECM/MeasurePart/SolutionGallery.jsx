@@ -43,7 +43,7 @@ export default class SolutionGallery extends Component {
 		});
 	}
 	_renderChart() {
-		return (<img src={this._getImages()[this.state.idx].ImageUrl} width="100%"/>);
+		return (<img src={this._getImages()[this.state.idx].ImageUrl} width="100%" height="332px"/>);
 	}
 	_renderDeleteDialog() {
 		let {showDelete, idx} = this.state;
