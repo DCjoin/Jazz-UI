@@ -11,7 +11,8 @@ import Immutable from 'immutable';
 const CREATE_DIAGNOSE_EVENT = 'create_diagnose_event',
       UPDATE_DIAGNOSE_EVENT='update_diagnose_event',
       REMOVE_DIAGNOSE_EVENT='remove_diagnose_event',
-      GET_CONSULTANT_EVENT='get_consultant_event';
+      GET_CONSULTANT_EVENT='get_consultant_event',
+      GET_ASSOCIATE_TAG_EVENT='get_associate_tags_event';
 
 var HierarchyAction=Hierarchy.Action;
 
@@ -19,6 +20,7 @@ var _diagnoseList=null,
     _diagnoseStatic=null,
     _currentDiagnose=null,
     _tagsList=null,
+    _tagsAssociateList=null,
     _chartData=null,
     _chartDataLoading=false,
     _calendar=null,
@@ -63,6 +65,12 @@ const DiagnoseStore = assign({}, PrototypeStore, {
   },
   getTagsList(){
     return _tagsList;
+  },
+  setTagsAssociateList(data){
+    _tagsAssociateList= data && Immutable.fromJS(data);
+  },
+  getTagsAssociateList(){
+    return _tagsAssociateList;
   },
   setLoading(data){
     _chartDataLoading = data;
@@ -259,7 +267,17 @@ const DiagnoseStore = assign({}, PrototypeStore, {
   removeConsultantListener: function(callback) {
     this.removeListener(GET_CONSULTANT_EVENT, callback);
     this.dispose();
-  }
+  },
+  emitAssociateTagChange: function(args) {
+    this.emit(GET_ASSOCIATE_TAG_EVENT, args);
+  },
+  addAssociateTagListener: function(callback) {
+    this.on(GET_ASSOCIATE_TAG_EVENT, callback);
+  },
+  removeAssociateTagListener: function(callback) {
+    this.removeListener(GET_ASSOCIATE_TAG_EVENT, callback);
+    this.dispose();
+  },
 })
 
 DiagnoseStore.dispatchToken = AppDispatcher.register(function(action) {
@@ -279,6 +297,10 @@ DiagnoseStore.dispatchToken = AppDispatcher.register(function(action) {
     case Action.GET_TAGS_LIST:
           DiagnoseStore.setTagsList(action.data);
           DiagnoseStore.emitChange()
+          break;
+    case Action.GET_ASSOCIATE_TAG_LIST:
+          DiagnoseStore.setTagsAssociateList(action.data);
+          DiagnoseStore.emitAssociateTagChange()
           break;
     case Action.GET_CHART_DATA:
           DiagnoseStore.setLoading(false);

@@ -6,6 +6,7 @@ module.exports = {
     GET_DIAGNOSIS_STATIC:null,
     GET_DIAGNOSIS_BY_ID:null,
     GET_TAGS_LIST:null,
+    GET_ASSOCIATE_TAG_LIST:null,
     GET_CHART_DATA:null,
     GET_CHART_DATAING:null,
     GET_DIAGNOSE_CHART_DATA_SUCCESS:null,
