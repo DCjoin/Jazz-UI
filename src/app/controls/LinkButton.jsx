@@ -7,7 +7,7 @@ const DEFAULT_STYLE = {
   labelStyle: {
     color: "#767a7a",
     cursor: "pointer",
-    opacity: 0.9 //must have this, for right color #1ca8dd
+    opacity: 0.9 //must have this, for right color #32ad3c
   },
   hoverColor: "#0cad04", // change by law 17/05/17
   disableColor: "#abafae"

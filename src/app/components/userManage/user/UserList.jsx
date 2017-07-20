@@ -126,8 +126,7 @@ module.exports = React.createClass({
 
     return (
       <div className="jazz-folder-leftpanel-container" style={{
-          color:'#fff',
-          backgroundColor:'#354052'
+          color:'#626469',
         }}>
 				<div className="pop-manage-list-title pop-framework-left-title">
 					<div className="pop-manage-list-title-action">

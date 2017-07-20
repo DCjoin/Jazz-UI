@@ -15,8 +15,8 @@ export default class CustomDropDownMenu extends Component {
   };
   static defaultProps = {
     height: 40,
-    backgroundColor: '#354052',
-    color: '#fff',
+    backgroundColor: '#ffffff',
+    color: '#626469',
     selfTarget: false
   };
   constructor(props) {

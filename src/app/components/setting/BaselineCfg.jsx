@@ -23,7 +23,7 @@ let BaselineCfg = React.createClass({
       dateRange: null,
       tag: this.props.tag,
       firstTabStyle: {
-        color: '#1ca8dd'
+        color: '#32ad3c'
       },
       activeTabIndex: 0,
     };
@@ -87,7 +87,7 @@ let BaselineCfg = React.createClass({
           color: '#767a7a'
         }
       });
-      ReactDom.findDOMNode(tab).style.color = '#1ca8dd';
+      ReactDom.findDOMNode(tab).style.color = '#32ad3c';
 
       if (lastTab) {
         ReactDom.findDOMNode(lastTab).style.color = '#767a7a';
@@ -101,7 +101,7 @@ let BaselineCfg = React.createClass({
     lastTab = null;
     this.setState({
       firstTabStyle: {
-        color: '#1ca8dd'
+        color: '#32ad3c'
       }
     });
   },
