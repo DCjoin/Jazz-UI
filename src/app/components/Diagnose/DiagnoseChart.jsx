@@ -26,6 +26,7 @@ function mapSeriesDataWithMax(isEdit, isHistory, energyData, serie, serieIdx, se
     }
   }
   return {...serie, ...{
+    name: serie.name + '<br/>（关联）',
     turboThreshold: null,
     enableHide: false,
     enableDelete: enableDelete,

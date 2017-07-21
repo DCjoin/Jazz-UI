@@ -1261,27 +1261,25 @@ class CreateDiagnose extends Component {
 		}
 	}
 	_onAssociateCheck(id, val) {
-		let newCheckedTags = [...this.state.checkedAssociateTag],
-		currentTags = this.state.associateTag.get('Tags').find(tag => tag.get('Id') === id);
-		if(val) {
-			newCheckedTags.push({
+		if( val ) {			
+			let newCheckedTags = [...this.state.checkedAssociateTag],
+			currentTags = this.state.associateTag.get('Tags').find(tag => tag.get('Id') === id);
+			newCheckedTags = [{
 				Id: currentTags.get('Id'),
 				DiagnoseName: currentTags.get('DiagnoseName'),
-				Step: currentTags.get('Step'),
-			});
-		} else {
-			newCheckedTags.splice(newCheckedTags.map(tag => tag.Id).indexOf(id), 1);
-		}
-		if( checkStep( newCheckedTags, this.state.filterObj.get('Step') ) ) {
-			this.setState({
-				checkedAssociateTag: newCheckedTags
-			}, this._getChartData);
+				Step: currentTags.get('Step'),				
+			}]
+			if( checkStep( newCheckedTags, this.state.filterObj.get('Step') ) ) {
+				this.setState({
+					checkedAssociateTag: newCheckedTags
+				}, this._getChartData);
 
-		} else {
-			this.setState({
-				tmpFilterDiagnoseTags: newCheckedTags,
-				tmpFilterStep: this.state.filterObj.get('Step')
-			});
+			} else {
+				this.setState({
+					tmpFilterDiagnoseTags: newCheckedTags,
+					tmpFilterStep: this.state.filterObj.get('Step')
+				});
+			}
 		}
 
 	}
