@@ -255,6 +255,21 @@ function getTextByFilter(isHover, isDosage, isIndex, isThisYear) {
 	}
 }
 
+function isOverproof(indicatorClass, {TargetValue, PredicteValue, ActualValue}) {
+	if( !util.isNumber(TargetValue) ) {
+		return false;
+	}
+	if( indicatorClass === IndicatorClass.Dosage ) {
+		if( util.isNumber(PredicteValue) ) {
+			return PredicteValue > TargetValue;
+		}
+	} else {
+		if( util.isNumber(ActualValue) ) {
+			return ActualValue > TargetValue;
+		}
+	}
+	return false;
+}
 
 function getUnit(id, RatioUomId) {
 	let code = find(UOMStore.getUoms(), uom => uom.Id === id).Code;
@@ -324,7 +339,7 @@ export default class KPIReport extends Component {
 		{label, key} = getTextByNoHover(isDosage, isIndex, !currentYearDone)[1],
 		value = summaryData[key];
 
-		let overproof = util.isNumber(summaryData.PredicteValue) && util.isNumber(summaryData.TargetValue) && summaryData.TargetValue < summaryData.PredicteValue ;
+		let overproof = isOverproof(data.get('IndicatorClass'), summaryData);
 		return (
 		<div className={classnames('summary-item', {overproof: overproof})}>
 			<div className='summary-title'>{
@@ -420,7 +435,7 @@ export default class KPIReport extends Component {
 	}
 	render() {
 		let {data, summaryData, period, onEdit, onRefresh, isGroup, currentYearDone, hasRank} = this.props;
-		let overproof = util.isNumber(summaryData.PredicteValue) && util.isNumber(summaryData.TargetValue) && summaryData.TargetValue < summaryData.PredicteValue ;
+		let overproof = isOverproof(data.get('IndicatorClass'), summaryData);
 		let showTip = !!overproof && !currentYearDone && !isGroup;
 
 		return (
