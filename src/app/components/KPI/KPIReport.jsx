@@ -419,7 +419,7 @@ export default class KPIReport extends Component {
 		</div>
 	}
 	render() {
-		let {data, summaryData, period, onEdit, onRefresh, isGroup, currentYearDone} = this.props;
+		let {data, summaryData, period, onEdit, onRefresh, isGroup, currentYearDone, hasRank} = this.props;
 		let overproof = util.isNumber(summaryData.PredictSum) && util.isNumber(summaryData.IndexValue) && summaryData.IndexValue < summaryData.PredictSum ;
 		let showTip = !!overproof && !currentYearDone && !isGroup;
 
@@ -438,7 +438,7 @@ export default class KPIReport extends Component {
 				<div className='jazz-kpi-report-header'>{data.get('name')}</div>
 				<div className='jazz-kpi-report'>
 					<div className='jazz-kpi-report-chart'>
-						<KPIChart LastMonthRatio={summaryData && summaryData.LastMonthRatio} period={period} data={data}/>
+						<KPIChart hasRank={hasRank} LastMonthRatio={summaryData && summaryData.LastMonthRatio} period={period} data={data}/>
 					</div>
 					<div className='jazz-kpi-report-summary'>
 						{!showTip && <div style={{height: 10}}/>}

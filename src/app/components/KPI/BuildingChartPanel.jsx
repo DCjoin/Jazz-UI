@@ -194,6 +194,7 @@ export default class BuildingChartPanel extends Component {
 						</div>
 						<div className='jazz-building-kpi-rank-report'>
 							<KPIReport
+								hasRank={true}
 								currentYearDone={last(period).clone().add(1, 'months').isBefore(new Date())}
 								isGroup={false}
 								period={period}
