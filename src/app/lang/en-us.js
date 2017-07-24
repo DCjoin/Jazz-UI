@@ -2450,4 +2450,13 @@ I18N.Setting.Diagnose.HasNoCalendar='No Calender';
 I18N.Setting.Diagnose.EditDiagnose='Edit Diagosis';
 I18N.Setting.Diagnose.SaveAndExit='Save and Exit';
 I18N.Setting.Diagnose.SaveErrorMsg='Diagnosis already exists, please modify the name and then save.';
+
+I18N.Setting.Diagnose.TriggerValueTitle='触发值({0})';
+
+I18N.Setting.Diagnose.AssociateCondition='关联触发条件';
+I18N.Setting.Diagnose.AssociateValueTitle='关联值({0})';
+I18N.Setting.Diagnose.AssociateValue='关联值';
+I18N.Setting.Diagnose.MoreThenAssociate='大于关联值';
+I18N.Setting.Diagnose.LessThenAssociate='小于关联值';
+
 module.exports = I18N;

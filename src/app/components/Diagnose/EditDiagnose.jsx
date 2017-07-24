@@ -168,9 +168,9 @@ export default class EditDiagnose extends Component {
   _renderChart(){
     var me=this;
     var {DiagnoseModel,WorkTimes,TriggerValue,ConditionType,TriggerType,ToleranceRatio,HistoryStartTime,HistoryEndTime,
-          StartTime,EndTime, Step}=this.state.diagnoseData.toJS();
+          StartTime,EndTime, Step, AssociateTag}=this.state.diagnoseData.toJS();
     var props={
-      DiagnoseModel,WorkTimes,TriggerValue,ConditionType,TriggerType,ToleranceRatio,Step,
+      DiagnoseModel,WorkTimes,TriggerValue,ConditionType,TriggerType,ToleranceRatio,Step,AssociateTag,
 			HistoryStartTime:this._formatTime(HistoryStartTime),
 			HistoryEndTime:this._formatTime(HistoryEndTime),
       StartTime:this._formatTime(StartTime),
