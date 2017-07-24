@@ -185,7 +185,7 @@ function getTextByFilter(isHover, isDosage, isIndex, isThisYear) {
 						key: 'SaveRatio',
 						label: SavingValue,
 					}, {
-						key: 'PredictRatio',
+						key: 'PredicteRatio',
 						label: PredictSaving,
 					}];
 				// 往年
@@ -255,6 +255,21 @@ function getTextByFilter(isHover, isDosage, isIndex, isThisYear) {
 	}
 }
 
+function isOverproof(indicatorClass, {TargetValue, PredicteValue, ActualValue}) {
+	if( !util.isNumber(TargetValue) ) {
+		return false;
+	}
+	if( indicatorClass === IndicatorClass.Dosage ) {
+		if( util.isNumber(PredicteValue) ) {
+			return PredicteValue > TargetValue;
+		}
+	} else {
+		if( util.isNumber(ActualValue) ) {
+			return ActualValue > TargetValue;
+		}
+	}
+	return false;
+}
 
 function getUnit(id, RatioUomId) {
 	let code = find(UOMStore.getUoms(), uom => uom.Id === id).Code;
@@ -324,7 +339,7 @@ export default class KPIReport extends Component {
 		{label, key} = getTextByNoHover(isDosage, isIndex, !currentYearDone)[1],
 		value = summaryData[key];
 
-		let overproof = util.isNumber(summaryData.PredictSum) && util.isNumber(summaryData.IndexValue) && summaryData.IndexValue < summaryData.PredictSum ;
+		let overproof = isOverproof(data.get('IndicatorClass'), summaryData);
 		return (
 		<div className={classnames('summary-item', {overproof: overproof})}>
 			<div className='summary-title'>{
@@ -419,8 +434,8 @@ export default class KPIReport extends Component {
 		</div>
 	}
 	render() {
-		let {data, summaryData, period, onEdit, onRefresh, isGroup, currentYearDone} = this.props;
-		let overproof = util.isNumber(summaryData.PredictSum) && util.isNumber(summaryData.IndexValue) && summaryData.IndexValue < summaryData.PredictSum ;
+		let {data, summaryData, period, onEdit, onRefresh, isGroup, currentYearDone, hasRank} = this.props;
+		let overproof = isOverproof(data.get('IndicatorClass'), summaryData);
 		let showTip = !!overproof && !currentYearDone && !isGroup;
 
 		return (
@@ -438,7 +453,7 @@ export default class KPIReport extends Component {
 				<div className='jazz-kpi-report-header'>{data.get('name')}</div>
 				<div className='jazz-kpi-report'>
 					<div className='jazz-kpi-report-chart'>
-						<KPIChart LastMonthRatio={summaryData && summaryData.LastMonthRatio} period={period} data={data}/>
+						<KPIChart hasRank={hasRank} LastMonthRatio={summaryData && summaryData.LastMonthRatio} period={period} data={data}/>
 					</div>
 					<div className='jazz-kpi-report-summary'>
 						{!showTip && <div style={{height: 10}}/>}

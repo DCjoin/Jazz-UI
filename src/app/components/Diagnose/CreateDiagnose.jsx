@@ -12,6 +12,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import ActionVisibility from 'material-ui/svg-icons/action/visibility';
 import SvgIcon from 'material-ui/SvgIcon';
+import {Tabs, Tab} from 'material-ui/Tabs';
 import moment from 'moment';
 import Immutable from 'immutable';
 import classnames from 'classnames';
@@ -162,6 +163,10 @@ function _getTimeRangeStep(step) {
 		return 100;
 	}
 	return 30;
+}
+
+function isTypeC(DiagnoseModel) {
+	return true||DiagnoseModel === DIAGNOSE_MODEL.C;
 }
 
 function AddIcon(props) {
@@ -422,13 +427,12 @@ function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime
 	</section>)
 }
 
-function TagList({tags, onCheck, checkedTags}) {
-	let content = (<section className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></section>);
+function TagContent({tags, onCheck, checkedTags}) {
 	if( tags ) {
-		content = (
+		return (
 			<ul className='diagnose-create-tag-list-content'>
 				{tags.map( (tag, i) =>
-				<li className='diagnose-create-tag-list-item'  title={tag.get('Name')}>
+				<li key={Math.random()} className='diagnose-create-tag-list-item'  title={tag.get('Name')}>
 					<Checkbox checked={checkedTags.map(checkedTag => checkedTag.Id).indexOf(tag.get('Id')) > -1}
 						disabled={!checkedTags.map(checkedTag => checkedTag.Id).indexOf(tag.get('Id')) > -1 && checkedTags.length === 10}
 						onCheck={(e, isInputChecked) => {
@@ -448,10 +452,48 @@ function TagList({tags, onCheck, checkedTags}) {
 			</ul>
 		);
 	}
+	return null;
+}
+
+function TagList(props) {
+	let content = (<section className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></section>);
+	if( props.tags ) {
+		content = <TagContent {...props}/>
+	}
 	return (<section className='diagnose-create-tag-list'>
 		<hgroup className='diagnose-create-tag-list-title diagnose-create-title'>{I18N.Setting.Diagnose.DiagnoseTags}</hgroup>
 		{content}
 	</section>)
+}
+
+function TagListTypeC({tags, onCheck, checkedTags, associateTag, onAssociateCheck, checkedAssociateTag}) {
+	let content = (<section className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></section>),
+	associateContent = (<section className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></section>);
+	if( tags ) {
+		content = (<TagContent tags={tags} onCheck={onCheck} checkedTags={checkedTags}/>);
+	}
+	if( associateTag ) {
+		associateContent = (<TagContent tags={associateTag.get('Tags')} onCheck={onAssociateCheck} checkedTags={checkedAssociateTag}/>);
+	}
+	return (
+		<Tabs className='diagnose-create-tag-list' 
+			tabItemContainerStyle={{backgroundColor: '#ffffff', borderBottom: '1px solid #e6e6e6', flex: 'none'}}
+			contentContainerStyle={{ flex: 1, display: 'flex', flexDirection: 'column',}}
+			tabTemplateStyle={{flex: 'none', display: 'flex', height: '100%'}}
+		>
+			<Tab style={{color: '#1b1f2c', fontSize: '15px'}} label={I18N.Setting.Diagnose.DiagnoseTags}>
+				{content}
+			</Tab>
+			<Tab style={{color: '#1b1f2c', fontSize: '15px'}} label={I18N.Setting.Diagnose.AssociateTags}>
+				<div style={{display: 'flex', flex: 1, flexDirection: 'column'}}>
+				{associateTag && <header
+					style={{borderBottom: '1px solid #e6e6e6', margin: '0 10px', padding: '10px 0'}}
+					><span className='icon-label' style={{marginRight: 5}}/>{associateTag.get('EnergyLabelName')}</header>}
+				{associateContent}
+				</div>
+			</Tab>
+		</Tabs>
+	);
 }
 
 /**
@@ -827,6 +869,9 @@ class CreateStep1 extends Component {
 			diagnoseTags,
 			checkedTags,
 			onCheckDiagnose,
+			associateTag,
+			checkedAssociateTag,
+			onAssociateCheck,
 			StartTime,
 			onChangeStartTime,
 			EndTime,
@@ -840,11 +885,23 @@ class CreateStep1 extends Component {
 			onDeleteDateRange,
 			onUpdateDateRange,
 			onDeleteLegendItem,
+			DiagnoseModel,
 		} = this.props;
 		return (
 			<section className='diagnose-create-content'>
 				<div className='diagnose-create-step'>
+					{ isTypeC(DiagnoseModel) ?
+					<TagListTypeC 
+						tags={diagnoseTags} 
+						checkedTags={checkedTags} 
+						onCheck={onCheckDiagnose}
+						associateTag={associateTag}
+						checkedAssociateTag={checkedAssociateTag}
+						onAssociateCheck={onAssociateCheck}
+					/>:
 					<TagList tags={diagnoseTags} checkedTags={checkedTags} onCheck={onCheckDiagnose}/>
+					}
+					
 					<ChartPreview
 						onDeleteLegendItem={onDeleteLegendItem}
 						StartTime={StartTime}
@@ -1050,26 +1107,35 @@ class CreateDiagnose extends Component {
 		this._onSaveBack = this._onSaveBack.bind(this);
 		this._onSaveRenew = this._onSaveRenew.bind(this);
 		this._onCheckDiagnose = this._onCheckDiagnose.bind(this);
+		this._onAssociateCheck = this._onAssociateCheck.bind(this);
 		this._getChartData = this._getChartData.bind(this);
 		this._onCreated = this._onCreated.bind(this);
+		this._onGetAssociateTag = this._onGetAssociateTag.bind(this);
 		this._onDeleteLegendItem = this._onDeleteLegendItem.bind(this);
 		this._onClose = this._onClose.bind(this);
 
 		this.state = {
 			step: 0,
 			diagnoseTags: null,
+			associateTag: null,
 			cahrtData: null,
 			filterObj: getDefaultFilter(),
-			checkedTags: []
+			checkedTags: [],
+			checkedAssociateTag: [],
 		};
 
 		this._getTagList(props, ctx);
+		if( isTypeC(props.EnergyLabel.get('DiagnoseModel')) ) {
+			this._getAssociateTagList(props, ctx);
+		}
 
 		DiagnoseStore.addCreatedDiagnoseListener(this._onCreated);
+		DiagnoseStore.addAssociateTagListener(this._onGetAssociateTag);
 
 	}
 	componentWillUnmount(){
 		DiagnoseStore.removeCreatedDiagnoseListener(this._onCreated);
+		DiagnoseStore.removeAssociateTagListener(this._onGetAssociateTag);
 	}
 	_getTagList(props, ctx) {
 		DiagnoseAction.getDiagnoseTag(
@@ -1079,14 +1145,21 @@ class CreateDiagnose extends Component {
 			1
 		);
 	}
+	_getAssociateTagList(props, ctx) {
+		DiagnoseAction.getDiagnoseAssociateTag(
+			ctx.hierarchyId,
+			props.EnergyLabel.get('Id'),
+			props.DiagnoseItem.get('Id'),
+		);
+	}
 	_getChartData() {
-		let {step, filterObj, checkedTags} = this.state;
-		if(/* step === 0*/!_previewed && checkedTags && checkedTags.length > 0 ) {
+		let {step, filterObj, checkedTags, checkedAssociateTag} = this.state;
+		if( isTypeC(this.props.EnergyLabel.get('DiagnoseModel')) && (!checkedAssociateTag || checkedAssociateTag.length === 0) ) {
+			return null;
+		}
+		if(!_previewed && checkedTags && checkedTags.length > 0 ) {
 			DiagnoseAction.getChartDataStep1({
-				tagIds: checkedTags.map(tag => tag.Id),/*diagnoseTags
-						.filter( tag => tag.get('checked') )
-						.map( tag => tag.get('Id') )
-						.toJS(),*/
+				tagIds: checkedTags.map(tag => tag.Id).concat(checkedAssociateTag.map(tag => tag.Id)),
 				viewOption: {
 					DataUsageType: 1,
 					IncludeNavigatorData: false,
@@ -1107,10 +1180,7 @@ class CreateDiagnose extends Component {
 				DiagnoseItemId: this.props.DiagnoseItem.get('Id'),
 				EnergyLabelId: this.props.EnergyLabel.get('Id'),
 				DiagnoseModel: this.props.EnergyLabel.get('DiagnoseModel'),
-				TagIds: checkedTags.map(tag => tag.Id),/*diagnoseTags
-						.filter( tag => tag.get('checked') )
-						.map( tag => tag.get('Id') )
-						.toJS(),*/
+				TagIds: checkedTags.map(tag => tag.Id).concat(checkedAssociateTag.map(tag => tag.Id)),
 			}}, this.state.chartData);
 		}
 		this.setState({
@@ -1190,6 +1260,29 @@ class CreateDiagnose extends Component {
 			});
 		}
 	}
+	_onAssociateCheck(id, val) {
+		if( val ) {			
+			let newCheckedTags = [...this.state.checkedAssociateTag],
+			currentTags = this.state.associateTag.get('Tags').find(tag => tag.get('Id') === id);
+			newCheckedTags = [{
+				Id: currentTags.get('Id'),
+				DiagnoseName: currentTags.get('DiagnoseName'),
+				Step: currentTags.get('Step'),				
+			}]
+			if( checkStep( newCheckedTags, this.state.filterObj.get('Step') ) ) {
+				this.setState({
+					checkedAssociateTag: newCheckedTags
+				}, this._getChartData);
+
+			} else {
+				this.setState({
+					tmpFilterDiagnoseTags: newCheckedTags,
+					tmpFilterStep: this.state.filterObj.get('Step')
+				});
+			}
+		}
+
+	}
 	_onDeleteLegendItem(obj) {
 		this._onCheckDiagnose(obj.uid, false);
 	}
@@ -1218,9 +1311,14 @@ class CreateDiagnose extends Component {
 			this._onRenew();
 		}
 	}
+	_onGetAssociateTag() {
+		this.setState({
+			associateTag: DiagnoseStore.getTagsAssociateList()
+		});
+	}
 	_renderContent() {
 		let DiagnoseModel = this.props.EnergyLabel.get('DiagnoseModel'),
-		{step, diagnoseTags, checkedTags, chartData, chartDataLoading, filterObj} = this.state,
+		{step, diagnoseTags, checkedTags, associateTag, checkedAssociateTag, chartData, chartDataLoading, filterObj} = this.state,
 		{
 			TagIds,
 			Timeranges,
@@ -1241,6 +1339,10 @@ class CreateDiagnose extends Component {
 						diagnoseTags={diagnoseTags}
 						checkedTags={checkedTags}
 						onCheckDiagnose={this._onCheckDiagnose}
+						associateTag={associateTag}
+						checkedAssociateTag={checkedAssociateTag}
+						onAssociateCheck={this._onAssociateCheck}
+						DiagnoseModel={DiagnoseModel}
 						StartTime={StartTime}
 						onChangeStartTime={(val) => {
 							let startTime = moment(val),
@@ -1412,7 +1514,7 @@ class CreateDiagnose extends Component {
 		return null;
 	}
 	_getFooterButton() {
-		let {step, filterObj, checkedTags} = this.state,
+		let {step, filterObj, checkedTags, checkedAssociateTag} = this.state,
 		needAddNames = !checkedTags ||
 						checkedTags.map(tag => tag.DiagnoseName)
 						.reduce((result, val) => result || isEmptyStr(val), false),
@@ -1420,17 +1522,20 @@ class CreateDiagnose extends Component {
 		disabledNext = step2NeedRequire(this.props.EnergyLabel.get('DiagnoseModel'), filterObj.get('TriggerType'), filterObj.get('TriggerValue'));
 		switch (step) {
 			case 0:
+				let isC = isTypeC(this.props.EnergyLabel.get('DiagnoseModel')),
+				valid = !(!(checkedTags && checkedTags.legnth > 0) || !(isC && (!checkedAssociateTag || !checkedAssociateTag.length > 0) )) ;
+
 				buttons.push(<Right>
-					{(!checkedTags || checkedTags.length === 0) &&
+					{!valid &&
 					<div style={{
 						paddingRight: 20,
 						color: '#adafae',
 						margin: 'auto'}}>
 						<FontIcon className='icon-information'
 							style={{fontSize: 12, color: '#adafae', }}/>
-						{I18N.Setting.Diagnose.SelectDiagnoseTags}
+						{isC ? I18N.Setting.Diagnose.SelectDiagnoseAndAssociateTags : I18N.Setting.Diagnose.SelectDiagnoseTags}
 					</div>}
-					<NextButton disabled={!checkedTags || checkedTags.length === 0} onClick={this._setStep(1)}/></Right>);
+					<NextButton disabled={!valid} onClick={this._setStep(1)}/></Right>);
 				break;
 			case 1:
 				buttons.push(<Left><PrevButton onClick={this._setStep(0)}/></Left>);
