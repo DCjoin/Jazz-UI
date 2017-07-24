@@ -16,8 +16,7 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import moment from 'moment';
 import Immutable from 'immutable';
 import classnames from 'classnames';
-import { curry } from 'lodash-es';
-import { divide } from 'lodash-es';
+import { partial, flowRight } from 'lodash-es';
 import _ from 'lodash-es';
 
 import TimeGranularity from 'constants/TimeGranularity.jsx';
@@ -166,7 +165,7 @@ function _getTimeRangeStep(step) {
 }
 
 function isTypeC(DiagnoseModel) {
-	return true||DiagnoseModel === DIAGNOSE_MODEL.C;
+	return DiagnoseModel === DIAGNOSE_MODEL.C;
 }
 
 function AddIcon(props) {
@@ -186,7 +185,7 @@ function AddIcon(props) {
 	return (<a {...props} {...otherProps}/>)
 }
 
-function step2NeedRequire(DiagnoseModel, TriggerType, TriggerValue) {
+function step2NeedRequire(DiagnoseModel, TriggerType, TriggerValue, AssociateValue) {
 	if( DiagnoseModel === DIAGNOSE_MODEL.A ) {
 		return !(new RegExp(/^(\-?)\d{1,9}([.]\d{1,6})?$/).test(TriggerValue));
 	} else if(DiagnoseModel === DIAGNOSE_MODEL.B) {
@@ -197,7 +196,10 @@ function step2NeedRequire(DiagnoseModel, TriggerType, TriggerValue) {
 			return false;
 		}
 	} else if(DiagnoseModel === DIAGNOSE_MODEL.C) {
-		return true;
+		return !(
+			new RegExp(/^(\-?)\d{1,9}([.]\d{1,6})?$/).test(TriggerValue) &&
+			new RegExp(/^(\-?)\d{1,9}([.]\d{1,6})?$/).test(AssociateValue)
+		);
 	}
 }
 
@@ -277,6 +279,9 @@ function getDefaultFilter() {
 		ToleranceRatio: null,
 		HistoryStartTime: moment().subtract(31, 'days').format('YYYY-MM-DDT00:00:00'),
 		HistoryEndTime: moment().subtract(1, 'days').format('YYYY-MM-DDT24:00:00'),
+		AssociateTag: {
+			ConditionType: CONDITION_TYPE.Larger,
+		}
 	});
 }
 
@@ -506,7 +511,7 @@ EndTime: 结束时间(YYYY-MM-DDTHH:mm:ss)
 onChangeStartTime: 修改开始时间 :: String(YYYY-MM-DDTHH:mm:ss) -> ?
 onChangeEndTime: 修改结束时间 :: String(YYYY-MM-DDTHH:mm:ss) -> ?
 **/
-function ChartPreview({chartData, chartDataLoading, onUpdateStep, Step, onDeleteLegendItem, ...other}) {
+function ChartPreview({chartData, chartDataLoading, onUpdateStep, Step, onDeleteLegendItem, isTypeC, ...other}) {
 	return (<section className='diagnose-create-chart-preview'>
 		<hgroup className='diagnose-range-title diagnose-create-title'>{I18N.Setting.Diagnose.ChartPreview}</hgroup>
 		<div className='diagnose-create-chart-action'>
@@ -518,12 +523,12 @@ function ChartPreview({chartData, chartDataLoading, onUpdateStep, Step, onDelete
 			</div>
 		</div>
 		{chartDataLoading ? <div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div> :
-		(chartData ?  <div className='diagnose-create-chart'><DiagnoseChart isEdit={true} data={chartData} onDeleteButtonClick={onDeleteLegendItem}/></div> :
+		(chartData ?  <div className='diagnose-create-chart'><DiagnoseChart isTypeC={isTypeC} isEdit={true} data={chartData} onDeleteButtonClick={onDeleteLegendItem}/></div> :
 		<div className='flex-center'>{I18N.Setting.Diagnose.SelectTagsFromLeft}</div>)}
 	</section>)
 }
 
-function ChartPreviewStep2({chartData, chartDataLoading, getChartData, disabledPreview, onDeleteLegendItem, ...other}) {
+function ChartPreviewStep2({chartData, chartDataLoading, getChartData, disabledPreview, onDeleteLegendItem, isTypeC, ...other}) {
 	return (<section className='diagnose-create-chart-preview-step2'>
 		<hgroup className='diagnose-create-title'>{I18N.Setting.Diagnose.ChartPreview}</hgroup>
 		<div className='diagnose-create-chart-action'>
@@ -533,7 +538,7 @@ function ChartPreviewStep2({chartData, chartDataLoading, getChartData, disabledP
 			<NewFlatButton secondary={true} label={I18N.Setting.Diagnose.PreviewButton} disabled={disabledPreview} onClick={getChartData} icon={<ActionVisibility/>}/>
 		</div>
 		{chartDataLoading ? <div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div> :
-		(chartData ?  <div className='diagnose-create-chart'><DiagnoseChart isEdit={true} data={chartData} onDeleteButtonClick={onDeleteLegendItem}/></div> :
+		(chartData ?  <div className='diagnose-create-chart'><DiagnoseChart isTypeC={isTypeC} isEdit={true} data={chartData} onDeleteButtonClick={onDeleteLegendItem}/></div> :
 		<div className='flex-center'>{I18N.Setting.Diagnose.SelectTagsFromLeft}</div>)}
 	</section>)
 
@@ -665,6 +670,7 @@ function ModelACondition({TriggerValue, onUpdateTriggerValue, uom}) {
 	return (<div className='diagnose-condition-model-a'>
 		<span className='diagnose-condition-subtitle'>{uom ? I18N.format(I18N.Setting.Diagnose.HolidayRuningTimesTrigger,uom) : I18N.Setting.Diagnose.HolidayRuningTimesTriggerWithoutData}</span>
 		<ViewableTextField
+			style={{fontSize: 14}}
 			regex={/^(\-?)\d{1,9}([.]\d{1,6})?$/}
 			errorMessage={I18N.Setting.Diagnose.FormatVaildTip}
 			hintText={I18N.Setting.Diagnose.InputTriggerValue}
@@ -742,6 +748,7 @@ function ModelBCondition({
 		<div style={{marginTop: 15}}>
 			<span className='diagnose-condition-subtitle'>{uom ? I18N.format(I18N.Setting.Diagnose.BaseValueTitle,uom) : I18N.EM.Ratio.BaseValue}</span>
 			<ViewableTextField
+				style={{fontSize: 14}}
 				regex={/^(\-?)\d{1,9}([.]\d{1,6})?$/}
 				errorMessage={I18N.Setting.Diagnose.FormatVaildTip}
 				hintText={I18N.Setting.Diagnose.InputBaseValue}
@@ -764,6 +771,7 @@ function ModelBCondition({
 		<div style={{marginTop: 15, marginBottom: 15}}>
 			<span className='diagnose-condition-subtitle'>{I18N.Setting.Diagnose.ToleranceRatioTitle}</span>
 			<ViewableTextField
+				style={{fontSize: 14}}
 				regex={/^(\-?)\d{1,9}([.]\d{1,6})?$/}
 				errorMessage={I18N.Setting.Diagnose.FormatVaildTip}
 				hintText={I18N.Setting.Diagnose.InputToleranceRatio}
@@ -772,6 +780,82 @@ function ModelBCondition({
 			<span style={{fontSize: 12, color: '#ff4b00'}}>{I18N.Setting.Diagnose.ToleranceRatioTip}</span>
 		</div>
 	</div>)
+}
+
+function ModelCCondition({
+	AssociateType, AssociateValue, onUpdateAssoicateType, onUpdateAssoicateValue, lastuom,
+	ConditionType, TriggerValue, onUpdateTriggerType, onUpdateTriggerValue, uom,
+}) {
+	return (<div className='diagnose-condition-model-c-item'>
+		<div>
+			<div className='diagnose-condition-subtitle'>{I18N.Setting.Diagnose.AssociateCondition}</div>
+			<RadioButtonGroup
+				className={'diagnose-condition-radio-group'}
+				name="TriggerType"
+				valueSelected={AssociateType}
+				onChange={(evt, val) => {
+					onUpdateAssoicateType(val);
+			}}>
+				<RadioButton
+					style={{width: 'auto'}}
+					labelStyle={{width: 'auto'}}
+					value={CONDITION_TYPE.Larger}
+					label={I18N.Setting.Diagnose.MoreThenAssociate}
+				/>
+				<RadioButton
+					style={{width: 'auto'}}
+					labelStyle={{width: 'auto'}}
+					value={CONDITION_TYPE.Smaller}
+					label={I18N.Setting.Diagnose.LessThenAssociate}
+				/>
+			</RadioButtonGroup>
+		</div>
+		<div style={{marginTop: 15}}>
+			<span className='diagnose-condition-subtitle'>{
+				lastuom ? I18N.format(I18N.Setting.Diagnose.AssociateValueTitle, lastuom) : I18N.Setting.Diagnose.AssociateValue}</span>
+			<ViewableTextField
+				style={{fontSize: 14}}
+				regex={/^(\-?)\d{1,9}([.]\d{1,6})?$/}
+				errorMessage={I18N.Setting.Diagnose.FormatVaildTip}
+				hintText={I18N.Setting.Diagnose.AssociateValue}
+				defaultValue={AssociateValue}
+				didChanged={onUpdateAssoicateValue}/>
+		</div>
+		<div style={{marginTop: 15}}>
+			<div className='diagnose-condition-subtitle'>{I18N.Setting.Diagnose.TriggerCondition}</div>
+			<RadioButtonGroup
+				className={'diagnose-condition-radio-group'}
+				name="TriggerType"
+				valueSelected={ConditionType}
+				onChange={(evt, val) => {
+					onUpdateTriggerType(val);
+			}}>
+				<RadioButton
+					style={{width: 'auto'}}
+					labelStyle={{width: 'auto'}}
+					value={CONDITION_TYPE.Larger}
+					label={I18N.Setting.Diagnose.MoreThenTrigger}
+				/>
+				<RadioButton
+					style={{width: 'auto'}}
+					labelStyle={{width: 'auto'}}
+					value={CONDITION_TYPE.Smaller}
+					label={I18N.Setting.Diagnose.LessThenTrigger}
+				/>
+			</RadioButtonGroup>
+		</div>
+		<div style={{marginTop: 15}}>
+			<span className='diagnose-condition-subtitle'>{
+				uom ? I18N.format(I18N.Setting.Diagnose.TriggerValueTitle, uom) : I18N.Setting.Diagnose.TriggerValue}</span>
+			<ViewableTextField
+				style={{fontSize: 14}}
+				regex={/^(\-?)\d{1,9}([.]\d{1,6})?$/}
+				errorMessage={I18N.Setting.Diagnose.FormatVaildTip}
+				hintText={I18N.Setting.Diagnose.TriggerValue}
+				defaultValue={TriggerValue}
+				didChanged={onUpdateTriggerValue}/>
+		</div>
+	</div>);
 }
 
 function DiagnoseCondition({
@@ -797,7 +881,7 @@ function DiagnoseCondition({
 	holidayRuningTimes = WorkTimes.filter(time => time.TimeType === CALENDAR_ITEM_TYPE.Holiday);
 	return (<section className='diagnose-condition'>
 		<hgroup className='diagnose-create-title'>{I18N.Setting.Diagnose.DiagnoseCondition}</hgroup>
-		<div className='diagnose-condition-content'>
+		{!isTypeC(DiagnoseModel) && <div className='diagnose-condition-content'>
 			<RuntimeComp
 				workRuningTimes={workRuningTimes}
 				title={I18N.Setting.Diagnose.WorkRuningTimes}
@@ -840,7 +924,10 @@ function DiagnoseCondition({
 				}}/>
 			{DiagnoseModel === DIAGNOSE_MODEL.A && <ModelACondition {...other}/>}
 			{DiagnoseModel === DIAGNOSE_MODEL.B && <ModelBCondition {...other}/>}
-		</div>
+		</div>}
+		{isTypeC(DiagnoseModel) && <div className='diagnose-condition-content'>
+			<ModelCCondition {...other}/>
+		</div>}
 	</section>);
 }
 
@@ -903,6 +990,7 @@ class CreateStep1 extends Component {
 					}
 					
 					<ChartPreview
+						isTypeC={isTypeC(DiagnoseModel)}
 						onDeleteLegendItem={onDeleteLegendItem}
 						StartTime={StartTime}
 						onChangeStartTime={onChangeStartTime}
@@ -963,16 +1051,33 @@ export class CreateStep2 extends Component {
 			disabledHistory,
 			chartData,
 			Step,
+			AssociateTag,
 			...other,
 		} = this.props,
-		disabledPreview = step2NeedRequire(DiagnoseModel, TriggerType, TriggerValue);
+		disabledPreview = step2NeedRequire(DiagnoseModel, TriggerType, TriggerValue, AssociateTag.TriggerValue);
+		let _firstUom, _lasttUom;
 		if(chartData) {
 			_firstUom = getUomById(chartData.getIn(['EnergyViewData', 'TargetEnergyData', 0, 'Target', 'UomId'])).Code;
+		}
+		if( isTypeC(DiagnoseModel) ) {
+			_lasttUom = getUomById(
+				chartData.getIn([
+					'EnergyViewData', 
+					'TargetEnergyData', 
+					chartData.getIn([
+						'EnergyViewData', 
+						'TargetEnergyData', 
+					]).size - 1, 
+					'Target', 
+					'UomId']
+				)
+			).Code;
 		}
 		return (
 			<section className='diagnose-create-content diagnose-create-step'>
 				<ChartPreviewStep2 {...other}
 					DiagnoseModel={DiagnoseModel}
+					isTypeC={isTypeC(DiagnoseModel)}
 					chartData={chartData}
 					disabledPreview={disabledPreview}
 					StartTime={StartTime}
@@ -1015,16 +1120,29 @@ export class CreateStep2 extends Component {
 				<DiagnoseCondition
 					Step={Step}
 					uom={_firstUom}
+					lastuom={_lasttUom}
 					disabledHistory={disabledHistory || Step === TimeGranularity.Monthly}
 					DiagnoseModel={DiagnoseModel}
 					WorkTimes={WorkTimes}
 					onChangeWorkTime={onUpdateFilterObj('WorkTimes')}
-
 					TriggerValue={TriggerValue}
 					onUpdateTriggerValue={onUpdateFilterObj('TriggerValue')}
 
 					ConditionType={ConditionType}
 					onUpdateConditionType={onUpdateFilterObj('ConditionType')}
+
+					AssociateType={AssociateTag.ConditionType}
+					AssociateValue={AssociateTag.TriggerValue}
+					onUpdateAssoicateType={(val) => {
+						onUpdateFilterObj('AssociateTag')({...AssociateTag, ...{
+							ConditionType: val
+						}});
+					}}
+					onUpdateAssoicateValue={(val) => {
+						onUpdateFilterObj('AssociateTag')({...AssociateTag, ...{
+							TriggerValue: val
+						}});
+					}}
 
 					TriggerType={TriggerType}
 					onUpdateTriggerType={(type) => {
@@ -1271,6 +1389,7 @@ class CreateDiagnose extends Component {
 			}]
 			if( checkStep( newCheckedTags, this.state.filterObj.get('Step') ) ) {
 				this.setState({
+					filterObj: this.state.filterObj.setIn(['AssociateTag', 'TagId'], id),
 					checkedAssociateTag: newCheckedTags
 				}, this._getChartData);
 
@@ -1296,6 +1415,7 @@ class CreateDiagnose extends Component {
 		this.setState({
 			diagnoseTags: null,
 			checkedTags: [],
+			checkedAssociateTag: [],
 		}, DiagnoseAction.clearCreate);
 		this._getTagList(this.props, this.context);
 		this._setStep(0)();
@@ -1332,6 +1452,7 @@ class CreateDiagnose extends Component {
 			ToleranceRatio,
 			HistoryStartTime,
 			HistoryEndTime,
+			AssociateTag
 		} = filterObj.toJS();
 		if( step === 0 ) {
 			return (<CreateStep1
@@ -1484,7 +1605,7 @@ class CreateDiagnose extends Component {
 						ToleranceRatio={ToleranceRatio}
 						HistoryStartTime={HistoryStartTime}
 						HistoryEndTime={HistoryEndTime}
-
+						AssociateTag={AssociateTag}
 						/>);
 		} else if( step === 2 ) {
 			return (<CreateStep3 checkedTags={checkedTags} onUpdateDiagnoseTags={(checkedTags) => {
@@ -1519,11 +1640,16 @@ class CreateDiagnose extends Component {
 						checkedTags.map(tag => tag.DiagnoseName)
 						.reduce((result, val) => result || isEmptyStr(val), false),
 		buttons = [],
-		disabledNext = step2NeedRequire(this.props.EnergyLabel.get('DiagnoseModel'), filterObj.get('TriggerType'), filterObj.get('TriggerValue'));
+		disabledNext = step2NeedRequire(
+			this.props.EnergyLabel.get('DiagnoseModel'), 
+			filterObj.get('TriggerType'), 
+			filterObj.get('TriggerValue'),
+			filterObj.getIn(['AssociateTag', 'TriggerValue'])
+		);
 		switch (step) {
 			case 0:
 				let isC = isTypeC(this.props.EnergyLabel.get('DiagnoseModel')),
-				valid = !(!(checkedTags && checkedTags.legnth > 0) || !(isC && (!checkedAssociateTag || !checkedAssociateTag.length > 0) )) ;
+				valid = checkedTags && checkedTags.length > 0 && (isC ? checkedAssociateTag && checkedAssociateTag.length > 0 : true);
 
 				buttons.push(<Right>
 					{!valid &&

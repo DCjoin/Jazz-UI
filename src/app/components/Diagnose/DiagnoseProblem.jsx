@@ -337,7 +337,7 @@ export default class DiagnoseProblem extends Component {
 
   render(){
 		var that=this;
-    var {Name}=this.props.selectedNode.toJS();
+    var {Name, DiagnoseModel}=this.props.selectedNode.toJS();
     var dialog;
 
     switch (this.state.dialogType) {
@@ -373,7 +373,7 @@ export default class DiagnoseProblem extends Component {
 						}
 
 
-					 {this.state.chartData?<DiagnoseChart data={this.state.chartData}/>
+					 {this.state.chartData?<DiagnoseChart isTypeC={DiagnoseModel === 3} data={this.state.chartData}/>
 																:<div className="flex-center">
 																		 <CircularProgress  mode="indeterminate" size={80} />
 																	 </div>}

@@ -2455,4 +2455,12 @@ I18N.Setting.Diagnose.EditDiagnose='编辑诊断';
 I18N.Setting.Diagnose.SaveAndExit='保存并退出';
 I18N.Setting.Diagnose.SaveErrorMsg='该诊断已存在，请修改名称后再保存。';
 
+I18N.Setting.Diagnose.TriggerValueTitle='触发值({0})';
+
+I18N.Setting.Diagnose.AssociateCondition='关联触发条件';
+I18N.Setting.Diagnose.AssociateValueTitle='关联值({0})';
+I18N.Setting.Diagnose.AssociateValue='关联值';
+I18N.Setting.Diagnose.MoreThenAssociate='大于关联值';
+I18N.Setting.Diagnose.LessThenAssociate='小于关联值';
+
 module.exports = I18N;

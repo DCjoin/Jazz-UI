@@ -78,33 +78,20 @@ const DiagnoseAction = {
     });
   },
   getDiagnoseAssociateTag(HierarchyId, EnergyLabelId, DiagnoseItemId) {
-    setTimeout(() => {
-      AppDispatcher.dispatch({
-        type: Action.GET_ASSOCIATE_TAG_LIST,
-        data: {
-          "EnergyLabelName": "室内CO",
-          "Tags": [{
-            "Id": 405018,
-            "Name": "new",
-            "Status": 0,
-            "Step": 6
-          },]
-        },
-      })
-  }, 1000);
-    // Ajax.post(Path.Diagnose.getDiagnoseAssociateTag, {
-    //   params: {
-    //     HierarchyId,
-    //     EnergyLabelId,
-    //     DiagnoseItemId,
-    //   },
-    //   success: (res) => {
-    //     AppDispatcher.dispatch({
-    //       type: Action.GET_ASSOCIATE_TAG_LIST,
-    //       data: res,
-    //     })
-    //   }
-    // });
+    Ajax.post(Path.Diagnose.getDiagnoseAssociateTag, {
+      params: {
+        HierarchyId,
+        EnergyLabelId,
+        DiagnoseItemId,
+        LabelType: 1
+      },
+      success: (res) => {
+        AppDispatcher.dispatch({
+          type: Action.GET_ASSOCIATE_TAG_LIST,
+          data: res,
+        })
+      }
+    });
   },
   getChartDataStep1(params) {
     AppDispatcher.dispatch({
