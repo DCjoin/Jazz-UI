@@ -39,7 +39,7 @@ class RoleRadio extends Component{
         <RadioButtonGroup onChange={this.props.handleChange} name="pop_user_filter_role_radio_group" defaultSelected={UserStore.getFilterObj().get("role")}>
             {radioList}
         </RadioButtonGroup>
-      );    
+      );
     }
 
 }
@@ -224,7 +224,7 @@ var UserFilter = React.createClass({
 					</div>
 					<div className="sidebar-bottom-action">
 						<FlatButton label={I18N.Setting.User.Filter} onClick={this.props.handleFilter} labelStyle={{
-          color: "#00BCD4"
+          color: "#32ad3c"
         }} style={{
           color: '#abafae',
           height: '48px',

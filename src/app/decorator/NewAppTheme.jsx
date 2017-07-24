@@ -37,7 +37,7 @@ module.exports = {
     primary1Color: Colors.cyan500,
     primary2Color: Colors.cyan700,
     primary3Color: Colors.lightBlack,
-    accent1Color: '#1ca8dd',
+    accent1Color: '#32ad3c',
     accent2Color: Colors.grey100,
     accent3Color: Colors.grey500,
     textColor: getLessVar('schneiderNormal'),

@@ -83,7 +83,7 @@ var FormBottomBar = React.createClass({
     };
     if (enableSave) {
       saveBtnProps.disabled = false;
-    // saveButtonStyle.color = '#1ca8dd';
+    // saveButtonStyle.color = '#32ad3c';
     } else {
       saveBtnProps.disabled = true;
     }
