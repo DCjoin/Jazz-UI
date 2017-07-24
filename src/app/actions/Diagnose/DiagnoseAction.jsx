@@ -77,6 +77,22 @@ const DiagnoseAction = {
       }
     });
   },
+  getDiagnoseAssociateTag(HierarchyId, EnergyLabelId, DiagnoseItemId) {
+    Ajax.post(Path.Diagnose.getDiagnoseAssociateTag, {
+      params: {
+        HierarchyId,
+        EnergyLabelId,
+        DiagnoseItemId,
+        LabelType: 1
+      },
+      success: (res) => {
+        AppDispatcher.dispatch({
+          type: Action.GET_ASSOCIATE_TAG_LIST,
+          data: res,
+        })
+      }
+    });
+  },
   getChartDataStep1(params) {
     AppDispatcher.dispatch({
       type: Action.GET_CHART_DATAING,

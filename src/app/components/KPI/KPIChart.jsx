@@ -70,7 +70,7 @@ function changeLegendStyle(item, color) {
 	item.setAttribute('stroke-dasharray', '4,3');
 }
 
-function getOptions(color, hasPrediction){
+function getOptions(color, hasPrediction, small){
 	let seriesOptions = [
 		{
 	        type: 'line',
@@ -88,7 +88,7 @@ function getOptions(color, hasPrediction){
 	        pointPadding: 0.4,
 	        pointPlacement: 0,
 	        color: color,
-	        pointWidth: 40,
+	        pointWidth: small ? 20 : 40,
 	        borderWidth: 1,
 	    }
 	];
@@ -101,7 +101,7 @@ function getOptions(color, hasPrediction){
 	        borderWidth: 1,
 			dashStyle: 'dash',
 			color: 'rgba(255, 255, 255, 0)',
-	        pointWidth: 44,
+	        pointWidth: small ? 24 : 44,
 	    });
 	}
 	return util.merge(true, {}, {
@@ -181,7 +181,7 @@ function getOptions(color, hasPrediction){
 
 export default class KPIChart extends Component {
 	_generatorOptions() {
-		let {data, period, LastMonthRatio} = this.props;
+		let {data, period, LastMonthRatio, hasRank} = this.props;
 		let currentMonthIndex = findLastIndex(period,  date => date.isBefore(new Date()) );
 		if(last(period).clone().add(1, 'months').isBefore(new Date())) {
 			currentMonthIndex = 12;
@@ -193,7 +193,8 @@ export default class KPIChart extends Component {
 		// });
 		let options = getOptions(
 			getColorByCommodityId(data.get('CommodityId')),
-			data.get('IndicatorClass') === IndicatorClass.Dosage
+			data.get('IndicatorClass') === IndicatorClass.Dosage,
+			document.body.clientWidth < 1600 && hasRank
 		);
 
 		let unit = getUnit(data.get('unit'), data.get('RatioUomId'));

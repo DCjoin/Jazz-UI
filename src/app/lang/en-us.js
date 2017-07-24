@@ -2389,11 +2389,13 @@ I18N.Setting.Diagnose.SaveDiagnoseStep0='Select Diagnosis Data Points and Config
 I18N.Setting.Diagnose.SaveDiagnoseStep1=' Edit Diagnosis Conditions ';
 I18N.Setting.Diagnose.SaveDiagnoseStep2=' Save Diagnosis ';
 I18N.Setting.Diagnose.SelectDiagnoseTags='Select Diagosis Data Points';
+I18N.Setting.Diagnose.SelectDiagnoseAndAssociateTags='请选择诊断数据点和关联数据点';
 I18N.Setting.Diagnose.InputDiagnoseCondition='Input Diagnosis Conditions';
 I18N.Setting.Diagnose.SaveThenReturn='Save and Return to Diagnosis List';
 I18N.Setting.Diagnose.SaveThenRenew='Save and Continue to Add';
 I18N.Setting.Diagnose.Diagnoseing='Diagnosing';
 I18N.Setting.Diagnose.DiagnoseTags='Diagnosis Data Points';
+I18N.Setting.Diagnose.AssociateTags='关联数据点';
 I18N.Setting.Diagnose.ChartPreview='Chart Preview';
 I18N.Setting.Diagnose.SelectTagsFromLeft='Select Data Points on the Left';
 I18N.Setting.Diagnose.PreviewButton='Preview';
@@ -2448,4 +2450,13 @@ I18N.Setting.Diagnose.HasNoCalendar='No Calender';
 I18N.Setting.Diagnose.EditDiagnose='Edit Diagosis';
 I18N.Setting.Diagnose.SaveAndExit='Save and Exit';
 I18N.Setting.Diagnose.SaveErrorMsg='Diagnosis already exists, please modify the name and then save.';
+
+I18N.Setting.Diagnose.TriggerValueTitle='触发值({0})';
+
+I18N.Setting.Diagnose.AssociateCondition='关联触发条件';
+I18N.Setting.Diagnose.AssociateValueTitle='关联值({0})';
+I18N.Setting.Diagnose.AssociateValue='关联值';
+I18N.Setting.Diagnose.MoreThenAssociate='大于关联值';
+I18N.Setting.Diagnose.LessThenAssociate='小于关联值';
+
 module.exports = I18N;

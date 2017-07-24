@@ -357,6 +357,7 @@
   position: absolute;
   top: 0px;
   left: 40px;
+  height: 18px;
   padding: 14px 0;
   display: flex;
   align-items: center;
@@ -440,7 +441,8 @@
   flex: none;
 
   &-subtitle {
-    color: #202622;
+    color: @medium-gray;
+    font-size: 12px;
   }
   &-radio-group {
     margin-top: 15px;
@@ -453,7 +455,7 @@
     flex: 1;
     overflow-x: hidden;
     overflow-y: auto;
-    padding-left: 15px;
+    padding: 0 15px;
   }
 
   &-run-time {
@@ -465,11 +467,23 @@
 
   &-model-a {
     margin-top: 15px;
+    font-size: 14px;
   }
 
   &-model-b-item {
     margin-top: 15px;
     border-bottom: 1px solid #e6e6e6;
+    font-size: 14px;
+  }
+
+  &-model-c-item {
+    margin-top: 15px;
+    font-size: 14px;
+
+    & .diagnose-condition-radio-group {
+      display: flex;
+      justify-content: space-between;
+    }
   }
 }
 

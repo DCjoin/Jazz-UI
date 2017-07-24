@@ -194,7 +194,7 @@ export default class DiagnoseList extends Component {
 	}
 
   render(){
-    var {Status,Name}=this.props.selectedNode.toJS();
+    var {Status,Name, DiagnoseModel}=this.props.selectedNode.toJS();
     var dialog;
 
     switch (this.state.dialogType) {
@@ -218,7 +218,7 @@ export default class DiagnoseList extends Component {
           {isFull() && this._renderIconMenu()}
         </div>
 				<div className="detail-content-content-problem-chart ">
-					{this.state.chartData?<DiagnoseChart data={this.state.chartData}/>
+					{this.state.chartData?<DiagnoseChart isTypeC={DiagnoseModel === 3} data={this.state.chartData}/>
 															 :<div className="flex-center">
          						 							<CircularProgress  mode="indeterminate" size={80} />
        													</div>}

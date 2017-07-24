@@ -2393,11 +2393,13 @@ I18N.Setting.Diagnose.SaveDiagnoseStep0='选择诊断数据点并配置诊断范
 I18N.Setting.Diagnose.SaveDiagnoseStep1=' 编辑诊断条件 ';
 I18N.Setting.Diagnose.SaveDiagnoseStep2=' 保存诊断 ';
 I18N.Setting.Diagnose.SelectDiagnoseTags='请选择诊断数据点';
+I18N.Setting.Diagnose.SelectDiagnoseAndAssociateTags='请选择诊断数据点和关联数据点';
 I18N.Setting.Diagnose.InputDiagnoseCondition='请填写诊断条件';
 I18N.Setting.Diagnose.SaveThenReturn='保存并返回诊断列表';
 I18N.Setting.Diagnose.SaveThenRenew='保存并继续添加';
 I18N.Setting.Diagnose.Diagnoseing='诊断中';
 I18N.Setting.Diagnose.DiagnoseTags='诊断数据点';
+I18N.Setting.Diagnose.AssociateTags='关联数据点';
 I18N.Setting.Diagnose.ChartPreview='图表预览';
 I18N.Setting.Diagnose.SelectTagsFromLeft='在左侧选择数据点';
 I18N.Setting.Diagnose.PreviewButton='预览';
@@ -2452,5 +2454,13 @@ I18N.Setting.Diagnose.HasNoCalendar='未配置日历属性';
 I18N.Setting.Diagnose.EditDiagnose='编辑诊断';
 I18N.Setting.Diagnose.SaveAndExit='保存并退出';
 I18N.Setting.Diagnose.SaveErrorMsg='该诊断已存在，请修改名称后再保存。';
+
+I18N.Setting.Diagnose.TriggerValueTitle='触发值({0})';
+
+I18N.Setting.Diagnose.AssociateCondition='关联触发条件';
+I18N.Setting.Diagnose.AssociateValueTitle='关联值({0})';
+I18N.Setting.Diagnose.AssociateValue='关联值';
+I18N.Setting.Diagnose.MoreThenAssociate='大于关联值';
+I18N.Setting.Diagnose.LessThenAssociate='小于关联值';
 
 module.exports = I18N;

@@ -81,6 +81,7 @@ module.exports = {
     ignorediagnose:'/diagnose/ignorediagnose/{diagnoseId}',
     previewchart:'/diagnose/previewchart',
     getDiagnoseTag: '/diagnose/getdiagnosetag',
+    getDiagnoseAssociateTag: '/diagnose/getassociatetag',
     updateDiagnose:'/diagnose/update',
     generatesolution:'/diagnose/generatesolution/{diagnoseId}',
     isconfigcalendar:'/diagnose/isconfigcalendar/{hierarchyId}',
