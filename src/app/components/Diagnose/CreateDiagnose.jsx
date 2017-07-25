@@ -817,7 +817,7 @@ function ModelCCondition({
 				style={{fontSize: 14}}
 				regex={/^(\-?)\d{1,9}([.]\d{1,6})?$/}
 				errorMessage={I18N.Setting.Diagnose.FormatVaildTip}
-				hintText={I18N.Setting.Diagnose.AssociateValue}
+				hintText={I18N.Setting.Diagnose.InputAssociateValue}
 				defaultValue={AssociateValue}
 				didChanged={onUpdateAssoicateValue}/>
 		</div>
@@ -851,7 +851,7 @@ function ModelCCondition({
 				style={{fontSize: 14}}
 				regex={/^(\-?)\d{1,9}([.]\d{1,6})?$/}
 				errorMessage={I18N.Setting.Diagnose.FormatVaildTip}
-				hintText={I18N.Setting.Diagnose.TriggerValue}
+				hintText={I18N.Setting.Diagnose.InputTriggerValue}
 				defaultValue={TriggerValue}
 				didChanged={onUpdateTriggerValue}/>
 		</div>
@@ -1054,24 +1054,25 @@ export class CreateStep2 extends Component {
 			AssociateTag,
 			...other,
 		} = this.props,
-		disabledPreview = step2NeedRequire(DiagnoseModel, TriggerType, TriggerValue, AssociateTag.TriggerValue);
+		disabledPreview = step2NeedRequire(DiagnoseModel, TriggerType, TriggerValue, AssociateTag && AssociateTag.TriggerValue);
 		let _firstUom, _lasttUom;
 		if(chartData) {
 			_firstUom = getUomById(chartData.getIn(['EnergyViewData', 'TargetEnergyData', 0, 'Target', 'UomId'])).Code;
-		}
-		if( isTypeC(DiagnoseModel) ) {
-			_lasttUom = getUomById(
-				chartData.getIn([
-					'EnergyViewData', 
-					'TargetEnergyData', 
+
+			if( isTypeC(DiagnoseModel) ) {
+				_lasttUom = getUomById(
 					chartData.getIn([
 						'EnergyViewData', 
 						'TargetEnergyData', 
-					]).size - 1, 
-					'Target', 
-					'UomId']
-				)
-			).Code;
+						chartData.getIn([
+							'EnergyViewData', 
+							'TargetEnergyData', 
+						]).size - 1, 
+						'Target', 
+						'UomId']
+					)
+				).Code;
+			}
 		}
 		return (
 			<section className='diagnose-create-content diagnose-create-step'>
@@ -1131,8 +1132,8 @@ export class CreateStep2 extends Component {
 					ConditionType={ConditionType}
 					onUpdateConditionType={onUpdateFilterObj('ConditionType')}
 
-					AssociateType={AssociateTag.ConditionType}
-					AssociateValue={AssociateTag.TriggerValue}
+					AssociateType={AssociateTag && AssociateTag.ConditionType}
+					AssociateValue={AssociateTag && AssociateTag.TriggerValue}
 					onUpdateAssoicateType={(val) => {
 						onUpdateFilterObj('AssociateTag')({...AssociateTag, ...{
 							ConditionType: val
@@ -1298,7 +1299,7 @@ class CreateDiagnose extends Component {
 				DiagnoseItemId: this.props.DiagnoseItem.get('Id'),
 				EnergyLabelId: this.props.EnergyLabel.get('Id'),
 				DiagnoseModel: this.props.EnergyLabel.get('DiagnoseModel'),
-				TagIds: checkedTags.map(tag => tag.Id).concat(checkedAssociateTag.map(tag => tag.Id)),
+				TagIds: checkedTags.map(tag => tag.Id),
 			}}, this.state.chartData);
 		}
 		this.setState({
