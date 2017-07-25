@@ -384,7 +384,7 @@ export default class TagDrawer extends Component {
 
     if(this.props.hierarchyId){
         DimAction.loadall(this.props.hierarchyId);
-      if(this.props.tagId){
+      if(this.props.tagId && DataAnalysisStore.getHierarchyName(this.props.hierarchyId)){
         TagStore.addAlarmTagNodeListener(this._onAlarmTagNodeChange);
         let data = {
           hierId: this.props.hierarchyId,
