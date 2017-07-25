@@ -48,7 +48,7 @@ let SearchBar = React.createClass({
         fontSize: '16px',
         marginLeft: '5px',
         marginTop: '3px',
-        color: '#767a7a'
+        color: '#626469'
       },
       cleanIconStyle = {
         marginTop: '3px',
