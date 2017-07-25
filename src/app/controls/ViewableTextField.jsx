@@ -228,6 +228,7 @@ var ViewableTextField = React.createClass({
   _onFocus() {
     var node = ReactDOM.findDOMNode(this.refs.TextField);
     node.className = 'pop-viewableTextField-focus';
+    // if(this.props.height) node.style.height = this.props.height;
     if (this.props.didFocus) {
       this.props.didFocus();
     }
@@ -256,8 +257,13 @@ var ViewableTextField = React.createClass({
         multiLine: this.props.multiLine ? true : false,
         // rows:this.state.value?this.state.value.split('\n').length:1,
         floatingLabelText: this.props.title,
+        floatingLabelStyle:{fontSize:'14px',color:'#9fa0a4'},
+        inputStyle:{fontSize:'14px',color:'#000000'},
         type: this.props.type
       };
+      if(this.props.height){
+        inputProps.style.height=this.props.height
+      }
       if (this.props.hintText) {
         inputProps.hintText = this.props.hintText;
         inputProps.className = "pop-viewableTextField-hintmode";
@@ -274,7 +280,7 @@ var ViewableTextField = React.createClass({
         inputProps.className += " pop-viewableTextField-noempty";
       }
       textField = (
-        <div><TextField ref="TextField" {...inputProps}/></div>
+        <div><TextField ref="TextField" {...inputProps} {...this.props}/></div>
       );
     } else {
       var v = this.props.defaultValue;

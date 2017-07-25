@@ -20,6 +20,7 @@ var ViewableDropDownMenu = React.createClass({
     style: React.PropTypes.object,
     disabled: React.PropTypes.bool,
     errorText: React.PropTypes.string,
+    titleStyle:React.PropTypes.object,
   },
   getDefaultProps() {
     return {
@@ -125,9 +126,9 @@ var ViewableDropDownMenu = React.createClass({
         <div style={{
           position: 'relative'
         }}>
-                    <div className="pop-viewable-title">{this.props.title}</div>
+                    <div className="pop-viewable-title" style={this.props.titleStyle}>{this.props.title}</div>
                     <SelectField
-        {...this.props} {...inputPorps}
+         {...inputPorps} {...this.props}
         ref="DropDownMenu">{menuItems}</SelectField>
                 </div>
       );

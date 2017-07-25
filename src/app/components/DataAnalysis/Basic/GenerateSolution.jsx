@@ -24,9 +24,15 @@ import FolderStore from 'stores/FolderStore.jsx';
 import EnergyStore from 'stores/Energy/EnergyStore.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
+import IconButton from 'material-ui/IconButton';
+import IconLabelField from 'controls/IconLabelField.jsx';
+import {NativeTextField} from 'components/ECM/MeasurePart/Solution.jsx';
+import TextField from 'material-ui/TextField';
 
-const SVG_WIDTH = 718;
-const SVG_HEIGHT = 359;
+const SVG_WIDTH = 700;
+const SVG_HEIGHT = 350;
 
 function SolutionFull() {
 	return PrivilegeUtil.isFull(PermissionCode.SOLUTION_FULL, CurrentUserStore.getCurrentPrivilege());
@@ -34,7 +40,6 @@ function SolutionFull() {
 function PushFull() {
 	return PrivilegeUtil.isFull(PermissionCode.PUSH_SOLUTION, CurrentUserStore.getCurrentPrivilege());
 }
-
 
 
 function getFromImmu(key) {
@@ -57,23 +62,56 @@ const getName = getFromImmu('Name');
 // }
 
 function getProblemMarkMenuItem() {
-	return [{
-		payload: 0,
-		text: I18N.Common.Label.CommoEmptyText,
-		disabled: true,
-	}].concat(Object.keys(ProblemMarkEnum).map(key => {return {
-		payload: ProblemMarkEnum[key],
-		text: I18N.Setting.DataAnalysis.EnergyProblem.MarkEnum[ProblemMarkEnum[key]]
-	}}));
+	return [
+		<MenuItem primaryText={I18N.Common.Label.CommoEmptyText} value={0} disabled={true}/>
+		].concat(Object.keys(ProblemMarkEnum).map(key => {
+		return <MenuItem primaryText={I18N.Setting.DataAnalysis.EnergyProblem.MarkEnum[ProblemMarkEnum[key]]} value={ProblemMarkEnum[key]}/>
+		}));
 }
+
+export class EnergySys extends Component {
+
+  _renderEnergySys(){
+    var {problemMark,didChanged}=this.props;
+    return(
+      <DropDownMenu
+                    style={{height: '28px'}}
+                    labelStyle={{fontSize:'14px',color:"#626469",border:"1px solid #e6e6e6",borderRadius: "4px",lineHeight:'26px',height:'26px',paddingLeft:'11px',paddingRight:'28px'}}
+                    iconButton={<IconButton iconClassName="icon-arrow-down" iconStyle={{fontSize:"10px"}} style={{width:14,height:14}}/>}
+                    iconStyle={{marginTop:'-12px',padding:'0',right:'15px',width:'24px',top:"2px"}}
+                    value={problemMark}
+                    underlineStyle={{display:"none"}}
+                    onChange={(e, selectedIndex, value)=>{
+                      didChanged(value)
+                    }}>
+										{getProblemMarkMenuItem()}
+    </DropDownMenu>
+    )
+  }
+
+  render(){
+
+    return(
+      <div>
+				<div style={{color:'#9fa0a4',fontSize:'14px',marginBottom:'5px'}}>{I18N.Setting.DataAnalysis.EnergyProblem.Mark}</div>
+        {this._renderEnergySys()}
+      </div>
+    )
+  }
+}
+
+EnergySys.propTypes = {
+  problemMark:React.PropTypes.object,
+  didChanged:React.PropTypes.func,
+};
 
 export class Gallery extends Component {
 	render() {
 		let {names, selectedIdx, onLeft, onRight, onDelete, renderContent} = this.props;
 		return (
 			<div className='jazz-scheme-gallery'>
-				<div className='jazz-scheme-gallery-action'>
-					{selectedIdx > 0 && <LinkButton iconName={'icon-arrow-left'} onClick={onLeft}/>}
+				<div className='jazz-scheme-gallery-action' style={{position:'absolute',left:'6px',zIndex:'1000'}}>
+					{selectedIdx > 0 && <IconButton iconClassName="icon-left-switch" iconStyle={{fontSize:"32px",opacity:0.85}} style={{width:32,height:32,lineHeight:'32px',padding:'0'}} onTouchTap={onLeft}/>}
 				</div>
 				<div className='jazz-scheme-gallery-content'>
 					<div className='jazz-scheme-gallery-content-header'>
@@ -82,8 +120,8 @@ export class Gallery extends Component {
 					</div>
 					{renderContent()}
 				</div>
-				<div className='jazz-scheme-gallery-action'>
-					{selectedIdx < names.length - 1 && <LinkButton iconName={'icon-arrow-right'} onClick={onRight}/>}
+				<div className='jazz-scheme-gallery-action' style={{position:'absolute',right:'6px',zIndex:'1000'}}>
+					{selectedIdx < names.length - 1 && <IconButton iconClassName="icon-right-switch" iconStyle={{fontSize:"32px",opacity:0.85}} style={{width:32,height:32,lineHeight:'32px',padding:'0'}} onTouchTap={onRight}/>}
 				</div>
 			</div>
 		);
@@ -100,7 +138,7 @@ class OnceHidePanel extends Component {
 	}
 	render() {
 		if(this.state.hide) {
-			return <LinkButton label={this.props.label} onClick={() => {this.setState({hide: false})}}/>
+			return <div style={this.props.style}><LinkButton label={this.props.label} onClick={() => {this.setState({hide: false})}} labelStyle={this.props.labelStyle}/></div>
 		}
 		return this.props.children;
 	}
@@ -227,33 +265,53 @@ export class GenerateSolution extends Component {
 		}
 	}
 
+	// <ViewableTextField title={I18N.Setting.ECM.ProblemDetailName}
+	// 	defaultValue={ProblemName}
+	// 	didChanged={this._setStateValue('ProblemName')}
+	// 	style={{width:'467px'}}
+	// 	height="50px"/>
+	//
+	// 			<ViewableTextField title={I18N.Setting.UserManagement.Comment}
+				// multiLine={true}
+				// defaultValue={ProblemDesc}
+				// didChanged={this._setStateValue('ProblemDesc')}
+				// style={{width:'100%'}}/>
 	_renderEnergyProblem() {
 		let {ProblemName, ProblemMark, ProblemDesc} = this.state;
-		return (<div style={{flex: 'none'}}>
-			<div style={{fontSize: '16px', fontWeight: 500}}>{I18N.Setting.DataAnalysis.EnergyProblem.Title}</div>
-			<ViewableTextField title={I18N.Common.Glossary.Name}
-				defaultValue={ProblemName}
-				didChanged={this._setStateValue('ProblemName')}/>
+		return (<div style={{flex: 'none',marginLeft:'12px'}}>
+			<div style={{fontSize: '16px', color:'#0f0f0f',marginTop:'20px'}}>{I18N.Setting.ECM.ProblemDetail}</div>
+
+			<TextField
+					floatingLabelText={I18N.Setting.ECM.ProblemDetailName}
+					floatingLabelStyle={{fontSize:'14px',top:'18px',color: '#9fa0a4'}}
+					floatingLabelFocusStyle={{fontSize:'14px',color: '#9fa0a4'}}
+					floatingLabelShrinkStyle={{fontSize:'18px',color: '#9fa0a4'}}
+					inputStyle={{marginTop:'3px',fontSize:'14px',color:'#000000'}}
+					style={{height:'50px',width:'467px'}}
+					value={ProblemName}
+					onChange={(e,value)=>{this._setStateValue('ProblemName')(value)}}/>
 			<div style={{
 				display: 'inline-block',
 				position: 'relative',
 				top: 16,
-				marginLeft: 20,
+				marginLeft: 30,
 			}}>
-				<ViewableDropDownMenu title={I18N.Setting.DataAnalysis.EnergyProblem.Mark}
-			        style={{
-			        	width: 160,
-			        }}
-					dataItems={getProblemMarkMenuItem()}
-					defaultValue={ProblemMark}
+				<EnergySys
+					problemMark={ProblemMark}
 					didChanged={this._setStateValue('ProblemMark')}/>
 			</div>
-			<OnceHidePanel label={I18N.Setting.DataAnalysis.EnergyProblem.AddDesc}>
+			<OnceHidePanel label={I18N.Setting.DataAnalysis.EnergyProblem.AddDesc} style={{marginTop:'20px'}} labelStyle={{fontSize:'14px',color:'#9fa0a4',textDecoration:'underline'}}>
 			<div>
-				<ViewableTextField title={I18N.Setting.UserManagement.Comment}
-					multiLine={true}
-					defaultValue={ProblemDesc}
-					didChanged={this._setStateValue('ProblemDesc')}/>
+					<TextField
+							floatingLabelText={I18N.Setting.UserManagement.Comment}
+							floatingLabelStyle={{fontSize:'14px',color: '#9fa0a4'}}
+							floatingLabelFocusStyle={{fontSize:'14px',color: '#9fa0a4'}}
+							floatingLabelShrinkStyle={{fontSize:'18px',color: '#9fa0a4'}}
+							textareaStyle={{fontSize:'14px',color:'#000000'}}
+							fullWidth={true}
+							multiLine={true}
+							value={ProblemDesc}
+							onChange={(e,value)=>{this._setStateValue('ProblemDesc')(value)}}/>
 			</div>
 			</OnceHidePanel>
 		</div>);
@@ -297,55 +355,97 @@ export class GenerateSolution extends Component {
 
 	_renderSaveScheme() {
 		let {SaveName, SaveValue, SaveUnit, SaveCost, SaveDesc} = this.state;
+		let iconStyle = {
+				fontSize: '24px'
+			},
+			style = {
+				padding: '0px',
+				fontSize: '24px',
+				lineHeight:"24px"
+			};
+		var props={
+      savingIcon:{
+        key:'EnergySolution'+'_SavingIcon',
+        icon:<FontIcon className="icon-energy_saving" color="#3dcd58" iconStyle ={iconStyle} style = {style} />,
+        label:I18N.Setting.ECM.ExpectedAnnualEnergySaving,
+      },
+      costIcon:{
+        key:'EnergySolution'+'_CostIcon',
+        icon:<FontIcon className="icon-cost_saving" color="#3dcd58" iconStyle ={iconStyle} style = {style} />,
+        label:I18N.Setting.ECM.ExpectedAnnualCostSaving,
+      },
+			saving:{
+				key:'EnergySolution'+'_Saving'+new Date(),
+				id:'EnergySolution'+'_Saving'+new Date(),
+				value:SaveValue,
+				onBlur:(value)=>{
+															if(value===''){value=null}
+															if(!MeasuresStore.validateNumber(value)){value=SaveValue}
+															this._setStateValue('SaveValue')(value)
+														},
+				getErrorText:(value)=>{return (!MeasuresStore.validateNumber(value))?I18N.Setting.ECM.NumberErrorText:null}
+			},
+			savingUnit:{
+				key:'EnergySolution'+'_SavingUnit',
+				id:'EnergySolution'+'_SavingUnit',
+				onBlur:(value)=>{
+															if(value===''){value=null}
+															this._setStateValue('SaveUnit')(value)
+														},
+				value:SaveUnit,
+			},
+			cost:{
+				key:'EnergySolution'+'_Cost'+new Date(),
+				id:'EnergySolution'+'_Cost'+new Date(),
+				value:SaveCost,
+				onBlur:(value)=>{
+															if(value===''){value=null}
+															if(!MeasuresStore.validateNumber(value)){value=SaveCost}
+															this._setStateValue('SaveCost')(value)
+														},
+				getErrorText:(value)=>{return (!MeasuresStore.validateNumber(value))?I18N.Setting.ECM.NumberErrorText:null}
+			},
+		}
 		return (
-			<OnceHidePanel label={I18N.Setting.DataAnalysis.SaveScheme.AddDesc}>
+			<OnceHidePanel label={I18N.Setting.DataAnalysis.SaveScheme.AddDesc} style={{marginLeft:'12px'}} labelStyle={{color:'#9fa0a4',fontSize:'14px',textDecoration:'underline'}}>
 				<div style={{flex: 'none'}}>
-					<div style={{fontSize: '16px', fontWeight: 500}}>{I18N.Setting.DataAnalysis.SaveScheme.Title}</div>
+					<div style={{fontSize: '16px', color:"#000000",marginBottom:'20px'}}>{I18N.Setting.ECM.Solution}</div>
 					<div>
-						<ViewableTextField title={I18N.Common.Glossary.Name}
-							defaultValue={SaveName}
-							didChanged={this._setStateValue('SaveName')}/>
+						<TextField
+								floatingLabelText={I18N.Common.Glossary.Name}
+								floatingLabelStyle={{fontSize:'14px',top:'18px',color: '#9fa0a4'}}
+								floatingLabelFocusStyle={{fontSize:'14px',color: '#9fa0a4'}}
+								floatingLabelShrinkStyle={{fontSize:'18px',color: '#9fa0a4'}}
+								inputStyle={{marginTop:'3px',fontSize:'14px',color:'#000000'}}
+								style={{height:'50px',width:'467px'}}
+								value={SaveName}
+								onChange={(e,value)=>{this._setStateValue('SaveName')(value)}}/>
 					</div>
-					<div style={{display:'flex'}}>
-						<ViewableTextField title={I18N.Setting.DataAnalysis.SaveScheme.TargetValue}
-							defaultValue={Util.toThousands(SaveValue)}
-							regexFn={(value)=>{
-								value = Util.thousandsToNormal(value);
-								if(value===''){value=null}
-								if(!MeasuresStore.validateNumber(value)){
-									return I18N.Setting.ECM.NumberErrorText
-								}
-								else {
-									return null
-								}
-							}}
-							didChanged={this._setStateValue('SaveValue')}
-							style={{width: 155, marginRight: 20}}/>
-						<ViewableTextField title={I18N.Common.Glossary.UOM}
-							defaultValue={SaveUnit}
-							didChanged={this._setStateValue('SaveUnit')}
-							style={{width: 80, marginRight: 20}}/>
-						<ViewableTextField title={I18N.Setting.DataAnalysis.SaveScheme.TargetCost}
-							defaultValue={Util.toThousands(SaveCost)}
-							didChanged={this._setStateValue('SaveCost')}
-							regexFn={(value)=>{
-								value = Util.thousandsToNormal(value);
-								if(value===''){value=null}
-								if(!MeasuresStore.validateNumber(value)){
-									return I18N.Setting.ECM.NumberErrorText
-								}
-								else {
-									return null
-								}
-							}}
-							style={{width: 155, marginRight: 20}}/>
-						<div style={{marginTop: 40}}>RMB</div>
+					<div style={{display:'flex',marginTop:'20px'}}>
+						<IconLabelField {...props.savingIcon}>
+              <div className="jazz-ecm-measure-solution-iconrow">
+                <NativeTextField {...props.saving}/>
+                <NativeTextField {...props.savingUnit}/>
+              </div>
+            </IconLabelField>
+            <div style={{marginLeft:'93px'}}><IconLabelField {...props.costIcon}>
+              <div className="jazz-ecm-measure-solution-iconrow">
+                <NativeTextField {...props.cost}/>
+                <div style={{marginLeft:'5px'}}>RMB</div>
+              </div>
+            </IconLabelField></div>
 					</div>
 					<div>
-						<ViewableTextField title={I18N.Setting.UserManagement.Comment}
-							multiLine={true}
-							defaultValue={SaveDesc}
-							didChanged={this._setStateValue('SaveDesc')} />
+							<TextField
+									floatingLabelText={I18N.Setting.UserManagement.Comment}
+									floatingLabelStyle={{fontSize:'14px',color: '#9fa0a4'}}
+									floatingLabelFocusStyle={{fontSize:'14px',color: '#9fa0a4'}}
+									floatingLabelShrinkStyle={{fontSize:'18px',color: '#9fa0a4'}}
+									textareaStyle={{fontSize:'14px',color:'#000000'}}
+									fullWidth={true}
+									multiLine={true}
+									value={SaveDesc}
+									onChange={(e,value)=>{this._setStateValue('SaveDesc')(value)}}/>
 					</div>
 				</div>
 			</OnceHidePanel>);
@@ -353,7 +453,7 @@ export class GenerateSolution extends Component {
 
 	_renderSubmit() {
 		return (<NewFlatButton
-			secondary
+			primary={true}
 			disabled={!this._getAPIDataFormat().verified}
 			label={I18N.Setting.DataAnalysis.SchemeSubmit}
 			onClick={() => {
@@ -376,7 +476,7 @@ export class GenerateSolution extends Component {
 	_renderDeleteDialog() {
 		let {showDelete, idx, nodes} = this.state;
 		return (<Dialog open={showDelete} actions={[
-					(<FlatButton label={I18N.Common.Button.Delete} onClick={this._onDelete} primary={true}/>),
+					(<FlatButton label={I18N.Common.Button.Delete} onClick={this._onDelete} primary={true} inDialog={true}/>),
 					(<FlatButton label={I18N.Common.Button.Cancel2} onClick={()=>{this.setState({showDelete: false})}}/>)
 				]}>
 				{I18N.Setting.DataAnalysis.SaveScheme.DeleteChart.replace(/{\w*}/, nodes[idx].get('Name'))}
@@ -387,16 +487,35 @@ export class GenerateSolution extends Component {
 		let names = this.state.nodes.map(function (node) {
 			return node.get('Name');
 		});
+		let style={
+			title:{
+				fontSize:'16px',
+				fontWeight:'500',
+				color:'#0f0f0f',
+				margin: "0 19px 0 35px",
+				lineHeight:'22px',
+				height:'22px',
+				padding:'25px 0 25px 0px',
+				borderBottom:'1px solid #e6e6e6'
+			},
+			content:{
+				margin:'0 25px',
+				overflowY: 'auto'
+			}
+		}
 		return (
 			<Dialog
 				open={true}
-				modal={false}
+				modal={true}
 				title={I18N.Setting.DataAnalysis.Scheme}
+				titleStyle={style.title}
 				actions={[this._renderSubmit(), this._renderCancel()]}
 				onRequestClose={this.props.onRequestClose}
-				contentStyle={{overflowY: 'auto'}}>
+				wrapperStyle={{position:'relative'}}
+				contentStyle={style.content}
+				actionsContainerStyle={{margin:'30px 36px'}}>
 				{this._renderEnergyProblem()}
-				<div style={{margin: '10px 0', flex: 'none'}}>
+				<div style={{margin: '30px 0', flex: 'none'}}>
 					<Gallery
 						names={this.state.nodes.map(node => node.get('Name'))}
 						selectedIdx={this.state.idx}

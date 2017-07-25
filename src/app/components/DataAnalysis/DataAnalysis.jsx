@@ -383,12 +383,12 @@ export default class DataAnalysis extends Component {
 				_userId = dialogData.get('UserId'),
 				_getNode = _isWidget && dialogData.get('Id') === selectedNode.get('Id') ? FolderStore.getSelectedNode : null;
 
-				dialog = <SendView 
+				dialog = <SendView
 									onSendItem={() => {
 										this._onDialogDismiss();
 										FolderAction.sendFolderCopy(_getNode ? _getNode() : dialogData, UserStore.getUserIds(), true);
 									}}
-									onDismiss={this._onDialogDismiss} 
+									onDismiss={this._onDialogDismiss}
           				type={_type}
           				userId={_userId}
           				/>;
