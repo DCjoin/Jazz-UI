@@ -6,7 +6,7 @@ import IconLabelField from 'controls/IconLabelField.jsx';
 import CommonFuns from 'util/Util.jsx';
 import TextField from 'material-ui/TextField';
 
-class NativeTextField extends Component{
+export class NativeTextField extends Component{
 
   constructor(props) {
         super(props);

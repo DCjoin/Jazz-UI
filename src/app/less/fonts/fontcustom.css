@@ -4,11 +4,11 @@
 
 @font-face {
   font-family: "fontcustom";
-  src: url("./fontcustom_a989372f49c011e28b769a240553a80c.eot");
-  src: url("./fontcustom_a989372f49c011e28b769a240553a80c.eot?#iefix") format("embedded-opentype"),
-       url("./fontcustom_a989372f49c011e28b769a240553a80c.woff") format("woff"),
-       url("./fontcustom_a989372f49c011e28b769a240553a80c.ttf") format("truetype"),
-       url("./fontcustom_a989372f49c011e28b769a240553a80c.svg#fontcustom") format("svg");
+  src: url("./fontcustom_33cadbc58f34df64ae14ae3da01c4239.eot");
+  src: url("./fontcustom_33cadbc58f34df64ae14ae3da01c4239.eot?#iefix") format("embedded-opentype"),
+       url("./fontcustom_33cadbc58f34df64ae14ae3da01c4239.woff") format("woff"),
+       url("./fontcustom_33cadbc58f34df64ae14ae3da01c4239.ttf") format("truetype"),
+       url("./fontcustom_33cadbc58f34df64ae14ae3da01c4239.svg#fontcustom") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -16,7 +16,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: "fontcustom";
-    src: url("./fontcustom_a989372f49c011e28b769a240553a80c.svg#fontcustom") format("svg");
+    src: url("./fontcustom_33cadbc58f34df64ae14ae3da01c4239.svg#fontcustom") format("svg");
   }
 }
 
@@ -121,6 +121,7 @@
 .icon-label:before,
 .icon-labeling:before,
 .icon-language:before,
+.icon-left-switch:before,
 .icon-level:before,
 .icon-lifeison:before,
 .icon-lighten:before,
@@ -174,6 +175,7 @@
 .icon-return:before,
 .icon-revised-cn:before,
 .icon-revised-en:before,
+.icon-right-switch:before,
 .icon-roi:before,
 .icon-room:before,
 .icon-save:before,
@@ -339,6 +341,7 @@
 .icon-label:before { content: "\f1c9"; }
 .icon-labeling:before { content: "\f158"; }
 .icon-language:before { content: "\f138"; }
+.icon-left-switch:before { content: "\f1d3"; }
 .icon-level:before { content: "\f139"; }
 .icon-lifeison:before { content: "\f194"; }
 .icon-lighten:before { content: "\f172"; }
@@ -392,6 +395,7 @@
 .icon-return:before { content: "\f169"; }
 .icon-revised-cn:before { content: "\f14c"; }
 .icon-revised-en:before { content: "\f14d"; }
+.icon-right-switch:before { content: "\f1d4"; }
 .icon-roi:before { content: "\f19d"; }
 .icon-room:before { content: "\f12b"; }
 .icon-save:before { content: "\f15d"; }
