@@ -98,7 +98,7 @@ const DataAnalysisStore = assign({}, PrototypeStore, {
     if(!hierarchyNode){
       hierarchyNode=find(HierarchyStore.getBuildingList(), building => building.Id === hierarchyId * 1 )
     }
-    return hierarchyNode.Name
+    return hierarchyNode?hierarchyNode.Name:null
   },
   dispose(){
     _gatherInfo=null;
