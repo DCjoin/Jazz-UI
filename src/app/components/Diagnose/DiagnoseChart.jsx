@@ -25,12 +25,12 @@ function mapSeriesDataWithMax(isEdit, isTypeC, isHistory, energyData, serie, ser
       enableDelete = false;
     }
   }
-  let name = serie.name;
-  if( isTypeC && serieIdx === series.length - 1 ) {
-    name += '<br/>（关联）';
-  }
+  // let name = serie.name;
+  // if( isTypeC && serieIdx === series.length - 1 ) {
+  //   name += '<br/>（关联）';
+  // }
   return {...serie, ...{
-    name: name,
+    name: serie.name,
     turboThreshold: null,
     enableHide: false,
     enableDelete: enableDelete,
@@ -83,6 +83,14 @@ function postNewConfig(data, isEdit, isTypeC, newConfig) {
         .filter( energyData => energyData.getIn(['Target', 'Code']) !== 'TriggerValue' )
     )
   );
+  if(isTypeC) {
+    newConfig.legend.labelFormatter = function() {
+      if( this.index === newConfig.series.length -1 ) {
+        return this.name + '<br>(关联)';
+      }
+      return this.name;
+    }
+  }
   if( isNumber(triggerVal) ) {
     newConfig.series.push({
         lockLegend: true,
@@ -171,6 +179,7 @@ function postNewConfig(data, isEdit, isTypeC, newConfig) {
     let oldTooltipFormatter = newConfig.tooltip.formatter;
     newConfig.tooltip.formatter = function() {
       let uomId = data.getIn(['EnergyViewData', 'TargetEnergyData', 0, 'Target', 'UomId']);
+      console.log(oldTooltipFormatter);
       return oldTooltipFormatter.call(this) + 
       `<span style="color:${ALARM_COLOR}">${I18N.Setting.Diagnose.TriggerValue}: <b>${convertDataByUom(triggerVal)+getUomById(uomId).Code}</b></span><br/>`;
     }
