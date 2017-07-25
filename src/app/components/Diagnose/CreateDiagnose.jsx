@@ -1058,20 +1058,21 @@ export class CreateStep2 extends Component {
 		let _firstUom, _lasttUom;
 		if(chartData) {
 			_firstUom = getUomById(chartData.getIn(['EnergyViewData', 'TargetEnergyData', 0, 'Target', 'UomId'])).Code;
-		}
-		if( isTypeC(DiagnoseModel) ) {
-			_lasttUom = getUomById(
-				chartData.getIn([
-					'EnergyViewData', 
-					'TargetEnergyData', 
+			
+			if( isTypeC(DiagnoseModel) ) {
+				_lasttUom = getUomById(
 					chartData.getIn([
 						'EnergyViewData', 
 						'TargetEnergyData', 
-					]).size - 1, 
-					'Target', 
-					'UomId']
-				)
-			).Code;
+						chartData.getIn([
+							'EnergyViewData', 
+							'TargetEnergyData', 
+						]).size - 1, 
+						'Target', 
+						'UomId']
+					)
+				).Code;
+			}
 		}
 		return (
 			<section className='diagnose-create-content diagnose-create-step'>
