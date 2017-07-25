@@ -69,24 +69,24 @@ let ServiceApp = React.createClass({
           ]
         }]
       },
-      // {
-      //   name: 'convert',
-      //   title: I18N.MainMenu.EnergyConvert,
-      //   children: [{
-      //     list: [
-      //       {
-      //         name: 'price',
-      //         getPath: service.price,
-      //         title: I18N.MainMenu.Price
-      //       },
-      //       {
-      //         name: 'carbon',
-      //         getPath: service.carbon,
-      //         title: I18N.MainMenu.Carbon
-      //       }
-      //     ]
-      //   }]
-      // },
+      {
+        name: 'convert',
+        title: I18N.MainMenu.EnergyConvert,
+        children: [{
+          list: [
+            {
+              name: 'price',
+              getPath: service.price,
+              title: I18N.MainMenu.Price
+            }/*,
+            {
+              name: 'carbon',
+              getPath: service.carbon,
+              title: I18N.MainMenu.Carbon
+            }*/
+          ]
+        }]
+      },
       // {
       //   name: 'statistics',
       //   title: I18N.MainMenu.Statistics,

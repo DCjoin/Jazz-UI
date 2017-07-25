@@ -48,6 +48,7 @@ import WorkDay from './components/calendar/WorkDay.jsx';
 import WorkTime from './components/calendar/WorkTime.jsx';
 import ColdWarm from './components/calendar/ColdWarm.jsx';
 import DayNight from './components/calendar/DayNight.jsx';
+import Tariff from './components/energyConversion/tariff/Tariff.jsx';
 import Customer from './components/customer/Customer.jsx';
 //for customerSetting
 import VEE from './components/customerSetting/VEERules/VEERules.jsx';
@@ -283,6 +284,9 @@ ReactDom.render(<Router history={hashHistory} routes={{
       }, {
         path: 'daynight',
         component: DayNight
+      }, {
+        path: 'price',
+        component: Tariff
       }, {
         path: 'customer',
         component: Customer
