@@ -1,0 +1,14 @@
+{DOCKER:APP_NAME}:
+  restart: always0
+  image: '{DOCKER:IMAGE_FULL_NAME}'
+  ports:
+    - 8080/tcp
+  environment:
+    - NPM_CONFIG_LOGLEVEL=info
+  memswap_limit: 0
+  labels:
+    aliyun.scale: '1'
+  shm_size: 
+  memswap_reservation: 0
+  kernel_memory: 0
+  mem_limit: 0
