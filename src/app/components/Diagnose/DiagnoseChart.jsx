@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import Immutable from 'immutable';
 import {curry, flowRight} from 'lodash-es'
 import moment from 'moment';
+import numeral from 'numeral';
 
-import {isNumber, isEmptyStr, getUomById, convertDataByUom} from 'util/Util.jsx';
+import {isNumber, isEmptyStr, getUomById} from 'util/Util.jsx';
 import {Minite,Min15,Min30,Hourly,Hour2,Hour4,Hour6,Hour8,Hour12,Daily,Weekly,Monthly,Yearly} from 'constants/TimeGranularity.jsx';
 
 import ChartBasicComponent from 'components/DataAnalysis/Basic/ChartBasicComponent.jsx'
@@ -85,7 +86,7 @@ function postNewConfig(data, isEdit, isTypeC, newConfig) {
   );
   if(isTypeC) {
     newConfig.legend.labelFormatter = function() {
-      if( this.index === newConfig.series.length -1 ) {
+      if( this.index === data.getIn(['EnergyViewData', 'TargetEnergyData']).size -1 ) {
         return this.name + '<br>(关联)';
       }
       return this.name;
@@ -179,9 +180,13 @@ function postNewConfig(data, isEdit, isTypeC, newConfig) {
     let oldTooltipFormatter = newConfig.tooltip.formatter;
     newConfig.tooltip.formatter = function() {
       let uomId = data.getIn(['EnergyViewData', 'TargetEnergyData', 0, 'Target', 'UomId']);
-      console.log(oldTooltipFormatter);
       return oldTooltipFormatter.call(this) + 
-      `<span style="color:${ALARM_COLOR}">${I18N.Setting.Diagnose.TriggerValue}: <b>${convertDataByUom(triggerVal)+getUomById(uomId).Code}</b></span><br/>`;
+      `<span style="color:${ALARM_COLOR}">${I18N.Setting.Diagnose.TriggerValue}: 
+        <b>${numeral(triggerVal).format('0,0.' + 
+          ((triggerVal + '').indexOf('.') === -1 ? '' :
+          new Array((triggerVal + '').substr((triggerVal + '').indexOf('.')).length - 1).fill(0).join(''))
+        ) + getUomById(uomId).Code}</b>
+      </span><br/>`;
     }
   }
 }
@@ -200,7 +205,7 @@ export default function DiagnoseChart(props) {
   // 由于API返回的数据为请求时间的后一个步长，所以为了数据点可以正常显示，加入如下逻辑
   // Law 2017/04/20
   let target = data.getIn(['EnergyViewData', 'TargetEnergyData', 0, 'Target'])
-  if( target && target.get('TimeSpan').size > 0 ) {
+  if( target && target.get('TimeSpan') && target.get('TimeSpan').size > 0 ) {
     let step = target.get('Step');
     chartProps.contentSyntax = JSON.stringify({
       viewOption: {

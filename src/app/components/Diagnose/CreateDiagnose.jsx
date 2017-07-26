@@ -668,7 +668,7 @@ function RuntimeComp({
 
 function ModelACondition({TriggerValue, onUpdateTriggerValue, uom}) {
 	return (<div className='diagnose-condition-model-a'>
-		<span className='diagnose-condition-subtitle'>{uom ? I18N.format(I18N.Setting.Diagnose.HolidayRuningTimesTrigger,uom) : I18N.Setting.Diagnose.HolidayRuningTimesTriggerWithoutData}</span>
+		<div className='diagnose-condition-subtitle'>{uom ? I18N.format(I18N.Setting.Diagnose.HolidayRuningTimesTrigger,uom) : I18N.Setting.Diagnose.HolidayRuningTimesTriggerWithoutData}</div>
 		<ViewableTextField
 			style={{fontSize: 14}}
 			regex={/^(\-?)\d{1,9}([.]\d{1,6})?$/}
@@ -676,7 +676,7 @@ function ModelACondition({TriggerValue, onUpdateTriggerValue, uom}) {
 			hintText={I18N.Setting.Diagnose.InputTriggerValue}
 			defaultValue={TriggerValue}
 			didChanged={onUpdateTriggerValue}/>
-		<span style={{fontSize: 12, color: '#9c9c9c'}}>{I18N.Setting.Diagnose.TriggerValueTip}</span>
+		<div style={{fontSize: 12, color: '#9c9c9c'}}>{I18N.Setting.Diagnose.TriggerValueTip}</div>
 	</div>)
 }
 
@@ -746,7 +746,7 @@ function ModelBCondition({
 		</div>
 		{ TriggerType === TRIGGER_TYPE.FixedValue &&
 		<div style={{marginTop: 15}}>
-			<span className='diagnose-condition-subtitle'>{uom ? I18N.format(I18N.Setting.Diagnose.BaseValueTitle,uom) : I18N.EM.Ratio.BaseValue}</span>
+			<div className='diagnose-condition-subtitle'>{uom ? I18N.format(I18N.Setting.Diagnose.BaseValueTitle,uom) : I18N.EM.Ratio.BaseValue}</div>
 			<ViewableTextField
 				style={{fontSize: 14}}
 				regex={/^(\-?)\d{1,9}([.]\d{1,6})?$/}
@@ -757,7 +757,7 @@ function ModelBCondition({
 		</div>}
 		{ TriggerType === TRIGGER_TYPE.HistoryValue &&
 		<div style={{marginTop: 15}}>
-			<span className='diagnose-condition-subtitle'>{I18N.Setting.Diagnose.BaseValueTimeRange}</span>
+			<div className='diagnose-condition-subtitle'>{I18N.Setting.Diagnose.BaseValueTimeRange}</div>
 			<ChartDateFilter
 				style={{
 					flexWrap: 'wrap'
@@ -769,7 +769,7 @@ function ModelBCondition({
 				onChangeEndTime={onUpdateHistoryEndTime}/>
 		</div>}
 		<div style={{marginTop: 15, marginBottom: 15}}>
-			<span className='diagnose-condition-subtitle'>{I18N.Setting.Diagnose.ToleranceRatioTitle}</span>
+			<div className='diagnose-condition-subtitle'>{I18N.Setting.Diagnose.ToleranceRatioTitle}</div>
 			<ViewableTextField
 				style={{fontSize: 14}}
 				regex={/^(\-?)\d{1,9}([.]\d{1,6})?$/}
@@ -777,7 +777,7 @@ function ModelBCondition({
 				hintText={I18N.Setting.Diagnose.InputToleranceRatio}
 				defaultValue={isNumeric(ToleranceRatio) ? pow10(ToleranceRatio, 2) : ToleranceRatio}
 				didChanged={onUpdateToleranceRatio}/>
-			<span style={{fontSize: 12, color: '#ff4b00'}}>{I18N.Setting.Diagnose.ToleranceRatioTip}</span>
+			<div style={{fontSize: 12, color: '#ff4b00'}}>{I18N.Setting.Diagnose.ToleranceRatioTip}</div>
 		</div>
 	</div>)
 }
@@ -811,8 +811,8 @@ function ModelCCondition({
 			</RadioButtonGroup>
 		</div>
 		<div style={{marginTop: 15}}>
-			<span className='diagnose-condition-subtitle'>{
-				lastuom ? I18N.format(I18N.Setting.Diagnose.AssociateValueTitle, lastuom) : I18N.Setting.Diagnose.AssociateValue}</span>
+			<div className='diagnose-condition-subtitle'>{
+				lastuom ? I18N.format(I18N.Setting.Diagnose.AssociateValueTitle, lastuom) : I18N.Setting.Diagnose.AssociateValue}</div>
 			<ViewableTextField
 				style={{fontSize: 14}}
 				regex={/^(\-?)\d{1,9}([.]\d{1,6})?$/}
@@ -845,8 +845,8 @@ function ModelCCondition({
 			</RadioButtonGroup>
 		</div>
 		<div style={{marginTop: 15}}>
-			<span className='diagnose-condition-subtitle'>{
-				uom ? I18N.format(I18N.Setting.Diagnose.TriggerValueTitle, uom) : I18N.Setting.Diagnose.TriggerValue}</span>
+			<div className='diagnose-condition-subtitle'>{
+				uom ? I18N.format(I18N.Setting.Diagnose.TriggerValueTitle, uom) : I18N.Setting.Diagnose.TriggerValue}</div>
 			<ViewableTextField
 				style={{fontSize: 14}}
 				regex={/^(\-?)\d{1,9}([.]\d{1,6})?$/}
