@@ -126,9 +126,9 @@ var TagFilter = React.createClass({
 					</div>
 					<div className="sidebar-bottom-action">
 						<FlatButton label={I18N.Common.Button.Filter} onClick={this.props.handleFilter} labelStyle={{
-        color: "#00BCD4"
+        color: "#32ad3c"
       }} style={{
-        color: '#abafae',
+        color: '#32ad3c',
         height: '48px',
         width: '100%'
       }} />

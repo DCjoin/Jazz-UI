@@ -9,6 +9,8 @@
   display: flex;
   flex-direction: column;
   width:320px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 100;
   &-header{
     padding: 0 30px;
     display: flex;
@@ -17,8 +19,9 @@
     justify-content: space-around;
     min-height:32px;
     height:32px;
-    background-color: #32ad3d;
-    color: #ffffff;
+    background-color: #ffffff;
+    color: @medium-gray;
+    border-bottom: 1px solid @border-gray;
     span {
       font-size: 14px !important;
     }
@@ -27,11 +30,12 @@
     }
     &-item{
       .pointer;
+      padding:0 5px;
       &-icon {
         padding-right: 8px;
       }
       &:hover {
-        color: @textWhiteHover !important;
+        background-color: #DDDDDD;
       }
     }
   }
@@ -46,13 +50,13 @@
     .buttonBar{
       // border-top: 1px solid #434d5e !important;
       .pre-btn,.next-btn,.jump-btn{
-        color: #adb0b8!important;
+        color: @dark-gray !important;
         &:hover {
-          color: white !important;
+          background-color: #dddddd;
         }
       }
       .jump-text{
-        color: #adb0b8!important;
+        color: @dark-gray !important;
       }
     }
   }
@@ -87,16 +91,16 @@
           display:flex;
           flex-flow:row nowrap;
           min-height:26px;
-          border:1px solid @slate-grey;
+          border:1px solid @border-gray;
           margin:9px 10px 9px 10px;
           .icon-search{
-            color:@slate-grey !important;
+            color:@medium-gray !important;
           }
           .icon-clean{
             padding-right: 5px!important;
           }
           div{
-            color:@slate-grey !important;
+            color:@medium-gray !important;
           }
           .input{
             >hr{
@@ -280,18 +284,18 @@
               color:#464949
             }
           }
-          .jazz-full-border-datepicker{
-            .jazz-full-border-datepicker-container{
-              >div{
-              background-color:#fbfbfb !important;
-              border: 0px !important;
-              top:-5px;
-              input{
-                font-size: 16px!important;
-              }
-            }
-            }
-            }
+          // .jazz-full-border-datepicker{
+          //   .jazz-full-border-datepicker-container{
+          //     >div{
+          //     background-color:#fbfbfb !important;
+          //     border: 0px !important;
+          //     top:-5px;
+          //     input{
+          //       font-size: 16px!important;
+          //     }
+          //   }
+          //   }
+          //   }
         }
         .rightside{
           margin-right: -30px;
@@ -349,7 +353,6 @@
   height: 100%;
   width: 320px;
   display: flex;
-  margin-top: -16px;
   flex-direction: column;
   border-left:1px solid #ececec;
   .title{
