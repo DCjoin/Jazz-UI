@@ -1,9 +1,11 @@
 language: node_js
+sudo: required
+
+services:
+  - docker
 
 node_js:
   - "6.10.2"
-
-sudo: false
 
 cache:
   yarn: true
@@ -12,28 +14,41 @@ cache:
   
 env:
   global:
-  - PROJECT="Jazz"
+  - PROJECT="Jazz-UI"
   - ROLE="WebUI"
   - PACKAGE_VERSION="v4.5.0.${TRAVIS_BUILD_NUMBER}"
+  - DOCKER_NS="se-rem-test"
   - secure: "0xa4wt6NnjmrLRUR//ZKVSthlTMTPBsvrctyR7oY/hDtFlc534PZpXxxZyHwxQACwXTlbSNc2kTAMjlJrpFrkrKS9pyKyht3M6kNzfOMt/7VTJuH2yeJYwy6D4GZAP3t6SAAW43nmOwCgVbNpvbcEsJKFrgRpwZJ2jrVCN5/43D0ytz626giWcblsnA1FUnC65wHch5MwrP0VGhSlER4PDoK6MsaBim+CqD9aTHw5YIzVJ9VuoQLoa6m3EqGltkW0OpulsV3EWz6frMyPs52qHqltSsp0Sto/5HlyD5sBktQ9H3D7IC8TK38dgPQI/stratigBn5jn3O+bPt+4WIrsZt9U8p9srtxzKTXS5xIsfeHAd8eqYOqZFjqwlSJPInYzebbTRvbNGrCg1rF7LmIus0SXRPEOGS1yGI1LA+OY/VX5ASVBfmrEfujWzozjh6E5IsJCFexF+bZVjI0eWXOiMPHs5VteSpoQ7OY4o841KNCaQeibxNZS8mFSk8/ja99sQRVSnVLn2sKP8PMCTIGaKl+7XRvoOV/0JtX2K/DiNqf6wxOP0MrNqcQ0qFs6a4XaLPHoklPSa5vb/rTgDAgPI9z9LW0dJilVcYvJpKWxlBb0L+xzjvr9mjLiAJKg3MiKAMJdyDJ6JT72w/VTrXpeFsmOByHlbD05vWVQnw0SU="
   - secure: "29F3H+LgjzpSQWGsJU3WIPw4RgYb5zPtRQ0MLkDeixc+JNeKEyet/Vt2WNeyTt1gKP3i1okBplLpbVUNaYE8Y7QWG6nCbd45c/3dg0F3tnRhSTd+21+a7o3WknM+c8CVeoxakqc4S55uo7hp8S2Gc19tT8THYXU5wlf6GgI3yIqRAgbF3p9x+7dyzFZg2o3QQLKHXkxlvX9f6vVzTIixL4h2AekRULnWdoX+OTnvOCnYpq5UtOU9XL3jf40Wc82DAbG+GlsjwTajC3DwEp+jmwK4frw/x+wjMSc44GXqzYnd4TtPfSSqOxsw2K0ZaQ5nJx8JhXJrShx3syy/1X+TVAcPF4NxgN5VylH0CTwQI5UMJ/yNrOG8AsA+1QiUGz/CA7eStiD7ofmvbp3HQFSk5SJoWFLbIq/ihq4+fr9t6O8crZGOloadMCS+gwX0BBNhtTH5E3ZHwPpoMTrQJjcijJU13gX8GKkJt6ZcK4t9+fmbM/4bnmc4TjEaMskUXu6b+qBV05QlXzOuCsZPkJk7x8NLr/y+/fZ6v2O/e31giFutIf51p55Wd6UO56v4mXXzKOTBMF9AgemKtnVIjSgsIgLhFHlwP3Pf3WnNDr7Tw2RPXs/BMAbPxv4Bkce/yGB8JSN/i/PsiXwD3nTK1G3sarM1F82n5gAHTDd0eaGV5pk="
   - secure: "JCk1Ssj1vFuNod4TvDelJaQxy+zlZkB5mSevczMUz6HV0JAk/BCKosZ/N1u89k5kvY2DuVU4JgCkr9GVMWLEP94kzEnrvFuLGdPIkleyZbXepYt2cNbN5P87DY2k0vtuiZjhnby3LvTP8uCGgcvnLMGoQ6AO7VnU88rJOd63ltD9UPx4HdbBQyz7AW2oae+jh+Oko7gVxPVThrLPfyJk9bmhchw8B/EuFkgeNXJTkdt0DDiZq3b/XUASQ2ugnZWrYNvwhEDs3/5WEzXHmouI8V06hhnahO95/IbgnXBw866DGJFlTH/lJY/oWq4Lcf5V29zFHpb18gQrYKAtwn+OFW3AjVWitfAQbuheUc1DFRNwFOQgDBfe+T/bIswOAVBLS/5J5VXYSCP9jCheIylw15pIQpfi+B2WhvbVTHVJt49l+0T634kBr1NuKQ5SrWCuXu1WM0Gz8QbBcc0uHM53rBgIq6cIsvl2RZdf8yQvoZYeqOXaHUmkR8FCUyFpXsTX0uQfBTpl0M1ypzmGw67cxUjHZk/BjUTA9eVPut9DYXEdgNB1f+nuvMTwFP4bFYT5bt49FjQsfAJQj07LXpptFgOXsqRWO3hZW51HTUr8gX1qWW0KhrsZNbTf3b8axn0xk2U3dkhCnGu1uZdiLXy3NCgIZs/Kb407AKGtZ3zrws0="
   - secure: "dw08+lD9lNI94RmOEJX+S10q3mDqTRCrSXP17Yz7+Dng8LcPoSulh3C3c2XtvJvjUFZyW243E/v4uhaMiBJ5GYAAw8gJJaHiztPBrtkn8cZfnTOaAqENRBNEAhjj6i3xTTOObHOY5CRdlrzDzazbyFmviyO18Ff+Y2PubpwHZmTCF6g80Dkr/PGlYaSZ9R+SPtJkVj9Yv2COy0inlAt5lwNfMUwunlOhGmtfAQyuiyAnqbD+GxRBIdn5nYDcUw5+Xemc88CCTXP6bVLb1fv0FO/nsUvr4eY4TyaBYkzVu64Di23l4/aI1v8E6+n42PN4wstKrqLOxnG3d2W0YtTtMrZ8EVni6i99xfSpegat38PIu2x5Z+nvAPYk5YipcoWRD3zEh2VUpBn4bCM8MOMe/pK3kkEnDoOspYyk4EysR44wCj6U3bb5MPtS3YMyw2+w+RHPoyy/EuzeO6ztFhMKhxnaXIbfKXlUMNuqdSOCMOUpqhc7qiFK1Nt55tagnB6kPQdkkUe3yrqTAq8SYGTAmHM99U9uaEhWDXKDGoT+QUX8v3imNZzuTD4YQcWbK97xwCcyLDFW5XnipDdhcqxGZTbQF4eiI8ZwvklccjKpHiRL7mTeCXfqnNhks5wu5qw4NU+RajboE4c8J1Ftr4+MAUUgxNnw5s/KNljeO8jWWdE="
   - secure: "h9vcatrcsxtm/4m/RaWdrh+GMbn34QLKfsqdgfJw+t3Jsi/zmliojeZGJSFDnFBzONpw4GF8aB2lfUvisogiyeshnKkRVfSY/21KVt7hN11SQSS0RtwPek9++6lbsNJ+6pNiePK+7mfCYQoZQDdWGvZwPu+1jmq/tDx4PTyFx+aGQi79fqbEnGgLcWZPKeFXYhSBJzuZC8l6xyPq3RJ4a+c99DsYIi9+qYPb7kY47ftdTZBMbTrBLWcP5kCN4e/raZ5XoLIzos8oim5+UVXkTxp13AnQekZqLZlPC8IK1zJF9pTuMOb7/MuEeZ22kLpthhI1bD5dxkHnO1wVTE+97wlgCPua8vnDeQAQ0R45ahi160PlNRU7TGV5RrnXqeabtkAeNMlK26m8ZKVkG9lsJULE1RV3Mfu/LhHh3pQtxtZidi4i6cDQGKos1TKWQ2gg3SWHpk0eUGcABttNwRySytxvTX5YRfjgt4cbsJWnK8ZnP8Ky0gq+LPF3dZQTyVLHNK6Icf1sdKQjkYfBmWVfuPgYlCwjiRwKEXXjEqH5PjKxIwvXvsPoe/RQvZPCDGN9buuLedK32t6/U760MLxPL3Lwn8FXLyyMzCZ+7YHq32olaayP0qvEWz3EIaZEVfDA2Gwuq0lb4GMsjxQifiB6canZ3Ryo5C5B5dhI5XFQkO0="
 
+before_script:
+  - export ARTIFACT_NAME="${PROJECT}-${ROLE}-${TRAVIS_BRANCH}-${PACKAGE_VERSION}.zip"
+  - export TAG=`echo "$PROJECT-$ROLE:$TRAVIS_BRANCH-$PACKAGE_VERSION" | tr '[:upper:]' '[:lower:]'`
+  - export TAG_LATEST=`echo "$PROJECT-$ROLE:$TRAVIS_BRANCH-latest" | tr '[:upper:]' '[:lower:]'`
+  - export REMOTE_TAG=$DOCKER_REGISTRY/$DOCKER_NS/$TAG
+  - export REMOTE_TAG_LATEST=$DOCKER_REGISTRY/$DOCKER_NS/$TAG_LATEST
+  - export ARTIFACT_NAME="${PROJECT}-${ROLE}-${TRAVIS_BRANCH}-${PACKAGE_VERSION}.zip"
+ 
 script:
   - yarn run build-test
-  - cd build
-  - echo -n "${PACKAGE_VERSION}" > version.txt
-  - export ARTIFACT_NAME="${PROJECT}-${ROLE}-${TRAVIS_BRANCH}-${PACKAGE_VERSION}.zip"
-  - zip -r ../${ARTIFACT_NAME} ./
-  - cd ..
+  - docker build -t $TAG .
 
 before_deploy:
+  - cp compose-template.yml build/
+  - echo -n "${PACKAGE_VERSION}" > build/version.txt
+  - cd build && zip -r ../${ARTIFACT_NAME} ./ && cd ..
   - 'curl -o upload.sh -H "Authorization: token ${GHAUTH}" https://raw.githubusercontent.com/SE-REM/Jenkins/master/shell/travis_upload.sh'
   - chmod a+x ./upload.sh
-  - cat upload.sh
-  - file="${PROJECT}-${ROLE}-${TRAVIS_BRANCH}-${PACKAGE_VERSION}.zip"
+  
+  - IMAGEID=$(docker images $TAG -q)
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" $DOCKER_REGISTRY
+  - docker tag $IMAGEID $REMOTE_TAG
+  - docker tag $IMAGEID $REMOTE_TAG_LATEST
+  - docker image ls
+  - ls -la
   
 deploy:
 - provider: script
@@ -41,7 +56,7 @@ deploy:
   on:
     all_branches: true
   script:
-    - ./upload.sh ./${file} ${PROJECT} ${TRAVIS_BRANCH} ${ROLE} ${PACKAGE_VERSION} ${BASKET} ${BOB} ${JOHN} && curl -X POST "http://114.215.253.133:8081/job/Jazz/buildWithParameters?environment=dev&ui_version=latest&main_version=latest&branch=${TRAVIS_BRANCH}" --user ${JENKINS_AUTH}
+    - ./upload.sh ./${ARTIFACT_NAME} ${PROJECT} ${TRAVIS_BRANCH} ${ROLE} ${PACKAGE_VERSION} ${BASKET} ${BOB} ${JOHN} && curl -X POST "http://114.215.253.133:8081/job/Jazz/buildWithParameters?environment=dev&ui_version=latest&main_version=latest&branch=${TRAVIS_BRANCH}" --user ${JENKINS_AUTH} && docker push $REMOTE_TAG && docker push $REMOTE_TAG_LATEST
 
 
 
