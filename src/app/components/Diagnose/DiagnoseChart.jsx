@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import Immutable from 'immutable';
 import {curry, flowRight} from 'lodash-es'
 import moment from 'moment';
+import numeral from 'numeral';
 
-import {isNumber, isEmptyStr, getUomById, convertDataByUom} from 'util/Util.jsx';
+import {isNumber, isEmptyStr, getUomById} from 'util/Util.jsx';
 import {Minite,Min15,Min30,Hourly,Hour2,Hour4,Hour6,Hour8,Hour12,Daily,Weekly,Monthly,Yearly} from 'constants/TimeGranularity.jsx';
 
 import ChartBasicComponent from 'components/DataAnalysis/Basic/ChartBasicComponent.jsx'
@@ -179,9 +180,13 @@ function postNewConfig(data, isEdit, isTypeC, newConfig) {
     let oldTooltipFormatter = newConfig.tooltip.formatter;
     newConfig.tooltip.formatter = function() {
       let uomId = data.getIn(['EnergyViewData', 'TargetEnergyData', 0, 'Target', 'UomId']);
-      console.log(oldTooltipFormatter);
       return oldTooltipFormatter.call(this) + 
-      `<span style="color:${ALARM_COLOR}">${I18N.Setting.Diagnose.TriggerValue}: <b>${convertDataByUom(triggerVal)+getUomById(uomId).Code}</b></span><br/>`;
+      `<span style="color:${ALARM_COLOR}">${I18N.Setting.Diagnose.TriggerValue}: 
+        <b>${numeral(triggerVal).format('0,0.' + 
+          ((triggerVal + '').indexOf('.') === -1 ? '' :
+          new Array((triggerVal + '').substr((triggerVal + '').indexOf('.')).length - 1).fill(0).join(''))
+        ) + getUomById(uomId).Code}</b>
+      </span><br/>`;
     }
   }
 }
