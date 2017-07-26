@@ -1425,11 +1425,14 @@ class AnalysisPanel extends Component {
       }
       if (!!hierNode) {
         let tagId = TagStore.getCurrentHierIdTagStatus().last();
-        this.setState({
-          hierarchyId:hierNode.hierId,
-          isBuilding:HierarchyStore.IsBuilding(hierNode.hierId),
-          tagId
-        })
+        if(DataAnalysisStore.getHierarchyName(hierNode.hierId)){
+          this.setState({
+            hierarchyId:hierNode.hierId,
+            isBuilding:HierarchyStore.IsBuilding(hierNode.hierId),
+            tagId
+          })
+        }
+
       }
       this.isInitial=true;
     }

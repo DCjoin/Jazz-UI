@@ -38,13 +38,13 @@
   .jazz-tag-list{
     overflow: auto;
     flex:1;
-    background-color: rgb(53, 64, 82);
+    background-color: #ffffff;
   }
   .jazz-tag-pagination{
-    background-color: #354052;
-    color: white;
+    background-color: #ffffff;
+    color: @slate-grey;
     .buttonBar{
-      border-top: 1px solid #434d5e !important;
+      // border-top: 1px solid #434d5e !important;
       .pre-btn,.next-btn,.jump-btn{
         color: #adb0b8!important;
         &:hover {
@@ -67,9 +67,9 @@
   .jazz-search-filter-bar{
     display: flex;
     flex-direction: row;
-    background-color: #354052;
-    border-bottom: 1px solid #434d5e;
-    color: white;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e6e6e6;
+    color: @slate-grey;
     .jazz-search{
       display:flex;
       flex-flow: row nowrap;
@@ -87,23 +87,23 @@
           display:flex;
           flex-flow:row nowrap;
           min-height:26px;
-          border:1px solid #434d5e;
+          border:1px solid @slate-grey;
           margin:9px 10px 9px 10px;
           .icon-search{
-            color:white !important;
+            color:@slate-grey !important;
           }
           .icon-clean{
             padding-right: 5px!important;
           }
           div{
-            color:white !important;
+            color:@slate-grey !important;
           }
           .input{
             >hr{
               border-bottom-color:transparent !important;
             }
             >input{
-              color:white !important;
+              color:@slate-grey !important;
               padding-left: 5px!important;
             }
           }
