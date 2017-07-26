@@ -1,7 +1,7 @@
 'use strict';
 
 import React from "react";
-import { CircularProgress, Checkbox, FontIcon } from 'material-ui';
+import { CircularProgress, Checkbox, FontIcon,FlatButton} from 'material-ui';
 import TagAction from '../../../actions/customerSetting/TagAction.jsx';
 import TagStore from '../../../stores/customerSetting/TagStore.jsx';
 import { List } from 'immutable';
@@ -9,7 +9,7 @@ import DateTimeSelector from '../../../controls/DateTimeSelector.jsx';
 import CommonFuns from '../../../util/Util.jsx';
 import Dialog from '../../../controls/NewDialog.jsx';
 import ChartPanel from './RawDataChartPanel.jsx';
-import FlatButton from 'controls/FlatButton.jsx';
+// import FlatButton from 'controls/FlatButton.jsx';
 import Immutable from 'immutable';
 import moment from 'moment';
 let {dateAdd} = CommonFuns;
@@ -254,10 +254,11 @@ let PTagRawData = React.createClass({
         fontSize: '12px'
       },
       pauseBtnStyle = {
-        border: '1px solid #e4e7e9',
-        height: '34px',
+        border: '1px solid #e6e6e6',
+        height: '30px',
+        lineHeight:'30px',
         width: '92px',
-        backgroundColor: '#fbfbfb',
+        backgroundColor: '#ffffff',
         marginLeft:'10px'
       },
       listBtnStyle = {

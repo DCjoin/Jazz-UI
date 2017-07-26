@@ -19,6 +19,7 @@
   min-height:32px;
   height:32px;
   background-color: #ffffff;
+  border-bottom: 1px solid @border-gray;
     .newfolder{
       //add later
     }
@@ -65,7 +66,7 @@
 .jazz-folder-leftpanel-foldertree{
  overflow: auto;
  flex:1;
- background-color: rgb(53, 64, 82);
+ background-color: #ffffff;
  margin-left:-16px;
 }
 .jazz-folder-alluser-useritem{
@@ -285,16 +286,23 @@
   }
 }
 .jazz-foldertree-arrow{
-  color:#ffffff
+  color:@dark-gray
 }
 .jazz-foldertree-node{
-  background-color: rgb(53, 64, 82) !important;
-  &.selected {
-    background-color: #2d3645 !important;
-  }
+  background-color: #ffffff;
   &:hover {
-    background-color: #2d3645 !important;
-    color:#d9d9da !important;
+
+    color:@medium-green !important;
+    .jazz-foldertree-arrow{
+      color: @medium-green !important;
+    }
+  }
+  &.selected {
+    background-color: @medium-green !important;
+    color: #ffffff !important;
+    .jazz-foldertree-arrow{
+      color: #ffffff !important;
+    }
   }
 }
 .jazz-checkboxtree-node{
