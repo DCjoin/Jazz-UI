@@ -85,7 +85,7 @@ function postNewConfig(data, isEdit, isTypeC, newConfig) {
   );
   if(isTypeC) {
     newConfig.legend.labelFormatter = function() {
-      if( this.index === newConfig.series.length -1 ) {
+      if( this.index === data.getIn(['EnergyViewData', 'TargetEnergyData']).size -1 ) {
         return this.name + '<br>(关联)';
       }
       return this.name;
@@ -200,7 +200,7 @@ export default function DiagnoseChart(props) {
   // 由于API返回的数据为请求时间的后一个步长，所以为了数据点可以正常显示，加入如下逻辑
   // Law 2017/04/20
   let target = data.getIn(['EnergyViewData', 'TargetEnergyData', 0, 'Target'])
-  if( target && target.get('TimeSpan').size > 0 ) {
+  if( target && target.get('TimeSpan') && target.get('TimeSpan').size > 0 ) {
     let step = target.get('Step');
     chartProps.contentSyntax = JSON.stringify({
       viewOption: {
