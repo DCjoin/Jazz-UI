@@ -784,7 +784,7 @@ function ModelBCondition({
 
 function ModelCCondition({
 	AssociateType, AssociateValue, onUpdateAssoicateType, onUpdateAssoicateValue, lastuom,
-	ConditionType, TriggerValue, onUpdateTriggerType, onUpdateTriggerValue, uom,
+	ConditionType, TriggerValue, onUpdateConditionType, onUpdateTriggerValue, uom,
 }) {
 	return (<div className='diagnose-condition-model-c-item'>
 		<div>
@@ -828,7 +828,7 @@ function ModelCCondition({
 				name="TriggerType"
 				valueSelected={ConditionType}
 				onChange={(evt, val) => {
-					onUpdateTriggerType(val);
+					onUpdateConditionType(val);
 			}}>
 				<RadioButton
 					style={{width: 'auto'}}
