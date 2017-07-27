@@ -27,9 +27,14 @@ function mapSeriesDataWithMax(isEdit, isTypeC, isHistory, energyData, serie, ser
     }
   }
   // let name = serie.name;
-  // if( isTypeC && serieIdx === series.length - 1 ) {
-  //   name += '<br/>（关联）';
-  // }
+  if( isTypeC ) {
+    if( serieIdx === series.length - 1 ) {
+      enableDelete = false;
+    }
+    if( energyData.size < 3 ) {
+      enableDelete = false;
+    }
+  }
   return {...serie, ...{
     name: serie.name,
     turboThreshold: null,
