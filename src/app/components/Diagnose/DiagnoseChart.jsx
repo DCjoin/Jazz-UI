@@ -153,7 +153,7 @@ function postNewConfig(data, isEdit, isTypeC, newConfig) {
       newConfig.series.unshift({
           lockLegend: true,
           enableDelete: false,
-          name: CalendarType === CALENDAR_TYPE_WORKTIME ? I18N.Setting.Diagnose.Runtime : I18N.Setting.Diagnose.Resttime,
+          name: isTypeC ? I18N.Setting.Diagnose.AssociateTriggerArea : (CalendarType === CALENDAR_TYPE_WORKTIME ? I18N.Setting.Diagnose.Runtime : I18N.Setting.Diagnose.Resttime),
           color: PLOT_BACKGROUND_COLOR, 
           lineWidth: 12,
           marker: {
