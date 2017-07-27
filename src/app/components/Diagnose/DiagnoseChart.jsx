@@ -27,9 +27,14 @@ function mapSeriesDataWithMax(isEdit, isTypeC, isHistory, energyData, serie, ser
     }
   }
   // let name = serie.name;
-  // if( isTypeC && serieIdx === series.length - 1 ) {
-  //   name += '<br/>（关联）';
-  // }
+  if( isTypeC ) {
+    if( serieIdx === series.length - 1 ) {
+      enableDelete = false;
+    }
+    if( energyData.size < 3 ) {
+      enableDelete = false;
+    }
+  }
   return {...serie, ...{
     name: serie.name,
     turboThreshold: null,
@@ -148,7 +153,7 @@ function postNewConfig(data, isEdit, isTypeC, newConfig) {
       newConfig.series.unshift({
           lockLegend: true,
           enableDelete: false,
-          name: CalendarType === CALENDAR_TYPE_WORKTIME ? I18N.Setting.Diagnose.Runtime : I18N.Setting.Diagnose.Resttime,
+          name: isTypeC ? I18N.Setting.Diagnose.AssociateTriggerArea : (CalendarType === CALENDAR_TYPE_WORKTIME ? I18N.Setting.Diagnose.Runtime : I18N.Setting.Diagnose.Resttime),
           color: PLOT_BACKGROUND_COLOR, 
           lineWidth: 12,
           marker: {
@@ -192,9 +197,20 @@ function postNewConfig(data, isEdit, isTypeC, newConfig) {
 }
 
 export default function DiagnoseChart(props) {
-	let {data,afterChartCreated, onDeleteButtonClick, isEdit, isTypeC} = props,
+	let {data,afterChartCreated, onDeleteButtonClick, isEdit, isTypeC} = props;
 
-	chartProps = {
+  data = data.setIn(
+    ['EnergyViewData', 'TargetEnergyData'],
+    data.getIn(['EnergyViewData', 'TargetEnergyData']).map(energyData => {
+      // Min30 -> Min15
+      if( energyData.getIn(['Target', 'Step']) === Min30 ) {
+        return energyData.setIn(['Target', 'Step'], Min15);
+      }
+      return energyData;
+    })
+  );
+
+	let chartProps = {
 		chartType: CHART_TYPE,
 		tagData: data.get('EnergyViewData'),
 		postNewConfig: curry(postNewConfig)(data, isEdit, isTypeC),
