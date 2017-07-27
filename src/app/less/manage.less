@@ -112,15 +112,20 @@
                 height: @list-title-action-height;
                 display: flex;
                 justify-content: space-around;
-                align-items: center;
+                // align-items: center;
+                border-bottom: 1px solid @border-gray;
                 &-item {
+                  padding: 5px 10px;
             		.pointer;
+                &:hover{
+                  background-color: #dddddd;
+                }
                 	&-icon {
                     	padding-right: 8px;
                     }
-                    &:hover {
-                        color: @textWhiteHover;
-                    }
+                    // &:hover {
+                    //     color: @textWhiteHover;
+                    // }
                 }
             }
         }
@@ -149,6 +154,18 @@
             .list-padding;
             color: @dark-gray;
             &:hover{
+              .pop-user-list-item-user-display-name{
+                color: #32ad3d !important;
+              }
+              .pop-user-list-item-user-real-name{
+                color: #32ad3d !important;
+              }
+              .pop-user-list-item-customer-title{
+                color: #32ad3d !important;
+              }
+              .pop-user-list-item-customer-value{
+                color: #32ad3d !important;
+              }
               color: #32ad3d !important;
             }
             &.selected {
@@ -156,6 +173,18 @@
                 background-color: #32ad3d;
                 color: #ffffff !important;
                 position: relative;
+                .pop-user-list-item-user-display-name{
+                  color: #ffffff !important;
+                }
+                .pop-user-list-item-user-real-name{
+                  color: #ffffff !important;
+                }
+                .pop-user-list-item-customer-title{
+                  color: #ffffff !important;
+                }
+                .pop-user-list-item-customer-value{
+                  color: #ffffff !important;
+                }
                 &:before {
                 content: '';
                 height: 100%;
