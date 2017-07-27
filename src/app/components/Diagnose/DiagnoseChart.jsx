@@ -197,9 +197,20 @@ function postNewConfig(data, isEdit, isTypeC, newConfig) {
 }
 
 export default function DiagnoseChart(props) {
-	let {data,afterChartCreated, onDeleteButtonClick, isEdit, isTypeC} = props,
+	let {data,afterChartCreated, onDeleteButtonClick, isEdit, isTypeC} = props;
 
-	chartProps = {
+  data = data.setIn(
+    ['EnergyViewData', 'TargetEnergyData'],
+    data.getIn(['EnergyViewData', 'TargetEnergyData']).map(energyData => {
+      // Min30 -> Min15
+      if( energyData.getIn(['Target', 'Step']) === Min30 ) {
+        return energyData.setIn(['Target', 'Step'], Min15);
+      }
+      return energyData;
+    })
+  );
+
+	let chartProps = {
 		chartType: CHART_TYPE,
 		tagData: data.get('EnergyViewData'),
 		postNewConfig: curry(postNewConfig)(data, isEdit, isTypeC),
