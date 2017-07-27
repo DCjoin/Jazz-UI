@@ -242,7 +242,7 @@ export default class KPIChart extends Component {
 	    			}
 	    		}
 	    	});
-	    	if( targetVal ) {
+	    	if( data.get('IndicatorClass') === IndicatorClass.Dosage && targetVal ) {
 	    		if(currentDataIndex <= currentMonthIndex || currentMonthIndex === -1) {
 	    			title += `<b>${util.replacePathParams(I18N.Kpi.MonthUsaged, (actualVal * 100 / targetVal).toFixed(1) * 1)}</b>`;
 	    		} else {

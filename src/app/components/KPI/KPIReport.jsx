@@ -83,26 +83,26 @@ function getTextByFilter(isHover, isDosage, isIndex, isThisYear) {
 				// 今年
 				if( isThisYear ) {
 					return [{
+						key: 'PredicteSave',
+						label: ByYearSavingPredict
+					}, {
 						key: 'TargetValue',
 						label: ByYearUsagedTarget
 					}, {
 						key: 'PredicteValue',
 						label: ByYearUsagedPredict
-					}, {
-						key: 'PredicteSave',
-						label: ByYearSavingPredict
-					}];
+					}, ];
 				// 往年
 				} else {
 					return [{
+						key: 'ActualSave',
+						label: ByYearSavingValue,
+					}, {
 						key: 'TargetValue',
 						label: ByYearUsagedTarget
 					}, {
 						key: 'ActualValue',
 						label: ByYearUsagedValue,
-					}, {
-						key: 'ActualSave',
-						label: ByYearSavingValue,
 					}];
 				}
 
