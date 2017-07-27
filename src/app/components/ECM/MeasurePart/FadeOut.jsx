@@ -44,8 +44,8 @@ const FadeOut = React.createClass({
             return(<div>
               <BlankItem style={{height:height/2,top:5,width:this.props.width}}/>
               <BlankItem style={{height:height/2,bottom:5,width:this.props.width}}/>
-              <BlankItem style={{width:width/2,left:0,top:15}}/>
-              <BlankItem style={{width:width/2,right:0,top:15}}/>
+              <BlankItem style={{width:width/2,left:10,top:15}}/>
+              <BlankItem style={{width:width/2,right:15,top:15}}/>
             </div>
               )
 

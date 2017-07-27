@@ -334,7 +334,7 @@ var HierarchyList = React.createClass({
           </span>
         </div>
         <div className="jazz-folder-leftpanel-foldertree" style={{
-        color: '#ffffff'
+        color: '#626469'
       }}>
           <Tree {...treeProps}/>
         </div>
