@@ -120,7 +120,7 @@ function postNewConfig(data, isEdit, isTypeC, newConfig) {
     let max  = triggerVal;
     let min  = triggerVal;
     data.getIn(['EnergyViewData', 'TargetEnergyData'])
-      .map( TargetEnergyData => TargetEnergyData.get('EnergyData').map(eData => {
+      .map( TargetEnergyData => TargetEnergyData.get('EnergyData') && TargetEnergyData.get('EnergyData').map(eData => {
         let val = eData.get('DataValue');
         if( val > max ) {
           max = val;

@@ -88,7 +88,7 @@ function getOptions(color, hasPrediction, small){
 	        pointPadding: 0.4,
 	        pointPlacement: 0,
 	        color: color,
-	        pointWidth: small ? 20 : 40,
+	        pointWidth: small ? 20 : 30,
 	        borderWidth: 1,
 	    }
 	];
@@ -101,7 +101,7 @@ function getOptions(color, hasPrediction, small){
 	        borderWidth: 1,
 			dashStyle: 'dash',
 			color: 'rgba(255, 255, 255, 0)',
-	        pointWidth: small ? 24 : 44,
+	        pointWidth: small ? 24 : 34,
 	    });
 	}
 	return util.merge(true, {}, {

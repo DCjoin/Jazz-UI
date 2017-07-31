@@ -2234,6 +2234,7 @@ I18N.Setting.KPI.Config.Step1 = ' Table data setting ';
 I18N.Setting.KPI.Config.DeleteTableData = 'Delete table data "{0}"?';
 I18N.Setting.KPI.Config.NewTableData = 'Add table data';
 I18N.Setting.KPI.Config.TableDataName = 'Table data name';
+I18N.Setting.KPI.Config.TableDataNameHint = 'Pleass input Table data name';
 I18N.Setting.KPI.Config.TableDataNameTip = 'This name already exists, please input again';
 
 

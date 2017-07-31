@@ -2237,6 +2237,7 @@ I18N.Setting.KPI.Config.Step1 = ' 表格数据设置 ';
 I18N.Setting.KPI.Config.DeleteTableData = '删除表格数据“{0}”吗？';
 I18N.Setting.KPI.Config.NewTableData = '添加表格数据';
 I18N.Setting.KPI.Config.TableDataName = '表格数据名称';
+I18N.Setting.KPI.Config.TableDataNameHint = '请输入表格数据名称';
 I18N.Setting.KPI.Config.TableDataNameTip = '此名称已存在，请重新输入';
 
 
