@@ -118,13 +118,13 @@ export default class RankHistory extends Component {
     return(
       <Dialog
         ref = "_dialog"
-        title={I18N.format(I18N.Setting.KPI.Group.Ranking.History.Name,this.props.name)}
+        title={this.state.record!==null?this.state.record.getIn([0,'RankName']):null}
         titleStyle={{color:'#0f0f0f',fontSize:'16px',borderBottom:'solid 1px #e6e6e6',padding:'15px 12px',fontWeight:'bold',marginBottom:'15px'}}
         modal={false}
         open={true}
         onRequestClose={this.props.onClose}
         >
-        {this.props.renderTitle && this.props.renderTitle()}
+        {this.state.record && this.props.renderTitle && this.props.renderTitle()}
         {content}
       </Dialog>
     )
