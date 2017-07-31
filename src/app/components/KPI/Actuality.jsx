@@ -83,7 +83,7 @@ function isReport(props) {
 export default class Actuality extends Component {
 
 	static getStores() {
-		return [ReportStore];
+		return [ReportStore, UserStore];
 	};
 
 	static calculateState(prevState) {

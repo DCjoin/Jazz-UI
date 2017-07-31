@@ -587,6 +587,7 @@ let ReportDataItem = React.createClass({
       ref: 'reportTypeName',
       defaultValue: this.state.data.get('Name'),
       title: I18N.Setting.KPI.Config.TableDataName,
+      hintText: I18N.Setting.KPI.Config.TableDataNameHint,
       didChanged: this._onReprtNameChange,
       regexFn: (val) => {
         if( this.props.itemsName.indexOf(val) !== -1 ) {
@@ -623,8 +624,8 @@ let ReportDataItem = React.createClass({
       title: I18N.Setting.KPI.Report.Sheet,
       textField: 'text',
       didChanged: this._handleSelectValueChange.bind(null, 'TargetSheet'),
-      errorText:I18N.Setting.KPI.Report.SheetErrorText,      
-      initError: this._getSheetItems().map(item => item.payload).indexOf(this.state.data.get('TargetSheet')) === -1
+      errorText: this._getSheetItems().map(item => item.payload).indexOf(this.state.data.get('TargetSheet')) === -1 && I18N.Setting.KPI.Report.SheetErrorText,      
+      // initError: this._getSheetItems().map(item => item.payload).indexOf(this.state.data.get('TargetSheet')) === -1
     };
     var startCellProps = {
       ref: 'startCellId',

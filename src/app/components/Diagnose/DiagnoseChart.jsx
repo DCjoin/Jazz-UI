@@ -91,7 +91,14 @@ function postNewConfig(data, isEdit, isTypeC, newConfig) {
   );
   if(isTypeC) {
     newConfig.legend.labelFormatter = function() {
-      if( this.index === data.getIn(['EnergyViewData', 'TargetEnergyData']).size -1 ) {
+      if( this.name === data.getIn([
+          'EnergyViewData', 
+          'TargetEnergyData', 
+          (data.getIn(['EnergyViewData', 'TargetEnergyData']).size - 1), 
+          'Target',
+          'Name'
+        ])
+      ) {
         return this.name + '<br>(关联)';
       }
       return this.name;
@@ -120,7 +127,7 @@ function postNewConfig(data, isEdit, isTypeC, newConfig) {
     let max  = triggerVal;
     let min  = triggerVal;
     data.getIn(['EnergyViewData', 'TargetEnergyData'])
-      .map( TargetEnergyData => TargetEnergyData.get('EnergyData').map(eData => {
+      .map( TargetEnergyData => TargetEnergyData.get('EnergyData') && TargetEnergyData.get('EnergyData').map(eData => {
         let val = eData.get('DataValue');
         if( val > max ) {
           max = val;
