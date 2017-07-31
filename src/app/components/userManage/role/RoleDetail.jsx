@@ -38,7 +38,7 @@ class PrivilegeList extends Component {
               <div key={codeObj.getLabel()} className='pop-role-detail-content-permission-content-item'>
                 <div className='pop-role-detail-content-permission-content-item-left'>
                   {codeObj.getLabel()}
-                </div>                
+                </div>
                 <RadioButtonGroup valueSelected={
                   privilegeUtil.getFullCode(codeObj, currentPrivilegeCodes) ||
                   privilegeUtil.getViewCode(codeObj, currentPrivilegeCodes) ||
@@ -208,7 +208,7 @@ var RoleDetail = React.createClass({
         dialogStatus: false
       });
     }
-    
+
     var {Name} = that.props.role.toJS();
     return (
 
@@ -250,7 +250,6 @@ var RoleDetail = React.createClass({
       disabledSaveButton = !role.get("Name") || role.get("Name").length > 200;
     var footer = (
     <FormBottomBar
-    transition={true}
     enableSave={!disabledSaveButton}
     status={this.props.formStatus}
     onSave={this._handleSaveRole}
@@ -276,9 +275,9 @@ var RoleDetail = React.createClass({
           </div>
         </div>
         {role.get('PrivilegeCodes')&&<div className="pop-manage-detail-content ">
-          <PrivilegeList 
+          <PrivilegeList
             isView={isView}
-            privilegeList={privilegeUtil.getRolePrivilegeList()} 
+            privilegeList={privilegeUtil.getRolePrivilegeList()}
             currentPrivilegeCodes={role.get('PrivilegeCodes').toJS()}
             handleChange={(value) => {
               RoleAction.merge({

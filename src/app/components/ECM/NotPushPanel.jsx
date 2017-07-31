@@ -377,7 +377,7 @@ export default class NotPushPanel extends Component {
 
   getProps(){
   var {destX,destY}=this.props.generatePositon,
-      width=ReactDom.findDOMNode(this.refs.content).clientWidth;
+      width=ReactDom.findDOMNode(this.refs.content).clientWidth-10-10-5-15;
   return{
     destX,destY,width
   }

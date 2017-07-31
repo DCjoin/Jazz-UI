@@ -513,7 +513,7 @@ export default class PushPanel extends Component {
       destX=btn.getBoundingClientRect().left+60,
       destY=btn.getBoundingClientRect().top;
     }
-  var width=ReactDom.findDOMNode(this.refs.content).clientWidth;
+  var width=ReactDom.findDOMNode(this.refs.content).clientWidth-10-10-5-15;
   return{
     destX,destY,width
   }
