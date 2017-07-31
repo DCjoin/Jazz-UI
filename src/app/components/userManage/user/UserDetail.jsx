@@ -252,7 +252,7 @@ var UserDetail = React.createClass({
         clip: true,
         background: 'pop-user-photo-logo',
         clipMode: '100% 100%',
-        imageUrl: Regex.UrlRule.test(UserPhoto) ? `url(${UserPhoto}&v=${Version})` : 
+        imageUrl: Regex.UrlRule.test(UserPhoto) ? `url(${UserPhoto}&v=${Version})` :
           `url(data:image/png;base64,${UserPhoto})`,
         isViewState: isView,
         updateTips: '上传头像推荐比例4:3',
@@ -615,7 +615,6 @@ var UserDetail = React.createClass({
 
     var footer = (
     <FormBottomBar
-    transition={true}
     customButton={sendPasswordButton}
     enableSave={!disabledSaveButton}
     status={this.props.formStatus}

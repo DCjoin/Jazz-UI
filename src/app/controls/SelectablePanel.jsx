@@ -37,7 +37,7 @@ let SelectablePanel = React.createClass({
         'btn-container-active': _isBoolean(this.props.isAddStatus) ? !this.props.isAddStatus : this.props.isViewStatus
       },
       buttonStyle = {
-        backgroundColor: 'transparent',
+        // backgroundColor: 'transparent',
         height: '32px'
       };
 
@@ -48,7 +48,7 @@ let SelectablePanel = React.createClass({
       listStyle: {
         width: 320,
         left: 0,
-      }, 
+      },
       labelStyle: {
         color: "#fff",
         padding: '0'

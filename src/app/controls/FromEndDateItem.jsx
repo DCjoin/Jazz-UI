@@ -105,7 +105,7 @@ var FromEndDateItem = React.createClass({
     var deleteButton = null;
     if (!me.props.isViewStatus && me.props.hasDeleteButton) {
       deleteButton = <div className='jazz-fromenddate-item-type-delete'><FlatButton secondary={true} label={I18N.Common.Button.Delete} onClick={me._onDeleteDateData} style={{
-        background: 'transparent'
+        background: 'transparent',minWidth:'60px'
       }} /></div>;
     }
     return (

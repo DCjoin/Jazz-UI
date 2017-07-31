@@ -623,7 +623,6 @@ var TariffDetail = React.createClass({
     }
     return (
       <FormBottomBar
-      transition={true}
       enableSave={!disabledSaveButton}
       status={this.props.formStatus}
       onSave={this._handleSaveTariff}
