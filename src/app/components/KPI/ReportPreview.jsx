@@ -201,7 +201,9 @@ export default class ReportPreview extends Component {
 						width: '100%',
 						zIndex: 1,
 					}}>
-						<div className='jazz-report-chart-header'>
+						<div className={classnames('jazz-report-chart-header', {
+							'full-width': !preview || !showAll
+						})}>
 							<div className='jazz-report-chart-excel-list'>
 								{this.state.reportList.map(report => 
 								<div className={classnames('tab', {
