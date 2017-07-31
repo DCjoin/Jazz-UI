@@ -1237,7 +1237,7 @@ class CreateDiagnose extends Component {
 			step: 0,
 			diagnoseTags: null,
 			associateTag: null,
-			cahrtData: null,
+			chartData: null,
 			filterObj: getDefaultFilter(),
 			checkedTags: [],
 			checkedAssociateTag: [],
