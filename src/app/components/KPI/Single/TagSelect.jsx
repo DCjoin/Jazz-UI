@@ -95,19 +95,19 @@ export default class TagSelect extends Component {
 
 	_renderTags(){
 		var header=(
-			<table className="jazz-kpi-tag-tags-header">
+			<table className="jazz-kpi-tag-tags-header" style={{borderSpacing:'0px'}}>
 				<tbody>
 					<tr>
 						<td className="column1">{I18N.Common.Glossary.Name}</td>
-						<td className="column2">{I18N.Common.Glossary.Commodity}</td>
-						<td className="column3">{I18N.Common.Glossary.UOM}</td>
+						<td className="column2" style={{display:'inline-block'}}>{I18N.Common.Glossary.Commodity}</td>
+						<td className="column3" style={{display:'inline-block'}}>{I18N.Common.Glossary.UOM}</td>
 					</tr>
 				</tbody>
 			</table>
 		);
 		var content=(this.state.tags===null)?<div className="flex-center">{I18N.Setting.KPI.Tag.NoTags}</div>
 																				: <table className='jazz-kpi-tag-tags-body'>
-																						<tbody>
+																						<tbody style={{height:'320px'}}>
 																							{
 																								this.state.tags.map(tag=>{
 																									return(
