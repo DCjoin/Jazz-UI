@@ -432,7 +432,7 @@ function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime
 	</section>)
 }
 
-function TagContent({tags, onCheck, checkedTags}) {
+function TagContent({tags, onCheck, checkedTags, statusLabel}) {
 	if( tags ) {
 		return (
 			<ul className='diagnose-create-tag-list-content'>
@@ -449,7 +449,7 @@ function TagContent({tags, onCheck, checkedTags}) {
 						</div>
 						{tag.get('Status') !== 0 &&
 						<div className='diagnose-create-checkbox-label-tip'>
-							{I18N.Setting.Diagnose.Diagnoseing}
+							{statusLabel}
 						</div>}
 					</div>
 				</li>
@@ -463,7 +463,7 @@ function TagContent({tags, onCheck, checkedTags}) {
 function TagList(props) {
 	let content = (<section className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></section>);
 	if( props.tags ) {
-		content = <TagContent {...props}/>
+		content = <TagContent {...props} statusLabel={I18N.Setting.Diagnose.Diagnoseing}/>
 	}
 	return (<section className='diagnose-create-tag-list'>
 		<hgroup className='diagnose-create-tag-list-title diagnose-create-title'>{I18N.Setting.Diagnose.DiagnoseTags}</hgroup>
@@ -475,10 +475,10 @@ function TagListTypeC({tags, onCheck, checkedTags, associateTag, onAssociateChec
 	let content = (<section className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></section>),
 	associateContent = (<section className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></section>);
 	if( tags ) {
-		content = (<TagContent tags={tags} onCheck={onCheck} checkedTags={checkedTags}/>);
+		content = (<TagContent tags={tags} onCheck={onCheck} checkedTags={checkedTags} statusLabel={I18N.Setting.Diagnose.Diagnoseing}/>);
 	}
 	if( associateTag ) {
-		associateContent = (<TagContent tags={associateTag.get('Tags')} onCheck={onAssociateCheck} checkedTags={checkedAssociateTag}/>);
+		associateContent = (<TagContent tags={associateTag.get('Tags')} onCheck={onAssociateCheck} checkedTags={checkedAssociateTag} statusLabel={I18N.Setting.Diagnose.Associateing}/>);
 	}
 	return (
 		<Tabs className='diagnose-create-tag-list' 
@@ -1274,6 +1274,9 @@ class CreateDiagnose extends Component {
 	_getChartData() {
 		let {step, filterObj, checkedTags, checkedAssociateTag} = this.state;
 		if( isTypeC(this.props.EnergyLabel.get('DiagnoseModel')) && (!checkedAssociateTag || checkedAssociateTag.length === 0) ) {
+			this.setState({
+				chartData: null
+			});
 			return null;
 		}
 		if(!_previewed && checkedTags && checkedTags.length > 0 ) {
@@ -1380,26 +1383,29 @@ class CreateDiagnose extends Component {
 		}
 	}
 	_onAssociateCheck(id, val) {
-		if( val ) {			
-			let newCheckedTags = [...this.state.checkedAssociateTag],
-			currentTags = this.state.associateTag.get('Tags').find(tag => tag.get('Id') === id);
+		let newCheckedTags = [...this.state.checkedAssociateTag],
+		currentTags = this.state.associateTag.get('Tags').find(tag => tag.get('Id') === id);
+		if( val ) {	
 			newCheckedTags = [{
 				Id: currentTags.get('Id'),
 				DiagnoseName: currentTags.get('DiagnoseName'),
 				Step: currentTags.get('Step'),				
 			}]
-			if( checkStep( newCheckedTags, this.state.filterObj.get('Step') ) ) {
-				this.setState({
-					filterObj: this.state.filterObj.setIn(['AssociateTag', 'TagId'], id),
-					checkedAssociateTag: newCheckedTags
-				}, this._getChartData);
+		} else {
+			newCheckedTags.splice(newCheckedTags.map(tag => tag.Id).indexOf(id), 1);
+		}
 
-			} else {
-				this.setState({
-					tmpFilterDiagnoseTags: newCheckedTags,
-					tmpFilterStep: this.state.filterObj.get('Step')
-				});
-			}
+		if( checkStep( newCheckedTags, this.state.filterObj.get('Step') ) ) {
+			this.setState({
+				filterObj: this.state.filterObj.setIn(['AssociateTag', 'TagId'], id),
+				checkedAssociateTag: newCheckedTags
+			}, this._getChartData);
+
+		} else {
+			this.setState({
+				tmpFilterDiagnoseTags: newCheckedTags,
+				tmpFilterStep: this.state.filterObj.get('Step')
+			});
 		}
 
 	}

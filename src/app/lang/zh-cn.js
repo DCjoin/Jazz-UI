@@ -2400,6 +2400,7 @@ I18N.Setting.Diagnose.SaveThenReturn='保存并返回诊断列表';
 I18N.Setting.Diagnose.SaveThenRenew='保存并继续添加';
 I18N.Setting.Diagnose.Diagnoseing='诊断中';
 I18N.Setting.Diagnose.DiagnoseTags='诊断数据点';
+I18N.Setting.Diagnose.Associateing='关联中';
 I18N.Setting.Diagnose.AssociateTags='关联数据点';
 I18N.Setting.Diagnose.ChartPreview='图表预览';
 I18N.Setting.Diagnose.SelectTagsFromLeft='在左侧选择数据点';

@@ -147,7 +147,7 @@ function postNewConfig(data, isEdit, isTypeC, newConfig) {
       if(max < triggerVal) {
         newConfig.yAxis[0].max = triggerVal;
       }
-      if( min > triggerVal ) {
+      if( min > triggerVal || triggerVal < newConfig.yAxis[0].min ) {
         newConfig.yAxis[0].min = triggerVal;
       }
     }
