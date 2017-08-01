@@ -1274,6 +1274,9 @@ class CreateDiagnose extends Component {
 	_getChartData() {
 		let {step, filterObj, checkedTags, checkedAssociateTag} = this.state;
 		if( isTypeC(this.props.EnergyLabel.get('DiagnoseModel')) && (!checkedAssociateTag || checkedAssociateTag.length === 0) ) {
+			this.setState({
+				chartData: null
+			});
 			return null;
 		}
 		if(!_previewed && checkedTags && checkedTags.length > 0 ) {
@@ -1380,26 +1383,29 @@ class CreateDiagnose extends Component {
 		}
 	}
 	_onAssociateCheck(id, val) {
-		if( val ) {			
-			let newCheckedTags = [...this.state.checkedAssociateTag],
-			currentTags = this.state.associateTag.get('Tags').find(tag => tag.get('Id') === id);
+		let newCheckedTags = [...this.state.checkedAssociateTag],
+		currentTags = this.state.associateTag.get('Tags').find(tag => tag.get('Id') === id);
+		if( val ) {	
 			newCheckedTags = [{
 				Id: currentTags.get('Id'),
 				DiagnoseName: currentTags.get('DiagnoseName'),
 				Step: currentTags.get('Step'),				
 			}]
-			if( checkStep( newCheckedTags, this.state.filterObj.get('Step') ) ) {
-				this.setState({
-					filterObj: this.state.filterObj.setIn(['AssociateTag', 'TagId'], id),
-					checkedAssociateTag: newCheckedTags
-				}, this._getChartData);
+		} else {
+			newCheckedTags.splice(newCheckedTags.map(tag => tag.Id).indexOf(id), 1);
+		}
+		
+		if( checkStep( newCheckedTags, this.state.filterObj.get('Step') ) ) {
+			this.setState({
+				filterObj: this.state.filterObj.setIn(['AssociateTag', 'TagId'], id),
+				checkedAssociateTag: newCheckedTags
+			}, this._getChartData);
 
-			} else {
-				this.setState({
-					tmpFilterDiagnoseTags: newCheckedTags,
-					tmpFilterStep: this.state.filterObj.get('Step')
-				});
-			}
+		} else {
+			this.setState({
+				tmpFilterDiagnoseTags: newCheckedTags,
+				tmpFilterStep: this.state.filterObj.get('Step')
+			});
 		}
 
 	}
