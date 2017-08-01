@@ -116,7 +116,8 @@ export default class Diagnose extends Component {
   _switchTab(no){
     this.setState({
       infoTabNo:no,
-      selectedId:null
+      selectedId:null,
+      isBasic: true,
     })
   }
 
