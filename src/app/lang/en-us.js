@@ -2396,6 +2396,7 @@ I18N.Setting.Diagnose.SaveThenReturn='Save and Return to Diagnosis List';
 I18N.Setting.Diagnose.SaveThenRenew='Save and Continue to Add';
 I18N.Setting.Diagnose.Diagnoseing='Diagnosing';
 I18N.Setting.Diagnose.DiagnoseTags='Diagnosis Data Points';
+I18N.Setting.Diagnose.Associateing='关联中';
 I18N.Setting.Diagnose.AssociateTags='关联数据点';
 I18N.Setting.Diagnose.ChartPreview='Chart Preview';
 I18N.Setting.Diagnose.SelectTagsFromLeft='Select Data Points on the Left';
