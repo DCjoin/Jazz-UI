@@ -99,7 +99,7 @@ function postNewConfig(data, isEdit, isTypeC, hiddenAssociateLabel, newConfig) {
           'Name'
         ])
       ) {
-        return this.name + '<br>(关联)';
+        return this.name + `<br>(${I18N.Setting.Diagnose.Associate})`;
       }
       return this.name;
     }

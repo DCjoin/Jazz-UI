@@ -238,7 +238,7 @@ render(){
           addLabel: null,
         });
       }}/>}
-      <Snackbar message={'诊断已创建'}
+      <Snackbar message={I18N.Setting.Diagnose.Created}
           open={this.state.createSuccessMeg}
           onRequestClose={() => {this.setState({createSuccessMeg: false})}}/>
 
