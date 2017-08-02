@@ -9,6 +9,10 @@ const DiagnoseAction = {
     _hierarchyId=HierarchyId;
     _gradeType=GradeType;
     _diagnoseListType=DiagnoseListType;
+    //first clear list
+    AppDispatcher.dispatch({
+      type: Action.CLEAR_ALL_LIST,
+    });
     Ajax.post(Path.Diagnose.diagnosislist,
       {
       params: {HierarchyId,GradeType,DiagnoseListType},
@@ -285,14 +289,14 @@ const DiagnoseAction = {
     //         Telephone: 123456789,
     //         Email: 'asdfa@adsf.coin'
     //       },
-    //     });  
+    //     });
     // }, 10000);
     Ajax.get(util.replacePathParams(Path.Diagnose.getConsultant, hierarchyId), {
       success: res => {
         AppDispatcher.dispatch({
           type: Action.GET_CONSULTANT,
           data: res,
-        });        
+        });
       }
     });
 
