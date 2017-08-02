@@ -351,6 +351,9 @@ DiagnoseStore.dispatchToken = AppDispatcher.register(function(action) {
           DiagnoseStore.setConsultant(action.data);
           DiagnoseStore.emitConsultantChange();
           break;
+    case Action.CLEAR_ALL_LIST:
+          _diagnoseList=null;
+          break;
   }
 })
 

@@ -181,8 +181,13 @@ export default class LabelList extends Component {
 
 	componentWillReceiveProps(nextProps,nextCtx) {
 		if(nextCtx.hierarchyId !== this.context.hierarchyId) {
-			this._getList(nextCtx.hierarchyId);
-			this.getCalendar(nextCtx.hierarchyId);
+      this.setState({
+        list:null
+      },()=>{
+        this._getList(nextCtx.hierarchyId);
+        this.getCalendar(nextCtx.hierarchyId);
+      })
+
 		}
 		if(nextProps.isFromProbem!==this.props.isFromProbem){
 			this.setState({
