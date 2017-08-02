@@ -71,7 +71,7 @@ function mapSeriesDataWithMax(isEdit, isTypeC, isHistory, energyData, serie, ser
   }}
 }
 
-function postNewConfig(data, isEdit, isTypeC, newConfig) {
+function postNewConfig(data, isEdit, isTypeC, hiddenAssociateLabel, newConfig) {
   let triggerVal = data.get('TriggerValue'),
   Calendars = data.getIn(['EnergyViewData', 'Calendars']),
   Step = data.getIn(['EnergyViewData', 'TargetEnergyData', 0, 'Target', 'Step']);
@@ -89,7 +89,7 @@ function postNewConfig(data, isEdit, isTypeC, newConfig) {
         .filter( energyData => energyData.getIn(['Target', 'Code']) !== 'TriggerValue' )
     )
   );
-  if(isTypeC) {
+  if( !hiddenAssociateLabel && isTypeC) {
     newConfig.legend.labelFormatter = function() {
       if( this.name === data.getIn([
           'EnergyViewData', 
@@ -99,7 +99,7 @@ function postNewConfig(data, isEdit, isTypeC, newConfig) {
           'Name'
         ])
       ) {
-        return this.name + '<br>(关联)';
+        return this.name + `<br>(${I18N.Setting.Diagnose.Associate})`;
       }
       return this.name;
     }
@@ -204,7 +204,7 @@ function postNewConfig(data, isEdit, isTypeC, newConfig) {
 }
 
 export default function DiagnoseChart(props) {
-	let {data,afterChartCreated, onDeleteButtonClick, isEdit, isTypeC} = props;
+	let {data,afterChartCreated, onDeleteButtonClick, isEdit, isTypeC, hiddenAssociateLabel} = props;
 
   data = data.setIn(
     ['EnergyViewData', 'TargetEnergyData'],
@@ -220,7 +220,7 @@ export default function DiagnoseChart(props) {
 	let chartProps = {
 		chartType: CHART_TYPE,
 		tagData: data.get('EnergyViewData'),
-		postNewConfig: curry(postNewConfig)(data, isEdit, isTypeC),
+		postNewConfig: curry(postNewConfig)(data, isEdit, isTypeC, hiddenAssociateLabel),
 		afterChartCreated,
     onDeleteButtonClick,
     isEdit,

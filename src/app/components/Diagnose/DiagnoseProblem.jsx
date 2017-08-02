@@ -373,7 +373,7 @@ export default class DiagnoseProblem extends Component {
 						}
 
 
-					 {this.state.chartData?<DiagnoseChart isTypeC={DiagnoseModel === 3} data={this.state.chartData}/>
+					 {this.state.chartData?<DiagnoseChart hiddenAssociateLabel isTypeC={DiagnoseModel === 3} data={this.state.chartData}/>
 																:<div className="flex-center">
 																		 <CircularProgress  mode="indeterminate" size={80} />
 																	 </div>}

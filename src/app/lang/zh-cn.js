@@ -2466,5 +2466,7 @@ I18N.Setting.Diagnose.MoreThenAssociate='大于关联值';
 I18N.Setting.Diagnose.LessThenAssociate='小于关联值';
 I18N.Setting.Diagnose.InputAssociateValue='输入关联值';
 I18N.Setting.Diagnose.AssociateTriggerArea='关联触发区域';
+I18N.Setting.Diagnose.Associate='关联';
+I18N.Setting.Diagnose.Created='诊断已创建';
 
 module.exports = I18N;
