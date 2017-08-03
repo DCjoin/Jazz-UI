@@ -174,6 +174,7 @@ export default class LabelList extends Component {
   componentDidMount(){
     DiagnoseStore.addChangeListener(this._onChanged);
 		if(this.context.hierarchyId){
+      DiagnoseAction.clearList();
 			this._getList(this.context.hierarchyId);
 			this.getCalendar(this.context.hierarchyId);
 		}
@@ -184,6 +185,7 @@ export default class LabelList extends Component {
       this.setState({
         list:null
       },()=>{
+        DiagnoseAction.clearList();
         this._getList(nextCtx.hierarchyId);
         this.getCalendar(nextCtx.hierarchyId);
       })
@@ -193,6 +195,7 @@ export default class LabelList extends Component {
 			this.setState({
 				infoTabNo:1
 			},()=>{
+        DiagnoseAction.clearList();
 				this._getList(nextCtx.hierarchyId,nextProps.isFromProbem);
 			})
 		}
