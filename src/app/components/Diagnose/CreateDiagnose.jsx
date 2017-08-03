@@ -1699,7 +1699,7 @@ class CreateDiagnose extends Component {
 	render() {
 		let {step} = this.state,
 		{EnergyLabel, DiagnoseItem, isBasic} = this.props;
-		if(!EnergyLabel) {
+		if(!DiagnoseItem) {
 			return (<div className='diagnose-overlay'/>)
 		}
 		return (
