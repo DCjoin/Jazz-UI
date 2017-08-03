@@ -9,10 +9,6 @@ const DiagnoseAction = {
     _hierarchyId=HierarchyId;
     _gradeType=GradeType;
     _diagnoseListType=DiagnoseListType;
-    //first clear list
-    AppDispatcher.dispatch({
-      type: Action.CLEAR_ALL_LIST,
-    });
     Ajax.post(Path.Diagnose.diagnosislist,
       {
       params: {HierarchyId,GradeType,DiagnoseListType},
@@ -28,6 +24,12 @@ const DiagnoseAction = {
       error: function(err, res) {
         console.log(err, res);
       }
+    });
+  },
+  clearList(){
+    //first clear list
+    AppDispatcher.dispatch({
+      type: Action.CLEAR_ALL_LIST,
     });
   },
   getDiagnoseStatic(hierarchyId){
