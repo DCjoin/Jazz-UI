@@ -23,6 +23,7 @@ import contactusApp from './components/ContactUS.jsx';
 import Actuality from './components/KPI/Actuality.jsx';
 import KPIActuality from './components/KPI/KPIActuality.jsx';
 import ReportPreview from './components/KPI/ReportPreview.jsx';
+import SaveEffect from './components/save_effect';
 import BuildingReportActuality from './components/KPI/BuildingReportActuality.jsx';
 import KPIConfig from './components/KPI/Group/ConfigMenu.jsx';
 import KPIConfigList from './components/KPI/Group/KPIConfigList.jsx';
@@ -220,6 +221,12 @@ ReactDom.render(<Router history={hashHistory} routes={{
         },
         path: 'energy_conservation_measures',
         component: ECM,
+      }, {
+        onEnter: () => {
+          document.title = I18N.MainMenu.SaveEffect;
+        },
+        path: 'save_effect',
+        component: SaveEffect,
       },{
         onEnter: () => {
           document.title = I18N.MainMenu.SmartDiagnose;

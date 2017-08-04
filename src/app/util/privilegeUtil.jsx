@@ -4,7 +4,8 @@ import PermissionCode, {
 	BASIC_DATA_ANALYSE, SENIOR_DATA_ANALYSE,
 	BASIC_SMART_DIACRISIS, SENIOR_SMART_DIACRISIS, BASIC_SMART_DIACRISIS_LIST, SENIOR_SMART_DIACRISIS_LIST,
 	/*BASELINE_CONFIG, ENERGY_EXPORT, ENERGY_ALARM, DATA_REPORT_MANAGEMENT,*/
-	TAG_MANAGEMENT, HIERARCHY_MANAGEMENT, CUSTOM_LABELING, PLATFORM_MANAGEMENT
+	TAG_MANAGEMENT, HIERARCHY_MANAGEMENT, CUSTOM_LABELING, PLATFORM_MANAGEMENT,
+	Save_Effect,
 } from 'constants/PermissionCode.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 
@@ -34,6 +35,7 @@ const PrivilegeUtil = {
 			HIERARCHY_MANAGEMENT,
 			CUSTOM_LABELING,
 			PLATFORM_MANAGEMENT,
+			Save_Effect,
 		].filter( privilege => spPrivilege.indexOf(privilege.READONLY) !== -1 || spPrivilege.indexOf(privilege.FULL) !== -1 );
 	},
 
