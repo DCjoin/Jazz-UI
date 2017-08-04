@@ -2471,4 +2471,9 @@ I18N.Setting.Diagnose.AssociateTriggerArea='关联触发区域';
 I18N.Setting.Diagnose.Associate='关联';
 I18N.Setting.Diagnose.Created='诊断已创建';
 
+I18N.SaveEffect={};
+I18N.SaveEffect.OverviewLabel = '节能效果概览';
+I18N.SaveEffect.ListLabel = '方案节能效果';
+I18N.SaveEffect.BestLabel = '最佳方案';
+
 module.exports = I18N;
