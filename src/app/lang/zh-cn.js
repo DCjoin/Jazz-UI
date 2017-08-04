@@ -49,6 +49,7 @@ I18N.MainMenu.KPI = '指标·报表';
 I18N.MainMenu.ActualityKPI = '指标';
 I18N.MainMenu.ActualityReport = '报表';
 I18N.MainMenu.SaveSchemeTab = '节能方案';
+I18N.MainMenu.SaveEffect = '节能效果';
 I18N.MainMenu.SmartDiagnose = '智能诊断';
 I18N.MainMenu.DataAnalysis = '数据分析';
 I18N.MainMenu.InputData = '录入数据';
@@ -1910,6 +1911,7 @@ I18N.Privilege.Role.SeniorDataAnalyse = '高级数据分析';
 I18N.Privilege.Role.PushSolution = '已推送方案';
 I18N.Privilege.Role.SolutionFull = '已推送+未推送方案';
 I18N.Privilege.Role.BuildingList = '项目列表';
+I18N.Privilege.Role.SaveEffect = '节能效果';
 
 I18N.Remark = {};
 I18N.Remark.Label = '备注';

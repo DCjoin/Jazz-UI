@@ -29,6 +29,9 @@ export default {
 		dailyReport: p => `/${p.lang}/${p.customerId}/dailyReport`,
 		template: p => `/${p.lang}/${p.customerId}/template`,
 	},
+	saveEffect: {
+		index: p => `/${p.lang}/${p.customerId}/save_effect`,
+	},
 	customerSetting:{
 		ptag:p => `/${p.lang}/${p.customerId}/ptag`,
 		vtag:p => `/${p.lang}/${p.customerId}/vtag`,

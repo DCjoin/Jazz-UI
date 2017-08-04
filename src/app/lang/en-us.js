@@ -49,6 +49,7 @@ I18N.MainMenu.KPI = 'KPI · Report';
 I18N.MainMenu.ActualityKPI = 'KPI';
 I18N.MainMenu.ActualityReport = 'Report';
 I18N.MainMenu.SaveSchemeTab = 'Energy Saving Scheme';
+I18N.MainMenu.SaveEffect = '节能效果';
 I18N.MainMenu.SmartDiagnose = 'Smart Diagnosis';
 I18N.MainMenu.DataAnalysis = 'Data Analysis';
 I18N.MainMenu.InputData = 'Input Data';
@@ -1912,6 +1913,7 @@ I18N.Privilege.Role.SeniorDataAnalyse = 'Senior Data Analysis';
 I18N.Privilege.Role.PushSolution = 'Pushed Solutions';
 I18N.Privilege.Role.SolutionFull = 'All Solutions';
 I18N.Privilege.Role.BuildingList = 'Project List';
+I18N.Privilege.Role.SaveEffect = '节能效果';
 
 I18N.Remark = {};
 I18N.Remark.Label = 'Comment';

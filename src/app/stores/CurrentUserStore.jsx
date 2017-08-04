@@ -45,6 +45,7 @@ const PRIVILEGE_ADMIN = [
   PermissionCode.SENIOR_SMART_DIACRISIS.FULL,
   PermissionCode.BASIC_SMART_DIACRISIS_LIST.FULL,
   PermissionCode.SENIOR_SMART_DIACRISIS_LIST.FULL,
+  PermissionCode.Save_Effect.FULL,
 ].map( code => '' + code );
 
 var CurrentUserStore = assign({}, PrototypeStore, {
@@ -265,6 +266,17 @@ var CurrentUserStore = assign({}, PrototypeStore, {
           getPath: RoutePath.ecm,
           hasBubble:this.getEcmBubble(),
           title: I18N.MainMenu.SaveSchemeTab
+        }
+      );
+    }
+    
+    if ( this.permit(PermissionCode.Save_Effect.FULL) ||
+         this.permit(PermissionCode.Save_Effect.READONLY)
+    ) {
+      menuItems.push(
+        {
+          getPath: RoutePath.saveEffect.index,
+          title: I18N.MainMenu.SaveEffect
         }
       );
     }

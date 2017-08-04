@@ -118,9 +118,10 @@ let MainApp = React.createClass({
         ( !customerId || HierarchyStore.getBuildingList() );
     },
     needDefaultReplace: (router) => {
-      if(CurrentUserStore.getCurrentUser().Id === 1) {
-        return RoutePath.config(assign({}, router.params));
-      }
+      // Remove Platement
+      // if(CurrentUserStore.getCurrentUser().Id === 1) {
+      //   return RoutePath.config(assign({}, router.params));
+      // }
       if( CurrentUserCustomerStore.getAll().length > 1 ) {
         return false;
       }
