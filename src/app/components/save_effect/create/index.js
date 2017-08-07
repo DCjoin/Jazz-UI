@@ -12,6 +12,8 @@ import IconButton from 'material-ui/IconButton';
 
 import Step1 from './step1.jsx';
 
+import {getTagsByPlan} from 'actions/save_effect_action';
+
 function stepLabelProps(stepValue, currentStep) {
 	let props = {
 		style: {
@@ -39,16 +41,17 @@ function stepLabelProps(stepValue, currentStep) {
 	return props;
 }
 
-function Header({title, timeStr, onShowDetail, onClose}) {
+function Header({name, timeStr, onShowDetail, onClose}) {
 	return (	
-		<header>
+		<header style={{marginLeft: 30,marginTop: 20, marginBottom: 10}}>
 			<div>
-				<span>{I18N.Setting.Diagnose.CreateDiagnose}</span>
-				<span style={{marginLeft: 14}}>
-					{'新建节能效果'}
-				</span>
+				<div>{I18N.SaveEffect.CreateTitle + ' ' + name}</div>
+				<div style={{marginTop: 10}}>
+					{I18N.SaveEffect.Runtime + ': ' + timeStr}
+					<a style={{marginLeft: 30, color: '#32ad3d'}} href='javascript:void(0)'>{I18N.SaveEffect.ShowSavePlanDetail}</a>
+				</div>
 			</div>
-			<IconButton iconClassName='icon-close' onClick={onClose}/>
+			<IconButton style={{position: 'fixed', right: 14, top: 14}} iconClassName='icon-close' onClick={onClose}/>
 		</header>
 	);
 }
@@ -78,6 +81,7 @@ function Nav({step}) {
 export default class Create extends Component {
 	constructor(props) {
 		super(props);
+		getTagsByPlan(this.props.id);
 	}
 	renderContent() {
 		return (<Step1
@@ -96,17 +100,23 @@ export default class Create extends Component {
 				console.log('delete: ' + id);
 			}}
 			onAddItem={(tag) => {
-				
+
 			}}
 		/>);
 	}
 	render() {
+		let {name, id, date} = this.props
 		return (
 			<div className='jazz-save-effect-create'>
-				<Header/>
+				<Header name={name} timeStr={date.format('YYYY-MM-DD HH:mm')}/>
 				<Nav step={0}/>
 				{this.renderContent()}
 			</div>
 		);
 	}
 }
+Create.PropTypes = {
+	id: PropTypes.number.isRequired,
+	name: PropTypes.string.isRequired,
+	date: PropTypes.object.isRequired, //moment
+};

@@ -43,7 +43,6 @@ export default class SaveEffect extends Component {
 					disabledButton={false}
 				/>}
 				{children}
-				<CreateSaveEffect/>
 			</div>
 		);
 	}
