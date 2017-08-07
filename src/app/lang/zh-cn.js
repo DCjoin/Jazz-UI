@@ -2488,5 +2488,9 @@ I18N.Setting.Effect.List ='节能效果列表';
 I18N.Setting.Effect.TagName ='数据点：';
 I18N.Setting.Effect.Problem ='所属方案：';
 I18N.Setting.Effect.ContinueConfig ='继续配置';
+I18N.SaveEffect={};
+I18N.SaveEffect.OverviewLabel = '节能效果概览';
+I18N.SaveEffect.ListLabel = '方案节能效果';
+I18N.SaveEffect.BestLabel = '最佳方案';
 
 module.exports = I18N;

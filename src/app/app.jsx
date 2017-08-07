@@ -24,6 +24,9 @@ import Actuality from './components/KPI/Actuality.jsx';
 import KPIActuality from './components/KPI/KPIActuality.jsx';
 import ReportPreview from './components/KPI/ReportPreview.jsx';
 import SaveEffect from './components/save_effect';
+import SaveEffectOverview from './components/save_effect/save_effect_overview.jsx';
+import SaveEffectBestList from './components/save_effect/save_effect_best_list.jsx';
+import SaveEffectList from './components/save_effect/list/save_effect_list.jsx';
 import BuildingReportActuality from './components/KPI/BuildingReportActuality.jsx';
 import KPIConfig from './components/KPI/Group/ConfigMenu.jsx';
 import KPIConfigList from './components/KPI/Group/KPIConfigList.jsx';
@@ -227,6 +230,18 @@ ReactDom.render(<Router history={hashHistory} routes={{
         },
         path: 'save_effect',
         component: SaveEffect,
+        childRoutes: [{
+          path: 'overview',
+          component: SaveEffectOverview
+        }, {
+          path: 'list',
+          component: SaveEffectList
+        }, {
+          path: 'best',
+          component: SaveEffectBestList
+        }, {
+          path: 'detail'
+        }]
       },{
         onEnter: () => {
           document.title = I18N.MainMenu.SmartDiagnose;
