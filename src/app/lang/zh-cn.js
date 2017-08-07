@@ -2471,4 +2471,22 @@ I18N.Setting.Diagnose.AssociateTriggerArea='关联触发区域';
 I18N.Setting.Diagnose.Associate='关联';
 I18N.Setting.Diagnose.Created='诊断已创建';
 
+I18N.Setting.Effect={};
+I18N.Setting.Effect.Config='配置节能效果';
+I18N.Setting.Effect.Start='开始执行';
+I18N.Setting.Effect.AirConditioning='空调系统';
+I18N.Setting.Effect.Power='动力系统';
+I18N.Setting.Effect.Lighting='照明系统';
+I18N.Setting.Effect.Product='生产系统';
+I18N.Setting.Effect.AirCompressor ='空压系统';
+I18N.Setting.Effect.Heating ='供热系统';
+I18N.Setting.Effect.Water ='水系统';
+I18N.Setting.Effect.Other ='其他';
+I18N.Setting.Effect.ConfiguredTag ='已配置数据点：';
+I18N.Setting.Effect.Cost ='节约成本：';
+I18N.Setting.Effect.List ='节能效果列表';
+I18N.Setting.Effect.TagName ='数据点：';
+I18N.Setting.Effect.Problem ='所属方案：';
+I18N.Setting.Effect.ContinueConfig ='继续配置';
+
 module.exports = I18N;
