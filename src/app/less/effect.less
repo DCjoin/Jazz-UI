@@ -1,0 +1,62 @@
+.jazz-effect{
+  &-list{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    &-title{
+
+    }
+    &-content{
+      display: flex;
+      flex-direction: column;
+      flex:1;
+      overflow-x: hidden;
+      overflow-y: auto;
+      width: 100%;
+    }
+  }
+  &-item{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    &-info{
+      display: flex;
+      flex-direction: column;
+      flex:1;
+      &-title{
+        display: flex;
+        flex-direction: row;
+        >.isPreferred{
+          width:20px
+        }
+        >.name{
+
+        }
+      }
+      &-subTitle{
+        flex:1;
+        display: flex;
+        flex-direction: row;
+        >span{
+          flex:1
+        }
+      }
+    }
+    &-cost{
+
+    }
+    &-draft{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      &-title{
+        &-tag{
+
+        }
+        &-problem{
+
+        }
+      }
+    }
+  }
+}

@@ -30,14 +30,14 @@ export default class SaveEffect extends Component {
 		hierarchyId = this.context.hierarchyId * 1;
 		return (
 			<div className='jazz-save-effect'>
-				{needHeader && <Header 
+				{needHeader && <Header
 					isCustomer={hierarchyId === router.params.customerId * 1}
 					isOverview={isOverview(router)}
 					onActive={(routeFunc) => {
 						router.push(routeFunc(router.params))
 					}}
 					onCreateSaveRatio={() => {
-						
+
 					}}
 					disabledButton={false}
 				/>}

@@ -26,6 +26,7 @@ import ReportPreview from './components/KPI/ReportPreview.jsx';
 import SaveEffect from './components/save_effect';
 import SaveEffectOverview from './components/save_effect/save_effect_overview.jsx';
 import SaveEffectBestList from './components/save_effect/save_effect_best_list.jsx';
+import SaveEffectList from './components/save_effect/list/save_effect_list.jsx';
 import BuildingReportActuality from './components/KPI/BuildingReportActuality.jsx';
 import KPIConfig from './components/KPI/Group/ConfigMenu.jsx';
 import KPIConfigList from './components/KPI/Group/KPIConfigList.jsx';
@@ -234,7 +235,7 @@ ReactDom.render(<Router history={hashHistory} routes={{
           component: SaveEffectOverview
         }, {
           path: 'list',
-          component: SaveEffectOverview // Need Replace
+          component: SaveEffectList
         }, {
           path: 'best',
           component: SaveEffectBestList
