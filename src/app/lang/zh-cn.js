@@ -2492,5 +2492,6 @@ I18N.SaveEffect={};
 I18N.SaveEffect.OverviewLabel = '节能效果概览';
 I18N.SaveEffect.ListLabel = '方案节能效果';
 I18N.SaveEffect.BestLabel = '最佳方案';
+I18N.SaveEffect.ConfigEnergySavingRate = '配置节能率';
 
 module.exports = I18N;

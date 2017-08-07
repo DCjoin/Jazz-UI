@@ -10,14 +10,14 @@ let {AjaxActionType} = AjaxConstants;
 var ListStore = assign({}, PrototypeStore, {
   getAllEnergySystem(){
     return{
-        'AirConditioning':{label:I18N.Setting.Effect.AirConditioning,value:1},
-        'Power':{label:I18N.Setting.Effect.Power,value:2},
-        'Lighting':{label:I18N.Setting.Effect.Lighting,value:3},
-        'Product':{label:I18N.Setting.Effect.Product,value:4},
-        'AirCompressor':{label:I18N.Setting.Effect.AirCompressor,value:5},
-        'Heating':{label:I18N.Setting.Effect.Heating,value:6},
-        'Water':{label:I18N.Setting.Effect.Water,value:7},
-        'Other':{label:I18N.Setting.Effect.Other,value:8},
+        'AirConditioning':{label:I18N.Setting.Effect.AirConditioning,value:10},
+        'Power':{label:I18N.Setting.Effect.Power,value:20},
+        'Lighting':{label:I18N.Setting.Effect.Lighting,value:30},
+        'Product':{label:I18N.Setting.Effect.Product,value:40},
+        'AirCompressor':{label:I18N.Setting.Effect.AirCompressor,value:50},
+        'Heating':{label:I18N.Setting.Effect.Heating,value:60},
+        'Water':{label:I18N.Setting.Effect.Water,value:70},
+        'Other':{label:I18N.Setting.Effect.Other,value:200},
       }
   },
   getEnergySystem(value){

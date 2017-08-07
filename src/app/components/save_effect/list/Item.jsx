@@ -4,41 +4,46 @@ import moment from 'moment';
 // import {EnergySystemArr} from '../../../constants/actionType/Effect.jsx';
 import util from 'util/Util.jsx';
 import ListStore from '../../../stores/save_effect/ListStore.jsx';
+import classNames from 'classnames';
+import {calcState} from "../../../constants/actionType/Effect.jsx";
+import {
+  Step,
+  Stepper,
+  StepLabel,
+} from 'material-ui/Stepper';
 
 export class ItemForConsultant extends Component {
 
   getTitle(){
-    var {isCalculated}=this.props.effect.toJS();
+    var {CalcState,EnergySolutionName}=this.props.effect.toJS();
     return(
       <div className="jazz-effect-item-info-title">
         <span className="isPreferred"></span>
-        <span className="name">厨房排油烟风机运行时间优化</span>
-        {isCalculated!==null && <FontIcon className={isCalculated?"icon-revised-cn":"icon-revised-en"}/>}
+        <span className="name">{EnergySolutionName}</span>
+        {CalcState!==null && <FontIcon className={CalcState===calcState.Being?"icon-revised-cn":"icon-revised-en"}/>}
       </div>
     )
   }
 
   getInfo(){
-    var {startTime,EnergySystem,tagNumber,tagTotal,cost}=this.props.effect.toJS();
+    var {ExecutedTime,EnergySystem,ConfigedTagCount,TotalTagCount,AnnualCostSaving}=this.props.effect.toJS();
     return(
       <div className="jazz-effect-item-info-subTitle">
         <span>
-          <span>{moment(util.DataConverter.JsonToDateTime(startTime)).format(I18N.DateTimeFormat.IntervalFormat.FullDate)}</span>
+          <span>{moment(util.DataConverter.JsonToDateTime(ExecutedTime)).format(I18N.DateTimeFormat.IntervalFormat.FullDate)}</span>
           <span>{I18N.Setting.Effect.Start}</span>
-          {EnergySystem && <span>
-                            <span>|</span>
-                            <span>{ListStore.getEnergySystem(EnergySystem)}</span>
-                           </span>}
+          {EnergySystem && <span>|</span>}
+          {EnergySystem && <span>{ListStore.getEnergySystem(EnergySystem)}</span>}
         </span>
         <span>
           <span>{I18N.Setting.Effect.ConfiguredTag}</span>
-          <span>{tagNumber}</span>
-          <span>{`/${tagTotal}`}</span>
-          <span>{tagNumber===tagTotal && <FontIcon className="icon-sync-ok"/>}</span>
+          <span style={{color:"#000000"}}>{ConfigedTagCount}</span>
+          <span>{`/${TotalTagCount}`}</span>
+          <span>{ConfigedTagCount===TotalTagCount && <FontIcon className="icon-sync-ok"/>}</span>
         </span>
         <span>
           <span>{I18N.Setting.Effect.Cost}</span>
-          <span>{`${util.getLabelData(cost)} RMB`}</span>
+          <span style={{color:"#000000"}}>{`${util.getLabelData(AnnualCostSaving)} RMB`}</span>
         </span>
       </div>
     )
@@ -46,12 +51,16 @@ export class ItemForConsultant extends Component {
 
   render(){
     return(
-      <div className="jazz-effect-item">
-        <span className="jazz-effect-item-info">
-          {this.getTitle()}
-          {this.getInfo()}
-        </span>
-        <span className="jazz-effect-item-action">{I18N.Setting.Effect.Config}</span>
+      <div className={classNames({
+          "active":false
+        })}>
+        <div className="jazz-effect-item">
+          <span className="jazz-effect-item-info">
+            {this.getTitle()}
+            {this.getInfo()}
+          </span>
+          <span className="jazz-effect-item-action">{I18N.Setting.Effect.Config}</span>
+        </div>
       </div>
     )
   }
@@ -65,38 +74,36 @@ ItemForConsultant.propTypes = {
 export class ItemForManager extends Component {
 
   getTitle(){
-    var {isCalculated}=this.props.effect.toJS();
+    var {CalcState,EnergySolutionName}=this.props.effect.toJS();
     return(
       <div className="jazz-effect-item-info-title">
         <span className="isPreferred"></span>
-        <span className="name">厨房排油烟风机运行时间优化</span>
-        {isCalculated!==null && <FontIcon className={isCalculated?"icon-revised-cn":"icon-revised-en"}/>}
+        <span className="name">{EnergySolutionName}</span>
+        {CalcState!==null && <FontIcon className={CalcState===calcState.Being?"icon-revised-cn":"icon-revised-en"}/>}
       </div>
     )
   }
 
   getInfo(){
-    var {startTime,EnergySystem}=this.props.effect.toJS();
+    var {ExecutedTime,EnergySystem}=this.props.effect.toJS();
     return(
       <div className="jazz-effect-item-info-subTitle">
         <span>
-          <span>{moment(util.DataConverter.JsonToDateTime(startTime)).format(I18N.DateTimeFormat.IntervalFormat.FullDate)}</span>
+          <span>{moment(util.DataConverter.JsonToDateTime(ExecutedTime)).format(I18N.DateTimeFormat.IntervalFormat.FullDate)}</span>
           <span>{I18N.Setting.Effect.Start}</span>
-          {EnergySystem && <span>
-                            <span>|</span>
-                            <span>{ListStore.getEnergySystem(EnergySystem)}</span>
-                           </span>}
+          {EnergySystem && <span>|</span>}
+          {EnergySystem && <span>{ListStore.getEnergySystem(EnergySystem)}</span>}
         </span>
       </div>
     )
   }
 
   getCost(){
-    var {cost}=this.props.effect.toJS();
+    var {AnnualCostSaving}=this.props.effect.toJS();
     return(
       <span className="jazz-effect-item-cost">
         <span>{I18N.Setting.Effect.Cost}</span>
-        <span>{`${util.getLabelData(cost)} RMB`}</span>
+        <span>{`${util.getLabelData(AnnualCostSaving)} RMB`}</span>
       </span>
     )
   }
@@ -120,19 +127,39 @@ ItemForManager.propTypes = {
 export class ItemForDraft extends Component {
 
   getTitle(){
-    var {tagName,problemName}=this.props.effect.toJS();
+    var {TagName,EnergySolutionName}=this.props.effect.toJS();
     return(
       <span className="jazz-effect-item-draft-title">
-        <div className="jazz-effect-item-draft-title-tag">{`${I18N.Setting.Effect.TagName}${tagName}`}</div>
-        <div className="jazz-effect-item-draft-title-problem">{`${I18N.Setting.Effect.Problem}${problemName}`}</div>
+        <div className="jazz-effect-item-draft-title-tag">{`${I18N.Setting.Effect.TagName}${TagName}`}</div>
+        <div className="jazz-effect-item-draft-title-problem">{`${I18N.Setting.Effect.Problem}${EnergySolutionName}`}</div>
       </span>
     )
   }
 
   getStep(){
-    var {startTime,EnergySystem}=this.props.effect.toJS();
+    var {ConfigStep}=this.props.effect.toJS();
     return(
       <div className="jazz-effect-item-draft-stepper">
+        <Stepper linear={false}>
+          <Step completed={ConfigStep>=1}>
+            <StepLabel>
+      Select campaign settings
+    </StepLabel>
+  </Step>
+  <Step completed={false}>
+    <StepLabel
+      icon={<WarningIcon color={red500} />}
+      style={{color: red500}}
+    >
+      Create an ad group
+    </StepLabel>
+  </Step>
+  <Step completed={false}>
+    <StepLabel>
+      Create an ad
+    </StepLabel>
+  </Step>
+</Stepper>
       </div>
     )
   }

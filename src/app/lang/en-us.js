@@ -121,38 +121,38 @@ I18N.Login.NoPriTitle = 'Unable to log in Schneider Electric EnergyMost';
 I18N.Login.NoPriDetail = 'Customer or data authority is not configured. Please contact your administrator.';
 I18N.Login.NoPriButton = 'back to Login';
 
-I18N.Login.Energymost = '云能效';
-I18N.Login.APP = '云能效客户端';
-I18N.Login.ScanDownloadAPP = '扫描下载云能效客户端';
+I18N.Login.Energymost = 'EnergyMost';
+I18N.Login.APP = 'EnergyMost App';
+I18N.Login.ScanDownloadAPP = 'Scan and Download EnergyMost App';
 I18N.Login.Step1 = {};
-I18N.Login.Step1.Nav = '智能方案';
-I18N.Login.Step1.Title = '无需手动分析，节能方案即可无忧直达';
-I18N.Login.Step1.Line1 = '人工智能诊断模块，覆盖数百种能效问题';
-I18N.Login.Step1.Line2 = '专家顾问分析，解决方案直接推送';
-I18N.Login.Step1.Line3 = '投资回报率，节能量，投资金额，节约成本一目了然';
+I18N.Login.Step1.Nav = 'AI Solutions';
+I18N.Login.Step1.Title = 'Directly-sent energy-saving solutions with no manual analysis required';
+I18N.Login.Step1.Line1 = 'AI diagnostic modules can diagnose hundreds of energy efficiency problems.';
+I18N.Login.Step1.Line2 = 'Solutions analyzed by experts and consultants can be sent to you directly.';
+I18N.Login.Step1.Line3 = 'ROI, energy savings, investment amounts and cost savings are clear.';
 I18N.Login.Step2 = {};
-I18N.Login.Step2.Nav = '方案追踪';
-I18N.Login.Step2.Title = '线上线下互动，方案全程追踪';
-I18N.Login.Step2.Line1 = 'Web端与App协同工作';
-I18N.Login.Step2.Line2 = '方案分配到人，让执行更高效';
-I18N.Login.Step2.Line3 = '节能方案全生命周期管理';
-I18N.Login.Step2.Line4 = '从推送方案到方案执行到成本降低全程掌握';
+I18N.Login.Step2.Nav = 'Solution Tracking';
+I18N.Login.Step2.Title = 'Online and offline interaction with whole-course solution tracking';
+I18N.Login.Step2.Line1 = 'Web and app work together.';
+I18N.Login.Step2.Line2 = 'Solutions are assigned to people to improve execution efficiency.';
+I18N.Login.Step2.Line3 = 'Full lifecycle management of energy-saving solutions-';
+I18N.Login.Step2.Line4 = 'Coverage from solution push to execution to cost reduction.';
 I18N.Login.Step3 = {};
-I18N.Login.Step3.Nav = '集团指标';
-I18N.Login.Step3.Title = 'ISO50001能源管理方法，助力节能达成';
-I18N.Login.Step3.Line1 = '自上而下分解集团目标至建筑目标，同尺度排名让目标管理清晰统一';
-I18N.Login.Step3.Line2 = '智能预测全年目标达成情况，实时掌握能源使用状态';
-I18N.Login.Step3.Line3 = '智能细分建筑月度目标，助力目标达成';
+I18N.Login.Step3.Nav = 'Group Targets';
+I18N.Login.Step3.Title = 'ISO 50001 for energy saving';
+I18N.Login.Step3.Line1 = 'Group targets are divided into building targets and the ranking supports target management.';
+I18N.Login.Step3.Line2 = 'Smartly forecast annual target achievement and track real-time energy use.';
+I18N.Login.Step3.Line3 = 'Smartly divide monthly building targets to achieve group targets.';
 I18N.Login.Step4 = {};
-I18N.Login.Step4.Nav = '节能效果';
-I18N.Login.Step4.Title = '无需手动对比，节能效果轻松呈现';
-I18N.Login.Step4.Line1 = '智能计算已实施节能方案节能量，让数据更加精确';
-I18N.Login.Step4.Line2 = '动态呈现所有方案节能效果，让成本降低实时可见';
+I18N.Login.Step4.Nav = 'Solution Effects';
+I18N.Login.Step4.Title = 'Clearly shown solution effects with no manual comparison required';
+I18N.Login.Step4.Line1 = 'Calculate energy saving amount by intelligent computing for more accurate data.';
+I18N.Login.Step4.Line2 = 'Dynamically show the effects of all solutions to visualize real-time cost reduction.';
 I18N.Login.Step5 = {};
-I18N.Login.Step5.Nav = '最佳方案';
-I18N.Login.Step5.Title = '展示集团最佳方案，让节能可复制可粘贴';
-I18N.Login.Step5.Line1 = '智能筛选所有建筑节能方案，让投入少，回报高的方案脱颖而出';
-I18N.Login.Step5.Line2 = '最佳方案直接推送，让决策更轻松更高效';
+I18N.Login.Step5.Nav = 'Best Solutions';
+I18N.Login.Step5.Title = 'Displaying best solutions that can serve as good examples';
+I18N.Login.Step5.Line1 = 'Intelligently filter low-cost and high-return solutions among all the buildings.';
+I18N.Login.Step5.Line2 = 'Best solutions will be sent to you directly to improve decision making efficiency';
 
 I18N.ContactUS = {};
 I18N.ContactUS.Tips = 'If you have any questions or requirements, please feel free to contact us.';
@@ -180,7 +180,7 @@ I18N.InitPassword.SuccessTitle = 'Set password successfully';
 I18N.InitPassword.SuccessTips = 'Your password has been set successfully, please click "continue" to return login page.';
 
 I18N.SelectCustomer = {};
-I18N.SelectCustomer.SubTitle = '选择项目';
+I18N.SelectCustomer.SubTitle = 'Select project';
 I18N.SelectCustomer.Title = "Select customer";
 I18N.SelectCustomer.SysManagement = "EnergyMost sys-management";
 I18N.SelectCustomer.SysManagementTip = "System management";
@@ -1714,19 +1714,19 @@ I18N.Kpi = {
   ActualSaving: 'Annual Actual Energy Saving Rate',
   PredictSaving: 'Annual Prediction Energy Saving Rate',
 
-  ByYearUntilNowValue: '年度迄今实际值',
-  ByYearValue: '年度实际值',
-  ByYearUntilNowSavingValue: '年度迄今节能率实际值',
-  ByYearSavingRatioValue: '年度节能率实际值',
-  ByYearKPIUsagedPredict: '年度指标使用量预测值',
-  ByYearKPIUsagedValue: '年度指标使用量实际值',
-  ByYearUsagedTarget: '年度用量目标值',
-  ByYearUsagedPredict: '年度用量预测值',
-  ByYearSavingPredict: '年度节能量预测值',
-  ByYearUsagedValue: '年度用量实际值',
-  ByYearSavingValue: '年度节能量实际值',
-  ByYearKPI: '年度指标值',
-  ByYearUntilNowKPIUsaged: '年度迄今指标使用量',
+  ByYearUntilNowValue: 'Annual Actual Value by Now',
+  ByYearValue: 'Annual Actual Value',
+  ByYearUntilNowSavingValue: 'Annual Actual Energy Saving Rate by Now',
+  ByYearSavingRatioValue: '',
+  ByYearKPIUsagedPredict: 'Annual Predicted KPI Usage',
+  ByYearKPIUsagedValue: 'Annual Actual KPI Usage',
+  ByYearUsagedTarget: 'Annual Targeted Usage',
+  ByYearUsagedPredict: 'Annual Predicted Usage',
+  ByYearSavingPredict: 'Anuual Predicted Engergy Saving',
+  ByYearUsagedValue: 'Annual Actual Usage',
+  ByYearSavingValue: 'Annual Actual Energy Saving',
+  ByYearKPI: 'Annual KPI Value',
+  ByYearUntilNowKPIUsaged: 'Annual KPI Usage by Now',
 
   Error:{
     SelectBuilding: 'Please click the icon above to select or configure projects.',
@@ -2097,7 +2097,7 @@ I18N.Setting.KPI.Tag.Title = 'Please select the data point to create index.';
 I18N.Setting.KPI.Tag.NoTags = 'Please select first the dimension on the left, then the corresponding data point.';
 I18N.Setting.KPI.Tag.Select = 'Select';
 I18N.Setting.KPI.Tag.SelectAgain = 'Select Again';
-I18N.Setting.KPI.Tag.ClearAll = '全部清除';
+I18N.Setting.KPI.Tag.ClearAll = 'Clear All';
 I18N.Setting.KPI.SelectProject = 'Choose a Project';
 I18N.Setting.KPI.SelectBuilding = 'Choose a Building';
 I18N.Setting.KPI.Basic = {};
@@ -2110,8 +2110,8 @@ I18N.Setting.KPI.YearAndType.SelectYear= 'Choose a Year';
 I18N.Setting.KPI.YearAndType.SelectType= 'Choose a Type';
 I18N.Setting.KPI.YearAndType.Quota= 'Quota Index ';
 I18N.Setting.KPI.YearAndType.SavingRate= 'Energy Saving Rate Index';
-I18N.Setting.KPI.YearAndType.Dosage= '用量类指标';
-I18N.Setting.KPI.YearAndType.Ratio= '比值类指标';
+I18N.Setting.KPI.YearAndType.Dosage= 'Usage Index';
+I18N.Setting.KPI.YearAndType.Ratio= 'Ratio Index';
 I18N.Setting.KPI.Parameter = {};
 I18N.Setting.KPI.Parameter.Title= 'Step Three: Parameter Setting';
 I18N.Setting.KPI.Parameter.Indicator= 'Set Target';
@@ -2150,7 +2150,7 @@ I18N.Setting.KPI.Group.Prolong = 'Prolong the Index of last year-{0}Year';
 I18N.Setting.KPI.Group.Config = 'Configure';
 I18N.Setting.KPI.Group.GroupConfig ={};
 I18N.Setting.KPI.Group.GroupConfig.Title='Step Two：Group Index Setting';
-I18N.Setting.KPI.Group.GroupConfig.Title='第二步：集团指标配置';
+I18N.Setting.KPI.Group.GroupConfig.Title='Step Two: Group Index Setting';
 I18N.Setting.KPI.Group.GroupConfig.Annual= 'Group{0}Target Value';
 I18N.Setting.KPI.Group.GroupConfig.InputAnnual= 'Enter Group{0}';
 I18N.Setting.KPI.Group.BuildingConfig ={};
@@ -2164,7 +2164,7 @@ I18N.Setting.KPI.Group.BuildingConfig.Tag='Quote Data Points';
 I18N.Setting.KPI.Group.BuildingConfig.Operation='Operation';
 I18N.Setting.KPI.Group.BuildingConfig.MonthConfig='Set Monthly Value';
 I18N.Setting.KPI.Group.BuildingConfig.Input='Enter Building{0}';
-I18N.Setting.KPI.Group.BuildingConfig.ClearAllTip='确认全部清空建筑上配置的所有指标数据吗？';
+I18N.Setting.KPI.Group.BuildingConfig.ClearAllTip='Confirm to Clear all the Set Building Index Data？';
 I18N.Setting.KPI.Group.MonthConfig = {};
 I18N.Setting.KPI.Group.MonthConfig.Title='Set Monthly Value';
 I18N.Setting.KPI.Group.MonthConfig.TagSelect='Quote Actual Data Points';
@@ -2397,15 +2397,15 @@ I18N.Setting.Diagnose.CreateDiagnose='Create Disagnosis';
 I18N.Setting.Diagnose.SaveDiagnoseStep0='Select Diagnosis Data Points and Configure Diagnosis Range ';
 I18N.Setting.Diagnose.SaveDiagnoseStep1=' Edit Diagnosis Conditions ';
 I18N.Setting.Diagnose.SaveDiagnoseStep2=' Save Diagnosis ';
-I18N.Setting.Diagnose.SelectDiagnoseTags='Select Diagosis Data Points';
-I18N.Setting.Diagnose.SelectDiagnoseAndAssociateTags='请选择诊断数据点和关联数据点';
+I18N.Setting.Diagnose.SelectDiagnoseTags='Select Diagnosis Data Points';
+I18N.Setting.Diagnose.SelectDiagnoseAndAssociateTags='Select Diagnosis Data Points and Associate Data Points';
 I18N.Setting.Diagnose.InputDiagnoseCondition='Input Diagnosis Conditions';
 I18N.Setting.Diagnose.SaveThenReturn='Save and Return to Diagnosis List';
 I18N.Setting.Diagnose.SaveThenRenew='Save and Continue to Add';
 I18N.Setting.Diagnose.Diagnoseing='Diagnosing';
 I18N.Setting.Diagnose.DiagnoseTags='Diagnosis Data Points';
-I18N.Setting.Diagnose.Associateing='关联中';
-I18N.Setting.Diagnose.AssociateTags='关联数据点';
+I18N.Setting.Diagnose.Associateing='Associating';
+I18N.Setting.Diagnose.AssociateTags='Associate Data Points';
 I18N.Setting.Diagnose.ChartPreview='Chart Preview';
 I18N.Setting.Diagnose.SelectTagsFromLeft='Select Data Points on the Left';
 I18N.Setting.Diagnose.PreviewButton='Preview';
@@ -2461,18 +2461,17 @@ I18N.Setting.Diagnose.EditDiagnose='Edit Diagosis';
 I18N.Setting.Diagnose.SaveAndExit='Save and Exit';
 I18N.Setting.Diagnose.SaveErrorMsg='Diagnosis already exists, please modify the name and then save.';
 
-I18N.Setting.Diagnose.TriggerValueTitle='触发值({0})';
+I18N.Setting.Diagnose.TriggerValueTitle='Trigger Value({0})';
 
-I18N.Setting.Diagnose.AssociateCondition='关联触发条件';
-I18N.Setting.Diagnose.AssociateValueTitle='关联值({0})';
-I18N.Setting.Diagnose.AssociateValue='关联值';
-I18N.Setting.Diagnose.MoreThenAssociate='大于关联值';
-I18N.Setting.Diagnose.LessThenAssociate='小于关联值';
-I18N.Setting.Diagnose.InputAssociateValue='输入关联值';
-I18N.Setting.Diagnose.AssociateTriggerArea='关联触发区域';
-I18N.Setting.Diagnose.Associate='关联';
-I18N.Setting.Diagnose.Created='诊断已创建';
-
+I18N.Setting.Diagnose.AssociateCondition='Associate Trigger Condition';
+I18N.Setting.Diagnose.AssociateValueTitle='Associated Value({0})';
+I18N.Setting.Diagnose.AssociateValue='Associated Value';
+I18N.Setting.Diagnose.MoreThenAssociate='More than Associated Value';
+I18N.Setting.Diagnose.LessThenAssociate='Less than Associated Value';
+I18N.Setting.Diagnose.InputAssociateValue='Input Asspciated Value';
+I18N.Setting.Diagnose.AssociateTriggerArea='Associate Trigger Area';
+I18N.Setting.Diagnose.Associate='Associate';
+I18N.Setting.Diagnose.Created='Diagnosis has been created';
 I18N.SaveEffect={};
 I18N.SaveEffect.OverviewLabel = '节能效果概览';
 I18N.SaveEffect.ListLabel = '方案节能效果';
