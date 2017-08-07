@@ -10,4 +10,48 @@
 		justify-content: space-between;
 		align-items: center;
 	}
+
+	&-create {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: #f3f5f7;
+		z-index: 1;
+
+		& .icon-close {
+			position: fixed;
+
+			&:before {
+				font-size: 18px;
+			}
+		}
+
+		& .create-block {
+			margin: 0 20px 20px;
+			background-color: #ffffff;
+			border: solid 1px @border;
+		}
+
+		& .step1 {
+			&-header {
+				height: 50px;
+				line-height: 50px;
+				border-bottom: 1px solid @border;
+				padding: 0 15px;
+			}
+			&-content {
+				padding: 20px 15px;
+
+				& .tag-configed {
+					margin-left: 40px;
+					color: @medium-gray;
+					line-height: 24px;
+					font-size: 14px;
+					margin-bottom: 5px;
+				}
+			}
+		}
+	}
 }

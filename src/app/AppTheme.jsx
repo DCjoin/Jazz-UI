@@ -25,7 +25,7 @@ module.exports = {
   //   desktopSubheaderHeight: 48,
   //   desktopToolbarHeight: 56,
   // },
-  fontFamily: 'Lantinghei sc,Microsoft YaHei Light,Microsoft YaHei',
+  fontFamily: 'Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Noto Sans CJK SC,WenQuanYi Micro Hei,Arial,sans-serif',
   palette: {
     primary1Color: getLessVar('medium-green'),
     primary2Color: Colors.cyan700,

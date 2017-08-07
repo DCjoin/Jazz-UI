@@ -2477,5 +2477,15 @@ I18N.SaveEffect={};
 I18N.SaveEffect.OverviewLabel = '节能效果概览';
 I18N.SaveEffect.ListLabel = '方案节能效果';
 I18N.SaveEffect.BestLabel = '最佳方案';
+I18N.SaveEffect.ConfigSaveRatio='配置节能率';
+I18N.SaveEffect.Configed='已配置';
+I18N.SaveEffect.AddTag='新增数据点';
+I18N.SaveEffect.Step1='选择数据点';
+I18N.SaveEffect.Step2='配置基准能耗值';
+I18N.SaveEffect.Step3='计算节能量';
+I18N.SaveEffect.Step4='配置展示图';
+I18N.SaveEffect.CreateTitle='新建节能效果';
+I18N.SaveEffect.Runtime='执行时间';
+I18N.SaveEffect.ShowSavePlanDetail='查看节能方案详情';
 
 module.exports = I18N;

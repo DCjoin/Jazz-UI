@@ -86,5 +86,9 @@ module.exports = {
     generatesolution:'/diagnose/generatesolution/{diagnoseId}',
     isconfigcalendar:'/diagnose/isconfigcalendar/{hierarchyId}',
     getConsultant: '/user/getconsultant/{hierarchyId}',
+  },
+
+  SaveEffect: {
+    getTagsByPlan: '/save_effert/get/tags/{planId}'
   }
 };
