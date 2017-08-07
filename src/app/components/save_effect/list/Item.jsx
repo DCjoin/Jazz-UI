@@ -142,24 +142,18 @@ export class ItemForDraft extends Component {
       <div className="jazz-effect-item-draft-stepper">
         <Stepper linear={false}>
           <Step completed={ConfigStep>=1}>
-            <StepLabel>
-      Select campaign settings
-    </StepLabel>
-  </Step>
-  <Step completed={false}>
-    <StepLabel
-      icon={<WarningIcon color={red500} />}
-      style={{color: red500}}
-    >
-      Create an ad group
-    </StepLabel>
-  </Step>
-  <Step completed={false}>
-    <StepLabel>
-      Create an ad
-    </StepLabel>
-  </Step>
-</Stepper>
+            <StepLabel style={{color:"#626469",fontSize:'14px'}}>{I18N.SaveEffect.Step1}</StepLabel>
+          </Step>
+          <Step completed={ConfigStep>=2}>
+            <StepLabel style={{color:"#626469",fontSize:'14px'}}>{I18N.SaveEffect.Step2}</StepLabel>
+          </Step>
+          <Step completed={ConfigStep>=3}>
+            <StepLabel style={{color:"#626469",fontSize:'14px'}}>{I18N.SaveEffect.Step3}</StepLabel>
+          </Step>
+          <Step completed={ConfigStep>=4}>
+            <StepLabel style={{color:"#626469",fontSize:'14px'}}>{I18N.SaveEffect.Step4}</StepLabel>
+          </Step>
+        </Stepper>
       </div>
     )
   }
@@ -177,7 +171,7 @@ export class ItemForDraft extends Component {
       <div className="jazz-effect-item-draft">
         {this.getTitle()}
         {this.getStep()}
-        {this.getCost()}
+        {this.getAction()}
       </div>
     )
   }

@@ -3,6 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import RoutePath from 'util/RoutePath.jsx';
 
 import Header from './header_tabs_bar.jsx';
+import CreateSaveEffect from './create';
 
 function checkPathMatch(targetPath, currentPath) {
 	return currentPath.indexOf(targetPath) === 0;

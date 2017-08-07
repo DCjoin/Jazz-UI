@@ -4,8 +4,9 @@ import PrototypeStore from '../PrototypeStore.jsx';
 import Immutable from 'immutable';
 // import events from 'events';
 import assign from 'object-assign';
+import { Action } from 'constants/actionType/Effect.jsx';
 
-let {AjaxActionType} = AjaxConstants;
+var _effect=null;
 
 var ListStore = assign({}, PrototypeStore, {
   getAllEnergySystem(){
@@ -24,13 +25,19 @@ var ListStore = assign({}, PrototypeStore, {
     var energySys=Immutable.fromJS(this.getAllEnergySystem())
     return energySys.find(item=>(item.get('value')===value)).get('label')
   },
+  setEffect(effect){
+  _effect=Immutable.fromJS(effect);
+  },
+  getEffect(){
+    return _effect
+  }
 
 });
 
 ListStore.dispatchToken = AppDispatcher.register(function(action) {
   switch(action.type) {
-    case AjaxActionType.AJAX_END_ERROR:
-        AjaxStore.emitError(action.httpStatusCode);
+    case Action.GET_ENERGY_EFFECT:
+        ListStore.setEffect(action.effect);
         break;
     default:
       // do nothing
