@@ -4,6 +4,7 @@ import RoutePath from 'util/RoutePath.jsx';
 
 import Header from './header_tabs_bar.jsx';
 import CreateSaveEffect from './create';
+import moment from 'moment';
 
 function checkPathMatch(targetPath, currentPath) {
 	return currentPath.indexOf(targetPath) === 0;
@@ -31,18 +32,19 @@ export default class SaveEffect extends Component {
 		hierarchyId = this.context.hierarchyId * 1;
 		return (
 			<div className='jazz-save-effect'>
-				{needHeader && <Header
+				{needHeader && <Header 
 					isCustomer={hierarchyId === router.params.customerId * 1}
 					isOverview={isOverview(router)}
 					onActive={(routeFunc) => {
 						router.push(routeFunc(router.params))
 					}}
 					onCreateSaveRatio={() => {
-
+						
 					}}
 					disabledButton={false}
 				/>}
 				{children}
+				<CreateSaveEffect id={123} name={'呵呵呵'} date={moment()}/>
 			</div>
 		);
 	}

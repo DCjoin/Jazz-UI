@@ -75,6 +75,7 @@
         <!-- <script src='http://localhost:3000/assets/zh-cn.js'></script> -->
         <div style='display: none;'>
         <script>
+          window.APIPath = '${JAZZ_APP_HOST}';
           document.rawWrite = document.write;
           document.write = function(content) {
             if(content.indexOf('<script ') === 0) {
