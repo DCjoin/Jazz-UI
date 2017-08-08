@@ -13,6 +13,37 @@ import {
   StepLabel,
 } from 'material-ui/Stepper';
 
+class CalculatingIcon extends Component{
+  render(){
+    var iconStyle={
+      fontSize:'10px',
+      marginRight:'3px'
+    }
+    return(
+      <div className="icon-calculating">
+        <FontIcon className="icon-mainline" color="#32ad3d" style={iconStyle}/>
+        <div>{I18N.SaveEffect.Calculating}</div>
+
+      </div>
+    )
+  }
+}
+
+class CalculatedIcon extends Component{
+  render(){
+    var iconStyle={
+      fontSize:'10px',
+      marginRight:'3px'
+    }
+    return(
+      <div className="icon-calculated">
+        <FontIcon className="icon-sync-ok" color="#ffffff" style={iconStyle}/>
+        <div>{I18N.SaveEffect.Calculated}</div>
+      </div>
+    )
+  }
+}
+
 export class ItemForConsultant extends Component {
 
   getTitle(){
@@ -21,7 +52,7 @@ export class ItemForConsultant extends Component {
       <div className="jazz-effect-item-info-title">
         <span className="isPreferred"></span>
         <span className="name">{EnergySolutionName}</span>
-        {CalcState!==null && <FontIcon className={CalcState===calcState.Being?"icon-revised-cn":"icon-revised-en"}/>}
+        {CalcState!==null && CalcState===calcState.Being?<CalculatingIcon/>:<CalculatedIcon/>}
       </div>
     )
   }
@@ -40,7 +71,7 @@ export class ItemForConsultant extends Component {
           <span>{I18N.Setting.Effect.ConfiguredTag}</span>
           <span style={{color:"#000000"}}>{ConfigedTagCount}</span>
           <span>{`/${TotalTagCount}`}</span>
-          <span>{ConfigedTagCount===TotalTagCount && <FontIcon className="icon-sync-ok"/>}</span>
+          <span>{ConfigedTagCount===TotalTagCount && <FontIcon className="icon-check-circle" color="#32ad3d" style={{fontSize:'14px',marginLeft:'10px'}}/>}</span>
         </span>}
         {ConfigedTagCount>0 && <span>
           <span>{I18N.Setting.Effect.Cost}</span>
@@ -81,7 +112,7 @@ export class ItemForManager extends Component {
       <div className="jazz-effect-item-info-title">
         <span className="isPreferred"></span>
         <span className="name">{EnergySolutionName}</span>
-        {CalcState!==null && <FontIcon className={CalcState===calcState.Being?"icon-revised-cn":"icon-revised-en"}/>}
+        {CalcState!==null && CalcState===calcState.Being?<CalculatingIcon/>:<CalculatedIcon/>}
       </div>
     )
   }

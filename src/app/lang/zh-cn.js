@@ -2505,5 +2505,11 @@ I18N.SaveEffect.ShowSavePlanDetail='查看节能方案详情';
 I18N.SaveEffect.NoEffectList='暂无方案节能效果';
 I18N.SaveEffect.EffectRateTip='请点击下方按钮配置节能率！';
 I18N.SaveEffect.Draft='草稿';
+I18N.SaveEffect.Calculating='计算中';
+I18N.SaveEffect.Calculated='计算完成';
+I18N.SaveEffect.DraftDeleteConfirm='确认删除“{0}”的草稿？';
+I18N.SaveEffect.EnergySystem='能源系统';
+I18N.SaveEffect.SelectTagAgain='重选';
+I18N.SaveEffect.SelectTag='关联节能率数据点';
 
 module.exports = I18N;
