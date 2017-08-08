@@ -2502,5 +2502,8 @@ I18N.SaveEffect.Step4='配置展示图';
 I18N.SaveEffect.CreateTitle='新建节能效果';
 I18N.SaveEffect.Runtime='执行时间';
 I18N.SaveEffect.ShowSavePlanDetail='查看节能方案详情';
+I18N.SaveEffect.NoEffectList='暂无方案节能效果';
+I18N.SaveEffect.EffectRateTip='请点击下方按钮配置节能率！';
+I18N.SaveEffect.Draft='草稿';
 
 module.exports = I18N;

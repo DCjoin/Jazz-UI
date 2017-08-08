@@ -203,7 +203,7 @@ function step2NeedRequire(DiagnoseModel, TriggerType, TriggerValue, AssociateVal
 	}
 }
 
-function stepLabelProps(stepValue, currentStep) {
+export function stepLabelProps(stepValue, currentStep) {
 	let props = {
 		style: {
 			height: 50,
@@ -481,7 +481,7 @@ function TagListTypeC({tags, onCheck, checkedTags, associateTag, onAssociateChec
 		associateContent = (<TagContent tags={associateTag.get('Tags')} onCheck={onAssociateCheck} checkedTags={checkedAssociateTag} statusLabel={I18N.Setting.Diagnose.Associateing}/>);
 	}
 	return (
-		<Tabs className='diagnose-create-tag-list' 
+		<Tabs className='diagnose-create-tag-list'
 			tabItemContainerStyle={{backgroundColor: '#ffffff', borderBottom: '1px solid #e6e6e6', flex: 'none'}}
 			contentContainerStyle={{ flex: 1, display: 'flex', flexDirection: 'column',}}
 			tabTemplateStyle={{flex: 'none', display: 'flex', height: '100%'}}
@@ -978,9 +978,9 @@ class CreateStep1 extends Component {
 			<section className='diagnose-create-content'>
 				<div className='diagnose-create-step'>
 					{ isTypeC(DiagnoseModel) ?
-					<TagListTypeC 
-						tags={diagnoseTags} 
-						checkedTags={checkedTags} 
+					<TagListTypeC
+						tags={diagnoseTags}
+						checkedTags={checkedTags}
 						onCheck={onCheckDiagnose}
 						associateTag={associateTag}
 						checkedAssociateTag={checkedAssociateTag}
@@ -988,7 +988,7 @@ class CreateStep1 extends Component {
 					/>:
 					<TagList tags={diagnoseTags} checkedTags={checkedTags} onCheck={onCheckDiagnose}/>
 					}
-					
+
 					<ChartPreview
 						isTypeC={isTypeC(DiagnoseModel)}
 						onDeleteLegendItem={onDeleteLegendItem}
@@ -1062,13 +1062,13 @@ export class CreateStep2 extends Component {
 			if( isTypeC(DiagnoseModel) ) {
 				_lasttUom = getUomById(
 					chartData.getIn([
-						'EnergyViewData', 
-						'TargetEnergyData', 
+						'EnergyViewData',
+						'TargetEnergyData',
 						chartData.getIn([
-							'EnergyViewData', 
-							'TargetEnergyData', 
-						]).size - 1, 
-						'Target', 
+							'EnergyViewData',
+							'TargetEnergyData',
+						]).size - 1,
+						'Target',
 						'UomId']
 					)
 				).Code;
@@ -1385,11 +1385,11 @@ class CreateDiagnose extends Component {
 	_onAssociateCheck(id, val) {
 		let newCheckedTags = [...this.state.checkedAssociateTag],
 		currentTags = this.state.associateTag.get('Tags').find(tag => tag.get('Id') === id);
-		if( val ) {	
+		if( val ) {
 			newCheckedTags = [{
 				Id: currentTags.get('Id'),
 				DiagnoseName: currentTags.get('DiagnoseName'),
-				Step: currentTags.get('Step'),				
+				Step: currentTags.get('Step'),
 			}]
 		} else {
 			newCheckedTags.splice(newCheckedTags.map(tag => tag.Id).indexOf(id), 1);
@@ -1520,7 +1520,7 @@ class CreateDiagnose extends Component {
 								} else {
 									this._setFilterObjThenUpdataChart('Step', val);
 								}
-								
+
 							} else {
 								this.setState({
 									tmpFilterDiagnoseTags: checkedTags,
@@ -1648,8 +1648,8 @@ class CreateDiagnose extends Component {
 						.reduce((result, val) => result || isEmptyStr(val), false),
 		buttons = [],
 		disabledNext = step2NeedRequire(
-			this.props.EnergyLabel.get('DiagnoseModel'), 
-			filterObj.get('TriggerType'), 
+			this.props.EnergyLabel.get('DiagnoseModel'),
+			filterObj.get('TriggerType'),
 			filterObj.get('TriggerValue'),
 			filterObj.getIn(['AssociateTag', 'TriggerValue'])
 		);
