@@ -44,7 +44,6 @@ export default class SaveEffect extends Component {
 					disabledButton={false}
 				/>}
 				{children}
-				<CreateSaveEffect id={123} name={'呵呵呵'} date={moment()}/>
 			</div>
 		);
 	}

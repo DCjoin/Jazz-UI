@@ -14,6 +14,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import ReduxDecorator from 'decorator/ReduxDecorator.jsx';
 
 import Step1 from './step1.jsx';
+import Step2 from './step2.jsx';
 
 import {getTagsByPlan, updateTags} from 'actions/save_effect_action';
 
@@ -97,7 +98,7 @@ export default class Create extends Component {
 
 		this.state = {
 			selectedId: null,
-			step: 0,
+			step: 1,
 		}
 	}
 	_isReady() {
@@ -105,20 +106,25 @@ export default class Create extends Component {
 	}
 	renderContent() {
 		let { selectedId, step, tags } = this.state;
-		if( step === 0 ) {			
-			return (<Step1
-				tags={tags}
-				selectedId={selectedId}
-				onClickItem={(selectedId) => {
-					this.setState((state, props) => {
-						return {
-							selectedId
-						}
-					});
-				}}
-				onDeleteItem={idx => updateTags(this.state.tags.delete(idx))}
-				onAddItem={ tag => updateTags(this.state.tags.push(tag))}
-			/>);
+		switch(step) {
+			case 0:
+				return (<Step1
+					tags={tags}
+					selectedId={selectedId}
+					onClickItem={(selectedId) => {
+						this.setState((state, props) => {
+							return {
+								selectedId
+							}
+						});
+					}}
+					onDeleteItem={idx => updateTags(this.state.tags.delete(idx))}
+					onAddItem={ tag => updateTags(this.state.tags.push(tag))}
+				/>);
+			case 1:
+				return (<Step2
+				/>);
+
 		}
 	}
 	render() {
