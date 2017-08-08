@@ -9,10 +9,15 @@ import {
 } from 'material-ui/Stepper';
 import SvgIcon from 'material-ui/SvgIcon';
 import IconButton from 'material-ui/IconButton';
+import CircularProgress from 'material-ui/CircularProgress';
+
+import ReduxDecorator from 'decorator/ReduxDecorator.jsx';
 
 import Step1 from './step1.jsx';
 
-import {getTagsByPlan} from 'actions/save_effect_action';
+import {getTagsByPlan, updateTags} from 'actions/save_effect_action';
+
+import CreateStore from 'stores/save_effect/create_store';
 
 function stepLabelProps(stepValue, currentStep) {
 	let props = {
@@ -77,39 +82,56 @@ function Nav({step}) {
 	);
 }
 
-
+@ReduxDecorator
 export default class Create extends Component {
+	static calculateState = (state, props, ctx) => {
+		return {
+			tags: CreateStore.getTagsByPlan()
+		}
+	};
+	static getStores = () => [CreateStore];
 	constructor(props) {
 		super(props);
+
 		getTagsByPlan(this.props.id);
+
+		this.state = {
+			selectedId: null,
+			step: 0,
+		}
+	}
+	_isReady() {
+		return !!this.state.tags;
 	}
 	renderContent() {
-		return (<Step1
-			tags={Immutable.fromJS([
-				{Id: 1, Name: 'tag1', Configed: false, isNew: false},
-				{Id: 2, Name: 'tag2', Configed: true, isNew: false},
-				{Id: 3, Name: 'tag3', Configed: true, isNew: false},
-				{Id: 4, Name: 'tag4', Configed: false, isNew: true},
-				{Id: 5, Name: 'tag5', Configed: false, isNew: true},
-			])}
-			selectedId={5}
-			onClickItem={(id) => {
-				console.log('click: ' + id);
-			}}
-			onDeleteItem={(id) => {
-				console.log('delete: ' + id);
-			}}
-			onAddItem={(tag) => {
-
-			}}
-		/>);
+		let { selectedId, step, tags } = this.state;
+		if( step === 0 ) {			
+			return (<Step1
+				tags={tags}
+				selectedId={selectedId}
+				onClickItem={(selectedId) => {
+					this.setState((state, props) => {
+						return {
+							selectedId
+						}
+					});
+				}}
+				onDeleteItem={idx => updateTags(this.state.tags.delete(idx))}
+				onAddItem={ tag => updateTags(this.state.tags.push(tag))}
+			/>);
+		}
 	}
 	render() {
-		let {name, id, date} = this.props
+		if( !this._isReady() ) {
+			return (<div className='jazz-save-effect-create flex-center'>
+				<CircularProgress  mode="indeterminate" size={80} />
+			</div>);
+		}
+		let {name, id, date} = this.props;
 		return (
 			<div className='jazz-save-effect-create'>
 				<Header name={name} timeStr={date.format('YYYY-MM-DD HH:mm')}/>
-				<Nav step={0}/>
+				<Nav step={this.state.step}/>
 				{this.renderContent()}
 			</div>
 		);
