@@ -3,7 +3,8 @@ import keyMirror from 'keymirror';
 module.exports = {
 
   Action: keyMirror({
-    GET_ENERGY_EFFECT:null
+    UPDATE_TAGS: null,
+    GET_ENERGY_EFFECT:null,
   }),
   calcState:{
     NotStarted:10,

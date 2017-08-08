@@ -1,5 +1,5 @@
 export default {
-  ServeAddress: "",
+  ServeAddress: window.APIPath,
   APIBasePath: "/API",
   socketServer: "",
 }

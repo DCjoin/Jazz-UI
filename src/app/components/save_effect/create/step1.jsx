@@ -11,7 +11,7 @@ import TagSelect from 'components/KPI/Single/TagSelect.jsx';
 import LinkButton from 'controls/LinkButton.jsx';
 import NewFlatButton from 'controls/NewFlatButton.jsx';
 
-function TagItem({tag, selectedId, onClick, onDelete}) {
+function TagItem({tag, selectedId, onClick, onDelete, idx}) {
 	if( tag.get('Configed') ) {
 		return (<div className='tag-configed'>
 			<span>{tag.get('Name')}</span>
@@ -37,7 +37,7 @@ function TagItem({tag, selectedId, onClick, onDelete}) {
 					lineHeight: '24px',
 				}} 
 				onClick={() => {
-					onDelete(tag.get('Id'));
+					onDelete(idx);
 				}}
 			>{I18N.Common.Button.Delete}</a>}
 		</div>
@@ -74,8 +74,9 @@ export default class Step1 extends Component {
 						onClick={this._onOpenSeleteTagDlg}/>
 				</header>
 				<div className='step1-content'>
-					{tags.map( tag => 
+					{tags.map( (tag, idx) => 
 					<TagItem 
+						idx={idx}
 						key={tag.get('Id')} 
 						tag={tag} 
 						selectedId={selectedId}
@@ -90,7 +91,9 @@ export default class Step1 extends Component {
 						find(HierarchyStore.getBuildingList(), hier => hier.Id === this.context.hierarchyId * 1).Name}
 					onCancel={this._onCloseSeleteTagDlg}
 					onSave={(selectedTag) =>{
-						onAddItem(selectedTag);
+						onAddItem({...selectedTag, ...{
+							isNew: true
+						}});
 						this._onCloseSeleteTagDlg();
 					}}
 				/>}

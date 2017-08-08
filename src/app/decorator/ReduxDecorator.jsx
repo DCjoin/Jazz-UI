@@ -64,7 +64,9 @@ function ReduxDecorator(Base) {
 		_onChange() {
 			let {state, props, context} = this;
 			if( !util.shallowEqual(state, Base.calculateState(state, props, context)) ) {
-				this.setState(Base.calculateState(state, props, context));
+				this.setState(() => {
+					return Base.calculateState(state, props, context)
+				});
 			}
 		}
 
