@@ -37,3 +37,14 @@ export function updateTags(tags) {
       tags
     });	
 };
+
+export function getenergyeffect(id) {
+	Ajax.get( Util.replacePathParams(SaveEffect.getenergyeffect, id), {
+		success: (effect) => {
+      AppDispatcher.dispatch({
+        type: Action.GET_ENERGY_EFFECT,
+        effect
+      });
+		}
+	});
+};
