@@ -17,7 +17,7 @@ export function getTagsByPlan(id) {
       });
 		}
 	});
-};
+}
 
 export function getenergyeffect(id) {
 	Ajax.get( Util.replacePathParams(SaveEffect.getenergyeffect, id), {
@@ -28,4 +28,26 @@ export function getenergyeffect(id) {
       });
 		}
 	});
-};
+}
+
+export function getEffectRateTag(hierarchyId) {
+	Ajax.get( Util.replacePathParams(SaveEffect.getenergyeffectratetags,hierarchyId), {
+		success: (tags) => {
+			AppDispatcher.dispatch({
+				type: Action.GET_EFFECT_RATE_TAG,
+				tags
+			});
+		}
+	});
+}
+
+export function saveeffectratetag(customerId,hierarchyId,list) {
+	Ajax.post( Util.replacePathParams(SaveEffect.saveenergyeffectratetags,customerId,hierarchyId), {
+		params: list.toJS(),
+		success: () => {
+			AppDispatcher.dispatch({
+				type: Action.SAVE_EFFECT_RATE_TAG,
+			});
+		}
+	});
+}

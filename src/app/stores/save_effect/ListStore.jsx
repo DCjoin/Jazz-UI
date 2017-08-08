@@ -6,7 +6,7 @@ import Immutable from 'immutable';
 import assign from 'object-assign';
 import { Action } from 'constants/actionType/Effect.jsx';
 
-var _effect=null;
+var _effect=null,_tags=null;
 
 var ListStore = assign({}, PrototypeStore, {
   getAllEnergySystem(){
@@ -33,6 +33,12 @@ var ListStore = assign({}, PrototypeStore, {
   },
   getRateBtnDisabled(energyEffects){
     return energyEffects.findIndex(item=>(item.get("ConfigedTagCount")!==0))===-1
+  },
+  setRateTagList(tags){
+    _tags=Immutable.fromJS(tags);
+  },
+  getRateTagList(){
+    return _tags
   }
 
 });
@@ -41,6 +47,11 @@ ListStore.dispatchToken = AppDispatcher.register(function(action) {
   switch(action.type) {
     case Action.GET_ENERGY_EFFECT:
         ListStore.setEffect(action.effect);
+        ListStore.emitChange();
+        break;
+    case Action.GET_EFFECT_RATE_TAG:
+        ListStore.setRateTagList(action.tags);
+        ListStore.emitChange();
         break;
     default:
       // do nothing
