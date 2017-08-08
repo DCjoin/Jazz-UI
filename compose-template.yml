@@ -5,6 +5,8 @@
     - 8080/tcp
   environment:
     - NPM_CONFIG_LOGLEVEL=info
+    - JAZZ_APP_HOST=${JAZZ_APP_HOST}
+    - JAZZ_UI_UMENG_CNZZ_SDK_URL=${JAZZ_UI_UMENG_CNZZ_SDK_URL}
   memswap_limit: 0
   labels:
     aliyun.scale: '1'
