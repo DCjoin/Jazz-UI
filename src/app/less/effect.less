@@ -10,6 +10,21 @@
       display: flex;
       flex-direction: row;
       align-items:center;
+      justify-content: space-between;
+      >div:first-child{
+        display: flex;
+        flex-direction: row;
+        align-items:center;
+      }
+      .draft-btn{
+        font-size: 14px;
+        color: #32ad3d;
+        &:hover{
+          cursor: pointer;
+          color: #3DCD58;
+        }
+      }
+
     }
     &-title{
       font-size: 16px;
@@ -125,7 +140,7 @@
       background-color: #ffffff;
       border: solid 1px @border;
       margin-top:15px;
-      padding:18px 0 18px 35px;
+      padding:15px 0 15px 35px;
       box-sizing: border-box;
       align-items: center;
       &-title{

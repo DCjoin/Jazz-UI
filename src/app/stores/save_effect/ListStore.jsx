@@ -30,6 +30,9 @@ var ListStore = assign({}, PrototypeStore, {
   },
   getEffect(){
     return _effect
+  },
+  getRateBtnDisabled(energyEffects){
+    return energyEffects.findIndex(item=>(item.get("ConfigedTagCount")!==0))===-1
   }
 
 });

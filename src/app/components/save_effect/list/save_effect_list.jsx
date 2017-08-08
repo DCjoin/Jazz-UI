@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {ItemForManager,ItemForConsultant} from './Item.jsx';
+import {ItemForManager,ItemForConsultant,ItemForDraft} from './Item.jsx';
 import _ from 'lodash-es';
 import Immutable from "immutable";
 import privilegeUtil from 'util/privilegeUtil.jsx';
@@ -18,25 +18,6 @@ function isFull() {
 	return privilegeWithSave_Effect(privilegeUtil.isFull.bind(privilegeUtil));
 }
 
-const arr=_.fill(Array(10),{
-  "AnnualCostSaving": 1.1,
-  "CalcState": 1,
-      "ConfigedTagCount": 2,
-      "EnergyProblemId": 3,
-      "EnergySolutionName": "sample string 4",
-      "EnergySystem": 10,
-      "ExecutedTime": "2017-08-07T08:20:22",
-      "TotalTagCount": 6
-
-})
-const draftarr=_.fill(Array(10),{
-  "ConfigStep": 1,
-      "EnergyProblemId": 2,
-      "EnergySolutionName": "sample string 3",
-      "TagId": 4,
-      "TagName": "sample string 5"
-
-})
 export default class EffectList extends Component {
 
   static contextTypes = {
@@ -70,7 +51,7 @@ export default class EffectList extends Component {
     {
       "AnnualCostSaving": 1.1,
       "CalcState": 1,
-      "ConfigedTagCount": 2,
+      "ConfigedTagCount": 1,
       "EnergyProblemId": 3,
       "EnergySolutionName": "sample string 4",
       "EnergySystem": 10,
@@ -80,7 +61,7 @@ export default class EffectList extends Component {
     {
       "AnnualCostSaving": 1.1,
       "CalcState": 1,
-      "ConfigedTagCount": 2,
+      "ConfigedTagCount": 0,
       "EnergyProblemId": 3,
       "EnergySolutionName": "sample string 4",
       "EnergySystem": 10,
@@ -89,7 +70,8 @@ export default class EffectList extends Component {
     }
   ],
   "SavingRateConfigState": 1
-})
+}),
+  draftShow:false
   }
 
   _onChanged(){
@@ -98,14 +80,20 @@ export default class EffectList extends Component {
     })
   }
 
-  componentDidMount(){
-    getenergyeffect(this.context.hierarchyId);
-    ListStore.addChangeListener(this._onChanged);
+  _onDraftShow(){
+    this.setState({
+      draftShow:true
+    })
   }
 
-  componentWillUnmount(){
-    ListStore.removeChangeListener(this._onChanged);
-  }
+  // componentDidMount(){
+  //   getenergyeffect(this.context.hierarchyId);
+  //   ListStore.addChangeListener(this._onChanged);
+  // }
+  //
+  // componentWillUnmount(){
+  //   ListStore.removeChangeListener(this._onChanged);
+  // }
 
   render(){
     var style={
@@ -133,15 +121,31 @@ export default class EffectList extends Component {
          {I18N.SaveEffect.NoEffectList}
        </div>
       )
-    }else {
+    }else if(this.state.draftShow){
+      return(
+        <div className="jazz-effect-list">
+          <div className="jazz-effect-list-header">
+            <div className="jazz-effect-list-title" style={{margin:'20px 0 5px 0'}}>{I18N.SaveEffect.Draft}</div>
+          </div>
+          <div className="jazz-effect-list-content">
+          {this.state.effect.get('Drafts').map(item=>(<ItemForDraft effect={item}/>))}
+          </div>
+        </div>
+      )
+    }else{
       return(
         <div className="jazz-effect-list">
           {this.state.effect.get('SavingRateConfigState') && <div className="jazz-effect-list-rateTip">
             {I18N.SaveEffect.EffectRateTip}
           </div>}
           <div className="jazz-effect-list-header">
-            <div className="jazz-effect-list-title">{I18N.Setting.Effect.List}</div>
-            <FlatButton label={I18N.SaveEffect.ConfigSaveRatio} style={style.btn} labelStyle={style.lable} secondary={true}/>
+            <div>
+              <div className="jazz-effect-list-title">{I18N.Setting.Effect.List}</div>
+              <FlatButton label={I18N.SaveEffect.ConfigSaveRatio} disabled={ListStore.getRateBtnDisabled(this.state.effect.get("EnergyEffects"))} style={style.btn} labelStyle={style.lable} secondary={true}/>
+            </div>
+            <div className="draft-btn" onClick={this._onDraftShow.bind(this)}>
+              {`${I18N.SaveEffect.Draft} (${this.state.effect.get('Drafts').size})`}
+            </div>
           </div>
           <div className="jazz-effect-list-content">
             {this.state.effect.get("EnergyEffects").map(item=>(isFull()?<ItemForConsultant effect={item}/>:<ItemForManager effect={item}/>))}

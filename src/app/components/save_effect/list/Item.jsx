@@ -6,6 +6,7 @@ import util from 'util/Util.jsx';
 import ListStore from '../../../stores/save_effect/ListStore.jsx';
 import classNames from 'classnames';
 import {calcState} from "../../../constants/actionType/Effect.jsx";
+import {stepLabelProps} from '../../Diagnose/CreateDiagnose.jsx';
 import {
   Step,
   Stepper,
@@ -32,27 +33,28 @@ export class ItemForConsultant extends Component {
         <span>
           <span>{moment(util.DataConverter.JsonToDateTime(ExecutedTime)).format(I18N.DateTimeFormat.IntervalFormat.FullDate)}</span>
           <span>{I18N.Setting.Effect.Start}</span>
-          {EnergySystem && <span>|</span>}
-          {EnergySystem && <span>{ListStore.getEnergySystem(EnergySystem)}</span>}
+          {EnergySystem && ConfigedTagCount>0 && <span>|</span>}
+          {EnergySystem && ConfigedTagCount>0 && <span>{ListStore.getEnergySystem(EnergySystem)}</span>}
         </span>
-        <span>
+        {ConfigedTagCount>0 && <span>
           <span>{I18N.Setting.Effect.ConfiguredTag}</span>
           <span style={{color:"#000000"}}>{ConfigedTagCount}</span>
           <span>{`/${TotalTagCount}`}</span>
           <span>{ConfigedTagCount===TotalTagCount && <FontIcon className="icon-sync-ok"/>}</span>
-        </span>
-        <span>
+        </span>}
+        {ConfigedTagCount>0 && <span>
           <span>{I18N.Setting.Effect.Cost}</span>
           <span style={{color:"#000000"}}>{`${util.getLabelData(AnnualCostSaving)} RMB`}</span>
-        </span>
+        </span>}
       </div>
     )
   }
 
   render(){
+    var {ConfigedTagCount}=this.props.effect.toJS();
     return(
       <div className={classNames({
-          "active":false
+          "active":ConfigedTagCount!==0
         })}>
         <div className="jazz-effect-item">
           <span className="jazz-effect-item-info">
@@ -138,20 +140,21 @@ export class ItemForDraft extends Component {
 
   getStep(){
     var {ConfigStep}=this.props.effect.toJS();
+    var step=ConfigStep-1;
     return(
       <div className="jazz-effect-item-draft-stepper">
-        <Stepper linear={false}>
-          <Step completed={ConfigStep>=1}>
-            <StepLabel style={{color:"#626469",fontSize:'14px'}}>{I18N.SaveEffect.Step1}</StepLabel>
+        <Stepper activeStep={step} style={{width: '80%'}}>
+          <Step>
+            <StepLabel {...stepLabelProps(0, step)}>{I18N.SaveEffect.Step1}</StepLabel>
           </Step>
-          <Step completed={ConfigStep>=2}>
-            <StepLabel style={{color:"#626469",fontSize:'14px'}}>{I18N.SaveEffect.Step2}</StepLabel>
+          <Step>
+            <StepLabel {...stepLabelProps(1, step)}>{I18N.SaveEffect.Step2}</StepLabel>
           </Step>
-          <Step completed={ConfigStep>=3}>
-            <StepLabel style={{color:"#626469",fontSize:'14px'}}>{I18N.SaveEffect.Step3}</StepLabel>
+          <Step>
+            <StepLabel {...stepLabelProps(2, step)}>{I18N.SaveEffect.Step3}</StepLabel>
           </Step>
-          <Step completed={ConfigStep>=4}>
-            <StepLabel style={{color:"#626469",fontSize:'14px'}}>{I18N.SaveEffect.Step4}</StepLabel>
+          <Step>
+            <StepLabel {...stepLabelProps(3, step)}>{I18N.SaveEffect.Step4}</StepLabel>
           </Step>
         </Stepper>
       </div>
