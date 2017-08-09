@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import assign from 'lodash-es/assign';
 import Config from 'config';
 import Checkbox from 'material-ui/Checkbox';
 import FontIcon from 'material-ui/FontIcon';
 import CommonFuns from 'util/Util.jsx';
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
 import BubbleIcon from '../BubbleIcon.jsx';
+
 function getUrl(url) {
 	return "url(" + url+")";
 	//return "url(" + Config.ServeAddress + url+")";
@@ -15,8 +17,11 @@ function validValue(value) {
 
 export class IconText extends Component{
   render(){
+		var style= assign({
+      marginLeft:'50px',width:"145px"
+    }, this.props.style);
     return(
-      <div style={{marginLeft:'50px',width:"145px"}}>
+      <div style={style}>
         <div style={{display:'flex',flexDirection:'row'}}>
           {this.props.icon}
           <div style={{fontSize:'12px',marginLeft:'5px',color:"#626469"}}>{this.props.label}</div>
@@ -36,6 +41,7 @@ IconText.propTypes = {
   label:React.PropTypes.bool,
   value:React.PropTypes.string,
 	uom:React.PropTypes.string,
+	style:React.PropTypes.object
 };
 
 export class MeasuresItem extends Component {

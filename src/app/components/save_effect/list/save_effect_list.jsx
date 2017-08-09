@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {ItemForManager,ItemForConsultant,ItemForDraft} from './Item.jsx';
-import _ from 'lodash-es';
+import FontIcon from 'material-ui/FontIcon';
+// import _ from 'lodash-es';
 import Immutable from "immutable";
 import privilegeUtil from 'util/privilegeUtil.jsx';
 import PermissionCode from 'constants/PermissionCode.jsx';
@@ -13,6 +14,7 @@ import ConfigRate from './ConfigRate.jsx';
 import HierarchyStore from 'stores/HierarchyStore.jsx';
 import CurrentUserCustomerStore from 'stores/CurrentUserCustomerStore.jsx';
 import {find} from 'lodash-es';
+import Detail from './save_effect_detail.jsx';
 
 function privilegeWithSave_Effect( privilegeCheck ) {
    return true
@@ -38,137 +40,139 @@ export default class EffectList extends Component {
         this._onChanged = this._onChanged.bind(this);
         this._onDraftDelete = this._onDraftDelete.bind(this);
         this._onRateTagSave = this._onRateTagSave.bind(this);
+        this._onItemClick = this._onItemClick.bind(this);
+
   }
 
   state={
     effect:Immutable.fromJS({
   "Drafts": [
-    {
-      "ConfigStep": 1,
-      "EnergyProblemId": 2,
-      "EnergySolutionName": "sample string 3",
-      "TagId": 4,
-      "TagName": "sample string 5"
-    },
-    {
-      "ConfigStep": 1,
-      "EnergyProblemId": 2,
-      "EnergySolutionName": "sample string 3",
-      "TagId": 4,
-      "TagName": "sample string 5"
-    },
-    {
-      "ConfigStep": 1,
-      "EnergyProblemId": 2,
-      "EnergySolutionName": "sample string 3",
-      "TagId": 4,
-      "TagName": "sample string 5"
-    },
-    {
-      "ConfigStep": 1,
-      "EnergyProblemId": 2,
-      "EnergySolutionName": "sample string 3",
-      "TagId": 4,
-      "TagName": "sample string 5"
-    },
-    {
-      "ConfigStep": 1,
-      "EnergyProblemId": 2,
-      "EnergySolutionName": "sample string 3",
-      "TagId": 4,
-      "TagName": "sample string 5"
-    },
-    {
-      "ConfigStep": 1,
-      "EnergyProblemId": 2,
-      "EnergySolutionName": "sample string 3",
-      "TagId": 4,
-      "TagName": "sample string 5"
-    },
-    {
-      "ConfigStep": 1,
-      "EnergyProblemId": 2,
-      "EnergySolutionName": "sample string 3",
-      "TagId": 4,
-      "TagName": "sample string 5"
-    },
-    {
-      "ConfigStep": 1,
-      "EnergyProblemId": 2,
-      "EnergySolutionName": "sample string 3",
-      "TagId": 4,
-      "TagName": "sample string 5"
-    },
-    {
-      "ConfigStep": 1,
-      "EnergyProblemId": 2,
-      "EnergySolutionName": "sample string 3",
-      "TagId": 4,
-      "TagName": "sample string 5"
-    },
-    {
-      "ConfigStep": 1,
-      "EnergyProblemId": 2,
-      "EnergySolutionName": "sample string 3",
-      "TagId": 4,
-      "TagName": "sample string 5"
-    },
-    {
-      "ConfigStep": 1,
-      "EnergyProblemId": 2,
-      "EnergySolutionName": "sample string 3",
-      "TagId": 4,
-      "TagName": "sample string 5"
-    },
-    {
-      "ConfigStep": 1,
-      "EnergyProblemId": 2,
-      "EnergySolutionName": "sample string 3",
-      "TagId": 4,
-      "TagName": "sample string 5"
-    },
-    {
-      "ConfigStep": 1,
-      "EnergyProblemId": 2,
-      "EnergySolutionName": "sample string 3",
-      "TagId": 4,
-      "TagName": "sample string 5"
-    },
-    {
-      "ConfigStep": 1,
-      "EnergyProblemId": 2,
-      "EnergySolutionName": "sample string 3",
-      "TagId": 4,
-      "TagName": "sample string 5"
-    },
-    {
-      "ConfigStep": 1,
-      "EnergyProblemId": 2,
-      "EnergySolutionName": "sample string 3",
-      "TagId": 4,
-      "TagName": "sample string 5"
-    },
-    {
-      "ConfigStep": 1,
-      "EnergyProblemId": 2,
-      "EnergySolutionName": "sample string 3",
-      "TagId": 4,
-      "TagName": "sample string 5"
-    },
-    {
-      "ConfigStep": 1,
-      "EnergyProblemId": 2,
-      "EnergySolutionName": "sample string 3",
-      "TagId": 4,
-      "TagName": "sample string 5"
-    },
-    {
-      "ConfigStep": 1,
-      "EnergyProblemId": 2,
-      "EnergySolutionName": "sample string 3",
-      "TagId": 4,
-      "TagName": "sample string 5"
-    }
+    // {
+    //   "ConfigStep": 1,
+    //   "EnergyProblemId": 2,
+    //   "EnergySolutionName": "sample string 3",
+    //   "TagId": 4,
+    //   "TagName": "sample string 5"
+    // },
+    // {
+    //   "ConfigStep": 1,
+    //   "EnergyProblemId": 2,
+    //   "EnergySolutionName": "sample string 3",
+    //   "TagId": 4,
+    //   "TagName": "sample string 5"
+    // },
+    // {
+    //   "ConfigStep": 1,
+    //   "EnergyProblemId": 2,
+    //   "EnergySolutionName": "sample string 3",
+    //   "TagId": 4,
+    //   "TagName": "sample string 5"
+    // },
+    // {
+    //   "ConfigStep": 1,
+    //   "EnergyProblemId": 2,
+    //   "EnergySolutionName": "sample string 3",
+    //   "TagId": 4,
+    //   "TagName": "sample string 5"
+    // },
+    // {
+    //   "ConfigStep": 1,
+    //   "EnergyProblemId": 2,
+    //   "EnergySolutionName": "sample string 3",
+    //   "TagId": 4,
+    //   "TagName": "sample string 5"
+    // },
+    // {
+    //   "ConfigStep": 1,
+    //   "EnergyProblemId": 2,
+    //   "EnergySolutionName": "sample string 3",
+    //   "TagId": 4,
+    //   "TagName": "sample string 5"
+    // },
+    // {
+    //   "ConfigStep": 1,
+    //   "EnergyProblemId": 2,
+    //   "EnergySolutionName": "sample string 3",
+    //   "TagId": 4,
+    //   "TagName": "sample string 5"
+    // },
+    // {
+    //   "ConfigStep": 1,
+    //   "EnergyProblemId": 2,
+    //   "EnergySolutionName": "sample string 3",
+    //   "TagId": 4,
+    //   "TagName": "sample string 5"
+    // },
+    // {
+    //   "ConfigStep": 1,
+    //   "EnergyProblemId": 2,
+    //   "EnergySolutionName": "sample string 3",
+    //   "TagId": 4,
+    //   "TagName": "sample string 5"
+    // },
+    // {
+    //   "ConfigStep": 1,
+    //   "EnergyProblemId": 2,
+    //   "EnergySolutionName": "sample string 3",
+    //   "TagId": 4,
+    //   "TagName": "sample string 5"
+    // },
+    // {
+    //   "ConfigStep": 1,
+    //   "EnergyProblemId": 2,
+    //   "EnergySolutionName": "sample string 3",
+    //   "TagId": 4,
+    //   "TagName": "sample string 5"
+    // },
+    // {
+    //   "ConfigStep": 1,
+    //   "EnergyProblemId": 2,
+    //   "EnergySolutionName": "sample string 3",
+    //   "TagId": 4,
+    //   "TagName": "sample string 5"
+    // },
+    // {
+    //   "ConfigStep": 1,
+    //   "EnergyProblemId": 2,
+    //   "EnergySolutionName": "sample string 3",
+    //   "TagId": 4,
+    //   "TagName": "sample string 5"
+    // },
+    // {
+    //   "ConfigStep": 1,
+    //   "EnergyProblemId": 2,
+    //   "EnergySolutionName": "sample string 3",
+    //   "TagId": 4,
+    //   "TagName": "sample string 5"
+    // },
+    // {
+    //   "ConfigStep": 1,
+    //   "EnergyProblemId": 2,
+    //   "EnergySolutionName": "sample string 3",
+    //   "TagId": 4,
+    //   "TagName": "sample string 5"
+    // },
+    // {
+    //   "ConfigStep": 1,
+    //   "EnergyProblemId": 2,
+    //   "EnergySolutionName": "sample string 3",
+    //   "TagId": 4,
+    //   "TagName": "sample string 5"
+    // },
+    // {
+    //   "ConfigStep": 1,
+    //   "EnergyProblemId": 2,
+    //   "EnergySolutionName": "sample string 3",
+    //   "TagId": 4,
+    //   "TagName": "sample string 5"
+    // },
+    // {
+    //   "ConfigStep": 1,
+    //   "EnergyProblemId": 2,
+    //   "EnergySolutionName": "sample string 3",
+    //   "TagId": 4,
+    //   "TagName": "sample string 5"
+    // }
   ],
   "EnergyEffects": [
     {
@@ -179,7 +183,8 @@ export default class EffectList extends Component {
       "EnergySolutionName": "sample string 4",
       "EnergySystem": 10,
       "ExecutedTime": "2017-08-07T08:20:22",
-      "TotalTagCount": 6
+      "TotalTagCount": 6,
+      EnergyEffectItemId:1,
     },
     {
       "AnnualCostSaving": 1.1,
@@ -717,7 +722,9 @@ export default class EffectList extends Component {
   draftShow:false,
   deleteConfirmShow:false,
   deleteIndex:null,
-  configRateShow:false
+  configRateShow:false,
+  effectDetailShow:false,
+  displayEffect:null
   }
 
   _getHierarchyId(router, context) {
@@ -758,7 +765,13 @@ export default class EffectList extends Component {
     },()=>{
         saveeffectratetag(this.props.router.params.customerId,this.context.hierarchyId,list)
     })
+  }
 
+  _onItemClick(effect){
+    this.setState({
+      effectDetailShow:true,
+      displayEffect:effect
+    })
   }
 
   // componentDidMount(){
@@ -842,7 +855,8 @@ export default class EffectList extends Component {
     }else if(this.state.effect.get('EnergyEffects').size===0){
       return (
         <div className="jazz-effect-list flex-center">
-         {I18N.SaveEffect.NoEffectList}
+          <FontIcon className="icon-weather-thunder" style={{fontSize:'60px'}} color="#32ad3d"/>
+         <div className="nolist-font">{I18N.SaveEffect.NoEffectList}</div>
        </div>
       )
     }else if(this.state.draftShow){
@@ -851,11 +865,20 @@ export default class EffectList extends Component {
           <div className="jazz-effect-list-header">
             <div className="jazz-effect-list-title" style={{margin:'20px 0 5px 0'}}>{I18N.SaveEffect.Draft}</div>
           </div>
-          <div className="jazz-effect-list-content">
+          {this.state.effect.get('Drafts').size===0?
+            <div className="jazz-effect-list-content flex-center">
+              <FontIcon className="icon-weather-thunder" style={{fontSize:'60px'}} color="#32ad3d"/>
+             <div className="nolist-font">{I18N.SaveEffect.NoDraft}</div>
+           </div>
+            :<div className="jazz-effect-list-content">
           {this.state.effect.get('Drafts').map((item,index)=>(<ItemForDraft effect={item} onDelete={()=>{this._onDraftDelete(index)}}/>))}
-          </div>
+          </div>}
           {this.state.deleteConfirmShow && this._renderDeleteDialog()}
         </div>
+      )
+    }else if(this.state.effectDetailShow){
+      return(
+          <Detail effect={this.state.displayEffect} onBack={()=>{this.setState({effectDetailShow:false,displayEffect:null})}}/>
       )
     }else{
       return(
@@ -874,7 +897,7 @@ export default class EffectList extends Component {
             </div>
           </div>
           <div className="jazz-effect-list-content">
-            {this.state.effect.get("EnergyEffects").map(item=>(isFull()?<ItemForConsultant effect={item}/>:<ItemForManager effect={item}/>))}
+            {this.state.effect.get("EnergyEffects").map(item=>(isFull()?<ItemForConsultant effect={item} onClick={this._onItemClick}/>:<ItemForManager effect={item} onClick={this._onItemClick}/>))}
           </div>
           {this.state.configRateShow &&
               <ConfigRate hierarchyName={this._getSelectedHierarchy().Name} hierarchyId={this.context.hierarchyId}

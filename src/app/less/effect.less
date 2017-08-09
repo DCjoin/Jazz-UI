@@ -6,6 +6,7 @@
     padding:0 calc(~'50% - 512px');
     overflow-x: hidden;
     overflow-y: auto;
+    flex:1;
     &-header{
       display: flex;
       flex-direction: row;
@@ -42,6 +43,9 @@
             box-shadow: 0 0 9px 1px #e0e0e0;
           }
         }
+      }
+      >div:last-child{
+        margin-bottom: 20px;
       }
     }
     &-rateTip{
@@ -263,6 +267,100 @@
           color:#3DCD58
         }
       }
+    }
+  }
+}
+.nolist-font{
+  font-size: 14px;
+  color: #505559;
+}
+.jazz-effect-detail{
+  display: flex;
+  flex-direction: column;
+  flex:1;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  &-header{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0 20px;
+    padding: 20px calc(~'50% - 532px');
+    border-bottom: 1px solid @border;
+    >span{
+      display: flex;
+      flex-direction: row;
+      align-items:center;
+    }
+    &-title{
+      margin-left: 20px;
+      font-size: 17px;
+      font-weight: 500;
+      color: #000000;
+      line-height:24px;
+    }
+    &-subtitle{
+      display: flex;
+      flex-direction: column;
+      width: 1024px;
+      margin:0 auto;
+      padding:15px 0;
+      border-bottom: 1px solid @border;
+      .font{
+        font-size: 14px;
+        color: #434343;
+      }
+      .operation{
+        font-size: 14px;
+        font-weight: 500;
+        color: #32ad3d;
+        &:hover{
+          cursor: pointer;
+          color:#3DCD58
+        }
+      }
+      &-energysys{
+        display: flex;
+        flex-direction: row;
+      }
+      &-info{
+        >span{
+          display: flex;
+          flex-direction: row;
+          align-items: flex-end;
+        }
+      }
+    }
+  }
+  &-content{
+    width: 1024px;
+    margin: 0 auto;
+    &-header{
+      display: flex;
+      flex-direction: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding:17px 0;
+      &-title{
+        font-size: 17px;
+        font-weight: 500;
+        color: #000000;
+      }
+      &-operation{
+      }
+    }
+    &-save-energy{
+      display: flex;
+      flex-direction: row;
+      height:104px;
+      min-height: 104px;
+      border-radius: 2px;
+      background-color: #ffffff;
+      border: solid 1px @border;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0 36px 0 70px;
     }
   }
 }

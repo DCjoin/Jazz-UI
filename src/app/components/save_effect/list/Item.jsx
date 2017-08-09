@@ -5,7 +5,7 @@ import moment from 'moment';
 import util from 'util/Util.jsx';
 import ListStore from '../../../stores/save_effect/ListStore.jsx';
 import classNames from 'classnames';
-import {calcState} from "../../../constants/actionType/Effect.jsx";
+import {calcState} from "constants/actionType/Effect.jsx";
 import {stepLabelProps} from '../../Diagnose/CreateDiagnose.jsx';
 import {
   Step,
@@ -21,7 +21,7 @@ class CalculatingIcon extends Component{
     }
     return(
       <div className="icon-calculating">
-        <FontIcon className="icon-mainline" color="#32ad3d" style={iconStyle}/>
+        <FontIcon className="icon-sandglass" color="#32ad3d" style={iconStyle}/>
         <div>{I18N.SaveEffect.Calculating}</div>
 
       </div>
@@ -86,7 +86,9 @@ export class ItemForConsultant extends Component {
     return(
       <div className={classNames({
           "active":ConfigedTagCount!==0
-        })}>
+        })} onClick={()=>{
+          if(ConfigedTagCount!==0) this.props.onClick(this.props.effect)
+        }}>
         <div className="jazz-effect-item">
           <span className="jazz-effect-item-info">
             {this.getTitle()}
@@ -101,6 +103,7 @@ export class ItemForConsultant extends Component {
 
 ItemForConsultant.propTypes = {
   effect:React.PropTypes.object,
+  onClick:React.PropTypes.func,
 }
 
 
@@ -141,7 +144,13 @@ export class ItemForManager extends Component {
     )
   }
   render(){
+    var {ConfigedTagCount}=this.props.effect.toJS();
     return(
+      <div className={classNames({
+          "active":ConfigedTagCount!==0
+        })} onClick={()=>{
+          if(ConfigedTagCount!==0) this.props.onClick(this.props.effect)
+        }}>
       <div className="jazz-effect-item">
         <span className="jazz-effect-item-info">
           {this.getTitle()}
@@ -149,12 +158,14 @@ export class ItemForManager extends Component {
         </span>
         {this.getCost()}
       </div>
+    </div>
     )
   }
 }
 
 ItemForManager.propTypes = {
   effect:React.PropTypes.object,
+  onClick:React.PropTypes.func,
 };
 
 export class ItemForDraft extends Component {
