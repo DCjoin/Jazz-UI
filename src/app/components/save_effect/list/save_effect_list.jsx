@@ -7,7 +7,7 @@ import privilegeUtil from 'util/privilegeUtil.jsx';
 import PermissionCode from 'constants/PermissionCode.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import FlatButton from "controls/NewFlatButton.jsx";
-import {getenergyeffect,deleteDraft,saveeffectratetag} from 'actions/save_effect_action.js';
+import {getenergyeffect,deleteItem,saveeffectratetag} from 'actions/save_effect_action.js';
 import ListStore from '../../../stores/save_effect/ListStore.jsx';
 import { CircularProgress,Dialog} from 'material-ui';
 import ConfigRate from './ConfigRate.jsx';
@@ -47,132 +47,135 @@ export default class EffectList extends Component {
   state={
     effect:Immutable.fromJS({
   "Drafts": [
-    // {
-    //   "ConfigStep": 1,
-    //   "EnergyProblemId": 2,
-    //   "EnergySolutionName": "sample string 3",
-    //   "TagId": 4,
-    //   "TagName": "sample string 5"
-    // },
-    // {
-    //   "ConfigStep": 1,
-    //   "EnergyProblemId": 2,
-    //   "EnergySolutionName": "sample string 3",
-    //   "TagId": 4,
-    //   "TagName": "sample string 5"
-    // },
-    // {
-    //   "ConfigStep": 1,
-    //   "EnergyProblemId": 2,
-    //   "EnergySolutionName": "sample string 3",
-    //   "TagId": 4,
-    //   "TagName": "sample string 5"
-    // },
-    // {
-    //   "ConfigStep": 1,
-    //   "EnergyProblemId": 2,
-    //   "EnergySolutionName": "sample string 3",
-    //   "TagId": 4,
-    //   "TagName": "sample string 5"
-    // },
-    // {
-    //   "ConfigStep": 1,
-    //   "EnergyProblemId": 2,
-    //   "EnergySolutionName": "sample string 3",
-    //   "TagId": 4,
-    //   "TagName": "sample string 5"
-    // },
-    // {
-    //   "ConfigStep": 1,
-    //   "EnergyProblemId": 2,
-    //   "EnergySolutionName": "sample string 3",
-    //   "TagId": 4,
-    //   "TagName": "sample string 5"
-    // },
-    // {
-    //   "ConfigStep": 1,
-    //   "EnergyProblemId": 2,
-    //   "EnergySolutionName": "sample string 3",
-    //   "TagId": 4,
-    //   "TagName": "sample string 5"
-    // },
-    // {
-    //   "ConfigStep": 1,
-    //   "EnergyProblemId": 2,
-    //   "EnergySolutionName": "sample string 3",
-    //   "TagId": 4,
-    //   "TagName": "sample string 5"
-    // },
-    // {
-    //   "ConfigStep": 1,
-    //   "EnergyProblemId": 2,
-    //   "EnergySolutionName": "sample string 3",
-    //   "TagId": 4,
-    //   "TagName": "sample string 5"
-    // },
-    // {
-    //   "ConfigStep": 1,
-    //   "EnergyProblemId": 2,
-    //   "EnergySolutionName": "sample string 3",
-    //   "TagId": 4,
-    //   "TagName": "sample string 5"
-    // },
-    // {
-    //   "ConfigStep": 1,
-    //   "EnergyProblemId": 2,
-    //   "EnergySolutionName": "sample string 3",
-    //   "TagId": 4,
-    //   "TagName": "sample string 5"
-    // },
-    // {
-    //   "ConfigStep": 1,
-    //   "EnergyProblemId": 2,
-    //   "EnergySolutionName": "sample string 3",
-    //   "TagId": 4,
-    //   "TagName": "sample string 5"
-    // },
-    // {
-    //   "ConfigStep": 1,
-    //   "EnergyProblemId": 2,
-    //   "EnergySolutionName": "sample string 3",
-    //   "TagId": 4,
-    //   "TagName": "sample string 5"
-    // },
-    // {
-    //   "ConfigStep": 1,
-    //   "EnergyProblemId": 2,
-    //   "EnergySolutionName": "sample string 3",
-    //   "TagId": 4,
-    //   "TagName": "sample string 5"
-    // },
-    // {
-    //   "ConfigStep": 1,
-    //   "EnergyProblemId": 2,
-    //   "EnergySolutionName": "sample string 3",
-    //   "TagId": 4,
-    //   "TagName": "sample string 5"
-    // },
-    // {
-    //   "ConfigStep": 1,
-    //   "EnergyProblemId": 2,
-    //   "EnergySolutionName": "sample string 3",
-    //   "TagId": 4,
-    //   "TagName": "sample string 5"
-    // },
-    // {
-    //   "ConfigStep": 1,
-    //   "EnergyProblemId": 2,
-    //   "EnergySolutionName": "sample string 3",
-    //   "TagId": 4,
-    //   "TagName": "sample string 5"
-    // },
-    // {
-    //   "ConfigStep": 1,
-    //   "EnergyProblemId": 2,
-    //   "EnergySolutionName": "sample string 3",
-    //   "TagId": 4,
-    //   "TagName": "sample string 5"
-    // }
+    {
+      "ConfigStep": 1,
+      "EnergyProblemId": 2,
+      "EnergySolutionName": "sample string 1",
+      "TagId": 4,
+      "TagName": "sample string 5",
+      EnergyEffectItemId:1
+    },
+    {
+      "ConfigStep": 1,
+      "EnergyProblemId": 2,
+      "EnergySolutionName": "sample string 2",
+      "TagId": 4,
+      "TagName": "sample string 5",
+      EnergyEffectItemId:2
+    },
+    {
+      "ConfigStep": 1,
+      "EnergyProblemId": 2,
+      "EnergySolutionName": "sample string 3",
+      "TagId": 4,
+      "TagName": "sample string 5",
+      EnergyEffectItemId:3
+    },
+    {
+      "ConfigStep": 1,
+      "EnergyProblemId": 2,
+      "EnergySolutionName": "sample string 3",
+      "TagId": 4,
+      "TagName": "sample string 5"
+    },
+    {
+      "ConfigStep": 1,
+      "EnergyProblemId": 2,
+      "EnergySolutionName": "sample string 3",
+      "TagId": 4,
+      "TagName": "sample string 5"
+    },
+    {
+      "ConfigStep": 1,
+      "EnergyProblemId": 2,
+      "EnergySolutionName": "sample string 3",
+      "TagId": 4,
+      "TagName": "sample string 5"
+    },
+    {
+      "ConfigStep": 1,
+      "EnergyProblemId": 2,
+      "EnergySolutionName": "sample string 3",
+      "TagId": 4,
+      "TagName": "sample string 5"
+    },
+    {
+      "ConfigStep": 1,
+      "EnergyProblemId": 2,
+      "EnergySolutionName": "sample string 3",
+      "TagId": 4,
+      "TagName": "sample string 5"
+    },
+    {
+      "ConfigStep": 1,
+      "EnergyProblemId": 2,
+      "EnergySolutionName": "sample string 3",
+      "TagId": 4,
+      "TagName": "sample string 5"
+    },
+    {
+      "ConfigStep": 1,
+      "EnergyProblemId": 2,
+      "EnergySolutionName": "sample string 3",
+      "TagId": 4,
+      "TagName": "sample string 5"
+    },
+    {
+      "ConfigStep": 1,
+      "EnergyProblemId": 2,
+      "EnergySolutionName": "sample string 3",
+      "TagId": 4,
+      "TagName": "sample string 5"
+    },
+    {
+      "ConfigStep": 1,
+      "EnergyProblemId": 2,
+      "EnergySolutionName": "sample string 3",
+      "TagId": 4,
+      "TagName": "sample string 5"
+    },
+    {
+      "ConfigStep": 1,
+      "EnergyProblemId": 2,
+      "EnergySolutionName": "sample string 3",
+      "TagId": 4,
+      "TagName": "sample string 5"
+    },
+    {
+      "ConfigStep": 1,
+      "EnergyProblemId": 2,
+      "EnergySolutionName": "sample string 3",
+      "TagId": 4,
+      "TagName": "sample string 5"
+    },
+    {
+      "ConfigStep": 1,
+      "EnergyProblemId": 2,
+      "EnergySolutionName": "sample string 3",
+      "TagId": 4,
+      "TagName": "sample string 5"
+    },
+    {
+      "ConfigStep": 1,
+      "EnergyProblemId": 2,
+      "EnergySolutionName": "sample string 3",
+      "TagId": 4,
+      "TagName": "sample string 5"
+    },
+    {
+      "ConfigStep": 1,
+      "EnergyProblemId": 2,
+      "EnergySolutionName": "sample string 3",
+      "TagId": 4,
+      "TagName": "sample string 5"
+    },
+    {
+      "ConfigStep": 1,
+      "EnergyProblemId": 2,
+      "EnergySolutionName": "sample string 3",
+      "TagId": 4,
+      "TagName": "sample string 5"
+    }
   ],
   "EnergyEffects": [
     {
@@ -774,15 +777,6 @@ export default class EffectList extends Component {
     })
   }
 
-  // componentDidMount(){
-  //   getenergyeffect(this.context.hierarchyId);
-  //   ListStore.addChangeListener(this._onChanged);
-  // }
-  //
-  // componentWillUnmount(){
-  //   ListStore.removeChangeListener(this._onChanged);
-  // }
-
   _renderDeleteDialog(){
     let draft=this.state.effect.get('Drafts').getIn([this.state.deleteIndex]);
     let actions = [
@@ -796,7 +790,7 @@ export default class EffectList extends Component {
           deleteConfirmShow:false,
           deleteIndex:null
         },()=>{
-          // deleteDraft();
+          deleteItem(draft.get('EnergyEffectItemId'));
         })
       }}
       />,
@@ -832,6 +826,15 @@ export default class EffectList extends Component {
     )
   }
 
+  componentDidMount(){
+    // getenergyeffect(this.context.hierarchyId);
+    ListStore.addChangeListener(this._onChanged);
+  }
+
+  componentWillUnmount(){
+    ListStore.removeChangeListener(this._onChanged);
+  }
+
   render(){
     var style={
       btn:{
@@ -861,6 +864,7 @@ export default class EffectList extends Component {
       )
     }else if(this.state.draftShow){
       return(
+        <div className="jazz-effect-overlay">
         <div className="jazz-effect-list">
           <div className="jazz-effect-list-header">
             <div className="jazz-effect-list-title" style={{margin:'20px 0 5px 0'}}>{I18N.SaveEffect.Draft}</div>
@@ -875,34 +879,41 @@ export default class EffectList extends Component {
           </div>}
           {this.state.deleteConfirmShow && this._renderDeleteDialog()}
         </div>
+      </div>
       )
     }else if(this.state.effectDetailShow){
       return(
-          <Detail effect={this.state.displayEffect} onBack={()=>{this.setState({effectDetailShow:false,displayEffect:null})}}/>
+          <Detail effect={this.state.displayEffect} onBack={()=>{this.setState({effectDetailShow:false,displayEffect:null},
+                                                            ()=>{
+                                                              // getenergyeffect(this.context.hierarchyId)
+                                                            })}}/>
       )
     }else{
       return(
-        <div className="jazz-effect-list">
-          {this.state.effect.get('SavingRateConfigState') && <div className="jazz-effect-list-rateTip">
-            {I18N.SaveEffect.EffectRateTip}
-          </div>}
-          <div className="jazz-effect-list-header">
-            <div>
-              <div className="jazz-effect-list-title">{I18N.Setting.Effect.List}</div>
-              <FlatButton label={I18N.SaveEffect.ConfigSaveRatio} onTouchTap={this._onConfigRateShow.bind(this)}
-                          disabled={ListStore.getRateBtnDisabled(this.state.effect.get("EnergyEffects"))} style={style.btn} labelStyle={style.lable} secondary={true}/>
+        <div className="jazz-effect-overlay">
+          <div className="jazz-effect-list">
+            {this.state.effect.get('SavingRateConfigState') && <div className="jazz-effect-list-rateTip">
+              {I18N.SaveEffect.EffectRateTip}
+            </div>}
+            <div className="jazz-effect-list-header">
+              <div>
+                <div className="jazz-effect-list-title">{I18N.Setting.Effect.List}</div>
+                <FlatButton label={I18N.SaveEffect.ConfigSaveRatio} onTouchTap={this._onConfigRateShow.bind(this)}
+                            disabled={ListStore.getRateBtnDisabled(this.state.effect.get("EnergyEffects"))} style={style.btn} labelStyle={style.lable} secondary={true}/>
+              </div>
+              <div className="draft-btn" onClick={this._onDraftShow.bind(this)}>
+                {`${I18N.SaveEffect.Draft} (${this.state.effect.get('Drafts').size})`}
+              </div>
             </div>
-            <div className="draft-btn" onClick={this._onDraftShow.bind(this)}>
-              {`${I18N.SaveEffect.Draft} (${this.state.effect.get('Drafts').size})`}
+            <div className="jazz-effect-list-content">
+              {this.state.effect.get("EnergyEffects").map(item=>(isFull()?<ItemForConsultant effect={item} onClick={this._onItemClick}/>:<ItemForManager effect={item} onClick={this._onItemClick}/>))}
             </div>
+            {this.state.configRateShow &&
+                <ConfigRate hierarchyName={this._getSelectedHierarchy().Name} hierarchyId={this.context.hierarchyId}
+                            onClose={()=>{this.setState({configRateShow:false})}} onSave={this._onRateTagSave}/>}
           </div>
-          <div className="jazz-effect-list-content">
-            {this.state.effect.get("EnergyEffects").map(item=>(isFull()?<ItemForConsultant effect={item} onClick={this._onItemClick}/>:<ItemForManager effect={item} onClick={this._onItemClick}/>))}
-          </div>
-          {this.state.configRateShow &&
-              <ConfigRate hierarchyName={this._getSelectedHierarchy().Name} hierarchyId={this.context.hierarchyId}
-                          onClose={()=>{this.setState({configRateShow:false})}} onSave={this._onRateTagSave}/>}
         </div>
+
       )
     }
 

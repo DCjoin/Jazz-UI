@@ -10,7 +10,8 @@ import Immutable from 'immutable';
 import FlatButton from "controls/NewFlatButton.jsx";
 import DropdownButton from '../../../controls/NewDropdownButton.jsx';
 import {IconText} from '../../ECM/MeasuresItem.jsx';
-import {getDetail} from 'actions/save_effect_action.js';
+import {getDetail,deleteItem} from 'actions/save_effect_action.js';
+import { CircularProgress,Dialog} from 'material-ui';
 
 function validValue(value) {
 	return value!==null?util.getLabelData(value*1):'-';
@@ -21,10 +22,14 @@ export default class EffectDetail extends Component {
   constructor(props, ctx) {
         super(props)
         this._onChanged = this._onChanged.bind(this);
+				this._handleEditTagChange = this._handleEditTagChange.bind(this);
+				this._handleDeleteTagChange = this._handleDeleteTagChange.bind(this);
   }
 
   state={
-    detailInfo:null
+    detailInfo:null,
+		deleteConfirmShow:false,
+		deleteIndex:null,
   }
 
   _onChanged(){
@@ -38,17 +43,23 @@ export default class EffectDetail extends Component {
   }
 
   _handleDeleteTagChange(event, value){
-
+		this.setState({
+			deleteConfirmShow:true,
+			deleteIndex:value,
+		})
   }
 
   _renderTitle(){
     return(
-      <div className="jazz-effect-detail-header">
-        <span>
-          <IconButton iconClassName="icon-return" onTouchTap={this.props.onBack} iconStyle={{fontSize:'17px'}} style={{width:'17px',height:'19px',padding:'0'}}/>
-          <div className="jazz-effect-detail-header-title">{this.props.effect.get('EnergySolutionName')}</div>
-        </span>
-      </div>
+			<div className="jazz-effect-detail-header-container">
+				<div className="jazz-effect-detail-header">
+					<span>
+						<IconButton iconClassName="icon-return" onTouchTap={this.props.onBack} iconStyle={{fontSize:'17px'}} style={{width:'17px',height:'19px',padding:'0'}}/>
+						<div className="jazz-effect-detail-header-title">{this.props.effect.get('EnergySolutionName')}</div>
+					</span>
+				</div>
+			</div>
+
     )
   }
   _renderSubTitle(){
@@ -125,14 +136,14 @@ export default class EffectDetail extends Component {
     },
     editProps = {
       text: I18N.Common.Button.Edit,
-      menuItems: tags.map(tag=>(<MenuItem value={tag.get('TagId')} primaryText={tag.get('TagName')} />)),
+      menuItems: tags.map((tag,index)=>(<MenuItem value={index} primaryText={tag.get('TagName')} />)),
       onItemClick: this._handleEditTagChange,
       buttonIcon: 'icon-arrow-unfold',
       buttonStyle:{marginLeft:'12px'}
     },
     deleteProps = {
       text: I18N.Common.Button.Delete,
-      menuItems: tags.map(tag=>(<MenuItem value={tag.get('Id')} primaryText={tag.get('Name')} />)),
+      menuItems: tags.map((tag,index)=>(<MenuItem value={index} primaryText={tag.get('TagName')} />)),
       onItemClick: this._handleDeleteTagChange,
       buttonIcon: 'icon-arrow-unfold',
       buttonStyle:{marginLeft:'12px'}
@@ -153,32 +164,91 @@ export default class EffectDetail extends Component {
           amountIcon=<FontIcon className="icon-investment-amount" iconStyle ={iconStyle} color="#626469" style = {icontextstyle} />,
           cycleIcon=<FontIcon className="icon-pay-back-period" iconStyle ={iconStyle} color="#626469" style = {icontextstyle} />;
 
-    return(
-      <div className="jazz-effect-detail-content">
-        <div className="jazz-effect-detail-content-header">
-          <div className="jazz-effect-detail-content-header-title">{I18N.MainMenu.SaveEffect}</div>
-          <div className="jazz-effect-detail-content-header-operation">
-            <FlatButton label={I18N.Setting.Effect.Config}
-                        style={style.btn} labelStyle={style.lable} secondary={true}/>
-            <DropdownButton {...editProps}/>
-            <DropdownButton {...deleteProps}/>
-          </div>
-        </div>
-        <div className="jazz-effect-detail-content-save-energy">
-            <IconText style={{width:'140px',marginLeft:'0px'}} icon={saveIcon} label={`${preTitle}${I18N.SaveEffect.EnergySaving}`} value={validValue(EnergySaving)} uom={util.getUomById(EnergySavingUomId).Code}/>
-            <IconText style={{width:'140px',marginLeft:'0px'}} icon={costIcon} label={`${preTitle}${I18N.Setting.Effect.Cost}`} value={validValue(EnergySavingCosts)} uom="RMB"/>
-            <IconText style={{width:'140px',marginLeft:'0px'}} icon={amountIcon} label={I18N.Setting.ECM.InvestmentAmount} value={validValue(InvestmentAmount)} uom="RMB"/>
-            <IconText style={{width:'140px',marginLeft:'0px'}} icon={cycleIcon} label={I18N.Setting.ECM.PaybackPeriod} value={InvestmentReturnCycle || '-'}
-                      uom={util.isNumber(InvestmentReturnCycle)?I18N.EM.Year:''}/>
+	  if(tags.size===0){
+			<div className="jazz-effect-detail-content flex-center">
+				<FontIcon className="icon-weather-thunder" style={{fontSize:'60px'}} color="#32ad3d"/>
+			 <div className="nolist-font">{I18N.SaveEffect.NoEffectDetail}</div>
+		 </div>
+		}else {
+			return(
+				<div className="jazz-effect-detail-content">
+					<div className="jazz-effect-detail-content-header">
+						<div className="jazz-effect-detail-content-header-title">{I18N.MainMenu.SaveEffect}</div>
+						<div className="jazz-effect-detail-content-header-operation">
+							<FlatButton label={I18N.Setting.Effect.Config}
+													style={style.btn} labelStyle={style.lable} secondary={true}/>
+							<DropdownButton {...editProps}/>
+							<DropdownButton {...deleteProps}/>
+						</div>
+					</div>
+					<div className="jazz-effect-detail-content-save-energy">
+							<IconText style={{width:'140px',marginLeft:'0px'}} icon={saveIcon} label={`${preTitle}${I18N.SaveEffect.EnergySaving}`} value={validValue(EnergySaving)} uom={util.getUomById(EnergySavingUomId).Code}/>
+							<IconText style={{width:'140px',marginLeft:'0px'}} icon={costIcon} label={`${preTitle}${I18N.Setting.Effect.Cost}`} value={validValue(EnergySavingCosts)} uom="RMB"/>
+							<IconText style={{width:'140px',marginLeft:'0px'}} icon={amountIcon} label={I18N.Setting.ECM.InvestmentAmount} value={validValue(InvestmentAmount)} uom="RMB"/>
+							<IconText style={{width:'140px',marginLeft:'0px'}} icon={cycleIcon} label={I18N.Setting.ECM.PaybackPeriod} value={InvestmentReturnCycle || '-'}
+												uom={util.isNumber(InvestmentReturnCycle)?I18N.EM.Year:''}/>
 
 
-        </div>
-      </div>
-    )
+					</div>
+				</div>
+			)
+		}
+
   }
 
+	_renderDeleteDialog(){
+		let tag=this.state.detailInfo.getIn(['EffectItems',this.state.deleteIndex]);
+		let actions = [
+			<FlatButton
+			inDialog={true}
+			primary={true}
+			label={I18N.Template.Delete.Delete}
+			style={{backgroundColor:'#dc0a0a',marginRight:'20px'}}
+			onTouchTap={()=>{
+				this.setState({
+					deleteConfirmShow:false,
+					deleteIndex:null
+				},()=>{
+					deleteItem(tag.get('EnergyEffectItemId'),()=>{
+						getDetail(this.props.effect.get('EnergyEffectId'));
+					});
+				})
+			}}
+			/>,
+			<FlatButton
+			label={I18N.Common.Button.Cancel2}
+			style={{borderRadius: "2px",border: 'solid 1px #9fa0a4'}}
+			onTouchTap={()=>{
+				this.setState({
+					deleteConfirmShow:false,
+					deleteIndex:null
+				})
+			}}
+			/>
+		];
+		let dialogProps = {
+			ref: 'dialog',
+			actions: actions,
+			modal: true,
+			open: true,
+		};
+		return(
+			<Dialog {...dialogProps}>
+				<div style={{
+						'word-wrap': 'break-word',
+						'word-break': 'break-all',
+						fontSize: "14px",
+						color: "#626469"
+					}}>
+					{I18N.format(I18N.SaveEffect.EffectDeleteConfirm,tag.get('TagName'))}
+				</div>
+
+			</Dialog>
+		)
+	}
+
   // componentDidMount(){
-  //   getDetail(effect.get('EnergyEffectItemId'));
+  //   getDetail(this.props.effect.get('EnergyEffectId'));
   //   ListStore.addChangeListener(this._onChanged);
   // }
   //
@@ -187,13 +257,23 @@ export default class EffectDetail extends Component {
   // }
 
   render(){
-    return(
-      <div className="jazz-effect-detail">
-        {this._renderTitle()}
-        {this._renderSubTitle()}
-        {this._renderContent()}
-      </div>
-    )
+		// if(this.state.detailInfo===null){
+		// 	return (
+		// 		<div className="jazz-effect-detail flex-center">
+		// 		 <CircularProgress  mode="indeterminate" size={80} />
+		// 	 </div>
+		// 	)
+		// }else {
+			return(
+				<div className="jazz-effect-detail">
+					{this._renderTitle()}
+					{this._renderSubTitle()}
+					{this._renderContent()}
+					{this.state.deleteConfirmShow && this._renderDeleteDialog()}
+				</div>
+			)
+		// }
+
   }
 }
 
