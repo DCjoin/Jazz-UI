@@ -154,6 +154,7 @@ class DatePicker extends React.Component {
         style={style}
         // errorStyle={{position:'absolute',bottom:"-10px"}}
         floatingLabelText={this.props.title}
+        hintText={this.props.hintText}
         name={this.props.name}
         errorText={error}
         onChange={(evt)=>{

@@ -90,6 +90,7 @@ module.exports = {
 
   SaveEffect: {
     getTagsByPlan: '/save_effert/get/tags/{planId}',
+    addItem: '/energyeffect/additem',
     getenergyeffect:'/energyeffect/getenergyeffect/{hierarchyId}',
     getenergyeffectratetags:'/energyeffect/getenergyeffectratetags/{hierarchyId}',
     saveenergyeffectratetags:'/energyeffect/saveeffectratetag/{customerId}/{hierarchyId}',
