@@ -34,13 +34,13 @@ let getStepDataItems = () => [
 	{ id: TimeGranularity.Monthly, label: I18N.EM.Month },
 ];
 
-export default class Step2 extends Component {
+export default class Step3 extends Component {
 	constructor(props) {
 		super(props);
 
 	}
 	render() {
-		let { data, disabledPreview, BenchmarkModel, BenchmarkStartDate, BenchmarkEndDate, CalculationStep, onChangeModelType, onChangeStep, onChangeBenchmarkStartDate, onChangeBenchmarkEndDate, onGetChartData } = this.props,
+		let { data, disabledPreview, BenchmarkModel, EnergyUnitPrice, EnergyStartDate, EnergyEndDate, onChangeEnergyUnitPrice, onChangeEnergyStartDate, onChangeEnergyEndDate, onGetChartData } = this.props,
 		chartProps;
 
 		if( data ) {
@@ -59,11 +59,6 @@ export default class Step2 extends Component {
 				chartType: 'line',
 				tagData: data,
 				// postNewConfig: curry(postNewConfig)(data, isEdit, isTypeC, hiddenAssociateLabel),
-				preConfig: (chartCmpObj) => {
-					let newConfig = Util.merge(true, chartCmpObj);
-					delete newConfig.config.navigator;
-					return newConfig;
-				},
 			};
 		  // 由于API返回的数据为请求时间的后一个步长，所以为了数据点可以正常显示，加入如下逻辑
 		  // Law 2017/04/20
@@ -73,8 +68,8 @@ export default class Step2 extends Component {
 		    chartProps.contentSyntax = JSON.stringify({
 		      viewOption: {
 		        TimeRanges: [{
-		          StartTime: subtractStep(BenchmarkStartDate, step),
-		          EndTime: subtractStep(BenchmarkEndDate, step),
+		          StartTime: subtractStep(EnergyStartDate, step),
+		          EndTime: subtractStep(EnergyEndDate, step),
 		        }]
 		      }
 		    });
@@ -85,31 +80,14 @@ export default class Step2 extends Component {
 				<div className='create-block step2-side'>
 					<header className='step2-side-header'>{'配置基准值模型'}</header>
 					<div className='step2-side-content'>
-						<ViewableDropDownMenu 
-							defaultValue={BenchmarkModel}
-							title={'基准值模型'} 
-							valueField='id' 
-							textField='label' 
-							dataItems={getModelDataItems()} 
-							didChanged={onChangeModelType}
-							style={{width: 170}}/>
-						<ViewableDropDownMenu 
-							defaultValue={CalculationStep}
-							isViewStatus={BenchmarkModel === Model.Manual}
-							title={'配置计算步长'} 
-							valueField='id' 
-							textField='label' 
-							dataItems={getStepDataItems()} 
-							didChanged={onChangeStep}
-							style={{width: 90}}/>
-						{BenchmarkModel !== Model.Manual && <div className='pop-viewableTextField'>
-							<header className='pop-viewable-title'>{'基准能耗确定期'}</header>
+						<div className='pop-viewableTextField'>
+							<header className='pop-viewable-title'>{'节能量计算期'}</header>
 							<div>
-								<ViewableDatePicker onChange={onChangeBenchmarkStartDate} datePickerClassName='date-picker-inline' width={83} value={BenchmarkStartDate}/>
+								<ViewableDatePicker onChange={onChangeEnergyStartDate} datePickerClassName='date-picker-inline' width={83} value={EnergyStartDate}/>
 								<div style={{display: 'inline-block', padding: '0 16px'}}>至</div>
-								<ViewableDatePicker onChange={onChangeBenchmarkEndDate} datePickerClassName='date-picker-inline' width={83} value={BenchmarkEndDate}/>
+								<ViewableDatePicker onChange={onChangeEnergyEndDate} datePickerClassName='date-picker-inline' width={83} value={EnergyEndDate}/>
 							</div>
-							<div className='tip-message'>{'注：确定期时间最大范围为1年'}</div>
+							<ViewableTextField title={'能源单价'} hintText={'输入价格'} defaultValue={EnergyUnitPrice} didChanged={onChangeEnergyUnitPrice}/>
 						</div>}
 					</div>
 				</div>
@@ -127,9 +105,9 @@ export default class Step2 extends Component {
 					<div className='step2-content-content'>
 						<header style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: 70}}>
 							<div className='diagnose-create-content'>
-								<ViewableDatePicker onChange={onChangeBenchmarkStartDate} datePickerClassName='diagnose-date-picker' width={100} value={BenchmarkStartDate}/>
+								<ViewableDatePicker onChange={onChangeEnergyStartDate} datePickerClassName='diagnose-date-picker' width={100} value={EnergyStartDate}/>
 								<div style={{display: 'inline-block', padding: '0 16px'}}>至</div>
-								<ViewableDatePicker onChange={onChangeBenchmarkEndDate} datePickerClassName='diagnose-date-picker' width={100} value={BenchmarkEndDate}/>
+								<ViewableDatePicker onChange={onChangeEnergyEndDate} datePickerClassName='diagnose-date-picker' width={100} value={EnergyEndDate}/>
 							</div>
 							<span>{I18N.EM.Report.Step + ': ' + find(getStepDataItems(), item => item.id === CalculationStep).label}</span>
 						</header>

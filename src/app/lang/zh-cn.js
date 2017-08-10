@@ -2506,4 +2506,13 @@ I18N.SaveEffect.NoEffectList='暂无方案节能效果';
 I18N.SaveEffect.EffectRateTip='请点击下方按钮配置节能率！';
 I18N.SaveEffect.Draft='草稿';
 
+I18N.SaveEffect.Model = {};
+I18N.SaveEffect.Model.Manual = '手动输入型';
+I18N.SaveEffect.Model.Contrast = '同比型';
+I18N.SaveEffect.Model.Easy = '简单型';
+I18N.SaveEffect.Model.Increment = '增量型';
+I18N.SaveEffect.Model.Relation = '关联型';
+I18N.SaveEffect.Model.Efficiency = '效率型';
+I18N.SaveEffect.Model.Simulation = '模拟型';
+
 module.exports = I18N;

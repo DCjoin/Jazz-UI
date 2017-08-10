@@ -30,6 +30,16 @@
 			}
 		}
 
+		& .date-picker-inline {
+			position: relative;
+
+			& .datepicker-popup {
+				z-index: 1;
+				position: absolute;
+				bottom: 0;
+			}
+		}
+
 		& .create-block {
 			margin: 0 20px 20px;
 			border: solid 1px @border;
@@ -64,7 +74,64 @@
 			&-side {
 				width: 260px;
 				margin-right: 0px;
+				&-header {
+					height: 50px;
+					line-height: 50px;
+					font-size: 16px;
+					border-bottom: 1px solid @border;
+					padding: 0 15px;
+				}
+				&-content {
+					padding: 15px;
 
+					& .date-picker-inline {
+						display: inline-block;
+					}
+
+					& .pop-viewableTextField {
+						margin-bottom:5px;
+
+						& .pop-viewable-title {
+							margin-bottom: 0;
+						}
+					}
+
+					& .tip-message {
+						font-size: 12px;
+						text-align: left;
+						color: @red;
+					}
+				}
+			}
+			&-content {
+				flex: 1;
+				display: flex;
+				flex-direction: column;
+
+				&-header {
+					height: 50px;
+					font-size: 16px;
+					border-bottom: 1px solid @border;
+					padding: 0 15px;
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+				}
+
+				&-content {
+					padding: 0 15px 20px;
+					flex: 1;
+					display: flex;
+					flex-direction: column;
+					font-size: 14px;
+					color: #505559;
+
+					& .diagnose-create-content {
+						display: flex;
+						align-items: center;
+						margin-top: 0;
+					}
+				}
 			}
 		}
 	}

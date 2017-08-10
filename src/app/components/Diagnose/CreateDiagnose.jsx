@@ -354,7 +354,7 @@ function AdditiveComp({
 	)
 }
 
-function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime, disabled, style, isPopover}) {
+export function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChangeEndTime, disabled, style, isPopover}) {
 	let endTimeLabel = EndTime.split('T')[1].split(':').slice(0, 2).join(':'),
 	endDateLabel = EndTime.split('T')[0];
 	if(endTimeLabel === '00:00') {
