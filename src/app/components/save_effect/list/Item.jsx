@@ -82,14 +82,17 @@ export class ItemForConsultant extends Component {
   }
 
   render(){
-    var {ConfigedTagCount}=this.props.effect.toJS();
+    var {ConfigedTagCount,EnergyProblemId}=this.props.effect.toJS();
     return(
       <div className={classNames({
           "active":ConfigedTagCount!==0
         })} onClick={()=>{
           if(ConfigedTagCount!==0) this.props.onClick(this.props.effect)
         }}>
-        <div className="jazz-effect-item">
+        <div className={classNames({
+            "jazz-effect-item":true,
+            "selected":this.props.configEnergyProblemId===EnergyProblemId
+          })}>
           <span className="jazz-effect-item-info">
             {this.getTitle()}
             {this.getInfo()}
@@ -109,6 +112,7 @@ ItemForConsultant.propTypes = {
   onClick:React.PropTypes.func,
   canEdit:React.PropTypes.boolean,
   onConfig:React.PropTypes.func,
+  configEnergyProblemId:React.PropTypes.number,
 }
 
 

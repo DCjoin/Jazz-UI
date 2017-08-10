@@ -9,13 +9,12 @@ import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import FlatButton from "controls/NewFlatButton.jsx";
 import {getenergyeffect,deleteItem,saveeffectratetag} from 'actions/save_effect_action.js';
 import ListStore from '../../../stores/save_effect/ListStore.jsx';
-import { CircularProgress,Dialog} from 'material-ui';
+import { CircularProgress,Dialog,Snackbar} from 'material-ui';
 import ConfigRate from './ConfigRate.jsx';
 import HierarchyStore from 'stores/HierarchyStore.jsx';
 import CurrentUserCustomerStore from 'stores/CurrentUserCustomerStore.jsx';
 import {find} from 'lodash-es';
 import Detail from './save_effect_detail.jsx';
-import Step1 from '../edit/step1.jsx';
 
 function privilegeWithSave_Effect( privilegeCheck ) {
    return true
@@ -728,7 +727,9 @@ export default class EffectList extends Component {
   deleteIndex:null,
   configRateShow:false,
   effectDetailShow:false,
-  displayEffect:null
+  displayEffect:null,
+  saveSuccessText:null,
+  configEnergyProblemId:null
   }
 
   _getHierarchyId(router, context) {
@@ -775,6 +776,21 @@ export default class EffectList extends Component {
     this.setState({
       effectDetailShow:true,
       displayEffect:effect
+    })
+  }
+
+  _onConfig(id){
+      this.setState({
+        configEnergyProblemId:id
+      })
+  }
+
+  _onConfigSuccess(){
+    this.setState({
+      saveSuccessText:I18N.SaveEffect.ConfigSuccess,
+      effect:null
+    },()=>{
+      // getenergyeffect(this.context.hierarchyId);
     })
   }
 
@@ -851,17 +867,6 @@ export default class EffectList extends Component {
       }
     };
 
-    return(
-      <Step1 tags={Immutable.fromJS([{
-          Id:1,Name:'Tag1'
-        },{
-          Id:1,Name:'Tag2'
-        },{
-          Id:1,Name:'Tag3'
-        }])}
-      isView={true}/>
-    )
-
     if(this.state.effect===null){
       return (
         <div className="jazz-effect-list flex-center">
@@ -921,11 +926,12 @@ export default class EffectList extends Component {
               </div>
             </div>
             <div className="jazz-effect-list-content">
-              {this.state.effect.get("EnergyEffects").map(item=>(isFull()?<ItemForConsultant effect={item} onClick={this._onItemClick} canEdit={isFull()}/>:<ItemForManager effect={item} onClick={this._onItemClick} canEdit={isFull()}/>))}
+              {this.state.effect.get("EnergyEffects").map(item=>(isFull()?<ItemForConsultant effect={item} configEnergyProblemId={this.state.configEnergyProblemId} onClick={this._onItemClick} canEdit={isFull()} OnConfig={this._onConfig.bind(this,item.get('configEnergyProblemId'))}/>:<ItemForManager effect={item} onClick={this._onItemClick} canEdit={isFull()}/>))}
             </div>
             {this.state.configRateShow &&
                 <ConfigRate hierarchyName={this._getSelectedHierarchy().Name} hierarchyId={this.context.hierarchyId}
                             onClose={()=>{this.setState({configRateShow:false})}} onSave={this._onRateTagSave}/>}
+            <Snackbar ref='snackbar' autoHideDuration={4000} open={!!this.state.saveSuccessText} onRequestClose={()=>{this.setState({saveSuccessText:null})}} message={this.state.saveSuccessText}/>
           </div>
         </div>
 
