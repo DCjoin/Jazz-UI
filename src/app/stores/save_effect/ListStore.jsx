@@ -7,6 +7,683 @@ import assign from 'object-assign';
 import { Action } from 'constants/actionType/Effect.jsx';
 
 var _effect=null,_tags=null,_detail=null;
+_effect=Immutable.fromJS({
+"Drafts": [
+{
+  "ConfigStep": 1,
+  "EnergyProblemId": 2,
+  "EnergySolutionName": "sample string 1",
+  "TagId": 4,
+  "TagName": "sample string 5",
+  EnergyEffectItemId:1
+},
+{
+  "ConfigStep": 1,
+  "EnergyProblemId": 2,
+  "EnergySolutionName": "sample string 2",
+  "TagId": 4,
+  "TagName": "sample string 5",
+  EnergyEffectItemId:2
+},
+{
+  "ConfigStep": 1,
+  "EnergyProblemId": 2,
+  "EnergySolutionName": "sample string 3",
+  "TagId": 4,
+  "TagName": "sample string 5",
+  EnergyEffectItemId:3
+},
+{
+  "ConfigStep": 1,
+  "EnergyProblemId": 2,
+  "EnergySolutionName": "sample string 3",
+  "TagId": 4,
+  "TagName": "sample string 5"
+},
+{
+  "ConfigStep": 1,
+  "EnergyProblemId": 2,
+  "EnergySolutionName": "sample string 3",
+  "TagId": 4,
+  "TagName": "sample string 5"
+},
+{
+  "ConfigStep": 1,
+  "EnergyProblemId": 2,
+  "EnergySolutionName": "sample string 3",
+  "TagId": 4,
+  "TagName": "sample string 5"
+},
+{
+  "ConfigStep": 1,
+  "EnergyProblemId": 2,
+  "EnergySolutionName": "sample string 3",
+  "TagId": 4,
+  "TagName": "sample string 5"
+},
+{
+  "ConfigStep": 1,
+  "EnergyProblemId": 2,
+  "EnergySolutionName": "sample string 3",
+  "TagId": 4,
+  "TagName": "sample string 5"
+},
+{
+  "ConfigStep": 1,
+  "EnergyProblemId": 2,
+  "EnergySolutionName": "sample string 3",
+  "TagId": 4,
+  "TagName": "sample string 5"
+},
+{
+  "ConfigStep": 1,
+  "EnergyProblemId": 2,
+  "EnergySolutionName": "sample string 3",
+  "TagId": 4,
+  "TagName": "sample string 5"
+},
+{
+  "ConfigStep": 1,
+  "EnergyProblemId": 2,
+  "EnergySolutionName": "sample string 3",
+  "TagId": 4,
+  "TagName": "sample string 5"
+},
+{
+  "ConfigStep": 1,
+  "EnergyProblemId": 2,
+  "EnergySolutionName": "sample string 3",
+  "TagId": 4,
+  "TagName": "sample string 5"
+},
+{
+  "ConfigStep": 1,
+  "EnergyProblemId": 2,
+  "EnergySolutionName": "sample string 3",
+  "TagId": 4,
+  "TagName": "sample string 5"
+},
+{
+  "ConfigStep": 1,
+  "EnergyProblemId": 2,
+  "EnergySolutionName": "sample string 3",
+  "TagId": 4,
+  "TagName": "sample string 5"
+},
+{
+  "ConfigStep": 1,
+  "EnergyProblemId": 2,
+  "EnergySolutionName": "sample string 3",
+  "TagId": 4,
+  "TagName": "sample string 5"
+},
+{
+  "ConfigStep": 1,
+  "EnergyProblemId": 2,
+  "EnergySolutionName": "sample string 3",
+  "TagId": 4,
+  "TagName": "sample string 5"
+},
+{
+  "ConfigStep": 1,
+  "EnergyProblemId": 2,
+  "EnergySolutionName": "sample string 3",
+  "TagId": 4,
+  "TagName": "sample string 5"
+},
+{
+  "ConfigStep": 1,
+  "EnergyProblemId": 2,
+  "EnergySolutionName": "sample string 3",
+  "TagId": 4,
+  "TagName": "sample string 5"
+}
+],
+"EnergyEffects": [
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 20,
+  "ConfigedTagCount": 0,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6,
+  EnergyEffectItemId:1,
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 6,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 2,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+},
+{
+  "AnnualCostSaving": 1.1,
+  "CalcState": 1,
+  "ConfigedTagCount": 1,
+  "EnergyProblemId": 3,
+  "EnergySolutionName": "sample string 4",
+  "EnergySystem": 10,
+  "ExecutedTime": "2017-08-07T08:20:22",
+  "TotalTagCount": 6
+}
+],
+"SavingRateConfigState": 1
+});
 
 var ListStore = assign({}, PrototypeStore, {
   getAllEnergySystem(){
@@ -46,6 +723,10 @@ var ListStore = assign({}, PrototypeStore, {
   getDetail(){
     return _detail
   },
+  deleteEffectItem(energyEffectItemId){
+      var index=_effect.get('Drafts').findIndex(item=>(item.get("EnergyEffectItemId")===energyEffectItemId));
+      _effect=_effect.deleteIn(["Drafts",index]);
+  },
 
 });
 
@@ -61,6 +742,10 @@ ListStore.dispatchToken = AppDispatcher.register(function(action) {
         break;
     case Action.GET_EFFECT_DETAIL:
         ListStore.setDetail(action.detail);
+        ListStore.emitChange();
+        break;
+    case Action.DELETE_EFFECT_ITEM:
+        ListStore.deleteEffectItem(action.energyEffectItemId);
         ListStore.emitChange();
         break;
     default:
