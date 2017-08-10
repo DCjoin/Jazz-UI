@@ -170,14 +170,14 @@ I18N.ResetPassword.Title = '重置密码';
 I18N.ResetPassword.Welcome1 = '';
 I18N.ResetPassword.Welcome2 = '，您好。请重置您的密码。';
 I18N.ResetPassword.SuccessTitle = '密码重置成功';
-I18N.ResetPassword.SuccessTips = '密码已重置成功，请单击“继续”返回登录页面。';
+I18N.ResetPassword.SuccessTips = '密码已重置成功，点击“确定”后，浏览器关闭';
 
 I18N.InitPassword = {};
 I18N.InitPassword.Title = '设置密码';
 I18N.InitPassword.Welcome1 = '';
 I18N.InitPassword.Welcome2 = '，您好。请设置您的密码。';
 I18N.InitPassword.SuccessTitle = '密码设置成功';
-I18N.InitPassword.SuccessTips = '密码已设置成功，请单击“继续”返回登录页面。';
+I18N.InitPassword.SuccessTips = '密码已设置成功，点击“确定”后，浏览器关闭';
 
 I18N.SelectCustomer = {};
 I18N.SelectCustomer.Title = '选择客户';

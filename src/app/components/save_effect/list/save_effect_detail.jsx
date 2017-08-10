@@ -17,6 +17,10 @@ function validValue(value) {
 	return value!==null?util.getLabelData(value*1):'-';
 }
 
+function tansferReturnCycle(cycle){
+	return cycle===0?I18N.Setting.ECM.InvestmentReturnCycle.ImmediateRecovery:cycle;
+}
+
 export default class EffectDetail extends Component {
 
   constructor(props, ctx) {
@@ -185,7 +189,7 @@ export default class EffectDetail extends Component {
 							<IconText style={{width:'140px',marginLeft:'0px'}} icon={saveIcon} label={`${preTitle}${I18N.SaveEffect.EnergySaving}`} value={validValue(EnergySaving)} uom={util.getUomById(EnergySavingUomId).Code}/>
 							<IconText style={{width:'140px',marginLeft:'0px'}} icon={costIcon} label={`${preTitle}${I18N.Setting.Effect.Cost}`} value={validValue(EnergySavingCosts)} uom="RMB"/>
 							<IconText style={{width:'140px',marginLeft:'0px'}} icon={amountIcon} label={I18N.Setting.ECM.InvestmentAmount} value={validValue(InvestmentAmount)} uom="RMB"/>
-							<IconText style={{width:'140px',marginLeft:'0px'}} icon={cycleIcon} label={I18N.Setting.ECM.PaybackPeriod} value={InvestmentReturnCycle || '-'}
+							<IconText style={{width:'140px',marginLeft:'0px'}} icon={cycleIcon} label={I18N.Setting.ECM.PaybackPeriod} value={tansferReturnCycle(InvestmentReturnCycle) || '-'}
 												uom={util.isNumber(InvestmentReturnCycle)?I18N.EM.Year:''}/>
 
 
