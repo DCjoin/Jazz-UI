@@ -1,12 +1,17 @@
 .jazz-effect{
+  &-overlay{
+    display: flex;
+    flex:1;
+    width: 100%;
+    overflow-y: auto;
+  }
   &-list{
     display: flex;
     flex-direction: column;
-    width: 1024px;
-    padding:0 calc(~'50% - 512px');
-    overflow-x: hidden;
-    overflow-y: auto;
-    flex:1;
+    min-width: 1024px;
+    max-width: 1440px;
+    width: 75%;
+    margin:0 auto;
     &-header{
       display: flex;
       flex-direction: row;
@@ -281,13 +286,19 @@
   width: 100%;
   overflow-x: hidden;
   overflow-y: auto;
+  &-header-container{
+    margin: 0 20px;
+    padding: 20px 0;
+    border-bottom: 1px solid @border;
+  }
   &-header{
     display:flex;
     flex-direction: row;
     justify-content: space-between;
-    margin: 0 20px;
-    padding: 20px calc(~'50% - 532px');
-    border-bottom: 1px solid @border;
+    margin: 0 auto;
+    min-width: 1024px;
+    max-width: 1440px;
+    width: calc(~'75% + 30px');
     >span{
       display: flex;
       flex-direction: row;
@@ -303,7 +314,9 @@
     &-subtitle{
       display: flex;
       flex-direction: column;
-      width: 1024px;
+      min-width: 1024px;
+      max-width: 1440px;
+      width: 75%;
       margin:0 auto;
       padding:15px 0;
       border-bottom: 1px solid @border;
@@ -334,7 +347,9 @@
     }
   }
   &-content{
-    width: 1024px;
+    min-width: 1024px;
+    max-width: 1440px;
+    width: 75%;
     margin: 0 auto;
     &-header{
       display: flex;

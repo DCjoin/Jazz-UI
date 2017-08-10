@@ -2515,6 +2515,8 @@ I18N.SaveEffect.SelectTagAgain='重选';
 I18N.SaveEffect.SelectTag='关联节能率数据点';
 I18N.SaveEffect.UtilNow='迄今';
 I18N.SaveEffect.EnergySaving='节能量';
+I18N.SaveEffect.NoEffectDetail='暂无节能效果，请配置节能效果';
+I18N.SaveEffect.EffectDeleteConfirm='确认删除“{0}”的节能效果配置？';
 
 I18N.SaveEffect.Model = {};
 I18N.SaveEffect.Model.Manual = '手动输入型';

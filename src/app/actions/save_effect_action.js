@@ -1759,7 +1759,7 @@ const test_data = {
 	};
 
 export function getTagsByPlan(id) {
-	setTimeout(() => {		
+	setTimeout(() => {
     AppDispatcher.dispatch({
       type: Action.UPDATE_TAGS,
       tags: [
@@ -1785,25 +1785,25 @@ export function updateTags(tags) {
     AppDispatcher.dispatch({
       type: Action.UPDATE_TAGS,
       tags
-    });	
+    });
 }
 
 export function getPreviewChart2() {
-	setTimeout(() => {		
+	setTimeout(() => {
     AppDispatcher.dispatch({
       type: Action.GET_PREVIEW_CHART2,
           data: test_data
-      
+
     });
 	}, 100);
 
 }
 export function getPreviewChart3() {
-	setTimeout(() => {		
+	setTimeout(() => {
     AppDispatcher.dispatch({
       type: Action.GET_PREVIEW_CHART3,
           data: test_data
-      
+
     });
 	}, 100);
 
@@ -1849,6 +1849,22 @@ export function getDetail(energyEffectId) {
 				type: Action.GET_EFFECT_DETAIL,
 				detail
 			});
+		}
+	});
+}
+
+export function deleteItem(energyEffectItemId,callback) {
+	Ajax.get( Util.replacePathParams(SaveEffect.deleteitem,energyEffectItemId), {
+		success: () => {
+			if(callback){
+				callback();
+			}else {
+				AppDispatcher.dispatch({
+					type: Action.DELETE_EFFECT_ITEM,
+					energyEffectItemId,
+				});
+			}
+
 		}
 	});
 }
