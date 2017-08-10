@@ -94,7 +94,10 @@ export class ItemForConsultant extends Component {
             {this.getTitle()}
             {this.getInfo()}
           </span>
-          <span className="jazz-effect-item-action">{I18N.Setting.Effect.Config}</span>
+          <span className="jazz-effect-item-action" onClick={(e)=>{
+              e.stopPropagation();
+              if(this.props.canEdit) this.props.onConfig();
+            }}>{I18N.Setting.Effect.Config}</span>
         </div>
       </div>
     )
@@ -104,6 +107,8 @@ export class ItemForConsultant extends Component {
 ItemForConsultant.propTypes = {
   effect:React.PropTypes.object,
   onClick:React.PropTypes.func,
+  canEdit:React.PropTypes.boolean,
+  onConfig:React.PropTypes.func,
 }
 
 
@@ -166,6 +171,7 @@ export class ItemForManager extends Component {
 ItemForManager.propTypes = {
   effect:React.PropTypes.object,
   onClick:React.PropTypes.func,
+  canEdit:React.PropTypes.boolean,
 };
 
 export class ItemForDraft extends Component {
@@ -216,7 +222,7 @@ export class ItemForDraft extends Component {
       <div className="jazz-effect-item-draft">
         {this.getTitle()}
         {this.getStep()}
-        {this.getAction()}
+        {this.props.canEdit && this.getAction()}
       </div>
     )
   }
@@ -226,4 +232,5 @@ ItemForDraft.propTypes = {
   effect:React.PropTypes.object,
   onContinue:React.PropTypes.func,
   onDelete:React.PropTypes.func,
+  canEdit:React.PropTypes.boolean,
 };

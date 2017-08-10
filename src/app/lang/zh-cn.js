@@ -2517,8 +2517,13 @@ I18N.SaveEffect.UtilNow='迄今';
 I18N.SaveEffect.EnergySaving='节能量';
 I18N.SaveEffect.NoEffectDetail='暂无节能效果，请配置节能效果';
 I18N.SaveEffect.EffectDeleteConfirm='确认删除“{0}”的节能效果配置？';
+I18N.SaveEffect.Alert = '请重新配置！';
+I18N.SaveEffect.BaselinePeriod='基准能耗确定期';
+I18N.SaveEffect.EnergyCalculatePeriod='节能量计算期';
+I18N.SaveEffect.EnergyUnitPrice='能源单价（{0}）';
 
 I18N.SaveEffect.Model = {};
+I18N.SaveEffect.Model.Title = '基准值模型';
 I18N.SaveEffect.Model.Manual = '手动输入型';
 I18N.SaveEffect.Model.Contrast = '同比型';
 I18N.SaveEffect.Model.Easy = '简单型';
@@ -2526,5 +2531,6 @@ I18N.SaveEffect.Model.Increment = '增量型';
 I18N.SaveEffect.Model.Relation = '关联型';
 I18N.SaveEffect.Model.Efficiency = '效率型';
 I18N.SaveEffect.Model.Simulation = '模拟型';
+I18N.SaveEffect.Model.Alert = '请重新配置！';
 
 module.exports = I18N;

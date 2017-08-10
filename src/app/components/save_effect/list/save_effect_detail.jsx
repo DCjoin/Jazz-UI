@@ -178,12 +178,12 @@ export default class EffectDetail extends Component {
 				<div className="jazz-effect-detail-content">
 					<div className="jazz-effect-detail-content-header">
 						<div className="jazz-effect-detail-content-header-title">{I18N.MainMenu.SaveEffect}</div>
-						<div className="jazz-effect-detail-content-header-operation">
+						{this.props.canEdit && <div className="jazz-effect-detail-content-header-operation">
 							<FlatButton label={I18N.Setting.Effect.Config}
 													style={style.btn} labelStyle={style.lable} secondary={true}/>
 							<DropdownButton {...editProps}/>
 							<DropdownButton {...deleteProps}/>
-						</div>
+						</div>}
 					</div>
 					<div className="jazz-effect-detail-content-save-energy">
 							<IconText style={{width:'140px',marginLeft:'0px'}} icon={saveIcon} label={`${preTitle}${I18N.SaveEffect.EnergySaving}`} value={validValue(EnergySaving)} uom={util.getUomById(EnergySavingUomId).Code}/>
@@ -284,4 +284,5 @@ export default class EffectDetail extends Component {
 EffectDetail.propTypes = {
   effect:React.PropTypes.object,
   onBack:React.PropTypes.func,
+	canEdit:React.PropTypes.boolean,
 };
