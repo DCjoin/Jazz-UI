@@ -1786,7 +1786,7 @@ export function updateTags(tags) {
       type: Action.UPDATE_TAGS,
       tags
     });	
-};
+}
 
 export function getPreviewChart2() {
 	setTimeout(() => {		
@@ -1818,4 +1818,37 @@ export function getenergyeffect(id) {
       });
 		}
 	});
-};
+}
+
+export function getEffectRateTag(hierarchyId) {
+	Ajax.get( Util.replacePathParams(SaveEffect.getenergyeffectratetags,hierarchyId), {
+		success: (tags) => {
+			AppDispatcher.dispatch({
+				type: Action.GET_EFFECT_RATE_TAG,
+				tags
+			});
+		}
+	});
+}
+
+export function saveeffectratetag(customerId,hierarchyId,list) {
+	Ajax.post( Util.replacePathParams(SaveEffect.saveenergyeffectratetags,customerId,hierarchyId), {
+		params: list.toJS(),
+		success: () => {
+			AppDispatcher.dispatch({
+				type: Action.SAVE_EFFECT_RATE_TAG,
+			});
+		}
+	});
+}
+
+export function getDetail(energyEffectId) {
+	Ajax.get( Util.replacePathParams(SaveEffect.getDetail,energyEffectId), {
+		success: (detail) => {
+			AppDispatcher.dispatch({
+				type: Action.GET_EFFECT_DETAIL,
+				detail
+			});
+		}
+	});
+}

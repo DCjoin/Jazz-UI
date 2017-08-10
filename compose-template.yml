@@ -1,8 +1,16 @@
 {DOCKER:APP_NAME:WebUI}:
-  restart: always0
+  restart: always
   image: '{DOCKER:IMAGE_FULL_NAME:WebUI}'
   ports:
-    - 8080/tcp
+    - '80/tcp'
+  dns:
+    - '10.160.23.21'
+    - '10.47.144.11'
+  dns_opt:
+    - use-vc
+    - no-tld-query
+  dns_search:
+    - hz.rem.cn.se.com
   environment:
     - NPM_CONFIG_LOGLEVEL=info
     - JAZZ_WEB_HOST=${JAZZ_WEB_HOST}
@@ -10,6 +18,7 @@
   memswap_limit: 0
   labels:
     aliyun.scale: '1'
+    aliyun.routing.port_80: 'jazz-test'
   shm_size: 
   memswap_reservation: 0
   kernel_memory: 0

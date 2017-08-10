@@ -5,13 +5,44 @@ import moment from 'moment';
 import util from 'util/Util.jsx';
 import ListStore from '../../../stores/save_effect/ListStore.jsx';
 import classNames from 'classnames';
-import {calcState} from "../../../constants/actionType/Effect.jsx";
+import {calcState} from "constants/actionType/Effect.jsx";
 import {stepLabelProps} from '../../Diagnose/CreateDiagnose.jsx';
 import {
   Step,
   Stepper,
   StepLabel,
 } from 'material-ui/Stepper';
+
+class CalculatingIcon extends Component{
+  render(){
+    var iconStyle={
+      fontSize:'10px',
+      marginRight:'3px'
+    }
+    return(
+      <div className="icon-calculating">
+        <FontIcon className="icon-sandglass" color="#32ad3d" style={iconStyle}/>
+        <div>{I18N.SaveEffect.Calculating}</div>
+
+      </div>
+    )
+  }
+}
+
+class CalculatedIcon extends Component{
+  render(){
+    var iconStyle={
+      fontSize:'10px',
+      marginRight:'3px'
+    }
+    return(
+      <div className="icon-calculated">
+        <FontIcon className="icon-sync-ok" color="#ffffff" style={iconStyle}/>
+        <div>{I18N.SaveEffect.Calculated}</div>
+      </div>
+    )
+  }
+}
 
 export class ItemForConsultant extends Component {
 
@@ -21,7 +52,7 @@ export class ItemForConsultant extends Component {
       <div className="jazz-effect-item-info-title">
         <span className="isPreferred"></span>
         <span className="name">{EnergySolutionName}</span>
-        {CalcState!==null && <FontIcon className={CalcState===calcState.Being?"icon-revised-cn":"icon-revised-en"}/>}
+        {CalcState!==null && CalcState===calcState.Being?<CalculatingIcon/>:<CalculatedIcon/>}
       </div>
     )
   }
@@ -40,7 +71,7 @@ export class ItemForConsultant extends Component {
           <span>{I18N.Setting.Effect.ConfiguredTag}</span>
           <span style={{color:"#000000"}}>{ConfigedTagCount}</span>
           <span>{`/${TotalTagCount}`}</span>
-          <span>{ConfigedTagCount===TotalTagCount && <FontIcon className="icon-sync-ok"/>}</span>
+          <span>{ConfigedTagCount===TotalTagCount && <FontIcon className="icon-check-circle" color="#32ad3d" style={{fontSize:'14px',marginLeft:'10px'}}/>}</span>
         </span>}
         {ConfigedTagCount>0 && <span>
           <span>{I18N.Setting.Effect.Cost}</span>
@@ -55,7 +86,9 @@ export class ItemForConsultant extends Component {
     return(
       <div className={classNames({
           "active":ConfigedTagCount!==0
-        })}>
+        })} onClick={()=>{
+          if(ConfigedTagCount!==0) this.props.onClick(this.props.effect)
+        }}>
         <div className="jazz-effect-item">
           <span className="jazz-effect-item-info">
             {this.getTitle()}
@@ -70,6 +103,7 @@ export class ItemForConsultant extends Component {
 
 ItemForConsultant.propTypes = {
   effect:React.PropTypes.object,
+  onClick:React.PropTypes.func,
 }
 
 
@@ -81,7 +115,7 @@ export class ItemForManager extends Component {
       <div className="jazz-effect-item-info-title">
         <span className="isPreferred"></span>
         <span className="name">{EnergySolutionName}</span>
-        {CalcState!==null && <FontIcon className={CalcState===calcState.Being?"icon-revised-cn":"icon-revised-en"}/>}
+        {CalcState!==null && CalcState===calcState.Being?<CalculatingIcon/>:<CalculatedIcon/>}
       </div>
     )
   }
@@ -110,7 +144,13 @@ export class ItemForManager extends Component {
     )
   }
   render(){
+    var {ConfigedTagCount}=this.props.effect.toJS();
     return(
+      <div className={classNames({
+          "active":ConfigedTagCount!==0
+        })} onClick={()=>{
+          if(ConfigedTagCount!==0) this.props.onClick(this.props.effect)
+        }}>
       <div className="jazz-effect-item">
         <span className="jazz-effect-item-info">
           {this.getTitle()}
@@ -118,12 +158,14 @@ export class ItemForManager extends Component {
         </span>
         {this.getCost()}
       </div>
+    </div>
     )
   }
 }
 
 ItemForManager.propTypes = {
   effect:React.PropTypes.object,
+  onClick:React.PropTypes.func,
 };
 
 export class ItemForDraft extends Component {
