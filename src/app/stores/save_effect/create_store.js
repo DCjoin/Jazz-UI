@@ -9,11 +9,13 @@ let {AjaxActionType} = AjaxConstants;
 
 let CreateStore,
 _tags,
-_chartData2;
+_chartData2,
+_chartData3;
 
 (function init() {
   _tags = undefined;
   _chartData2 = undefined;
+  _chartData3 = undefined;
 })();
 
 export default CreateStore = Object.assign({}, PrototypeStore, {

@@ -3,6 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import find from 'lodash-es/find';
 
 import { RadioButton } from 'material-ui/RadioButton';
+import CircularProgress from 'material-ui/CircularProgress';
 
 import HierarchyStore from 'stores/HierarchyStore.jsx';
 
@@ -63,6 +64,11 @@ export default class Step1 extends Component {
 		this.setState((state, props) => {return {showSeleteTagDlg: false}});
 	}
 	render() {
+		if( !this.props.tags ) {
+			return (<div className='flex-center'>
+				<CircularProgress  mode="indeterminate" size={80} />
+			</div>);
+		}
 		let { tags, selectedId, onClickItem, onDeleteItem, onAddItem } = this.props;
 		return (
 			<div className='create-block step1-wrapper'>

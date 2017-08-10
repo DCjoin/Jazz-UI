@@ -1792,21 +1792,30 @@ export function getPreviewChart2() {
 	setTimeout(() => {
     AppDispatcher.dispatch({
       type: Action.GET_PREVIEW_CHART2,
-          data: test_data
-
+          data: test_data      
+      
     });
 	}, 100);
-
 }
 export function getPreviewChart3() {
 	setTimeout(() => {
     AppDispatcher.dispatch({
       type: Action.GET_PREVIEW_CHART3,
-          data: test_data
-
+          data: test_data      
+      
     });
 	}, 100);
+}
+export function saveItem(params) {
+	// Ajax.post(SaveEffect.addItem, {
+	// 	params,
+	// 	success: () => {
 
+	// 	},
+	// 	error: () => {
+
+	// 	}
+	// });
 }
 
 export function getenergyeffect(id) {

@@ -12,10 +12,12 @@ import Util from 'util/Util.jsx';
 
 import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
 import ViewableDatePicker from 'controls/ViewableDatePicker.jsx';
+import ViewableTextField from 'controls/ViewableTextField.jsx';
 import NewFlatButton from 'controls/NewFlatButton.jsx';
 
 import {ChartDateFilter} from 'components/Diagnose/CreateDiagnose.jsx';
 import ChartBasicComponent from 'components/DataAnalysis/Basic/ChartBasicComponent.jsx';
+import {getDateObjByRange} from './';
 
 let getModelDataItems = () => [
 	{ id: Model.Easy, label: I18N.SaveEffect.Model.Easy },
@@ -34,13 +36,49 @@ let getStepDataItems = () => [
 	{ id: TimeGranularity.Monthly, label: I18N.EM.Month },
 ];
 
+function ManualValue({BenchmarkDatas, onChangeValue, unit}) {
+	return (
+		<div className='step3-manual-value-wrapper'>
+			<header>{'计算期逐月基准值' + '(' + unit + ')'}</header>
+			{BenchmarkDatas ? 
+			<div>
+				{BenchmarkDatas.map((data, idx) => 
+				<ViewableTextField
+					defaultValue={data.Value}
+					hintText={data.Label}
+					style={{width: 90}}
+					didChanged={(val) => {
+						onChangeValue(idx, val);
+					}}
+				/>)}
+			</div>:
+			<div>
+				{'计算期确定后，此处才显示'}
+			</div>}
+		</div>
+	);
+}
+
+
 export default class Step3 extends Component {
 	constructor(props) {
 		super(props);
 
 	}
 	render() {
-		let { data, disabledPreview, BenchmarkModel, EnergyUnitPrice, EnergyStartDate, EnergyEndDate, onChangeEnergyUnitPrice, onChangeEnergyStartDate, onChangeEnergyEndDate, onGetChartData } = this.props,
+		let { data, 
+			disabledPreview, 
+			BenchmarkModel, 
+			CalculationStep, 
+			EnergyUnitPrice, 
+			EnergyStartDate, 
+			EnergyEndDate, 
+			BenchmarkDatas,
+			onChangeEnergyUnitPrice, 
+			onChangeEnergyStartDate, 
+			onChangeEnergyEndDate, 
+			onChangeBenchmarkDatas, 
+			onGetChartData, } = this.props,
 		chartProps;
 
 		if( data ) {
@@ -77,18 +115,19 @@ export default class Step3 extends Component {
 		}
 		return (
 			<div className='step2-wrapper'>
-				<div className='create-block step2-side'>
+				<div className='create-block step2-side step3-side'>
 					<header className='step2-side-header'>{'配置基准值模型'}</header>
-					<div className='step2-side-content'>
+					<div className='step2-side-content step3-side-content'>
 						<div className='pop-viewableTextField'>
 							<header className='pop-viewable-title'>{'节能量计算期'}</header>
 							<div>
-								<ViewableDatePicker onChange={onChangeEnergyStartDate} datePickerClassName='date-picker-inline' width={83} value={EnergyStartDate}/>
+								<ViewableDatePicker isPopover hintText='开始时间' onChange={onChangeEnergyStartDate} datePickerClassName='date-picker-inline' width={83} value={EnergyStartDate}/>
 								<div style={{display: 'inline-block', padding: '0 16px'}}>至</div>
-								<ViewableDatePicker onChange={onChangeEnergyEndDate} datePickerClassName='date-picker-inline' width={83} value={EnergyEndDate}/>
+								<ViewableDatePicker isPopover hintText='结束时间' onChange={onChangeEnergyEndDate} datePickerClassName='date-picker-inline' width={83} value={EnergyEndDate}/>
 							</div>
-							<ViewableTextField title={'能源单价'} hintText={'输入价格'} defaultValue={EnergyUnitPrice} didChanged={onChangeEnergyUnitPrice}/>
-						</div>}
+							<ViewableTextField floatingLabelFixed={true} style={{width: 170}} title={'能源单价'} hintText={'输入价格'} defaultValue={EnergyUnitPrice} didChanged={onChangeEnergyUnitPrice}/>
+							{ Model.Manual === BenchmarkModel && <ManualValue key={EnergyStartDate + EnergyEndDate} BenchmarkDatas={BenchmarkDatas} onChangeValue={onChangeBenchmarkDatas}/>}
+						</div>
 					</div>
 				</div>
 				<div className='create-block step2-content'>

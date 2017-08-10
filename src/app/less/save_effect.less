@@ -10,6 +10,9 @@
 		justify-content: space-between;
 		align-items: center;
 	}
+	& .footer {
+		margin: 0 20px;
+	}
 
 	&-create {
 		position: fixed;
@@ -47,6 +50,10 @@
 		}
 
 		& .step1 {
+			&-wrapper {
+				display: flex;
+				flex-direction: column
+			}
 			&-header {
 				height: 50px;
 				line-height: 50px;
@@ -55,6 +62,9 @@
 			}
 			&-content {
 				padding: 20px 15px;
+				overflow-x: hidden;
+				overflow-y: auto;
+				flex: 1;
 
 				& .tag-configed {
 					margin-left: 40px;
@@ -131,6 +141,65 @@
 						align-items: center;
 						margin-top: 0;
 					}
+				}
+			}
+		}
+		& .step3 {
+			&-side {
+				display: flex;
+				flex-direction: column;
+				&-content {
+					display: flex;
+					flex-direction: column;
+					overflow-x: hidden;
+					overflow-y: auto;
+					flex: 1;
+				}
+			}
+
+			&-manual-value-wrapper {
+				& .pop-viewableTextField:nth-of-type(2n+1) {
+					margin-right: 40px;
+				}
+			}
+		}
+
+		& .step4 {
+			&-wrapper {
+				display: flex;
+				flex: 1;
+				margin: 0 20px 20px;
+			}
+			&-block {
+				flex: 1;
+				background-color: #fff;
+				border: solid 1px @border;
+				&-header {
+					height: 50px;
+					line-height: 50px;
+					color: @black;
+					border-bottom: 1px solid @border;
+					padding-left: 15px;
+				}
+				&-content {
+					padding: 15px;
+					overview-x: hidden;
+					overflow-y: auto;
+				}
+				&:first-of-type {
+					margin-right: 26px;
+				}
+			}
+			&-item {
+				margin-bottom: 20px;
+				&-title {
+					font-size: 12px;
+					color: @medium-gray;
+					margin-bottom: 8px;
+				}
+				&-value {
+					font-size: 14px;
+					color: #434343;
 				}
 			}
 		}
