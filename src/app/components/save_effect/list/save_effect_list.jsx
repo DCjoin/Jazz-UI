@@ -15,6 +15,7 @@ import HierarchyStore from 'stores/HierarchyStore.jsx';
 import CurrentUserCustomerStore from 'stores/CurrentUserCustomerStore.jsx';
 import {find} from 'lodash-es';
 import Detail from './save_effect_detail.jsx';
+import Step1 from '../edit/step1.jsx';
 
 function privilegeWithSave_Effect( privilegeCheck ) {
    return true
@@ -849,6 +850,18 @@ export default class EffectList extends Component {
         padding:'0'
       }
     };
+
+    return(
+      <Step1 tags={Immutable.fromJS([{
+          Id:1,Name:'Tag1'
+        },{
+          Id:1,Name:'Tag2'
+        },{
+          Id:1,Name:'Tag3'
+        }])}
+      isView={true}/>
+    )
+
     if(this.state.effect===null){
       return (
         <div className="jazz-effect-list flex-center">
@@ -875,7 +888,7 @@ export default class EffectList extends Component {
              <div className="nolist-font">{I18N.SaveEffect.NoDraft}</div>
            </div>
             :<div className="jazz-effect-list-content">
-          {this.state.effect.get('Drafts').map((item,index)=>(<ItemForDraft effect={item} onDelete={()=>{this._onDraftDelete(index)}}/>))}
+          {this.state.effect.get('Drafts').map((item,index)=>(<ItemForDraft effect={item} onDelete={()=>{this._onDraftDelete(index)}} canEdit={isFull()}/>))}
           </div>}
           {this.state.deleteConfirmShow && this._renderDeleteDialog()}
         </div>
@@ -886,27 +899,29 @@ export default class EffectList extends Component {
           <Detail effect={this.state.displayEffect} onBack={()=>{this.setState({effectDetailShow:false,displayEffect:null},
                                                             ()=>{
                                                               // getenergyeffect(this.context.hierarchyId)
-                                                            })}}/>
+                                                            })}}
+                                                    canEdit={isFull()}/>
       )
     }else{
+      let disabled=ListStore.getRateBtnDisabled(this.state.effect.get("EnergyEffects"));
       return(
         <div className="jazz-effect-overlay">
           <div className="jazz-effect-list">
-            {this.state.effect.get('SavingRateConfigState') && <div className="jazz-effect-list-rateTip">
+            {isFull() && !disabled && this.state.effect.get('SavingRateConfigState') && <div className="jazz-effect-list-rateTip">
               {I18N.SaveEffect.EffectRateTip}
             </div>}
             <div className="jazz-effect-list-header">
               <div>
                 <div className="jazz-effect-list-title">{I18N.Setting.Effect.List}</div>
-                <FlatButton label={I18N.SaveEffect.ConfigSaveRatio} onTouchTap={this._onConfigRateShow.bind(this)}
-                            disabled={ListStore.getRateBtnDisabled(this.state.effect.get("EnergyEffects"))} style={style.btn} labelStyle={style.lable} secondary={true}/>
+                {isFull() && <FlatButton label={I18N.SaveEffect.ConfigSaveRatio} onTouchTap={this._onConfigRateShow.bind(this)}
+                            disabled={disabled} style={style.btn} labelStyle={style.lable} secondary={true}/>}
               </div>
               <div className="draft-btn" onClick={this._onDraftShow.bind(this)}>
                 {`${I18N.SaveEffect.Draft} (${this.state.effect.get('Drafts').size})`}
               </div>
             </div>
             <div className="jazz-effect-list-content">
-              {this.state.effect.get("EnergyEffects").map(item=>(isFull()?<ItemForConsultant effect={item} onClick={this._onItemClick}/>:<ItemForManager effect={item} onClick={this._onItemClick}/>))}
+              {this.state.effect.get("EnergyEffects").map(item=>(isFull()?<ItemForConsultant effect={item} onClick={this._onItemClick} canEdit={isFull()}/>:<ItemForManager effect={item} onClick={this._onItemClick} canEdit={isFull()}/>))}
             </div>
             {this.state.configRateShow &&
                 <ConfigRate hierarchyName={this._getSelectedHierarchy().Name} hierarchyId={this.context.hierarchyId}

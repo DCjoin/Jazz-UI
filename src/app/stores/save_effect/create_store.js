@@ -3,8 +3,8 @@ import Immutable from 'immutable';
 import AppDispatcher from '../../dispatcher/AppDispatcher.jsx';
 import PrototypeStore from '../PrototypeStore.jsx';
 import AjaxConstants from 'constants/AjaxConstants.jsx';
-import { Action } from 'constants/actionType/Effect.jsx';
-
+import { Action,Model } from 'constants/actionType/Effect.jsx';
+import TimeGranularity from 'constants/TimeGranularity.jsx';
 let {AjaxActionType} = AjaxConstants;
 
 let CreateStore,
@@ -36,6 +36,25 @@ export default CreateStore = Object.assign({}, PrototypeStore, {
   },
   getChartData3: () => {
     return _chartData3;
+  },
+  getBenchmarkModelById:(id)=>{
+  return Immutable.fromJS([
+    	{ id: Model.Easy, label: I18N.SaveEffect.Model.Easy },
+    	{ id: Model.Contrast, label: I18N.SaveEffect.Model.Contrast },
+    	{ id: Model.Manual, label: I18N.SaveEffect.Model.Manual },
+    	{ id: Model.Increment, label: I18N.SaveEffect.Model.Increment },
+    	{ id: Model.Relation, label: I18N.SaveEffect.Model.Relation },
+    	{ id: Model.Efficiency, label: I18N.SaveEffect.Model.Efficiency },
+    	{ id: Model.Simulation, label: I18N.SaveEffect.Model.Simulation },
+    ]).find(item=>(item.get('id')===id)).get('label')
+  },
+  getCalculationStepByStep:(step)=>{
+  return Immutable.fromJS([
+    { id: TimeGranularity.Minite, label: I18N.EM.Raw },
+    { id: TimeGranularity.Hourly, label: I18N.EM.Hour },
+    { id: TimeGranularity.Daily, label: I18N.EM.Day },
+    { id: TimeGranularity.Monthly, label: I18N.EM.Month },
+    ]).find(item=>(item.get('id')===step)).get('label')
   },
 });
 CreateStore.dispatchToken = AppDispatcher.register(function(action) {

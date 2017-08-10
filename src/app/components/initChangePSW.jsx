@@ -74,6 +74,10 @@ var initChangePSW = React.createClass({
       //   that.context.router.replaceWith('login', { lang: this.props.params.lang });
       // });
     },
+    _onClose:function(){
+      window.location.href="about:blank";
+      window.close();
+    },
     _getEditPasswordDialog: function() {
         let {newPassword, confirmNewPassword} = this.state.tempData,
             newPasswordProps = {
@@ -130,8 +134,8 @@ var initChangePSW = React.createClass({
     },
     _getSussDialog:function(){
       let goonProps = {
-    		onClick: this._returnLogin,
-    		label: I18N.Common.Button.GoOn
+    		onClick: this._onClose,
+    		label: I18N.Common.Button.Confirm
     	};
       let actions = [
   			<CusFlatButton {...goonProps} />
