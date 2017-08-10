@@ -65,7 +65,7 @@ export default class Step1 extends Component {
 	render() {
 		let { tags, selectedId, onClickItem, onDeleteItem, onAddItem } = this.props;
 		return (
-			<div className='create-block'>
+			<div className='create-block step1-wrapper'>
 				<header className='step1-header'>
 					<span>{I18N.EM.Report.SelectTag}</span>
 					<NewFlatButton 

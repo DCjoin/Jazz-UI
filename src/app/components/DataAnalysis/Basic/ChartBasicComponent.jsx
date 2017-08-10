@@ -151,7 +151,7 @@ export default class ChartBasicComponent extends Component {
   }
 
   render(){
-    let {tagData, chartType, widgetStatus, widgetSeriesArray, contentSyntax, postNewConfig} = this.props,
+    let {tagData, chartType, widgetStatus, widgetSeriesArray, contentSyntax, postNewConfig, preConfig} = this.props,
     target = tagData.getIn(['TargetEnergyData', 0, 'Target']),
     timeSpan = target.get('TimeSpan'),
     startTime = timeSpan.get('StartTime'),
@@ -242,6 +242,9 @@ export default class ChartBasicComponent extends Component {
       onDeleteButtonClick: this.props.onDeleteButtonClick,
       postNewConfig
     };
+    if( preConfig && typeof preConfig === 'function' ) {
+      chartCmpObj = preConfig(chartCmpObj);
+    }
     return (
          <ChartComponentBox {...chartCmpObj}/>
     );

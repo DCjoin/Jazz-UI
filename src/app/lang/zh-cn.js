@@ -2516,4 +2516,13 @@ I18N.SaveEffect.SelectTag='关联节能率数据点';
 I18N.SaveEffect.UtilNow='迄今';
 I18N.SaveEffect.EnergySaving='节能量';
 
+I18N.SaveEffect.Model = {};
+I18N.SaveEffect.Model.Manual = '手动输入型';
+I18N.SaveEffect.Model.Contrast = '同比型';
+I18N.SaveEffect.Model.Easy = '简单型';
+I18N.SaveEffect.Model.Increment = '增量型';
+I18N.SaveEffect.Model.Relation = '关联型';
+I18N.SaveEffect.Model.Efficiency = '效率型';
+I18N.SaveEffect.Model.Simulation = '模拟型';
+
 module.exports = I18N;
