@@ -3,12 +3,46 @@
 	flex-direction: column;
 	align-items: center;
 	flex:1;
+	background-color: #f3f5f7;
 	& .header {
-		width: 85%;
-		height: 48px;
 		display: flex;
-		justify-content: space-between;
-		align-items: center;
+		flex-direction: row;
+		padding: 16px 0;
+		justify-content: center;
+		width: calc(~'100% - 40px');
+		margin:0 auto;
+		border-bottom: 1px solid @border;
+		>div{
+			display: flex;
+			flex-direction: row;
+			>div:first-child{
+				margin-right: 15px;
+			}
+		}
+		.tab{
+			min-height: 30px;
+  		height: 30px;
+			line-height: 30px;
+			text-align: center;
+			padding:5px 15px;
+			font-size: 14px;
+  		color: @medium-gray;
+			&:hover{
+				cursor: pointer;
+			}
+		}
+		.active{
+			min-height: 30px;
+  		height: 30px;
+			line-height: 30px;
+			text-align: center;
+			padding:5px 15px;
+  		border-radius: 2px;
+  		background-color: #ffffff;
+  		box-shadow: 0 0 2px 2px rgba(209, 209, 209, 0.5);
+			font-size: 14px;
+ 			color: @slate-grey;
+		}
 	}
 
 	&-create {
