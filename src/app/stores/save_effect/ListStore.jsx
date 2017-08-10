@@ -6,7 +6,7 @@ import Immutable from 'immutable';
 import assign from 'object-assign';
 import { Action } from 'constants/actionType/Effect.jsx';
 
-var _effect=null,_tags=null;
+var _effect=null,_tags=null,_detail=null;
 
 var ListStore = assign({}, PrototypeStore, {
   getAllEnergySystem(){
@@ -39,7 +39,13 @@ var ListStore = assign({}, PrototypeStore, {
   },
   getRateTagList(){
     return _tags
-  }
+  },
+  setDetail(detail){
+    _detail=Immutable.fromJS(detail)
+  },
+  getDetail(){
+    return _detail
+  },
 
 });
 
@@ -51,6 +57,10 @@ ListStore.dispatchToken = AppDispatcher.register(function(action) {
         break;
     case Action.GET_EFFECT_RATE_TAG:
         ListStore.setRateTagList(action.tags);
+        ListStore.emitChange();
+        break;
+    case Action.GET_EFFECT_DETAIL:
+        ListStore.setDetail(action.detail);
         ListStore.emitChange();
         break;
     default:
