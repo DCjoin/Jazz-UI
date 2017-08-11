@@ -10,8 +10,10 @@ import Immutable from 'immutable';
 import FlatButton from "controls/NewFlatButton.jsx";
 import DropdownButton from '../../../controls/NewDropdownButton.jsx';
 import {IconText} from '../../ECM/MeasuresItem.jsx';
-import {getDetail,deleteItem} from 'actions/save_effect_action.js';
-import { CircularProgress,Dialog} from 'material-ui';
+import {getDetail,deleteItem,changeEnergySystemForEffect} from 'actions/save_effect_action.js';
+import { CircularProgress,Dialog,Snackbar} from 'material-ui';
+import PreCreate from '../create/pre_create.jsx';
+import Create from '../create';
 
 function validValue(value) {
 	return value!==null?util.getLabelData(value*1):'-';
@@ -34,6 +36,8 @@ export default class EffectDetail extends Component {
     detailInfo:null,
 		deleteConfirmShow:false,
 		deleteIndex:null,
+		energySystemDialogShow:false,
+		createShow:false
   }
 
   _onChanged(){
@@ -41,6 +45,18 @@ export default class EffectDetail extends Component {
       detailInfo:ListStore.getDetail()
     })
   }
+
+	_onEnergySystemDialogShow(){
+		this.setState({
+			energySystemDialogShow:true
+		})
+	}
+
+	_onCreateShow(){
+		this.setState({
+			createShow:true
+		})
+	}
 
   _handleEditTagChange(event, value){
 
@@ -91,7 +107,7 @@ export default class EffectDetail extends Component {
           <div className="jazz-effect-detail-header-subtitle-info">
             <span style={{marginBottom:'5px'}}>
               <div className="font" style={{marginRight:'10px'}}>{ListStore.getEnergySystem(EnergySystem)}</div>
-              <div className="operation">{I18N.Baseline.Button.Edit}</div>
+              {this.props.canEdit && <div className="operation" onClick={this._onEnergySystemDialogShow.bind(this)}>{I18N.Baseline.Button.Edit}</div>}
             </span>
             <span>
               <FontIcon className="icon-calendar1" style={{fontSize:'14px',marginRight:'10px'}}/>
@@ -118,7 +134,8 @@ export default class EffectDetail extends Component {
     // var tags=this.state.detailInfo.get('EffectItems'),
           //  {EnergySaving,EnergySavingCosts,InvestmentAmount,InvestmentReturnCycle,EnergySavingUomId}=this.state.detailInfo.toJS();
     var {CalcState}=this.props.effect.toJS(),
-        preTitle=CalcState===calcState.Being?I18N.SaveEffect.UtilNow:'';
+        preTitle=CalcState===calcState.Being?I18N.SaveEffect.UtilNow:'',
+				prePeriod=CalcState===calcState.Being?I18N.SaveEffect.Predict:'';
     var tags=Immutable.fromJS([{TagId:1,TagName:'TagA'},{TagId:2,TagName:'TagB'}]),
         EnergySaving=1,
         EnergySavingCosts=1,
@@ -136,7 +153,13 @@ export default class EffectDetail extends Component {
         fontSize: "14px",
         fontWeight: "500",
         padding:'0'
-      }
+      },
+			editBtn:{
+				width: "73px",
+				minWidth:'73px',
+  			"height": "30px",
+				paddding:0
+			}
     },
     editProps = {
       text: I18N.Common.Button.Edit,
@@ -171,7 +194,10 @@ export default class EffectDetail extends Component {
 	  if(tags.size===0){
 			<div className="jazz-effect-detail-content flex-center">
 				<FontIcon className="icon-weather-thunder" style={{fontSize:'60px'}} color="#32ad3d"/>
-			 <div className="nolist-font">{I18N.SaveEffect.NoEffectDetail}</div>
+			 <div className="nolist-font" style={{display:'flex',flexDirection:'row'}}>
+				 {I18N.SaveEffect.NoEffectDetail}
+				 <div className="operation" onClick={this._onCreateShow.bind(this)}>{I18N.Setting.Effect.Config}</div>
+			 </div>
 		 </div>
 		}else {
 			return(
@@ -179,17 +205,21 @@ export default class EffectDetail extends Component {
 					<div className="jazz-effect-detail-content-header">
 						<div className="jazz-effect-detail-content-header-title">{I18N.MainMenu.SaveEffect}</div>
 						{this.props.canEdit && <div className="jazz-effect-detail-content-header-operation">
-							<FlatButton label={I18N.Setting.Effect.Config}
+							<FlatButton label={I18N.Setting.Effect.Config} onTouchTap={this._onCreateShow.bind(this)}
 													style={style.btn} labelStyle={style.lable} secondary={true}/>
-							<DropdownButton {...editProps}/>
-							<DropdownButton {...deleteProps}/>
+												{tags.size===1?<FlatButton label={I18N.Common.Button.Edit} onTouchTap={(e)=>{this._handleEditTagChange(e,0)}}
+																		style={style.editBtn} labelStyle={style.lable} secondary={true}/>
+														 :<DropdownButton {...editProps}/>}
+							{tags.size===1?<FlatButton label={I18N.Common.Button.Delete} onTouchTap={(e)=>{this._handleDeleteTagChange(e,0)}}
+							 																		style={style.editBtn} labelStyle={style.lable} secondary={true}/>
+							 														 :<DropdownButton {...deleteProps}/>}
 						</div>}
 					</div>
 					<div className="jazz-effect-detail-content-save-energy">
 							<IconText style={{width:'140px',marginLeft:'0px'}} icon={saveIcon} label={`${preTitle}${I18N.SaveEffect.EnergySaving}`} value={validValue(EnergySaving)} uom={util.getUomById(EnergySavingUomId).Code}/>
 							<IconText style={{width:'140px',marginLeft:'0px'}} icon={costIcon} label={`${preTitle}${I18N.Setting.Effect.Cost}`} value={validValue(EnergySavingCosts)} uom="RMB"/>
 							<IconText style={{width:'140px',marginLeft:'0px'}} icon={amountIcon} label={I18N.Setting.ECM.InvestmentAmount} value={validValue(InvestmentAmount)} uom="RMB"/>
-							<IconText style={{width:'140px',marginLeft:'0px'}} icon={cycleIcon} label={I18N.Setting.ECM.PaybackPeriod} value={tansferReturnCycle(InvestmentReturnCycle) || '-'}
+							<IconText style={{width:'140px',marginLeft:'0px'}} icon={cycleIcon} label={`${prePeriod}${I18N.Setting.ECM.PaybackPeriod}`} value={tansferReturnCycle(InvestmentReturnCycle) || '-'}
 												uom={util.isNumber(InvestmentReturnCycle)?I18N.EM.Year:''}/>
 
 
@@ -268,12 +298,34 @@ export default class EffectDetail extends Component {
 		// 	 </div>
 		// 	)
 		// }else {
+		 var {EnergySolutionName,EnergyProblemId,EnergyEffectId,ExecutedTime}=this.props.effect.toJS();
 			return(
 				<div className="jazz-effect-detail">
 					{this._renderTitle()}
 					{this._renderSubTitle()}
 					{this._renderContent()}
 					{this.state.deleteConfirmShow && this._renderDeleteDialog()}
+					{this.state.energySystemDialogShow && <PreCreate isEdit={true}
+																														onCLose={()=>{this.setState({energySystemDialogShow:false})}}
+																														onSubmit={(id)=>{
+																															this.setState({energySystemDialogShow:false},()=>{
+																																changeEnergySystemForEffect(id,this.props.effect.get("EnergyEffectId"))
+																															})
+																														}}/>}
+					{this.state.createShow && <Create
+						EnergySolutionName
+						EnergyProblemId
+						EnergyEffectId
+						ExecutedTime
+						onSubmitDone={()=>{getDetail(this.props.effect.get('EnergyEffectId'));}}
+						onClose={()=>{
+							this.setState({
+								createShow:false,
+								saveSuccessText:I18N.SaveEffect.ConfigSuccess,
+								detailInfo:null
+							})
+						}}/>}
+						<Snackbar ref='snackbar' autoHideDuration={4000} open={!!this.state.saveSuccessText} onRequestClose={()=>{this.setState({saveSuccessText:null})}} message={this.state.saveSuccessText}/>
 				</div>
 			)
 		// }

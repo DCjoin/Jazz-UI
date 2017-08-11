@@ -8,12 +8,15 @@ import classNames from 'classnames';
 import {calcState} from "constants/actionType/Effect.jsx";
 import {stepLabelProps} from '../../Diagnose/CreateDiagnose.jsx';
 
-import CreateEffert from '../create';
 import {
   Step,
   Stepper,
   StepLabel,
 } from 'material-ui/Stepper';
+
+function validValue(value) {
+	return value!==null?util.getLabelData(value*1):'-';
+}
 
 class CalculatingIcon extends Component{
   render(){
@@ -77,7 +80,7 @@ export class ItemForConsultant extends Component {
         </span>}
         {ConfigedTagCount>0 && <span>
           <span>{I18N.Setting.Effect.Cost}</span>
-          <span style={{color:"#000000"}}>{`${util.getLabelData(AnnualCostSaving)} RMB`}</span>
+          <span style={{color:"#000000"}}>{`${validValue(AnnualCostSaving)} RMB`}</span>
         </span>}
       </div>
     )
@@ -150,7 +153,7 @@ export class ItemForManager extends Component {
     return(
       <span className="jazz-effect-item-cost">
         <span>{I18N.Setting.Effect.Cost}</span>
-        <span>{`${util.getLabelData(AnnualCostSaving)} RMB`}</span>
+        <span>{`${validValue(AnnualCostSaving)} RMB`}</span>
       </span>
     )
   }
