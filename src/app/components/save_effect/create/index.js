@@ -136,6 +136,7 @@ export default class Create extends Component {
 			chartData3: CreateStore.getChartData3(),
 			energySolution: CreateStore.getEnergySolution(),
 			supervisorList:MeasuresStore.getSupervisor(),
+			EnergyEffectItemId: CreateStore.getEnergyEffectItemId(),
 		}
 	};
 	static getStores = () => [CreateStore, MeasuresStore];
@@ -447,7 +448,8 @@ export default class Create extends Component {
 	     canEdit:false,
 	   },
 	   gallery: {
-	    measure:currentSolution
+	    measure:currentSolution,
+	    isView: true,
 	   },
 	   remark:{
 	   	remarkList: currentSolution.get('Remarks'),

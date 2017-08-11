@@ -11,13 +11,15 @@ let CreateStore,
 _tags,
 _chartData2,
 _chartData3,
-_energySolution;
+_energySolution,
+_energyEffectItemId;
 
 (function init() {
   _tags = undefined;
   _chartData2 = undefined;
   _chartData3 = undefined;
   _energySolution = undefined;
+  _energyEffectItemId = undefined;
 })();
 
 export default CreateStore = Object.assign({}, PrototypeStore, {
@@ -44,6 +46,12 @@ export default CreateStore = Object.assign({}, PrototypeStore, {
   },
   getEnergySolution: () => {
     return _energySolution;
+  },
+  setEnergyEffectItemId: (id) => {
+    _energyEffectItemId = id;
+  },
+  getEnergyEffectItemId: () => {
+    return _energyEffectItemId;
   },
   getBenchmarkModelById:(id)=>{
   return Immutable.fromJS([
@@ -81,6 +89,10 @@ CreateStore.dispatchToken = AppDispatcher.register(function(action) {
         break;
     case Action.GET_ENERGY_SOLUTION:
         CreateStore.setEnergySolution(action.data);
+        CreateStore.emitChange();
+        break;
+    case Action.ADD_ITEM:
+        CreateStore.setEnergyEffectItemId(action.id);
         CreateStore.emitChange();
         break;
     default:

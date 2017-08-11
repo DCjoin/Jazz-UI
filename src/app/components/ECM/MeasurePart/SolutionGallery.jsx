@@ -58,6 +58,7 @@ export default class SolutionGallery extends Component {
 		return (
 			<div style={{margin: '10px 0'}}>
 				<Gallery
+					isView={this.props.isView}
 					names={this._getImages().map(image => image.Name)}
 					selectedIdx={this.state.idx}
 					onLeft={this._setIdx(this.state.idx - 1)}
