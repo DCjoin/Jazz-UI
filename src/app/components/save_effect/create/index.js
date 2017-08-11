@@ -158,7 +158,8 @@ export default class Create extends Component {
 	}
 	_goStepAndInit(step) {
 		this._goStep(step);
-		this._getInitData(step);
+
+		setTimeout(() => {this._getInitData(step)}, 0);
 	}
 	_getInitData(step, props = this.props, state = this.state) {
 		switch( step ) {
@@ -227,7 +228,7 @@ export default class Create extends Component {
 					CalculationStep={CalculationStep}
 					BenchmarkStartDate={BenchmarkStartDate}
 					BenchmarkEndDate={BenchmarkEndDate}
-					disabledPreview={false}
+					disabledPreview={!this._checkCanNext()}
 					onChangeModelType={(type) => {
 						filterObj = filterObj.set('BenchmarkModel', type);
 						if(type === Model.Manual) {
@@ -285,7 +286,7 @@ export default class Create extends Component {
 					EnergyStartDate={EnergyStartDate}
 					EnergyEndDate={EnergyEndDate}
 					BenchmarkDatas={BenchmarkDatas}
-					disabledPreview={false}
+					disabledPreview={!this._checkCanNext()}
 					onChangeEnergyUnitPrice={(val) => {
 						this._setFilterObj(filterObj.set('EnergyUnitPrice', val));
 					}}
