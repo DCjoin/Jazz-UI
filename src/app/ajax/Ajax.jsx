@@ -77,6 +77,7 @@ var _ajax = function(url, options) {
         .set('Accept', dataType)
         .set('httpWebRequest.MediaType', dataType)
         .set('Content-Type', dataType)
+        .set('withCredentials', true)
         .end(function(err, res){
           // remove(reqList, (reqObj) => {
           //   return reqObj.key === options.tag;
