@@ -235,9 +235,12 @@ ReactDom.render(<Router history={hashHistory} routes={{
           path: 'overview',
           component: SaveEffectOverview
         }, {
-          path: 'list',
-          component: SaveEffectList,
-          childRoutes: [{
+          path: 'effect',
+          childRoutes: [
+            {
+              path: 'list',
+              component: SaveEffectList
+            },{
             path: 'drafts',
             component: SaveEffecDrafts
           }]

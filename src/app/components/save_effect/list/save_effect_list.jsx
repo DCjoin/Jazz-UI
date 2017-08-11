@@ -17,6 +17,7 @@ import CurrentUserCustomerStore from 'stores/CurrentUserCustomerStore.jsx';
 import {find} from 'lodash-es';
 import Detail from './save_effect_detail.jsx';
 import Create from '../create';
+import util from 'util/Util.jsx';
 
 function privilegeWithSave_Effect( privilegeCheck ) {
    return true
@@ -118,9 +119,20 @@ export default class EffectList extends Component {
     ListStore.addChangeListener(this._onChanged);
   }
 
+  componentWillReceiveProps(nextProps, nextContext) {
+    if( !util.shallowEqual(nextContext.hierarchyId, this.context.hierarchyId) ) {
+      this.setState({
+      effect:null
+    },()=>{
+      getenergyeffect(nextContext.hierarchyId);
+    });
+    }
+  }
+
   componentWillUnmount(){
     ListStore.removeChangeListener(this._onChanged);
   }
+
 
   render(){
     var style={
