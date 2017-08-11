@@ -1818,7 +1818,7 @@ export function getPreviewChart2(params) {
  //    });
 	// }, 100);
 }
-export function getPreviewChart3() {	
+export function getPreviewChart3(params) {	
 	Ajax.post(SaveEffect.energyEffectPriview, {
 		params,
 		success: (data) => {
@@ -1830,15 +1830,15 @@ export function getPreviewChart3() {
 	});
 }
 export function saveItem(params) {
-	// Ajax.post(SaveEffect.addItem, {
-	// 	params,
-	// 	success: () => {
+	Ajax.post(SaveEffect.addItem, {
+		params,
+		success: () => {
 
-	// 	},
-	// 	error: () => {
+		},
+		error: () => {
 
-	// 	}
-	// });
+		}
+	});
 }
 
 export function getenergyeffect(id) {
