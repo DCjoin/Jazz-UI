@@ -4,6 +4,7 @@ import RoutePath from 'util/RoutePath.jsx';
 
 import Header from './header_tabs_bar.jsx';
 import CreateSaveEffect from './create';
+import PreCreate from './create/pre_create.jsx';
 import moment from 'moment';
 
 function checkPathMatch(targetPath, currentPath) {
@@ -44,6 +45,8 @@ export default class SaveEffect extends Component {
 					disabledButton={false}
 				/>}
 				{children}
+				{true && <CreateSaveEffect EnergyProblemId={515} ExecutedTime={'2017-05-01'} EnergySolutionName={'hhhh'}/>}
+				{false && <PreCreate/>}
 			</div>
 		);
 	}

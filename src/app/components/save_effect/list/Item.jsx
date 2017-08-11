@@ -7,6 +7,8 @@ import ListStore from '../../../stores/save_effect/ListStore.jsx';
 import classNames from 'classnames';
 import {calcState} from "constants/actionType/Effect.jsx";
 import {stepLabelProps} from '../../Diagnose/CreateDiagnose.jsx';
+
+import CreateEffert from '../create';
 import {
   Step,
   Stepper,
