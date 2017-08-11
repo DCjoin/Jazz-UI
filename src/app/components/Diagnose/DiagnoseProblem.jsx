@@ -13,7 +13,7 @@ import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
 import DiagnoseStore from 'stores/DiagnoseStore.jsx';
 import DiagnoseChart from './DiagnoseChart.jsx';
 import {DiagnoseStatus} from 'constants/actionType/Diagnose.jsx';
-import {GenerateSolutionButton,GenerateSolution} from '../DataAnalysis/Basic/GenerateSolution.jsx';
+import {GenerateSolutionButton,GenerateSolution, getTagsByChartData} from '../DataAnalysis/Basic/GenerateSolution.jsx';
 
 import TimeGranularity from 'constants/TimeGranularity.jsx';
 
@@ -298,11 +298,12 @@ export default class DiagnoseProblem extends Component {
       let nodeId = getId(node);
       return(
         <DiagnoseChart
-          afterChartCreated={afterChartCreated}
+			afterChartCreated={() => {
+				return afterChartCreated.apply(null, [getTagsByChartData(this.state.chartData.get('EnergyViewData'))].concat(arguments));
+			}}
           ref='ChartBasicComponent'
           key={nodeId}
-          data={this.state.chartData}
-          afterChartCreated={afterChartCreated}/>
+          data={this.state.chartData}/>
       )
     }
 

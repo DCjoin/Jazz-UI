@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import {flowRight, curryRight} from 'lodash-es';
 import FontIcon from 'material-ui/FontIcon';
+import Immutable from 'Immutable';
 import CircularProgress from 'material-ui/CircularProgress';
 
 import Util from 'util/Util.jsx';
@@ -160,7 +161,7 @@ export class GenerateSolution extends Component {
 		this.state = {
 			idx: 0,
 			nodes: props.nodes,
-			//tagDatas: {},
+			allTags: {},
 			svgStrings: {},
 			ProblemName: null,
 			ProblemMark: 0,
@@ -179,7 +180,7 @@ export class GenerateSolution extends Component {
 		this._renderHighChart = this._renderHighChart.bind(this);
 		this._renderChart = this._renderChart.bind(this);
 	}
-	_afterChartCreated(nodeId) {
+	_afterChartCreated(nodeId, tags) {
 		let svgString,
 		parent = ReactDOM.findDOMNode(this).querySelector('#chart_basic_component_' + nodeId);
 		if(parent && parent.querySelector('svg')) {
@@ -189,6 +190,9 @@ export class GenerateSolution extends Component {
 			this.setState({
 				svgStrings: {...this.state.svgStrings, ...{
 					[nodeId]: svgString
+				}},
+				allTags: {...this.state.allTags, ...{
+					[nodeId]: tags
 				}}
 			});
 		}
@@ -236,6 +240,7 @@ export class GenerateSolution extends Component {
 			SaveUnit,
 			SaveCost,
 			SaveDesc,
+			allTags,
 		} = this.state;
 		return {
 			verified: ProblemName && ProblemMark && nodes.length <= Object.keys(svgStrings).length,
@@ -251,7 +256,11 @@ export class GenerateSolution extends Component {
 					EnergyProblemImages: nodes.map((node) => {return {
 						Name: node.get('Name'),
 						Content: svgStrings[getId(node)]
-					}})
+					}}),
+					Tags: nodes.map(node => allTags[getId(node)])
+							.reduce((res, current) => 
+								res.concat(current&&current.filter( id => res.indexOf(id) === -1 )), []
+							),
 				},
 				EnergySolution: {
 					Name: SaveName,
@@ -346,8 +355,8 @@ export class GenerateSolution extends Component {
 			          marginBottom: '0px',
 			          marginLeft: '9px'
 			        }}>
-							{this.props.renderChartCmp(node,() => {
-								this._afterChartCreated(nodeId);
+							{this.props.renderChartCmp(node,(tags) => {
+								this._afterChartCreated(nodeId, tags);
 							})}
 					</div>
 				</div>);
@@ -589,4 +598,13 @@ export class GenerateSolutionButton extends Component {
 			</span>
 		);
 	}
+}
+
+export function getTagsByChartData(chartData) {
+	if(!chartData) {
+		return null;
+	}
+	return (Immutable.fromJS(chartData).get('TargetEnergyData') || Immutable.fromJS([]))
+		.map( targetEnergyData => targetEnergyData.getIn(['Target', 'TargetId']) )
+		.toJS();
 }

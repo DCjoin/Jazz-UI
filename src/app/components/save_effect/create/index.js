@@ -153,8 +153,9 @@ export default class Create extends Component {
 		this._goStepAndInit(step);
 	}
 	_goSaveAndClose() {
-		saveItem(this.state.filterObj.set('ConfigStep', 5).toJS());
-		this.props.onClose();
+		saveItem(this.state.filterObj.set('ConfigStep', 5).toJS(), this.context.hierarchyId);
+
+		this.props.onClose(true);
 	}
 	_goStepAndInit(step) {
 		this._goStep(step);
@@ -200,8 +201,8 @@ export default class Create extends Component {
 		}
 	}
 	_onClose() {
-
-		this._goSaveAndClose();
+		saveItem(this.state.filterObj.toJS(), this.props.onSubmitDone);
+		this.props.onClose(false);
 	}
 	renderContent() {
 		let { tags, chartData2, chartData3, filterObj } = this.state;
@@ -490,6 +491,7 @@ Create.PropTypes = {
 	EnergyEffectId: PropTypes.string.isRequired,
 	ExecutedTime: PropTypes.object.isRequired, //moment
 	onClose: PropTypes.func.isRequired,
+	onSubmitDone: PropTypes.func,
 };
 
 export function getDateObjByRange(startDate, endDate) {
