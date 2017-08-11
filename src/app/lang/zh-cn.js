@@ -2521,6 +2521,7 @@ I18N.SaveEffect.Alert = '请重新配置！';
 I18N.SaveEffect.BaselinePeriod='基准能耗确定期';
 I18N.SaveEffect.EnergyCalculatePeriod='节能量计算期';
 I18N.SaveEffect.EnergyUnitPrice='能源单价（{0}）';
+I18N.SaveEffect.ConfigSuccess='节能效果配置成功';
 
 I18N.SaveEffect.Model = {};
 I18N.SaveEffect.Model.Title = '基准值模型';
