@@ -229,6 +229,11 @@ ReactDom.render(<Router history={hashHistory} routes={{
         onEnter: () => {
           document.title = I18N.MainMenu.SaveEffect;
         },
+        indexRoute: {
+          onEnter: (router, replaceState) => {
+            replaceState(RoutePath.saveEffect.list(router.params));
+          },
+        },
         path: 'save_effect',
         component: SaveEffect,
         childRoutes: [{

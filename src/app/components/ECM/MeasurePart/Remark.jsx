@@ -159,11 +159,11 @@ export default class Remark extends Component {
 
     componentDidMount(){
       MeasuresStore.addChangeListener(this._onChanged.bind(this));
-      MeasuresAction.getRemarkList(this.props.problemId);
+      this.props.remarkList && MeasuresAction.getRemarkList(this.props.problemId);
     }
 
     componentDidUpdate(prevProps,prevState){
-      if(prevState.remarkList!==null && prevState.remarkList.size<this.state.remarkList.size){
+      if(!prevProps.remarkList && prevState.remarkList!==null && prevState.remarkList.size<this.state.remarkList.size){
         this.props.onScroll(getNewRemarkHeight(ReactDom.findDOMNode(this)))
       }
     }
@@ -173,7 +173,7 @@ export default class Remark extends Component {
     }
 
     render(){
-      if(this.state.remarkList===null){
+      if(this.props.remarkList == null && this.state.remarkList===null){
         return(
           <div className="flex-center">
            <CircularProgress  mode="indeterminate" size={80} />
@@ -186,8 +186,8 @@ export default class Remark extends Component {
               <div className="name">{I18N.Remark.Label}</div>
             </div>
             {this.props.canEdit && <AddRemark onSave={this._onSave.bind(this)} onCancel={this._onCancel.bind(this)}/>}
-            {this.state.remarkList.map(remark=>(
-              <RemarkItem remark={remark} canEdit={this.props.canEdit} onDelete={this._onDelete.bind(this,remark.get('Id'))}/>
+            {(this.props.remarkList || this.state.remarkList).map(remark=>(
+              remark && <RemarkItem remark={remark} canEdit={this.props.canEdit} onDelete={this._onDelete.bind(this,remark.get('Id'))}/>
             ))}
           </div>
         )

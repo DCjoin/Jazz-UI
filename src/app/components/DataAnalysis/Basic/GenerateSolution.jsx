@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import {flowRight, curryRight} from 'lodash-es';
 import FontIcon from 'material-ui/FontIcon';
-import Immutable from 'Immutable';
+import Immutable from 'immutable';
 import CircularProgress from 'material-ui/CircularProgress';
 
 import Util from 'util/Util.jsx';
@@ -108,7 +108,7 @@ EnergySys.propTypes = {
 
 export class Gallery extends Component {
 	render() {
-		let {names, selectedIdx, onLeft, onRight, onDelete, renderContent} = this.props;
+		let {names, selectedIdx, onLeft, onRight, onDelete, renderContent, isView} = this.props;
 		return (
 			<div className='jazz-scheme-gallery'>
 				<div className='jazz-scheme-gallery-action' style={{position:'absolute',left:'6px',zIndex:'1000'}}>
@@ -117,7 +117,7 @@ export class Gallery extends Component {
 				<div className='jazz-scheme-gallery-content'>
 					<div className='jazz-scheme-gallery-content-header'>
 						{`(${selectedIdx+1}/${names.length})${names[selectedIdx]}`}
-						{names.length > 1 && <LinkButton className='jazz-scheme-gallery-content-header-delete' label={I18N.Common.Button.Delete} onClick={onDelete}/>}
+						{names.length > 1 && !isView && <LinkButton className='jazz-scheme-gallery-content-header-delete' label={I18N.Common.Button.Delete} onClick={onDelete}/>}
 					</div>
 					{renderContent()}
 				</div>
@@ -257,7 +257,7 @@ export class GenerateSolution extends Component {
 						Name: node.get('Name'),
 						Content: svgStrings[getId(node)]
 					}}),
-					Tags: nodes.map(node => allTags[getId(node)])
+					TagIds: nodes.map(node => allTags[getId(node)])
 							.reduce((res, current) => 
 								res.concat(current&&current.filter( id => res.indexOf(id) === -1 )), []
 							),
