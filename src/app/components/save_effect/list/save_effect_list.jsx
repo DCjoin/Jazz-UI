@@ -160,10 +160,11 @@ export default class EffectList extends Component {
       )
     }else{
       let disabled=ListStore.getRateBtnDisabled(this.state.effect.get("EnergyEffects"));
-      let {EnergySolutionName,EnergyProblemId,EnergyEffectId,ExecutedTime}
-          =this.state.effect.get("EnergyEffects")
-                            .find(item=>(item.get("EnergyProblemId")===this.state.configEnergyProblemId))
-                            .toJS();
+      var configEffect;
+      if(this.state.configEnergyProblemId){
+          configEffect  =this.state.effect.get("EnergyEffects")
+                              .find(item=>(item.get("EnergyProblemId")===this.state.configEnergyProblemId));
+      }
       return(
         <div className="jazz-effect-overlay">
           <div className="jazz-effect-list">
@@ -187,7 +188,7 @@ export default class EffectList extends Component {
             </div>
             <div className="jazz-effect-list-content">
               {this.state.effect.get("EnergyEffects").map(item=>(
-                isFull()?<ItemForConsultant effect={item} configEnergyProblemId={this.state.configEnergyProblemId} onClick={this._onItemClick} canEdit={isFull()} OnConfig={this._onConfig.bind(this,item.get('EnergyProblemId'))}/>
+                isFull()?<ItemForConsultant effect={item} configEnergyProblemId={this.state.configEnergyProblemId} onClick={this._onItemClick} canEdit={isFull()} onConfig={this._onConfig.bind(this,item.get('EnergyProblemId'))}/>
               :(item.get('ConfigedTagCount')!==0 && <ItemForManager effect={item} onClick={this._onItemClick} canEdit={isFull()}/>)))}
             </div>
             {this.state.configRateShow &&
@@ -195,10 +196,10 @@ export default class EffectList extends Component {
                             onClose={()=>{this.setState({configRateShow:false})}} onSave={this._onRateTagSave}/>}
             <Snackbar ref="snackbar" autoHideDuration={4000} open={!!this.state.saveSuccessText} onRequestClose={()=>{this.setState({saveSuccessText:null})}} message={this.state.saveSuccessText}/>
               {this.state.createShow && <Create
-    						EnergySolutionName
-    						EnergyProblemId
-    						EnergyEffectId
-    						ExecutedTime
+    						EnergySolutionName={configEffect.get('EnergySolutionName')}
+    						EnergyProblemId={configEffect.get('EnergyProblemId')}
+    						EnergyEffectId={configEffect.get('EnergyEffectId')}
+    						ExecutedTime={configEffect.get('ExecutedTime')}
     						onSubmitDone={()=>{getenergyeffect(this.context.hierarchyId);}}
     						onClose={()=>{
     							this.setState({
