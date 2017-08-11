@@ -34,6 +34,7 @@ export default class EffectDetail extends Component {
     detailInfo:null,
 		deleteConfirmShow:false,
 		deleteIndex:null,
+		energySystemDialogShow:false
   }
 
   _onChanged(){
@@ -41,6 +42,12 @@ export default class EffectDetail extends Component {
       detailInfo:ListStore.getDetail()
     })
   }
+
+	_onEnergySystemDialogShow(){
+		this.setState({
+			energySystemDialogShow:true
+		})
+	}
 
   _handleEditTagChange(event, value){
 
@@ -91,7 +98,7 @@ export default class EffectDetail extends Component {
           <div className="jazz-effect-detail-header-subtitle-info">
             <span style={{marginBottom:'5px'}}>
               <div className="font" style={{marginRight:'10px'}}>{ListStore.getEnergySystem(EnergySystem)}</div>
-              <div className="operation">{I18N.Baseline.Button.Edit}</div>
+              {this.props.canEdit && <div className="operation" onClick={this._onEnergySystemDialogShow.bind(this)}>{I18N.Baseline.Button.Edit}</div>}
             </span>
             <span>
               <FontIcon className="icon-calendar1" style={{fontSize:'14px',marginRight:'10px'}}/>
