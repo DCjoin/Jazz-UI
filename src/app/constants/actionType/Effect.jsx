@@ -14,7 +14,8 @@ module.exports = {
     DELETE_EFFECT_ITEM:null,
     GET_ENERGY_SOLUTION:null,
     GET_DRAFTS_SUCCESS:null,
-    CHANGE_ENERGY_SYSTEM_FOR_EFFECT:null
+    CHANGE_ENERGY_SYSTEM_FOR_EFFECT:null,
+    ADD_ITEM:null,
   }),
   calcState:{
     NotStarted:10,

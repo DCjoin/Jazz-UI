@@ -111,7 +111,7 @@ function Nav({step}) {
 function getInitFilterObj(props) {
 	return Immutable.fromJS({
 		TagId: null,
-		CalculationStep: TimeGranularity.Minite,
+		CalculationStep: TimeGranularity.Daily,
 		BenchmarkModel: Model.Easy,
 		BenchmarkStartDate: moment(props.ExecutedTime).subtract(31, 'days').format('YYYY-MM-DD'),
 		BenchmarkEndDate: moment(props.ExecutedTime).format('YYYY-MM-DD'),
@@ -123,6 +123,18 @@ function getInitFilterObj(props) {
 	});
 }
 
+function resetFilterObjAfter2(filterObj) {
+	return filterObj
+			.set('PredictionDatas', null)
+			.set('PredictionDatas', null)
+			.set('EnergyUnitPrice', '')
+			.set('EnergyStartDate', null)
+			.set('EnergyEndDate', null)
+			;
+}
+function resetFilterObjAfter3(filterObj) {
+}
+
 @ReduxDecorator
 export default class Create extends Component {
 	static calculateState = (state, props, ctx) => {
@@ -131,6 +143,7 @@ export default class Create extends Component {
 				TagId: tag.get('TagId'),
 				Name: tag.get('Name'),
 				Configed: !!tag.get('EnergyEffectItemId'),
+				isNew: tag.get('isNew'),
 			})),
 			chartData2: CreateStore.getChartData2(),
 			chartData3: CreateStore.getChartData3(),
@@ -161,15 +174,19 @@ export default class Create extends Component {
 			}
 		});
 	}
+	_getFilterObj() {
+		return this.state.filterObj
+				.set('EnergyEffectItemId', this.state.EnergyEffectItemId);
+	}
 	_goStep(step) {
 		this._setFilterObj(this.state.filterObj.set('ConfigStep', step));
 	}
 	_goStepAndSave(step) {
-		saveItem(this.state.filterObj.toJS());
+		saveItem(this._getFilterObj().toJS());
 		this._goStepAndInit(step);
 	}
 	_goSaveAndClose() {
-		saveItem(this.state.filterObj.set('ConfigStep', 5).toJS(), this.props.onSubmitDone);
+		saveItem(this._getFilterObj().set('ConfigStep', 5).toJS(), this.props.onSubmitDone);
 
 		this.props.onClose(true);
 	}
@@ -184,7 +201,7 @@ export default class Create extends Component {
 				getTagsByPlan(props.EnergyProblemId);
 				break;
 			case 2:
-				getPreviewChart2(state.filterObj.toJS());
+				getPreviewChart2(this._getFilterObj().toJS());
 				break;
 		}
 	}
@@ -229,7 +246,11 @@ export default class Create extends Component {
 					tags={tags}
 					selectedId={filterObj.get('TagId')}
 					onClickItem={(TagId) => {
-						this._setFilterObj(filterObj.set('TagId', TagId));
+						this._setFilterObj(
+							getInitFilterObj(this.props)
+								.set('EnergyEffectId', this.props.EnergyEffectId)
+								.set('TagId', TagId)
+						);
 					}}
 					onDeleteItem={idx => updateTags(this.state.tags.delete(idx))}
 					onAddItem={ tag => updateTags(this.state.tags.push(tag.set('TagId', tag.get('Id'))))}
@@ -249,8 +270,17 @@ export default class Create extends Component {
 					onChangeModelType={(type) => {
 						filterObj = filterObj.set('BenchmarkModel', type);
 						if(type === Model.Manual) {
+							filterObj = filterObj.set('CalculationStep', TimeGranularity.Monthly);
+						} else {
 							filterObj = filterObj.set('CalculationStep', TimeGranularity.Daily);
+
 						}
+						filterObj
+							.set('PredictionDatas', null)
+							.set('PredictionDatas', null)
+							.set('EnergyUnitPrice', '')
+							.set('EnergyStartDate', null)
+							.set('EnergyEndDate', null)
 						this._setFilterObj(filterObj);
 					}}
 					onChangeStep={(step) => {
@@ -515,9 +545,7 @@ export default class Create extends Component {
 				<NewDialog open={this.state.closeDlgShow} actionsContainerStyle={{textAlign: 'right'}} actions={[
 					<NewFlatButton primary label={'保存'} onClick={this._onClose}/>,
 					<NewFlatButton style={{marginLeft: 24}} secondary label={'取消'} onClick={() =>{
-						this.setState({
-							closeDlgShow: false
-						});
+						this.props.onClose(false);
 					}}/>
 				]}>{'离开页面会导致编辑内容丢失，是否保存到草稿？'}</NewDialog>
 			</div>

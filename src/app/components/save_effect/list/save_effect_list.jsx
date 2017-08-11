@@ -8,7 +8,7 @@ import privilegeUtil from 'util/privilegeUtil.jsx';
 import PermissionCode from 'constants/PermissionCode.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import FlatButton from "controls/NewFlatButton.jsx";
-import {getenergyeffect,saveeffectratetag} from 'actions/save_effect_action.js';
+import {getenergyeffect,saveeffectratetag, configEnergySystem} from 'actions/save_effect_action.js';
 import ListStore from '../../../stores/save_effect/ListStore.jsx';
 import { CircularProgress,Snackbar} from 'material-ui';
 import ConfigRate from './ConfigRate.jsx';
@@ -17,6 +17,7 @@ import CurrentUserCustomerStore from 'stores/CurrentUserCustomerStore.jsx';
 import {find} from 'lodash-es';
 import Detail from './save_effect_detail.jsx';
 import Create from '../create';
+import PreCreate from '../create/pre_create.jsx';
 import util from 'util/Util.jsx';
 
 function privilegeWithSave_Effect( privilegeCheck ) {
@@ -207,7 +208,7 @@ export default class EffectList extends Component {
                 <ConfigRate hierarchyName={this._getSelectedHierarchy().Name} hierarchyId={this.context.hierarchyId}
                             onClose={()=>{this.setState({configRateShow:false})}} onSave={this._onRateTagSave}/>}
             <Snackbar ref="snackbar" autoHideDuration={4000} open={!!this.state.saveSuccessText} onRequestClose={()=>{this.setState({saveSuccessText:null})}} message={this.state.saveSuccessText}/>
-              {this.state.createShow && <Create
+              {this.state.createShow && true && <Create
     						EnergySolutionName={configEffect.get('EnergySolutionName')}
     						EnergyProblemId={configEffect.get('EnergyProblemId')}
     						EnergyEffectId={configEffect.get('EnergyEffectId')}
@@ -220,6 +221,13 @@ export default class EffectList extends Component {
     								effect:null
     							})
     						}}/>}
+              {this.state.createShow && false && <PreCreate onClose={() => {}} onSubmit={(energySys) => {
+                configEnergySystem(
+                  this.props.router.params.customerId,
+                  this.context.hierarchyId,
+                  configEffect.get('EnergyProblemId'),
+                  energySys)
+              }}/>}
         </div>
         </div>
 

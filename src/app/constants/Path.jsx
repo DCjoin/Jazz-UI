@@ -98,6 +98,7 @@ module.exports = {
     saveenergyeffectratetags:'/energyeffect/saveeffectratetag/{customerId}/{hierarchyId}',
     getDetail:'/energyeffect/detail/{energyEffectId}',
     deleteitem:'/energyeffect/deleteitem/{energyEffectItemId}',
-    getitemlist:'/energyeffect/getitemlist/{hierarchyId}/{configStep}'
+    getitemlist:'/energyeffect/getitemlist/{hierarchyId}/{configStep}',
+    configEnergySystem: '/energyeffect/configenergysystem/{customerId}/{hierarchyId}/{energyProblemId}/{energySystem}',
   }
 };

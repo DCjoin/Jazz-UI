@@ -12,7 +12,7 @@
     "dev-all": "concurrently --kill-others \"npm run dev\" \"npm run start\"",
     "build": "webpack --config webpack-production.config.js --progress --profile --colors > ret.log",
     "start": "supervisor -w ./src/server/ ./src/server/server.js",
-    "build-test": "webpack --config webpack-test.config.js --progress --profile --colors",
+    "build-test": "webpack --config webpack-test.config.js --progress --profile --colors > ret-test.log",
     "dev1": "webpack --config conf/webpack.conf.js --progress --profile --display-modules",
     "dll": "webpack --config conf/webpack.dll.conf.js",
     "release:docker": "npm run build-test && node shell/copy_server.js && node ./build/release_server.js"
