@@ -1759,27 +1759,38 @@ const test_data = {
 	};
 
 export function getTagsByPlan(id) {
-	setTimeout(() => {
-    AppDispatcher.dispatch({
-      type: Action.UPDATE_TAGS,
-      tags: [
-				{Id: 1, Name: 'tag1', Configed: false, isNew: false},
-				{Id: 2, Name: 'tag2', Configed: true, isNew: false},
-				{Id: 3, Name: 'tag3', Configed: true, isNew: false},
-				{Id: 4, Name: 'tag4', Configed: false, isNew: true},
-				{Id: 5, Name: 'tag5', Configed: false, isNew: true},
-			]
-    });
-	}, 100);
-	// Ajax.get( Util.replacePathParams(SaveEffect.getTagsByPlan, id), {
-	// 	success: (tags) => {
- //      AppDispatcher.dispatch({
- //        type: Action.UPDATE_TAGS,
- //        tags
- //      });
-	// 	}
-	// });
+	// setTimeout(() => {
+ //    AppDispatcher.dispatch({
+ //      type: Action.UPDATE_TAGS,
+ //      tags: [
+	// 			{Id: 1, Name: 'tag1', Configed: false, isNew: false},
+	// 			{Id: 2, Name: 'tag2', Configed: true, isNew: false},
+	// 			{Id: 3, Name: 'tag3', Configed: true, isNew: false},
+	// 			{Id: 4, Name: 'tag4', Configed: false, isNew: true},
+	// 			{Id: 5, Name: 'tag5', Configed: false, isNew: true},
+	// 		]
+ //    });
+	// }, 100);
+	Ajax.get( Util.replacePathParams(SaveEffect.getEnergyEffectTags, id, 0), {
+		success: (tags) => {
+      AppDispatcher.dispatch({
+        type: Action.UPDATE_TAGS,
+        tags
+      });
+		}
+	});
 };
+
+export function getEnergySolution(problemId) {
+	Ajax.get( Util.replacePathParams(SaveEffect.getEnergySolution, problemId, 'w_146,h_97', 'w_600,h_400'), {
+		success: (data) => {
+			AppDispatcher.dispatch({
+				type: Action.GET_ENERGY_SOLUTION,
+				data
+			});
+		}
+	});
+}
 
 export function updateTags(tags) {
     AppDispatcher.dispatch({
@@ -1788,34 +1799,46 @@ export function updateTags(tags) {
     });
 }
 
-export function getPreviewChart2() {
-	setTimeout(() => {
-    AppDispatcher.dispatch({
-      type: Action.GET_PREVIEW_CHART2,
-          data: test_data      
+export function getPreviewChart2(params) {
+
+	Ajax.post(SaveEffect.energyEffectPriview, {
+		params,
+		success: (data) => {
+	    	AppDispatcher.dispatch({
+		        type: Action.GET_PREVIEW_CHART2,
+		        data
+		    });
+		}
+	});
+	// setTimeout(() => {
+ //    AppDispatcher.dispatch({
+ //      type: Action.GET_PREVIEW_CHART2,
+ //          data: test_data      
       
-    });
-	}, 100);
+ //    });
+	// }, 100);
 }
-export function getPreviewChart3() {
-	setTimeout(() => {
-    AppDispatcher.dispatch({
-      type: Action.GET_PREVIEW_CHART3,
-          data: test_data      
-      
-    });
-	}, 100);
+export function getPreviewChart3(params) {	
+	Ajax.post(SaveEffect.energyEffectPriview, {
+		params,
+		success: (data) => {
+	    	AppDispatcher.dispatch({
+		        type: Action.GET_PREVIEW_CHART3,
+		        data
+		    });
+		}
+	});
 }
 export function saveItem(params) {
-	// Ajax.post(SaveEffect.addItem, {
-	// 	params,
-	// 	success: () => {
+	Ajax.post(SaveEffect.addItem, {
+		params,
+		success: () => {
 
-	// 	},
-	// 	error: () => {
+		},
+		error: () => {
 
-	// 	}
-	// });
+		}
+	});
 }
 
 export function getenergyeffect(id) {

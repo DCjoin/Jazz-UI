@@ -152,7 +152,13 @@ export default class Step3 extends Component {
 						</header>
 						{data ? 
 						<ChartBasicComponent {...chartProps}/> : 
-						<div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>}
+						<div className='flex-center'>
+							<em className='icon-chart1'/>
+							<div>
+								添加左侧列表中的节能量计算期
+								可预览此时间段内基准能耗值与计算tag是实际的对比图
+							</div>
+						</div>}
 					</div>
 				</div>
 			</div>

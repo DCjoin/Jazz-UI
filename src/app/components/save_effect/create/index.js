@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import ReactDom from 'react-dom';
 
 import Immutable from 'immutable';
 import moment from 'moment';
@@ -17,6 +18,7 @@ import ReduxDecorator from 'decorator/ReduxDecorator.jsx';
 import TimeGranularity from 'constants/TimeGranularity.jsx';
 import {Model} from 'constants/actionType/Effect.jsx';
 
+import NewDialog from 'controls/NewDialog.jsx';
 import NewFlatButton from 'controls/NewFlatButton.jsx';
 
 import Step1 from './step1.jsx';
@@ -24,7 +26,11 @@ import Step2 from './step2.jsx';
 import Step3 from './step3.jsx';
 import Step4 from './step4.jsx';
 
-import {getTagsByPlan, updateTags, getPreviewChart2, getPreviewChart3, saveItem} from 'actions/save_effect_action';
+import {Solution,SolutionLabel} from 'components/ECM/MeasurePart/Solution.jsx';
+import Problem from 'components/ECM/MeasurePart/Problem.jsx';
+import SolutionGallery from 'components/ECM/MeasurePart/SolutionGallery.jsx';
+
+import {getTagsByPlan, updateTags, getPreviewChart2, getPreviewChart3, saveItem, getEnergySolution } from 'actions/save_effect_action';
 
 import CreateStore from 'stores/save_effect/create_store';
 
@@ -66,7 +72,7 @@ function Header({name, timeStr, onShowDetail, onClose}) {
 				<div>{I18N.SaveEffect.CreateTitle + ' ' + name}</div>
 				<div style={{marginTop: 10}}>
 					{I18N.SaveEffect.Runtime + ': ' + timeStr}
-					<a style={{marginLeft: 30, color: '#32ad3d'}} href='javascript:void(0)'>{I18N.SaveEffect.ShowSavePlanDetail}</a>
+					<a style={{marginLeft: 30, color: '#32ad3d'}} href='javascript:void(0)' onClick={onShowDetail}>{I18N.SaveEffect.ShowSavePlanDetail}</a>
 				</div>
 			</div>
 			<IconButton style={{position: 'fixed', right: 14, top: 14}} iconClassName='icon-close' onClick={onClose}/>
@@ -95,13 +101,13 @@ function Nav({step}) {
 	);
 }
 
-function getInitFilterObj() {
+function getInitFilterObj(props) {
 	return Immutable.fromJS({
 		TagId: null,
 		CalculationStep: TimeGranularity.Minite,
 		BenchmarkModel: Model.Easy,
-		BenchmarkStartDate: '2017-08-09',
-		BenchmarkEndDate: '2017-08-09',
+		BenchmarkStartDate: moment(props.ExecutedTime).subtract(31, 'days').format('YYYY-MM-DD'),
+		BenchmarkEndDate: moment(props.ExecutedTime).format('YYYY-MM-DD'),
 		EnergyStartDate: null,
 		EnergyEndDate: null,
 		EnergyUnitPrice: '',
@@ -117,6 +123,7 @@ export default class Create extends Component {
 			tags: CreateStore.getTagsByPlan(),
 			chartData2: CreateStore.getChartData2(),
 			chartData3: CreateStore.getChartData3(),
+			energySolution: CreateStore.getEnergySolution(),
 		}
 	};
 	static getStores = () => [CreateStore];
@@ -124,10 +131,12 @@ export default class Create extends Component {
 		super(props);
 
 		this.state = {
-			filterObj: getInitFilterObj()
-						.set('EnergyEffectId', props.id),
+			filterObj: getInitFilterObj(props)
+						.set('EnergyEffectId', props.EnergyEffectId),
+			measureShow: false,
+			closeDlgShow: false,
 		}
-		this._getInitData(1);
+		this._getInitData(1, props);
 	}
 	_setFilterObj(filterObj) {		
 		this.setState((state, props) => {
@@ -149,15 +158,16 @@ export default class Create extends Component {
 	}
 	_goStepAndInit(step) {
 		this._goStep(step);
-		this._getInitData(step);
+
+		setTimeout(() => {this._getInitData(step)}, 0);
 	}
-	_getInitData(step) {
+	_getInitData(step, props = this.props, state = this.state) {
 		switch( step ) {
 			case 1:
-				getTagsByPlan(this.props.id);
+				getTagsByPlan(props.EnergyProblemId);
 				break;
 			case 2:
-				getPreviewChart2(filterObj.toJS());
+				getPreviewChart2(state.filterObj.toJS());
 				break;
 		}
 	}
@@ -189,6 +199,10 @@ export default class Create extends Component {
 				break;
 		}
 	}
+	_onClose() {
+
+		this._goSaveAndClose();
+	}
 	renderContent() {
 		let { tags, chartData2, chartData3, filterObj } = this.state;
 		switch(filterObj.get('ConfigStep')) {
@@ -214,7 +228,7 @@ export default class Create extends Component {
 					CalculationStep={CalculationStep}
 					BenchmarkStartDate={BenchmarkStartDate}
 					BenchmarkEndDate={BenchmarkEndDate}
-					disabledPreview={false}
+					disabledPreview={!this._checkCanNext()}
 					onChangeModelType={(type) => {
 						filterObj = filterObj.set('BenchmarkModel', type);
 						if(type === Model.Manual) {
@@ -272,7 +286,7 @@ export default class Create extends Component {
 					EnergyStartDate={EnergyStartDate}
 					EnergyEndDate={EnergyEndDate}
 					BenchmarkDatas={BenchmarkDatas}
-					disabledPreview={false}
+					disabledPreview={!this._checkCanNext()}
 					onChangeEnergyUnitPrice={(val) => {
 						this._setFilterObj(filterObj.set('EnergyUnitPrice', val));
 					}}
@@ -371,22 +385,110 @@ export default class Create extends Component {
 		}
 		return (<footer className='footer'>{buttons}</footer>)
 	}
+	_renderMeasureDialog(){
+	  var currentSolution=this.state.energySolution;
+	  var onClose=()=>{
+	    this.setState({
+	      measureShow:false,
+	    })
+	  };
+	  if( !currentSolution ) {
+		return (
+	    <NewDialog
+	      open={this.state.measureShow}
+	      modal={false}
+	      isOutsideClose={false}
+	      onRequestClose={onClose}
+	      overlayStyle={{overflowY:"auto"}}
+	      style={{overflow:"visible"}}
+	      wrapperStyle={{overflow:"visible"}}
+	      titleStyle={{margin:'0 7px',paddingTop:"7px"}}
+	      contentStyle={{overflowY:"auto",display:'block',padding:"6px 28px 14px 32px",margin:0}}>
+	      <div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>
+	     </NewDialog>)
+	  }
+	 var props={
+	   title:{
+	     measure:currentSolution,
+	     canNameEdit:false,
+	     canEnergySysEdit:false,
+	   },
+	   problem:{
+	     measure:currentSolution,
+	     canEdit:false,
+	   },
+	   solution:{
+	     measure:currentSolution,
+	     canEdit:false,
+	   },
+	   gallery: {
+	    measure:currentSolution
+	   },
+	   remark:{
+	     problemId:currentSolution.getIn(['EnergyProblem','Id']),
+	     canEdit:false,
+	     onScroll:(height)=>{ReactDom.findDOMNode(this).querySelector(".dialog-content").scrollTop+=height+15}
+	   }
+	 }
+	  return(
+	    <NewDialog
+	      open={this.state.measureShow}
+	      modal={false}
+	      isOutsideClose={false}
+	      onRequestClose={onClose}
+	      overlayStyle={{overflowY:"auto"}}
+	      style={{overflow:"visible"}}
+	      wrapperStyle={{overflow:"visible"}}
+	      titleStyle={{margin:'0 7px',paddingTop:"7px"}}
+	      contentStyle={{overflowY:"auto",display:'block',padding:"6px 28px 14px 32px",margin:0}}>
+	      <div style={{paddingLeft:'9px',borderBottom:"1px solid #e6e6e6",paddingRight:'19px'}}>{this._renderOperation()}</div>
+	      <SolutionLabel {...props.solution}/>
+	      <Solution {...props.solution}/>
+	      <Problem {...props.problem}/>
+	      <div style={{margin:"46px 20px 0 16px"}}><SolutionGallery {...props.gallery}/></div>
+	      <div style={{display:"flex",alignItems:"flex-end",marginTop:'36px'}}>
+	        <div className="jazz-ecm-push-operation-label">{`${I18N.Setting.ECM.PushPanel.CreateUser}：`}</div>
+	        <div style={{fontSize:'12px',color:'#9fa0a4',marginLeft:'5px'}}>{currentSolution.getIn(['EnergyProblem', 'CreateUserName']) || '-'}</div>
+	      </div>
+	      <Remark {...props.remark}/>
+	    </NewDialog>
+	  )
+	}
 	render() {
-		let {name, id, date, onClose} = this.props;
+		let {EnergyProblemId, EnergySolutionName, ExecutedTime, onClose} = this.props;
 		return (
 			<div className='jazz-save-effect-create'>
-				<Header name={name} timeStr={date.format('YYYY-MM-DD HH:mm')} onClose={onClose}/>
+				<Header name={EnergySolutionName} timeStr={moment(ExecutedTime).format('YYYY-MM-DD HH:mm')} onShowDetail={() => {
+					this.setState((state, props) => {
+						return { measureShow: true };
+					});
+					getEnergySolution(EnergyProblemId);
+				}} onClose={() => {
+					this.setState({
+						closeDlgShow: true
+					});
+				}}/>
 				<Nav step={this.state.filterObj.get('ConfigStep') - 1}/>
 				{this.renderContent()}
 				{this.renderFooter()}
+				{this._renderMeasureDialog()}
+				<NewDialog open={this.state.closeDlgShow} actionsContainerStyle={{textAlign: 'right'}} actions={[
+					<NewFlatButton primary label={'保存'} onClick={this._onClose}/>,
+					<NewFlatButton style={{marginLeft: 24}} secondary label={'取消'} onClick={() =>{
+						this.setState({
+							closeDlgShow: false
+						});
+					}}/>
+				]}>{'离开页面会导致编辑内容丢失，是否保存到草稿？'}</NewDialog>
 			</div>
 		);
 	}
 }
 Create.PropTypes = {
-	id: PropTypes.number.isRequired,
-	name: PropTypes.string.isRequired,
-	date: PropTypes.object.isRequired, //moment
+	EnergySolutionName: PropTypes.string.isRequired,
+	EnergyProblemId: PropTypes.string.isRequired,
+	EnergyEffectId: PropTypes.string.isRequired,
+	ExecutedTime: PropTypes.object.isRequired, //moment
 	onClose: PropTypes.func.isRequired,
 };
 
