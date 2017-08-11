@@ -22,12 +22,12 @@ function TagItem({tag, selectedId, onClick, onDelete, idx}) {
 	return (
 		<div style={{display: 'flex', marginBottom: 5}}>
 			<RadioButton 
-				checked={selectedId === tag.get('Id')}
+				checked={selectedId === tag.get('TagId')}
 				style={{display: 'inline-block', width: 'auto', fontSize: '14px'}} 
 				labelStyle={{color: '#434343'}}
 				label={tag.get('Name')} 
 				onClick={() => {
-					onClick(tag.get('Id'));
+					onClick(tag.get('TagId'));
 				}}
 			/>
 			{tag.get('isNew') && 
@@ -83,7 +83,7 @@ export default class Step1 extends Component {
 					{tags.map( (tag, idx) => 
 					<TagItem 
 						idx={idx}
-						key={tag.get('Id')} 
+						key={tag.get('TagId')} 
 						tag={tag} 
 						selectedId={selectedId}
 						onClick={onClickItem}

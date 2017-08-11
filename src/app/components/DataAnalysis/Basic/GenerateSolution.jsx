@@ -257,7 +257,7 @@ export class GenerateSolution extends Component {
 						Name: node.get('Name'),
 						Content: svgStrings[getId(node)]
 					}}),
-					Tags: nodes.map(node => allTags[getId(node)])
+					TagIds: nodes.map(node => allTags[getId(node)])
 							.reduce((res, current) => 
 								res.concat(current&&current.filter( id => res.indexOf(id) === -1 )), []
 							),

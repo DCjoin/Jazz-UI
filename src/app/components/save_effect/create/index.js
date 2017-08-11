@@ -29,10 +29,17 @@ import Step4 from './step4.jsx';
 import {Solution,SolutionLabel} from 'components/ECM/MeasurePart/Solution.jsx';
 import Problem from 'components/ECM/MeasurePart/Problem.jsx';
 import SolutionGallery from 'components/ECM/MeasurePart/SolutionGallery.jsx';
+import Supervisor from 'components/ECM/MeasurePart/Supervisor.jsx';
+import StatusCmp from 'components/ECM/MeasurePart/Status.jsx'
+import {EnergySys} from 'components/ECM/MeasurePart/MeasureTitle.jsx';
+import Remark from 'components/ECM/MeasurePart/Remark.jsx';
 
 import {getTagsByPlan, updateTags, getPreviewChart2, getPreviewChart3, saveItem, getEnergySolution } from 'actions/save_effect_action';
 
+import MeasuresAction from 'actions/ECM/MeasuresAction.jsx';
+
 import CreateStore from 'stores/save_effect/create_store';
+import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
 
 function _getTimeRangeStep() {
 	return 365;
@@ -120,13 +127,18 @@ function getInitFilterObj(props) {
 export default class Create extends Component {
 	static calculateState = (state, props, ctx) => {
 		return {
-			tags: CreateStore.getTagsByPlan(),
+			tags: CreateStore.getTagsByPlan() && CreateStore.getTagsByPlan().map(tag => Immutable.fromJS({
+				TagId: tag.get('TagId'),
+				Name: tag.get('Name'),
+				Configed: !!tag.get('EnergyEffectItemId'),
+			})),
 			chartData2: CreateStore.getChartData2(),
 			chartData3: CreateStore.getChartData3(),
 			energySolution: CreateStore.getEnergySolution(),
+			supervisorList:MeasuresStore.getSupervisor(),
 		}
 	};
-	static getStores = () => [CreateStore];
+	static getStores = () => [CreateStore, MeasuresStore];
 	constructor(props) {
 		super(props);
 
@@ -138,6 +150,9 @@ export default class Create extends Component {
 		}
 		this._getInitData(1, props);
 	}
+	static contextTypes = {
+		hierarchyId: PropTypes.string
+	};
 	_setFilterObj(filterObj) {		
 		this.setState((state, props) => {
 			return {
@@ -153,7 +168,7 @@ export default class Create extends Component {
 		this._goStepAndInit(step);
 	}
 	_goSaveAndClose() {
-		saveItem(this.state.filterObj.set('ConfigStep', 5).toJS(), this.context.hierarchyId);
+		saveItem(this.state.filterObj.set('ConfigStep', 5).toJS(), this.props.onSubmitDone);
 
 		this.props.onClose(true);
 	}
@@ -216,7 +231,7 @@ export default class Create extends Component {
 						this._setFilterObj(filterObj.set('TagId', TagId));
 					}}
 					onDeleteItem={idx => updateTags(this.state.tags.delete(idx))}
-					onAddItem={ tag => updateTags(this.state.tags.push(tag))}
+					onAddItem={ tag => updateTags(this.state.tags.push(tag.set('TagId', tag.get('Id'))))}
 				/>);
 				break;
 			}
@@ -386,6 +401,14 @@ export default class Create extends Component {
 		}
 		return (<footer className='footer'>{buttons}</footer>)
 	}
+	_renderPersonInCharge(problem,indetail){
+	  return(
+	    <Supervisor person={problem.get('Supervisor')} supervisorList={this.state.supervisorList}
+	        usedInDetail={indetail}
+	        canEdit={false}
+	        energySys={problem.get('EnergySys')}/>
+	  )
+	}
 	_renderMeasureDialog(){
 	  var currentSolution=this.state.energySolution;
 	  var onClose=()=>{
@@ -408,6 +431,7 @@ export default class Create extends Component {
 	      <div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>
 	     </NewDialog>)
 	  }
+		let problem = currentSolution.get('EnergyProblem');
 	 var props={
 	   title:{
 	     measure:currentSolution,
@@ -426,9 +450,15 @@ export default class Create extends Component {
 	    measure:currentSolution
 	   },
 	   remark:{
-	     problemId:currentSolution.getIn(['EnergyProblem','Id']),
+	   	remarkList: currentSolution.get('Remarks'),
+	     problemId:problem.get('Id'),
 	     canEdit:false,
 	     onScroll:(height)=>{ReactDom.findDOMNode(this).querySelector(".dialog-content").scrollTop+=height+15}
+	   },	   
+	   energySys:{
+	     measure:currentSolution,
+	     canNameEdit:false,
+	     canEnergySysEdit:false,
 	   }
 	 }
 	  return(
@@ -442,14 +472,20 @@ export default class Create extends Component {
 	      wrapperStyle={{overflow:"visible"}}
 	      titleStyle={{margin:'0 7px',paddingTop:"7px"}}
 	      contentStyle={{overflowY:"auto",display:'block',padding:"6px 28px 14px 32px",margin:0}}>
-	      <div style={{paddingLeft:'9px',borderBottom:"1px solid #e6e6e6",paddingRight:'19px'}}>{this._renderOperation()}</div>
+	      <div style={{paddingLeft:'9px',borderBottom:"1px solid #e6e6e6",paddingRight:'19px'}}>
+		      <div className="jazz-ecm-push-operation">
+		        <StatusCmp status={problem.get('Status')} canEdit={false}/>
+		        {this._renderPersonInCharge(problem,true)}
+		        <EnergySys {...props.energySys}/>
+		      </div>
+	      </div>
 	      <SolutionLabel {...props.solution}/>
 	      <Solution {...props.solution}/>
 	      <Problem {...props.problem}/>
 	      <div style={{margin:"46px 20px 0 16px"}}><SolutionGallery {...props.gallery}/></div>
 	      <div style={{display:"flex",alignItems:"flex-end",marginTop:'36px'}}>
 	        <div className="jazz-ecm-push-operation-label">{`${I18N.Setting.ECM.PushPanel.CreateUser}：`}</div>
-	        <div style={{fontSize:'12px',color:'#9fa0a4',marginLeft:'5px'}}>{currentSolution.getIn(['EnergyProblem', 'CreateUserName']) || '-'}</div>
+	        <div style={{fontSize:'12px',color:'#9fa0a4',marginLeft:'5px'}}>{problem.get('CreateUserName') || '-'}</div>
 	      </div>
 	      <Remark {...props.remark}/>
 	    </NewDialog>
@@ -464,6 +500,7 @@ export default class Create extends Component {
 						return { measureShow: true };
 					});
 					getEnergySolution(EnergyProblemId);
+					MeasuresAction.getSupervisor(this.context.hierarchyId);
 				}} onClose={() => {
 					this.setState({
 						closeDlgShow: true
