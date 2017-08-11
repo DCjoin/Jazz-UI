@@ -1813,12 +1813,12 @@ export function getPreviewChart2(params) {
 	// setTimeout(() => {
  //    AppDispatcher.dispatch({
  //      type: Action.GET_PREVIEW_CHART2,
- //          data: test_data      
-      
+ //          data: test_data
+
  //    });
 	// }, 100);
 }
-export function getPreviewChart3(params) {	
+export function getPreviewChart3(params) {
 	Ajax.post(SaveEffect.energyEffectPriview, {
 		params,
 		success: (data) => {
@@ -1899,6 +1899,26 @@ export function deleteItem(energyEffectItemId,callback) {
 				});
 			}
 
+		}
+	});
+}
+
+export function changeEnergySystemForEffect(sysId,energyEffectId) {
+			AppDispatcher.dispatch({
+				type: Action.CHANGE_ENERGY_SYSTEM_FOR_EFFECT,
+				sysId,
+				energyEffectId
+			});
+}
+
+export function getDrafts(hierarchyId) {
+	//4:草稿
+	Ajax.get( Util.replacePathParams(SaveEffect.getitemlist,hierarchyId,4), {
+		success: (drafts) => {
+			AppDispatcher.dispatch({
+				type: Action.GET_DRAFTS_SUCCESS,
+				drafts
+			});
 		}
 	});
 }

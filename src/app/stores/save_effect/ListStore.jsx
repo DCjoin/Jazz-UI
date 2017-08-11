@@ -6,7 +6,7 @@ import Immutable from 'immutable';
 import assign from 'object-assign';
 import { Action } from 'constants/actionType/Effect.jsx';
 
-var _effect=null,_tags=null,_detail=null;
+var _effect=null,_tags=null,_detail=null,_drafts=null;
 _effect=Immutable.fromJS({
 "Drafts": [
 {
@@ -727,6 +727,16 @@ var ListStore = assign({}, PrototypeStore, {
       var index=_effect.get('Drafts').findIndex(item=>(item.get("EnergyEffectItemId")===energyEffectItemId));
       _effect=_effect.deleteIn(["Drafts",index]);
   },
+  changeEnergySystem(sysId,energyEffectId){
+    var index=_effect.get('EnergyEffects').findIndex(item=>(item.get("EnergyEffectId")===energyEffectId));
+    _effect=_effect.setIn(["EnergyEffects",index,"EnergySystem"],energyEffectId);
+  },
+  setDrafts(drafts){
+    _drafts=Immutable.fromJS(drafts)
+  },
+  getDrafts(){
+    return _drafts
+  }
 
 });
 
@@ -748,6 +758,15 @@ ListStore.dispatchToken = AppDispatcher.register(function(action) {
         ListStore.deleteEffectItem(action.energyEffectItemId);
         ListStore.emitChange();
         break;
+    case Action.CHANGE_ENERGY_SYSTEM_FOR_EFFECT:
+        ListStore.changeEnergySystem(action.sysId,action.energyEffectId);
+        ListStore.emitChange();
+        break;
+    case Action.GET_DRAFTS_SUCCESS:
+        ListStore.setDrafts(action.drafts);
+        ListStore.emitChange();
+        break;
+
     default:
       // do nothing
   }
