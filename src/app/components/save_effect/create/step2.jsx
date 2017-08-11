@@ -97,6 +97,7 @@ export default class Step2 extends Component {
 							defaultValue={CalculationStep}
 							isViewStatus={BenchmarkModel === Model.Manual}
 							title={'配置计算步长'} 
+							isViewStatus={true}
 							valueField='id' 
 							textField='label' 
 							dataItems={getStepDataItems()} 

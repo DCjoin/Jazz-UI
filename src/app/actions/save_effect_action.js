@@ -1832,9 +1832,15 @@ export function getPreviewChart3(params) {
 export function saveItem(params, onSubmitDone) {
 	Ajax.post(SaveEffect.addItem, {
 		params,
-		success: () => {
+		success: (data) => {
 			if(onSubmitDone && typeof onSubmitDone === 'function') {
 				onSubmitDone();
+			} else {
+		    	AppDispatcher.dispatch({
+			        type: Action.ADD_ITEM,
+			        id: data.get('EnergyEffectItemId')
+			    });
+
 			}
 		},
 		error: () => {
@@ -1919,6 +1925,14 @@ export function getDrafts(hierarchyId) {
 				type: Action.GET_DRAFTS_SUCCESS,
 				drafts
 			});
+		}
+	});
+}
+
+export function configEnergySystem(customerId,hierarchyId,energyProblemId,energySystem) {
+
+	Ajax.get( Util.replacePathParams(SaveEffect.configEnergySystem,customerId,hierarchyId,energyProblemId,energySystem), {
+		success: (data) => {
 		}
 	});
 }
