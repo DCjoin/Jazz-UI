@@ -35,6 +35,7 @@ export default {
 		list: p => `/${p.lang}/${p.customerId}/save_effect/list`,
 		best: p => `/${p.lang}/${p.customerId}/save_effect/best`,
 		detail: p => `/${p.lang}/${p.customerId}/save_effect/detail`,
+		drafts: p => `/${p.lang}/${p.customerId}/save_effect/drafts`,
 	},
 	customerSetting:{
 		ptag:p => `/${p.lang}/${p.customerId}/ptag`,
