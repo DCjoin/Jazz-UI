@@ -89,7 +89,9 @@ module.exports = {
   },
 
   SaveEffect: {
-    getTagsByPlan: '/save_effert/get/tags/{planId}',
+    getEnergyEffectTags: '/energyeffect/getenergyeffecttags/{energyProblemId}/{state}',
+    energyEffectPriview: '/energyeffect/priview',
+    getEnergySolution: '/energysolution/{problemid}/{smallsize}/{size}',
     addItem: '/energyeffect/additem',
     getenergyeffect:'/energyeffect/getenergyeffect/{hierarchyId}',
     getenergyeffectratetags:'/energyeffect/getenergyeffectratetags/{hierarchyId}',

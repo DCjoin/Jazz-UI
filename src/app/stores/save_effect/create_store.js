@@ -10,12 +10,14 @@ let {AjaxActionType} = AjaxConstants;
 let CreateStore,
 _tags,
 _chartData2,
-_chartData3;
+_chartData3,
+_energySolution;
 
 (function init() {
   _tags = undefined;
   _chartData2 = undefined;
   _chartData3 = undefined;
+  _energySolution = undefined;
 })();
 
 export default CreateStore = Object.assign({}, PrototypeStore, {
@@ -36,6 +38,12 @@ export default CreateStore = Object.assign({}, PrototypeStore, {
   },
   getChartData3: () => {
     return _chartData3;
+  },
+  setEnergySolution: data => {
+    _energySolution = Immutable.fromJS(data);
+  },
+  getEnergySolution: () => {
+    return _energySolution;
   },
   getBenchmarkModelById:(id)=>{
   return Immutable.fromJS([
@@ -69,6 +77,10 @@ CreateStore.dispatchToken = AppDispatcher.register(function(action) {
         break;
     case Action.GET_PREVIEW_CHART3:
         CreateStore.setChartData3(action.data);
+        CreateStore.emitChange();
+        break;
+    case Action.GET_ENERGY_SOLUTION:
+        CreateStore.setEnergySolution(action.data);
         CreateStore.emitChange();
         break;
     default:

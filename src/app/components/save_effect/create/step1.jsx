@@ -97,9 +97,7 @@ export default class Step1 extends Component {
 						find(HierarchyStore.getBuildingList(), hier => hier.Id === this.context.hierarchyId * 1).Name}
 					onCancel={this._onCloseSeleteTagDlg}
 					onSave={(selectedTag) =>{
-						onAddItem({...selectedTag, ...{
-							isNew: true
-						}});
+						onAddItem(selectedTag.set('isNew', true));
 						this._onCloseSeleteTagDlg();
 					}}
 				/>}
