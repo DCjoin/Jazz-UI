@@ -1829,11 +1829,13 @@ export function getPreviewChart3(params) {
 		}
 	});
 }
-export function saveItem(params) {
+export function saveItem(params, onSubmitDone) {
 	Ajax.post(SaveEffect.addItem, {
 		params,
 		success: () => {
-
+			if(onSubmitDone && typeof onSubmitDone === 'function') {
+				onSubmitDone();
+			}
 		},
 		error: () => {
 

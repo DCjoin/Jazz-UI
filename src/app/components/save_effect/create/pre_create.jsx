@@ -27,11 +27,11 @@ export default class PreCreate extends Component {
 		}
 	}
 	render() {
-		let {onClose, onSubmit} = this.props;
+		let {onClose, onSubmit, isEdit} = this.props;
 		return (
 			<NewDialog actionsContainerStyle={{textAlign: 'right', margin: '15px 24px'}} actions={[
 
-				<NewFlatButton label={'开始配置'} primary disabled={!this.state.val} onClick={() => {
+				<NewFlatButton label={isEdit?'完成':'开始配置'} primary disabled={!this.state.val} onClick={() => {
 					onSubmit(this.state.val);
 					onClose();
 				}}/>

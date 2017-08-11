@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import {GenerateSolution} from './GenerateSolution.jsx';
+import {GenerateSolution, getTagsByChartData} from './GenerateSolution.jsx';
 import ChartBasicComponent from './ChartBasicComponent.jsx';
 import {flowRight, curryRight} from 'lodash-es';
 
@@ -123,7 +123,9 @@ export default class AnalysisGenerateSolution extends Component {
     if(!tagDatas[nodeId]) return null
     return(
       <ChartBasicComponent
-        afterChartCreated={afterChartCreated}
+        afterChartCreated={function() {
+          return afterChartCreated.apply(this, [getTagsByChartData(tagDatas[nodeId])].concat(arguments));
+        }}
         ref='ChartBasicComponent'
         key={nodeId}
         node={node}
