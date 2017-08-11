@@ -74,10 +74,10 @@ var _ajax = function(url, options) {
 
 	var req =_generatorRequest(Config.ServeAddress + Config.APIBasePath + url, type, params)
 		.send(params)
+	.withCredentials()
         .set('Accept', dataType)
         .set('httpWebRequest.MediaType', dataType)
         .set('Content-Type', dataType)
-        .set('withCredentials', true)
         .end(function(err, res){
           // remove(reqList, (reqObj) => {
           //   return reqObj.key === options.tag;
