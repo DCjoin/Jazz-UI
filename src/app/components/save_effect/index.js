@@ -19,7 +19,7 @@ function checkPathWithRouter(targetPathFunc) {
 }
 
 let isOverview = checkPathWithRouter(RoutePath.saveEffect.overview);
-let isList = checkPathWithRouter(RoutePath.saveEffect.list);
+let isListBase = checkPathWithRouter(RoutePath.saveEffect.listBase);
 let isBest = checkPathWithRouter(RoutePath.saveEffect.best);
 
 export default class SaveEffect extends Component {
@@ -29,7 +29,7 @@ export default class SaveEffect extends Component {
 
 	render() {
 		let { router, children } = this.props,
-		needHeader = isOverview(router) || isList(router) || isBest(router),
+		needHeader = isOverview(router) || isListBase(router) || isBest(router),
 		hierarchyId = this.context.hierarchyId * 1;
 		return (
 			<div className='jazz-save-effect'>
@@ -45,8 +45,6 @@ export default class SaveEffect extends Component {
 					disabledButton={false}
 				/>}
 				{children}
-				{false && <CreateSaveEffect EnergyProblemId={515} ExecutedTime={'2017-05-01'} EnergySolutionName={'hhhh'}/>}
-				{false && <PreCreate/>}
 			</div>
 		);
 	}
