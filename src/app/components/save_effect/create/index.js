@@ -21,6 +21,7 @@ import {Model} from 'constants/actionType/Effect.jsx';
 import NewDialog from 'controls/NewDialog.jsx';
 import NewFlatButton from 'controls/NewFlatButton.jsx';
 
+import PreCreate from './pre_create.jsx';
 import Step1 from './step1.jsx';
 import Step2 from './step2.jsx';
 import Step3 from './step3.jsx';
@@ -34,7 +35,7 @@ import StatusCmp from 'components/ECM/MeasurePart/Status.jsx'
 import {EnergySys} from 'components/ECM/MeasurePart/MeasureTitle.jsx';
 import Remark from 'components/ECM/MeasurePart/Remark.jsx';
 
-import {getTagsByPlan, updateTags, getPreviewChart2, getPreviewChart3, saveItem, getEnergySolution } from 'actions/save_effect_action';
+import {getTagsByPlan, updateTags, getPreviewChart2, getPreviewChart3, saveItem, getEnergySolution, configEnergySystem } from 'actions/save_effect_action';
 
 import MeasuresAction from 'actions/ECM/MeasuresAction.jsx';
 
@@ -132,8 +133,17 @@ function resetFilterObjAfter2(filterObj) {
 			.set('EnergyEndDate', null)
 			;
 }
-function resetFilterObjAfter3(filterObj) {
+
+class GetInitData extends Component {
+	constructor(props) {
+		super(props);
+		this.props.action();
+	}
+	render() {
+		return null;
+	}
 }
+
 
 @ReduxDecorator
 export default class Create extends Component {
@@ -150,24 +160,25 @@ export default class Create extends Component {
 			energySolution: CreateStore.getEnergySolution(),
 			supervisorList:MeasuresStore.getSupervisor(),
 			EnergyEffectItemId: CreateStore.getEnergyEffectItemId(),
+			EnergyEffectId: CreateStore.getEnergyEffectId(props.EnergyProblemId),
 		}
 	};
 	static getStores = () => [CreateStore, MeasuresStore];
 	constructor(props) {
 		super(props);
-
 		this.state = {
-			filterObj: getInitFilterObj(props)
-						.set('EnergyEffectId', props.EnergyEffectId),
+			filterObj: getInitFilterObj(props),
+						// .set('EnergyEffectId', props.EnergyEffectId),
 			measureShow: false,
 			closeDlgShow: false,
 		}
-		this._getInitData(1, props);
 
 		this._onClose = this._onClose.bind(this);
+		this._getInitData = this._getInitData.bind(this);
 	}
 	static contextTypes = {
-		hierarchyId: PropTypes.string
+		hierarchyId: PropTypes.string,
+		router: PropTypes.object,
 	};
 	_setFilterObj(filterObj) {		
 		this.setState((state, props) => {
@@ -178,7 +189,8 @@ export default class Create extends Component {
 	}
 	_getFilterObj() {
 		return this.state.filterObj
-				.set('EnergyEffectItemId', this.state.EnergyEffectItemId);
+				.set('EnergyEffectItemId', this.state.EnergyEffectItemId)
+				.set('EnergyEffectId', this.state.EnergyEffectId);
 	}
 	_goStep(step) {
 		this._setFilterObj(this.state.filterObj.set('ConfigStep', step));
@@ -250,7 +262,7 @@ export default class Create extends Component {
 					onClickItem={(TagId) => {
 						this._setFilterObj(
 							getInitFilterObj(this.props)
-								.set('EnergyEffectId', this.props.EnergyEffectId)
+								.set('EnergyEffectId', this.state.EnergyEffectId)
 								.set('TagId', TagId)
 						);
 					}}
@@ -526,9 +538,26 @@ export default class Create extends Component {
 	  )
 	}
 	render() {
-		let {EnergyProblemId, EnergySolutionName, ExecutedTime, onClose} = this.props;
+		let { EnergyProblemId, EnergySolutionName, ExecutedTime, onClose } = this.props;
+		if( !this.state.EnergyEffectId ) {
+			return <PreCreate onClose={() => {
+				onClose(false);
+			}} onSubmit={(energySys) => {
+				configEnergySystem(
+				  this.context.router.params.customerId,
+				  this.context.hierarchyId,
+				  EnergyProblemId,
+				  energySys
+				);
+			}}/>
+		}
 		return (
 			<div className='jazz-save-effect-create'>
+				<GetInitData action={() =>{
+					this._getInitData(1, {
+						EnergyProblemId,
+					});
+				}}/>
 				<Header name={EnergySolutionName} timeStr={moment(ExecutedTime).format('YYYY-MM-DD HH:mm')} onShowDetail={() => {
 					this.setState((state, props) => {
 						return { measureShow: true };
@@ -536,9 +565,13 @@ export default class Create extends Component {
 					getEnergySolution(EnergyProblemId);
 					MeasuresAction.getSupervisor(this.context.hierarchyId);
 				}} onClose={() => {
-					this.setState({
-						closeDlgShow: true
-					});
+					if( this.state.filterObj.get('ConfigStep') > 1 ) {
+						this.setState({
+							closeDlgShow: true
+						});
+					} else {
+						this.props.onClose(false);
+					}
 				}}/>
 				<Nav step={this.state.filterObj.get('ConfigStep') - 1}/>
 				{this.renderContent()}
