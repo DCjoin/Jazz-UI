@@ -13,10 +13,12 @@ function HeaderTabs({isCustomer, isOverview, onActive,context,param}) {
 	let secondTabProps = {
 		label: I18N.SaveEffect.ListLabel,
 		path:RoutePath.saveEffect.list,
+		basePath:RoutePath.saveEffect.listBase,
 	};
 	if( isCustomer ) {
 		secondTabProps.label = I18N.SaveEffect.BestLabel;
 			secondTabProps.path=RoutePath.saveEffect.best;
+			secondTabProps.basePath=RoutePath.saveEffect.best;
 	}
 	return (
 		<div>
@@ -28,7 +30,7 @@ function HeaderTabs({isCustomer, isOverview, onActive,context,param}) {
 			}}>{I18N.SaveEffect.OverviewLabel}</div>
 		<div className={classNames({
 				"tab":true,
-				'active':context.isActive(secondTabProps.path(param))
+				'active':context.isActive(secondTabProps.basePath(param))
 			})} onClick={() => {
 			onActive(secondTabProps.path);
 		}}>{secondTabProps.label}</div>

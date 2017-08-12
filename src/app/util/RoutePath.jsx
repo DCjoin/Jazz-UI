@@ -33,6 +33,7 @@ export default {
 		index: p => `/${p.lang}/${p.customerId}/save_effect`,
 		overview: p => `/${p.lang}/${p.customerId}/save_effect/overview`,
 		list: p => `/${p.lang}/${p.customerId}/save_effect/effect/list`,
+		listBase: p => `/${p.lang}/${p.customerId}/save_effect/effect`,
 		best: p => `/${p.lang}/${p.customerId}/save_effect/best`,
 		detail: p => `/${p.lang}/${p.customerId}/save_effect/detail`,
 		drafts: p => `/${p.lang}/${p.customerId}/save_effect/effect/drafts`,
