@@ -19,6 +19,7 @@ import Detail from './save_effect_detail.jsx';
 import Create from '../create';
 import PreCreate from '../create/pre_create.jsx';
 import util from 'util/Util.jsx';
+import Config from 'config';
 
 function privilegeWithSave_Effect( privilegeCheck ) {
    return true
@@ -36,7 +37,9 @@ function getCustomerById(customerId) {
 export default class EffectList extends Component {
 
   static contextTypes = {
-        hierarchyId: React.PropTypes.string
+        router: React.PropTypes.object,
+        hierarchyId: React.PropTypes.string,
+        currentRoute: React.PropTypes.object
       };
 
   constructor(props, ctx) {
@@ -181,7 +184,7 @@ export default class EffectList extends Component {
       return(
         <div className="jazz-effect-overlay">
           <div className="jazz-effect-list">
-            {isFull() && !disabled && this.state.effect.get('SavingRateConfigState') && <div className="jazz-effect-list-rateTip">
+            {isFull() && !disabled && this.state.effect.get('SavingRateConfigState')===0 && <div className="jazz-effect-list-rateTip">
               {I18N.SaveEffect.EffectRateTip}
             </div>}
             <div className="jazz-effect-list-header">
@@ -191,7 +194,7 @@ export default class EffectList extends Component {
                             disabled={disabled} style={style.btn} labelStyle={style.lable} secondary={true}/>}
               </div>
               {this.state.effect.get('Drafts').size!==0?<div className="draft-btn" onClick={()=>{
-                   this.props.router.push(RoutePath.saveEffect.drafts(this.props.params));
+	                   util.openTab(RoutePath.saveEffect.drafts(this.props.params)+'?init_hierarchy_id='+this.context.hierarchyId);
                 }}>
                 {`${I18N.SaveEffect.Draft} (${this.state.effect.get('Drafts').size})`}
               </div>
