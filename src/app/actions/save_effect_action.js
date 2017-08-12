@@ -1832,13 +1832,13 @@ export function getPreviewChart3(params) {
 export function saveItem(params, onSubmitDone) {
 	Ajax.post(SaveEffect.addItem, {
 		params,
-		success: (data) => {
+		success: (id) => {
 			if(onSubmitDone && typeof onSubmitDone === 'function') {
 				onSubmitDone();
 			} else {
 		    	AppDispatcher.dispatch({
 			        type: Action.ADD_ITEM,
-			        id: data.get('EnergyEffectItemId')
+			        id
 			    });
 
 			}

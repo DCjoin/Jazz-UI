@@ -163,6 +163,8 @@ export default class Create extends Component {
 			closeDlgShow: false,
 		}
 		this._getInitData(1, props);
+
+		this._onClose = this._onClose.bind(this);
 	}
 	static contextTypes = {
 		hierarchyId: PropTypes.string
