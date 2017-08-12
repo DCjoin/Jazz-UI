@@ -13,7 +13,6 @@ export default class ConfigRate extends Component {
 
   contextTypes:{
       currentRoute: React.PropTypes.object,
-      hierarchyId: React.PropTypes.string
   }
 
   constructor(props, ctx) {
@@ -24,32 +23,7 @@ export default class ConfigRate extends Component {
   }
 
   state={
-    taglist:Immutable.fromJS({
-    "CommodityEffectRateTag": [
-      {
-        "CommodityId": 0,
-        "TagId": null,
-        "TagName": null
-      },
-      {
-        "CommodityId": 2,
-        "TagId": 2,
-        "TagName": "TagA"
-      }
-    ],
-    "EnergySystemEffectRateTag": [
-      {
-        "EnergySystem": 20,
-        "TagId": 3,
-        "TagName": "TagA"
-      },
-      {
-        "EnergySystem": 10,
-        "TagId": null,
-        "TagName": null
-      }
-    ]
-  }),
+    taglist:null,
     tagNo:1,
     tagDialogShow:false,
     configIndex:null
@@ -112,27 +86,31 @@ export default class ConfigRate extends Component {
 
   _renderCommodity(){
     var list=this.state.taglist.get("CommodityEffectRateTag");
-    return(
-      <div className="jazz-rate_config-list">
-        {list.map((item,index)=>(
-          <div className="jazz-rate_config-list-item">
-            <span className="name">{CommonFuns.getCommodityById(item.get("CommodityId")).Comment}</span>
-            <span>
-              {item.get("TagId")?<div className="tagshow">
-                                    <span className="name">{item.get("TagName")}</span>
-                                    <span className="operation" style={{marginLeft:'10px'}} onClick={this._tagShow.bind(this,index)}>{I18N.SaveEffect.SelectTagAgain}</span>
-                                  </div>
-                                :<div className="operation" onClick={this._tagShow.bind(this,index)}>{I18N.SaveEffect.SelectTag}</div>}
-            </span>
-          </div>
-        ))}
-      </div>
-    )
+    if(list.size!==0){
+      return(
+        <div className="jazz-rate_config-list">
+          {list.map((item,index)=>(
+            <div className="jazz-rate_config-list-item">
+              <span className="name">{CommonFuns.getCommodityById(item.get("CommodityId")).Comment}</span>
+              <span>
+                {item.get("TagId")?<div className="tagshow">
+                                      <span className="name">{item.get("TagName")}</span>
+                                      <span className="operation" style={{marginLeft:'10px'}} onClick={this._tagShow.bind(this,index)}>{I18N.SaveEffect.SelectTagAgain}</span>
+                                    </div>
+                                  :<div className="operation" onClick={this._tagShow.bind(this,index)}>{I18N.SaveEffect.SelectTag}</div>}
+              </span>
+            </div>
+          ))}
+        </div>
+      )
+    }
+
   }
 
   _renderEnergySystem(){
     var list=this.state.taglist.get("EnergySystemEffectRateTag");
-    return(
+    if(list.size!==0){
+      return(
       <div className="jazz-rate_config-list">
         {list.map((item,index)=>(
           <div className="jazz-rate_config-list-item">
@@ -149,16 +127,17 @@ export default class ConfigRate extends Component {
       </div>
     )
   }
+  }
 
 
-  // componentDidMount(){
-  //   getEffectRateTag(this.context.hierarchyId);
-  //   ListStore.addChangeListener(this._onChanged);
-  // }
-  //
-  // componentWillUnmount(){
-  //   ListStore.removeChangeListener(this._onChanged);
-  // }
+  componentDidMount(){
+    getEffectRateTag(this.props.hierarchyId);
+    ListStore.addChangeListener(this._onChanged);
+  }
+
+  componentWillUnmount(){
+    ListStore.removeChangeListener(this._onChanged);
+  }
 
 
   render(){
