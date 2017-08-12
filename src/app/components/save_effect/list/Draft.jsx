@@ -5,8 +5,19 @@ import { CircularProgress,Dialog} from 'material-ui';
 import FlatButton from "controls/NewFlatButton.jsx";
 import {deleteItem,getDrafts} from 'actions/save_effect_action.js';
 import ListStore from 'stores/save_effect/ListStore.jsx';
+import privilegeUtil from 'util/privilegeUtil.jsx';
+import PermissionCode from 'constants/PermissionCode.jsx';
+import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 
-export class Draft extends Component {
+function privilegeWithSaveEffect( privilegeCheck ) {
+  //  return true
+	return privilegeCheck(PermissionCode.Save_Effect, CurrentUserStore.getCurrentPrivilege());
+}
+function isFull() {
+	return privilegeWithSaveEffect(privilegeUtil.isFull.bind(privilegeUtil));
+}
+
+export default class Draft extends Component {
 
   static contextTypes = {
         hierarchyId: React.PropTypes.string
@@ -18,6 +29,10 @@ export class Draft extends Component {
         this._onDraftDelete = this._onDraftDelete.bind(this);
   }
 
+  state={
+    drafts:null
+  }
+
   _onDraftDelete(index){
     this.setState({
       deleteConfirmShow:true,
@@ -25,8 +40,14 @@ export class Draft extends Component {
     })
   }
 
+  _onChanged(){
+    this.setState({
+      drafts:ListStore.getDrafts()
+    })
+  }
+
   _renderDeleteDialog(){
-    let draft=this.state.effect.get('Drafts').getIn([this.state.deleteIndex]);
+    let draft=this.state.drafts.getIn([this.state.deleteIndex]);
     let actions = [
       <FlatButton
       inDialog={true}
@@ -38,7 +59,7 @@ export class Draft extends Component {
           deleteConfirmShow:false,
           deleteIndex:null
         },()=>{
-          deleteItem(draft.get('EnergyEffectItemId'));
+          deleteItem(draft.get('Id'));
         })
       }}
       />,
@@ -84,7 +105,7 @@ export class Draft extends Component {
   }
 
   render(){
-    if(this.state.effect===null){
+    if(this.state.drafts===null){
       return (
         <div className="jazz-effect-list flex-center">
          <CircularProgress  mode="indeterminate" size={80} />
@@ -97,13 +118,13 @@ export class Draft extends Component {
           <div className="jazz-effect-list-header">
             <div className="jazz-effect-list-title" style={{margin:'20px 0 5px 0'}}>{I18N.SaveEffect.Draft}</div>
           </div>
-          {this.state.effect.get('Drafts').size===0?
+          {this.state.drafts.size===0?
             <div className="jazz-effect-list-content flex-center">
               <FontIcon className="icon-weather-thunder" style={{fontSize:'60px'}} color="#32ad3d"/>
              <div className="nolist-font">{I18N.SaveEffect.NoDraft}</div>
            </div>
             :<div className="jazz-effect-list-content">
-          {this.state.effect.get('Drafts').map((item,index)=>(<ItemForDraft effect={item} onDelete={()=>{this._onDraftDelete(index)}} canEdit={isFull()}/>))}
+          {this.state.drafts.map((item,index)=>(<ItemForDraft effect={item} onDelete={()=>{this._onDraftDelete(index)}} canEdit={isFull()}/>))}
           </div>}
           {this.state.deleteConfirmShow && this._renderDeleteDialog()}
         </div>

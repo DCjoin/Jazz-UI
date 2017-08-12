@@ -92,7 +92,7 @@ export class ItemForConsultant extends Component {
       <div className={classNames({
           "active":ConfigedTagCount!==0
         })} onClick={()=>{
-          if(ConfigedTagCount!==0) this.props.onClick(this.props.effect)
+          if(ConfigedTagCount!==0) this.props.onClick()
         }}>
         <div className={classNames({
             "jazz-effect-item":true,

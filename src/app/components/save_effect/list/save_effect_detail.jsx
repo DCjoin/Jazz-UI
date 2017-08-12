@@ -83,15 +83,15 @@ export default class EffectDetail extends Component {
     )
   }
   _renderSubTitle(){
-    // var tag=this.state.detailInfo.get('Tags');
-    var tag=Immutable.fromJS({a:1,b:3});
+    var tag=this.state.detailInfo.get('EffectItems');
+    // var tag=Immutable.fromJS({a:1,b:3});
     var {ExecutedTime,EnergySystem,CalcState}=this.props.effect.toJS();
     if(tag.size===0){
       return (
         <div className="jazz-effect-detail-header-subtitle">
           <div className="jazz-effect-detail-header-subtitle-info">
             <span>
-              <FontIcon className="icon-calendar1"/>
+              <FontIcon className="icon-calendar1" style={{fontSize:'14px',marginRight:'10px'}}/>
               <div className="font">
                 <span>{moment(util.DataConverter.JsonToDateTime(ExecutedTime)).format(I18N.DateTimeFormat.IntervalFormat.FullDateMinute)}</span>
                 <span>{I18N.Setting.Effect.Start}</span>
@@ -131,17 +131,17 @@ export default class EffectDetail extends Component {
   }
 
   _renderContent(){
-    // var tags=this.state.detailInfo.get('EffectItems'),
-          //  {EnergySaving,EnergySavingCosts,InvestmentAmount,InvestmentReturnCycle,EnergySavingUomId}=this.state.detailInfo.toJS();
+    var tags=this.state.detailInfo.get('EffectItems'),
+           {EnergySaving,EnergySavingCosts,InvestmentAmount,InvestmentReturnCycle,EnergySavingUomId}=this.state.detailInfo.toJS();
     var {CalcState}=this.props.effect.toJS(),
         preTitle=CalcState===calcState.Being?I18N.SaveEffect.UtilNow:'',
 				prePeriod=CalcState===calcState.Being?I18N.SaveEffect.Predict:'';
-    var tags=Immutable.fromJS([{TagId:1,TagName:'TagA'},{TagId:2,TagName:'TagB'}]),
-        EnergySaving=1,
-        EnergySavingCosts=1,
-        InvestmentAmount=1,
-        InvestmentReturnCycle=1,
-        EnergySavingUomId=1;
+    // var tags=Immutable.fromJS([{TagId:1,TagName:'TagA'},{TagId:2,TagName:'TagB'}]),
+    //     EnergySaving=1,
+    //     EnergySavingCosts=1,
+    //     InvestmentAmount=1,
+    //     InvestmentReturnCycle=1,
+    //     EnergySavingUomId=1;
     var style={
       btn:{
         height:'30px',
@@ -192,13 +192,16 @@ export default class EffectDetail extends Component {
           cycleIcon=<FontIcon className="icon-pay-back-period" iconStyle ={iconStyle} color="#626469" style = {icontextstyle} />;
 
 	  if(tags.size===0){
-			<div className="jazz-effect-detail-content flex-center">
-				<FontIcon className="icon-weather-thunder" style={{fontSize:'60px'}} color="#32ad3d"/>
-			 <div className="nolist-font" style={{display:'flex',flexDirection:'row'}}>
-				 {I18N.SaveEffect.NoEffectDetail}
-				 <div className="operation" onClick={this._onCreateShow.bind(this)}>{I18N.Setting.Effect.Config}</div>
+			return(
+				<div className="jazz-effect-detail-content flex-center" style={{flexDirection:'column'}}>
+					<FontIcon className="icon-weather-thunder" style={{fontSize:'60px'}} color="#32ad3d"/>
+				 <div className="nolist-font" style={{display:'flex',flexDirection:'row'}}>
+					 {I18N.SaveEffect.NoEffectDetail}
+					 <div className="operation" onClick={this._onCreateShow.bind(this)}>{I18N.Setting.Effect.Config}</div>
+				 </div>
 			 </div>
-		 </div>
+			)
+
 		}else {
 			return(
 				<div className="jazz-effect-detail-content">
@@ -281,23 +284,23 @@ export default class EffectDetail extends Component {
 		)
 	}
 
-  // componentDidMount(){
-  //   getDetail(this.props.effect.get('EnergyEffectId'));
-  //   ListStore.addChangeListener(this._onChanged);
-  // }
-  //
-  // componentWillUnmount(){
-  //   ListStore.removeChangeListener(this._onChanged);
-  // }
+  componentDidMount(){
+    getDetail(this.props.effect.get('EnergyEffectId'));
+    ListStore.addChangeListener(this._onChanged);
+  }
+
+  componentWillUnmount(){
+    ListStore.removeChangeListener(this._onChanged);
+  }
 
   render(){
-		// if(this.state.detailInfo===null){
-		// 	return (
-		// 		<div className="jazz-effect-detail flex-center">
-		// 		 <CircularProgress  mode="indeterminate" size={80} />
-		// 	 </div>
-		// 	)
-		// }else {
+		if(this.state.detailInfo===null){
+			return (
+				<div className="jazz-effect-detail flex-center">
+				 <CircularProgress  mode="indeterminate" size={80} />
+			 </div>
+			)
+		}else {
 		 var {EnergySolutionName,EnergyProblemId,EnergyEffectId,ExecutedTime}=this.props.effect.toJS();
 			return(
 				<div className="jazz-effect-detail">
@@ -306,7 +309,7 @@ export default class EffectDetail extends Component {
 					{this._renderContent()}
 					{this.state.deleteConfirmShow && this._renderDeleteDialog()}
 					{this.state.energySystemDialogShow && <PreCreate isEdit={true}
-																														onCLose={()=>{this.setState({energySystemDialogShow:false})}}
+																														onClose={()=>{this.setState({energySystemDialogShow:false})}}
 																														onSubmit={(id)=>{
 																															this.setState({energySystemDialogShow:false},()=>{
 																																changeEnergySystemForEffect(id,this.props.effect.get("EnergyEffectId"))
@@ -328,7 +331,7 @@ export default class EffectDetail extends Component {
 						<Snackbar ref='snackbar' autoHideDuration={4000} open={!!this.state.saveSuccessText} onRequestClose={()=>{this.setState({saveSuccessText:null})}} message={this.state.saveSuccessText}/>
 				</div>
 			)
-		// }
+		}
 
   }
 }
