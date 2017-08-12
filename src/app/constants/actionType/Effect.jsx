@@ -16,6 +16,7 @@ module.exports = {
     GET_DRAFTS_SUCCESS:null,
     CHANGE_ENERGY_SYSTEM_FOR_EFFECT:null,
     ADD_ITEM:null,
+    SET_ENERGY_EFFECT_ID:null,
   }),
   calcState:{
     NotStarted:10,

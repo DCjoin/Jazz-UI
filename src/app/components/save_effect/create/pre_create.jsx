@@ -33,7 +33,6 @@ export default class PreCreate extends Component {
 
 				<NewFlatButton label={isEdit?'完成':'开始配置'} primary disabled={!this.state.val} onClick={() => {
 					onSubmit(this.state.val);
-					onClose();
 				}}/>
 				]} open={true}>
 				<header className='jazz-pre-create-header'>
