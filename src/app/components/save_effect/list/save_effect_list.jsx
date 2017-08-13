@@ -89,7 +89,8 @@ export default class EffectList extends Component {
 
   _onRateTagSave(list){
     this.setState({
-      configRateShow:false
+      configRateShow:false,
+			configEnergyProblemId:null
     },()=>{
         saveeffectratetag(this.props.router.params.customerId,this.context.hierarchyId,list)
     })
@@ -98,7 +99,8 @@ export default class EffectList extends Component {
   _onItemClick(energyEffectId){
     this.setState({
       effectDetailShow:true,
-      displayEffect:energyEffectId
+      displayEffect:energyEffectId,
+			configEnergyProblemId:null
     })
   }
 
@@ -108,14 +110,6 @@ export default class EffectList extends Component {
         createShow:true
       })
   }
-
-  _onConfigSuccess(){
-    this.setState({
-      saveSuccessText:I18N.SaveEffect.ConfigSuccess,
-      effect:null
-    })
-  }
-
 
   componentDidMount(){
     getenergyeffect(this.context.hierarchyId);

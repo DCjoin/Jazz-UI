@@ -88,6 +88,8 @@ export class ItemForConsultant extends Component {
 
   render(){
     var {ConfigedTagCount,EnergyProblemId}=this.props.effect.toJS();
+    console.log('EnergyProblemId='+EnergyProblemId);
+    console.log("configEnergyProblemId="+this.props.configEnergyProblemId);
     return(
       <div className={classNames({
           "active":ConfigedTagCount!==0

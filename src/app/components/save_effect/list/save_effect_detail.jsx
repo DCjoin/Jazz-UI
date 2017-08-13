@@ -157,7 +157,8 @@ export default class EffectDetail extends Component {
 			editBtn:{
 				width: "73px",
 				minWidth:'73px',
-  			"height": "30px",
+  			height: "30px",
+				lineHeight:'30px',
 				paddding:0
 			}
     },
@@ -316,10 +317,10 @@ export default class EffectDetail extends Component {
 																															})
 																														}}/>}
 					{this.state.createShow && <Create
-						EnergySolutionName
-						EnergyProblemId
-						EnergyEffectId
-						ExecutedTime
+						EnergySolutionName={EnergySolutionName}
+						EnergyProblemId={EnergyProblemId}
+						EnergyEffectId={EnergyEffectId}
+						ExecutedTime={ExecutedTime}
 						onSubmitDone={()=>{getDetail(this.props.effect.get('EnergyEffectId'));}}
 						onClose={()=>{
 							this.setState({
