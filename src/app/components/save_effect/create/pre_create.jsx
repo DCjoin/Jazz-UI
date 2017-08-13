@@ -40,7 +40,7 @@ export default class PreCreate extends Component {
 						<span>{'选择方案所属能源系统'}</span>
 						<span className='jazz-pre-create-header-mark'>{'(以便汇总统计能源系统的节能量)'}</span>
 					</div>
-					<FontIcon style={{fontSize: '16px'}} className={'icon-close'} onClose={onClose}/>
+					<FontIcon style={{fontSize: '16px'}} className={'icon-close'} onClick={onClose}/>
 				</header>
 				<RadioButtonGroup className='jazz-pre-create-content' onChange={(e, v) => {
 					this.setState({
