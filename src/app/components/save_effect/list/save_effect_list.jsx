@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDom from 'react-dom';
 import {ItemForManager,ItemForConsultant} from './Item.jsx';
 import FontIcon from 'material-ui/FontIcon';
 import RoutePath from 'util/RoutePath.jsx';
@@ -20,6 +21,8 @@ import Create from '../create';
 import PreCreate from '../create/pre_create.jsx';
 import util from 'util/Util.jsx';
 
+const TABS_HEIGHT=73;
+
 function privilegeWithSaveEffect( privilegeCheck ) {
   //  return true
 	return privilegeCheck(PermissionCode.Save_Effect, CurrentUserStore.getCurrentPrivilege());
@@ -31,7 +34,6 @@ function isFull() {
 function getCustomerById(customerId) {
 	return find(CurrentUserCustomerStore.getAll(), customer => customer.Id === customerId * 1 );
 }
-
 
 export default class EffectList extends Component {
 
@@ -111,6 +113,25 @@ export default class EffectList extends Component {
       })
   }
 
+	_onScrollConfigEffect(){
+		var overallEl=ReactDom.findDOMNode(this.refs.list).getClientRects()[0],
+				listEl=ReactDom.findDOMNode(this.refs.content).getClientRects()[0],
+				overallHeight=overallEl.height,
+				headHeight=listEl.top-overallEl.top,
+				listHeigt=listEl.height,
+				index=this.state.effect.get('EnergyEffects').findIndex(item=>item.get("EnergyProblemId")===this.state.configEnergyProblemId),
+				heightArr=this.state.effect.get('EnergyEffects')
+																		.map((item,index)=>(ReactDom.findDOMNode(this.refs[`content_${index}`]).getClientRects()[0].height)),
+				preListHeight=heightArr.take(index).reduce((pre,cur)=>pre+cur),
+				currentHeight=heightArr.getIn([index]),
+				lastListHeight=heightArr.takeLast(this.state.effect.get('EnergyEffects').size-index-1).reduce((pre,cur)=>pre+cur);
+
+		if(lastListHeight+currentHeight/2<=listHeigt/2) return;
+
+		ReactDom.findDOMNode(this.refs.list).scrollTop=headHeight+preListHeight+currentHeight/2-overallHeight/2;
+
+	}
+
   componentDidMount(){
     getenergyeffect(this.context.hierarchyId);
     ListStore.addChangeListener(this._onChanged);
@@ -126,10 +147,17 @@ export default class EffectList extends Component {
     }
   }
 
-  componentWillUnmount(){
-    ListStore.removeChangeListener(this._onChanged);
-  }
+	componentDidUpdate(prevProps,prevState) {
+			console.log("componentDidUpdate");
+			if(this.state.configEnergyProblemId!==prevState.configEnergyProblemId && this.refs.list && this.refs.content){
+				this._onScrollConfigEffect()
+			}
+		}
 
+
+	componentWillUnmount(){
+		    ListStore.removeChangeListener(this._onChanged);
+		  }
 
   render(){
     var style={
@@ -175,12 +203,12 @@ export default class EffectList extends Component {
                               .find(item=>(item.get("EnergyProblemId")===this.state.configEnergyProblemId));
       }
       return(
-        <div className="jazz-effect-overlay">
+        <div className="jazz-effect-overlay" ref="list">
           <div className="jazz-effect-list">
-            {isFull() && !disabled && this.state.effect.get('SavingRateConfigState')===0 && <div className="jazz-effect-list-rateTip">
+            {isFull() && !disabled && this.state.effect.get('SavingRateConfigState')===0 && <div className="jazz-effect-list-rateTip" ref="rateTip">
               {I18N.SaveEffect.EffectRateTip}
             </div>}
-            <div className="jazz-effect-list-header">
+            <div className="jazz-effect-list-header" ref="header">
               <div>
                 <div className="jazz-effect-list-title">{I18N.Setting.Effect.List}</div>
                 {isFull() && <FlatButton label={I18N.SaveEffect.ConfigSaveRatio} onTouchTap={this._onConfigRateShow.bind(this)}
@@ -195,10 +223,10 @@ export default class EffectList extends Component {
               {`${I18N.SaveEffect.Draft} (${this.state.effect.get('Drafts').size})`}
             </div>}
             </div>
-            <div className="jazz-effect-list-content">
+            <div className="jazz-effect-list-content" ref="content">
               {this.state.effect.get("EnergyEffects").map((item,index)=>(
-                isFull()?<ItemForConsultant effect={item} configEnergyProblemId={this.state.configEnergyProblemId} onClick={this._onItemClick.bind(this,index)} canEdit={isFull()} onConfig={this._onConfig.bind(this,item.get('EnergyProblemId'))}/>
-              :(item.get('ConfigedTagCount')!==0 && <ItemForManager effect={item} onClick={this._onItemClick} canEdit={isFull()}/>)))}
+                isFull()?<ItemForConsultant ref={`content_${index}`} effect={item} configEnergyProblemId={this.state.configEnergyProblemId} onClick={this._onItemClick.bind(this,index)} canEdit={isFull()} onConfig={this._onConfig.bind(this,item.get('EnergyProblemId'))}/>
+              :(item.get('ConfigedTagCount')!==0 && <ItemForManager ref={`content_${index}`} effect={item} onClick={this._onItemClick} canEdit={isFull()}/>)))}
             </div>
             {this.state.configRateShow &&
                 <ConfigRate hierarchyName={this._getSelectedHierarchy().Name} hierarchyId={this.context.hierarchyId}
