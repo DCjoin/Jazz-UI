@@ -19,14 +19,13 @@ import Detail from './save_effect_detail.jsx';
 import Create from '../create';
 import PreCreate from '../create/pre_create.jsx';
 import util from 'util/Util.jsx';
-import Config from 'config';
 
-function privilegeWithSave_Effect( privilegeCheck ) {
-   return true
-	// return privilegeCheck(PermissionCode.Save_Effect, CurrentUserStore.getCurrentPrivilege());
+function privilegeWithSaveEffect( privilegeCheck ) {
+  //  return true
+	return privilegeCheck(PermissionCode.Save_Effect, CurrentUserStore.getCurrentPrivilege());
 }
 function isFull() {
-	return privilegeWithSave_Effect(privilegeUtil.isFull.bind(privilegeUtil));
+	return privilegeWithSaveEffect(privilegeUtil.isFull.bind(privilegeUtil));
 }
 
 function getCustomerById(customerId) {
@@ -90,16 +89,18 @@ export default class EffectList extends Component {
 
   _onRateTagSave(list){
     this.setState({
-      configRateShow:false
+      configRateShow:false,
+			configEnergyProblemId:null
     },()=>{
         saveeffectratetag(this.props.router.params.customerId,this.context.hierarchyId,list)
     })
   }
 
-  _onItemClick(effect){
+  _onItemClick(energyEffectId){
     this.setState({
       effectDetailShow:true,
-      displayEffect:effect
+      displayEffect:energyEffectId,
+			configEnergyProblemId:null
     })
   }
 
@@ -109,14 +110,6 @@ export default class EffectList extends Component {
         createShow:true
       })
   }
-
-  _onConfigSuccess(){
-    this.setState({
-      saveSuccessText:I18N.SaveEffect.ConfigSuccess,
-      effect:null
-    })
-  }
-
 
   componentDidMount(){
     getenergyeffect(this.context.hierarchyId);
@@ -168,9 +161,9 @@ export default class EffectList extends Component {
       )
     }else if(this.state.effectDetailShow){
       return(
-          <Detail effect={this.state.displayEffect} onBack={()=>{this.setState({effectDetailShow:false,displayEffect:null},
+          <Detail effect={this.state.effect.getIn(["EnergyEffects",this.state.displayEffect])} onBack={()=>{this.setState({effectDetailShow:false,displayEffect:null},
                                                             ()=>{
-                                                              // getenergyeffect(this.context.hierarchyId)
+                                                              getenergyeffect(this.context.hierarchyId)
                                                             })}}
                                                     canEdit={isFull()}/>
       )
@@ -203,8 +196,8 @@ export default class EffectList extends Component {
             </div>}
             </div>
             <div className="jazz-effect-list-content">
-              {this.state.effect.get("EnergyEffects").map(item=>(
-                isFull()?<ItemForConsultant effect={item} configEnergyProblemId={this.state.configEnergyProblemId} onClick={this._onItemClick} canEdit={isFull()} onConfig={this._onConfig.bind(this,item.get('EnergyProblemId'))}/>
+              {this.state.effect.get("EnergyEffects").map((item,index)=>(
+                isFull()?<ItemForConsultant effect={item} configEnergyProblemId={this.state.configEnergyProblemId} onClick={this._onItemClick.bind(this,index)} canEdit={isFull()} onConfig={this._onConfig.bind(this,item.get('EnergyProblemId'))}/>
               :(item.get('ConfigedTagCount')!==0 && <ItemForManager effect={item} onClick={this._onItemClick} canEdit={isFull()}/>)))}
             </div>
             {this.state.configRateShow &&

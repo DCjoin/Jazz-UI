@@ -88,11 +88,13 @@ export class ItemForConsultant extends Component {
 
   render(){
     var {ConfigedTagCount,EnergyProblemId}=this.props.effect.toJS();
+    console.log('EnergyProblemId='+EnergyProblemId);
+    console.log("configEnergyProblemId="+this.props.configEnergyProblemId);
     return(
       <div className={classNames({
           "active":ConfigedTagCount!==0
         })} onClick={()=>{
-          if(ConfigedTagCount!==0) this.props.onClick(this.props.effect)
+          if(ConfigedTagCount!==0) this.props.onClick()
         }}>
         <div className={classNames({
             "jazz-effect-item":true,
