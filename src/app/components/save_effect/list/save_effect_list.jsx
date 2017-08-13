@@ -243,9 +243,7 @@ export default class EffectList extends Component {
                     createShow:false,
     								saveSuccessText:I18N.SaveEffect.ConfigSuccess,
     								effect:null
-    							},()=>{
-										this._onScrollConfigEffect()
-									})
+    							})
     						}}/>}
               {this.state.createShow && false && <PreCreate onClose={() => {}} onSubmit={(energySys) => {
                 configEnergySystem(
