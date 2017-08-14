@@ -52,6 +52,9 @@
             box-shadow: 0 0 9px 1px #e0e0e0;
           }
         }
+        .selected{
+          background-color: #f1fcf3;
+        }
       }
       >div:last-child{
         margin-bottom: 20px;
@@ -69,9 +72,6 @@
       vertical-align: middle;
       margin:10px 0 18px 0;
     }
-  }
-  .selected{
-    background-color: #f1fcf3;
   }
   &-item{
     display: flex;
@@ -248,7 +248,6 @@
       border-radius: 2px;
       background-color: #32ad3d;
       border: solid 1px #32ad3d;
-      color: #ffffff;
     }
   }
   &-list{
@@ -369,6 +368,7 @@
         color: #000000;
       }
       &-operation{
+        display: flex;
       }
     }
     &-save-energy{
