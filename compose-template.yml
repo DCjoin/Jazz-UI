@@ -13,12 +13,12 @@
     - hz.rem.cn.se.com
   environment:
     - NPM_CONFIG_LOGLEVEL=info
-    - JAZZ_WEB_HOST=${JAZZ_WEB_HOST}
+    - JAZZ_WEB_HOST=${JAZZ_WEBAPI_HOST}
     - JAZZ_UI_UMENG_CNZZ_SDK_URL=${JAZZ_UI_UMENG_CNZZ_SDK_URL}
   memswap_limit: 0
   labels:
     aliyun.scale: '1'
-    aliyun.routing.port_80: 'jazz-test'
+    aliyun.routing.port_80: '${JAZZ_WEB_HOST}'
   shm_size: 
   memswap_reservation: 0
   kernel_memory: 0
