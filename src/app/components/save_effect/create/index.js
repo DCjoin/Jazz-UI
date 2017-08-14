@@ -110,18 +110,18 @@ function Nav({step}) {
 }
 
 function getInitFilterObj(props) {
-	return props.filterObj || Immutable.fromJS({
+	return Immutable.fromJS({...{
 		TagId: null,
 		CalculationStep: TimeGranularity.Daily,
 		BenchmarkModel: Model.Easy,
-		BenchmarkStartDate: moment(props.ExecutedTime).subtract(31, 'days').format('YYYY-MM-DD'),
-		BenchmarkEndDate: moment(props.ExecutedTime).format('YYYY-MM-DD'),
+		BenchmarkStartDate: moment(props.filterObj.ExecutedTime).subtract(31, 'days').format('YYYY-MM-DD'),
+		BenchmarkEndDate: moment(props.filterObj.ExecutedTime).format('YYYY-MM-DD'),
 		EnergyStartDate: null,
 		EnergyEndDate: null,
 		EnergyUnitPrice: '',
 		ContrastStep: TimeGranularity.Monthly,
 		ConfigStep: props.ConfigStep,
-	});
+	}, ...props.filterObj});
 }
 
 function resetFilterObjAfter2(filterObj) {
@@ -188,10 +188,7 @@ export default class Create extends Component {
 		});
 	}
 	_getFilterObj() {
-		return this.state.filterObj
-				.set('EnergyProblemId', this.props.EnergyProblemId)
-				.set('EnergyEffectId', this.props.EnergyEffectId)
-				.set('EnergySystem', this.props.EnergySystem || this.state.energySys);
+		return this.state.filterObj;
 	}
 	_goStep(step) {
 		this._setFilterObj(this.state.filterObj.set('ConfigStep', step));
@@ -208,7 +205,7 @@ export default class Create extends Component {
 	_getInitData(step, props = this.props, state = this.state) {
 		switch( step ) {
 			case 1:
-				getTagsByPlan(props.EnergyProblemId);
+				getTagsByPlan(state.filterObj.get('EnergyProblemId'));
 				break;
 			case 2:
 				getPreviewChart2(this._getFilterObj().toJS());
@@ -258,12 +255,13 @@ export default class Create extends Component {
 					onClickItem={(TagId) => {
 						this._setFilterObj(
 							getInitFilterObj(this.props)
+								.set('EnergySystem', this.state.filterObj.get('EnergySystem'))
 								.set('TagId', TagId)
 						);
 					}}
 					onDeleteItem={idx => updateTags(this.state.tags.delete(idx))}
 					onAddItem={ (tag) => {
-							addEnergyEffectTag(this.props.EnergyProblemId, tag.get('Id'));
+							addEnergyEffectTag(filterObj.get('EnergyProblemId'), tag.get('Id'));
 							updateTags(this.state.tags.push(tag.set('TagId', tag.get('Id'))))
 						}
 					}
@@ -537,22 +535,19 @@ export default class Create extends Component {
 	  )
 	}
 	render() {
-		let { EnergyProblemId, EnergySolutionName, ExecutedTime, onClose } = this.props;
-		if( !this.props.EnergySystem && !this.state.energySys ) {
+		let { onClose } = this.props,
+		{EnergyProblemId, EnergySolutionName, ExecutedTime, EnergySystem} = this.state.filterObj.toJS();
+		if( !EnergySystem ) {
 			return <PreCreate onClose={() => {
 				onClose(false);
 			}} onSubmit={(energySys) => {
-				this.setState({
-					energySys
-				});
+				this._setFilterObj(this.state.filterObj.set('EnergySystem', energySys));
 			}}/>
 		}
 		return (
 			<div className='jazz-save-effect-create'>
 				<GetInitData action={() =>{
-					this._getInitData(this.props.ConfigStep, {
-						EnergyProblemId,
-					});
+					this._getInitData(this.props.ConfigStep);
 				}}/>
 				<Header name={EnergySolutionName} timeStr={moment(ExecutedTime).format('YYYY-MM-DD HH:mm')} onShowDetail={() => {
 					this.setState((state, props) => {
@@ -584,11 +579,6 @@ export default class Create extends Component {
 	}
 }
 Create.PropTypes = {
-	EnergySolutionName: PropTypes.string.isRequired,
-	EnergyProblemId: PropTypes.string.isRequired,
-	EnergyEffectId: PropTypes.string.isRequired,
-	EnergySystem: PropTypes.string.isRequired,
-	ExecutedTime: PropTypes.object.isRequired,
 	onClose: PropTypes.func.isRequired,
 	onSubmitDone: PropTypes.func,
 	ConfigStep: PropTypes.number,

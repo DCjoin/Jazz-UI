@@ -233,12 +233,13 @@ export default class EffectList extends Component {
                             onClose={()=>{this.setState({configRateShow:false})}} onSave={this._onRateTagSave}/>}
             <Snackbar ref="snackbar" autoHideDuration={4000} open={!!this.state.saveSuccessText} onRequestClose={()=>{this.setState({saveSuccessText:null})}} message={this.state.saveSuccessText}/>
               {this.state.createShow && true && <Create
-    						EnergySolutionName={configEffect.get('EnergySolutionName')}
-    						EnergyProblemId={configEffect.get('EnergyProblemId')}
-                EnergyEffectId={configEffect.get('EnergyEffectId')}
-                EnergyEffectItemId={configEffect.get('EnergyEffectItemId')}
-    						EnergySystem={configEffect.get('EnergySystem')}
-    						ExecutedTime={configEffect.get('ExecutedTime')}
+                filterObj={{
+                  EnergySolutionName: configEffect.get('EnergySolutionName'),
+                  EnergyProblemId: configEffect.get('EnergyProblemId'),
+                  EnergyEffectId: configEffect.get('EnergyEffectId'),
+                  EnergySystem: configEffect.get('EnergySystem'),
+                  ExecutedTime: configEffect.get('ExecutedTime'),
+                }}
     						onSubmitDone={()=>{getenergyeffect(this.context.hierarchyId);}}
     						onClose={()=>{
     							this.setState({
