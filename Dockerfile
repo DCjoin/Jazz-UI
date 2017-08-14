@@ -8,4 +8,6 @@ RUN yarn --force
 
 RUN yarn global add pm2
 
-CMD ["npm", "run", "release:docker"]
+RUN npm run build-test && node shell/copy_server.js
+
+CMD ["node", "./build/release_server.js"]
