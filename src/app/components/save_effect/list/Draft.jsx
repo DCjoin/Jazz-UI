@@ -150,13 +150,24 @@ export default class Draft extends Component {
 							EnergySystem:configDraft.get('EnergySystem')}}
 						ConfigStep={configDraft.get('ConfigStep')}
 						onSubmitDone={()=>{getDrafts(this.context.hierarchyId);}}
-						onClose={()=>{
-							this.setState({
-								createShow:false,
-								configIndex:null,
-								saveSuccessText:I18N.SaveEffect.ConfigSuccess,
-								drafts:null
-							})
+						onClose={(isSuccess)=>{
+							if(isSuccess){
+								this.setState({
+									createShow:false,
+									configIndex:null,
+									saveSuccessText:I18N.SaveEffect.ConfigSuccess,
+									drafts:null
+								})
+							}else {
+								this.setState({
+									createShow:false,
+									configIndex:null,
+									drafts:null
+								},()=>{
+									getDrafts(this.context.hierarchyId)
+								})
+							}
+
 						}}/>}
 					<Snackbar ref="snackbar" autoHideDuration={4000} open={!!this.state.saveSuccessText} onRequestClose={()=>{this.setState({saveSuccessText:null})}} message={this.state.saveSuccessText}/>
         </div>

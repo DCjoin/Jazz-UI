@@ -322,14 +322,24 @@ export default class EffectDetail extends Component {
 							EnergyProblemId,
 							EnergyEffectId,
 							ExecutedTime,
-						EnergySystem}}  
+						EnergySystem}}
 						onSubmitDone={()=>{getDetail(this.props.effect.get('EnergyEffectId'));}}
-						onClose={()=>{
-							this.setState({
-								createShow:false,
-								saveSuccessText:I18N.SaveEffect.ConfigSuccess,
-								detailInfo:null
-							})
+						onClose={(isSuccess)=>{
+							if(isSuccess){
+								this.setState({
+									createShow:false,
+									saveSuccessText:I18N.SaveEffect.ConfigSuccess,
+									detailInfo:null
+								})
+							}else {
+								this.setState({
+									createShow:false,
+									detailInfo:null
+								},()=>{
+									getDetail(this.props.effect.get('EnergyEffectId'))
+								})
+							}
+
 						}}/>}
 						<Snackbar ref='snackbar' autoHideDuration={4000} open={!!this.state.saveSuccessText} onRequestClose={()=>{this.setState({saveSuccessText:null})}} message={this.state.saveSuccessText}/>
 				</div>

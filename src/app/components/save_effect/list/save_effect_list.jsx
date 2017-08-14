@@ -241,12 +241,22 @@ export default class EffectList extends Component {
                   ExecutedTime: configEffect.get('ExecutedTime'),
                 }}
     						onSubmitDone={()=>{getenergyeffect(this.context.hierarchyId);}}
-    						onClose={()=>{
-    							this.setState({
-                    createShow:false,
-    								saveSuccessText:I18N.SaveEffect.ConfigSuccess,
-    								effect:null
-    							})
+    						onClose={(isSuccess)=>{
+									if(isSuccess){
+										this.setState({
+											createShow:false,
+											saveSuccessText:I18N.SaveEffect.ConfigSuccess,
+											effect:null
+										})
+									}else {
+										this.setState({
+											createShow:false,
+											effect:null
+										},()=>{
+											getenergyeffect(this.context.hierarchyId)
+										})
+									}
+
     						}}/>}
               {this.state.createShow && false && <PreCreate onClose={() => {}} onSubmit={(energySys) => {
                 configEnergySystem(
