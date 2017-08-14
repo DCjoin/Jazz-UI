@@ -302,7 +302,7 @@ export default class EffectDetail extends Component {
 			 </div>
 			)
 		}else {
-		 var {EnergySolutionName,EnergyProblemId,EnergyEffectId,ExecutedTime}=this.props.effect.toJS();
+		 var {EnergySolutionName,EnergyProblemId,EnergyEffectId,ExecutedTime,EnergySystem}=this.props.effect.toJS();
 			return(
 				<div className="jazz-effect-detail">
 					{this._renderTitle()}
@@ -321,7 +321,8 @@ export default class EffectDetail extends Component {
 							EnergySolutionName,
 							EnergyProblemId,
 							EnergyEffectId,
-							ExecutedTime}}  
+							ExecutedTime,
+						EnergySystem}}  
 						onSubmitDone={()=>{getDetail(this.props.effect.get('EnergyEffectId'));}}
 						onClose={()=>{
 							this.setState({

@@ -146,7 +146,8 @@ export default class Draft extends Component {
 							EnergySolutionName:configDraft.get('EnergySolutionName'),
 							EnergyProblemId:configDraft.get('EnergyProblemId'),
 							EnergyEffectId:configDraft.get('EnergyEffectId'),
-							ExecutedTime:configDraft.get('ExecutedTime')}}
+							ExecutedTime:configDraft.get('ExecutedTime'),
+							EnergySystem:configDraft.get('EnergySystem')}}
 						ConfigStep={configDraft.get('ConfigStep')}
 						onSubmitDone={()=>{getDrafts(this.context.hierarchyId);}}
 						onClose={()=>{

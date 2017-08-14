@@ -61,8 +61,8 @@ export function getPreviewChart3(params) {
 		}
 	});
 }
-export function saveItem(params, onSubmitDone) {
-	Ajax.post(SaveEffect.addItem, {
+export function saveItem(customerId, hierarchyId, params, onSubmitDone) {
+	Ajax.post( Util.replacePathParams(SaveEffect.addItem, customerId, hierarchyId, params.EnergySystem) , {
 		params,
 		success: (id) => {
 			if(onSubmitDone && typeof onSubmitDone === 'function') {
@@ -70,7 +70,6 @@ export function saveItem(params, onSubmitDone) {
 			} else {
 		    	AppDispatcher.dispatch({
 			        type: Action.ADD_ITEM,
-			        id
 			    });
 
 			}
@@ -165,11 +164,19 @@ export function configEnergySystem(customerId,hierarchyId,energyProblemId,energy
 
 	Ajax.get( Util.replacePathParams(SaveEffect.configEnergySystem,customerId,hierarchyId,energyProblemId,energySystem), {
 		success: (eid) => {
-			AppDispatcher.dispatch({
-				type: Action.SET_ENERGY_EFFECT_ID,
-				pid: energyProblemId,
-				eid,
-			});
+			// AppDispatcher.dispatch({
+			// 	type: Action.SET_ENERGY_EFFECT_ID,
+			// 	pid: energyProblemId,
+			// 	eid,
+			// });
+		}
+	});
+}
+
+export function addEnergyEffectTag(energyProblemId, tagId) {
+
+	Ajax.get( Util.replacePathParams(SaveEffect.addenergyeffecttag, energyProblemId, tagId), {
+		success: () => {
 		}
 	});
 }
