@@ -29,13 +29,15 @@ before_script:
   - export ARTIFACT_NAME="${PROJECT}-${ROLE}-${TRAVIS_BRANCH}-${PACKAGE_VERSION}.zip"
  
 script:
-  - yarn run build-test
+#  - yarn run build-test
   - docker build -t $TAG .
 
 before_deploy:
-  - cp compose-template.yml build/
-  - echo -n "${PACKAGE_VERSION}" > build/version.txt
-  - cd build && zip -r ../${ARTIFACT_NAME} ./ && cd ..
+#  - cp compose-template.yml build/
+#  - echo -n "${PACKAGE_VERSION}" > build/version.txt
+#  - cd build && zip -r ../${ARTIFACT_NAME} ./ && cd ..
+  - echo -n "${PACKAGE_VERSION}" > version.txt
+  - zip -r /tmp/${ARTIFACT_NAME} ./  -x *node_modules*
   - 'curl -o upload.sh -H "Authorization: token ${GITHUB_TOKEN}" ${GITHUB_UPLOAD_SCRIPT}'
   - chmod a+x ./upload.sh
   
@@ -52,4 +54,5 @@ deploy:
   on:
     all_branches: true
   script:
-    - ./upload.sh ./${ARTIFACT_NAME} ${PROJECT} ${TRAVIS_BRANCH} ${ROLE} ${PACKAGE_VERSION} ${OSS_BUCKET} ${OSS_KEY} ${OSS_SECRET} && curl -X POST "http://114.215.253.133:8081/job/Jazz/buildWithParameters?environment=dev&ui_version=latest&main_version=latest&branch=${TRAVIS_BRANCH}" --user ${JENKINS_AUTH} && docker push $REMOTE_TAG && docker push $REMOTE_TAG_LATEST
+#    - ./upload.sh /tmp/${ARTIFACT_NAME} ${PROJECT} ${TRAVIS_BRANCH} ${ROLE} ${PACKAGE_VERSION} ${OSS_BUCKET} ${OSS_KEY} ${OSS_SECRET} && curl -X POST "http://114.215.253.133:8081/job/Jazz/buildWithParameters?environment=dev&ui_version=latest&main_version=latest&branch=${TRAVIS_BRANCH}" --user ${JENKINS_AUTH} && docker push $REMOTE_TAG && docker push $REMOTE_TAG_LATEST
+    - ./upload.sh /tmp/${ARTIFACT_NAME} ${PROJECT} ${TRAVIS_BRANCH} ${ROLE} ${PACKAGE_VERSION} ${OSS_BUCKET} ${OSS_KEY} ${OSS_SECRET} && docker push $REMOTE_TAG && docker push $REMOTE_TAG_LATEST
