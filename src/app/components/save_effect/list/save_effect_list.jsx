@@ -214,7 +214,9 @@ export default class EffectList extends Component {
               {this.state.createShow && true && <Create
     						EnergySolutionName={configEffect.get('EnergySolutionName')}
     						EnergyProblemId={configEffect.get('EnergyProblemId')}
-    						EnergyEffectId={configEffect.get('EnergyEffectId')}
+                EnergyEffectId={configEffect.get('EnergyEffectId')}
+                EnergyEffectItemId={configEffect.get('EnergyEffectItemId')}
+    						EnergySystem={configEffect.get('EnergySystem')}
     						ExecutedTime={configEffect.get('ExecutedTime')}
     						onSubmitDone={()=>{getenergyeffect(this.context.hierarchyId);}}
     						onClose={()=>{

@@ -92,7 +92,7 @@ module.exports = {
     getEnergyEffectTags: '/energyeffect/getenergyeffecttags/{energyProblemId}/{state}',
     energyEffectPriview: '/energyeffect/priview',
     getEnergySolution: '/energysolution/{problemid}/{smallsize}/{size}',
-    addItem: '/energyeffect/additem',
+    addItem: '/energyeffect/additem/{customerId}/{hierarchyId}/{energySystem}',
     getenergyeffect:'/energyeffect/getenergyeffect/{hierarchyId}',
     getenergyeffectratetags:'/energyeffect/getenergyeffectratetags/{hierarchyId}',
     saveenergyeffectratetags:'/energyeffect/saveeffectratetag/{customerId}/{hierarchyId}',
@@ -100,5 +100,6 @@ module.exports = {
     deleteitem:'/energyeffect/deleteitem/{energyEffectItemId}',
     getitemlist:'/energyeffect/getitemlist/{hierarchyId}/{configStep}',
     configEnergySystem: '/energyeffect/configenergysystem/{customerId}/{hierarchyId}/{energyProblemId}/{energySystem}',
+    addenergyeffecttag: '/energyeffect/addenergyeffecttag/{energyProblemId}/{tagId}',
   }
 };
