@@ -16,6 +16,12 @@ let getStepDataItems = () => [
 export default class Step4 extends Component {
 	render() {
 		let {EnergyStartDate, EnergyEndDate, CalculationStep, PredictionDatas, BenchmarkStartDate, BenchmarkEndDate, ContrastStep, onChangePredictionDatas, onChangeContrastStep} = this.props;
+		let radios = [(
+			<RadioButton label={'天'} value={TimeGranularity.Daily}/>
+		)];
+		if( CalculationStep !== TimeGranularity.Daily ) {
+			radios.push(<RadioButton label={'月'} value={TimeGranularity.Monthly}/>);
+		}
 		return (
 			<div className='step4-wrapper'>
 				<div className='step4-block'>
@@ -53,8 +59,7 @@ export default class Step4 extends Component {
 							<RadioButtonGroup valueSelected={ContrastStep} onChange={(e, v) => {
 								onChangeContrastStep(v);
 							}}>
-								<RadioButton label={'天'} value={TimeGranularity.Daily}/>
-								<RadioButton label={'月'} value={TimeGranularity.Monthly}/>
+								{radios}								
 							</RadioButtonGroup>
 						</div>
 					</div>
