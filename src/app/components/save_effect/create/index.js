@@ -208,7 +208,7 @@ export default class Create extends Component {
 				getTagsByPlan(state.filterObj.get('EnergyProblemId'));
 				break;
 			case 2:
-				getPreviewChart2(this._getFilterObj().toJS());
+				getPreviewChart2(this._getFilterObj().set('ConfigStep', 2).toJS());
 				break;
 		}
 	}

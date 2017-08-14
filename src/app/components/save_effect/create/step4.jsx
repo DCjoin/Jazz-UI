@@ -49,10 +49,6 @@ export default class Step4 extends Component {
 					<header className='step4-block-header'>{'计算期内基准能耗与计算数据的实际值对比'}</header>
 					<div className='step4-block-content'>
 						<div className='step4-item'>
-							<header className='step4-item-title'>{'节能量计算期'}</header>
-							<div className='step4-item-value'>{BenchmarkStartDate + ' 至 '+ '至今'}</div>
-						</div>
-						<div className='step4-item'>
 							<header className='step4-item-title'>{'步长'}</header>
 							<RadioButtonGroup valueSelected={ContrastStep} onChange={(e, v) => {
 								onChangeContrastStep(v);
