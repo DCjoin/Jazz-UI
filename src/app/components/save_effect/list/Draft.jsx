@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import FontIcon from 'material-ui/FontIcon';
 import {ItemForDraft} from './Item.jsx';
-import { CircularProgress,Dialog} from 'material-ui';
+import { CircularProgress,Dialog,Snackbar} from 'material-ui';
 import FlatButton from "controls/NewFlatButton.jsx";
 import {deleteItem,getDrafts} from 'actions/save_effect_action.js';
 import ListStore from 'stores/save_effect/ListStore.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
 import PermissionCode from 'constants/PermissionCode.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
+import Create from '../create';
 
 function privilegeWithSaveEffect( privilegeCheck ) {
   //  return true
@@ -30,7 +31,9 @@ export default class Draft extends Component {
   }
 
   state={
-    drafts:null
+    drafts:null,
+		createShow:false,
+		configIndex:null
   }
 
   _onDraftDelete(index){
@@ -39,6 +42,13 @@ export default class Draft extends Component {
       deleteIndex:index
     })
   }
+
+	_onConfig(index){
+		this.setState({
+			configIndex:index,
+			createShow:true
+		})
+	}
 
   _onChanged(){
     this.setState({
@@ -112,6 +122,10 @@ export default class Draft extends Component {
        </div>
       )
     }else{
+			var configDraft;
+			if(this.state.configIndex){
+				configDraft=this.state.drafts.getIn([this.state.configIndex])
+			}
       return(
         <div className="jazz-effect-overlay">
         <div className="jazz-effect-list">
@@ -124,9 +138,26 @@ export default class Draft extends Component {
              <div className="nolist-font">{I18N.SaveEffect.NoDraft}</div>
            </div>
             :<div className="jazz-effect-list-content">
-          {this.state.drafts.map((item,index)=>(<ItemForDraft effect={item} onDelete={()=>{this._onDraftDelete(index)}} canEdit={isFull()}/>))}
+          {this.state.drafts.map((item,index)=>(<ItemForDraft effect={item} onDelete={()=>{this._onDraftDelete(index)}} canEdit={isFull()} onContinue={this._onConfig.bind(this,index)}/>))}
           </div>}
           {this.state.deleteConfirmShow && this._renderDeleteDialog()}
+					{this.state.createShow && true && <Create
+						filterObj ={{
+							EnergySolutionName:configDraft.get('EnergySolutionName'),
+							EnergyProblemId:configDraft.get('EnergyProblemId'),
+							EnergyEffectId:configDraft.get('EnergyEffectId'),
+							ExecutedTime:configDraft.get('ExecutedTime')}}
+						ConfigStep={configDraft.get('ConfigStep')}
+						onSubmitDone={()=>{getDrafts(this.context.hierarchyId);}}
+						onClose={()=>{
+							this.setState({
+								createShow:false,
+								configIndex:null,
+								saveSuccessText:I18N.SaveEffect.ConfigSuccess,
+								drafts:null
+							})
+						}}/>}
+					<Snackbar ref="snackbar" autoHideDuration={4000} open={!!this.state.saveSuccessText} onRequestClose={()=>{this.setState({saveSuccessText:null})}} message={this.state.saveSuccessText}/>
         </div>
       </div>
       )

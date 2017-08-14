@@ -214,14 +214,14 @@ export default class EffectList extends Component {
                 {isFull() && <FlatButton label={I18N.SaveEffect.ConfigSaveRatio} onTouchTap={this._onConfigRateShow.bind(this)}
                             disabled={disabled} style={style.btn} labelStyle={style.lable} secondary={true}/>}
               </div>
-              {this.state.effect.get('Drafts').size!==0?<div className="draft-btn" onClick={()=>{
+              {isFull() && (this.state.effect.get('Drafts').size!==0?<div className="draft-btn" onClick={()=>{
 	                   util.openTab(RoutePath.saveEffect.drafts(this.props.params)+'?init_hierarchy_id='+this.context.hierarchyId);
                 }}>
                 {`${I18N.SaveEffect.Draft} (${this.state.effect.get('Drafts').size})`}
               </div>
             :<div className="draft-btn-disabled">
               {`${I18N.SaveEffect.Draft} (${this.state.effect.get('Drafts').size})`}
-            </div>}
+            </div>)}
             </div>
             <div className="jazz-effect-list-content" ref="content">
               {this.state.effect.get("EnergyEffects").map((item,index)=>(
@@ -233,10 +233,10 @@ export default class EffectList extends Component {
                             onClose={()=>{this.setState({configRateShow:false})}} onSave={this._onRateTagSave}/>}
             <Snackbar ref="snackbar" autoHideDuration={4000} open={!!this.state.saveSuccessText} onRequestClose={()=>{this.setState({saveSuccessText:null})}} message={this.state.saveSuccessText}/>
               {this.state.createShow && true && <Create
-    						EnergySolutionName={configEffect.get('EnergySolutionName')}
-    						EnergyProblemId={configEffect.get('EnergyProblemId')}
-    						EnergyEffectId={configEffect.get('EnergyEffectId')}
-    						ExecutedTime={configEffect.get('ExecutedTime')}
+								filterObj ={{EnergySolutionName:configEffect.get('EnergySolutionName'),
+	    						EnergyProblemId:configEffect.get('EnergyProblemId'),
+	    						EnergyEffectId:configEffect.get('EnergyEffectId'),
+	    						ExecutedTime:configEffect.get('ExecutedTime')}}    						
     						onSubmitDone={()=>{getenergyeffect(this.context.hierarchyId);}}
     						onClose={()=>{
     							this.setState({

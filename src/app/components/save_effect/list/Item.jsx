@@ -69,8 +69,8 @@ export class ItemForConsultant extends Component {
         <span>
           <span>{moment(util.DataConverter.JsonToDateTime(ExecutedTime)).format(I18N.DateTimeFormat.IntervalFormat.FullDate)}</span>
           <span>{I18N.Setting.Effect.Start}</span>
-          {EnergySystem && ConfigedTagCount>0 && <span>|</span>}
-          {EnergySystem && ConfigedTagCount>0 && <span>{ListStore.getEnergySystem(EnergySystem)}</span>}
+          {ConfigedTagCount>0 && <span>|</span>}
+          {ConfigedTagCount>0 && <span>{ListStore.getEnergySystem(EnergySystem)}</span>}
         </span>
         {ConfigedTagCount>0 && <span>
           <span>{I18N.Setting.Effect.ConfiguredTag}</span>
@@ -87,12 +87,12 @@ export class ItemForConsultant extends Component {
   }
 
   render(){
-    var {ConfigedTagCount,EnergyProblemId}=this.props.effect.toJS();
+    var {EnergySystem,EnergyProblemId}=this.props.effect.toJS();
     return(
       <div className={classNames({
-          "active":ConfigedTagCount!==0
+          "active":EnergySystem!==null
         })} onClick={()=>{
-          if(ConfigedTagCount!==0) this.props.onClick()
+          if(EnergySystem!==null) this.props.onClick()
         }}>
         <div className={classNames({
             "jazz-effect-item":true,
@@ -189,15 +189,15 @@ export class ItemForDraft extends Component {
     var {TagName,EnergySolutionName}=this.props.effect.toJS();
     return(
       <span className="jazz-effect-item-draft-title">
-        <div className="jazz-effect-item-draft-title-tag">{`${I18N.Setting.Effect.TagName}${TagName}`}</div>
-        <div className="jazz-effect-item-draft-title-problem">{`${I18N.Setting.Effect.Problem}${EnergySolutionName}`}</div>
+        <div className="jazz-effect-item-draft-title-tag" title={`${I18N.Setting.Effect.TagName}${TagName}`}>{`${I18N.Setting.Effect.TagName}${TagName}`}</div>
+        <div className="jazz-effect-item-draft-title-problem" title={`${I18N.Setting.Effect.Problem}${EnergySolutionName}`}>{`${I18N.Setting.Effect.Problem}${EnergySolutionName}`}</div>
       </span>
     )
   }
 
   getStep(){
     var {ConfigStep}=this.props.effect.toJS();
-    var step=ConfigStep-1;
+    var step=ConfigStep-1-1;
     return(
       <div className="jazz-effect-item-draft-stepper">
         <Stepper activeStep={step} style={{width: '80%'}}>

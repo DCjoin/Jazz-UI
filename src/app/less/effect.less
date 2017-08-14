@@ -149,7 +149,7 @@
     &-draft{
       display: flex;
       flex-direction: row;
-      justify-content: space-between;
+      // justify-content: space-between;
       min-height: 80px;
       border-radius: 2px;
       background-color: #ffffff;
@@ -159,19 +159,30 @@
       box-sizing: border-box;
       align-items: center;
       &-title{
+        flex:1;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
         &-tag{
           font-size: 14px;
           font-weight: 500;
           color: #626469;
           color: @slate-grey;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
         }
         &-problem{
           font-size: 14px;
           color: @medium-gray;
-          margin-top: 4px
+          margin-top: 4px;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
         }
       }
       &-action{
+        margin-left: 16px;
         >span{
           font-size: 14px;
           font-weight: 500;

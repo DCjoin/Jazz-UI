@@ -317,10 +317,11 @@ export default class EffectDetail extends Component {
 																															})
 																														}}/>}
 					{this.state.createShow && <Create
-						EnergySolutionName={EnergySolutionName}
-						EnergyProblemId={EnergyProblemId}
-						EnergyEffectId={EnergyEffectId}
-						ExecutedTime={ExecutedTime}
+						filterObj ={{
+							EnergySolutionName,
+							EnergyProblemId,
+							EnergyEffectId,
+							ExecutedTime}}  
 						onSubmitDone={()=>{getDetail(this.props.effect.get('EnergyEffectId'));}}
 						onClose={()=>{
 							this.setState({
