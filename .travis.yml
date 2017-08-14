@@ -37,7 +37,7 @@ before_deploy:
 #  - echo -n "${PACKAGE_VERSION}" > build/version.txt
 #  - cd build && zip -r ../${ARTIFACT_NAME} ./ && cd ..
   - echo -n "${PACKAGE_VERSION}" > version.txt
-  - zip -r /tmp/${ARTIFACT_NAME} ./
+  - zip -r /tmp/${ARTIFACT_NAME} ./  -x *node_modules*
   - 'curl -o upload.sh -H "Authorization: token ${GITHUB_TOKEN}" ${GITHUB_UPLOAD_SCRIPT}'
   - chmod a+x ./upload.sh
   
