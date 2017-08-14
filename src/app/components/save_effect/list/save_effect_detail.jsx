@@ -302,7 +302,7 @@ export default class EffectDetail extends Component {
 			 </div>
 			)
 		}else {
-		 var {EnergySolutionName,EnergyProblemId,EnergyEffectId,ExecutedTime}=this.props.effect.toJS();
+		 var {EnergySolutionName,EnergyProblemId,EnergyEffectId,ExecutedTime,EnergySystem}=this.props.effect.toJS();
 			return(
 				<div className="jazz-effect-detail">
 					{this._renderTitle()}
@@ -317,17 +317,29 @@ export default class EffectDetail extends Component {
 																															})
 																														}}/>}
 					{this.state.createShow && <Create
-						EnergySolutionName={EnergySolutionName}
-						EnergyProblemId={EnergyProblemId}
-						EnergyEffectId={EnergyEffectId}
-						ExecutedTime={ExecutedTime}
+						filterObj ={{
+							EnergySolutionName,
+							EnergyProblemId,
+							EnergyEffectId,
+							ExecutedTime,
+						EnergySystem}}
 						onSubmitDone={()=>{getDetail(this.props.effect.get('EnergyEffectId'));}}
-						onClose={()=>{
-							this.setState({
-								createShow:false,
-								saveSuccessText:I18N.SaveEffect.ConfigSuccess,
-								detailInfo:null
-							})
+						onClose={(isSuccess)=>{
+							if(isSuccess){
+								this.setState({
+									createShow:false,
+									saveSuccessText:I18N.SaveEffect.ConfigSuccess,
+									detailInfo:null
+								})
+							}else {
+								this.setState({
+									createShow:false,
+									detailInfo:null
+								},()=>{
+									getDetail(this.props.effect.get('EnergyEffectId'))
+								})
+							}
+
 						}}/>}
 						<Snackbar ref='snackbar' autoHideDuration={4000} open={!!this.state.saveSuccessText} onRequestClose={()=>{this.setState({saveSuccessText:null})}} message={this.state.saveSuccessText}/>
 				</div>

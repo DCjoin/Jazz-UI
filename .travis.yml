@@ -6,11 +6,6 @@ services:
 
 node_js:
   - "6.10.2"
-
-cache:
-  yarn: true
-  directories:
-  - node_modules
   
 env:
   global:
@@ -30,14 +25,17 @@ before_script:
  
 script:
 #  - yarn run build-test
+  - ls -la
   - docker build -t $TAG .
+  - ls -la
 
 before_deploy:
 #  - cp compose-template.yml build/
 #  - echo -n "${PACKAGE_VERSION}" > build/version.txt
 #  - cd build && zip -r ../${ARTIFACT_NAME} ./ && cd ..
+  - ls -la
   - echo -n "${PACKAGE_VERSION}" > version.txt
-  - zip -r /tmp/${ARTIFACT_NAME} ./  -x *node_modules*
+  - zip -r /tmp/${ARTIFACT_NAME} -x *node_modules* ./  
   - 'curl -o upload.sh -H "Authorization: token ${GITHUB_TOKEN}" ${GITHUB_UPLOAD_SCRIPT}'
   - chmod a+x ./upload.sh
   

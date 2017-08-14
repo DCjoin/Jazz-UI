@@ -214,14 +214,14 @@ export default class EffectList extends Component {
                 {isFull() && <FlatButton label={I18N.SaveEffect.ConfigSaveRatio} onTouchTap={this._onConfigRateShow.bind(this)}
                             disabled={disabled} style={style.btn} labelStyle={style.lable} secondary={true}/>}
               </div>
-              {this.state.effect.get('Drafts').size!==0?<div className="draft-btn" onClick={()=>{
+              {isFull() && (this.state.effect.get('Drafts').size!==0?<div className="draft-btn" onClick={()=>{
 	                   util.openTab(RoutePath.saveEffect.drafts(this.props.params)+'?init_hierarchy_id='+this.context.hierarchyId);
                 }}>
                 {`${I18N.SaveEffect.Draft} (${this.state.effect.get('Drafts').size})`}
               </div>
             :<div className="draft-btn-disabled">
               {`${I18N.SaveEffect.Draft} (${this.state.effect.get('Drafts').size})`}
-            </div>}
+            </div>)}
             </div>
             <div className="jazz-effect-list-content" ref="content">
               {this.state.effect.get("EnergyEffects").map((item,index)=>(
@@ -241,12 +241,22 @@ export default class EffectList extends Component {
                   ExecutedTime: configEffect.get('ExecutedTime'),
                 }}
     						onSubmitDone={()=>{getenergyeffect(this.context.hierarchyId);}}
-    						onClose={()=>{
-    							this.setState({
-                    createShow:false,
-    								saveSuccessText:I18N.SaveEffect.ConfigSuccess,
-    								effect:null
-    							})
+    						onClose={(isSuccess)=>{
+									if(isSuccess){
+										this.setState({
+											createShow:false,
+											saveSuccessText:I18N.SaveEffect.ConfigSuccess,
+											effect:null
+										})
+									}else {
+										this.setState({
+											createShow:false,
+											effect:null
+										},()=>{
+											getenergyeffect(this.context.hierarchyId)
+										})
+									}
+
     						}}/>}
               {this.state.createShow && false && <PreCreate onClose={() => {}} onSubmit={(energySys) => {
                 configEnergySystem(
