@@ -148,7 +148,6 @@ export default class EffectList extends Component {
   }
 
 	componentDidUpdate(prevProps,prevState) {
-			console.log("componentDidUpdate");
 			if(this.state.configEnergyProblemId!==prevState.configEnergyProblemId && this.refs.list && this.refs.content){
 				this._onScrollConfigEffect()
 			}

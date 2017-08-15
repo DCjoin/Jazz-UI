@@ -122,7 +122,6 @@ export default class Draft extends Component {
        </div>
       )
     }else{
-			var configDraft=this.state.configIndex!==null?this.state.drafts.getIn([this.state.configIndex]):null;
       return(
         <div className="jazz-effect-overlay">
         <div className="jazz-effect-list">
@@ -139,7 +138,7 @@ export default class Draft extends Component {
           </div>}
           {this.state.deleteConfirmShow && this._renderDeleteDialog()}
 					{this.state.createShow && true && <Create
-						filterObj ={configDraft.toJS()}
+						filterObj ={this.state.drafts.getIn([this.state.configIndex]).toJS()}
 						onSubmitDone={()=>{getDrafts(this.context.hierarchyId);}}
 						onClose={(isSuccess)=>{
 							if(isSuccess){
