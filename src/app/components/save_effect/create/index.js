@@ -368,9 +368,9 @@ export default class Create extends Component {
 			}
 			case 3:
 			{
-				let {BenchmarkModel, CalculationStep, EnergyStartDate, EnergyEndDate, EnergyUnitPrice, BenchmarkDatas} = filterObj.toJS();
+				let {UomId, BenchmarkModel, CalculationStep, EnergyStartDate, EnergyEndDate, EnergyUnitPrice, BenchmarkDatas} = filterObj.toJS();
 				return (<Step3
-					unit={getUomByChartData(chartData2)}
+					unit={UomId ? UOMStore.getUomById(UomId) : getUomByChartData(chartData2)}
 					data={chartData3}
 					BenchmarkModel={BenchmarkModel}
 					CalculationStep={CalculationStep}
@@ -434,7 +434,7 @@ export default class Create extends Component {
 			{
 				let {EnergyStartDate, EnergyEndDate, CalculationStep, PredictionDatas, BenchmarkStartDate, BenchmarkEndDate, ContrastStep} = filterObj.toJS();
 				return (<Step4
-					unit={getUomByChartData(chartData2)}
+					unit={UomId ? UOMStore.getUomById(UomId) : getUomByChartData(chartData2)}
 					EnergyStartDate={EnergyStartDate}
 					EnergyEndDate={EnergyEndDate}
 					CalculationStep={CalculationStep}
