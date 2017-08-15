@@ -54,10 +54,10 @@ import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
 import UOMStore from 'stores/UOMStore.jsx';
 
 function date2UTC(date) {
-	return moment(date).utcOffset(0).format('YYYY-MM-DD HH:mm:ss');
+	return date ? moment(date).utcOffset(0).format('YYYY-MM-DD HH:mm:ss') : '';
 }
 function UTC2Local(date) {
-	return moment(date).add(8, 'hours').format('YYYY-MM-DD');
+	return date ? moment(date).add(8, 'hours').format('YYYY-MM-DD') : '';
 }
 
 function _getTimeRangeStep() {
@@ -143,8 +143,8 @@ function getInitFilterObj(props) {
 		TagId: null,
 		CalculationStep: TimeGranularity.Daily,
 		BenchmarkModel: Model.Easy,
-		BenchmarkStartDate: moment(props.filterObj.ExecutedTime).subtract(31, 'days'),
-		BenchmarkEndDate: moment(props.filterObj.ExecutedTime),
+		BenchmarkStartDate: date2UTC(moment(UTC2Local(props.filterObj.ExecutedTime)).subtract(31, 'days')),
+		BenchmarkEndDate: date2UTC(UTC2Local(props.filterObj.ExecutedTime)),
 		EnergyStartDate: null,
 		EnergyEndDate: null,
 		EnergyUnitPrice: '',
@@ -643,7 +643,7 @@ export function getDateObjByRange(startDate, endDate) {
 			existYears.push( incrementDate.get('year') );
 		}
 		result.push({
-			Key: incrementDate.format('YYYY-MM-DD HH:mm:ss'),
+			Key: date2UTC(incrementDate),
 			Label,
 		})
 	}
