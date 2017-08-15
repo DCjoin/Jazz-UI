@@ -122,10 +122,7 @@ export default class Draft extends Component {
        </div>
       )
     }else{
-			var configDraft;
-			if(this.state.configIndex){
-				configDraft=this.state.drafts.getIn([this.state.configIndex])
-			}
+			var configDraft=this.state.configIndex!==null?this.state.drafts.getIn([this.state.configIndex]):null;
       return(
         <div className="jazz-effect-overlay">
         <div className="jazz-effect-list">
