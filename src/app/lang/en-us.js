@@ -1,4 +1,4 @@
-﻿
+﻿'use strict';
 
 
 let I18N = {};
@@ -449,6 +449,7 @@ I18N.DateTimeFormat.IntervalFormat.MonthDate = 'MM/DD';
 I18N.DateTimeFormat.IntervalFormat.Year = 'YYYY';
 I18N.DateTimeFormat.IntervalFormat.FullDateTime = 'HH:mm:ss, MM/DD, YYYY';
 I18N.DateTimeFormat.IntervalFormat.FullDate = 'MM/DD, YYYY';
+I18N.DateTimeFormat.IntervalFormat.FullDateMinute = 'YYYY年MM月DD日 HH:mm';
 I18N.DateTimeFormat.IntervalFormat.MonthDayHour = 'MM/DD, HH';
 I18N.DateTimeFormat.IntervalFormat.DayHour = 'DD, HH';
 I18N.DateTimeFormat.IntervalFormat.RawDate.FullHour = 'YYYY/MM/DD HH:mm';
@@ -765,7 +766,6 @@ I18N.Setting.Calendar.shortMonthList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'
 I18N.Setting.Calendar.shortDayList= ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 I18N.Setting.Calendar.year = '';
 I18N.Setting.Calendar.today="Today";
-
 //hierarchy population/area
 I18N.Setting.DynamicProperty = {};
 
@@ -1120,7 +1120,6 @@ I18N.Message.M02027 = 'Can not view data because the step in record is smaller t
 
 I18N.Message.M02601 = 'The day and night calendar is missing, and chart cannot be drawn. Please try again after setting.'; //'{0} Not available to see the day-night ratio bacause no Day-night calendar has been set.Please set it and try again???;
 I18N.Message.M02602 = 'The working calendar is missing, and chart cannot be drawn. Please try again after setting.'; //'{0} Not available to see the on/off-work ratio bacause no working calendar has been set.Please set it and try again???;
-
 I18N.Message.M02603 = 'The total area is missing, and chart cannot be drawn. Please try again after setting.';
 I18N.Message.M02604 = 'The cooling area is missing, and chart cannot be drawn. Please try again after setting.';
 I18N.Message.M02605 = 'The heating area is missing, and chart cannot be drawn. Please try again after setting.';
@@ -2472,10 +2471,29 @@ I18N.Setting.Diagnose.InputAssociateValue='Input Asspciated Value';
 I18N.Setting.Diagnose.AssociateTriggerArea='Associate Trigger Area';
 I18N.Setting.Diagnose.Associate='Associate';
 I18N.Setting.Diagnose.Created='Diagnosis has been created';
+
+I18N.Setting.Effect={};
+I18N.Setting.Effect.Config='配置节能效果';
+I18N.Setting.Effect.Start='开始执行';
+I18N.Setting.Effect.AirConditioning='空调系统';
+I18N.Setting.Effect.Power='动力系统';
+I18N.Setting.Effect.Lighting='照明系统';
+I18N.Setting.Effect.Product='生产系统';
+I18N.Setting.Effect.AirCompressor ='空压系统';
+I18N.Setting.Effect.Heating ='供热系统';
+I18N.Setting.Effect.Water ='水系统';
+I18N.Setting.Effect.Other ='其他';
+I18N.Setting.Effect.ConfiguredTag ='已配置数据点：';
+I18N.Setting.Effect.Cost ='节约成本：';
+I18N.Setting.Effect.List ='节能效果列表';
+I18N.Setting.Effect.TagName ='数据点：';
+I18N.Setting.Effect.Problem ='所属方案：';
+I18N.Setting.Effect.ContinueConfig ='继续配置';
+
 I18N.SaveEffect={};
-I18N.SaveEffect.OverviewLabel = '节能效果概览';
-I18N.SaveEffect.ListLabel = '方案节能效果';
-I18N.SaveEffect.BestLabel = '最佳方案';
+I18N.SaveEffect.OverviewLabel='节能效果概览';
+I18N.SaveEffect.ListLabel='方案节能效果';
+I18N.SaveEffect.BestLabel='最佳方案';
 I18N.SaveEffect.ConfigSaveRatio='配置节能率';
 I18N.SaveEffect.Configed='已配置';
 I18N.SaveEffect.AddTag='新增数据点';
@@ -2486,5 +2504,56 @@ I18N.SaveEffect.Step4='配置展示图';
 I18N.SaveEffect.CreateTitle='新建节能效果';
 I18N.SaveEffect.Runtime='执行时间';
 I18N.SaveEffect.ShowSavePlanDetail='查看节能方案详情';
+I18N.SaveEffect.NoEffectList='暂无方案节能效果';
+I18N.SaveEffect.EffectRateTip='请点击下方按钮配置节能率！';
+I18N.SaveEffect.Draft='草稿';
+I18N.SaveEffect.NoDraft='暂无草稿';
+I18N.SaveEffect.Calculating='计算中';
+I18N.SaveEffect.Calculated='计算完成';
+I18N.SaveEffect.DraftDeleteConfirm='确认删除“{0}”的草稿？';
+I18N.SaveEffect.EnergySystem='能源系统';
+I18N.SaveEffect.SelectTagAgain='重选';
+I18N.SaveEffect.SelectTag='关联节能率数据点';
+I18N.SaveEffect.UtilNow='迄今';
+I18N.SaveEffect.EnergySaving='节能量';
+I18N.SaveEffect.NoEffectDetail='暂无节能效果，请';
+I18N.SaveEffect.EffectDeleteConfirm='确认删除“{0}”的节能效果配置？';
+I18N.SaveEffect.Alert = '请重新配置！';
+I18N.SaveEffect.BaselinePeriod='基准能耗确定期';
+I18N.SaveEffect.EnergyCalculatePeriod='节能量计算期';
+I18N.SaveEffect.EnergyUnitPrice='能源单价（{0}）';
+I18N.SaveEffect.ConfigSuccess='节能效果配置成功';
+I18N.SaveEffect.Predict='预计';
+
+I18N.SaveEffect.Model = {};
+I18N.SaveEffect.Model.Title = '基准值模型';
+I18N.SaveEffect.Model.Manual = '手动输入型';
+I18N.SaveEffect.Model.Contrast = '同比型';
+I18N.SaveEffect.Model.Easy = '简单型';
+I18N.SaveEffect.Model.Increment = '增量型';
+I18N.SaveEffect.Model.Relation = '关联型';
+I18N.SaveEffect.Model.Efficiency = '效率型';
+I18N.SaveEffect.Model.Simulation = '模拟型';
+I18N.SaveEffect.Model.Alert = '请重新配置！';
+
+I18N.SaveEffect.Create = {};
+I18N.SaveEffect.Create.Start = '开始配置';
+I18N.SaveEffect.Create.Done = '配置完成';
+I18N.SaveEffect.Create.LeaveTip = '离开页面会导致编辑内容丢失，是否保存到草稿？';
+I18N.SaveEffect.Create.SelectEnergySystem = '选择方案所属能源系统';
+I18N.SaveEffect.Create.SelectEnergySystemTip = '(以便汇总统计能源系统的节能量)';
+I18N.SaveEffect.Create.ConfigModel = '配置基准值模型';
+I18N.SaveEffect.Create.ConfigCalcStep = '配置计算步长';
+I18N.SaveEffect.Create.BenchmarkDate = '基准能耗确定期';
+I18N.SaveEffect.Create.BenchmarkDateTip = '注：确定期时间最大范围为1年';
+I18N.SaveEffect.Create.CalcBenchmarkByMonth = '计算期逐月基准值';
+I18N.SaveEffect.Create.CalcSave = '计算节能量';
+I18N.SaveEffect.Create.EnergyUnitPrice='能源单价';
+I18N.SaveEffect.Create.EnterEnergyUnitPrice='输入价格';
+I18N.SaveEffect.Create.NeedEnterSaveTimeTip1='添加左侧列表中的节能量计算期';
+I18N.SaveEffect.Create.NeedEnterSaveTimeTip2='可预览此时间段内基准能耗值与计算tag是实际的对比图';
+I18N.SaveEffect.Create.SavePreviewChart='节能量展示图';
+I18N.SaveEffect.Create.CalcSaveByMonth='计算期逐月能耗值';
+I18N.SaveEffect.Create.BenchmarkBattleCalc='计算期内基准能耗与计算数据的实际值对比';
 
 module.exports = I18N;

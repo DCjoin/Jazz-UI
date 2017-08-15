@@ -30,7 +30,7 @@ function TagItem({tag, selectedId, onClick, onDelete, idx}) {
 					onClick(tag.get('TagId'));
 				}}
 			/>
-			{tag.get('isNew') && 
+			{(tag.get('isNew') || ( !tag.get('Configed') && tag.get('Status') === 2 ) ) && 
 			<a href='javascript:void(0)' style={{
 					color: '#32ad3d', 
 					marginLeft: 14,
@@ -38,7 +38,7 @@ function TagItem({tag, selectedId, onClick, onDelete, idx}) {
 					lineHeight: '24px',
 				}} 
 				onClick={() => {
-					onDelete(idx);
+					onDelete(idx, tag.get('TagId'));
 				}}
 			>{I18N.Common.Button.Delete}</a>}
 		</div>

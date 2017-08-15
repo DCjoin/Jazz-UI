@@ -39,8 +39,8 @@ let getStepDataItems = () => [
 function ManualValue({BenchmarkDatas, onChangeValue, unit}) {
 	return (
 		<div className='step3-manual-value-wrapper'>
-			<header>{'计算期逐月基准值' + '(' + unit + ')'}</header>
-			{BenchmarkDatas ? 
+			<header>{I18N.SaveEffect.Create.CalcBenchmarkByMonth + '(' + unit + ')'}</header>
+			{BenchmarkDatas && 
 			<div>
 				{BenchmarkDatas.map((data, idx) => 
 				<ViewableTextField
@@ -51,9 +51,6 @@ function ManualValue({BenchmarkDatas, onChangeValue, unit}) {
 						onChangeValue(idx, val);
 					}}
 				/>)}
-			</div>:
-			<div>
-				{'计算期确定后，此处才显示'}
 			</div>}
 		</div>
 	);
@@ -78,7 +75,9 @@ export default class Step3 extends Component {
 			onChangeEnergyStartDate, 
 			onChangeEnergyEndDate, 
 			onChangeBenchmarkDatas, 
-			onGetChartData, } = this.props,
+			onGetChartData, 
+			unit,
+		} = this.props,
 		chartProps;
 
 		if( data ) {
@@ -98,8 +97,6 @@ export default class Step3 extends Component {
 				tagData: data,
 				// postNewConfig: curry(postNewConfig)(data, isEdit, isTypeC, hiddenAssociateLabel),
 			};
-		  // 由于API返回的数据为请求时间的后一个步长，所以为了数据点可以正常显示，加入如下逻辑
-		  // Law 2017/04/20
 		  let target = data.getIn(['TargetEnergyData', 0, 'Target'])
 		  if( target && target.get('TimeSpan') && target.get('TimeSpan').size > 0 ) {
 		    let step = target.get('Step');
@@ -116,23 +113,23 @@ export default class Step3 extends Component {
 		return (
 			<div className='step2-wrapper'>
 				<div className='create-block step2-side step3-side'>
-					<header className='step2-side-header'>{'配置基准值模型'}</header>
+					<header className='step2-side-header'>{I18N.SaveEffect.Create.CalcSave}</header>
 					<div className='step2-side-content step3-side-content'>
 						<div className='pop-viewableTextField'>
-							<header className='pop-viewable-title'>{'节能量计算期'}</header>
+							<header className='pop-viewable-title'>{I18N.SaveEffect.EnergyCalculatePeriod}</header>
 							<div>
-								<ViewableDatePicker isPopover hintText='开始时间' onChange={onChangeEnergyStartDate} datePickerClassName='date-picker-inline' width={83} value={EnergyStartDate}/>
-								<div style={{display: 'inline-block', padding: '0 16px'}}>至</div>
-								<ViewableDatePicker isPopover hintText='结束时间' onChange={onChangeEnergyEndDate} datePickerClassName='date-picker-inline' width={83} value={EnergyEndDate}/>
+								<ViewableDatePicker isPopover hintText={I18N.Setting.Calendar.StartTime} onChange={onChangeEnergyStartDate} datePickerClassName='date-picker-inline' width={83} value={EnergyStartDate}/>
+								<div style={{display: 'inline-block', padding: '0 16px'}}>{I18N.EM.To2}</div>
+								<ViewableDatePicker isPopover hintText={I18N.Setting.Calendar.EndTime} onChange={onChangeEnergyEndDate} datePickerClassName='date-picker-inline' width={83} value={EnergyEndDate}/>
 							</div>
-							<ViewableTextField floatingLabelFixed={true} style={{width: 170}} title={'能源单价'} hintText={'输入价格'} defaultValue={EnergyUnitPrice} didChanged={onChangeEnergyUnitPrice}/>
-							{ Model.Manual === BenchmarkModel && <ManualValue key={EnergyStartDate + EnergyEndDate} BenchmarkDatas={BenchmarkDatas} onChangeValue={onChangeBenchmarkDatas}/>}
+							<ViewableTextField floatingLabelFixed={true} style={{width: 170}} title={I18N.SaveEffect.Create.EnergyUnitPrice + `(RMB/${unit})`} hintText={I18N.SaveEffect.Create.EnterEnergyUnitPrice} defaultValue={EnergyUnitPrice} didChanged={onChangeEnergyUnitPrice}/>
+							{ Model.Manual === BenchmarkModel && <ManualValue unit={unit} key={EnergyStartDate + EnergyEndDate} BenchmarkDatas={BenchmarkDatas} onChangeValue={onChangeBenchmarkDatas}/>}
 						</div>
 					</div>
 				</div>
 				<div className='create-block step2-content'>
 					<header className='step2-content-header'>
-						{'图表预览'}
+						{I18N.Setting.Diagnose.ChartPreview}
 						<NewFlatButton 
 							secondary
 							onClick={onGetChartData}
@@ -145,7 +142,7 @@ export default class Step3 extends Component {
 						<header style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: 70}}>
 							<div className='diagnose-create-content'>
 								<ViewableDatePicker onChange={onChangeEnergyStartDate} datePickerClassName='diagnose-date-picker' width={100} value={EnergyStartDate}/>
-								<div style={{display: 'inline-block', padding: '0 16px'}}>至</div>
+								<div style={{display: 'inline-block', padding: '0 16px'}}>{I18N.EM.To2}</div>
 								<ViewableDatePicker onChange={onChangeEnergyEndDate} datePickerClassName='diagnose-date-picker' width={100} value={EnergyEndDate}/>
 							</div>
 							<span>{I18N.EM.Report.Step + ': ' + find(getStepDataItems(), item => item.id === CalculationStep).label}</span>
@@ -154,8 +151,8 @@ export default class Step3 extends Component {
 						<ChartBasicComponent {...chartProps}/> : 
 						<div className='flex-center' style={{flexDirection: 'column'}}>
 							<em className='icon-chart1' style={{fontSize: '50px', color: '#32ad3d'}}/>
-							<div>添加左侧列表中的节能量计算期</div>
-							<div>可预览此时间段内基准能耗值与计算tag是实际的对比图</div>
+							<div>{I18N.SaveEffect.Create.NeedEnterSaveTimeTip1}</div>
+							<div>{I18N.SaveEffect.Create.NeedEnterSaveTimeTip2}</div>
 						</div>}
 					</div>
 				</div>

@@ -5,25 +5,23 @@ import PrototypeStore from '../PrototypeStore.jsx';
 import AjaxConstants from 'constants/AjaxConstants.jsx';
 import { Action,Model } from 'constants/actionType/Effect.jsx';
 import TimeGranularity from 'constants/TimeGranularity.jsx';
-let {AjaxActionType} = AjaxConstants;
 
-let CreateStore,
-_tags,
-_chartData2,
-_chartData3,
-_energySolution,
-_energyEffectItemId
-// _energyEffectIds,
-;
+let 
+  _tags,
+  _chartData2,
+  _chartData3,
+  _energySolution,
+  _energyEffectItemId,
+  CreateStore;
 
-(function init() {
+function init() {
   _tags = undefined;
   _chartData2 = undefined;
   _chartData3 = undefined;
   _energySolution = undefined;
   _energyEffectItemId = undefined;
-  // _energyEffectIds = {};
-})();
+}
+init();
 
 export default CreateStore = Object.assign({}, PrototypeStore, {
   setTagsByPlan: tags => {
@@ -104,9 +102,8 @@ CreateStore.dispatchToken = AppDispatcher.register(function(action) {
         // CreateStore.setEnergyEffectItemId(action.id);
         CreateStore.emitChange();
         break;
-    // case Action.SET_ENERGY_EFFECT_ID:
-    //     CreateStore.setEnergyEffectId(action.pid, action.eid);
-    //     CreateStore.emitChange();
+    case Action.CLEAN_CREATE_SAVE_EFFECT:
+        init();
         break;
     default:
   }
