@@ -188,11 +188,14 @@ export default class EffectList extends Component {
       )
     }else if(this.state.effectDetailShow){
       return(
-          <Detail effect={this.state.effect.getIn(["EnergyEffects",this.state.displayEffect])} onBack={()=>{this.setState({effectDetailShow:false,displayEffect:null},
+          <Detail effect={this.state.effect.getIn(["EnergyEffects",this.state.displayEffect])}
+						      onBack={()=>{this.setState({effectDetailShow:false,displayEffect:null},
                                                             ()=>{
                                                               getenergyeffect(this.context.hierarchyId)
                                                             })}}
-                                                    canEdit={isFull()}/>
+								  customerId={this.props.router.params.customerId}
+									hierarchyId={this.context.hierarchyId}
+                  canEdit={isFull()}/>
       )
     }else{
       let disabled=ListStore.getRateBtnDisabled(this.state.effect.get("EnergyEffects"));

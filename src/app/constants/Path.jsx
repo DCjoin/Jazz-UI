@@ -100,6 +100,7 @@ module.exports = {
     deleteitem:'/energyeffect/deleteitem/{energyEffectItemId}',
     getitemlist:'/energyeffect/getitemlist/{hierarchyId}/{configStep}',
     configEnergySystem: '/energyeffect/configenergysystem/{customerId}/{hierarchyId}/{energyProblemId}/{energySystem}',
+    updateEnergySystem: '/energyeffect/updateenergySystem/{customerId}/{hierarchyId}/{energyProblemId}/{energySystem}',
     addenergyeffecttag: '/energyeffect/addenergyeffecttag/{energyProblemId}/{tagId}',
     deleteenergyeffecttag: '/energyeffect/deleteenergyeffecttag/{energyProblemId}/{tagId}',
   }
