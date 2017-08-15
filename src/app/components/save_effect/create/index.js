@@ -242,16 +242,16 @@ export default class Create extends Component {
 				return this.state.filterObj.get('TagId');
 				break;
 			case 2:
-				return true;
+				return this.state.chartData2;
 				break;
 			case 3:
 				let {EnergyStartDate, EnergyEndDate, EnergyUnitPrice, BenchmarkDatas, BenchmarkModel} = this.state.filterObj.toJS();
-				if( !EnergyStartDate || !EnergyEndDate || !EnergyUnitPrice ) {
+				if( !EnergyStartDate || !EnergyEndDate || !EnergyUnitPrice ||  !/^(\-?)\d{1,9}([.]\d{1,3})?$/.test(EnergyUnitPrice) ) {
 					return false;
 				}
 				if( BenchmarkModel === Model.Manual ) {
 					return BenchmarkDatas.reduce((result, current) => {
-						return result && !!current.Value;
+						return result && !!current.Value && /^(\-?)\d{1,9}([.]\d{1,3})?$/.test(current.Value);
 					}, true);
 				}
 				return true;
@@ -259,7 +259,7 @@ export default class Create extends Component {
 			case 4:
 				let {PredictionDatas} = this.state.filterObj.toJS();
 				return PredictionDatas.reduce((result, current) => {
-					return result && !!current.Value;
+					return result && !!current.Value && /^(\-?)\d{1,9}([.]\d{1,3})?$/.test(current.Value);
 				}, true);
 				break;
 		}
