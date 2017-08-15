@@ -313,7 +313,7 @@ export default class EffectDetail extends Component {
 																														onClose={()=>{this.setState({energySystemDialogShow:false})}}
 																														onSubmit={(id)=>{
 																															this.setState({energySystemDialogShow:false},()=>{
-																																changeEnergySystemForEffect(id,this.props.effect.get("EnergyEffectId"))
+																																changeEnergySystemForEffect(id,this.props.effect.get("EnergyEffectId"),this.props.effect.get("EnergyProblemId"),this.props.customerId,this.props.hierarchyId)
 																															})
 																														}}/>}
 					{this.state.createShow && <Create
@@ -350,6 +350,8 @@ export default class EffectDetail extends Component {
 }
 
 EffectDetail.propTypes = {
+	customerId:React.PropTypes.number,
+	hierarchyId:React.PropTypes.number,
   effect:React.PropTypes.object,
   onBack:React.PropTypes.func,
 	canEdit:React.PropTypes.boolean,

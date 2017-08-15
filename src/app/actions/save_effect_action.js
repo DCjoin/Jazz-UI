@@ -140,7 +140,17 @@ export function deleteItem(energyEffectItemId,callback) {
 	});
 }
 
-export function changeEnergySystemForEffect(sysId,energyEffectId) {
+export function changeEnergySystemForEffect(sysId,energyEffectId,energyProblemId,customerId,hierarchyId) {
+	Ajax.get( Util.replacePathParams(SaveEffect.updateEnergySystem,customerId,hierarchyId,energyProblemId,sysId), {
+		success: (eid) => {
+			AppDispatcher.dispatch({
+				type: Action.CHANGE_ENERGY_SYSTEM_FOR_EFFECT,
+				sysId,
+				energyEffectId
+			});
+		}
+	});
+
 			AppDispatcher.dispatch({
 				type: Action.CHANGE_ENERGY_SYSTEM_FOR_EFFECT,
 				sysId,
@@ -191,5 +201,5 @@ export function deleteEnergyEffectTag(energyProblemId, tagId) {
 export function cleanCreate() {
 	AppDispatcher.dispatch({
 		type: Action.CLEAN_CREATE_SAVE_EFFECT,
-	});	
+	});
 }
