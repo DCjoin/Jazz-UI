@@ -39,9 +39,16 @@ export default class Step4 extends Component {
 							<div className='step4-item-value'>
 								{PredictionDatas && PredictionDatas.map((data, idx) => 
 								<ViewableTextField
+									errorStyle={{
+										position: 'absolute',
+										bottom: -5,
+										fontSize: '11px',
+									}}
+									errorMessage={I18N.Setting.Diagnose.FormatVaildTip} 
+									regex={/^(\-?)\d{1,9}([.]\d{1,3})?$/}
 									defaultValue={data.Value}
 									hintText={data.Label}
-									style={{width: 90}}
+									style={{width: 100}}
 									didChanged={(val) => {
 										onChangePredictionDatas(idx, val);
 									}}

@@ -204,7 +204,7 @@ var TreeNodeContent = React.createClass({
 
   var {indent,indentUnit,nodeOriginPaddingLeft}=this.props.panel.props;
     return (
-      <div onMouseEnter={egg} className="tree-node-content" onClick={this._onClick} style={{
+      <div className="tree-node-content" onClick={this._onClick} style={{
         whiteSpace: 'nowrap',
         textOverflow: 'ellipsis',
         overflow: 'hidden'
