@@ -142,7 +142,7 @@ export default class Draft extends Component {
 						filterObj ={{
 							EnergySolutionName:configDraft.get('EnergySolutionName'),
 							EnergyProblemId:configDraft.get('EnergyProblemId'),
-							EnergyEffectId:configDraft.get('EnergyEffectId'),
+							EnergyEffectId:configDraft.get('Id'),
 							ExecutedTime:configDraft.get('ExecutedTime'),
 							EnergySystem:configDraft.get('EnergySystem')}}
 						ConfigStep={configDraft.get('ConfigStep')}
