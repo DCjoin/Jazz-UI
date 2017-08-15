@@ -128,20 +128,20 @@ function getTextByFilter(isHover, isDosage, isIndex, isThisYear) {
 				// 今年
 				if( isThisYear ) {
 					return [{
-						key: 'TargetValue',
-						label: ByYearKPI,
-					}, {
 						key: 'ActualValue',
 						label: ByYearUntilNowValue,
+					}, {
+						key: 'TargetValue',
+						label: ByYearKPI,
 					}];
 				// 往年
 				} else {
 					return [{
-						key: 'TargetValue',
-						label: ByYearKPI,
-					}, {
 						key: 'ActualValue',
 						label: ByYearValue,
+					}, {
+						key: 'TargetValue',
+						label: ByYearKPI,
 					}];
 				}
 

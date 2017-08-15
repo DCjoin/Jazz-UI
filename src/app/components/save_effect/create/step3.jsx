@@ -78,6 +78,7 @@ export default class Step3 extends Component {
 			EnergyStartDate, 
 			EnergyEndDate, 
 			BenchmarkDatas,
+			IncludeEnergyEffectData,
 			onChangeEnergyUnitPrice, 
 			onChangeEnergyStartDate, 
 			onChangeEnergyEndDate, 
@@ -102,6 +103,20 @@ export default class Step3 extends Component {
 			chartProps = {
 				chartType: 'line',
 				tagData: data,
+				postNewConfig: (chartCmpObj) => {
+					let newConfig = Util.merge(true, chartCmpObj);
+					newConfig.series = newConfig.series.map((serie, i) => {
+						if( i !== 0 ) {
+							serie.type = 'column';							
+						} else {
+							serie.name = I18N.EM.Ratio.BaseValue;
+						}
+						return serie;
+					});
+					newConfig.stacking = null;
+					newConfig.legendSwitchList = ['line', 'column'];
+					return newConfig;
+				}
 				// postNewConfig: curry(postNewConfig)(data, isEdit, isTypeC, hiddenAssociateLabel),
 			};
 		  let target = data.getIn(['TargetEnergyData', 0, 'Target'])
