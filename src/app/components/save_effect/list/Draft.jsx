@@ -139,13 +139,7 @@ export default class Draft extends Component {
           </div>}
           {this.state.deleteConfirmShow && this._renderDeleteDialog()}
 					{this.state.createShow && true && <Create
-						filterObj ={{
-							EnergySolutionName:configDraft.get('EnergySolutionName'),
-							EnergyProblemId:configDraft.get('EnergyProblemId'),
-							EnergyEffectId:configDraft.get('Id'),
-							ExecutedTime:configDraft.get('ExecutedTime'),
-							EnergySystem:configDraft.get('EnergySystem')}}
-						ConfigStep={configDraft.get('ConfigStep')}
+						filterObj ={configDraft.toJS()}
 						onSubmitDone={()=>{getDrafts(this.context.hierarchyId);}}
 						onClose={(isSuccess)=>{
 							if(isSuccess){
