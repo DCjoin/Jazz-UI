@@ -70,7 +70,7 @@ export default class Step2 extends Component {
 							if( i !== 0 ) {
 								serie.type = 'column';							
 							} else {
-								serie.name = '基准值';
+								serie.name = I18N.EM.Ratio.BaseValue;
 							}
 						}
 						return serie;
@@ -78,8 +78,6 @@ export default class Step2 extends Component {
 					return newConfig;
 				}
 			};
-		  // 由于API返回的数据为请求时间的后一个步长，所以为了数据点可以正常显示，加入如下逻辑
-		  // Law 2017/04/20
 		  let target = data.getIn(['TargetEnergyData', 0, 'Target'])
 		  if( target && target.get('TimeSpan') && target.get('TimeSpan').size > 0 ) {
 		    let step = target.get('Step');
@@ -96,11 +94,11 @@ export default class Step2 extends Component {
 		return (
 			<div className='step2-wrapper'>
 				<div className='create-block step2-side'>
-					<header className='step2-side-header'>{'配置基准值模型'}</header>
+					<header className='step2-side-header'>{I18N.SaveEffect.Create.ConfigModel}</header>
 					<div className='step2-side-content'>
 						<ViewableDropDownMenu 
 							defaultValue={BenchmarkModel}
-							title={'基准值模型'} 
+							title={I18N.SaveEffect.Model.Title} 
 							valueField='id' 
 							textField='label' 
 							dataItems={getModelDataItems()} 
@@ -109,7 +107,7 @@ export default class Step2 extends Component {
 						<ViewableDropDownMenu 
 							defaultValue={CalculationStep}
 							isViewStatus={BenchmarkModel === Model.Manual}
-							title={'配置计算步长'} 
+							title={I18N.SaveEffect.Create.ConfigCalcStep} 
 							isViewStatus={true}
 							valueField='id' 
 							textField='label' 
@@ -117,19 +115,19 @@ export default class Step2 extends Component {
 							didChanged={onChangeStep}
 							style={{width: 90}}/>
 						{BenchmarkModel !== Model.Manual && <div className='pop-viewableTextField'>
-							<header className='pop-viewable-title'>{'基准能耗确定期'}</header>
+							<header className='pop-viewable-title'>{I18N.SaveEffect.Create.BenchmarkDate}</header>
 							<div>
 								<ViewableDatePicker onChange={onChangeBenchmarkStartDate} datePickerClassName='date-picker-inline' width={83} value={BenchmarkStartDate}/>
-								<div style={{display: 'inline-block', padding: '0 16px'}}>至</div>
+								<div style={{display: 'inline-block', padding: '0 16px'}}>{I18N.EM.To2}</div>
 								<ViewableDatePicker onChange={onChangeBenchmarkEndDate} datePickerClassName='date-picker-inline' width={83} value={BenchmarkEndDate}/>
 							</div>
-							<div className='tip-message'>{'注：确定期时间最大范围为1年'}</div>
+							<div className='tip-message'>{I18N.SaveEffect.Create.BenchmarkDateTip}</div>
 						</div>}
 					</div>
 				</div>
 				<div className='create-block step2-content'>
 					<header className='step2-content-header'>
-						{'图表预览'}
+						{I18N.Setting.Diagnose.ChartPreview}
 						<NewFlatButton 
 							secondary
 							onClick={onGetChartData}
@@ -142,7 +140,7 @@ export default class Step2 extends Component {
 						<header style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: 70}}>
 							<div className='diagnose-create-content'>
 								<ViewableDatePicker onChange={onChangeBenchmarkStartDate} datePickerClassName='diagnose-date-picker' width={100} value={BenchmarkStartDate}/>
-								<div style={{display: 'inline-block', padding: '0 16px'}}>至</div>
+								<div style={{display: 'inline-block', padding: '0 16px'}}>{I18N.EM.To2}</div>
 								<ViewableDatePicker onChange={onChangeBenchmarkEndDate} datePickerClassName='diagnose-date-picker' width={100} value={BenchmarkEndDate}/>
 							</div>
 							<span>{I18N.EM.Report.Step + ': ' + find(getStepDataItems(), item => item.id === CalculationStep).label}</span>

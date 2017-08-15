@@ -180,3 +180,16 @@ export function addEnergyEffectTag(energyProblemId, tagId) {
 		}
 	});
 }
+export function deleteEnergyEffectTag(energyProblemId, tagId) {
+
+	Ajax.get( Util.replacePathParams(SaveEffect.deleteenergyeffecttag, energyProblemId, tagId), {
+		success: () => {
+		}
+	});
+}
+
+export function cleanCreate() {
+	AppDispatcher.dispatch({
+		type: Action.CLEAN_CREATE_SAVE_EFFECT,
+	});	
+}
