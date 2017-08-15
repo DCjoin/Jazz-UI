@@ -40,7 +40,7 @@ export default class Step2 extends Component {
 
 	}
 	render() {
-		let { data, disabledPreview, BenchmarkModel, BenchmarkStartDate, BenchmarkEndDate, CalculationStep, onChangeModelType, onChangeStep, onChangeBenchmarkStartDate, onChangeBenchmarkEndDate, onGetChartData } = this.props,
+		let { data, disabledPreview, BenchmarkModel, BenchmarkStartDate, BenchmarkEndDate, CalculationStep, onChangeModelType, onChangeStep, onChangeBenchmarkStartDate, onChangeBenchmarkEndDate, onGetChartData, IncludeEnergyEffectData  } = this.props,
 		chartProps;
 
 		if( data ) {
@@ -58,12 +58,25 @@ export default class Step2 extends Component {
 			chartProps = {
 				chartType: 'line',
 				tagData: data,
-				// postNewConfig: curry(postNewConfig)(data, isEdit, isTypeC, hiddenAssociateLabel),
 				preConfig: (chartCmpObj) => {
 					let newConfig = Util.merge(true, chartCmpObj);
 					delete newConfig.config.navigator;
 					return newConfig;
 				},
+				postNewConfig: (chartCmpObj) => {
+					let newConfig = Util.merge(true, chartCmpObj);
+					newConfig.series = newConfig.series.map((serie, i) => {
+						if( IncludeEnergyEffectData ) {
+							if( i !== 0 ) {
+								serie.type = 'column';							
+							} else {
+								serie.name = '基准值';
+							}
+						}
+						return serie;
+					});
+					return newConfig;
+				}
 			};
 		  // 由于API返回的数据为请求时间的后一个步长，所以为了数据点可以正常显示，加入如下逻辑
 		  // Law 2017/04/20

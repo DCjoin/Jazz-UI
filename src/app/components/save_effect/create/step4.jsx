@@ -16,6 +16,12 @@ let getStepDataItems = () => [
 export default class Step4 extends Component {
 	render() {
 		let {EnergyStartDate, EnergyEndDate, CalculationStep, PredictionDatas, BenchmarkStartDate, BenchmarkEndDate, ContrastStep, onChangePredictionDatas, onChangeContrastStep} = this.props;
+		let radios = [(
+			<RadioButton label={'天'} value={TimeGranularity.Daily}/>
+		)];
+		if( CalculationStep !== TimeGranularity.Daily ) {
+			radios.push(<RadioButton label={'月'} value={TimeGranularity.Monthly}/>);
+		}
 		return (
 			<div className='step4-wrapper'>
 				<div className='step4-block'>
@@ -49,16 +55,11 @@ export default class Step4 extends Component {
 					<header className='step4-block-header'>{'计算期内基准能耗与计算数据的实际值对比'}</header>
 					<div className='step4-block-content'>
 						<div className='step4-item'>
-							<header className='step4-item-title'>{'节能量计算期'}</header>
-							<div className='step4-item-value'>{BenchmarkStartDate + ' 至 '+ '至今'}</div>
-						</div>
-						<div className='step4-item'>
 							<header className='step4-item-title'>{'步长'}</header>
 							<RadioButtonGroup valueSelected={ContrastStep} onChange={(e, v) => {
 								onChangeContrastStep(v);
 							}}>
-								<RadioButton label={'天'} value={TimeGranularity.Daily}/>
-								<RadioButton label={'月'} value={TimeGranularity.Monthly}/>
+								{radios}								
 							</RadioButtonGroup>
 						</div>
 					</div>

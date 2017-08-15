@@ -211,7 +211,7 @@ const PermissionCode = function() {
 
 	Save_Effect: {
 		getLabel: () => I18N.Privilege.Role.SaveEffect,
-		FULL: 1206,
+		FULL: 1329,
 		READONLY: 1328,
 	}
 

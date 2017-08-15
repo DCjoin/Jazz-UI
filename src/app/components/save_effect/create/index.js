@@ -121,6 +121,7 @@ function getInitFilterObj(props) {
 		EnergyUnitPrice: '',
 		ContrastStep: TimeGranularity.Monthly,
 		ConfigStep: props.ConfigStep,
+		IncludeEnergyEffectData: false,
 	}, ...props.filterObj});
 }
 
@@ -152,7 +153,7 @@ export default class Create extends Component {
 			tags: CreateStore.getTagsByPlan() && CreateStore.getTagsByPlan().map(tag => Immutable.fromJS({
 				TagId: tag.get('TagId'),
 				Name: tag.get('Name'),
-				Configed: !!tag.get('EnergyEffectItemId'),
+				Configed: !!tag.get('Configed') || !!tag.get('EnergyEffectItemId'),
 				isNew: tag.get('isNew'),
 			})),
 			chartData2: CreateStore.getChartData2(),
@@ -208,7 +209,7 @@ export default class Create extends Component {
 				getTagsByPlan(state.filterObj.get('EnergyProblemId'));
 				break;
 			case 2:
-				getPreviewChart2(this._getFilterObj().toJS());
+				getPreviewChart2(this._getFilterObj().set('ConfigStep', 2).toJS());
 				break;
 		}
 	}
@@ -270,20 +271,23 @@ export default class Create extends Component {
 			}
 			case 2:
 			{
-				let {BenchmarkStartDate, BenchmarkEndDate, CalculationStep, BenchmarkModel} = filterObj.toJS();
+				let {BenchmarkStartDate, BenchmarkEndDate, CalculationStep, BenchmarkModel, IncludeEnergyEffectData} = filterObj.toJS();
 				return (<Step2
 					data={chartData2}
 					BenchmarkModel={BenchmarkModel}
 					CalculationStep={CalculationStep}
 					BenchmarkStartDate={BenchmarkStartDate}
 					BenchmarkEndDate={BenchmarkEndDate}
+					IncludeEnergyEffectData={IncludeEnergyEffectData}
 					disabledPreview={!this._checkCanNext()}
 					onChangeModelType={(type) => {
 						filterObj = filterObj.set('BenchmarkModel', type);
 						if(type === Model.Manual) {
 							filterObj = filterObj.set('CalculationStep', TimeGranularity.Monthly);
+							filterObj = filterObj.set('ContrastStep', TimeGranularity.Monthly);
 						} else {
 							filterObj = filterObj.set('CalculationStep', TimeGranularity.Daily);
+							filterObj = filterObj.set('ContrastStep', TimeGranularity.Daily);
 
 						}
 						filterObj
@@ -328,7 +332,9 @@ export default class Create extends Component {
 						this._setFilterObj(filterObj);
 					}}
 					onGetChartData={() => {
-						getPreviewChart2(filterObj.toJS());
+						let newFilterObj = filterObj.set('IncludeEnergyEffectData', true);
+						this._setFilterObj(newFilterObj);
+						getPreviewChart2(newFilterObj.toJS());
 					}}
 				/>);
 				break;
