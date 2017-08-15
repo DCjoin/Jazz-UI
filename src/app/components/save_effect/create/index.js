@@ -53,6 +53,13 @@ import CreateStore from 'stores/save_effect/create_store';
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
 import UOMStore from 'stores/UOMStore.jsx';
 
+function date2UTC(date) {
+	return date ? moment(date).utcOffset(0).format('YYYY-MM-DD HH:mm:ss') : '';
+}
+function UTC2Local(date) {
+	return date ? moment(date).add(8, 'hours').format('YYYY-MM-DD') : '';
+}
+
 function _getTimeRangeStep() {
 	return 365;
 }
@@ -136,8 +143,8 @@ function getInitFilterObj(props) {
 		TagId: null,
 		CalculationStep: TimeGranularity.Daily,
 		BenchmarkModel: Model.Easy,
-		BenchmarkStartDate: moment(props.filterObj.ExecutedTime).subtract(31, 'days').format('YYYY-MM-DD'),
-		BenchmarkEndDate: moment(props.filterObj.ExecutedTime).format('YYYY-MM-DD'),
+		BenchmarkStartDate: date2UTC(moment(UTC2Local(props.filterObj.ExecutedTime)).subtract(31, 'days')),
+		BenchmarkEndDate: date2UTC(UTC2Local(props.filterObj.ExecutedTime)),
 		EnergyStartDate: null,
 		EnergyEndDate: null,
 		EnergyUnitPrice: '',
@@ -303,8 +310,8 @@ export default class Create extends Component {
 					data={chartData2}
 					BenchmarkModel={BenchmarkModel}
 					CalculationStep={CalculationStep}
-					BenchmarkStartDate={BenchmarkStartDate}
-					BenchmarkEndDate={BenchmarkEndDate}
+					BenchmarkStartDate={UTC2Local(BenchmarkStartDate)}
+					BenchmarkEndDate={UTC2Local(BenchmarkEndDate)}
 					IncludeEnergyEffectData={IncludeEnergyEffectData}
 					disabledPreview={!this._checkCanNext()}
 					onChangeModelType={(type) => {
@@ -329,6 +336,7 @@ export default class Create extends Component {
 						this._setFilterObj(filterObj.set('CalculationStep', step));
 					}}
 					onChangeBenchmarkStartDate={(val) => {
+						val = date2UTC(val);
 						filterObj = filterObj.set('BenchmarkStartDate', val);
 						let startTime = moment(val),
 						endTime = moment(BenchmarkEndDate);
@@ -344,6 +352,7 @@ export default class Create extends Component {
 						this._setFilterObj(filterObj);
 					}}
 					onChangeBenchmarkEndDate={(val) => {
+						val = date2UTC(val);
 						filterObj = filterObj.set('BenchmarkEndDate', val);
 						let endTime = moment(val),
 						startTime = moment(BenchmarkStartDate);
@@ -375,14 +384,15 @@ export default class Create extends Component {
 					BenchmarkModel={BenchmarkModel}
 					CalculationStep={CalculationStep}
 					EnergyUnitPrice={EnergyUnitPrice}
-					EnergyStartDate={EnergyStartDate}
-					EnergyEndDate={EnergyEndDate}
+					EnergyStartDate={UTC2Local(EnergyStartDate)}
+					EnergyEndDate={UTC2Local(EnergyEndDate)}
 					BenchmarkDatas={BenchmarkDatas}
 					disabledPreview={!this._checkCanNext()}
 					onChangeEnergyUnitPrice={(val) => {
 						this._setFilterObj(filterObj.set('EnergyUnitPrice', val));
 					}}
 					onChangeEnergyStartDate={(val) => {
+						val = date2UTC(val);
 						filterObj = filterObj.set('EnergyStartDate', val);
 						let startTime = moment(val),
 						endTime = moment(EnergyEndDate);
@@ -403,6 +413,7 @@ export default class Create extends Component {
 						this._setFilterObj(filterObj);
 					}}
 					onChangeEnergyEndDate={(val) => {
+						val = date2UTC(val);
 						filterObj = filterObj.set('EnergyEndDate', val);
 						let endTime = moment(val),
 						startTime = moment(EnergyStartDate);
@@ -432,11 +443,11 @@ export default class Create extends Component {
 			}
 			case 4:
 			{
-				let {EnergyStartDate, EnergyEndDate, CalculationStep, PredictionDatas, BenchmarkStartDate, BenchmarkEndDate, ContrastStep} = filterObj.toJS();
+				let {UomId, EnergyStartDate, EnergyEndDate, CalculationStep, PredictionDatas, BenchmarkStartDate, BenchmarkEndDate, ContrastStep} = filterObj.toJS();
 				return (<Step4
 					unit={UomId ? UOMStore.getUomById(UomId) : getUomByChartData(chartData2)}
-					EnergyStartDate={EnergyStartDate}
-					EnergyEndDate={EnergyEndDate}
+					EnergyStartDate={UTC2Local(EnergyStartDate)}
+					EnergyEndDate={UTC2Local(EnergyEndDate)}
 					CalculationStep={CalculationStep}
 					PredictionDatas={PredictionDatas}
 					BenchmarkStartDate={BenchmarkStartDate}
@@ -584,7 +595,7 @@ export default class Create extends Component {
 				<GetInitData action={() =>{
 					this._getInitData(this.props.ConfigStep);
 				}}/>
-				<Header name={EnergySolutionName} timeStr={moment(ExecutedTime).format('YYYY-MM-DD HH:mm')} onShowDetail={() => {
+				<Header name={EnergySolutionName} timeStr={moment(ExecutedTime).add(8, 'hours').format('YYYY-MM-DD HH:mm')} onShowDetail={() => {
 					this.setState((state, props) => {
 						return { measureShow: true };
 					});
@@ -632,7 +643,7 @@ export function getDateObjByRange(startDate, endDate) {
 			existYears.push( incrementDate.get('year') );
 		}
 		result.push({
-			Key: incrementDate.format('YYYY-MM-DD HH:mm:ss'),
+			Key: date2UTC(incrementDate),
 			Label,
 		})
 	}
