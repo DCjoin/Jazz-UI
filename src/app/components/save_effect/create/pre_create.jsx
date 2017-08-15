@@ -31,14 +31,14 @@ export default class PreCreate extends Component {
 		return (
 			<NewDialog actionsContainerStyle={{textAlign: 'right', margin: '15px 24px'}} actions={[
 
-				<NewFlatButton label={isEdit?'完成':'开始配置'} primary disabled={!this.state.val} onClick={() => {
+				<NewFlatButton label={isEdit?I18N.Platform.Password.Confirm:I18N.SaveEffect.Create.Start} primary disabled={!this.state.val} onClick={() => {
 					onSubmit(this.state.val);
 				}}/>
 				]} open={true}>
 				<header className='jazz-pre-create-header'>
 					<div>
-						<span>{'选择方案所属能源系统'}</span>
-						<span className='jazz-pre-create-header-mark'>{'(以便汇总统计能源系统的节能量)'}</span>
+						<span>{I18N.SaveEffect.Create.SelectEnergySystem}</span>
+						<span className='jazz-pre-create-header-mark'>{I18N.SaveEffect.Create.SelectEnergySystemTip}</span>
 					</div>
 					<FontIcon style={{fontSize: '16px'}} className={'icon-close'} onClick={onClose}/>
 				</header>

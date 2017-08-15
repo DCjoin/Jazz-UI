@@ -2489,6 +2489,7 @@ I18N.Setting.Effect.List ='节能效果列表';
 I18N.Setting.Effect.TagName ='数据点：';
 I18N.Setting.Effect.Problem ='所属方案：';
 I18N.Setting.Effect.ContinueConfig ='继续配置';
+
 I18N.SaveEffect={};
 I18N.SaveEffect.OverviewLabel='节能效果概览';
 I18N.SaveEffect.ListLabel='方案节能效果';
@@ -2534,5 +2535,25 @@ I18N.SaveEffect.Model.Relation = '关联型';
 I18N.SaveEffect.Model.Efficiency = '效率型';
 I18N.SaveEffect.Model.Simulation = '模拟型';
 I18N.SaveEffect.Model.Alert = '请重新配置！';
+
+I18N.SaveEffect.Create = {};
+I18N.SaveEffect.Create.Start = '开始配置';
+I18N.SaveEffect.Create.Done = '配置完成';
+I18N.SaveEffect.Create.LeaveTip = '离开页面会导致编辑内容丢失，是否保存到草稿？';
+I18N.SaveEffect.Create.SelectEnergySystem = '选择方案所属能源系统';
+I18N.SaveEffect.Create.SelectEnergySystemTip = '(以便汇总统计能源系统的节能量)';
+I18N.SaveEffect.Create.ConfigModel = '配置基准值模型';
+I18N.SaveEffect.Create.ConfigCalcStep = '配置计算步长';
+I18N.SaveEffect.Create.BenchmarkDate = '基准能耗确定期';
+I18N.SaveEffect.Create.BenchmarkDateTip = '注：确定期时间最大范围为1年';
+I18N.SaveEffect.Create.CalcBenchmarkByMonth = '计算期逐月基准值';
+I18N.SaveEffect.Create.CalcSave = '计算节能量';
+I18N.SaveEffect.Create.EnergyUnitPrice='能源单价';
+I18N.SaveEffect.Create.EnterEnergyUnitPrice='输入价格';
+I18N.SaveEffect.Create.NeedEnterSaveTimeTip1='添加左侧列表中的节能量计算期';
+I18N.SaveEffect.Create.NeedEnterSaveTimeTip2='可预览此时间段内基准能耗值与计算tag是实际的对比图';
+I18N.SaveEffect.Create.SavePreviewChart='节能量展示图';
+I18N.SaveEffect.Create.CalcSaveByMonth='计算期逐月能耗值';
+I18N.SaveEffect.Create.BenchmarkBattleCalc='计算期内基准能耗与计算数据的实际值对比';
 
 module.exports = I18N;

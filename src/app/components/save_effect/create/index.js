@@ -35,15 +35,37 @@ import StatusCmp from 'components/ECM/MeasurePart/Status.jsx'
 import {EnergySys} from 'components/ECM/MeasurePart/MeasureTitle.jsx';
 import Remark from 'components/ECM/MeasurePart/Remark.jsx';
 
-import {getTagsByPlan, updateTags, getPreviewChart2, getPreviewChart3, saveItem, getEnergySolution, addEnergyEffectTag } from 'actions/save_effect_action';
+import {
+	getTagsByPlan, 
+	updateTags, 
+	getPreviewChart2, 
+	getPreviewChart3, 
+	saveItem, 
+	getEnergySolution, 
+	addEnergyEffectTag, 
+	deleteEnergyEffectTag, 
+	cleanCreate, 
+} from 'actions/save_effect_action';
 
 import MeasuresAction from 'actions/ECM/MeasuresAction.jsx';
 
 import CreateStore from 'stores/save_effect/create_store';
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
+import UOMStore from 'stores/UOMStore.jsx';
 
 function _getTimeRangeStep() {
 	return 365;
+}
+
+function getUomByChartData(data) {
+	return UOMStore.getUomById(
+		data.getIn([
+			'TargetEnergyData', 
+			data.get('TargetEnergyData').size - 1, 
+			'Target', 
+			'UomId',
+		])
+	);
 }
 
 function stepLabelProps(stepValue, currentStep) {
@@ -155,6 +177,7 @@ export default class Create extends Component {
 				Name: tag.get('Name'),
 				Configed: !!tag.get('Configed') || !!tag.get('EnergyEffectItemId'),
 				isNew: tag.get('isNew'),
+				Status: tag.get('Status'),
 			})),
 			chartData2: CreateStore.getChartData2(),
 			chartData3: CreateStore.getChartData3(),
@@ -171,7 +194,7 @@ export default class Create extends Component {
 			closeDlgShow: false,
 		}
 
-		this._onClose = this._onClose.bind(this);
+		this._onSaveAndClose = this._onSaveAndClose.bind(this);
 		this._getInitData = this._getInitData.bind(this);
 	}
 	static contextTypes = {
@@ -201,7 +224,7 @@ export default class Create extends Component {
 	_goSaveAndClose() {
 		saveItem(this.context.router.params.customerId, this.context.hierarchyId, this._getFilterObj().set('ConfigStep', 5).toJS(), this.props.onSubmitDone);
 
-		this.props.onClose(true);
+		this._onClose(true);
 	}
 	_getInitData(step, props = this.props, state = this.state) {
 		switch( step ) {
@@ -241,9 +264,13 @@ export default class Create extends Component {
 				break;
 		}
 	}
-	_onClose() {
+	_onSaveAndClose() {
 		saveItem(this.context.router.params.customerId, this.context.hierarchyId, this._getFilterObj().toJS(), this.props.onSubmitDone);
-		this.props.onClose(false);
+		this._onClose(false);
+	}
+	_onClose(done) {
+		this.props.onClose(!!done);
+		cleanCreate();
 	}
 	renderContent() {
 		let { tags, chartData2, chartData3, filterObj } = this.state;
@@ -260,7 +287,10 @@ export default class Create extends Component {
 								.set('TagId', TagId)
 						);
 					}}
-					onDeleteItem={idx => updateTags(this.state.tags.delete(idx))}
+					onDeleteItem={(idx, tagId) => {
+						deleteEnergyEffectTag(filterObj.get('EnergyProblemId'), tagId);
+						updateTags(this.state.tags.delete(idx));
+					}}
 					onAddItem={ (tag) => {
 							addEnergyEffectTag(filterObj.get('EnergyProblemId'), tag.get('Id'));
 							updateTags(this.state.tags.push(tag.set('TagId', tag.get('Id'))))
@@ -343,6 +373,7 @@ export default class Create extends Component {
 			{
 				let {BenchmarkModel, CalculationStep, EnergyStartDate, EnergyEndDate, EnergyUnitPrice, BenchmarkDatas} = filterObj.toJS();
 				return (<Step3
+					unit={getUomByChartData(chartData2)}
 					data={chartData3}
 					BenchmarkModel={BenchmarkModel}
 					CalculationStep={CalculationStep}
@@ -406,6 +437,7 @@ export default class Create extends Component {
 			{
 				let {EnergyStartDate, EnergyEndDate, CalculationStep, PredictionDatas, BenchmarkStartDate, BenchmarkEndDate, ContrastStep} = filterObj.toJS();
 				return (<Step4
+					unit={getUomByChartData(chartData2)}
 					EnergyStartDate={EnergyStartDate}
 					EnergyEndDate={EnergyEndDate}
 					CalculationStep={CalculationStep}
@@ -432,19 +464,19 @@ export default class Create extends Component {
 		let buttons = [];		
 		switch( this.state.filterObj.get('ConfigStep') ) {
 			case 1:
-				buttons.push(<NewFlatButton onClick={() => {this._goStepAndInit(2)}} primary disabled={!this._checkCanNext()} label={'下一步'} style={{float: 'right'}}/>);
+				buttons.push(<NewFlatButton onClick={() => {this._goStepAndInit(2)}} primary disabled={!this._checkCanNext()} label={I18N.Paging.Button.NextStep} style={{float: 'right'}}/>);
 				break;
 			case 2:
-				buttons.push(<NewFlatButton onClick={() => {this._goStep(1)}} secondary label={'上一步'} style={{float: 'left'}}/>);
-				buttons.push(<NewFlatButton onClick={() => {this._goStep(3)}} primary disabled={!this._checkCanNext()} label={'下一步'} style={{float: 'right'}}/>);
+				buttons.push(<NewFlatButton onClick={() => {this._goStep(1)}} secondary label={I18N.Paging.Button.PreStep} style={{float: 'left'}}/>);
+				buttons.push(<NewFlatButton onClick={() => {this._goStep(3)}} primary disabled={!this._checkCanNext()} label={I18N.Paging.Button.NextStep} style={{float: 'right'}}/>);
 				break;
 			case 3:
-				buttons.push(<NewFlatButton onClick={() => {this._goStep(2)}} secondary label={'上一步'} style={{float: 'left'}}/>);
-				buttons.push(<NewFlatButton onClick={() => {this._goStep(4)}} primary disabled={!this._checkCanNext()} label={'下一步'} style={{float: 'right'}}/>);
+				buttons.push(<NewFlatButton onClick={() => {this._goStep(2)}} secondary label={I18N.Paging.Button.PreStep} style={{float: 'left'}}/>);
+				buttons.push(<NewFlatButton onClick={() => {this._goStep(4)}} primary disabled={!this._checkCanNext()} label={I18N.Paging.Button.NextStep} style={{float: 'right'}}/>);
 				break;
 			case 4:
-				buttons.push(<NewFlatButton onClick={() => {this._goStep(3)}} secondary label={'上一步'} style={{float: 'left'}}/>);
-				buttons.push(<NewFlatButton onClick={() => {this._goSaveAndClose(4)}} primary disabled={!this._checkCanNext()} label={'配置完成'} style={{float: 'right'}}/>);
+				buttons.push(<NewFlatButton onClick={() => {this._goStep(3)}} secondary label={I18N.Paging.Button.PreStep} style={{float: 'left'}}/>);
+				buttons.push(<NewFlatButton onClick={() => {this._goSaveAndClose(4)}} primary disabled={!this._checkCanNext()} label={I18N.SaveEffect.Create.Done} style={{float: 'right'}}/>);
 				break;
 		}
 		return (<footer className='footer'>{buttons}</footer>)
@@ -567,7 +599,7 @@ export default class Create extends Component {
 							closeDlgShow: true
 						});
 					} else {
-						this.props.onClose(false);
+						this._onClose(false);
 					}
 				}}/>
 				<Nav step={this.state.filterObj.get('ConfigStep') - 1}/>
@@ -575,11 +607,11 @@ export default class Create extends Component {
 				{this.renderFooter()}
 				{this._renderMeasureDialog()}
 				<NewDialog open={this.state.closeDlgShow} actionsContainerStyle={{textAlign: 'right'}} actions={[
-					<NewFlatButton primary label={'保存'} onClick={this._onClose}/>,
-					<NewFlatButton style={{marginLeft: 24}} secondary label={'取消'} onClick={() =>{
-						this.props.onClose(false);
+					<NewFlatButton primary label={I18N.Common.Button.Save} onClick={this._onSaveAndClose}/>,
+					<NewFlatButton style={{marginLeft: 24}} secondary label={I18N.Common.Button.Cancel2} onClick={() =>{
+						this._onClose(false);
 					}}/>
-				]}>{'离开页面会导致编辑内容丢失，是否保存到草稿？'}</NewDialog>
+				]}>{I18N.SaveEffect.Create.LeaveTip}</NewDialog>
 			</div>
 		);
 	}
