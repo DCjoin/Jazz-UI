@@ -186,6 +186,13 @@ export default class Create extends Component {
 		}
 	};
 	static getStores = () => [CreateStore, MeasuresStore];
+	static contextTypes = {
+		hierarchyId: PropTypes.string,
+		router: PropTypes.object,
+	};
+	static defaultProps ={
+		ConfigStep: 1,
+	};
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -197,18 +204,9 @@ export default class Create extends Component {
 		this._onSaveAndClose = this._onSaveAndClose.bind(this);
 		this._getInitData = this._getInitData.bind(this);
 	}
-	static contextTypes = {
-		hierarchyId: PropTypes.string,
-		router: PropTypes.object,
-	};
-	static defaultProps ={
-		ConfigStep: 1,
-	}
 	_setFilterObj(filterObj) {		
 		this.setState((state, props) => {
-			return {
-				filterObj
-			}
+			return {filterObj}
 		});
 	}
 	_getFilterObj() {
@@ -223,7 +221,6 @@ export default class Create extends Component {
 	}
 	_goSaveAndClose() {
 		saveItem(this.context.router.params.customerId, this.context.hierarchyId, this._getFilterObj().set('ConfigStep', 5).toJS(), this.props.onSubmitDone);
-
 		this._onClose(true);
 	}
 	_getInitData(step, props = this.props, state = this.state) {
@@ -371,9 +368,9 @@ export default class Create extends Component {
 			}
 			case 3:
 			{
-				let {BenchmarkModel, CalculationStep, EnergyStartDate, EnergyEndDate, EnergyUnitPrice, BenchmarkDatas} = filterObj.toJS();
+				let {UomId, BenchmarkModel, CalculationStep, EnergyStartDate, EnergyEndDate, EnergyUnitPrice, BenchmarkDatas} = filterObj.toJS();
 				return (<Step3
-					unit={getUomByChartData(chartData2)}
+					unit={UomId ? UOMStore.getUomById(UomId) : getUomByChartData(chartData2)}
 					data={chartData3}
 					BenchmarkModel={BenchmarkModel}
 					CalculationStep={CalculationStep}
@@ -393,9 +390,9 @@ export default class Create extends Component {
 						if( EnergyEndDate ) {
 							if( endTime < moment(startTime) ) {
 								endTime = moment(startTime).add(1, 'days');
-							} else if( moment(startTime).add(_getTimeRangeStep(CalculationStep), 'days') < endTime ) {
+							} /*else if( moment(startTime).add(_getTimeRangeStep(CalculationStep), 'days') < endTime ) {
 								endTime = moment(startTime).add(_getTimeRangeStep(CalculationStep), 'days');
-							}
+							}*/
 							if(endTime.format('YYYY-MM-DD') !== EnergyEndDate) {
 								filterObj = filterObj.set('EnergyEndDate', endTime.format('YYYY-MM-DD'))
 							}
@@ -413,9 +410,9 @@ export default class Create extends Component {
 						if( EnergyStartDate ) {
 							if( startTime > moment(endTime) ) {
 								startTime = moment(endTime).subtract(1, 'days');
-							} else if( moment(endTime).subtract(_getTimeRangeStep(CalculationStep), 'days') > startTime ) {
+							} /*else if( moment(endTime).subtract(_getTimeRangeStep(CalculationStep), 'days') > startTime ) {
 								startTime = moment(endTime).subtract(_getTimeRangeStep(CalculationStep), 'days');
-							}
+							}*/
 							if(startTime.format('YYYY-MM-DD') !== EnergyStartDate) {
 								filterObj = filterObj.set('EnergyStartDate', startTime.format('YYYY-MM-DD'))
 							}
@@ -437,7 +434,7 @@ export default class Create extends Component {
 			{
 				let {EnergyStartDate, EnergyEndDate, CalculationStep, PredictionDatas, BenchmarkStartDate, BenchmarkEndDate, ContrastStep} = filterObj.toJS();
 				return (<Step4
-					unit={getUomByChartData(chartData2)}
+					unit={UomId ? UOMStore.getUomById(UomId) : getUomByChartData(chartData2)}
 					EnergyStartDate={EnergyStartDate}
 					EnergyEndDate={EnergyEndDate}
 					CalculationStep={CalculationStep}
