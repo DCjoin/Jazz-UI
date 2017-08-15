@@ -66,15 +66,15 @@ export default class Step2 extends Component {
 				postNewConfig: (chartCmpObj) => {
 					let newConfig = Util.merge(true, chartCmpObj);
 					newConfig.series = newConfig.series.map((serie, i) => {
-						if( i !== 0 ) {
-							serie.type = 'column';							
-						} else {
-							serie.name = I18N.EM.Ratio.BaseValue;
+						if( IncludeEnergyEffectData ) {
+							if( i !== 0 ) {
+								serie.type = 'column';							
+							} else {
+								serie.name = I18N.EM.Ratio.BaseValue;
+							}
 						}
 						return serie;
 					});
-					newConfig.stacking = null;
-					newConfig.legendSwitchList = ['line', 'column'];
 					return newConfig;
 				}
 			};
