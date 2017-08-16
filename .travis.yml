@@ -24,18 +24,15 @@ before_script:
   - export ARTIFACT_NAME="${PROJECT}-${ROLE}-${TRAVIS_BRANCH}-${PACKAGE_VERSION}.zip"
  
 script:
-#  - yarn run build-test
-  - ls -la
+  - yarn run build-test
   - docker build -t $TAG .
-  - ls -la
 
 before_deploy:
-#  - cp compose-template.yml build/
-#  - echo -n "${PACKAGE_VERSION}" > build/version.txt
-#  - cd build && zip -r ../${ARTIFACT_NAME} ./ && cd ..
-  - ls -la
-  - echo -n "${PACKAGE_VERSION}" > version.txt
-  - zip -r --exclude=*node_modules* /tmp/${ARTIFACT_NAME} ./
+  - cp compose-template.yml build/
+  - echo -n "${PACKAGE_VERSION}" > build/version.txt
+  - cd build && zip -r ../${ARTIFACT_NAME} ./ && cd ..
+#  - echo -n "${PACKAGE_VERSION}" > version.txt
+#  - zip -r --exclude=*node_modules* /tmp/${ARTIFACT_NAME} ./
   - 'curl -o upload.sh -H "Authorization: token ${GITHUB_TOKEN}" ${GITHUB_UPLOAD_SCRIPT}'
   - chmod a+x ./upload.sh
   
