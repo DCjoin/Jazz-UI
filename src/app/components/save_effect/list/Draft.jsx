@@ -9,6 +9,7 @@ import privilegeUtil from 'util/privilegeUtil.jsx';
 import PermissionCode from 'constants/PermissionCode.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import Create from '../create';
+import util from 'util/Util.jsx';
 
 function privilegeWithSaveEffect( privilegeCheck ) {
   //  return true
@@ -109,6 +110,16 @@ export default class Draft extends Component {
     getDrafts(this.context.hierarchyId);
     ListStore.addChangeListener(this._onChanged);
   }
+
+	componentWillReceiveProps(nextProps, nextContext) {
+		if( !util.shallowEqual(nextContext.hierarchyId, this.context.hierarchyId) ) {
+			this.setState({
+			drafts:null
+		},()=>{
+			getDrafts(nextContext.hierarchyId);
+		});
+		}
+	}
 
   componentWillUnmount(){
     ListStore.removeChangeListener(this._onChanged);
