@@ -18,7 +18,7 @@
   memswap_limit: 0
   labels:
     aliyun.scale: '1'
-    aliyun.routing.port_80: '${JAZZ_WEB_HOST}'
+    aliyun.routing.port_80: '${JAZZ_UI_HOST}'
   shm_size: 
   memswap_reservation: 0
   kernel_memory: 0
