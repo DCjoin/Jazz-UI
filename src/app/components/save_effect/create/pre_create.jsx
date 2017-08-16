@@ -47,7 +47,7 @@ export default class PreCreate extends Component {
 						val: v
 					});
 				}}>
-					{getEnergySystem().map(sys => 
+					{getEnergySystem().map(sys =>
 					<RadioButton style={{marginBottom: 15}} label={sys.label} value={sys.value}/>)}
 				</RadioButtonGroup>
 			</NewDialog>
