@@ -72,6 +72,8 @@ export default class Step2 extends Component {
 							} else {
 								serie.name = I18N.EM.Ratio.BaseValue;
 							}
+						} else {
+							serie.type = 'column';	
 						}
 						return serie;
 					});

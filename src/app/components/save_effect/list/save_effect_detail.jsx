@@ -309,13 +309,15 @@ export default class EffectDetail extends Component {
 					{this._renderSubTitle()}
 					{this._renderContent()}
 					{this.state.deleteConfirmShow && this._renderDeleteDialog()}
-					{this.state.energySystemDialogShow && <PreCreate isEdit={true}
-																														onClose={()=>{this.setState({energySystemDialogShow:false})}}
-																														onSubmit={(id)=>{
-																															this.setState({energySystemDialogShow:false},()=>{
-																																changeEnergySystemForEffect(id,this.props.effect.get("EnergyEffectId"),this.props.effect.get("EnergyProblemId"),this.props.customerId,this.props.hierarchyId)
-																															})
-																														}}/>}
+					{this.state.energySystemDialogShow && 
+					<PreCreate isEdit
+						EnergySystem={EnergySystem}
+						onClose={()=>{this.setState({energySystemDialogShow:false})}}
+						onSubmit={(id)=>{
+							this.setState({energySystemDialogShow:false},()=>{
+								changeEnergySystemForEffect(id,this.props.effect.get("EnergyEffectId"),this.props.effect.get("EnergyProblemId"),this.props.customerId,this.props.hierarchyId)
+							})
+						}}/>}
 					{this.state.createShow && <Create
 						filterObj ={{
 							EnergySolutionName,
