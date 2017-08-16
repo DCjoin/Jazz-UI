@@ -53,6 +53,31 @@ import CreateStore from 'stores/save_effect/create_store';
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
 import UOMStore from 'stores/UOMStore.jsx';
 
+const ASC_STEP = [
+	TimeGranularity.None,
+	TimeGranularity.Minite,
+	TimeGranularity.Min15,
+	TimeGranularity.Min30,
+	TimeGranularity.Hourly,
+	TimeGranularity.Hour2,
+	TimeGranularity.Hour4,
+	TimeGranularity.Hour6,
+	TimeGranularity.Hour8,
+	TimeGranularity.Hour12,
+	TimeGranularity.Daily,
+	TimeGranularity.Weekly,
+	TimeGranularity.Monthly,
+	TimeGranularity.Yearly,
+];
+
+function checkSupportStep(currentStep, targetStep) {
+	return ASC_STEP.indexOf(targetStep) >= ASC_STEP.indexOf(currentStep);
+}
+
+function checkStepByTag(tagId, calcStep) {
+	return checkSupportStep( CreateStore.getTagsByPlan().find(tag => tag.get('TagId') === tagId).get('Step'), calcStep)
+}
+
 function date2UTC(date) {
 	return date ? moment(date).utcOffset(0).format('YYYY-MM-DD HH:mm:ss') : '';
 }
@@ -185,6 +210,7 @@ export default class Create extends Component {
 				Configed: !!tag.get('Configed') || !!tag.get('EnergyEffectItemId'),
 				isNew: tag.get('isNew'),
 				Status: tag.get('Status'),
+				Step: tag.get('Step'),
 			})),
 			chartData2: CreateStore.getChartData2(),
 			chartData3: CreateStore.getChartData3(),
@@ -206,6 +232,7 @@ export default class Create extends Component {
 			filterObj: getInitFilterObj(props),
 			measureShow: false,
 			closeDlgShow: false,
+			showStepTip: false,
 		}
 
 		this._onSaveAndClose = this._onSaveAndClose.bind(this);
@@ -240,13 +267,22 @@ export default class Create extends Component {
 				break;
 		}
 	}
+	_setTagStepTip(calcStep) {
+		if( !checkStepByTag(this.state.filterObj.get('TagId'), calcStep) ) {
+			this.setState((state, props) => {
+				return {
+					showStepTip: true
+				}
+			});
+		}
+	}
 	_checkCanNext() {		
 		switch( this.state.filterObj.get('ConfigStep') ) {
 			case 1:
 				return this.state.filterObj.get('TagId');
 				break;
 			case 2:
-				return this.state.chartData2;
+				return this.state.chartData2 && checkStepByTag(this.state.filterObj.get('TagId'), this.state.filterObj.get('CalculationStep'));
 				break;
 			case 3:
 				let {EnergyStartDate, EnergyEndDate, EnergyUnitPrice, BenchmarkDatas, BenchmarkModel} = this.state.filterObj.toJS();
@@ -306,7 +342,10 @@ export default class Create extends Component {
 					}}
 					onAddItem={ (tag) => {
 							addEnergyEffectTag(filterObj.get('EnergyProblemId'), tag.get('Id'));
-							updateTags(this.state.tags.push(tag.set('TagId', tag.get('Id'))))
+							updateTags(this.state.tags.push(
+								tag.set('TagId', tag.get('Id'))
+									.set('Step', tag.get('CalculationStep'))
+							));
 						}
 					}
 				/>);
@@ -316,6 +355,7 @@ export default class Create extends Component {
 			{
 				let {BenchmarkStartDate, BenchmarkEndDate, CalculationStep, BenchmarkModel, IncludeEnergyEffectData} = filterObj.toJS();
 				return (<Step2
+					TagId={filterObj.get('TagId')}
 					data={chartData2}
 					BenchmarkModel={BenchmarkModel}
 					CalculationStep={CalculationStep}
@@ -326,10 +366,12 @@ export default class Create extends Component {
 					onChangeModelType={(type) => {
 						filterObj = filterObj.set('BenchmarkModel', type);
 						if(type === Model.Manual) {
+							this._setTagStepTip( TimeGranularity.Monthly );
 							filterObj = filterObj.set('CalculationStep', TimeGranularity.Monthly);
 							filterObj = filterObj.set('ContrastStep', TimeGranularity.Monthly);
 							filterObj = filterObj.set('BenchmarkStartDate', moment(BenchmarkEndDate).subtract(1, 'years').format('YYYY-MM-DD HH:mm:ss'));
 						} else {
+							this._setTagStepTip( TimeGranularity.Daily );
 							filterObj = filterObj.set('CalculationStep', TimeGranularity.Daily);
 							filterObj = filterObj.set('ContrastStep', TimeGranularity.Daily);
 
@@ -344,6 +386,7 @@ export default class Create extends Component {
 					}}
 					onChangeStep={(step) => {
 						this._setFilterObj(filterObj.set('CalculationStep', step));
+						this._setTagStepTip( step );
 					}}
 					onChangeBenchmarkStartDate={(val) => {
 						val = date2UTC(val);
@@ -482,7 +525,10 @@ export default class Create extends Component {
 		let buttons = [];		
 		switch( this.state.filterObj.get('ConfigStep') ) {
 			case 1:
-				buttons.push(<NewFlatButton onClick={() => {this._goStepAndInit(2)}} primary disabled={!this._checkCanNext()} label={I18N.Paging.Button.NextStep} style={{float: 'right'}}/>);
+				buttons.push(<NewFlatButton onClick={() => {
+					this._goStepAndInit(2);
+					this._setTagStepTip( this.state.filterObj.get('CalculationStep') );
+				}} primary disabled={!this._checkCanNext()} label={I18N.Paging.Button.NextStep} style={{float: 'right'}}/>);
 				break;
 			case 2:
 				buttons.push(<NewFlatButton onClick={() => {this._goStep(1)}} secondary label={I18N.Paging.Button.PreStep} style={{float: 'left'}}/>);
@@ -629,6 +675,17 @@ export default class Create extends Component {
 						this._onClose(false);
 					}}/>
 				]}>{I18N.SaveEffect.Create.LeaveTip}</NewDialog>
+				<NewDialog open={this.state.showStepTip} actions={[
+					<NewFlatButton style={{marginLeft: 24}} secondary label={I18N.Common.Button.Confirm} onClick={() =>{
+						this.setState((state, props) => {
+							return {
+								showStepTip: false
+							}
+						});
+					}}/>
+				]}>
+					{I18N.SaveEffect.Create.StepTip}
+				</NewDialog>
 			</div>
 		);
 	}

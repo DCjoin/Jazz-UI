@@ -23,22 +23,25 @@ const TagSelectAction = {
 			error: function() {}
 		});
 	},
-  getTags(hierarchyId,associationId,customerId,CommodityId){
+  getTags(allTag, hierarchyId,associationId,customerId,CommodityId){
     var url = Path.KPI.getTags;
+    var filter = {
+      AlarmStatus:null,
+      Association:{
+        AssociationId:associationId===-1?hierarchyId:associationId,
+        AssociationOption:associationId===-1?2:6
+      },
+      CustomerId:customerId,
+      IncludeAssociationName:true,
+      CommodityId
+    };
+    if( !allTag ) {
+      filter.CalculationSteps = [0,1,2,6,7,8,9,10,11,12];
+    }
     Ajax.post(url,
       {
       params: {
-          filter:{
-            AlarmStatus:null,
-            CalculationSteps:[0,1,2,6,7,8,9,10,11,12],
-            Association:{
-              AssociationId:associationId===-1?hierarchyId:associationId,
-              AssociationOption:associationId===-1?2:6
-            },
-            CustomerId:customerId,
-            IncludeAssociationName:true,
-            CommodityId
-          },
+          filter,
           filters:null,
           limit:perPage,
           page:1,

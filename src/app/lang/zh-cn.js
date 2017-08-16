@@ -2555,5 +2555,6 @@ I18N.SaveEffect.Create.NeedEnterSaveTimeTip2='可预览此时间段内基准能�
 I18N.SaveEffect.Create.SavePreviewChart='节能量展示图';
 I18N.SaveEffect.Create.CalcSaveByMonth='计算期逐月能耗值';
 I18N.SaveEffect.Create.BenchmarkBattleCalc='计算期内基准能耗与计算数据的实际值对比';
+I18N.SaveEffect.Create.StepTip = '所选数据点补偿与计算步长不匹配，请重新选择数据点。';
 
 module.exports = I18N;
