@@ -159,11 +159,11 @@ export default class Remark extends Component {
 
     componentDidMount(){
       MeasuresStore.addChangeListener(this._onChanged.bind(this));
-      this.props.remarkList && MeasuresAction.getRemarkList(this.props.problemId);
+      !this.props.remarkList && MeasuresAction.getRemarkList(this.props.problemId);
     }
 
     componentDidUpdate(prevProps,prevState){
-      if(!prevProps.remarkList && prevState.remarkList!==null && prevState.remarkList.size<this.state.remarkList.size){
+      if( (!prevProps.remarkList || prevState.remarkList===null) && prevState.remarkList && prevState.remarkList.size<this.state.remarkList.size){
         this.props.onScroll(getNewRemarkHeight(ReactDom.findDOMNode(this)))
       }
     }
