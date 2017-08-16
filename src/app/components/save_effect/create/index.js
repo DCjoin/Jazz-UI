@@ -290,6 +290,12 @@ export default class Create extends Component {
 								.set('EnergySystem', this.state.filterObj.get('EnergySystem'))
 								.set('TagId', TagId)
 						);
+						this.setState((state, props) => {
+							return {
+								chartData2: null,
+								chartData3: null,
+							}
+						});
 					}}
 					onDeleteItem={(idx, tagId) => {
 						deleteEnergyEffectTag(filterObj.get('EnergyProblemId'), tagId);
