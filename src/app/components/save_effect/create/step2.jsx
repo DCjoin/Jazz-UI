@@ -37,7 +37,6 @@ let getStepDataItems = () => [
 export default class Step2 extends Component {
 	constructor(props) {
 		super(props);
-
 	}
 	render() {
 		let { data, disabledPreview, BenchmarkModel, BenchmarkStartDate, BenchmarkEndDate, CalculationStep, onChangeModelType, onChangeStep, onChangeBenchmarkStartDate, onChangeBenchmarkEndDate, onGetChartData, IncludeEnergyEffectData  } = this.props,

@@ -53,7 +53,7 @@ function ManualValue({BenchmarkDatas, onChangeValue, unit}) {
 					regex={/^(\-?)\d{1,9}([.]\d{1,3})?$/}
 					defaultValue={data.Value}
 					hintText={data.Label}
-					style={{width: 90}}
+					style={{width: 95}}
 					didChanged={(val) => {
 						onChangeValue(idx, val);
 					}}
