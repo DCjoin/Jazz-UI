@@ -319,6 +319,7 @@ export default class Create extends Component {
 						if(type === Model.Manual) {
 							filterObj = filterObj.set('CalculationStep', TimeGranularity.Monthly);
 							filterObj = filterObj.set('ContrastStep', TimeGranularity.Monthly);
+							filterObj = filterObj.set('BenchmarkStartDate', moment(BenchmarkEndDate).subtract(1, 'years').format('YYYY-MM-DD HH:mm:ss'));
 						} else {
 							filterObj = filterObj.set('CalculationStep', TimeGranularity.Daily);
 							filterObj = filterObj.set('ContrastStep', TimeGranularity.Daily);
