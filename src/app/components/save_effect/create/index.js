@@ -346,8 +346,8 @@ export default class Create extends Component {
 						} else if( moment(startTime).add(_getTimeRangeStep(CalculationStep), 'days') < endTime ) {
 							endTime = moment(startTime).add(_getTimeRangeStep(CalculationStep), 'days');
 						}
-						if(endTime.format('YYYY-MM-DD') !== BenchmarkEndDate) {
-							filterObj = filterObj.set('BenchmarkEndDate', endTime.format('YYYY-MM-DD'))
+						if(endTime.format('YYYY-MM-DD HH:mm:ss') !== BenchmarkEndDate) {
+							filterObj = filterObj.set('BenchmarkEndDate', endTime.format('YYYY-MM-DD HH:mm:ss'))
 						}
 						this._setFilterObj(filterObj);
 					}}
@@ -362,8 +362,8 @@ export default class Create extends Component {
 						} else if( moment(endTime).subtract(_getTimeRangeStep(CalculationStep), 'days') > startTime ) {
 							startTime = moment(endTime).subtract(_getTimeRangeStep(CalculationStep), 'days');
 						}
-						if(startTime.format('YYYY-MM-DD') !== BenchmarkStartDate) {
-							filterObj = filterObj.set('BenchmarkStartDate', startTime.format('YYYY-MM-DD'))
+						if(startTime.format('YYYY-MM-DD HH:mm:ss') !== BenchmarkStartDate) {
+							filterObj = filterObj.set('BenchmarkStartDate', startTime.format('YYYY-MM-DD HH:mm:ss'))
 						}
 						this._setFilterObj(filterObj);
 					}}
@@ -403,8 +403,8 @@ export default class Create extends Component {
 							} /*else if( moment(startTime).add(_getTimeRangeStep(CalculationStep), 'days') < endTime ) {
 								endTime = moment(startTime).add(_getTimeRangeStep(CalculationStep), 'days');
 							}*/
-							if(endTime.format('YYYY-MM-DD') !== EnergyEndDate) {
-								filterObj = filterObj.set('EnergyEndDate', endTime.format('YYYY-MM-DD'))
+							if(endTime.format('YYYY-MM-DD HH:mm:ss') !== EnergyEndDate) {
+								filterObj = filterObj.set('EnergyEndDate', endTime.format('YYYY-MM-DD HH:mm:ss'))
 							}
 
 							filterObj = filterObj.set('BenchmarkDatas', getDateObjByRange(val, EnergyEndDate));
@@ -424,8 +424,8 @@ export default class Create extends Component {
 							} /*else if( moment(endTime).subtract(_getTimeRangeStep(CalculationStep), 'days') > startTime ) {
 								startTime = moment(endTime).subtract(_getTimeRangeStep(CalculationStep), 'days');
 							}*/
-							if(startTime.format('YYYY-MM-DD') !== EnergyStartDate) {
-								filterObj = filterObj.set('EnergyStartDate', startTime.format('YYYY-MM-DD'))
+							if(startTime.format('YYYY-MM-DD HH:mm:ss') !== EnergyStartDate) {
+								filterObj = filterObj.set('EnergyStartDate', startTime.format('YYYY-MM-DD HH:mm:ss'))
 							}
 							filterObj = filterObj.set('BenchmarkDatas', getDateObjByRange(EnergyStartDate, val));
 							filterObj = filterObj.set('PredictionDatas', getDateObjByRange(EnergyStartDate, val));
