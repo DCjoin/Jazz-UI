@@ -14,7 +14,8 @@ import GlobalErrorMessageAction from '../actions/GlobalErrorMessageAction.jsx';
 
 import HierarchyStore from '../stores/HierarchyStore.jsx';
 import LabelMenuStore from '../stores/LabelMenuStore.jsx';
-import SingleKPIStore from '../stores/KPI/SingleKPIStore.jsx';
+// import SingleKPIStore from '../stores/KPI/SingleKPIStore.jsx';
+
 const FIXEDTIMES = {
   millisecond: 1,
   second: 1000,
@@ -2064,7 +2065,7 @@ let CommonFuns = {
     }
   },
   formatDateByPeriod(date){
-    let period=SingleKPIStore.getYearQuotaperiod();
+    let period=require('../stores/KPI/SingleKPIStore.jsx').getYearQuotaperiod();
     if(period===null || period.length!==12) return '';
     let firstMonth=period[0];
     if(date.year()===firstMonth.year() && date.month()===firstMonth.month() || date.month()===0){
