@@ -553,9 +553,9 @@ var UserStore = assign({}, PrototypeStore, {
         UserStore.setUserCustomers(action.data);
         UserStore.emitChange(action.data.UserId);
         break;
-      case UserAction.MERGE_CUSTOMER_BY_USER:
-        UserStore.mergeUserCustomers(action.data);
-        break;
+      // case UserAction.MERGE_CUSTOMER_BY_USER:
+      //   UserStore.mergeUserCustomers(action.data);
+      //   break;
       case UserAction.GET_CUSTOMER_PERMISSION_BY_USER:
         if (action.data) {
           UserStore.setCustomerDataPrivilege(action.data);
