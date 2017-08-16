@@ -108,7 +108,7 @@ export default class MainPanel extends Component {
       return <NotPushPanel hierarchyId={this.context.hierarchyId} generatePositon={{destX,destY}}/>
     }
     else {
-      return <PushPanel hierarchyId={this.context.hierarchyId}/>
+      return <PushPanel hierarchyId={this.context.hierarchyId} params={this.props.params}/>
     }
   }
 

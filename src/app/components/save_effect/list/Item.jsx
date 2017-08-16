@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import FontIcon from 'material-ui/FontIcon';
 import moment from 'moment';
-// import {EnergySystemArr} from '../../../constants/actionType/Effect.jsx';
 import util from 'util/Util.jsx';
 import ListStore from '../../../stores/save_effect/ListStore.jsx';
 import classNames from 'classnames';
