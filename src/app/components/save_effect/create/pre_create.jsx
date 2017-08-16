@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 
 import FontIcon from 'material-ui/FontIcon';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
@@ -23,7 +23,7 @@ export default class PreCreate extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			val: null
+			val: this.props.EnergySystem
 		}
 	}
 	render() {
@@ -42,7 +42,7 @@ export default class PreCreate extends Component {
 					</div>
 					<FontIcon style={{fontSize: '16px'}} className={'icon-close'} onClick={onClose}/>
 				</header>
-				<RadioButtonGroup className='jazz-pre-create-content' onChange={(e, v) => {
+				<RadioButtonGroup className='jazz-pre-create-content' valueSelected={this.state.val} onChange={(e, v) => {
 					this.setState({
 						val: v
 					});
@@ -53,4 +53,11 @@ export default class PreCreate extends Component {
 			</NewDialog>
 		);
 	}
+}
+
+PreCreate.PropTypes = {
+	onClose: PropTypes.func.isRequired, 
+	onSubmit: PropTypes.func.isRequired, 
+	isEdit: PropTypes.boolean,
+	EnergySystem: PropTypes.number,
 }
