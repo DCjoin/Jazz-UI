@@ -17,6 +17,7 @@ export default class TagSelect extends Component {
 		onCancel:React.PropTypes.func,
 		tag:React.PropTypes.object,
 		title:React.PropTypes.String,
+		filterTagIds:React.PropTypes.array,
 	};
 
 	static contextTypes = {
@@ -105,11 +106,16 @@ export default class TagSelect extends Component {
 				</tbody>
 			</table>
 		);
-		var content=(this.state.tags===null)?<div className="flex-center">{I18N.Setting.KPI.Tag.NoTags}</div>
+		let tags = this.state.tags,
+		filterTagIds = this.props.filterTagIds;
+		if( tags && filterTagIds ) {
+			tags = tags.filter(tag => filterTagIds.indexOf(tag.get('Id')) === -1);
+		}
+		var content=(tags===null)?<div className="flex-center">{I18N.Setting.KPI.Tag.NoTags}</div>
 																				: <table className='jazz-kpi-tag-tags-body'>
 																						<tbody style={{height:'320px'}}>
 																							{
-																								this.state.tags.map(tag=>{
+																								tags.map(tag=>{
 																									return(
 																										<tr className={classNames({
 		        																		'selected': this.state.selectedTag && tag.get('Id')===this.state.selectedTag.get('Id'),
