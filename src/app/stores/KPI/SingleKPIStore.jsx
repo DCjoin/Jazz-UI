@@ -22,8 +22,7 @@ import {
   DataStatus,
   Type
 } from '../../constants/actionType/KPI.jsx';
-import CommonFuns from '../../util/Util.jsx';
-
+import {isNumeric} from '../../util/Util.jsx';
 // let j2d = DataConverter.JsonToDateTime,
 //   d2j = DataConverter.DatetimeToJson;
 
@@ -374,7 +373,9 @@ const SingleKPIStore = assign({}, PrototypeStore, {
     }
     return yearList
   },
+  filterZero(value){
 
+  },
   validateQuota(value = '') {
     if (value === null) {
       value = ''
@@ -382,10 +383,11 @@ const SingleKPIStore = assign({}, PrototypeStore, {
     value = value === 0 || value ? value + '' : value;
     let temp = parseFloat(value);
     if (!value || value === '-') return true;
-    if (isNaN(temp)) return false;
-    if ((temp + '').length !== value.length || temp < 0 || value.indexOf('.') > -1) return false;
+    if (isNaN(value)) return false;
+    if ( temp < 0 || (value.indexOf('.') > -1 && value.length-value.indexOf('.')-1>2)) return false;
     return true
 
+    //(temp + '').length !== value.length
     // if(typeof value !== 'number' && !value) return false; //empty string, null, undefined
     //
     // if(isNaN(parseFloat(value))) return false; //not a number
