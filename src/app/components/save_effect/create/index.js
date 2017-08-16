@@ -294,6 +294,9 @@ export default class Create extends Component {
 					onDeleteItem={(idx, tagId) => {
 						deleteEnergyEffectTag(filterObj.get('EnergyProblemId'), tagId);
 						updateTags(this.state.tags.delete(idx));
+						if( tagId === filterObj.get('TagId') ) {
+							this._setFilterObj(filterObj.set('TagId', null));
+						}
 					}}
 					onAddItem={ (tag) => {
 							addEnergyEffectTag(filterObj.get('EnergyProblemId'), tag.get('Id'));
