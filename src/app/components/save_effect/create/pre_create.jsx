@@ -10,12 +10,12 @@ import NewFlatButton from 'controls/NewFlatButton.jsx';
 
 const getEnergySystem = () => [
     {label:I18N.Setting.Effect.AirConditioning,value:10},
-    {label:I18N.Setting.Effect.Power,value:20},
     {label:I18N.Setting.Effect.Lighting,value:30},
-    {label:I18N.Setting.Effect.Product,value:40},
-    {label:I18N.Setting.Effect.AirCompressor,value:50},
+    {label:I18N.Setting.Effect.Power,value:20},
     {label:I18N.Setting.Effect.Heating,value:60},
     {label:I18N.Setting.Effect.Water,value:70},
+    {label:I18N.Setting.Effect.AirCompressor,value:50},
+    {label:I18N.Setting.Effect.Product,value:40},
     {label:I18N.Setting.Effect.Other,value:200},
 ];
 
