@@ -163,7 +163,7 @@ export default class EffectList extends Component {
       btn:{
         height:'30px',
         width:'100px',
-        lineHeight:'30px',
+        lineHeight:'28px',
         marginLeft:'15px'
       },
       lable:{
