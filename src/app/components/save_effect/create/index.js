@@ -176,7 +176,7 @@ function Nav({step}) {
 	            <StepLabel {...stepLabelProps(0, step)}>{I18N.SaveEffect.Step1}</StepLabel>
 	          </Step>
 	          <Step>
-	            <StepLabel {...stepLabelProps(1, step)}>{I18N.SaveEffect.Step2}</StepLabel>
+	            <StepLabel {...stepLabelProps(1, step)}>{I18N.SaveEffect.Create.ConfigModel}</StepLabel>
 	          </Step>
 	          <Step>
 	            <StepLabel {...stepLabelProps(2, step)}>{I18N.SaveEffect.Step3}</StepLabel>
