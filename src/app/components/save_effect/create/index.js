@@ -268,7 +268,12 @@ export default class Create extends Component {
 		}
 	}
 	_setTagStepTip(calcStep) {
-		if( !checkStepByTag(this.state.filterObj.get('TagId'), calcStep) ) {
+		let propsStep = this.props.filterObj.get('Step')
+		if( 
+			propsStep ? 
+			!checkSupportStep(propsStep, calcStep) :
+			!checkStepByTag(this.state.filterObj.get('TagId'), calcStep) 
+		) {
 			this.setState((state, props) => {
 				return {
 					showStepTip: true
@@ -648,7 +653,7 @@ export default class Create extends Component {
 		return (
 			<div className='jazz-save-effect-create'>
 				<GetInitData action={() =>{
-					this._getInitData(this.props.ConfigStep);
+					this._getInitData(this.state.filterObj.get('ConfigStep'));
 				}}/>
 				<Header name={EnergySolutionName} timeStr={moment(ExecutedTime).add(8, 'hours').format('YYYY-MM-DD HH:mm')} onShowDetail={() => {
 					this.setState((state, props) => {
@@ -694,7 +699,7 @@ Create.PropTypes = {
 	onClose: PropTypes.func.isRequired,
 	onSubmitDone: PropTypes.func,
 	ConfigStep: PropTypes.number,
-	filterObj: PropTypes.object,
+	filterObj: PropTypes.object, //Draft Item
 };
 
 export function getDateObjByRange(startDate, endDate) {

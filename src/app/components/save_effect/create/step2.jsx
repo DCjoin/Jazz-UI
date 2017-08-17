@@ -8,7 +8,7 @@ import moment from 'moment';
 import TimeGranularity from 'constants/TimeGranularity.jsx';
 import {Model} from 'constants/actionType/Effect.jsx';
 
-import Util from 'util/Util.jsx';
+import Util, {dateAdd} from 'util/Util.jsx';
 
 import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
 import ViewableDatePicker from 'controls/ViewableDatePicker.jsx';
@@ -37,6 +37,58 @@ let getStepDataItems = () => [
 export default class Step2 extends Component {
 	constructor(props) {
 		super(props);
+	}
+	OnNavigatorChanged (obj) {
+		var chart = obj.target.chart,
+		  scroller = chart.scroller,
+		  min = obj.min,
+		  max = obj.max,
+		  start = Math.round(min),
+		  end = Math.round(max),
+		  type = 'resize',
+		  startTime,
+		  endTime;
+
+		if (scroller.grabbedLeft) {
+		  startTime = new Date(start);
+		  startTime.setMinutes(0, 0, 0);
+		  endTime = new Date(end);
+		  endTime.setMinutes(0, 0, 0);
+		  this.needRollback = true;
+		} else if (scroller.grabbedRight) {
+		  endTime = new Date(end);
+		  endTime.setMinutes(0, 0, 0);
+
+		  startTime = new Date(start);
+		  startTime.setMinutes(0, 0, 0);
+		  this.needRollback = true;
+		} else {
+		  startTime = new Date(start);
+		  startTime.setMinutes(0, 0, 0);
+		  endTime = new Date(end);
+		  endTime.setMinutes(0, 0, 0);
+		  type = 'move';
+		}
+
+		if (startTime > endTime) {
+		  startTime = new Date(start);
+		  startTime.setMinutes(0, 0, 0);
+		  endTime = new Date(end);
+		  endTime.setMinutes(0, 0, 0);
+		}
+
+		if (startTime.getTime() == endTime.getTime()) {
+		  if (scroller.grabbedLeft) {
+		    startTime = dateAdd(endTime, -1, 'hours');
+		  } else {
+		    endTime = dateAdd(startTime, 1, 'hours');
+		  }
+		}
+		console.log(startTime, endTime);
+		// if (this.state.chartStrategy.handleNavigatorChangeTimeFn) {
+		//   this.state.chartStrategy.handleNavigatorChangeTimeFn(startTime, endTime);
+		// }
+		// this.dateChanged(chart, startTime, endTime, type);
 	}
 	render() {
 		let { data, disabledPreview, BenchmarkModel, BenchmarkStartDate, BenchmarkEndDate, CalculationStep, onChangeModelType, onChangeStep, onChangeBenchmarkStartDate, onChangeBenchmarkEndDate, onGetChartData, IncludeEnergyEffectData  } = this.props,
