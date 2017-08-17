@@ -21,6 +21,8 @@ import {Model} from 'constants/actionType/Effect.jsx';
 import NewDialog from 'controls/NewDialog.jsx';
 import NewFlatButton from 'controls/NewFlatButton.jsx';
 
+import {binarySearch} from 'util/algorithm';
+
 import PreCreate from './pre_create.jsx';
 import Step1 from './step1.jsx';
 import Step2 from './step2.jsx';
@@ -78,8 +80,25 @@ function checkStepByTag(tagId, calcStep) {
 	return checkSupportStep( CreateStore.getTagsByPlan().find(tag => tag.get('TagId') === tagId).get('Step'), calcStep)
 }
 
+function getDataByNavgatorData(startTime, endTime, chartData) {
+	startTime = startTime.split(' ').join('T');
+	endTime = endTime.split(' ').join('T');
+	let start = binarySearch((item) => {
+		if( item.get('UtcTime') > startTime ) {
+			return -1;
+		} else if( item.get('UtcTime') < startTime ) {
+			return 1;
+		} else {
+			return 0;
+		}
+	}, chartData.getIn(['NavigatorData', 'EnergyData']));
+	if( start ) {
+		console.log(start.toJS());
+	}
+}
+
 function date2UTC(date) {
-	return date ? moment(date).utcOffset(0).format('YYYY-MM-DD HH:mm:ss') : '';
+	return date ? moment(date).startOf('day').utcOffset(0).format('YYYY-MM-DD HH:mm:ss') : '';
 }
 function UTC2Local(date) {
 	return date ? moment(date).add(8, 'hours').format('YYYY-MM-DD') : '';
@@ -268,7 +287,7 @@ export default class Create extends Component {
 		}
 	}
 	_setTagStepTip(calcStep) {
-		if( this._checkStepByTag(calcStep) ) {
+		if( !this._checkStepByTag(calcStep) ) {
 			this.setState((state, props) => {
 				return {
 					showStepTip: true
@@ -279,8 +298,8 @@ export default class Create extends Component {
 	_checkStepByTag(calcStep) {
 		let propsStep = this.props.filterObj.Step;
 		return propsStep ? 
-			!checkSupportStep(propsStep, calcStep) :
-			!checkStepByTag(this.state.filterObj.get('TagId'), calcStep);
+			checkSupportStep(propsStep, calcStep) :
+			checkStepByTag(this.state.filterObj.get('TagId'), calcStep);
 	}
 	_checkCanNext() {		
 		switch( this.state.filterObj.get('ConfigStep') ) {
@@ -432,7 +451,18 @@ export default class Create extends Component {
 						getPreviewChart2(newFilterObj.toJS());
 					}}
 					updateChartByNavgatorData={() => {
-						console.log(this.state.filterObj.get('BenchmarkStartDate'));
+						let {filterObj, chartData2} = this.state;
+						this.setState((state, props) => {
+							return {								
+								chartData2: chartData2.setIn(['TargetEnergyData', 0, 'EnergyData'],
+									getDataByNavgatorData( 
+										filterObj.get('BenchmarkStartDate'), 
+										filterObj.get('BenchmarkStartDate'),
+										chartData2
+									)
+								)
+							}
+						});
 					}}
 				/>);
 				break;
