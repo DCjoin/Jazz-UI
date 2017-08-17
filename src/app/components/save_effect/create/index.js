@@ -93,7 +93,14 @@ function getDataByNavgatorData(startTime, endTime, chartData) {
 		}
 	}, chartData.getIn(['NavigatorData', 'EnergyData']));
 	if( start ) {
-		console.log(start.toJS());
+		let startIndex = start.get('index'),
+		EnergyData = chartData.getIn(['NavigatorData', 'EnergyData']),
+		EnergyDataSize = EnergyData.size,
+		result = [];
+		while( endTime >= EnergyData.getIn([startIndex, 'UtcTime']) ) {
+			result.push(EnergyData.get(startIndex++));
+		}
+		return Immutable.fromJS(result);
 	}
 }
 
@@ -169,7 +176,7 @@ function Nav({step}) {
 	            <StepLabel {...stepLabelProps(0, step)}>{I18N.SaveEffect.Step1}</StepLabel>
 	          </Step>
 	          <Step>
-	            <StepLabel {...stepLabelProps(1, step)}>{I18N.SaveEffect.Step2}</StepLabel>
+	            <StepLabel {...stepLabelProps(1, step)}>{I18N.SaveEffect.Create.ConfigModel}</StepLabel>
 	          </Step>
 	          <Step>
 	            <StepLabel {...stepLabelProps(2, step)}>{I18N.SaveEffect.Step3}</StepLabel>
@@ -413,7 +420,7 @@ export default class Create extends Component {
 						this._setFilterObj(filterObj.set('CalculationStep', step));
 						this._setTagStepTip( step );
 					}}
-					onChangeBenchmarkStartDate={(val) => {
+					onChangeBenchmarkStartDate={(val, callback) => {
 						val = date2UTC(val);
 						filterObj = filterObj.set('BenchmarkStartDate', val);
 						let startTime = moment(val),
@@ -426,6 +433,10 @@ export default class Create extends Component {
 						}
 						if(endTime.format('YYYY-MM-DD HH:mm:ss') !== BenchmarkEndDate) {
 							filterObj = filterObj.set('BenchmarkEndDate', endTime.format('YYYY-MM-DD HH:mm:ss'))
+						}
+						if( callback && typeof callback === 'function' ) {
+							let chartData2State = callback(filterObj);
+							this.setState(chartData2State);
 						}
 						this._setFilterObj(filterObj);
 					}}
@@ -450,9 +461,9 @@ export default class Create extends Component {
 						this._setFilterObj(newFilterObj);
 						getPreviewChart2(newFilterObj.toJS());
 					}}
-					updateChartByNavgatorData={() => {
-						let {filterObj, chartData2} = this.state;
-						this.setState((state, props) => {
+					updateChartByNavgatorData={(filterObj) => {
+						let {chartData2} = this.state;
+						// this.setState((state, props) => {
 							return {								
 								chartData2: chartData2.setIn(['TargetEnergyData', 0, 'EnergyData'],
 									getDataByNavgatorData( 
@@ -462,7 +473,7 @@ export default class Create extends Component {
 									)
 								)
 							}
-						});
+						// });
 					}}
 				/>);
 				break;
@@ -675,8 +686,8 @@ export default class Create extends Component {
 	  )
 	}
 	render() {
-		let { onClose } = this.props,
-		{EnergyProblemId, EnergySolutionName, ExecutedTime, EnergySystem} = this.state.filterObj.toJS();
+		let { onClose, filterObj } = this.props,
+		{EnergyProblemId, EnergySolutionName, ExecutedTime, EnergySystem, ConfigStep, UomId, TagId, TagName} = this.state.filterObj.toJS();
 		if( !EnergySystem ) {
 			return <PreCreate onClose={() => {
 				onClose(false);
@@ -689,7 +700,22 @@ export default class Create extends Component {
 				<GetInitData action={() =>{
 					this._getInitData(this.state.filterObj.get('ConfigStep'));
 				}}/>
-				<Header name={EnergySolutionName} timeStr={moment(ExecutedTime).add(8, 'hours').format('YYYY-MM-DD HH:mm')} onShowDetail={() => {
+				<Header name={
+					EnergySolutionName + (
+						ConfigStep > 1 ? 
+						' - '
+						 + (
+						 	TagName ? TagName :
+						 	this.state.tags.find(tag => tag.get('TagId') === TagId).get('Name')
+						 )
+						 + '（' + (
+							UomId ? UOMStore.getUomById(UomId) : 
+							(this.state.chartData2 ? getUomByChartData(this.state.chartData2) : '')
+						) + '）'
+						: ''
+					)
+
+				} timeStr={moment(ExecutedTime).add(8, 'hours').format('YYYY-MM-DD HH:mm')} onShowDetail={() => {
 					this.setState((state, props) => {
 						return { measureShow: true };
 					});

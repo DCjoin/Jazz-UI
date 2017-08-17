@@ -104,16 +104,16 @@ export default class Step2 extends Component {
 				timeoutID = setTimeout(() => {
 					this.props.onChangeBenchmarkStartDate(startTime);
 					this.props.onChangeBenchmarkEndDate(endTime);
-					this.props.updateChartByNavgatorData();
+					// this.props.updateChartByNavgatorData();
 					timeoutID = null;
 				}, 300);
 			} else {				
 				this.props.onChangeBenchmarkStartDate(startTime);
-				this.props.updateChartByNavgatorData();
+				// this.props.updateChartByNavgatorData();
 			}
 		} else if( rightChange ) {
 				this.props.onChangeBenchmarkEndDate(endTime);
-				this.props.updateChartByNavgatorData();
+				// this.props.updateChartByNavgatorData();
 		}
 	}
 	render() {
@@ -154,6 +154,8 @@ export default class Step2 extends Component {
 						}
 						return serie;
 					});
+					newConfig.stacking = null;
+					newConfig.legendSwitchList = ['line', 'column'];
 					return newConfig;
 				},
 				afterChartCreated: this._afterChartCreated
