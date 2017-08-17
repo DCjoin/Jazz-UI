@@ -93,6 +93,7 @@ export default class Step1 extends Component {
 				{this.state.showSeleteTagDlg && 
 				<TagSelect
 					allTag
+					title={'选择数据点'}
 					filterTagIds={tags.map(tag => tag.get('TagId'))}
 					hierarchyId={this.context.hierarchyId * 1}
 					hierarchyName={
