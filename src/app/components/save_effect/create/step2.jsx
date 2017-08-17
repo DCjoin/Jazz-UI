@@ -34,10 +34,13 @@ let getStepDataItems = () => [
 	{ id: TimeGranularity.Monthly, label: I18N.EM.Month },
 ];
 
+let timeoutID = null;
+
 export default class Step2 extends Component {
 	constructor(props) {
 		super(props);
 		this._afterChartCreated = this._afterChartCreated.bind(this);
+		this.OnNavigatorChanged = this.OnNavigatorChanged.bind(this);
 	}
   _afterChartCreated(chartObj) {
     if (chartObj.options.scrollbar && chartObj.options.scrollbar.enabled) {
@@ -95,18 +98,23 @@ export default class Step2 extends Component {
 		}
 		if( leftChange ) {
 			if( rightChange ) {
-				console.log('both');
+				if( timeoutID ) {
+					clearTimeout(timeoutID);
+				}
+				timeoutID = setTimeout(() => {
+					this.props.onChangeBenchmarkStartDate(startTime);
+					this.props.onChangeBenchmarkEndDate(endTime);
+					this.props.updateChartByNavgatorData();
+					timeoutID = null;
+				}, 300);
 			} else {				
-				console.log('left');
+				this.props.onChangeBenchmarkStartDate(startTime);
+				this.props.updateChartByNavgatorData();
 			}
 		} else if( rightChange ) {
-			console.log('right');
+				this.props.onChangeBenchmarkEndDate(endTime);
+				this.props.updateChartByNavgatorData();
 		}
-		console.log(startTime, endTime);
-		// if (this.state.chartStrategy.handleNavigatorChangeTimeFn) {
-		//   this.state.chartStrategy.handleNavigatorChangeTimeFn(startTime, endTime);
-		// }
-		// this.dateChanged(chart, startTime, endTime, type);
 	}
 	render() {
 		let { data, disabledPreview, BenchmarkModel, BenchmarkStartDate, BenchmarkEndDate, CalculationStep, onChangeModelType, onChangeStep, onChangeBenchmarkStartDate, onChangeBenchmarkEndDate, onGetChartData, IncludeEnergyEffectData  } = this.props,

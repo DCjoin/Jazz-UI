@@ -431,6 +431,9 @@ export default class Create extends Component {
 						this._setFilterObj(newFilterObj);
 						getPreviewChart2(newFilterObj.toJS());
 					}}
+					updateChartByNavgatorData={() => {
+						console.log(this.state.filterObj.get('BenchmarkStartDate'));
+					}}
 				/>);
 				break;
 			}
