@@ -37,8 +37,17 @@ let getStepDataItems = () => [
 export default class Step2 extends Component {
 	constructor(props) {
 		super(props);
+		this._afterChartCreated = this._afterChartCreated.bind(this);
 	}
+  _afterChartCreated(chartObj) {
+    if (chartObj.options.scrollbar && chartObj.options.scrollbar.enabled) {
+      chartObj.xAxis[0].bind('setExtremes', this.OnNavigatorChanged);
+    }
+  }
 	OnNavigatorChanged (obj) {
+		let leftChange = obj.min !== obj.target.min,
+				rightChange = obj.max !== obj.target.max;
+
 		var chart = obj.target.chart,
 		  scroller = chart.scroller,
 		  min = obj.min,
@@ -83,6 +92,15 @@ export default class Step2 extends Component {
 		  } else {
 		    endTime = dateAdd(startTime, 1, 'hours');
 		  }
+		}
+		if( leftChange ) {
+			if( rightChange ) {
+				console.log('both');
+			} else {				
+				console.log('left');
+			}
+		} else if( rightChange ) {
+			console.log('right');
 		}
 		console.log(startTime, endTime);
 		// if (this.state.chartStrategy.handleNavigatorChangeTimeFn) {
@@ -129,7 +147,8 @@ export default class Step2 extends Component {
 						return serie;
 					});
 					return newConfig;
-				}
+				},
+				afterChartCreated: this._afterChartCreated
 			};
 		  let target = data.getIn(['TargetEnergyData', 0, 'Target'])
 		  if( target && target.get('TimeSpan') && target.get('TimeSpan').size > 0 ) {

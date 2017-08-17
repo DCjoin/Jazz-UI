@@ -268,12 +268,7 @@ export default class Create extends Component {
 		}
 	}
 	_setTagStepTip(calcStep) {
-		let propsStep = this.props.filterObj.get('Step')
-		if( 
-			propsStep ? 
-			!checkSupportStep(propsStep, calcStep) :
-			!checkStepByTag(this.state.filterObj.get('TagId'), calcStep) 
-		) {
+		if( this._checkStepByTag(calcStep) ) {
 			this.setState((state, props) => {
 				return {
 					showStepTip: true
@@ -281,13 +276,19 @@ export default class Create extends Component {
 			});
 		}
 	}
+	_checkStepByTag(calcStep) {
+		let propsStep = this.props.filterObj.Step;
+		return propsStep ? 
+			!checkSupportStep(propsStep, calcStep) :
+			!checkStepByTag(this.state.filterObj.get('TagId'), calcStep);
+	}
 	_checkCanNext() {		
 		switch( this.state.filterObj.get('ConfigStep') ) {
 			case 1:
 				return this.state.filterObj.get('TagId');
 				break;
 			case 2:
-				return this.state.chartData2 && checkStepByTag(this.state.filterObj.get('TagId'), this.state.filterObj.get('CalculationStep'));
+				return this.state.chartData2 && this._checkStepByTag(this.state.filterObj.get('CalculationStep'));
 				break;
 			case 3:
 				let {EnergyStartDate, EnergyEndDate, EnergyUnitPrice, BenchmarkDatas, BenchmarkModel} = this.state.filterObj.toJS();
