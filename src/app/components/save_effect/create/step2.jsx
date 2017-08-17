@@ -154,6 +154,8 @@ export default class Step2 extends Component {
 						}
 						return serie;
 					});
+					newConfig.stacking = null;
+					newConfig.legendSwitchList = ['line', 'column'];
 					return newConfig;
 				},
 				afterChartCreated: this._afterChartCreated
