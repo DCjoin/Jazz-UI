@@ -8,7 +8,7 @@ import moment from 'moment';
 import TimeGranularity from 'constants/TimeGranularity.jsx';
 import {Model} from 'constants/actionType/Effect.jsx';
 
-import Util from 'util/Util.jsx';
+import Util, {dateAdd} from 'util/Util.jsx';
 
 import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
 import ViewableDatePicker from 'controls/ViewableDatePicker.jsx';
@@ -34,9 +34,87 @@ let getStepDataItems = () => [
 	{ id: TimeGranularity.Monthly, label: I18N.EM.Month },
 ];
 
+let timeoutID = null;
+
 export default class Step2 extends Component {
 	constructor(props) {
 		super(props);
+		this._afterChartCreated = this._afterChartCreated.bind(this);
+		this.OnNavigatorChanged = this.OnNavigatorChanged.bind(this);
+	}
+  _afterChartCreated(chartObj) {
+    if (chartObj.options.scrollbar && chartObj.options.scrollbar.enabled) {
+      chartObj.xAxis[0].bind('setExtremes', this.OnNavigatorChanged);
+    }
+  }
+	OnNavigatorChanged (obj) {
+		let leftChange = obj.min !== obj.target.min,
+				rightChange = obj.max !== obj.target.max;
+
+		var chart = obj.target.chart,
+		  scroller = chart.scroller,
+		  min = obj.min,
+		  max = obj.max,
+		  start = Math.round(min),
+		  end = Math.round(max),
+		  type = 'resize',
+		  startTime,
+		  endTime;
+
+		if (scroller.grabbedLeft) {
+		  startTime = new Date(start);
+		  startTime.setMinutes(0, 0, 0);
+		  endTime = new Date(end);
+		  endTime.setMinutes(0, 0, 0);
+		  this.needRollback = true;
+		} else if (scroller.grabbedRight) {
+		  endTime = new Date(end);
+		  endTime.setMinutes(0, 0, 0);
+
+		  startTime = new Date(start);
+		  startTime.setMinutes(0, 0, 0);
+		  this.needRollback = true;
+		} else {
+		  startTime = new Date(start);
+		  startTime.setMinutes(0, 0, 0);
+		  endTime = new Date(end);
+		  endTime.setMinutes(0, 0, 0);
+		  type = 'move';
+		}
+
+		if (startTime > endTime) {
+		  startTime = new Date(start);
+		  startTime.setMinutes(0, 0, 0);
+		  endTime = new Date(end);
+		  endTime.setMinutes(0, 0, 0);
+		}
+
+		if (startTime.getTime() == endTime.getTime()) {
+		  if (scroller.grabbedLeft) {
+		    startTime = dateAdd(endTime, -1, 'hours');
+		  } else {
+		    endTime = dateAdd(startTime, 1, 'hours');
+		  }
+		}
+		if( leftChange ) {
+			if( rightChange ) {
+				if( timeoutID ) {
+					clearTimeout(timeoutID);
+				}
+				timeoutID = setTimeout(() => {
+					this.props.onChangeBenchmarkStartDate(startTime);
+					this.props.onChangeBenchmarkEndDate(endTime);
+					this.props.updateChartByNavgatorData();
+					timeoutID = null;
+				}, 300);
+			} else {				
+				this.props.onChangeBenchmarkStartDate(startTime);
+				this.props.updateChartByNavgatorData();
+			}
+		} else if( rightChange ) {
+				this.props.onChangeBenchmarkEndDate(endTime);
+				this.props.updateChartByNavgatorData();
+		}
 	}
 	render() {
 		let { data, disabledPreview, BenchmarkModel, BenchmarkStartDate, BenchmarkEndDate, CalculationStep, onChangeModelType, onChangeStep, onChangeBenchmarkStartDate, onChangeBenchmarkEndDate, onGetChartData, IncludeEnergyEffectData  } = this.props,
@@ -77,7 +155,8 @@ export default class Step2 extends Component {
 						return serie;
 					});
 					return newConfig;
-				}
+				},
+				afterChartCreated: this._afterChartCreated
 			};
 		  let target = data.getIn(['TargetEnergyData', 0, 'Target'])
 		  if( target && target.get('TimeSpan') && target.get('TimeSpan').size > 0 ) {
