@@ -58,7 +58,7 @@ export class ItemForConsultant extends Component {
     return(
       <div className="jazz-effect-item-info-title">
         <span className="isPreferred"></span>
-        <span className="name">{EnergySolutionName}</span>
+        <span className="name" title={EnergySolutionName}>{EnergySolutionName}</span>
         {CalcState!==null && (CalcState===calcState.Being?<CalculatingIcon/>:<CalculatedIcon/>)}
       </div>
     )
@@ -130,7 +130,7 @@ export class ItemForManager extends Component {
     return(
       <div className="jazz-effect-item-info-title">
         <span className="isPreferred"></span>
-        <span className="name">{EnergySolutionName}</span>
+        <span className="name" title={EnergySolutionName}>{EnergySolutionName}</span>
         {CalcState!==null && (CalcState===calcState.Being?<CalculatingIcon/>:<CalculatedIcon/>)}
       </div>
     )
