@@ -110,14 +110,14 @@ export default class EffectDetail extends Component {
               {this.props.canEdit && <div className="operation" onClick={this._onEnergySystemDialogShow.bind(this)}>{I18N.Baseline.Button.Edit}</div>}
             </span>
             <span>
-              <FontIcon className="icon-calendar1" style={{fontSize:'14px',marginRight:'10px'}}/>
+              <FontIcon className="icon-calendar1" style={{fontSize:'14px',marginRight:'10px',lineHeight:'14px'}} color="#434343"/>
               <div className="font">
                 <span>{moment(util.DataConverter.JsonToDateTime(ExecutedTime)).format(I18N.DateTimeFormat.IntervalFormat.FullDateMinute)}</span>
                 <span>{I18N.Setting.Effect.Start}</span>
               </div>
-              <div style={{margin:'0 20px'}}>|</div>
+              <div style={{margin:'0 20px'}} className="font">|</div>
               {CalcState===calcState.Being?<FontIcon className="icon-sandglass" style={{fontSize:'14px'}}/>
-            :<FontIcon className="icon-sync-ok" style={{fontSize:'14px'}}/>}
+						:<FontIcon className="icon-sync-ok" style={{fontSize:'14px',lineHeight:'14px'}} color="#434343"/>}
                 <div className="font" style={{marginLeft:'5px'}}>
                   {CalcState===calcState.Being?`${I18N.MainMenu.SaveEffect}${I18N.SaveEffect.Calculating}`
                     :`${I18N.MainMenu.SaveEffect}${I18N.SaveEffect.Calculated}`}
@@ -146,7 +146,7 @@ export default class EffectDetail extends Component {
       btn:{
         height:'30px',
         width:'100px',
-        lineHeight:'30px',
+        lineHeight:'28px',
         marginLeft:'15px'
       },
       lable:{
@@ -158,8 +158,9 @@ export default class EffectDetail extends Component {
 				width: "73px",
 				minWidth:'73px',
   			height: "30px",
-				lineHeight:'30px',
-				paddding:0
+				lineHeight:'28px',
+				paddding:0,
+				marginLeft:'12px'
 			}
     },
     editProps = {
@@ -309,7 +310,7 @@ export default class EffectDetail extends Component {
 					{this._renderSubTitle()}
 					{this._renderContent()}
 					{this.state.deleteConfirmShow && this._renderDeleteDialog()}
-					{this.state.energySystemDialogShow && 
+					{this.state.energySystemDialogShow &&
 					<PreCreate isEdit
 						EnergySystem={EnergySystem}
 						onClose={()=>{this.setState({energySystemDialogShow:false})}}

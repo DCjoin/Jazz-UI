@@ -22,7 +22,8 @@ class CalculatingIcon extends Component{
   render(){
     var iconStyle={
       fontSize:'10px',
-      marginRight:'3px'
+      marginRight:'3px',
+      backgroundColor:"transparent"
     }
     return(
       <div className="icon-calculating">
@@ -38,7 +39,8 @@ class CalculatedIcon extends Component{
   render(){
     var iconStyle={
       fontSize:'10px',
-      marginRight:'3px'
+      marginRight:'3px',
+      backgroundColor:"transparent"
     }
     return(
       <div className="icon-calculated">
@@ -66,22 +68,22 @@ export class ItemForConsultant extends Component {
     var {ExecutedTime,EnergySystem,ConfigedTagCount,TotalTagCount,AnnualCostSaving}=this.props.effect.toJS();
     return(
       <div className="jazz-effect-item-info-subTitle">
-        <span>
+        <div>
           <span>{moment(util.DataConverter.JsonToDateTime(ExecutedTime)).format(I18N.DateTimeFormat.IntervalFormat.FullDate)}</span>
           <span>{I18N.Setting.Effect.Start}</span>
           {ConfigedTagCount>0 && <span>|</span>}
           {ConfigedTagCount>0 && <span>{ListStore.getEnergySystem(EnergySystem)}</span>}
-        </span>
-        {ConfigedTagCount>0 && <span>
+        </div>
+        {ConfigedTagCount>0 && <div>
           <span>{I18N.Setting.Effect.ConfiguredTag}</span>
           <span style={{color:"#000000"}}>{ConfigedTagCount}</span>
           <span>{`/${TotalTagCount}`}</span>
           <span>{ConfigedTagCount===TotalTagCount && <FontIcon className="icon-check-circle" color="#32ad3d" style={{fontSize:'14px',marginLeft:'10px'}}/>}</span>
-        </span>}
-        {ConfigedTagCount>0 && <span>
+        </div>}
+        {ConfigedTagCount>0 && <div>
           <span>{I18N.Setting.Effect.Cost}</span>
           <span style={{color:"#000000"}}>{`${validValue(AnnualCostSaving)} RMB`}</span>
-        </span>}
+        </div>}
       </div>
     )
   }
@@ -138,12 +140,12 @@ export class ItemForManager extends Component {
     var {ExecutedTime,EnergySystem}=this.props.effect.toJS();
     return(
       <div className="jazz-effect-item-info-subTitle">
-        <span>
+        <div>
           <span>{moment(util.DataConverter.JsonToDateTime(ExecutedTime)).format(I18N.DateTimeFormat.IntervalFormat.FullDate)}</span>
           <span>{I18N.Setting.Effect.Start}</span>
           {EnergySystem && <span>|</span>}
           {EnergySystem && <span>{ListStore.getEnergySystem(EnergySystem)}</span>}
-        </span>
+        </div>
       </div>
     )
   }

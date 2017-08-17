@@ -117,7 +117,7 @@ export default class EffectList extends Component {
 		var overallEl=ReactDom.findDOMNode(this.refs.list).getClientRects()[0],
 				listEl=ReactDom.findDOMNode(this.refs.content).getClientRects()[0],
 				overallHeight=overallEl.height,
-				headHeight=listEl.top-overallEl.top,
+				headHeight=listEl.top-overallEl.top+ReactDom.findDOMNode(this.refs.list).scrollTop,
 				listHeigt=listEl.height,
 				index=this.state.effect.get('EnergyEffects').findIndex(item=>item.get("EnergyProblemId")===this.state.configEnergyProblemId),
 				heightArr=this.state.effect.get('EnergyEffects')
@@ -126,7 +126,7 @@ export default class EffectList extends Component {
 				currentHeight=heightArr.getIn([index]),
 				lastListHeight=heightArr.takeLast(this.state.effect.get('EnergyEffects').size-index-1).reduce((pre,cur)=>pre+cur);
 
-		if(lastListHeight+currentHeight/2<=listHeigt/2) return;
+		// if(lastListHeight+currentHeight/2<=listHeigt/2) return;
 
 		ReactDom.findDOMNode(this.refs.list).scrollTop=headHeight+preListHeight+currentHeight/2-overallHeight/2;
 
@@ -148,7 +148,7 @@ export default class EffectList extends Component {
   }
 
 	componentDidUpdate(prevProps,prevState) {
-			if(this.state.configEnergyProblemId!==prevState.configEnergyProblemId && this.refs.list && this.refs.content){
+			if(this.state.configEnergyProblemId && this.refs.list && this.refs.content){
 				this._onScrollConfigEffect()
 			}
 		}
@@ -163,7 +163,7 @@ export default class EffectList extends Component {
       btn:{
         height:'30px',
         width:'100px',
-        lineHeight:'30px',
+        lineHeight:'28px',
         marginLeft:'15px'
       },
       lable:{
@@ -258,7 +258,6 @@ export default class EffectList extends Component {
 											getenergyeffect(this.context.hierarchyId)
 										})
 									}
-
     						}}/>}
               {this.state.createShow && false && <PreCreate onClose={() => {}} onSubmit={(energySys) => {
                 configEnergySystem(
