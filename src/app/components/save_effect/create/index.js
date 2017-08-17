@@ -268,7 +268,7 @@ export default class Create extends Component {
 		}
 	}
 	_setTagStepTip(calcStep) {
-		if( !checkStepByTag(this.state.filterObj.get('TagId'), calcStep) ) {
+		if( this._checkStepByTag(calcStep) ) {
 			this.setState((state, props) => {
 				return {
 					showStepTip: true
@@ -276,13 +276,19 @@ export default class Create extends Component {
 			});
 		}
 	}
+	_checkStepByTag(calcStep) {
+		let propsStep = this.props.filterObj.Step;
+		return propsStep ? 
+			!checkSupportStep(propsStep, calcStep) :
+			!checkStepByTag(this.state.filterObj.get('TagId'), calcStep);
+	}
 	_checkCanNext() {		
 		switch( this.state.filterObj.get('ConfigStep') ) {
 			case 1:
 				return this.state.filterObj.get('TagId');
 				break;
 			case 2:
-				return this.state.chartData2 && checkStepByTag(this.state.filterObj.get('TagId'), this.state.filterObj.get('CalculationStep'));
+				return this.state.chartData2 && this._checkStepByTag(this.state.filterObj.get('CalculationStep'));
 				break;
 			case 3:
 				let {EnergyStartDate, EnergyEndDate, EnergyUnitPrice, BenchmarkDatas, BenchmarkModel} = this.state.filterObj.toJS();
@@ -424,6 +430,9 @@ export default class Create extends Component {
 						let newFilterObj = filterObj.set('IncludeEnergyEffectData', true);
 						this._setFilterObj(newFilterObj);
 						getPreviewChart2(newFilterObj.toJS());
+					}}
+					updateChartByNavgatorData={() => {
+						console.log(this.state.filterObj.get('BenchmarkStartDate'));
 					}}
 				/>);
 				break;
@@ -648,7 +657,7 @@ export default class Create extends Component {
 		return (
 			<div className='jazz-save-effect-create'>
 				<GetInitData action={() =>{
-					this._getInitData(this.props.ConfigStep);
+					this._getInitData(this.state.filterObj.get('ConfigStep'));
 				}}/>
 				<Header name={EnergySolutionName} timeStr={moment(ExecutedTime).add(8, 'hours').format('YYYY-MM-DD HH:mm')} onShowDetail={() => {
 					this.setState((state, props) => {
@@ -694,7 +703,7 @@ Create.PropTypes = {
 	onClose: PropTypes.func.isRequired,
 	onSubmitDone: PropTypes.func,
 	ConfigStep: PropTypes.number,
-	filterObj: PropTypes.object,
+	filterObj: PropTypes.object, //Draft Item
 };
 
 export function getDateObjByRange(startDate, endDate) {

@@ -228,8 +228,8 @@ export default class ChartBasicComponent extends Component {
         },
       },
       plotBands: plotBands,
-      afterChartCreated: () => { 
-        Util.isFunction(this.props.afterChartCreated) && this.props.afterChartCreated() 
+      afterChartCreated: (chartObj) => { 
+        Util.isFunction(this.props.afterChartCreated) && this.props.afterChartCreated(chartObj) 
       },
       assignStatus: (config) => {
         return widgetSeriesArray ? 
