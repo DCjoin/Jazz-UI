@@ -686,8 +686,8 @@ export default class Create extends Component {
 	  )
 	}
 	render() {
-		let { onClose } = this.props,
-		{EnergyProblemId, EnergySolutionName, ExecutedTime, EnergySystem} = this.state.filterObj.toJS();
+		let { onClose, filterObj } = this.props,
+		{EnergyProblemId, EnergySolutionName, ExecutedTime, EnergySystem, ConfigStep, UomId, TagId, TagName} = this.state.filterObj.toJS();
 		if( !EnergySystem ) {
 			return <PreCreate onClose={() => {
 				onClose(false);
@@ -700,7 +700,22 @@ export default class Create extends Component {
 				<GetInitData action={() =>{
 					this._getInitData(this.state.filterObj.get('ConfigStep'));
 				}}/>
-				<Header name={EnergySolutionName} timeStr={moment(ExecutedTime).add(8, 'hours').format('YYYY-MM-DD HH:mm')} onShowDetail={() => {
+				<Header name={
+					EnergySolutionName + (
+						ConfigStep > 1 ? 
+						' - '
+						 + (
+						 	TagName ? TagName :
+						 	this.state.tags.find(tag => tag.get('TagId') === TagId).get('Name')
+						 )
+						 + '（' + (
+							UomId ? UOMStore.getUomById(UomId) : 
+							(this.state.chartData2 ? getUomByChartData(this.state.chartData2) : '')
+						) + '）'
+						: ''
+					)
+
+				} timeStr={moment(ExecutedTime).add(8, 'hours').format('YYYY-MM-DD HH:mm')} onShowDetail={() => {
 					this.setState((state, props) => {
 						return { measureShow: true };
 					});
