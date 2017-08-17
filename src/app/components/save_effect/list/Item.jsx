@@ -22,7 +22,8 @@ class CalculatingIcon extends Component{
   render(){
     var iconStyle={
       fontSize:'10px',
-      marginRight:'3px'
+      marginRight:'3px',
+      backgroundColor:"transparent"
     }
     return(
       <div className="icon-calculating">
@@ -38,7 +39,8 @@ class CalculatedIcon extends Component{
   render(){
     var iconStyle={
       fontSize:'10px',
-      marginRight:'3px'
+      marginRight:'3px',
+      backgroundColor:"transparent"
     }
     return(
       <div className="icon-calculated">
