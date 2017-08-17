@@ -23,7 +23,7 @@ function TagItem({tag, selectedId, onClick, onDelete, idx}) {
 		<div style={{display: 'flex', marginBottom: 5}}>
 			<RadioButton 
 				checked={selectedId === tag.get('TagId')}
-				style={{display: 'inline-block', flex: 1, fontSize: '14px'}} 
+				style={{display: 'inline-block', width: 'auto', fontSize: '14px'}} 
 				labelStyle={{color: '#434343'}}
 				label={tag.get('Name')} 
 				onClick={() => {
