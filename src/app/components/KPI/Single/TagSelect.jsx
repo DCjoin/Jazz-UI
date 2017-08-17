@@ -48,10 +48,10 @@ export default class TagSelect extends Component {
 
 	_getTags(id){
 		if(!this.props.tag){
-			TagSelectAction.getTags(this.props.hierarchyId,id,this.context.router.params.customerId)
+			TagSelectAction.getTags(!!this.props.allTag, this.props.hierarchyId,id,this.context.router.params.customerId)
 		}
 		else {
-			TagSelectAction.getTags(this.props.hierarchyId,id,this.context.router.params.customerId,
+			TagSelectAction.getTags(!!this.props.allTag, this.props.hierarchyId,id,this.context.router.params.customerId,
 				this.props.tag.get('CommodityId'))
 		}
 	}
