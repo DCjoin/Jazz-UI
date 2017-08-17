@@ -408,13 +408,16 @@ export default class Create extends Component {
 							filterObj = filterObj.set('ContrastStep', TimeGranularity.Daily);
 
 						}
-						filterObj
-							.set('PredictionDatas', null)
+						filterObj = filterObj
+							.set('IncludeEnergyEffectData', null)
 							.set('PredictionDatas', null)
 							.set('EnergyUnitPrice', '')
 							.set('EnergyStartDate', null)
 							.set('EnergyEndDate', null)
 						this._setFilterObj(filterObj);
+						this.setState({
+							chartData3: null
+						});
 					}}
 					onChangeStep={(step) => {
 						this._setFilterObj(filterObj.set('CalculationStep', step));
@@ -434,11 +437,14 @@ export default class Create extends Component {
 						if(endTime.format('YYYY-MM-DD HH:mm:ss') !== BenchmarkEndDate) {
 							filterObj = filterObj.set('BenchmarkEndDate', endTime.format('YYYY-MM-DD HH:mm:ss'))
 						}
-						if( callback && typeof callback === 'function' ) {
-							let chartData2State = callback(filterObj);
-							this.setState(chartData2State);
-						}
+						// if( callback && typeof callback === 'function' ) {
+						// 	let chartData2State = callback(filterObj);
+						// 	this.setState(chartData2State);
+						// }
 						this._setFilterObj(filterObj);
+						this.setState({
+							chartData3: null
+						});
 					}}
 					onChangeBenchmarkEndDate={(val) => {
 						val = date2UTC(val);
@@ -454,7 +460,10 @@ export default class Create extends Component {
 						if(startTime.format('YYYY-MM-DD HH:mm:ss') !== BenchmarkStartDate) {
 							filterObj = filterObj.set('BenchmarkStartDate', startTime.format('YYYY-MM-DD HH:mm:ss'))
 						}
-						this._setFilterObj(filterObj);
+						this._setFilterObj(filterObj);						
+						this.setState({
+							chartData3: null
+						});
 					}}
 					onGetChartData={() => {
 						let newFilterObj = filterObj.set('IncludeEnergyEffectData', true);
