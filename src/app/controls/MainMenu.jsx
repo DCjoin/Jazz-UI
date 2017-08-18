@@ -130,7 +130,7 @@ var SubMainMenu = React.createClass({
         "active": isActive
       })} onMouseEnter={this._showSubMenu} onMouseLeave={this._dismissSubMain}style={style}>
             <div>{node.title}</div>
-            <div className="jazz-mainmenu-main-title">{activeTitle}</div>
+            <div className="jazz-mainmenu-main-title" style={{marginTop:'-5px'}}>{activeTitle}</div>
             {menu}
           </a>
 

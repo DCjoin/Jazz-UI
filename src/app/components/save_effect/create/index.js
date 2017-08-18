@@ -38,15 +38,15 @@ import {EnergySys} from 'components/ECM/MeasurePart/MeasureTitle.jsx';
 import Remark from 'components/ECM/MeasurePart/Remark.jsx';
 
 import {
-	getTagsByPlan, 
-	updateTags, 
-	getPreviewChart2, 
-	getPreviewChart3, 
-	saveItem, 
-	getEnergySolution, 
-	addEnergyEffectTag, 
-	deleteEnergyEffectTag, 
-	cleanCreate, 
+	getTagsByPlan,
+	updateTags,
+	getPreviewChart2,
+	getPreviewChart3,
+	saveItem,
+	getEnergySolution,
+	addEnergyEffectTag,
+	deleteEnergyEffectTag,
+	cleanCreate,
 } from 'actions/save_effect_action';
 
 import MeasuresAction from 'actions/ECM/MeasuresAction.jsx';
@@ -118,9 +118,9 @@ function _getTimeRangeStep() {
 function getUomByChartData(data) {
 	return UOMStore.getUomById(
 		data.getIn([
-			'TargetEnergyData', 
-			data.get('TargetEnergyData').size - 1, 
-			'Target', 
+			'TargetEnergyData',
+			data.get('TargetEnergyData').size - 1,
+			'Target',
 			'UomId',
 		])
 	);
@@ -154,10 +154,10 @@ function stepLabelProps(stepValue, currentStep) {
 }
 
 function Header({name, timeStr, onShowDetail, onClose}) {
-	return (	
+	return (
 		<header style={{marginLeft: 30,marginTop: 20, marginBottom: 10}}>
 			<div>
-				<div>{I18N.SaveEffect.CreateTitle + ' ' + name}</div>
+				<div style={{fontWeight:'600',fontSize:'16px',color:'#0f0f0f'}}>{I18N.SaveEffect.CreateTitle + ' ' + name}</div>
 				<div style={{marginTop: 10}}>
 					{I18N.SaveEffect.Runtime + ': ' + timeStr}
 					<a style={{marginLeft: 30, color: '#32ad3d'}} href='javascript:void(0)' onClick={onShowDetail}>{I18N.SaveEffect.ShowSavePlanDetail}</a>
@@ -271,7 +271,7 @@ export default class Create extends Component {
 		this._onSaveAndClose = this._onSaveAndClose.bind(this);
 		this._getInitData = this._getInitData.bind(this);
 	}
-	_setFilterObj(filterObj) {		
+	_setFilterObj(filterObj) {
 		this.setState((state, props) => {
 			return {filterObj}
 		});
@@ -311,11 +311,11 @@ export default class Create extends Component {
 	}
 	_checkStepByTag(calcStep) {
 		let propsStep = this.props.filterObj.Step;
-		return propsStep ? 
+		return propsStep ?
 			checkSupportStep(propsStep, calcStep) :
 			checkStepByTag(this.state.filterObj.get('TagId'), calcStep);
 	}
-	_checkCanNext() {		
+	_checkCanNext() {
 		switch( this.state.filterObj.get('ConfigStep') ) {
 			case 1:
 				return this.state.filterObj.get('TagId');
@@ -470,7 +470,7 @@ export default class Create extends Component {
 						if(startTime.format('YYYY-MM-DD HH:mm:ss') !== BenchmarkStartDate) {
 							filterObj = filterObj.set('BenchmarkStartDate', startTime.format('YYYY-MM-DD HH:mm:ss'))
 						}
-						this._setFilterObj(filterObj);						
+						this._setFilterObj(filterObj);
 						this.setState({
 							chartData3: null
 						});
@@ -484,10 +484,10 @@ export default class Create extends Component {
 					updateChartByNavgatorData={(filterObj) => {
 						let {chartData2} = this.state;
 						// this.setState((state, props) => {
-							return {								
+							return {
 								chartData2: chartData2.setIn(['TargetEnergyData', 0, 'EnergyData'],
-									getDataByNavgatorData( 
-										filterObj.get('BenchmarkStartDate'), 
+									getDataByNavgatorData(
+										filterObj.get('BenchmarkStartDate'),
 										filterObj.get('BenchmarkStartDate'),
 										chartData2
 									)
@@ -592,7 +592,7 @@ export default class Create extends Component {
 		</div>);
 	}
 	renderFooter() {
-		let buttons = [];		
+		let buttons = [];
 		switch( this.state.filterObj.get('ConfigStep') ) {
 			case 1:
 				buttons.push(<NewFlatButton onClick={() => {
@@ -678,7 +678,7 @@ export default class Create extends Component {
 	     problemId:problem.get('Id'),
 	     canEdit:false,
 	     onScroll:(height)=>{ReactDom.findDOMNode(this).querySelector(".dialog-content").scrollTop+=height+15}
-	   },	   
+	   },
 	   energySys:{
 	     measure:currentSolution,
 	     canNameEdit:false,
@@ -732,14 +732,14 @@ export default class Create extends Component {
 				}}/>
 				<Header name={
 					EnergySolutionName + (
-						ConfigStep > 1 ? 
+						ConfigStep > 1 ?
 						' - '
 						 + (
 						 	TagName ? TagName :
 						 	this.state.tags.find(tag => tag.get('TagId') === TagId).get('Name')
 						 )
 						 + '（' + (
-							UomId ? UOMStore.getUomById(UomId) : 
+							UomId ? UOMStore.getUomById(UomId) :
 							(this.state.chartData2 ? getUomByChartData(this.state.chartData2) : '')
 						) + '）'
 						: ''

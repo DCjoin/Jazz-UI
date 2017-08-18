@@ -34,10 +34,10 @@ export default class PreCreate extends Component {
 				<NewFlatButton label={isEdit?I18N.Platform.Password.Confirm:I18N.SaveEffect.Create.Start} primary disabled={!this.state.val} onClick={() => {
 					onSubmit(this.state.val);
 				}}/>
-				]} open={true}>
+    ]} open={true} contentStyle={{marginTop:'-8px'}}>
 				<header className='jazz-pre-create-header'>
 					<div>
-						<span>{I18N.SaveEffect.Create.SelectEnergySystem}</span>
+						<span style={{fontSize:'16px',fontWeight:'600',color:'#0f0f0f'}}>{I18N.SaveEffect.Create.SelectEnergySystem}</span>
 						<span className='jazz-pre-create-header-mark'>{I18N.SaveEffect.Create.SelectEnergySystemTip}</span>
 					</div>
 					<FontIcon style={{fontSize: '16px'}} className={'icon-close'} onClick={onClose}/>
@@ -56,8 +56,8 @@ export default class PreCreate extends Component {
 }
 
 PreCreate.PropTypes = {
-	onClose: PropTypes.func.isRequired, 
-	onSubmit: PropTypes.func.isRequired, 
+	onClose: PropTypes.func.isRequired,
+	onSubmit: PropTypes.func.isRequired,
 	isEdit: PropTypes.boolean,
 	EnergySystem: PropTypes.number,
 }

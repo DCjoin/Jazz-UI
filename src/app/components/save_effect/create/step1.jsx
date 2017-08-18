@@ -21,22 +21,22 @@ function TagItem({tag, selectedId, onClick, onDelete, idx}) {
 	}
 	return (
 		<div style={{display: 'flex', marginBottom: 5}}>
-			<RadioButton 
+			<RadioButton
 				checked={selectedId === tag.get('TagId')}
-				style={{display: 'inline-block', width: 'auto', fontSize: '14px'}} 
+				style={{display: 'inline-block', width: 'auto', fontSize: '14px'}}
 				labelStyle={{color: '#434343'}}
-				label={tag.get('Name')} 
+				label={tag.get('Name')}
 				onClick={() => {
 					onClick(tag.get('TagId'));
 				}}
 			/>
-			{(tag.get('isNew') || ( !tag.get('Configed') && tag.get('Status') === 2 ) ) && 
+			{(tag.get('isNew') || ( !tag.get('Configed') && tag.get('Status') === 2 ) ) &&
 			<a href='javascript:void(0)' style={{
-					color: '#32ad3d', 
+					color: '#32ad3d',
 					marginLeft: 14,
 					fontSize: '14px',
 					lineHeight: '24px',
-				}} 
+				}}
 				onClick={() => {
 					onDelete(idx, tag.get('TagId'));
 				}}
@@ -73,24 +73,24 @@ export default class Step1 extends Component {
 		return (
 			<div className='create-block step1-wrapper'>
 				<header className='step1-header'>
-					<span>{I18N.EM.Report.SelectTag}</span>
-					<NewFlatButton 
-						style={{marginLeft: 10, height: 30, lineHeight: 'normal'}} secondary 
+					<span style={{fontSize:'16px',fontWeight:'600',color:'#434343'}}>{I18N.EM.Report.SelectTag}</span>
+					<NewFlatButton
+						style={{marginLeft: 10, height: 30, lineHeight: 'normal'}} secondary
 						label={I18N.SaveEffect.AddTag}
 						onClick={this._onOpenSeleteTagDlg}/>
 				</header>
 				<div className='step1-content'>
-					{tags.map( (tag, idx) => 
-					<TagItem 
+					{tags.map( (tag, idx) =>
+					<TagItem
 						idx={idx}
-						key={tag.get('TagId')} 
-						tag={tag} 
+						key={tag.get('TagId')}
+						tag={tag}
 						selectedId={selectedId}
 						onClick={onClickItem}
 						onDelete={onDeleteItem}
 					/>)}
 				</div>
-				{this.state.showSeleteTagDlg && 
+				{this.state.showSeleteTagDlg &&
 				<TagSelect
 					allTag
 					title={'选择数据点'}

@@ -20,7 +20,7 @@ export default class Step4 extends Component {
 		if( CalculationStep === TimeGranularity.Daily ) {
 			radios.push(<RadioButton label={I18N.EM.Day} value={TimeGranularity.Daily}/>);
 		}
-		radios.push(<RadioButton label={I18N.EM.Month} value={TimeGranularity.Monthly}/>);
+		radios.push(<RadioButton label={I18N.EM.Month} value={TimeGranularity.Monthly} style={{marginTop:'12px'}}/>);
 		return (
 			<div className='step4-wrapper'>
 				<div className='step4-block'>
@@ -35,16 +35,16 @@ export default class Step4 extends Component {
 							<div className='step4-item-value'>{find(getStepDataItems(), item => item.id === CalculationStep).label}</div>
 						</div>
 						<div className='step4-item'>
-							<header className='step4-item-title'>{I18N.SaveEffect.Create.CalcSaveByMonth + `（${unit}）`}</header>
+							<header className='step4-item-title' style={{marginBottom:'0'}}>{I18N.SaveEffect.Create.CalcSaveByMonth + `（${unit}）`}</header>
 							<div className='step4-item-value'>
-								{PredictionDatas && PredictionDatas.map((data, idx) => 
+								{PredictionDatas && PredictionDatas.map((data, idx) =>
 								<ViewableTextField
 									errorStyle={{
 										position: 'absolute',
 										bottom: -5,
 										fontSize: '11px',
 									}}
-									errorMessage={I18N.Setting.Diagnose.FormatVaildTip} 
+									errorMessage={I18N.Setting.Diagnose.FormatVaildTip}
 									regex={/^(\-?)\d{1,9}([.]\d{1,3})?$/}
 									defaultValue={data.Value}
 									hintText={data.Label}
@@ -65,7 +65,7 @@ export default class Step4 extends Component {
 							<RadioButtonGroup valueSelected={ContrastStep} onChange={(e, v) => {
 								onChangeContrastStep(v);
 							}}>
-								{radios}								
+								{radios}
 							</RadioButtonGroup>
 						</div>
 					</div>
