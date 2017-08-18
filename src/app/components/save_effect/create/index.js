@@ -202,12 +202,19 @@ function getInitFilterObj(props) {
 		ContrastStep: TimeGranularity.Monthly,
 		ConfigStep: props.ConfigStep,
 		IncludeEnergyEffectData: false,
-	}, ...props.filterObj});
+	}, ...props.filterObj, ...{		
+		BenchmarkDatas: (!props.filterObj.BenchmarkDatas || props.filterObj.BenchmarkDatas.length === 0 && props.filterObj.EnergyStartDate && props.filterObj.EnergyStartDate) ? 
+							getDateObjByRange(props.filterObj.EnergyStartDate, props.filterObj.EnergyStartDate) :
+							props.filterObj.BenchmarkDatas,
+		PredictionDatas: (!props.filterObj.PredictionDatas || props.filterObj.PredictionDatas.length === 0 && props.filterObj.EnergyStartDate && props.filterObj.EnergyStartDate) ? 
+							getDateObjByRange(props.filterObj.EnergyStartDate, props.filterObj.EnergyStartDate) :
+							props.filterObj.PredictionDatas,
+	}});
 }
 
 function resetFilterObjAfter2(filterObj) {
 	return filterObj
-			.set('PredictionDatas', null)
+			// .set('PredictionDatas', null)
 			.set('PredictionDatas', null)
 			.set('EnergyUnitPrice', '')
 			.set('EnergyStartDate', null)
@@ -594,11 +601,21 @@ export default class Create extends Component {
 				}} primary disabled={!this._checkCanNext()} label={I18N.Paging.Button.NextStep} style={{float: 'right'}}/>);
 				break;
 			case 2:
-				buttons.push(<NewFlatButton onClick={() => {this._goStep(1)}} secondary label={I18N.Paging.Button.PreStep} style={{float: 'left'}}/>);
+				buttons.push(<NewFlatButton onClick={() => {
+					this._goStep(1)					
+					if(!this.state.tags) {
+						this._goStepAndInit(1);
+					}
+				}} secondary label={I18N.Paging.Button.PreStep} style={{float: 'left'}}/>);
 				buttons.push(<NewFlatButton onClick={() => {this._goStep(3)}} primary disabled={!this._checkCanNext()} label={I18N.Paging.Button.NextStep} style={{float: 'right'}}/>);
 				break;
 			case 3:
-				buttons.push(<NewFlatButton onClick={() => {this._goStep(2)}} secondary label={I18N.Paging.Button.PreStep} style={{float: 'left'}}/>);
+				buttons.push(<NewFlatButton onClick={() => {
+					this._goStep(2);
+					if(!this.state.chartData2) {
+						this._goStepAndInit(2);
+					}
+				}} secondary label={I18N.Paging.Button.PreStep} style={{float: 'left'}}/>);
 				buttons.push(<NewFlatButton onClick={() => {this._goStep(4)}} primary disabled={!this._checkCanNext()} label={I18N.Paging.Button.NextStep} style={{float: 'right'}}/>);
 				break;
 			case 4:
