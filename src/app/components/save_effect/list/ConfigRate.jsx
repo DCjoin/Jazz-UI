@@ -171,7 +171,7 @@ export default class ConfigRate extends Component {
           open={true}
           isOutsideClose={false}
           onRequestClose={this.props.onClose}
-          titleStyle={{margin:'0 22px',padding:"15px 0 15px 8px",fontSize:'14px', fontWeight: 500,borderBottom:'1px solid #e6e6e6'}}
+          titleStyle={{margin:'0 22px',padding:"15px 0 15px 8px",fontSize:'14px', fontWeight: 600,borderBottom:'1px solid #e6e6e6'}}
           contentStyle={{overflowY:"auto",display:'block',paddingLeft:"8px",margin:"0 22px",borderBottom:'1px solid #e6e6e6'}}
           actionsContainerStyle={{margin:'15px 22px'}}
           title={I18N.SaveEffect.ConfigSaveRatio}

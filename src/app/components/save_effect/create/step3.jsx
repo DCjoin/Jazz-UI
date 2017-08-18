@@ -40,16 +40,16 @@ function ManualValue({BenchmarkDatas, onChangeValue, unit}) {
 	return (
 		<div className='step3-manual-value-wrapper'>
 			<header>{I18N.SaveEffect.Create.CalcBenchmarkByMonth + '(' + unit + ')'}</header>
-			{BenchmarkDatas && 
+			{BenchmarkDatas &&
 			<div>
-				{BenchmarkDatas.map((data, idx) => 
+				{BenchmarkDatas.map((data, idx) =>
 				<ViewableTextField
 					errorStyle={{
 						position: 'absolute',
 						bottom: -5,
 						fontSize: '11px',
 					}}
-					errorMessage={I18N.Setting.Diagnose.FormatVaildTip} 
+					errorMessage={I18N.Setting.Diagnose.FormatVaildTip}
 					regex={/^(\-?)\d{1,9}([.]\d{1,3})?$/}
 					defaultValue={data.Value}
 					hintText={data.Label}
@@ -70,20 +70,20 @@ export default class Step3 extends Component {
 
 	}
 	render() {
-		let { data, 
-			disabledPreview, 
-			BenchmarkModel, 
-			CalculationStep, 
-			EnergyUnitPrice, 
-			EnergyStartDate, 
-			EnergyEndDate, 
+		let { data,
+			disabledPreview,
+			BenchmarkModel,
+			CalculationStep,
+			EnergyUnitPrice,
+			EnergyStartDate,
+			EnergyEndDate,
 			BenchmarkDatas,
 			IncludeEnergyEffectData,
-			onChangeEnergyUnitPrice, 
-			onChangeEnergyStartDate, 
-			onChangeEnergyEndDate, 
-			onChangeBenchmarkDatas, 
-			onGetChartData, 
+			onChangeEnergyUnitPrice,
+			onChangeEnergyStartDate,
+			onChangeEnergyEndDate,
+			onChangeBenchmarkDatas,
+			onGetChartData,
 			unit,
 		} = this.props,
 		chartProps;
@@ -107,7 +107,7 @@ export default class Step3 extends Component {
 					let newConfig = Util.merge(true, chartCmpObj);
 					newConfig.series = newConfig.series.map((serie, i) => {
 						if( i !== 0 ) {
-							serie.type = 'column';							
+							serie.type = 'column';
 						} else {
 							serie.name = I18N.EM.Ratio.BaseValue;
 						}
@@ -154,13 +154,13 @@ export default class Step3 extends Component {
 				<div className='create-block step2-content'>
 					<header className='step2-content-header'>
 						{I18N.Setting.Diagnose.ChartPreview}
-						<NewFlatButton 
+						<NewFlatButton
 							secondary
 							onClick={onGetChartData}
-							style={{height: 30, lineHeight: '30px'}}
-							label={I18N.Setting.Diagnose.PreviewButton} 
-							disabled={disabledPreview} 
-							icon={<ActionVisibility/>}/>
+							style={{height: 30, lineHeight: '28px'}}
+							label={I18N.Setting.Diagnose.PreviewButton}
+							disabled={disabledPreview}
+							icon={<ActionVisibility style={{height:16}}/>}/>
 					</header>
 					<div className='step2-content-content'>
 						{data && <header style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: 70}}>
@@ -171,8 +171,8 @@ export default class Step3 extends Component {
 							</div>
 							<span>{I18N.EM.Report.Step + ': ' + find(getStepDataItems(), item => item.id === CalculationStep).label}</span>
 						</header>}
-						{data ? 
-						<ChartBasicComponent {...chartProps}/> : 
+						{data ?
+						<ChartBasicComponent {...chartProps}/> :
 						<div className='flex-center' style={{flexDirection: 'column'}}>
 							<em className='icon-chart1' style={{fontSize: '50px', color: '#32ad3d'}}/>
 							<div>{I18N.SaveEffect.Create.NeedEnterSaveTimeTip1}</div>

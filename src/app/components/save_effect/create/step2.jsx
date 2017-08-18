@@ -107,7 +107,7 @@ export default class Step2 extends Component {
 					// this.props.updateChartByNavgatorData();
 					timeoutID = null;
 				}, 300);
-			} else {				
+			} else {
 				this.props.onChangeBenchmarkStartDate(startTime);
 				// this.props.updateChartByNavgatorData();
 			}
@@ -145,12 +145,12 @@ export default class Step2 extends Component {
 					newConfig.series = newConfig.series.map((serie, i) => {
 						if( IncludeEnergyEffectData ) {
 							if( i !== 0 ) {
-								serie.type = 'column';							
+								serie.type = 'column';
 							} else {
 								serie.name = I18N.EM.Ratio.BaseValue;
 							}
 						} else {
-							serie.type = 'column';	
+							serie.type = 'column';
 						}
 						return serie;
 					});
@@ -181,28 +181,28 @@ export default class Step2 extends Component {
 					<header className='step2-side-header'>{I18N.SaveEffect.Create.ConfigModel}</header>
 					<div className='step2-side-content'>
 						<div>
-							<ViewableDropDownMenu 
+							<ViewableDropDownMenu
 								defaultValue={BenchmarkModel}
-								title={I18N.SaveEffect.Model.Title} 
-								valueField='id' 
-								textField='label' 
-								dataItems={getModelDataItems()} 
+								title={I18N.SaveEffect.Model.Title}
+								valueField='id'
+								textField='label'
+								dataItems={getModelDataItems()}
 								didChanged={onChangeModelType}
 								style={{width: 170}}/>
 						</div>
 						<div>
-							<ViewableDropDownMenu 
+							<ViewableDropDownMenu
 								defaultValue={CalculationStep}
 								isViewStatus={BenchmarkModel === Model.Manual}
-								title={I18N.SaveEffect.Create.ConfigCalcStep} 
+								title={I18N.SaveEffect.Create.ConfigCalcStep}
 								isViewStatus={true}
-								valueField='id' 
-								textField='label' 
-								dataItems={getStepDataItems()} 
+								valueField='id'
+								textField='label'
+								dataItems={getStepDataItems()}
 								didChanged={onChangeStep}
 								style={{width: 90}}/>
 						</div>
-						{BenchmarkModel !== Model.Manual && <div className='pop-viewableTextField'>
+						{BenchmarkModel !== Model.Manual && <div className='pop-viewableTextField' style={{marginTop:'20px'}}>
 							<header className='pop-viewable-title'>{I18N.SaveEffect.Create.BenchmarkDate}</header>
 							<div>
 								<ViewableDatePicker onChange={onChangeBenchmarkStartDate} datePickerClassName='date-picker-inline' width={83} value={BenchmarkStartDate}/>
@@ -216,13 +216,13 @@ export default class Step2 extends Component {
 				<div className='create-block step2-content'>
 					<header className='step2-content-header'>
 						{I18N.Setting.Diagnose.ChartPreview}
-						<NewFlatButton 
+						<NewFlatButton
 							secondary
 							onClick={onGetChartData}
-							style={{height: 30, lineHeight: '30px'}}
-							label={I18N.Setting.Diagnose.PreviewButton} 
-							disabled={disabledPreview} 
-							icon={<ActionVisibility/>}/>
+							style={{height: 30, lineHeight: '28px'}}
+							label={I18N.Setting.Diagnose.PreviewButton}
+							disabled={disabledPreview}
+							icon={<ActionVisibility style={{height:16}}/>}/>
 					</header>
 					<div className='step2-content-content'>
 						<header style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: 70}}>
@@ -233,8 +233,8 @@ export default class Step2 extends Component {
 							</div>
 							<span>{I18N.EM.Report.Step + ': ' + find(getStepDataItems(), item => item.id === CalculationStep).label}</span>
 						</header>
-						{data ? 
-						<ChartBasicComponent {...chartProps}/> : 
+						{data ?
+						<ChartBasicComponent {...chartProps}/> :
 						<div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>}
 					</div>
 				</div>

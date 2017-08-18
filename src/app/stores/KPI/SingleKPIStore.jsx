@@ -22,7 +22,6 @@ import {
   DataStatus,
   Type
 } from '../../constants/actionType/KPI.jsx';
-import {isNumeric} from '../../util/Util.jsx';
 // let j2d = DataConverter.JsonToDateTime,
 //   d2j = DataConverter.DatetimeToJson;
 
@@ -556,6 +555,17 @@ const SingleKPIStore = assign({}, PrototypeStore, {
   cleanActuality() {
     // this.setCustomerCurrentYear(null);
     _init();
+  },
+  formatDateByPeriod(date){
+    let period=this.getYearQuotaperiod();
+    if(period===null || period.length!==12) return '';
+    let firstMonth=period[0];
+    if(date.year()===firstMonth.year() && date.month()===firstMonth.month() || date.month()===0){
+      return date.format(I18N.DateTimeFormat.IntervalFormat.Month)
+    }
+    else{
+      return date.format(I18N.DateTimeFormat.IntervalFormat.OnlyMonth)
+    }
   },
 
   dispose() {
