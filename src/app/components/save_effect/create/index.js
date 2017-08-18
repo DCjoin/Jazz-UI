@@ -157,7 +157,7 @@ function Header({name, timeStr, onShowDetail, onClose}) {
 	return (
 		<header style={{marginLeft: 30,marginTop: 20, marginBottom: 10}}>
 			<div>
-				<div className='hiddenEllipsis' style={{fontWeight:'600',fontSize:'16px',color:'#0f0f0f'}}>{I18N.SaveEffect.CreateTitle + ' ' + name}</div>
+				<div className='hiddenEllipsis' style={{width: '90%', fontWeight:'600',fontSize:'16px',color:'#0f0f0f'}}>{I18N.SaveEffect.CreateTitle + ' ' + name}</div>
 				<div style={{marginTop: 10}}>
 					{I18N.SaveEffect.Runtime + ': ' + timeStr}
 					<a style={{marginLeft: 30, color: '#32ad3d'}} href='javascript:void(0)' onClick={onShowDetail}>{I18N.SaveEffect.ShowSavePlanDetail}</a>
