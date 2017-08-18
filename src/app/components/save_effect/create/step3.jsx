@@ -125,8 +125,10 @@ export default class Step3 extends Component {
 		    chartProps.contentSyntax = JSON.stringify({
 		      viewOption: {
 		        TimeRanges: [{
-		          StartTime: subtractStep(EnergyStartDate, step),
-		          EndTime: subtractStep(EnergyEndDate, step),
+		          StartTime: target.getIn(['TimeSpan', 'StartTime']),
+		          EndTime: target.getIn(['TimeSpan', 'EndTime']),
+		          // StartTime: subtractStep(EnergyStartDate, step),
+		          // EndTime: subtractStep(EnergyEndDate, step),
 		        }]
 		      }
 		    });
@@ -161,14 +163,14 @@ export default class Step3 extends Component {
 							icon={<ActionVisibility style={{height:16}}/>}/>
 					</header>
 					<div className='step2-content-content'>
-						<header style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: 70}}>
+						{data && <header style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: 70}}>
 							<div className='diagnose-create-content'>
 								<ViewableDatePicker onChange={onChangeEnergyStartDate} datePickerClassName='diagnose-date-picker' width={100} value={EnergyStartDate}/>
 								<div style={{display: 'inline-block', padding: '0 16px'}}>{I18N.EM.To2}</div>
 								<ViewableDatePicker onChange={onChangeEnergyEndDate} datePickerClassName='diagnose-date-picker' width={100} value={EnergyEndDate}/>
 							</div>
 							<span>{I18N.EM.Report.Step + ': ' + find(getStepDataItems(), item => item.id === CalculationStep).label}</span>
-						</header>
+						</header>}
 						{data ?
 						<ChartBasicComponent {...chartProps}/> :
 						<div className='flex-center' style={{flexDirection: 'column'}}>

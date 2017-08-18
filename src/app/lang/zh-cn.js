@@ -2553,8 +2553,8 @@ I18N.SaveEffect.Create.EnterEnergyUnitPrice='输入价格';
 I18N.SaveEffect.Create.NeedEnterSaveTimeTip1='添加左侧列表中的节能量计算期';
 I18N.SaveEffect.Create.NeedEnterSaveTimeTip2='可预览此时间段内基准能耗值与计算tag是实际的对比图';
 I18N.SaveEffect.Create.SavePreviewChart='节能量展示图';
-I18N.SaveEffect.Create.CalcSaveByMonth='计算期逐月能耗值';
-I18N.SaveEffect.Create.BenchmarkBattleCalc='计算期内基准能耗与计算数据的实际值对比';
-I18N.SaveEffect.Create.StepTip = '所选数据点补偿与计算步长不匹配，请重新选择数据点。';
+I18N.SaveEffect.Create.CalcSaveByMonth='逐月预计节能量';
+I18N.SaveEffect.Create.BenchmarkBattleCalc='实际值与基准值对比图';
+I18N.SaveEffect.Create.StepTip = '所选数据点步长与计算步长不匹配，请重新选择数据点。';
 
 module.exports = I18N;

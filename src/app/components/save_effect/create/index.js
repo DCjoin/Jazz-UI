@@ -409,7 +409,7 @@ export default class Create extends Component {
 
 						}
 						filterObj = filterObj
-							.set('IncludeEnergyEffectData', null)
+							// .set('IncludeEnergyEffectData', null)
 							.set('PredictionDatas', null)
 							.set('EnergyUnitPrice', '')
 							.set('EnergyStartDate', null)
@@ -418,10 +418,12 @@ export default class Create extends Component {
 						this.setState({
 							chartData3: null
 						});
+						getPreviewChart2(filterObj.toJS());
 					}}
 					onChangeStep={(step) => {
 						this._setFilterObj(filterObj.set('CalculationStep', step));
 						this._setTagStepTip( step );
+						getPreviewChart2(filterObj.toJS());
 					}}
 					onChangeBenchmarkStartDate={(val, callback) => {
 						val = date2UTC(val);
@@ -445,6 +447,7 @@ export default class Create extends Component {
 						this.setState({
 							chartData3: null
 						});
+						getPreviewChart2(filterObj.toJS());
 					}}
 					onChangeBenchmarkEndDate={(val) => {
 						val = date2UTC(val);
@@ -464,6 +467,7 @@ export default class Create extends Component {
 						this.setState({
 							chartData3: null
 						});
+						getPreviewChart2(filterObj.toJS());
 					}}
 					onGetChartData={() => {
 						let newFilterObj = filterObj.set('IncludeEnergyEffectData', true);
