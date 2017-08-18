@@ -37,7 +37,7 @@ export default class PreCreate extends Component {
 				]} open={true}>
 				<header className='jazz-pre-create-header'>
 					<div>
-						<span>{I18N.SaveEffect.Create.SelectEnergySystem}</span>
+						<span style={{fontSize:'16px',fontWeight:'600',color:'#0f0f0f'}}>{I18N.SaveEffect.Create.SelectEnergySystem}</span>
 						<span className='jazz-pre-create-header-mark'>{I18N.SaveEffect.Create.SelectEnergySystemTip}</span>
 					</div>
 					<FontIcon style={{fontSize: '16px'}} className={'icon-close'} onClick={onClose}/>
@@ -56,8 +56,8 @@ export default class PreCreate extends Component {
 }
 
 PreCreate.PropTypes = {
-	onClose: PropTypes.func.isRequired, 
-	onSubmit: PropTypes.func.isRequired, 
+	onClose: PropTypes.func.isRequired,
+	onSubmit: PropTypes.func.isRequired,
 	isEdit: PropTypes.boolean,
 	EnergySystem: PropTypes.number,
 }
