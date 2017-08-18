@@ -180,24 +180,28 @@ export default class Step2 extends Component {
 				<div className='create-block step2-side'>
 					<header className='step2-side-header'>{I18N.SaveEffect.Create.ConfigModel}</header>
 					<div className='step2-side-content'>
-						<ViewableDropDownMenu 
-							defaultValue={BenchmarkModel}
-							title={I18N.SaveEffect.Model.Title} 
-							valueField='id' 
-							textField='label' 
-							dataItems={getModelDataItems()} 
-							didChanged={onChangeModelType}
-							style={{width: 170}}/>
-						<ViewableDropDownMenu 
-							defaultValue={CalculationStep}
-							isViewStatus={BenchmarkModel === Model.Manual}
-							title={I18N.SaveEffect.Create.ConfigCalcStep} 
-							isViewStatus={true}
-							valueField='id' 
-							textField='label' 
-							dataItems={getStepDataItems()} 
-							didChanged={onChangeStep}
-							style={{width: 90}}/>
+						<div>
+							<ViewableDropDownMenu 
+								defaultValue={BenchmarkModel}
+								title={I18N.SaveEffect.Model.Title} 
+								valueField='id' 
+								textField='label' 
+								dataItems={getModelDataItems()} 
+								didChanged={onChangeModelType}
+								style={{width: 170}}/>
+						</div>
+						<div>
+							<ViewableDropDownMenu 
+								defaultValue={CalculationStep}
+								isViewStatus={BenchmarkModel === Model.Manual}
+								title={I18N.SaveEffect.Create.ConfigCalcStep} 
+								isViewStatus={true}
+								valueField='id' 
+								textField='label' 
+								dataItems={getStepDataItems()} 
+								didChanged={onChangeStep}
+								style={{width: 90}}/>
+						</div>
 						{BenchmarkModel !== Model.Manual && <div className='pop-viewableTextField'>
 							<header className='pop-viewable-title'>{I18N.SaveEffect.Create.BenchmarkDate}</header>
 							<div>
