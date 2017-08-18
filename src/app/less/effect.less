@@ -90,6 +90,9 @@
       display: flex;
       flex-direction: column;
       flex:1;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
       &-title{
         display: flex;
         flex-direction: row;
@@ -102,10 +105,12 @@
           font-weight: 500;
           color: @slate-grey;
           margin-right: 10px;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
         }
       }
       &-subTitle{
-        flex:1;
         display: flex;
         flex-direction: row;
         color:@medium-gray;
@@ -200,6 +205,7 @@
 }
 .icon-calculating{
   width: 58px;
+  min-width: 58px;
   height: 18px;
   border: solid 1px #32ad3d;
   line-height: 18px;
@@ -217,6 +223,7 @@
 }
 .icon-calculated{
   width: 70px;
+  min-width: 70px;
   height: 18px;
   background-color: #32ad3d;
   border: solid 1px #32ad3d;
