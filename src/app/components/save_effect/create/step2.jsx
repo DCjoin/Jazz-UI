@@ -166,8 +166,10 @@ export default class Step2 extends Component {
 		    chartProps.contentSyntax = JSON.stringify({
 		      viewOption: {
 		        TimeRanges: [{
-		          StartTime: subtractStep(BenchmarkStartDate, step),
-		          EndTime: subtractStep(BenchmarkEndDate, step),
+		          StartTime: target.getIn(['TimeSpan', 'StartTime']),
+		          EndTime: target.getIn(['TimeSpan', 'EndTime']),
+		          // StartTime: subtractStep(BenchmarkStartDate, step),
+		          // EndTime: subtractStep(BenchmarkEndDate, step),
 		        }]
 		      }
 		    });
