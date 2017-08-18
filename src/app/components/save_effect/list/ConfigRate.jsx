@@ -163,15 +163,15 @@ export default class ConfigRate extends Component {
         onCancel:this._onDialogDismiss
       },
       actions=[
-        <FlatButton label={I18N.Common.Button.Cancel2} secondary={true} style={{float:'right'}} onTouchTap={this.props.onClose}/>,
-        <FlatButton label={I18N.Common.Button.Save} primary={true} style={{float:'right',marginRight:'20px'}} onTouchTap={()=>{this.props.onSave(this.state.taglist)}}/>
+        <FlatButton label={I18N.Common.Button.Cancel2} secondary={true} style={{float:'right',height:36,lineHeight:'34px'}} onTouchTap={this.props.onClose}/>,
+        <FlatButton label={I18N.Common.Button.Save} primary={true} style={{float:'right',marginRight:'20px',height:36,lineHeight:'34px'}} onTouchTap={()=>{this.props.onSave(this.state.taglist)}}/>
       ];
       return(
         <NewDialog
           open={true}
           isOutsideClose={false}
           onRequestClose={this.props.onClose}
-          titleStyle={{margin:'0 22px',padding:"15px 0 15px 8px",fontSize:'14px', fontWeight: 600,borderBottom:'1px solid #e6e6e6'}}
+          titleStyle={{margin:'0 22px',height:'19px',lineHeight:'19px',padding:"15px 0 15px 8px",fontSize:'14px', fontWeight: 600,borderBottom:'1px solid #e6e6e6'}}
           contentStyle={{overflowY:"auto",display:'block',paddingLeft:"8px",margin:"0 22px",borderBottom:'1px solid #e6e6e6'}}
           actionsContainerStyle={{margin:'15px 22px'}}
           title={I18N.SaveEffect.ConfigSaveRatio}
