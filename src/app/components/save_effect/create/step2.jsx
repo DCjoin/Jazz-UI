@@ -21,10 +21,10 @@ let getModelDataItems = () => [
 	{ id: Model.Easy, label: I18N.SaveEffect.Model.Easy },
 	{ id: Model.Contrast, label: I18N.SaveEffect.Model.Contrast },
 	{ id: Model.Manual, label: I18N.SaveEffect.Model.Manual },
-	{ id: Model.Increment, label: I18N.SaveEffect.Model.Increment },
-	{ id: Model.Relation, label: I18N.SaveEffect.Model.Relation },
-	{ id: Model.Efficiency, label: I18N.SaveEffect.Model.Efficiency },
-	{ id: Model.Simulation, label: I18N.SaveEffect.Model.Simulation },
+	// { id: Model.Increment, label: I18N.SaveEffect.Model.Increment },
+	// { id: Model.Relation, label: I18N.SaveEffect.Model.Relation },
+	// { id: Model.Efficiency, label: I18N.SaveEffect.Model.Efficiency },
+	// { id: Model.Simulation, label: I18N.SaveEffect.Model.Simulation },
 ];
 
 let getStepDataItems = () => [
