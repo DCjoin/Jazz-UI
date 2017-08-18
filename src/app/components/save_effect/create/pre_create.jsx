@@ -34,7 +34,7 @@ export default class PreCreate extends Component {
 				<NewFlatButton label={isEdit?I18N.Platform.Password.Confirm:I18N.SaveEffect.Create.Start} primary disabled={!this.state.val} onClick={() => {
 					onSubmit(this.state.val);
 				}}/>
-				]} open={true}>
+    ]} open={true} contentStyle={{marginTop:'-8px'}}>
 				<header className='jazz-pre-create-header'>
 					<div>
 						<span style={{fontSize:'16px',fontWeight:'600',color:'#0f0f0f'}}>{I18N.SaveEffect.Create.SelectEnergySystem}</span>
