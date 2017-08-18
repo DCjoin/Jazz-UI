@@ -289,7 +289,7 @@ let MainApp = React.createClass({
     let customerId = this.props.params.customerId;
     let isFull = PrivilegeUtil.isFull(PermissionCode.BUILDING_LIST, CurrentUserStore.getCurrentPrivilege());
     return this.state.hierarchyId && (<div className='jazz-top-select-hierarchy' style={{
-          marginTop: isFull ? 10 : 20,
+          marginTop: isFull ? 0 : 10,
           marginLeft : isFull ? 10 : 30,
           color: '#fff'
         }}>
