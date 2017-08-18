@@ -19,7 +19,7 @@ export default class MonthValueGroup extends Component {
                     value=CommonFuns.thousandsToNormal(value);
                     this.props.onChange(index,value)
                   },
-                  date:CommonFuns.formatDateByPeriod(el),
+                  date:SingleKPIStore.formatDateByPeriod(el),
                   regexFn:(value)=>{
                     value=CommonFuns.thousandsToNormal(value);
                     return !SingleKPIStore.validateQuota(value) && I18N.Setting.KPI.Parameter.QuotaErrorText}
