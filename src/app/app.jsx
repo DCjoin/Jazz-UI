@@ -54,6 +54,7 @@ import WorkTime from './components/calendar/WorkTime.jsx';
 import ColdWarm from './components/calendar/ColdWarm.jsx';
 import DayNight from './components/calendar/DayNight.jsx';
 import Tariff from './components/energyConversion/tariff/Tariff.jsx';
+import Carbon from './components/energyConversion/carbon/Carbon.jsx';
 import Customer from './components/customer/Customer.jsx';
 //for customerSetting
 import VEE from './components/customerSetting/VEERules/VEERules.jsx';
