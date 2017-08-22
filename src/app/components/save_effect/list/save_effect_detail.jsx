@@ -14,6 +14,7 @@ import {getDetail,deleteItem,changeEnergySystemForEffect} from 'actions/save_eff
 import { CircularProgress,Dialog,Snackbar} from 'material-ui';
 import PreCreate from '../create/pre_create.jsx';
 import Create from '../create';
+import Edit from '../edit';
 
 function validValue(value) {
 	return value!==null?util.getLabelData(value*1):'-';
@@ -37,7 +38,9 @@ export default class EffectDetail extends Component {
 		deleteConfirmShow:false,
 		deleteIndex:null,
 		energySystemDialogShow:false,
-		createShow:false
+		createShow:false,
+		editShow:false,
+		editIndex:null
   }
 
   _onChanged(){
@@ -59,7 +62,10 @@ export default class EffectDetail extends Component {
 	}
 
   _handleEditTagChange(event, value){
-
+		this.setState({
+					editShow:true,
+					editIndex:value
+		})
   }
 
   _handleDeleteTagChange(event, value){
@@ -344,6 +350,20 @@ export default class EffectDetail extends Component {
 							}
 
 						}}/>}
+						{this.state.editShow && <Edit effect={this.props.effect.set('EnergyEffectItemId',this.state.detailInfo.getIn(['EffectItems',this.state.editIndex,"EnergyEffectItemId"]))}
+																					editTagName={this.state.detailInfo.getIn(['EffectItems',this.state.editIndex,"TagName"])}
+																					onSubmitDone={()=>{getDetail(this.props.effect.get('EnergyEffectId'));}}
+																					onClose={()=>{
+																										this.setState({
+																										editShow:false,
+																										editIndex:null
+																						},()=>{
+																							getDetail(this.props.effect.get('EnergyEffectId'))
+																						})
+																					}
+																		
+																					}
+						/>}
 						<Snackbar ref='snackbar' autoHideDuration={4000} open={!!this.state.saveSuccessText} onRequestClose={()=>{this.setState({saveSuccessText:null})}} message={this.state.saveSuccessText}/>
 				</div>
 			)

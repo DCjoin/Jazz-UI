@@ -5,16 +5,13 @@ import FlatButton from "controls/NewFlatButton.jsx";
 import CreateStore from 'stores/save_effect/create_store';
 import util from 'util/Util.jsx';
 import moment from 'moment';
+import {Model} from 'constants/actionType/Effect.jsx';
 
 function formatDate(date){
   return moment(util.DataConverter.JsonToDateTime(date)).format("YYYY-MM-DD")
 }
 
-export default class Step2 extends Component {
-
-  state={
-    isView:this.props.isView
-  }
+export default class Step2 extends Component {  
 
   _renderViewStauts(){
     let { BenchmarkModel, BenchmarkStartDate, BenchmarkEndDate, CalculationStep} = this.props;
@@ -24,17 +21,18 @@ export default class Step2 extends Component {
         <div className="jazz-save-effect-edit-step2-view-text">{CreateStore.getBenchmarkModelById(BenchmarkModel)}</div>
         <header className="jazz-save-effect-edit-step2-view-title">{I18N.Setting.Tag.CalculationStep}</header>
         <div className="jazz-save-effect-edit-step2-view-text">{CreateStore.getCalculationStepByStep(CalculationStep)}</div>
-        <header className="jazz-save-effect-edit-step2-view-title">{I18N.SaveEffect.BaselinePeriod}</header>
-        <div className="jazz-save-effect-edit-step2-view-text">`${formatDate(BenchmarkStartDate)} ${I18N.EM.To2} ${formatDate(BenchmarkEndDate)}`</div>
+        {BenchmarkModel!==Model.Manual && <header className="jazz-save-effect-edit-step2-view-title">{I18N.SaveEffect.BaselinePeriod}</header>}
+        {BenchmarkModel!==Model.Manual && <div className="jazz-save-effect-edit-step2-view-text">{`${formatDate(BenchmarkStartDate)} ${I18N.EM.To2} ${formatDate(BenchmarkEndDate)}`}</div>}
       </div>
     )
   }
 
   _renderEditStauts(){
-    var {isView,onSave,onCancel,...other}=this.props;
+    var {isView,onSave,onCancel,editDisabled,onEdit,...other}=this.props;
     var actions=[
-        <FlatButton label={I18N.Platform.Password.Confirm} primary={true} style={{float:'right',marginRight:'20px'}} onTouchTap={()=>{onSave()}}/>,
-      <FlatButton label={I18N.Common.Button.Cancel2} secondary={true} style={{float:'right'}} onTouchTap={onCancel}/>
+        <FlatButton label={I18N.Common.Button.Cancel2} secondary={true} style={{float:'right',minWidth:'68px'}} onTouchTap={onCancel}/>,
+        <FlatButton label={I18N.Platform.Password.Confirm} disabled={this.props.disabledPreview} primary={true} style={{float:'right',minWidth:'68px',marginRight:'20px'}} onTouchTap={()=>{onSave()}}/>,
+      
     ]
     return(
       <div className="jazz-save-effect-edit-step2-edit">
@@ -46,18 +44,16 @@ export default class Step2 extends Component {
     )
   }
 
-  componentWillReceiveProps(nextProps) {
-    if(nextProps.isView!==this.props.isView){
-      this.setState({
-        isView:nextProps.isView
-      })
-    }
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.configStep<=3|| nextProps.configStep===null
   }
 
   render(){
+    var editDisabled=this.props.configStep!==2 && this.props.configStep!==null;
    return(
-     <StepComponent step={2} title={I18N.SaveEffect.Step2} isView={this.state.isView} >
-       {this.state.isView?this._renderViewStauts():this._renderEditStauts()}
+     <StepComponent step={2} title={I18N.SaveEffect.Step2} isfolded={this.props.data===null}
+                    editDisabled={editDisabled} isView={this.props.isView} onEdit={this.props.onEdit}>
+       {this.props.isView?this._renderViewStauts():this._renderEditStauts()}
      </StepComponent>
    )
   }
@@ -65,7 +61,9 @@ export default class Step2 extends Component {
 }
 
 Step2.propTypes = {
+  configStep:React.PropTypes.number || null,
   isView:React.PropTypes.boolean,
   onSave:React.PropTypes.func,
   onCancel:React.PropTypes.func,
+  onEdit:React.PropTypes.func,
 };
