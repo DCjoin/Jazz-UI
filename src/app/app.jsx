@@ -323,6 +323,9 @@ ReactDom.render(<Router history={hashHistory} routes={{
         path: 'price',
         component: Tariff
       }, {
+        path: 'carbon',
+        component: Carbon
+      }, {
         path: 'customer',
         component: Customer
       }, {
