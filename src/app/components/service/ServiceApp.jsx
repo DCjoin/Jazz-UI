@@ -78,12 +78,12 @@ let ServiceApp = React.createClass({
               name: 'price',
               getPath: service.price,
               title: I18N.MainMenu.Price
-            }/*,
+            },
             {
               name: 'carbon',
               getPath: service.carbon,
               title: I18N.MainMenu.Carbon
-            }*/
+            }
           ]
         }]
       },
