@@ -240,14 +240,14 @@ export default class PushPanel extends Component {
 
 	_renderEffectAction(solution){
 		return(
-			<div style={{width:'110px',minWidth:'110px'}}>
-				{this.state.infoTabNo===3 && EffectIsFullOrIsView() && solution.getIn(["EnergySolution","Name"])
+			<div style={{width:'110px',minWidth:'110px'}} onClick={(e)=>{e.stopPropagation();}}>
+				{this.state.infoTabNo===3 && EffectIsFullOrIsView() && solution.get("EnergyEffectStatus")
 					&& <NewFlatButton label={I18N.MainMenu.SaveEffect}
 														secondary={true}
 														style={{width:'95px',height:'30px',lineHeight:'28px',float:'right'}}
 														onTouchTap={(e)=>{
 															e.stopPropagation();
-															openTab(RoutePath.saveEffect.index(this.props.params)+'?init_hierarchy_id='+this.props.hierarchyId);
+															openTab(RoutePath.saveEffect.list(this.props.params)+'/'+solution.getIn(["EnergyProblem","Id"])+'?init_hierarchy_id='+this.props.hierarchyId);
 														}}/>}
 			</div>
 		)

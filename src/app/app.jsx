@@ -245,9 +245,8 @@ ReactDom.render(<Router history={hashHistory} routes={{
           path: 'effect',
           childRoutes: [
             {
-              path: 'list',
+              path: 'list(/:problemId)',
               component: SaveEffectList,
-              childRoutes: [{path:':problemId', component: SaveEffectDetail} ]
             },{
             path: 'drafts',
             component: SaveEffectDrafts

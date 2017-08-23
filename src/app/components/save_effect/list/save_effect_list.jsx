@@ -101,9 +101,9 @@ export default class EffectList extends Component {
 
   _onItemClick(energyProblemId){
     this.setState({
-      effectDetailShow:true,
-      displayEffectProblemId:energyProblemId,
 			configEnergyProblemId:null
+    },()=>{
+      this.props.router.push(RoutePath.saveEffect.list(this.props.params) + '/' + energyProblemId);
     })
   }
 
@@ -137,7 +137,7 @@ export default class EffectList extends Component {
     getenergyeffect(this.context.hierarchyId);
     ListStore.addChangeListener(this._onChanged);
     if(getProblemId(this.props)){
-      this.setState({
+        this.setState({
           effectDetailShow:true,
           displayEffectProblemId:getProblemId(this.props),
       })
@@ -151,7 +151,13 @@ export default class EffectList extends Component {
     },()=>{
       getenergyeffect(nextContext.hierarchyId);
     });
-    }
+  }
+  if(getProblemId(nextProps)){
+      this.setState({
+          effectDetailShow:true,
+          displayEffectProblemId:getProblemId(nextProps),
+      })
+  }
   }
 
 	componentDidUpdate(prevProps,prevState) {
@@ -195,7 +201,7 @@ export default class EffectList extends Component {
       )
     }else if(this.state.effectDetailShow){
       return(
-          <Detail effect={this.state.effect.get("EnergyEffects").find(item=>item.get("EnergyProblemId")===displayEffectProblemId)}
+          <Detail effect={this.state.effect.get("EnergyEffects").find(item=>item.get("EnergyProblemId")===this.state.displayEffectProblemId)}
 						      onBack={()=>{this.setState({effectDetailShow:false,displayEffectProblemId:null},
                                                             ()=>{
                                                               getenergyeffect(this.context.hierarchyId)
