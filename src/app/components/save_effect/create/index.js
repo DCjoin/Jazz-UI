@@ -199,6 +199,7 @@ function getInitFilterObj(props) {
 		EnergyStartDate: null,
 		EnergyEndDate: null,
 		EnergyUnitPrice: '',
+		CorrectionFactor:null,
 		ContrastStep: TimeGranularity.Monthly,
 		ConfigStep: props.ConfigStep,
 		IncludeEnergyEffectData: false,
@@ -324,7 +325,7 @@ export default class Create extends Component {
 				return this.state.chartData2 && this._checkStepByTag(this.state.filterObj.get('CalculationStep'));
 				break;
 			case 3:
-				let {EnergyStartDate, EnergyEndDate, EnergyUnitPrice, BenchmarkDatas, BenchmarkModel} = this.state.filterObj.toJS();
+				let {EnergyStartDate, EnergyEndDate, EnergyUnitPrice, BenchmarkDatas, BenchmarkModel,CorrectionFactor} = this.state.filterObj.toJS();
 				if( !EnergyStartDate || !EnergyEndDate || !EnergyUnitPrice ||  !/^(\-?)\d{1,9}([.]\d{1,3})?$/.test(EnergyUnitPrice) ) {
 					return false;
 				}
@@ -332,6 +333,8 @@ export default class Create extends Component {
 					return BenchmarkDatas.reduce((result, current) => {
 						return result && !!current.Value && /^(\-?)\d{1,9}([.]\d{1,3})?$/.test(current.Value);
 					}, true);
+				}else{
+					if(!CorrectionFactor || !/^(\+?)\d{1,9}([.]\d{1,3})?$/.test(CorrectionFactor)) return false
 				}
 				return true;
 				break;
@@ -419,6 +422,7 @@ export default class Create extends Component {
 							// .set('IncludeEnergyEffectData', null)
 							.set('PredictionDatas', null)
 							.set('EnergyUnitPrice', '')
+							.set('CorrectionFactor','')
 							.set('EnergyStartDate', null)
 							.set('EnergyEndDate', null)
 						this._setFilterObj(filterObj);
@@ -500,7 +504,7 @@ export default class Create extends Component {
 			}
 			case 3:
 			{
-				let {UomId, BenchmarkModel, CalculationStep, EnergyStartDate, EnergyEndDate, EnergyUnitPrice, BenchmarkDatas} = filterObj.toJS();
+				let {UomId, BenchmarkModel, CalculationStep, EnergyStartDate, EnergyEndDate, EnergyUnitPrice, BenchmarkDatas,CorrectionFactor} = filterObj.toJS();
 				return (<Step3
 					unit={UomId ? UOMStore.getUomById(UomId) : getUomByChartData(chartData2)}
 					data={chartData3}
@@ -510,9 +514,13 @@ export default class Create extends Component {
 					EnergyStartDate={UTC2Local(EnergyStartDate)}
 					EnergyEndDate={UTC2Local(EnergyEndDate)}
 					BenchmarkDatas={BenchmarkDatas}
+					CorrectionFactor={CorrectionFactor}
 					disabledPreview={!this._checkCanNext()}
 					onChangeEnergyUnitPrice={(val) => {
 						this._setFilterObj(filterObj.set('EnergyUnitPrice', val));
+					}}
+				  onChangeCorrectionFactor={(val) => {
+						this._setFilterObj(filterObj.set('CorrectionFactor', val));
 					}}
 					onChangeEnergyStartDate={(val) => {
 						val = date2UTC(val);

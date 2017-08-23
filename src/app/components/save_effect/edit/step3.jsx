@@ -14,7 +14,7 @@ function formatDate(date){
 export default class Step3 extends Component {
 
   _renderViewStauts(){
-    let { BenchmarkModel,EnergyStartDate, EnergyEndDate, EnergyUnitPrice,BenchmarkDatas,unit} = this.props;
+    let { BenchmarkModel,EnergyStartDate, EnergyEndDate, EnergyUnitPrice,BenchmarkDatas,unit,CorrectionFactor} = this.props;
     return(
       <div className="jazz-save-effect-edit-step2-view">
         <header className="jazz-save-effect-edit-step2-view-title">{I18N.SaveEffect.EnergyCalculatePeriod}</header>
@@ -33,6 +33,8 @@ export default class Step3 extends Component {
 					style={{width: 95}}
 				/>)}
 			</div>}
+       {BenchmarkModel!==Model.Manual && <header className="jazz-save-effect-edit-step2-view-title">{I18N.SaveEffect.Create.CorrectionFactor}</header>}
+       {BenchmarkModel!==Model.Manual && <div className="jazz-save-effect-edit-step2-view-text">{CorrectionFactor}</div>}
       </div>
     )
   }

@@ -75,11 +75,13 @@ export default class Step3 extends Component {
 			BenchmarkModel,
 			CalculationStep,
 			EnergyUnitPrice,
+			CorrectionFactor,
 			EnergyStartDate,
 			EnergyEndDate,
 			BenchmarkDatas,
 			IncludeEnergyEffectData,
 			onChangeEnergyUnitPrice,
+			onChangeCorrectionFactor,
 			onChangeEnergyStartDate,
 			onChangeEnergyEndDate,
 			onChangeBenchmarkDatas,
@@ -148,6 +150,9 @@ export default class Step3 extends Component {
 							</div>
 							<ViewableTextField errorMessage={I18N.Setting.Diagnose.FormatVaildTip} regex={/^(\-?)\d{1,9}([.]\d{1,3})?$/} floatingLabelFixed={true} style={{width: 170}} title={I18N.SaveEffect.Create.EnergyUnitPrice + `(RMB/${unit})`} hintText={I18N.SaveEffect.Create.EnterEnergyUnitPrice} defaultValue={EnergyUnitPrice} didChanged={onChangeEnergyUnitPrice}/>
 							{ Model.Manual === BenchmarkModel && <ManualValue unit={unit} key={EnergyStartDate + EnergyEndDate} BenchmarkDatas={BenchmarkDatas} onChangeValue={onChangeBenchmarkDatas}/>}
+							{Model.Manual !== BenchmarkModel && 
+							<ViewableTextField errorMessage={I18N.Setting.Diagnose.FormatVaildTip} regex={/^(\+?)\d{1,9}([.]\d{1,3})?$/} floatingLabelFixed={true} style={{width: 170}} title={I18N.SaveEffect.Create.CorrectionFactor} hintText={I18N.SaveEffect.Create.EnterCorrectionFactor} defaultValue={CorrectionFactor} didChanged={onChangeCorrectionFactor}/>
+							}
 						</div>
 					</div>
 				</div>
