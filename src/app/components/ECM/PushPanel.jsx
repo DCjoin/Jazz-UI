@@ -3,8 +3,9 @@ import ReactDom from 'react-dom';
 import classnames from "classnames";
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
 import MeasuresAction from 'actions/ECM/MeasuresAction.jsx';
+import RoutePath from 'util/RoutePath.jsx';
 import {Status,Msg} from 'constants/actionType/Measures.jsx';
-import {DataConverter} from 'util/Util.jsx';
+import {DataConverter,openTab} from 'util/Util.jsx';
 import {MeasuresItem} from './MeasuresItem.jsx';
 import {Snackbar,CircularProgress} from 'material-ui';
 import {EnergySys} from './MeasurePart/MeasureTitle.jsx';
@@ -20,6 +21,7 @@ import BubbleIcon from '../BubbleIcon.jsx';
 import StatusCmp from './MeasurePart/Status.jsx';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'controls/FlatButton.jsx';
+import NewFlatButton from 'controls/NewFlatButton.jsx';
 import Remark from './MeasurePart/Remark.jsx';
 import DisappareItem from './MeasurePart/DisappareItem.jsx';
 
@@ -40,6 +42,16 @@ function privilegeWithPushAndNotPush( privilegeCheck ) {
 function PushAndNotPushIsFull() {
 	return privilegeWithPushAndNotPush(privilegeUtil.isFull.bind(privilegeUtil));
 }
+
+//节能效果权限
+function privilegeWithSaveEffect( privilegeCheck ) {
+  //  return true
+	return privilegeCheck(PermissionCode.Save_Effect, CurrentUserStore.getCurrentPrivilege());
+}
+function EffectIsFullOrIsView() {
+	return privilegeWithSaveEffect(privilegeUtil.isFull.bind(privilegeUtil)) || privilegeWithSaveEffect(privilegeUtil.isView.bind(privilegeUtil));
+}
+
 
 function currentUserId(){
   return CurrentUserStore.getCurrentUser().Id
@@ -66,6 +78,7 @@ function canEditStatus(userId,infoTabNo){
 }
 
 const status=[Status.ToBe,Status.Being,Status.Done,Status.Canceled];
+
 export default class PushPanel extends Component {
 
   constructor(props) {
@@ -225,6 +238,21 @@ export default class PushPanel extends Component {
     )
   }
 
+	_renderEffectAction(solution){
+		return(
+			<div style={{width:'110px',minWidth:'110px'}}>
+				{this.state.infoTabNo===3 && EffectIsFullOrIsView() && solution.getIn(["EnergySolution","Name"])
+					&& <NewFlatButton label={I18N.MainMenu.SaveEffect}
+														secondary={true}
+														style={{width:'95px',height:'30px',lineHeight:'28px',float:'right'}}
+														onTouchTap={(e)=>{
+															e.stopPropagation();
+															openTab(RoutePath.saveEffect.index(this.props.params)+'?init_hierarchy_id='+this.props.hierarchyId);
+														}}/>}
+			</div>
+		)
+	}
+
   _renderListByTimeType(type,displayLabel){
     var label=type===1?I18N.Setting.ECM.PushPanel.ThisMonth
               :type===2?I18N.Setting.ECM.PushPanel.Last3Month
@@ -238,7 +266,8 @@ export default class PushPanel extends Component {
           hasCheckBox:false,
           personInCharge:this._renderPersonInCharge(solution.get('EnergyProblem'),false,index),
           onClick:()=>{this._onMeasureItemClick(index)},
-          displayUnread:displayUnread(this.state.infoTabNo)
+          displayUnread:displayUnread(this.state.infoTabNo),
+					action:this._renderEffectAction(solution)
         }
         if(this.state.measureShow===false && this.state.measureIndex!==null && index===this.state.measureIndex){
           List.push(

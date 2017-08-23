@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import NewDialog from 'controls/NewDialog.jsx';
-import {getEffectRateTag,saveeffectratetag} from 'actions/save_effect_action.js';
+import {getEffectRateTag} from 'actions/save_effect_action.js';
 import ListStore from '../../../stores/save_effect/ListStore.jsx';
 import { CircularProgress} from 'material-ui';
 import classNames from 'classnames';
-import Immutable from "immutable";
 import CommonFuns from '../../../util/Util.jsx';
 import TagSelect from '../../KPI/Single/TagSelect.jsx';
 import FlatButton from "controls/NewFlatButton.jsx";

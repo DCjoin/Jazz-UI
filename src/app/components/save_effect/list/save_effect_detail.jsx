@@ -6,7 +6,6 @@ import moment from 'moment';
 import util from 'util/Util.jsx';
 import ListStore from 'stores/save_effect/ListStore.jsx';
 import {calcState} from "constants/actionType/Effect.jsx";
-import Immutable from 'immutable';
 import FlatButton from "controls/NewFlatButton.jsx";
 import DropdownButton from '../../../controls/NewDropdownButton.jsx';
 import {IconText} from '../../ECM/MeasuresItem.jsx';
@@ -90,7 +89,6 @@ export default class EffectDetail extends Component {
   }
   _renderSubTitle(){
     var tag=this.state.detailInfo.get('EffectItems');
-    // var tag=Immutable.fromJS({a:1,b:3});
     var {ExecutedTime,EnergySystem,CalcState}=this.props.effect.toJS();
     if(tag.size===0){
       return (
@@ -142,12 +140,7 @@ export default class EffectDetail extends Component {
     var {CalcState}=this.props.effect.toJS(),
         preTitle=CalcState===calcState.Being?I18N.SaveEffect.UtilNow:'',
 				prePeriod=CalcState===calcState.Being?I18N.SaveEffect.Predict:'';
-    // var tags=Immutable.fromJS([{TagId:1,TagName:'TagA'},{TagId:2,TagName:'TagB'}]),
-    //     EnergySaving=1,
-    //     EnergySavingCosts=1,
-    //     InvestmentAmount=1,
-    //     InvestmentReturnCycle=1,
-    //     EnergySavingUomId=1;
+
     var style={
       btn:{
         height:'30px',

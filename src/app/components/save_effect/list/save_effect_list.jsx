@@ -4,7 +4,6 @@ import {ItemForManager,ItemForConsultant} from './Item.jsx';
 import FontIcon from 'material-ui/FontIcon';
 import RoutePath from 'util/RoutePath.jsx';
 // import _ from 'lodash-es';
-import Immutable from "immutable";
 import privilegeUtil from 'util/privilegeUtil.jsx';
 import PermissionCode from 'constants/PermissionCode.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
@@ -20,8 +19,6 @@ import Detail from './save_effect_detail.jsx';
 import Create from '../create';
 import PreCreate from '../create/pre_create.jsx';
 import util from 'util/Util.jsx';
-
-const TABS_HEIGHT=73;
 
 function privilegeWithSaveEffect( privilegeCheck ) {
   //  return true
