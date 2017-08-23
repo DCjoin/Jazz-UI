@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import classNames from 'classnames';
 import BubbleIcon from 'components/BubbleIcon.jsx';
 import FontIcon from 'material-ui/FontIcon';
 
@@ -30,13 +31,16 @@ export default class StepComponent extends Component {
           <div>
             <BubbleIcon number={this.props.step} style={styles.bubble} numberStyle={styles.number}/>
             <div className="jazz-save-effect-edit-step-component-title-label">{this.props.title}</div>
-            {this.props.hasAlert && <div className="jazz-save-effect-edit-step-component-title-alert">
+            {this.props.isfolded && <div className="jazz-save-effect-edit-step-component-title-alert">
               <FontIcon className="icon-VIP" style={styles.icon} color="#ff4548"/>
               {I18N.SaveEffect.Alert}
             </div>}
           </div>
-          {this.props.isView && <div className="opertion" onClick={this.props.onEdit}>
-            <FontIcon className="icon-edit" color="#505559" style={styles.icon}/>
+          {this.props.isView && <div className={classNames({
+				                                        "operation":true,
+				                                        'disabled':this.props.editDisabled
+			                                          })} onClick={!this.props.editDisabled && this.props.onEdit}>
+            <FontIcon className="icon-edit" color={this.props.editDisabled?"#cbcbcb":"#505559"} style={styles.icon}/>
             {I18N.Baseline.Button.Edit}
           </div>}
 
@@ -52,7 +56,7 @@ export default class StepComponent extends Component {
 StepComponent.propTypes = {
   step:React.PropTypes.number,
   title:React.PropTypes.string,
-  hasAlert:React.PropTypes.boolean,
+  editDisabled:React.PropTypes.boolean,
   isView:React.PropTypes.boolean,
   onEdit:React.PropTypes.func,
   isfolded:React.PropTypes.boolean,

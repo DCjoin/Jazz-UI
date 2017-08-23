@@ -6,14 +6,15 @@ import FlatButton from "controls/NewFlatButton.jsx";
 export default class Step1 extends Component {
 
   state={
-    isView:this.props.isView
+    selectedId:this.props.selectedId,
+    tagName:this.props.tagName
   }
 
   _renderViewStauts(){
     return(
       <div className="jazz-save-effect-edit-step1-view">
         <header className="jazz-save-effect-edit-step1-view-title">{I18N.Setting.Tag.Tag}</header>
-        {this.props.tags.map(tag=>(<div>{tag.get('Name')}</div>))}
+        {this.state.tagName}
       </div>
     )
   }
@@ -21,12 +22,17 @@ export default class Step1 extends Component {
   _renderEditStauts(){
     var {isView,onSave,onCancel,...other}=this.props;
     var actions=[
-        <FlatButton label={I18N.Platform.Password.Confirm} primary={true} style={{float:'right',marginRight:'20px'}} onTouchTap={()=>{onSave()}}/>,
-      <FlatButton label={I18N.Common.Button.Cancel2} secondary={true} style={{float:'right'}} onTouchTap={onCancel}/>
+        <FlatButton label={I18N.Common.Button.Cancel2} secondary={true} style={{float:'right',minWidth:'68px'}} onTouchTap={onCancel}/>,
+        <FlatButton label={I18N.Platform.Password.Confirm} primary={true} style={{float:'right',minWidth:'68px',marginRight:'20px'}} 
+              onTouchTap={()=>{
+                            if(this.state.selectedId!==this.props.selectedId) onSave(this.state.selectedId,this.state.TagName)
+                                else{
+                                  onCancel()
+                                }}}/>      
     ]
     return(
       <div className="jazz-save-effect-edit-step1-edit">
-        <EditStep1 {...other}/>
+        <EditStep1 {...other} selectedId={this.state.selectedId} onClickItem={(TagId,TagName)=>{this.setState({selectedId:TagId,TagName})}}/>
         <div className="jazz-save-effect-edit-step1-edit-actions">
           {actions}
         </div>
@@ -34,18 +40,24 @@ export default class Step1 extends Component {
     )
   }
 
-  componentWillReceiveProps(nextProps) {
-    if(nextProps.isView!==this.props.isView){
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.configStep<=2 || nextProps.configStep===null
+  }
+
+    componentWillReceiveProps(nextProps) {
+    if(nextProps.tagName!==this.props.tagName){
       this.setState({
-        isView:nextProps.isView
+        tagName:nextProps.tagName
       })
     }
   }
 
   render(){
+    var editDisabled=this.props.configStep!==1 && this.props.configStep!==null;
    return(
-     <StepComponent step={1} title={I18N.SaveEffect.Step1} isView={this.state.isView} >
-       {this.state.isView?this._renderViewStauts():this._renderEditStauts()}
+     <StepComponent step={1} isfolded={false} title={I18N.SaveEffect.Step1} 
+                    isView={this.props.isView} editDisabled={editDisabled} onEdit={this.props.onEdit}>
+       {this.props.isView?this._renderViewStauts():this._renderEditStauts()}
      </StepComponent>
    )
   }
@@ -54,11 +66,15 @@ export default class Step1 extends Component {
 
 Step1.propTypes = {
   tags:React.PropTypes.object,
+  tagName:React.PropTypes.string,
   selectedId:React.PropTypes.number,
   onClickItem:React.PropTypes.func,
   onDeleteItem:React.PropTypes.func,
   onAddItem:React.PropTypes.func,
   isView:React.PropTypes.boolean,
+  // editDisabled:React.PropTypes.boolean,
   onSave:React.PropTypes.func,
   onCancel:React.PropTypes.func,
+  onEdit:React.PropTypes.func,
+  configStep:React.PropTypes.number || null
 };
