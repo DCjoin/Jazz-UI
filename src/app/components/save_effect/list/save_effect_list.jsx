@@ -4,7 +4,6 @@ import {ItemForManager,ItemForConsultant} from './Item.jsx';
 import FontIcon from 'material-ui/FontIcon';
 import RoutePath from 'util/RoutePath.jsx';
 // import _ from 'lodash-es';
-import Immutable from "immutable";
 import privilegeUtil from 'util/privilegeUtil.jsx';
 import PermissionCode from 'constants/PermissionCode.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
@@ -21,8 +20,6 @@ import Create from '../create';
 import PreCreate from '../create/pre_create.jsx';
 import util from 'util/Util.jsx';
 
-const TABS_HEIGHT=73;
-
 function privilegeWithSaveEffect( privilegeCheck ) {
   //  return true
 	return privilegeCheck(PermissionCode.Save_Effect, CurrentUserStore.getCurrentPrivilege());
@@ -34,6 +31,10 @@ function isFull() {
 function getCustomerById(customerId) {
 	return find(CurrentUserCustomerStore.getAll(), customer => customer.Id === customerId * 1 );
 }
+
+function getProblemId(props) {
+	return +props.params.problemId;
+  }
 
 export default class EffectList extends Component {
 
@@ -58,7 +59,7 @@ export default class EffectList extends Component {
   deleteIndex:null,
   configRateShow:false,
   effectDetailShow:false,
-  displayEffect:null,
+  displayEffectProblemId:null,
   saveSuccessText:null,
   configEnergyProblemId:null,
   createShow:false
@@ -98,11 +99,11 @@ export default class EffectList extends Component {
     })
   }
 
-  _onItemClick(energyEffectId){
+  _onItemClick(energyProblemId){
     this.setState({
-      effectDetailShow:true,
-      displayEffect:energyEffectId,
 			configEnergyProblemId:null
+    },()=>{
+      this.props.router.push(RoutePath.saveEffect.list(this.props.params) + '/' + energyProblemId);
     })
   }
 
@@ -135,6 +136,12 @@ export default class EffectList extends Component {
   componentDidMount(){
     getenergyeffect(this.context.hierarchyId);
     ListStore.addChangeListener(this._onChanged);
+    if(getProblemId(this.props)){
+        this.setState({
+          effectDetailShow:true,
+          displayEffectProblemId:getProblemId(this.props),
+      })
+    }
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
@@ -144,7 +151,13 @@ export default class EffectList extends Component {
     },()=>{
       getenergyeffect(nextContext.hierarchyId);
     });
-    }
+  }
+  if(getProblemId(nextProps)){
+      this.setState({
+          effectDetailShow:true,
+          displayEffectProblemId:getProblemId(nextProps),
+      })
+  }
   }
 
 	componentDidUpdate(prevProps,prevState) {
@@ -188,8 +201,8 @@ export default class EffectList extends Component {
       )
     }else if(this.state.effectDetailShow){
       return(
-          <Detail effect={this.state.effect.getIn(["EnergyEffects",this.state.displayEffect])}
-						      onBack={()=>{this.setState({effectDetailShow:false,displayEffect:null},
+          <Detail effect={this.state.effect.get("EnergyEffects").find(item=>item.get("EnergyProblemId")===this.state.displayEffectProblemId)}
+						      onBack={()=>{this.setState({effectDetailShow:false,displayEffectProblemId:null},
                                                             ()=>{
                                                               getenergyeffect(this.context.hierarchyId)
                                                             })}}
@@ -227,8 +240,8 @@ export default class EffectList extends Component {
             </div>
             <div className="jazz-effect-list-content" ref="content">
               {this.state.effect.get("EnergyEffects").map((item,index)=>(
-                isFull()?<ItemForConsultant ref={`content_${index}`} effect={item} configEnergyProblemId={this.state.configEnergyProblemId} onClick={this._onItemClick.bind(this,index)} canEdit={isFull()} onConfig={this._onConfig.bind(this,item.get('EnergyProblemId'))}/>
-              :(item.get('ConfigedTagCount')!==0 && <ItemForManager ref={`content_${index}`} effect={item} onClick={this._onItemClick.bind(this,index)} canEdit={isFull()}/>)))}
+                isFull()?<ItemForConsultant ref={`content_${index}`} effect={item} configEnergyProblemId={this.state.configEnergyProblemId} onClick={this._onItemClick.bind(this,item.get("EnergyProblemId"))} canEdit={isFull()} onConfig={this._onConfig.bind(this,item.get('EnergyProblemId'))}/>
+              :(item.get('ConfigedTagCount')!==0 && <ItemForManager ref={`content_${index}`} effect={item} onClick={this._onItemClick.bind(this,item.get("EnergyProblemId"))} canEdit={isFull()}/>)))}
             </div>
             {this.state.configRateShow &&
                 <ConfigRate hierarchyName={this._getSelectedHierarchy().Name} hierarchyId={this.context.hierarchyId}

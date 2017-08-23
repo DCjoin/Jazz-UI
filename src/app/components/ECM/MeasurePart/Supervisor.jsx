@@ -401,7 +401,7 @@ export default class Supervisor extends Component {
         };
         var costIcon=<FontIcon className="icon-user" iconStyle ={iconStyle} style = {style} />;
       return(
-        <IconText icon={costIcon} label={I18N.Setting.CustomerManagement.Principal}>
+        <IconText icon={costIcon} style={{flex:1}} label={I18N.Setting.CustomerManagement.Principal}>
           <div style={{marginTop:'10px'}}>
             <SupervisorDropDownMenu {...prop}/>
           </div>
