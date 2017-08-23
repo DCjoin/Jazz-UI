@@ -28,6 +28,7 @@ import SaveEffectOverview from './components/save_effect/save_effect_overview.js
 import SaveEffectBestList from './components/save_effect/save_effect_best_list.jsx';
 import SaveEffectDrafts from './components/save_effect/list/Draft.jsx';
 import SaveEffectList from './components/save_effect/list/save_effect_list.jsx';
+import SaveEffectDetail from './components/save_effect/list/save_effect_detail.jsx';
 import BuildingReportActuality from './components/KPI/BuildingReportActuality.jsx';
 import KPIConfig from './components/KPI/Group/ConfigMenu.jsx';
 import KPIConfigList from './components/KPI/Group/KPIConfigList.jsx';
@@ -170,7 +171,7 @@ ReactDom.render(<Router history={hashHistory} routes={{
       component: resetPSWApp
     }, {
       path: 'u=:user&t=:token&a=demologin&lang=:lang2',
-      component: demoLoginApp
+      component: demoLoginApp 
     }, {
       path: 'u=:user&t=:token&a=initpwd&lang=:lang2',
       component: initChangePSWApp
@@ -245,7 +246,8 @@ ReactDom.render(<Router history={hashHistory} routes={{
           childRoutes: [
             {
               path: 'list',
-              component: SaveEffectList
+              component: SaveEffectList,
+              childRoutes: [{path:':problemId', component: SaveEffectDetail} ]
             },{
             path: 'drafts',
             component: SaveEffectDrafts

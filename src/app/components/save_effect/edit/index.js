@@ -158,7 +158,7 @@ function getInitFilterObj(state) {
 		EnergyStartDate: null,
 		EnergyEndDate: null,
 		EnergyUnitPrice: '',
-		CorrectionFactor:null,
+		CorrectionFactor:1,
 		ContrastStep: TimeGranularity.Monthly,
 		ConfigStep: state.ConfigStep,
 		IncludeEnergyEffectData: false,

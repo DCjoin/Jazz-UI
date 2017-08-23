@@ -35,6 +35,10 @@ function getCustomerById(customerId) {
 	return find(CurrentUserCustomerStore.getAll(), customer => customer.Id === customerId * 1 );
 }
 
+function getProblemId(props) {
+	return +props.params.problemId;
+  }
+
 export default class EffectList extends Component {
 
   static contextTypes = {
@@ -58,7 +62,7 @@ export default class EffectList extends Component {
   deleteIndex:null,
   configRateShow:false,
   effectDetailShow:false,
-  displayEffect:null,
+  displayEffectProblemId:null,
   saveSuccessText:null,
   configEnergyProblemId:null,
   createShow:false
@@ -98,10 +102,10 @@ export default class EffectList extends Component {
     })
   }
 
-  _onItemClick(energyEffectId){
+  _onItemClick(energyProblemId){
     this.setState({
       effectDetailShow:true,
-      displayEffect:energyEffectId,
+      displayEffectProblemId:energyProblemId,
 			configEnergyProblemId:null
     })
   }
@@ -135,6 +139,12 @@ export default class EffectList extends Component {
   componentDidMount(){
     getenergyeffect(this.context.hierarchyId);
     ListStore.addChangeListener(this._onChanged);
+    if(getProblemId(this.props)){
+      this.setState({
+          effectDetailShow:true,
+          displayEffectProblemId:getProblemId(this.props),
+      })
+    }
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
@@ -188,8 +198,8 @@ export default class EffectList extends Component {
       )
     }else if(this.state.effectDetailShow){
       return(
-          <Detail effect={this.state.effect.getIn(["EnergyEffects",this.state.displayEffect])}
-						      onBack={()=>{this.setState({effectDetailShow:false,displayEffect:null},
+          <Detail effect={this.state.effect.get("EnergyEffects").find(item=>item.get("EnergyProblemId")===displayEffectProblemId)}
+						      onBack={()=>{this.setState({effectDetailShow:false,displayEffectProblemId:null},
                                                             ()=>{
                                                               getenergyeffect(this.context.hierarchyId)
                                                             })}}
@@ -227,8 +237,8 @@ export default class EffectList extends Component {
             </div>
             <div className="jazz-effect-list-content" ref="content">
               {this.state.effect.get("EnergyEffects").map((item,index)=>(
-                isFull()?<ItemForConsultant ref={`content_${index}`} effect={item} configEnergyProblemId={this.state.configEnergyProblemId} onClick={this._onItemClick.bind(this,index)} canEdit={isFull()} onConfig={this._onConfig.bind(this,item.get('EnergyProblemId'))}/>
-              :(item.get('ConfigedTagCount')!==0 && <ItemForManager ref={`content_${index}`} effect={item} onClick={this._onItemClick.bind(this,index)} canEdit={isFull()}/>)))}
+                isFull()?<ItemForConsultant ref={`content_${index}`} effect={item} configEnergyProblemId={this.state.configEnergyProblemId} onClick={this._onItemClick.bind(this,item.get("EnergyProblemId"))} canEdit={isFull()} onConfig={this._onConfig.bind(this,item.get('EnergyProblemId'))}/>
+              :(item.get('ConfigedTagCount')!==0 && <ItemForManager ref={`content_${index}`} effect={item} onClick={this._onItemClick.bind(this,item.get("EnergyProblemId"))} canEdit={isFull()}/>)))}
             </div>
             {this.state.configRateShow &&
                 <ConfigRate hierarchyName={this._getSelectedHierarchy().Name} hierarchyId={this.context.hierarchyId}

@@ -58,6 +58,7 @@
 		z-index: 3;
 		display: flex;
 		flex-direction: column;
+		// position: relative;
 
 		// & .icon-close {
 		// 	position: fixed;
@@ -68,12 +69,13 @@
 		// }
 
 		& .date-picker-inline {
-			position: relative;
+			// position: relative;
 
 			& .datepicker-popup {
 				z-index: 1;
 				position: absolute;
-				bottom: 0;
+				top: 0;
+				left: 0;
 			}
 		}
 
@@ -81,6 +83,7 @@
 			margin: 0 20px 20px;
 			border: solid 1px @border;
 			background-color: #ffffff;
+			position: relative;
 		}
 
 		& .step1 {

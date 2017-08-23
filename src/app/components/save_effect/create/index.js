@@ -199,7 +199,7 @@ function getInitFilterObj(props) {
 		EnergyStartDate: null,
 		EnergyEndDate: null,
 		EnergyUnitPrice: '',
-		CorrectionFactor:null,
+		CorrectionFactor:1,
 		ContrastStep: TimeGranularity.Monthly,
 		ConfigStep: props.ConfigStep,
 		IncludeEnergyEffectData: false,
