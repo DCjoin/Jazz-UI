@@ -158,6 +158,7 @@ function getInitFilterObj(state) {
 		EnergyStartDate: null,
 		EnergyEndDate: null,
 		EnergyUnitPrice: '',
+		CorrectionFactor:null,
 		ContrastStep: TimeGranularity.Monthly,
 		ConfigStep: state.ConfigStep,
 		IncludeEnergyEffectData: false,
@@ -273,7 +274,7 @@ export default class Edit extends Component {
 				return this.state.chartData2 && this._checkStepByTag(this.state.filterObj.get('CalculationStep'));
 				break;
 			case 3:
-				let {EnergyStartDate, EnergyEndDate, EnergyUnitPrice, BenchmarkDatas, BenchmarkModel} = this.state.filterObj.toJS();
+				let {EnergyStartDate, EnergyEndDate, EnergyUnitPrice, BenchmarkDatas, BenchmarkModel,CorrectionFactor} = this.state.filterObj.toJS();
 				if( !EnergyStartDate || !EnergyEndDate || !EnergyUnitPrice ||  !/^(\-?)\d{1,9}([.]\d{1,3})?$/.test(EnergyUnitPrice) ) {
 					return false;
 				}
@@ -281,6 +282,8 @@ export default class Edit extends Component {
 					return BenchmarkDatas.reduce((result, current) => {
 						return result && !!current.Value && /^(\-?)\d{1,9}([.]\d{1,3})?$/.test(current.Value);
 					}, true);
+				}else{
+					if(!CorrectionFactor || !/^(\+?)\d{1,9}([.]\d{1,3})?$/.test(CorrectionFactor)) return false
 				}
 				return true;
 				break;
@@ -476,6 +479,7 @@ export default class Edit extends Component {
 							// .set('IncludeEnergyEffectData', null)
 							.set('PredictionDatas', null)
 							.set('EnergyUnitPrice', '')
+							.set('CorrectionFactor','')
 							.set('EnergyStartDate', null)
 							.set('EnergyEndDate', null)
 						this._setFilterObj(filterObj);
@@ -588,7 +592,7 @@ export default class Edit extends Component {
 
   _renderStep3(){
     let { filterObj,chartData3,chartData2,configStep} = this.state;
-    let {UomId, BenchmarkModel, CalculationStep, EnergyStartDate, EnergyEndDate, EnergyUnitPrice, BenchmarkDatas}
+    let {UomId, BenchmarkModel, CalculationStep, EnergyStartDate, EnergyEndDate, EnergyUnitPrice, BenchmarkDatas,CorrectionFactor}
 				 = (configStep===3 || configStep===null)?filterObj.toJS():CreateStore.getEffectItem().toJS();
 				return (<Step3
 					unit={UomId ? UOMStore.getUomById(UomId) : (chartData2 ? getUomByChartData(chartData2) : '')}
@@ -599,9 +603,13 @@ export default class Edit extends Component {
 					EnergyStartDate={UTC2Local(EnergyStartDate)}
 					EnergyEndDate={UTC2Local(EnergyEndDate)}
 					BenchmarkDatas={BenchmarkDatas}
+					CorrectionFactor={CorrectionFactor}
 					disabledPreview={!this._checkCanNext(3)}
 					onChangeEnergyUnitPrice={(val) => {
 						this._setFilterObj(filterObj.set('EnergyUnitPrice', val));
+					}}
+					onChangeCorrectionFactor={(val) => {
+						this._setFilterObj(filterObj.set('CorrectionFactor', val));
 					}}
 					onChangeEnergyStartDate={(val) => {
 						val = date2UTC(val);
@@ -756,7 +764,7 @@ export default class Edit extends Component {
 							closeDlgShow: true
 						});
 					} else {
-						this._onClose(false);
+						this._close(false);
 					}
 				}}/>
          <div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>
@@ -792,7 +800,7 @@ export default class Edit extends Component {
 							closeDlgShow: true
 						});
 					} else {
-						this._onClose(false);
+						this._onSaveAndClose(false);
 					}
 				}}/>
           {this._renderMeasureDialog()}
