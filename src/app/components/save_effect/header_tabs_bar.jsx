@@ -23,12 +23,12 @@ function HeaderTabs({isCustomer, isOverview, onActive,context,param}) {
 	}
 	return (
 		<div>
-			{false&&<div className={classNames({
+			<div className={classNames({
 					"tab":true,
 					'active':context.isActive(RoutePath.saveEffect.overview(param))
 				})} onClick={() => {
 				onActive(RoutePath.saveEffect.overview);
-			}}>{I18N.SaveEffect.OverviewLabel}</div>}
+			}}>{I18N.SaveEffect.OverviewLabel}</div>
 		<div className={classNames({
 				"tab":true,
 				'active':context.isActive(secondTabProps.basePath(param))
