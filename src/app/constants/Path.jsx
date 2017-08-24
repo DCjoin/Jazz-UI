@@ -103,6 +103,8 @@ module.exports = {
     updateEnergySystem: '/energyeffect/updateenergySystem/{customerId}/{hierarchyId}/{energyProblemId}/{energySystem}',
     addenergyeffecttag: '/energyeffect/addenergyeffecttag/{energyProblemId}/{tagId}',
     deleteenergyeffecttag: '/energyeffect/deleteenergyeffecttag/{energyProblemId}/{tagId}',
-    getitem:'/energyeffect/getitem/{energyEffectItemId}'
+    getitem:'/energyeffect/getitem/{energyEffectItemId}',
+    getcontrast:'/energyeffect/detail/contrast/{energyEffectId}/{energyEffectItemId}',
+    getsaving:'/energyeffect/detail/saving/{energyEffectId}/{energyEffectItemId}'
   }
 };

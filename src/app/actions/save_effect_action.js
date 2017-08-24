@@ -227,3 +227,25 @@ export function updateItem(effectItem,chart2,chart3) {
 		effectItem,chart2,chart3
 	});
 }
+
+export function getContrastChartData(energyEffectId,energyEffectItemId) {
+		Ajax.get( Util.replacePathParams(SaveEffect.getcontrast, energyEffectId,energyEffectItemId), {
+			success: (data) => {
+      	AppDispatcher.dispatch({
+        	type: Action.GET_DETAIL_CHART,
+        	data
+      });
+		}
+	});
+}
+
+export function getSavingChartData(energyEffectId,energyEffectItemId) {
+		Ajax.get( Util.replacePathParams(SaveEffect.getsaving, energyEffectId,energyEffectItemId), {
+			success: (data) => {
+      	AppDispatcher.dispatch({
+        	type: Action.GET_DETAIL_CHART,
+        	data
+      });
+		}
+	});
+}
