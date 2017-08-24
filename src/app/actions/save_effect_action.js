@@ -203,3 +203,27 @@ export function cleanCreate() {
 		type: Action.CLEAN_CREATE_SAVE_EFFECT,
 	});
 }
+
+export function getItem(energyEffectItemId) {
+	Ajax.get( Util.replacePathParams(SaveEffect.getitem, energyEffectItemId), {
+		success: (effectItem) => {
+      AppDispatcher.dispatch({
+        type: Action.GET_ITEM_SUCCESS,
+        effectItem
+      });
+		}
+	});
+}
+
+export function cleanEdit() {
+	AppDispatcher.dispatch({
+		type: Action.CLEAN_EDIT_SAVE_EFFECT,
+	});
+}
+
+export function updateItem(effectItem,chart2,chart3) {
+	AppDispatcher.dispatch({
+		type: Action.GET_ITEM_SUCCESS,
+		effectItem,chart2,chart3
+	});
+}

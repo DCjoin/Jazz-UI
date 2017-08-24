@@ -6,7 +6,6 @@ import moment from 'moment';
 import util from 'util/Util.jsx';
 import ListStore from 'stores/save_effect/ListStore.jsx';
 import {calcState} from "constants/actionType/Effect.jsx";
-import Immutable from 'immutable';
 import FlatButton from "controls/NewFlatButton.jsx";
 import DropdownButton from '../../../controls/NewDropdownButton.jsx';
 import {IconText} from '../../ECM/MeasuresItem.jsx';
@@ -14,6 +13,7 @@ import {getDetail,deleteItem,changeEnergySystemForEffect} from 'actions/save_eff
 import { CircularProgress,Dialog,Snackbar} from 'material-ui';
 import PreCreate from '../create/pre_create.jsx';
 import Create from '../create';
+import Edit from '../edit';
 
 function validValue(value) {
 	return value!==null?util.getLabelData(value*1):'-';
@@ -37,7 +37,9 @@ export default class EffectDetail extends Component {
 		deleteConfirmShow:false,
 		deleteIndex:null,
 		energySystemDialogShow:false,
-		createShow:false
+		createShow:false,
+		editShow:false,
+		editIndex:null
   }
 
   _onChanged(){
@@ -59,7 +61,10 @@ export default class EffectDetail extends Component {
 	}
 
   _handleEditTagChange(event, value){
-
+		this.setState({
+					editShow:true,
+					editIndex:value
+		})
   }
 
   _handleDeleteTagChange(event, value){
@@ -84,7 +89,6 @@ export default class EffectDetail extends Component {
   }
   _renderSubTitle(){
     var tag=this.state.detailInfo.get('EffectItems');
-    // var tag=Immutable.fromJS({a:1,b:3});
     var {ExecutedTime,EnergySystem,CalcState}=this.props.effect.toJS();
     if(tag.size===0){
       return (
@@ -136,12 +140,7 @@ export default class EffectDetail extends Component {
     var {CalcState}=this.props.effect.toJS(),
         preTitle=CalcState===calcState.Being?I18N.SaveEffect.UtilNow:'',
 				prePeriod=CalcState===calcState.Being?I18N.SaveEffect.Predict:'';
-    // var tags=Immutable.fromJS([{TagId:1,TagName:'TagA'},{TagId:2,TagName:'TagB'}]),
-    //     EnergySaving=1,
-    //     EnergySavingCosts=1,
-    //     InvestmentAmount=1,
-    //     InvestmentReturnCycle=1,
-    //     EnergySavingUomId=1;
+
     var style={
       btn:{
         height:'30px',
@@ -344,6 +343,20 @@ export default class EffectDetail extends Component {
 							}
 
 						}}/>}
+						{this.state.editShow && <Edit effect={this.props.effect.set('EnergyEffectItemId',this.state.detailInfo.getIn(['EffectItems',this.state.editIndex,"EnergyEffectItemId"]))}
+																					editTagName={this.state.detailInfo.getIn(['EffectItems',this.state.editIndex,"TagName"])}
+																					onSubmitDone={()=>{getDetail(this.props.effect.get('EnergyEffectId'));}}
+																					onClose={()=>{
+																										this.setState({
+																										editShow:false,
+																										editIndex:null
+																						},()=>{
+																							getDetail(this.props.effect.get('EnergyEffectId'))
+																						})
+																					}
+																		
+																					}
+						/>}
 						<Snackbar ref='snackbar' autoHideDuration={4000} open={!!this.state.saveSuccessText} onRequestClose={()=>{this.setState({saveSuccessText:null})}} message={this.state.saveSuccessText}/>
 				</div>
 			)

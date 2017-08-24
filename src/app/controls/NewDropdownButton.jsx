@@ -89,7 +89,7 @@ var NewDropdownButton = React.createClass({
       height: '30px',
       borderRadius: '2px',
       border: 'solid 1px #32ad3d',
-      lineHeight:'30px'
+      lineHeight:'28px'
     }, this.props.buttonStyle);
     return (
       <div ref="root" className={classSet(classes)} style={{display:'inline-block'}}>

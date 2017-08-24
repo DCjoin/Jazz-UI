@@ -18,7 +18,7 @@ function validValue(value) {
 export class IconText extends Component{
   render(){
 		var style= assign({
-      marginLeft:'50px',width:"145px"
+      width:"145px",
     }, this.props.style);
     return(
       <div style={style}>
@@ -95,11 +95,11 @@ export class MeasuresItem extends Component {
           periodIcon=<FontIcon className="icon-pay-back-period" iconStyle ={iconStyle} color="#626469" style = {style} />;
       return(
         <div className="measuresItem-content">
-          <div className="side">
+          <div className="side" style={{flex:1}}>
             <div className="image" style={{backgroundImage:getUrl(EnergyProblem.ThumbnailUrl)}}></div>
-            <IconText icon={costIcon} label={I18N.Setting.ECM.EstimatedAnnualCostSavings} value={validValue(ExpectedAnnualCostSaving)} uom="RMB"/>
-            <IconText icon={sumIcon} label={I18N.Setting.ECM.InvestmentAmount} value={validValue(InvestmentAmount)} uom="RMB"/>
-            <IconText icon={periodIcon} label={I18N.Setting.ECM.PaybackPeriod} value={InvestmentReturnCycle || '-'}
+            <IconText icon={costIcon} style={{marginLeft:'30px',flex:1}} label={I18N.Setting.ECM.EstimatedAnnualCostSavings} value={validValue(ExpectedAnnualCostSaving)} uom="RMB"/>
+            <IconText icon={sumIcon} style={{marginLeft:'30px',flex:1}} label={I18N.Setting.ECM.InvestmentAmount} value={validValue(InvestmentAmount)} uom="RMB"/>
+            <IconText icon={periodIcon} style={{marginLeft:'30px',flex:1}} label={I18N.Setting.ECM.PaybackPeriod} value={InvestmentReturnCycle || '-'}
 											uom={CommonFuns.isNumber(InvestmentReturnCycle)?I18N.EM.Year:''}/>
             <div>{this.props.personInCharge}</div>
           </div>

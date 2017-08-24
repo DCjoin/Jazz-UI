@@ -28,6 +28,7 @@ import SaveEffectOverview from './components/save_effect/save_effect_overview.js
 import SaveEffectBestList from './components/save_effect/save_effect_best_list.jsx';
 import SaveEffectDrafts from './components/save_effect/list/Draft.jsx';
 import SaveEffectList from './components/save_effect/list/save_effect_list.jsx';
+import SaveEffectDetail from './components/save_effect/list/save_effect_detail.jsx';
 import BuildingReportActuality from './components/KPI/BuildingReportActuality.jsx';
 import KPIConfig from './components/KPI/Group/ConfigMenu.jsx';
 import KPIConfigList from './components/KPI/Group/KPIConfigList.jsx';
@@ -54,6 +55,7 @@ import WorkTime from './components/calendar/WorkTime.jsx';
 import ColdWarm from './components/calendar/ColdWarm.jsx';
 import DayNight from './components/calendar/DayNight.jsx';
 import Tariff from './components/energyConversion/tariff/Tariff.jsx';
+import Carbon from './components/energyConversion/carbon/Carbon.jsx';
 import Customer from './components/customer/Customer.jsx';
 //for customerSetting
 import VEE from './components/customerSetting/VEERules/VEERules.jsx';
@@ -169,7 +171,7 @@ ReactDom.render(<Router history={hashHistory} routes={{
       component: resetPSWApp
     }, {
       path: 'u=:user&t=:token&a=demologin&lang=:lang2',
-      component: demoLoginApp
+      component: demoLoginApp 
     }, {
       path: 'u=:user&t=:token&a=initpwd&lang=:lang2',
       component: initChangePSWApp
@@ -243,8 +245,8 @@ ReactDom.render(<Router history={hashHistory} routes={{
           path: 'effect',
           childRoutes: [
             {
-              path: 'list',
-              component: SaveEffectList
+              path: 'list(/:problemId)',
+              component: SaveEffectList,
             },{
             path: 'drafts',
             component: SaveEffectDrafts
@@ -322,6 +324,9 @@ ReactDom.render(<Router history={hashHistory} routes={{
       }, {
         path: 'price',
         component: Tariff
+      }, {
+        path: 'carbon',
+        component: Carbon
       }, {
         path: 'customer',
         component: Customer

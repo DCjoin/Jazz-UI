@@ -6,12 +6,15 @@ import AjaxConstants from 'constants/AjaxConstants.jsx';
 import { Action,Model } from 'constants/actionType/Effect.jsx';
 import TimeGranularity from 'constants/TimeGranularity.jsx';
 
+let CHANGE_EVENT = 'change';
+
 let 
   _tags,
   _chartData2,
   _chartData3,
   _energySolution,
   _energyEffectItemId,
+  _effectItem,
   CreateStore;
 
 function init() {
@@ -20,6 +23,7 @@ function init() {
   _chartData3 = undefined;
   _energySolution = undefined;
   _energyEffectItemId = undefined;
+  _effectItem= null;
 }
 init();
 
@@ -47,6 +51,12 @@ export default CreateStore = Object.assign({}, PrototypeStore, {
   },
   getEnergySolution: () => {
     return _energySolution;
+  },
+  setEffectItem:effectitem=>{
+    _effectItem = Immutable.fromJS(effectitem);
+  },
+  getEffectItem:()=>{
+    return _effectItem
   },
   // setEnergyEffectItemId: (id) => {
   //   _energyEffectItemId = id;
@@ -79,12 +89,15 @@ export default CreateStore = Object.assign({}, PrototypeStore, {
     { id: TimeGranularity.Monthly, label: I18N.EM.Month },
     ]).find(item=>(item.get('id')===step)).get('label')
   },
+  emitChange(args) {
+    this.emit(CHANGE_EVENT, args);
+  },
 });
 CreateStore.dispatchToken = AppDispatcher.register(function(action) {
   switch(action.type) {
     case Action.UPDATE_TAGS:
         CreateStore.setTagsByPlan(action.tags);
-        CreateStore.emitChange();
+        CreateStore.emitChange(true);
         break;
     case Action.GET_PREVIEW_CHART2:
         CreateStore.setChartData2(action.data);
@@ -104,6 +117,15 @@ CreateStore.dispatchToken = AppDispatcher.register(function(action) {
         break;
     case Action.CLEAN_CREATE_SAVE_EFFECT:
         init();
+        break;
+    case Action.CLEAN_CREATE_SAVE_EFFECT:
+        _effectItem=null;
+        break;
+    case Action.GET_ITEM_SUCCESS:
+        CreateStore.setEffectItem(action.effectItem);
+        if(action.chart2===null) CreateStore.setChartData2(action.chart2);
+        if(action.chart3===null) CreateStore.setChartData3(action.chart3);
+        CreateStore.emitChange(true);
         break;
     default:
   }
