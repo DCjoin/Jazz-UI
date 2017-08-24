@@ -25,11 +25,11 @@ before_script:
  
 script:
   - yarn run build-test
+  - echo -n "${PACKAGE_VERSION}" > build/version.txt
   - docker build -t $TAG .
 
 before_deploy:
   - cp compose-template.yml build/
-  - echo -n "${PACKAGE_VERSION}" > build/version.txt
   - cd build && zip -r ../${ARTIFACT_NAME} ./ && cd ..
 #  - echo -n "${PACKAGE_VERSION}" > version.txt
 #  - zip -r --exclude=*node_modules* /tmp/${ARTIFACT_NAME} ./
