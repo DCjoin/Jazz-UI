@@ -88,12 +88,12 @@ export class ItemForConsultant extends Component {
   }
 
   render(){
-    var {EnergySystem,EnergyProblemId}=this.props.effect.toJS();
+    var {EnergySystem,EnergyProblemId,ConfigedTagCount}=this.props.effect.toJS();
     return(
       <div className={classNames({
-          "active":EnergySystem!==null
+          "active":ConfigedTagCount>0
         })} onClick={()=>{
-          if(EnergySystem!==null) this.props.onClick()
+          if(ConfigedTagCount>0) this.props.onClick()
         }}>
         <div className={classNames({
             "jazz-effect-item":true,

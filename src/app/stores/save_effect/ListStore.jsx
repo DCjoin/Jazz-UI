@@ -6,7 +6,7 @@ import Immutable from 'immutable';
 import assign from 'object-assign';
 import { Action } from 'constants/actionType/Effect.jsx';
 
-var _effect=null,_tags=null,_detail=null,_drafts=null;
+var _effect=null,_tags=null,_detail=null,_drafts=null,_detailChart=null;
 
 
 var ListStore = assign({}, PrototypeStore, {
@@ -60,6 +60,12 @@ var ListStore = assign({}, PrototypeStore, {
   },
   getDrafts(){
     return _drafts
+  },
+  setDetailChart(data){
+    _detailChart=Immutable.fromJS(data)
+  },
+  getDetailChart(){
+    return _detailChart
   }
 
 });
@@ -90,7 +96,10 @@ ListStore.dispatchToken = AppDispatcher.register(function(action) {
         ListStore.setDrafts(action.drafts);
         ListStore.emitChange();
         break;
-
+    case Action.GET_DETAIL_CHART:
+        ListStore.setDetailChart(action.data);
+        ListStore.emitChange();
+        break;
     default:
       // do nothing
   }

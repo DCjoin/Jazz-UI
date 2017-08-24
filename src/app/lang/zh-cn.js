@@ -2524,6 +2524,9 @@ I18N.SaveEffect.EnergyCalculatePeriod='节能量计算期';
 I18N.SaveEffect.EnergyUnitPrice='能源单价（{0}）';
 I18N.SaveEffect.ConfigSuccess='节能效果配置成功';
 I18N.SaveEffect.Predict='预计';
+I18N.SaveEffect.TagSum='数据总和';
+I18N.SaveEffect.Saving='节能量图';
+I18N.SaveEffect.Contrast='实际值与基准值对比图';
 
 I18N.SaveEffect.Model = {};
 I18N.SaveEffect.Model.Title = '基准值模型';

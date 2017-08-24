@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import classNames from 'classnames';
 import IconButton from 'material-ui/IconButton';
 import FontIcon from 'material-ui/FontIcon';
 import MenuItem from 'material-ui/MenuItem';
+import DropDownMenu from 'material-ui/DropDownMenu';
 import moment from 'moment';
 import util from 'util/Util.jsx';
 import ListStore from 'stores/save_effect/ListStore.jsx';
@@ -9,11 +11,16 @@ import {calcState} from "constants/actionType/Effect.jsx";
 import FlatButton from "controls/NewFlatButton.jsx";
 import DropdownButton from '../../../controls/NewDropdownButton.jsx';
 import {IconText} from '../../ECM/MeasuresItem.jsx';
-import {getDetail,deleteItem,changeEnergySystemForEffect} from 'actions/save_effect_action.js';
+import {getDetail,deleteItem,changeEnergySystemForEffect,getContrastChartData,getSavingChartData} from 'actions/save_effect_action.js';
 import { CircularProgress,Dialog,Snackbar} from 'material-ui';
 import PreCreate from '../create/pre_create.jsx';
 import Create from '../create';
 import Edit from '../edit';
+
+const type={
+	"Saving":0,
+	"Contrast":1
+}
 
 function validValue(value) {
 	return value!==null?util.getLabelData(value*1):'-';
@@ -21,6 +28,24 @@ function validValue(value) {
 
 function tansferReturnCycle(cycle){
 	return cycle===0?I18N.Setting.ECM.InvestmentReturnCycle.ImmediateRecovery:cycle;
+}
+
+function getEffectItemId(tagId,tags){
+	return tagId===-1?null:tags.find(item=>item.get("TagId")===tagId).get('EnergyEffectItemId')
+}
+
+class IconLabel extends Component {
+	render(){
+		var {label,selected,onClick}=this.props;
+			return(
+		<div className="icon-chat-label" onClick={onClick}>
+		<FontIcon color={selected?"#32ad3d":"#9fa0a4"} style={{fontSize:'24px',marginRight:'8px'}} className="icon-stacked-chart2"/>
+		<div className={classNames({"selected":selected})}>{label}</div>
+
+		</div>
+	)
+	}
+
 }
 
 export default class EffectDetail extends Component {
@@ -39,12 +64,16 @@ export default class EffectDetail extends Component {
 		energySystemDialogShow:false,
 		createShow:false,
 		editShow:false,
-		editIndex:null
+		editIndex:null,
+		displayTagId:-1,
+		displayChartType:type.Saving,
+		chartData:null
   }
 
   _onChanged(){
     this.setState({
-      detailInfo:ListStore.getDetail()
+      detailInfo:ListStore.getDetail(),
+			chartData:ListStore.getDetailChart()
     })
   }
 
@@ -73,6 +102,28 @@ export default class EffectDetail extends Component {
 			deleteIndex:value,
 		})
   }
+
+	_handlechartTypeChange(type,tags){
+		this.setState({
+			displayChartType:type
+		},()=>{
+			this._getChartData(this.props.effect.get("EnergyEffectId"),getEffectItemId(this.state.displayTagId,tags));
+		})
+	}
+
+	_getChartData(effectId,effectItemId){
+		switch(this.state.displayChartType){
+			case type.Saving:
+						getSavingChartData(effectId,effectItemId)
+						break;
+			case type.Contrast:
+						getContrastChartData(effectId,effectItemId)
+					 break;
+			default:
+						break
+		}
+	}
+
 
   _renderTitle(){
     return(
@@ -134,6 +185,45 @@ export default class EffectDetail extends Component {
     }
   }
 
+	_renderChart(){
+		var tags=this.state.detailInfo.get('EffectItems');
+		var menus=[<MenuItem primaryText={I18N.SaveEffect.TagSum} value={-1}/>];
+		if(tags.size>1){
+			menus.push()
+		}
+		return(
+			<div className="jazz-effect-detail-content-chart-field">
+				<div className="operation">
+					<div className="tag-select">
+						{tags.size===0?<div className="single">{tags.getIn([0,"TagName"])}</div>
+													:     
+													 <DropDownMenu
+                   					 style={{height: '26px'}}
+                    				 labelStyle={{fontSize:'14px',color:"#32ad3d",lineHeight:'26px',height:'26px',paddingLeft:'11px',paddingRight:'28px'}}
+                    				 iconButton={<IconButton iconClassName="icon-arrow-unfold" iconStyle={{fontSize:"10px",color:"#32ad3d"}} style={{width:14,height:14}}/>}
+                    				 iconStyle={{marginTop:'-12px',padding:'0',right:'15px',width:'24px',top:"2px"}}
+                    				 value={this.state.displayTagId}
+                    				 underlineStyle={{display:"none"}}
+                    				 onChange={(e, selectedIndex, value)=>{
+															 this.setState({displayTagId:value},
+															 ()=>{
+																 this._getChartData(this.props.effect.get("EnergyEffectId"),getEffectItemId(this.state.displayTagId,tags));
+															 })
+                   						 }}>
+      											<MenuItem primaryText={I18N.SaveEffect.TagSum} value={-1}/>
+														{tags.map(tag=><MenuItem primaryText={tag.get("TagName")} value={tag.get("TagId")}/>)}
+    												</DropDownMenu>}
+					</div>
+					<div className="chart-select">
+					<IconLabel label={I18N.SaveEffect.Saving} selected={this.state.displayChartType===type.Saving} onClick={this._handlechartTypeChange.bind(this,type.Saving,tags)}/>
+					<IconLabel label={I18N.SaveEffect.Contrast} selected={this.state.displayChartType===type.Contrast} onClick={this._handlechartTypeChange.bind(this,type.Contrast,tags)}/>
+					</div>
+
+				</div>
+			</div>
+		)
+	}
+
   _renderContent(){
     var tags=this.state.detailInfo.get('EffectItems'),
            {EnergySaving,EnergySavingCosts,InvestmentAmount,InvestmentReturnCycle,EnergySavingUomId}=this.state.detailInfo.toJS();
@@ -164,14 +254,14 @@ export default class EffectDetail extends Component {
     },
     editProps = {
       text: I18N.Common.Button.Edit,
-      menuItems: tags.map((tag,index)=>(<MenuItem value={index} primaryText={tag.get('TagName')} />)),
+      menuItems: tags.map((tag,index)=>(<MenuItem value={index} primaryText={tag.get('TagName')} />)).toJS(),
       onItemClick: this._handleEditTagChange,
       buttonIcon: 'icon-arrow-unfold',
       buttonStyle:{marginLeft:'12px'}
     },
     deleteProps = {
       text: I18N.Common.Button.Delete,
-      menuItems: tags.map((tag,index)=>(<MenuItem value={index} primaryText={tag.get('TagName')} />)),
+      menuItems: tags.map((tag,index)=>(<MenuItem value={index} primaryText={tag.get('TagName')} />)).toJS(),
       onItemClick: this._handleDeleteTagChange,
       buttonIcon: 'icon-arrow-unfold',
       buttonStyle:{marginLeft:'12px'}
@@ -228,6 +318,7 @@ export default class EffectDetail extends Component {
 
 
 					</div>
+					{this._renderChart()}
 				</div>
 			)
 		}
@@ -287,6 +378,7 @@ export default class EffectDetail extends Component {
 
   componentDidMount(){
     getDetail(this.props.effect.get('EnergyEffectId'));
+		this._getChartData(this.props.effect.get("EnergyEffectId"),null);
     ListStore.addChangeListener(this._onChanged);
   }
 

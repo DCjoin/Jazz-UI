@@ -311,10 +311,13 @@
   width: 100%;
   overflow-x: hidden;
   overflow-y: auto;
+  position: absolute;
+  z-index: 2;
+  height: 100%;
+  background-color: #f3f5f7;
   &-header-container{
     margin: 0 20px;
     padding: 20px 0;
-    border-bottom: 1px solid @border;
   }
   &-header{
     display:flex;
@@ -343,9 +346,8 @@
       max-width: 1440px;
       width: 75%;
       margin:0 auto;
-      padding:15px 0;
-      border-bottom: 1px solid @border;
-      min-height: 45px;
+      padding-bottom:20px;
+      min-height: 30px;
       .font{
         font-size: 14px;
         color: #434343;
@@ -377,12 +379,18 @@
     max-width: 1440px;
     width: 75%;
     margin: 0 auto;
+    margin-bottom: 49px;
+    border-radius: 2px;
+    background-color: #ffffff;
     &-header{
       display: flex;
       flex-direction: flex;
       justify-content: space-between;
       align-items: center;
-      padding:17px 0;
+      padding:13px 20px;
+      background-color: #eeeeee;
+      border: solid 1px @border;
+      border-bottom: none;
       &-title{
         font-size: 17px;
         font-weight: 600;
@@ -404,5 +412,52 @@
       justify-content: space-around;
       padding: 0 36px 0 70px;
     }
+    &-chart-field{
+      height: 398px;
+      display: flex;
+      flex-direction: column;
+      padding:30px 20px;
+      border: solid 1px @border;
+      border-top: none;
+      background-color: #ffffff;
+      >.operation{
+        margin-bottom: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        .tag-select{
+          .single{
+            font-size: 16px;
+            color: #0f0f0f;
+          }
+          .group{
+            display: flex;
+            flex-direction: row;
+            font-size: 16px;
+            color: #32ad3d;
+          }
+        }
+        .chart-select{
+          display: flex;
+          flex-direction: row;
+          align-items: center
+        }
+      }
+    }
+  }
+}
+.icon-chat-label{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 14px;
+  color: @medium-gray;
+  margin-left: 30px;
+  &:hover{
+    cursor: pointer;
+  }
+  >.selected{
+    color: @medium-green-two;
   }
 }
