@@ -2571,4 +2571,9 @@ I18N.SaveEffect.Create.CalcSaveByMonth='逐月预计节能量';
 I18N.SaveEffect.Create.BenchmarkBattleCalc='实际值与基准值对比图';
 I18N.SaveEffect.Create.StepTip = '所选数据点步长与计算步长不匹配，请重新选择数据点。';
 
+I18N.SaveEffect.Chart = {};
+I18N.SaveEffect.Chart.PredictSaving = '预计节能量';
+I18N.SaveEffect.Chart.ActualSaving = '实际节能量';
+I18N.SaveEffect.Chart.Benchmark = '基准值';
+
 module.exports = I18N;

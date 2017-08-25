@@ -17,12 +17,12 @@ const opern = ['+3', '+2', '+1', '7', '6', '5', '6', '7', '+3', '+2', '+1', '7',
 '+5', '+3', '+4', '+5', '+3', '+4', '+5', '5', '6', '7', '+1', '+2', '+3', '+4', '+3', '+1', '+2', '+3', '3', '4', '5', '6', '5', '4', '5', '3', '4', '5', '4', '6', '5', '4', '3', '2', '3', '2', '1', '2', '3', '4', '5', '6', '4', '6', '5', '6', '7', '+1', '+2', '+3', '+4', '+5', '+3', '+1', '+2', '+3', '+2', '+1', '+2', '7', '+1', '+2', '+3', '+2', '+1', '7', '+1', '6', '7', '+1', '1', '2', '3', '4', '3', '2', '3', '+1', '7', '+1', '6', '+1', '7', '6', '5', '4', '5', '4', '3', '4', '5', '6', '7', '+1', '6', '+1', '7', '+1', '7', '6', '7', '+1', '+2', '+1', '7', '+1', '6', '7',
 ];
 
-function egg() {
+/*function egg() {
   if( i >= opern.length ) {
     return;
   }
   audioCtx.play(coverNumToHz(opern[i++]));
-}
+}*/
 
 const ONE_LINED_NOTES = [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88];
 const DIATONIC_SCALE = ['subsubcontra', 'subcontra', 'contra', 'great', 'small', 'one-lined', 'two-lined', 'three-lined', 'four-lined', 'five-lined', 'six-lined'];
@@ -39,7 +39,7 @@ let DiatonicNotes = {
   [DIATONIC_SCALE[9]]: ONE_LINED_NOTES.map(note => note * 16),
   [DIATONIC_SCALE[10]]: ONE_LINED_NOTES.map(note => note * 32),
 };
-
+/*
 let audioCtx = new AudioCtx();
 
 let scaleIdx = 0,
@@ -80,7 +80,7 @@ AudioCtx.prototype.play = function(frequency) {
   oscillator.start(audioCtx.currentTime);
   gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1);
   oscillator.stop(audioCtx.currentTime + 1);
-}
+}*/
 
 
 const normalStyle = {

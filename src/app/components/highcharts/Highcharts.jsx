@@ -4,6 +4,7 @@
 let React = require('react');
 let ReactDOM = require('react-dom');
 let assign = require('object-assign');
+let classnames = require('classnames');
 
 let Highcharts = window.Highcharts;
 
@@ -50,7 +51,9 @@ let Highstock = React.createClass({
     },
 
     render () {
-        return <div className="pop-chart-paper" ref="jazz_energy_view"/>;
+        return <div className={classnames('pop-chart-paper', {
+            [this.props.className]: this.props.className,
+        })} ref="jazz_energy_view"/>;
     },
 
     _draw () {

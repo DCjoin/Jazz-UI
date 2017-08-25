@@ -24,7 +24,7 @@ import Actuality from './components/KPI/Actuality.jsx';
 import KPIActuality from './components/KPI/KPIActuality.jsx';
 import ReportPreview from './components/KPI/ReportPreview.jsx';
 import SaveEffect from './components/save_effect';
-import SaveEffectOverview from './components/save_effect/save_effect_overview.jsx';
+import SaveEffectOverview from './components/save_effect/overview';
 import SaveEffectBestList from './components/save_effect/save_effect_best_list.jsx';
 import SaveEffectDrafts from './components/save_effect/list/Draft.jsx';
 import SaveEffectList from './components/save_effect/list/save_effect_list.jsx';
