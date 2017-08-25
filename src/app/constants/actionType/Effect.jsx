@@ -21,6 +21,9 @@ module.exports = {
     GET_ITEM_SUCCESS:null,
     CLEAN_EDIT_SAVE_EFFECT:null,
     GET_DETAIL_CHART:null,
+    GET_GROUP_CHART:null,
+    GET_BUILDING_CHART:null,
+    GET_MIN_YEAR:null,
   }),
   calcState:{
     NotStarted:10,

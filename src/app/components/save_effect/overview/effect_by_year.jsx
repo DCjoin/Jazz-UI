@@ -40,6 +40,16 @@ const data2 = {
         ]
       }
     ],
+    "ActualSavingValues": [
+      {
+        "Time": "2017-08-24T02:21:22",
+        "Value": 1.1
+      },
+      {
+        "Time": "2017-08-24T02:21:22",
+        "Value": 1.1
+      }
+    ],
     "PredictionSavingValues": [
       {
         "Time": "2017-08-24T02:21:22",
@@ -79,7 +89,8 @@ export default class EffectByYear extends Component {
             onRight={this.props.onRight}/>
         </header>
 				<div className='effect-card-content'>
-          <EffectReport data={data2} year={this.props.year}/>
+          <div></div>
+          <EffectReport isCustomer={this.props.isCustomer} data={data2} year={this.props.year}/>
         </div>
 			</div>
 		);

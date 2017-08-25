@@ -5,6 +5,7 @@ import classnames from 'classnames';
 import util from 'util/Util.jsx';
 
 import BuildChart from '../chart/building_chart.jsx';
+import CustomerChart from '../chart/customer_chart.jsx';
 
 const CommodityMap = {
   ElectricOther: 1,
@@ -111,9 +112,14 @@ export default class EffectReport extends Component {
     };
   }
 	render() {
-    let {data, year} = this.props,
+    let {data, year, isCustomer} = this.props,
     config = getConfigByCommodityId(data.CommodityId),
-    isStack = this.state.isStack;
+    isStack = this.state.isStack,
+
+    Comp = BuildChart;
+    if( isCustomer ) {
+      Comp = CustomerChart;
+    }
 
 		return (
 			<div className='save-effect-report'>
@@ -193,7 +199,7 @@ export default class EffectReport extends Component {
               </div>
             </li>
           </ul>
-          <BuildChart isStack={isStack} data={data}/>
+          <Comp isStack={isStack} data={data} color={config.color}/>
 				</div>
 			</div>
 		);

@@ -249,3 +249,44 @@ export function getSavingChartData(energyEffectId,energyEffectItemId) {
 		}
 	});
 }
+
+export function getChartDataByCustomer(hierarchyId, year) {
+		Ajax.get( Util.replacePathParams(SaveEffect.groupOverviewCommodityShow, hierarchyId, year), {
+			success: (data) => {
+      	AppDispatcher.dispatch({
+        	type: Action.GET_GROUP_CHART,
+        	data
+      });
+		}
+	});
+}
+
+export function getChartDataByBuilding(hierarchyId, year) {
+		Ajax.get( Util.replacePathParams(SaveEffect.buildingOverviewCommodityShow, hierarchyId, year), {
+			success: (data) => {
+      	AppDispatcher.dispatch({
+        	type: Action.GET_BUILDING_CHART,
+        	data
+      });
+		}
+	});
+}
+
+export function getChartMinYear(hierarchyId, isCustomer) {
+	setTimeout(() => {
+  	AppDispatcher.dispatch({
+    	type: Action.GET_MIN_YEAR,
+    	data: 2015
+  	});
+	}, 500);
+	/*
+	Ajax.get( Util.replacePathParams(SaveEffect.buildingOverviewCommodityShow, hierarchyId, year), {
+		success: (data) => {
+    	AppDispatcher.dispatch({
+      	type: Action.GET_MIN_YEAR,
+      	data
+    	});
+		}
+	});
+	*/
+}
