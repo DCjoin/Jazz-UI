@@ -428,15 +428,16 @@ export default class Edit extends Component {
 								chartData3: null,
                 configStep:2
 							}
-						},()=>{              
-              updateItem(getInitFilterObj(this.state)
+						},()=>{   
+							var filterObj= getInitFilterObj(this.state)
 								          .set('TagId', TagId)
                           .set('TagName',TagName)
                           .set('ConfigStep',2)
 													.set('EnergyStartDate', null)
 													.set('EnergyEndDate', null)
-                          .toJS(),null,null);
-              this._getInitData(2);
+                          .toJS();          
+              updateItem(filterObj,null,null);
+							getPreviewChart2(filterObj);
             });
 					}
          } 

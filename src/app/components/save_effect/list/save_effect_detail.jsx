@@ -247,6 +247,8 @@ export default class EffectDetail extends Component {
 		if(tags.size>1){
 			menus.push()
 		}
+			// {this.state.displayChartType===type.Saving?<SavingChart unit={util.getUomById(this.state.detailInfo.get("EnergySavingUomId")).Code} data={this.state.chartData}/>
+			// 																						:<ContrastChart unit={util.getUomById(this.state.detailInfo.get("EnergySavingUomId")).Code} data={this.state.chartData}/>}
 		return(
 			<div className="jazz-effect-detail-content-chart-field">
 				<div className="operation">
@@ -276,8 +278,7 @@ export default class EffectDetail extends Component {
 					</div>
 
 				</div>
-				{this.state.displayChartType===type.Saving?<SavingChart unit={util.getUomById(this.state.detailInfo.get("EnergySavingUomId")).Code} data={this.state.chartData}/>
-																									:<ContrastChart unit={util.getUomById(this.state.detailInfo.get("EnergySavingUomId")).Code} data={this.state.chartData}/>}
+			
 			</div>
 		)
 	}
