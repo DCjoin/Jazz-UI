@@ -4,14 +4,17 @@ import util from 'util/Util.jsx';
 
 import Highcharts from 'components/highcharts/Highcharts.jsx';
 
-function getOptions(categories, series, unit){
+
+function getOptions(categories, series, unit, colors){
 	return {
+		colors: colors,
 	    credits: {
 	        enabled: false
 	    },
 	    chart: {
 	      	height: 265,
-	      	backgroundColor: '#ffffff',
+	      	backgroundColor: '#f7faff',
+	      	type: 'column',
 	    },
 	    title: null,
 	    legend: {
@@ -42,6 +45,13 @@ function getOptions(categories, series, unit){
 	            x: -10,
 	            text: unit,
 	        }
+	    },
+	    legend: {
+	        align: 'top',
+	        verticalAlign: 'top',
+	        layout: 'horizontal',
+	        y: -15,
+	        x: 200,
 	    },
 	    tooltip: {
 	        crosshairs: {
@@ -87,35 +97,26 @@ function getOptions(categories, series, unit){
     	    	`;
     	    }
 	    },
-	    series: [ {
-		        type: 'column',
-		        color: '#4caf50',
-		        name: series[0].name,
-		        data: series[0].data
-		    }, {
-		        type: 'line',
-		        marker: {
-			        lineWidth: 1,
-			        lineColor: '#ff5722',
-			        fillColor: 'white',
-			        radius: 2,
-			    },
-		        zIndex: 2,
-		        color: '#ff5722',
-		        lineWidth: 1,
-		        name: series[1].name,
-		        data: series[1].data,
-		    },
-		],
+	    plotOptions: {
+	        column: {
+	            stacking: 'normal',
+	            // lineColor: '#666666',
+	            lineWidth: 0,
+	            marker: {
+	                enabled: false
+	            },
+	        }
+	    },
+	    series: series
 	};
 }
 
-export default class BasicColumn extends Component {
+export default class BasicStack extends Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		return this.props.data !== nextProps.data;
 	}
 	render () {
-		let {series, categories, unit} = this.props;
-	    return (<Highcharts options={getOptions(categories, series, unit)} className='save_effect_chart'/>);
+		let {series, categories, unit, colors} = this.props;
+	    return (<Highcharts options={getOptions(categories, series, unit, colors)} className='save_effect_chart'/>);
 	}
 }

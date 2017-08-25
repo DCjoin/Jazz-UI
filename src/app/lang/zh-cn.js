@@ -200,6 +200,7 @@ I18N.Common.Commodity = {};
 I18N.Common.Commodity.Electric = '电力';
 I18N.Common.Commodity.ElectricOther = '电';
 I18N.Common.Commodity.Water = '自来水';
+I18N.Common.Commodity.WaterOther = '水';
 I18N.Common.Commodity.Gas = '天然气';
 I18N.Common.Commodity.Air = '空气';
 I18N.Common.Commodity.Steam = '蒸汽';
@@ -2526,6 +2527,7 @@ I18N.SaveEffect.ConfigSuccess='节能效果配置成功';
 I18N.SaveEffect.Predict='预计';
 I18N.SaveEffect.TagSum='数据总和';
 I18N.SaveEffect.Saving='节能量图';
+I18N.SaveEffect.Saving2='节约量图';
 I18N.SaveEffect.Contrast='实际值与基准值对比图';
 
 I18N.SaveEffect.Model = {};

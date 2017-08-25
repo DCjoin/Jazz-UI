@@ -1,107 +1,54 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import find from 'lodash-es/find';
 
-import SavingChart from '../chart/contrast_chart.jsx';
+import CurrentUserCustomerStore from 'stores/CurrentUserCustomerStore.jsx';
+import HierarchyStore from 'stores/HierarchyStore.jsx';
 
-const data = {
-	ContrastStep: 3,
-  "ActualValues": [
-    {
-      "Time": "2017-08-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2017-09-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2017-10-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2017-11-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2017-12-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2018-01-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2018-02-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2018-03-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2018-04-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2018-05-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2018-06-24T02:33:51",
-      "Value": 1.1
-    }
-  ],
-  "BenchmarkValues": [
-    {
-      "Time": "2017-08-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2017-09-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2017-10-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2017-11-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2017-12-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2018-01-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2018-02-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2018-03-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2018-04-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2018-05-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2018-06-24T02:33:51",
-      "Value": 1.1
-    }
-  ]
-};
+import EffectByYear from './effect_by_year.jsx';
+
+const currentYear = new Date().getFullYear();
 
 export default class SaveEffectOverview extends Component {
+  static contextTypes = {
+    hierarchyId: PropTypes.number
+  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      year: currentYear
+    }
+  }
 	render() {
+    let isCustomer = this.context.hierarchyId + '' === this.props.router.params.customerId,
+    hierarchyName = find( CurrentUserCustomerStore.getAll().concat(HierarchyStore.getBuildingList()), 
+      hier => hier.Id === this.context.hierarchyId
+    ).Name ;
+    let byYearProps = {
+      year: this.state.year
+    };
+    if( this.state.year < currentYear ) {
+      byYearProps.onRight = () => {
+        this.setState((state, props) => {
+          return {
+            year: state.year + 1
+          }
+        });
+      }
+    }
+    if( true || this.state.year < currentYear ) {
+      byYearProps.onLeft = () => {
+        this.setState((state, props) => {
+          return {
+            year: state.year - 1
+          }
+        });
+      }
+    }
 		return (
-			<SavingChart unit={'test'} data={data}/>
+      <div className='jazz-save-effect-overview'>
+		    <header className='overview-header'>{hierarchyName + I18N.SaveEffect.OverviewLabel}</header>
+        <EffectByYear {...byYearProps} data={this.state.data} />
+      </div>
 		);
 	}
 }

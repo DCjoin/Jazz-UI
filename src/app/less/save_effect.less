@@ -1,7 +1,7 @@
 .jazz-save-effect {
 	display: flex;
 	flex-direction: column;
-	align-items: center;
+	// align-items: center;
 	flex:1;
 	background-color: #f3f5f7;
 	position: relative;
@@ -410,6 +410,25 @@
 			}
 		}
 	}
+
+	&-overview {
+		padding: 20px 12.5%;
+		display: flex;
+		flex-direction: column;
+		overflow-x: hidden;
+		overflow-y: auto;
+	    flex: 1;
+
+		&>.overview-header {
+			display: flex;
+			height: 30px;
+			flex: none;
+			justify-content: space-between;
+			align-items: center;
+			font-weight: 600;
+			color: #000;
+		}
+	}
 }
 
 .jazz-pre-create {
@@ -438,4 +457,123 @@
 .save_effect_chart {
 	padding: 20px;
 	background-color: #fff;
+}
+
+.effect-card {
+
+	border-radius: 2px;
+	background-color: #ffffff;
+	border: solid 1px @border;
+	margin-top: 20px;
+
+	&-header {
+	  height: 50px;
+	  background-color: #eeeeee;
+	  border-bottom: solid 1px @border;
+	  padding: 0 20px;
+	  display: flex;
+	  align-items: center;
+	  justify-content: space-between;
+
+	  &-text {
+		  font-weight: 600;
+			color: #000;
+	  }
+	}
+
+	&-content {
+		margin: 20px;
+	}
+}
+
+.save-effect-report {
+	margin-top: 30px;
+
+	&-header {
+		display: flex;
+    justify-content: space-between;
+    align-items: center;
+	}
+
+	&-name {
+		display: flex;
+		align-items: center;
+	}
+	&-icon {
+		font-size: 24px;
+		margin-right: 10px;
+	}
+
+	&-actions {
+		display: flex;
+
+		&-item {
+			display: flex;
+			margin-left: 30px;
+			align-items: center;
+			color: #9fa0a4;
+
+			&.active {
+				color: #32ad3c;
+			}
+
+			& .action-icon  {
+				font-size: 24px;
+				margin-right: 8px;
+			}
+		}
+	}
+
+	&-content {
+		background-color: #f7faff;
+		border: 1px solid #e6e6e6;
+		margin-top: 10px;
+
+		&-sum {
+			display: flex;
+			height: 78px;
+			flex: none;
+			border-bottom: 1px solid #e6e6e6;
+
+			&-item {
+				flex: 1;
+				justify-content: center;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				border-right: 1px solid #e6e6e6;
+
+				&:last-of-type {
+					border-right: none;
+				}
+
+				& .report-sum-header {
+					color: #9fa0a4;
+					font-size: 12px;
+				}
+
+				& .report-sum-icon {
+					margin-right: 8px;
+				}
+
+				& .report-sum-content {
+					margin-top: 6px;
+				}
+
+				& .report-sum-value {
+					font-size: 18px;
+				}
+
+				& .report-sum-unit {
+					font-size: 14px;
+					margin-left: 9px;
+					color: #626469;
+				}
+			}
+		}
+
+		& .save_effect_chart  {
+			background-color: #f7faff;
+		}
+	}
 }

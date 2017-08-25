@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment';
+import CircularProgress from 'material-ui/CircularProgress';
 
 import {Monthly} from 'constants/TimeGranularity.jsx';
 
@@ -49,6 +50,9 @@ function getSeries(data) {
 }
 
 export default function SavingChart(props) {
+	if( !props.data ) {
+		return (<div className='flex-center' style={{height: 305}}><CircularProgress mode="indeterminate" size={80} /></div>);
+	}
 	return (
 		<BasicColumn unit={props.unit}
 			categories={getCategories(props.data)}
