@@ -105,6 +105,8 @@ module.exports = {
     deleteenergyeffecttag: '/energyeffect/deleteenergyeffecttag/{energyProblemId}/{tagId}',
     getitem:'/energyeffect/getitem/{energyEffectItemId}',
     getcontrast:'/energyeffect/detail/contrast/{energyEffectId}/{energyEffectItemId}',
-    getsaving:'/energyeffect/detail/saving/{energyEffectId}/{energyEffectItemId}'
+    getsaving:'/energyeffect/detail/saving/{energyEffectId}/{energyEffectItemId}',
+    groupOverviewCommodityShow:'/energyeffect/group/Overview/CommodityShow/{customerId}/{year}',
+    buildingOverviewCommodityShow:'/energyeffect/building/Overview/CommodityShow/{hierarchyId}/{year}',
   }
 };

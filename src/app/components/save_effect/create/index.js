@@ -20,6 +20,7 @@ import {Model} from 'constants/actionType/Effect.jsx';
 
 import NewDialog from 'controls/NewDialog.jsx';
 import NewFlatButton from 'controls/NewFlatButton.jsx';
+import ActionComp from 'controls/action_comp.jsx';
 
 import {binarySearch} from 'util/algorithm';
 
@@ -222,17 +223,6 @@ function resetFilterObjAfter2(filterObj) {
 			.set('EnergyEndDate', null)
 			;
 }
-
-class GetInitData extends Component {
-	constructor(props) {
-		super(props);
-		this.props.action();
-	}
-	render() {
-		return null;
-	}
-}
-
 
 @ReduxDecorator
 export default class Create extends Component {
@@ -735,7 +725,7 @@ export default class Create extends Component {
 		}
 		return (
 			<div className='jazz-save-effect-create'>
-				<GetInitData action={() =>{
+				<ActionComp action={() =>{
 					this._getInitData(this.state.filterObj.get('ConfigStep'));
 				}}/>
 				<Header name={
