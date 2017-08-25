@@ -106,6 +106,9 @@ module.exports = {
     getitem:'/energyeffect/getitem/{energyEffectItemId}',
     getcontrast:'/energyeffect/detail/contrast/{energyEffectId}/{energyEffectItemId}',
     getsaving:'/energyeffect/detail/saving/{energyEffectId}/{energyEffectItemId}',
-    saveBest:'/energyeffect/bestsolution/save/{effectId}'
+    saveBest:'/energyeffect/bestsolution/save/{effectId}',
+    deleteBest:'/energyeffect/bestsolution/delete/{effectId}',
+    ignoreBest:'/energyeffect/bestsolution/ignore/{effectId}',
+    getBest:'/energyeffect/bestsolution/list/{customerId}'
   }
 };

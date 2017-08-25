@@ -11,7 +11,7 @@ import {calcState} from "constants/actionType/Effect.jsx";
 import FlatButton from "controls/NewFlatButton.jsx";
 import DropdownButton from '../../../controls/NewDropdownButton.jsx';
 import {IconText} from '../../ECM/MeasuresItem.jsx';
-import {getDetail,deleteItem,changeEnergySystemForEffect,getContrastChartData,getSavingChartData,saveBest} from 'actions/save_effect_action.js';
+import {getDetail,deleteItem,changeEnergySystemForEffect,getContrastChartData,getSavingChartData,saveBest,deleteBest,ignoreBest} from 'actions/save_effect_action.js';
 import { CircularProgress,Dialog,Snackbar} from 'material-ui';
 import NewDialog from 'controls/NewDialog.jsx';
 import PreCreate from '../create/pre_create.jsx';
@@ -20,6 +20,7 @@ import Edit from '../edit';
 import Reason from './reason.jsx';
 import ContrastChart from '../chart/contrast_chart.jsx';
 import SavingChart from '../chart/saving_chart.jsx';
+import {LessInvest,HighCost,Easy,HighReturn} from '../best/icon.jsx';
 
 const type={
 	"Saving":0,
@@ -81,7 +82,8 @@ export default class EffectDetail extends Component {
 		configBestShow:false,
 		isBest:false,
 		characteristics:'',
-		recommendReason:null
+		recommendReason:null,
+		IgnoreBestShow:false
   }
 
   _onChanged(){
@@ -90,7 +92,7 @@ export default class EffectDetail extends Component {
 			chartData:ListStore.getDetailChart(),
 			isBest:ListStore.getDetail().get("BestSolution")!==null,
 			characteristics:ListStore.getDetail().get("BestSolution")===null?'':ListStore.getDetail().getIn(["BestSolution","Characteristics"]),
-			recommendReason:ListStore.getDetail().get("BestSolution")===null?null:ListStore.getDetail().getIn(["BestSolution","recommendReason"]),
+			recommendReason:ListStore.getDetail().get("BestSolution")===null?null:ListStore.getDetail().getIn(["BestSolution","RecommendReason"]),
     })
   }
 
@@ -110,6 +112,16 @@ export default class EffectDetail extends Component {
 		this.setState({
 			configBestShow:true
 		})
+	}
+
+	_onIgnoreBestShow(){
+		this.setState({
+			IgnoreBestShow:true
+		})
+	}
+
+	isCharacterSelected(value){
+		return this.state.characteristics.indexOf(value+'')>-1
 	}
 
   _handleEditTagChange(event, value){
@@ -240,6 +252,80 @@ export default class EffectDetail extends Component {
       )
     }
   }
+
+	_renderBest(){
+		var bestIcon=<FontIcon className="icon-medal" style={{fontSize:'20px',marginRight:'10px'}} color="#ff9000"/>;
+		var highCost=this.isCharacterSelected(characterType.HighCost),
+				lessInvest=this.isCharacterSelected(characterType.LessInvest),
+				easy=this.isCharacterSelected(characterType.Easy),
+				highReturn=this.isCharacterSelected(characterType.HighReturn);
+		var style={
+			btn:{
+				width: '68px',
+ 			  height: '30px',
+				lineHeight:'28px',
+				minWidth:'68px',
+ 				borderRadius: '2px',
+  			border:' solid 1px #e6e6e6',
+				marginLeft:'12px'
+			},
+			label:{
+				fontSize: '14px',
+				color:"#505559"
+			},
+			ignoreBtn:{
+				width:'120px',
+				height:'30px',
+				lineHeight:'28px',
+				borderRadius: '2px',
+  			border: 'solid 1px #e6e6e6'
+			},
+			ignoreLabel:{
+				fontSize: '14px',
+  			color: '#626469',
+				padding:'0'
+						},
+			ignoredBtn:{
+				width:'92px',
+				height:'30px',
+				lineHeight:'28px',
+				borderRadius: '2px',
+  			border: 'solid 1px #e6e6e6',
+				backgroundColor: '#e6e6e6'
+			},
+			ignoredLabel:{
+				fontSize: '14px',
+  			color: '#9fa0a4',
+				padding:'0'
+			}
+		},
+		ignoreIcon=<FontIcon className="icon-ignore" style={{fontSize:'18px',marginRight:'5px',marginLeft:'0'}} color="#505559"/>;
+		return(
+			<div className="jazz-effect-detail-best">
+				<div className="jazz-effect-detail-best-info">
+					<div className="row">
+						{bestIcon}
+						<div className="title-font">{I18N.SaveEffect.BestLabel}</div>
+						{lessInvest && <LessInvest/>}
+						{highReturn && <HighReturn/>}
+						{highCost && <HighCost/>}
+						{easy && <Easy/>}
+					</div>
+					<div className="sub-font" style={{marginTop:'15px'}}>{this.state.recommendReason}</div>
+				</div>
+				{this.props.isFromBestList?
+							this.state.detailInfo.get('Status')===1?
+																		<div className="jazz-effect-detail-best-operation">
+																				<FlatButton icon={ignoreIcon} label={I18N.SaveEffect.IgnoreSolution} style={style.ignoreBtn} labelStyle={style.ignoreLabel} onClick={this._onIgnoreBestShow.bind(this)}/>
+																		</div>					
+																		:<FlatButton icon={ignoreIcon} label={I18N.SaveEffect.SolutionIgnored} style={style.ignoredBtn} labelStyle={style.ignoredLabel} disabled={true}/>
+							:<div className="jazz-effect-detail-best-operation">
+									<FlatButton label={I18N.Common.Button.Edit} style={style.btn} labelStyle={style.label} onClick={this._onBestShow.bind(this)}/>
+									<FlatButton label={I18N.Common.Button.Repeal} style={style.btn} labelStyle={style.label} onClick={()=>{deleteBest(this.props.effect.get('EnergyEffectId'))}}/>
+							</div>}
+			</div>
+		)
+	}
 
 	_renderChart(){
 		var tags=this.state.detailInfo.get('EffectItems');
@@ -435,7 +521,6 @@ export default class EffectDetail extends Component {
 
 		_renderConfigBestDialog(){
 		let tag=this.state.detailInfo.getIn(['EffectItems',this.state.deleteIndex]);
-		var isCharacterSelected=(value)=>(this.state.characteristics.indexOf(value+'')>-1);
 		let actions = [
 			<FlatButton
 			inDialog={true}
@@ -506,10 +591,10 @@ export default class EffectDetail extends Component {
 			}
 
 		};
-		var highCost=isCharacterSelected(characterType.HighCost),
-				lessInvest=isCharacterSelected(characterType.LessInvest),
-				easy=isCharacterSelected(characterType.Easy),
-				highReturn=isCharacterSelected(characterType.HighReturn);
+		var highCost=this.isCharacterSelected(characterType.HighCost),
+				lessInvest=this.isCharacterSelected(characterType.LessInvest),
+				easy=this.isCharacterSelected(characterType.Easy),
+				highReturn=this.isCharacterSelected(characterType.HighReturn);
 		return(
 			<NewDialog {...dialogProps}>
 				<div className="jazz-effect-best-font" style={{marginTop:'15px',marginBottom:'10px'}}>{I18N.SaveEffect.SelectCharacteristics}</div>
@@ -549,6 +634,52 @@ export default class EffectDetail extends Component {
 		)
 	}
 
+	_renderIgnoreBestDialog(){
+    let actions = [
+      <FlatButton
+      inDialog={true}
+      primary={true}
+      label={I18N.SaveEffect.Ignore}
+      style={{backgroundColor:'#dc0a0a',marginRight:'20px'}}
+      onTouchTap={()=>{
+        this.setState({
+          IgnoreBestShow:false,
+        },()=>{
+          ignoreBest(this.props.effect.get('EnergyEffectId'));
+        })
+      }}
+      />,
+      <FlatButton
+      label={I18N.Common.Button.Cancel2}
+      style={{borderRadius: "2px",border: 'solid 1px #9fa0a4'}}
+      onTouchTap={()=>{
+        this.setState({
+          IgnoreBestShow:false,
+        })
+      }}
+      />
+    ];
+    let dialogProps = {
+      ref: 'dialog',
+      actions: actions,
+      modal: true,
+      open: true,
+    };
+    return(
+      <Dialog {...dialogProps}>
+        <div style={{
+            'word-wrap': 'break-word',
+            'word-break': 'break-all',
+            fontSize: "14px",
+            color: "#626469"
+          }}>
+          {I18N.SaveEffect.IgnoreTip}
+        </div>
+
+      </Dialog>
+    )
+	}
+
   componentDidMount(){
     getDetail(this.props.effect.get('EnergyEffectId'));
 		this._getChartData(this.props.effect.get("EnergyEffectId"),null);
@@ -572,9 +703,11 @@ export default class EffectDetail extends Component {
 				<div className="jazz-effect-detail">
 					{this._renderTitle()}
 					{this._renderSubTitle()}
+					{this.state.isBest && this._renderBest()}
 					{this._renderContent()}
 					{this.state.deleteConfirmShow && this._renderDeleteDialog()}
 					{this.state.configBestShow && this._renderConfigBestDialog()}
+					{this.state.IgnoreBestShow && this._renderIgnoreBestDialog()}
 					{this.state.energySystemDialogShow &&
 					<PreCreate isEdit
 						EnergySystem={EnergySystem}

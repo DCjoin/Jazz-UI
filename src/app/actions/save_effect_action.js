@@ -258,3 +258,30 @@ export function saveBest(effectId,Characteristics,RecommendReason) {
 		}
 	});
 }
+
+export function deleteBest(effectId) {
+	Ajax.post( Util.replacePathParams(SaveEffect.deleteBest,effectId), {
+		success: () => {
+			getDetail(effectId)
+		}
+	});
+}
+
+export function ignoreBest(effectId) {
+	Ajax.post( Util.replacePathParams(SaveEffect.ignoreBest,effectId), {
+		success: () => {
+			getDetail(effectId)
+		}
+	});
+}
+
+export function getBestSolution(customerId) {
+		Ajax.get( Util.replacePathParams(SaveEffect.getBest, customerId), {
+			success: (data) => {
+      	AppDispatcher.dispatch({
+        	type: Action.GET_BEST_SOLUTION,
+        	data
+      });
+		}
+	});
+}
