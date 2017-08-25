@@ -249,3 +249,12 @@ export function getSavingChartData(energyEffectId,energyEffectItemId) {
 		}
 	});
 }
+
+export function saveBest(effectId,Characteristics,RecommendReason) {
+	Ajax.post( Util.replacePathParams(SaveEffect.saveBest,effectId), {
+		params: {Characteristics,RecommendReason},
+		success: () => {
+			getDetail(effectId)
+		}
+	});
+}

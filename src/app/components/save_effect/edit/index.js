@@ -275,7 +275,7 @@ export default class Edit extends Component {
 				break;
 			case 3:
 				let {EnergyStartDate, EnergyEndDate, EnergyUnitPrice, BenchmarkDatas, BenchmarkModel,CorrectionFactor} = this.state.filterObj.toJS();
-				if( !EnergyStartDate || !EnergyEndDate || !EnergyUnitPrice ||  !/^(\-?)\d{1,9}([.]\d{1,3})?$/.test(EnergyUnitPrice) ) {
+				if( !EnergyStartDate || !EnergyEndDate || !EnergyUnitPrice ||  !/^(\+?)\d{1,9}([.]\d{1,3})?$/.test(EnergyUnitPrice) ) {
 					return false;
 				}
 				if( BenchmarkModel === Model.Manual ) {

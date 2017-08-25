@@ -11,15 +11,23 @@ import {calcState} from "constants/actionType/Effect.jsx";
 import FlatButton from "controls/NewFlatButton.jsx";
 import DropdownButton from '../../../controls/NewDropdownButton.jsx';
 import {IconText} from '../../ECM/MeasuresItem.jsx';
-import {getDetail,deleteItem,changeEnergySystemForEffect,getContrastChartData,getSavingChartData} from 'actions/save_effect_action.js';
+import {getDetail,deleteItem,changeEnergySystemForEffect,getContrastChartData,getSavingChartData,saveBest} from 'actions/save_effect_action.js';
 import { CircularProgress,Dialog,Snackbar} from 'material-ui';
+import NewDialog from 'controls/NewDialog.jsx';
 import PreCreate from '../create/pre_create.jsx';
 import Create from '../create';
 import Edit from '../edit';
+import Reason from './reason.jsx'
 
 const type={
 	"Saving":0,
 	"Contrast":1
+}
+const characterType={
+			"HighCost":1,
+			"LessInvest":2,
+			"Easy":3,
+			"HighReturn":4
 }
 
 function validValue(value) {
@@ -67,13 +75,20 @@ export default class EffectDetail extends Component {
 		editIndex:null,
 		displayTagId:-1,
 		displayChartType:type.Saving,
-		chartData:null
+		chartData:null,
+		configBestShow:false,
+		isBest:false,
+		characteristics:'',
+		recommendReason:null
   }
 
   _onChanged(){
     this.setState({
       detailInfo:ListStore.getDetail(),
-			chartData:ListStore.getDetailChart()
+			chartData:ListStore.getDetailChart(),
+			isBest:ListStore.getDetail().get("BestSolution")!==null,
+			characteristics:ListStore.getDetail().get("BestSolution")===null?'':ListStore.getDetail().getIn(["BestSolution","Characteristics"]),
+			recommendReason:ListStore.getDetail().get("BestSolution")===null?null:ListStore.getDetail().getIn(["BestSolution","recommendReason"]),
     })
   }
 
@@ -86,6 +101,12 @@ export default class EffectDetail extends Component {
 	_onCreateShow(){
 		this.setState({
 			createShow:true
+		})
+	}
+
+	_onBestShow(){
+		this.setState({
+			configBestShow:true
 		})
 	}
 
@@ -110,6 +131,23 @@ export default class EffectDetail extends Component {
 			this._getChartData(this.props.effect.get("EnergyEffectId"),getEffectItemId(this.state.displayTagId,tags));
 		})
 	}
+	
+	_handelCharacterChange(value){
+		var character=this.state.characteristics,index=character.indexOf(value+'');
+		if(index>-1){
+			character=character.substring(0,index-1)+character.substring(index+1);
+			this.setState({
+				characteristics:character
+			})
+		}else{
+			this.setState({
+			characteristics:character===''?value+'':character+','+value
+		})
+		}
+
+
+
+	}
 
 	_getChartData(effectId,effectItemId){
 		switch(this.state.displayChartType){
@@ -126,12 +164,28 @@ export default class EffectDetail extends Component {
 
 
   _renderTitle(){
+		var style={
+      btn:{
+        height:'30px',
+        width:'128px',
+        lineHeight:'28px',
+        marginLeft:'15px'
+      },
+      lable:{
+        fontSize: "14px",
+        fontWeight: "500",
+        padding:'0'
+      }};
     return(
 			<div className="jazz-effect-detail-header-container">
 				<div className="jazz-effect-detail-header">
 					<span>
 						<IconButton iconClassName="icon-return" onTouchTap={this.props.onBack} iconStyle={{fontSize:'17px'}} style={{width:'17px',height:'19px',padding:'0'}}/>
 						<div className="jazz-effect-detail-header-title">{this.props.effect.get('EnergySolutionName')}</div>
+					</span>
+					<span>
+						{!this.state.isBest && <FlatButton label={I18N.SaveEffect.SetBest} onTouchTap={this._onBestShow.bind(this)}
+													style={style.btn} labelStyle={style.lable} secondary={true}/>}
 					</span>
 				</div>
 			</div>
@@ -315,8 +369,6 @@ export default class EffectDetail extends Component {
 							<IconText style={{width:'140px',marginLeft:'0px'}} icon={amountIcon} label={I18N.Setting.ECM.InvestmentAmount} value={validValue(InvestmentAmount)} uom="RMB"/>
 							<IconText style={{width:'140px',marginLeft:'0px'}} icon={cycleIcon} label={`${prePeriod}${I18N.Setting.ECM.PaybackPeriod}`} value={tansferReturnCycle(InvestmentReturnCycle) || '-'}
 												uom={util.isNumber(InvestmentReturnCycle) && InvestmentReturnCycle!==0?I18N.EM.Year:''}/>
-
-
 					</div>
 					{this._renderChart()}
 				</div>
@@ -376,6 +428,122 @@ export default class EffectDetail extends Component {
 		)
 	}
 
+		_renderConfigBestDialog(){
+		let tag=this.state.detailInfo.getIn(['EffectItems',this.state.deleteIndex]);
+		var isCharacterSelected=(value)=>(this.state.characteristics.indexOf(value+'')>-1);
+		let actions = [
+			<FlatButton
+			inDialog={true}
+			primary={true}
+			label={I18N.Common.Button.Save}
+			style={{marginRight:'20px'}}
+			disabled={!this.state.characteristics || !this.state.recommendReason}
+			onTouchTap={()=>{
+			this.setState({
+					configBestShow:false,
+				},()=>{
+					saveBest(this.props.effect.get('EnergyEffectId'),this.state.characteristics,this.state.recommendReason)
+				})
+			}}
+			/>,
+			<FlatButton
+			secondary={true}
+			label={I18N.Common.Button.Cancel2}
+			onTouchTap={()=>{
+				this.setState({
+					configBestShow:false,
+					characteristics:ListStore.getDetail().get("BestSolution")===null?'':ListStore.getDetail().getIn(["BestSolution","Characteristics"]),
+					recommendReason:ListStore.getDetail().get("BestSolution")===null?null:ListStore.getDetail().getIn(["BestSolution","recommendReason"]),
+				})
+			}}
+			/>
+		];
+		let dialogProps = {
+			ref: 'dialog',
+			actions: actions,
+			modal: true,
+			open: true,
+			title:I18N.SaveEffect.SetBest,
+			titleStyle:{fontSize:'16px',fontWeight:'600',color:'#0f0f0f',padding:'15px 30px',borderBottom:'1px solid #e6e6e6'},
+			style:{overflowY:'auto'}
+		},style={
+			btn:{
+				selected:{
+					borderRadius: '2px',
+  				backgroundColor: '#0cad04',
+					marginRight:'15px'
+				},
+				notSelected:{
+					borderRadius: '2px',
+  				border: 'solid 1px #9fa0a4',
+					marginRight:'15px'
+				}
+			},
+			label:{
+				selected:{
+					fontSize: '14px',
+  				color: '#ffffff'
+				},
+				notSelected:{
+					fontSize: '14px',
+  				color: '#9fa0a4'
+				}
+			},
+			icon:{
+				selected:{
+					color:'#ffffff',
+					fontSize:'15px'
+				},
+				notSelected:{
+					color:'#9fa0a4',
+					fontSize:'15px'
+				}			
+			}
+
+		};
+		var highCost=isCharacterSelected(characterType.HighCost),
+				lessInvest=isCharacterSelected(characterType.LessInvest),
+				easy=isCharacterSelected(characterType.Easy),
+				highReturn=isCharacterSelected(characterType.HighReturn);
+		return(
+			<NewDialog {...dialogProps}>
+				<div className="jazz-effect-best-font" style={{marginTop:'15px',marginBottom:'10px'}}>{I18N.SaveEffect.SelectCharacteristics}</div>
+				<div className="jazz-effect-best-character">
+
+					<FlatButton label={I18N.SaveEffect.HighCost}
+											labelStyle={highCost?style.label.selected:style.label.notSelected}
+											icon={<FontIcon className="icon-check-circle" style={highCost?style.icon.selected:style.icon.notSelected}/>}	
+											style={highCost?style.btn.selected:style.btn.notSelected}
+											onClick={this._handelCharacterChange.bind(this,characterType.HighCost)}/>
+
+					<FlatButton label={I18N.SaveEffect.LessInvest}
+											labelStyle={lessInvest?style.label.selected:style.label.notSelected}
+											icon={<FontIcon className="icon-check-circle" style={lessInvest?style.icon.selected:style.icon.notSelected}/>}	
+											style={lessInvest?style.btn.selected:style.btn.notSelected}
+											onClick={this._handelCharacterChange.bind(this,characterType.LessInvest)}/>
+
+					<FlatButton label={I18N.SaveEffect.Easy}
+											labelStyle={easy?style.label.selected:style.label.notSelected}
+											icon={<FontIcon className="icon-check-circle" style={easy?style.icon.selected:style.icon.notSelected}/>}	
+											style={easy?style.btn.selected:style.btn.notSelected}
+											onClick={this._handelCharacterChange.bind(this,characterType.Easy)}/>
+
+					<FlatButton label={I18N.SaveEffect.HighReturn}
+											labelStyle={highReturn?style.label.selected:style.label.notSelected}
+											icon={<FontIcon className="icon-check-circle" style={highReturn?style.icon.selected:style.icon.notSelected}/>}	
+											style={highReturn?style.btn.selected:style.btn.notSelected}
+											onClick={this._handelCharacterChange.bind(this,characterType.HighReturn)}/>
+				</div>
+				
+				<div className="jazz-effect-best-font" style={{marginTop:'30px',marginBottom:'6px'}}>{I18N.SaveEffect.RecommendReason}</div>
+
+				<div className="jazz-effect-best-recommend">
+				<Reason text={this.state.recommendReason} onChange={(e)=>{this.setState({recommendReason:e.target.value})}}/>
+				</div>
+			</NewDialog>
+		)
+	}
+
   componentDidMount(){
     getDetail(this.props.effect.get('EnergyEffectId'));
 		this._getChartData(this.props.effect.get("EnergyEffectId"),null);
@@ -401,6 +569,7 @@ export default class EffectDetail extends Component {
 					{this._renderSubTitle()}
 					{this._renderContent()}
 					{this.state.deleteConfirmShow && this._renderDeleteDialog()}
+					{this.state.configBestShow && this._renderConfigBestDialog()}
 					{this.state.energySystemDialogShow &&
 					<PreCreate isEdit
 						EnergySystem={EnergySystem}
@@ -463,4 +632,9 @@ EffectDetail.propTypes = {
   effect:React.PropTypes.object,
   onBack:React.PropTypes.func,
 	canEdit:React.PropTypes.boolean,
+	isFromBestList:React.PropTypes.boolean,
 };
+
+EffectDetail.defaultProps={
+	isFromBestList:false
+}

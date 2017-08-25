@@ -105,6 +105,7 @@ module.exports = {
     deleteenergyeffecttag: '/energyeffect/deleteenergyeffecttag/{energyProblemId}/{tagId}',
     getitem:'/energyeffect/getitem/{energyEffectItemId}',
     getcontrast:'/energyeffect/detail/contrast/{energyEffectId}/{energyEffectItemId}',
-    getsaving:'/energyeffect/detail/saving/{energyEffectId}/{energyEffectItemId}'
+    getsaving:'/energyeffect/detail/saving/{energyEffectId}/{energyEffectItemId}',
+    saveBest:'/energyeffect/bestsolution/save/{effectId}'
   }
 };
