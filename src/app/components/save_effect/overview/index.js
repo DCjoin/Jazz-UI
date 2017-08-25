@@ -1,107 +1,105 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import find from 'lodash-es/find';
+import CircularProgress from 'material-ui/CircularProgress';
 
-import SavingChart from '../chart/contrast_chart.jsx';
+import ReduxDecorator from 'decorator/ReduxDecorator.jsx';
 
-const data = {
-	ContrastStep: 3,
-  "ActualValues": [
-    {
-      "Time": "2017-08-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2017-09-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2017-10-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2017-11-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2017-12-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2018-01-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2018-02-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2018-03-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2018-04-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2018-05-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2018-06-24T02:33:51",
-      "Value": 1.1
-    }
-  ],
-  "BenchmarkValues": [
-    {
-      "Time": "2017-08-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2017-09-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2017-10-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2017-11-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2017-12-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2018-01-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2018-02-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2018-03-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2018-04-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2018-05-24T02:33:51",
-      "Value": 1.1
-    },
-    {
-      "Time": "2018-06-24T02:33:51",
-      "Value": 1.1
-    }
-  ]
-};
+import {
+  getChartDataByCustomer,
+  getChartDataByBuilding,
+  getChartMinYear,
+} from 'actions/save_effect_action';
 
+import CurrentUserCustomerStore from 'stores/CurrentUserCustomerStore.jsx';
+import HierarchyStore from 'stores/HierarchyStore.jsx';
+import OverviewStore from 'stores/save_effect/overview_store';
+
+import ActionComp from 'controls/action_comp.jsx';
+
+import EffectByYear from './effect_by_year.jsx';
+
+const currentYear = new Date().getFullYear();
+
+function getChartData(hierarchyId, year, isCustomer) {
+  if( isCustomer ) {
+    return getChartDataByCustomer(hierarchyId, year);
+  }
+  return getChartDataByBuilding(hierarchyId, year);
+}
+
+@ReduxDecorator
 export default class SaveEffectOverview extends Component {
+  static contextTypes = {
+    hierarchyId: PropTypes.number
+  };
+  static calculateState = (state, props, ctx) => {
+    return {
+      chartData: OverviewStore.getOverview(),
+      minYear: OverviewStore.getMinYear(),
+    }
+  };
+  static getStores = () => [OverviewStore];
+  static contextTypes = {
+    hierarchyId: PropTypes.string,
+    router: PropTypes.object,
+  };
+  constructor(props, ctx) {
+    super(props);
+    this.state = {
+      year: currentYear
+    }
+    getChartMinYear(ctx.hierarchyId, ctx.hierarchyId + '' === props.router.params.customerId);
+  }
 	render() {
+    let isCustomer = this.context.hierarchyId + '' === this.props.router.params.customerId,
+    hierarchyName = find( CurrentUserCustomerStore.getAll().concat(HierarchyStore.getBuildingList()), 
+      hier => hier.Id === this.context.hierarchyId
+    ).Name ,
+    {minYear, chartData, year} = this.state;
+    if( chartData === null ) {
+      return (<div className='flex-center'>{'暂无节能效果'}</div>);
+    }
+    let byYearProps = {
+      isCustomer,
+      year: year
+    };
+    if( year < currentYear ) {
+      byYearProps.onRight = () => {
+        getChartData(this.context.hierarchyId, year + 1, isCustomer);
+        this.setState((state, props) => {
+          return {
+            year: state.year + 1,
+            chartData: undefined,
+          }
+        });
+      }
+    }
+    if( year > minYear ) {
+      byYearProps.onLeft = () => {
+        getChartData(this.context.hierarchyId, year - 1, isCustomer);
+        this.setState((state, props) => {
+          return {
+            year: state.year - 1,
+            chartData: undefined,
+          }
+        });
+      }
+    }
 		return (
-			<SavingChart unit={'test'} data={data}/>
+      <div className='jazz-save-effect-overview'>
+	      <header className='overview-header'>{hierarchyName + I18N.SaveEffect.OverviewLabel}</header>
+        {minYear ? 
+        <div>
+          <ActionComp action={() => {
+            getChartData(this.context.hierarchyId, year, isCustomer);
+          }}/>
+          {chartData ? 
+          <EffectByYear {...byYearProps} data={this.state.data} /> :
+          <div className='flex-center' style={{height: 305}}><CircularProgress mode="indeterminate" size={80} /></div>}
+          }
+        </div> :
+        <div className='flex-center' style={{height: 305}}><CircularProgress mode="indeterminate" size={80} /></div>}
+      </div>
 		);
 	}
 }
