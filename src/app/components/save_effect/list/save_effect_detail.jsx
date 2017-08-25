@@ -17,7 +17,9 @@ import NewDialog from 'controls/NewDialog.jsx';
 import PreCreate from '../create/pre_create.jsx';
 import Create from '../create';
 import Edit from '../edit';
-import Reason from './reason.jsx'
+import Reason from './reason.jsx';
+import ContrastChart from '../chart/contrast_chart.jsx';
+import SavingChart from '../chart/saving_chart.jsx';
 
 const type={
 	"Saving":0,
@@ -274,6 +276,8 @@ export default class EffectDetail extends Component {
 					</div>
 
 				</div>
+				{this.state.displayChartType===type.Saving?<SavingChart unit={util.getUomById(this.state.detailInfo.get("EnergySavingUomId")).Code} data={this.state.chartData}/>
+																									:<ContrastChart unit={util.getUomById(this.state.detailInfo.get("EnergySavingUomId")).Code} data={this.state.chartData}/>}
 			</div>
 		)
 	}
