@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {getBestSolution} from 'actions/save_effect_action.js';
-import BestStore from 'stores/save_effect/BestStore.jsx';
+import BestStore from 'stores/save_effect/bestStore.jsx';
 import FontIcon from 'material-ui/FontIcon';
 import {LessInvest,HighCost,Easy,HighReturn} from './best/icon.jsx';
 
