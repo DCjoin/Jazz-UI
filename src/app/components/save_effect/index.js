@@ -25,6 +25,12 @@ let isBest = checkPathWithRouter(RoutePath.saveEffect.best);
 export default class SaveEffect extends Component {
 	static contextTypes = {
 		hierarchyId: PropTypes.string
+	};
+
+	componentWillReceiveProps(nextProps, nextCtx) {
+		if( nextCtx.hierarchyId !== this.context.hierarchyId ) {
+			nextProps.router.replace(RoutePath.saveEffect.overview(nextProps.router.params));
+		}
 	}
 
 	render() {
