@@ -11,7 +11,7 @@ function getOptions(categories, series, unit){
 	    },
 	    chart: {
 	      	height: 265,
-	      	backgroundColor: '#ffffff',
+	      	backgroundColor: '#f7faff',
 	    },
 	    title: null,
 	    legend: {

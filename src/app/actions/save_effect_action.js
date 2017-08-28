@@ -322,14 +322,8 @@ export function getChartDataByBuilding(hierarchyId, year) {
 }
 
 export function getChartMinYear(hierarchyId, isCustomer) {
-	setTimeout(() => {
-  	AppDispatcher.dispatch({
-    	type: Action.GET_MIN_YEAR,
-    	data: 2015
-  	});
-	}, 500);
-	/*
-	Ajax.get( Util.replacePathParams(SaveEffect.buildingOverviewCommodityShow, hierarchyId, year), {
+	
+	Ajax.get( Util.replacePathParams(SaveEffect.overviewMinYear, !isCustomer, hierarchyId), {
 		success: (data) => {
     	AppDispatcher.dispatch({
       	type: Action.GET_MIN_YEAR,
@@ -337,5 +331,11 @@ export function getChartMinYear(hierarchyId, isCustomer) {
     	});
 		}
 	});
-	*/
+	
+}
+
+export function initStore() {
+	AppDispatcher.dispatch({
+  	type: Action.INIT_STORE,
+	});
 }

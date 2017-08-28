@@ -456,7 +456,7 @@
 
 .save_effect_chart {
 	padding: 20px;
-	background-color: #fff;
+	background-color: #f7faff;
 }
 
 .effect-card {
@@ -483,6 +483,39 @@
 
 	&-content {
 		margin: 20px;
+
+		&-tabs {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		&-tab {
+			width: 138px;
+			font-size: 14px;
+			color: #9fa0a4;
+			text-align: center;
+			border: solid 1px #9fa0a4;
+			height: 30px;
+			line-height: 30px;
+
+			&:first-of-type {
+				border-top-left-radius: 2px;
+				border-bottom-left-radius: 2px;
+			}
+
+			&:last-of-type {
+				border-top-right-radius: 2px;
+				border-bottom-right-radius: 2px;
+			}
+
+			&.actived {
+				border-color: #32ad3c;
+				background: #32ad3c;
+				color: #fff;
+			}
+
+		}
 	}
 }
 
