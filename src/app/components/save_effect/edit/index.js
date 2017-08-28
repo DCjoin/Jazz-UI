@@ -220,7 +220,7 @@ export default class Edit extends Component {
 				getTagsByPlan(state.filterObj.get('EnergyProblemId'));
 				break;
 			case 2:
-				getPreviewChart2(this._getFilterObj().set('ConfigStep', 2).toJS());
+				getPreviewChart2(this._getFilterObj().set('ConfigStep', 2).set("CorrectionFactor",1).toJS());
 				break;
     	case 3:
 				getPreviewChart3(this._getFilterObj().set('ConfigStep', 3).toJS());
@@ -434,10 +434,9 @@ export default class Edit extends Component {
                           .set('TagName',TagName)
                           .set('ConfigStep',2)
 													.set('EnergyStartDate', null)
-													.set('EnergyEndDate', null)
-                          .toJS();          
-              updateItem(filterObj,null,null);
-							getPreviewChart2(filterObj);
+													.set('EnergyEndDate', null);          
+              updateItem(filterObj.toJS(),null,null);
+							getPreviewChart2(filterObj.set("CorrectionFactor",1).toJS());
             });
 					}
          } 
@@ -487,12 +486,12 @@ export default class Edit extends Component {
 						this.setState({
 							chartData3: null
 						});
-						getPreviewChart2(filterObj.set('ConfigStep', 2).toJS());
+						getPreviewChart2(filterObj.set('ConfigStep', 2).set("CorrectionFactor",1).toJS());
 					}}
 					onChangeStep={(step) => {
 						this._setFilterObj(filterObj.set('CalculationStep', step));
 						this._setTagStepTip( step );
-						getPreviewChart2(filterObj.set('ConfigStep', 2).toJS());
+						getPreviewChart2(filterObj.set('ConfigStep', 2).set("CorrectionFactor",1).toJS());
 					}}
 					onChangeBenchmarkStartDate={(val, callback) => {
 						val = date2UTC(val);
@@ -516,7 +515,7 @@ export default class Edit extends Component {
 						this.setState({
 							chartData3: null
 						});
-						getPreviewChart2(filterObj.toJS());
+						getPreviewChart2(filterObj.set("CorrectionFactor",1).toJS());
 					}}
 					onChangeBenchmarkEndDate={(val) => {
 						val = date2UTC(val);
@@ -536,12 +535,12 @@ export default class Edit extends Component {
 						this.setState({
 							chartData3: null
 						});
-						getPreviewChart2(filterObj.toJS());
+						getPreviewChart2(filterObj.set("CorrectionFactor",1).toJS());
 					}}
 					onGetChartData={() => {
 						let newFilterObj = filterObj.set('IncludeEnergyEffectData', true);
 						this._setFilterObj(newFilterObj);
-						getPreviewChart2(newFilterObj.toJS());
+						getPreviewChart2(newFilterObj.set("CorrectionFactor",1).toJS());
 					}}
 					updateChartByNavgatorData={(filterObj) => {
 						let {chartData2} = this.state;

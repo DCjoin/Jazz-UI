@@ -6,6 +6,7 @@ import {LessInvest,HighCost,Easy,HighReturn} from './best/icon.jsx';
 import {openTab} from 'util/Util.jsx';
 import RoutePath from 'util/RoutePath.jsx';
 import { CircularProgress,Snackbar} from 'material-ui';
+import Detail from './list/save_effect_detail.jsx';
 
 const characterType={
 			"HighCost":1,
@@ -59,6 +60,10 @@ class Item extends Component {
 
 export default class SaveEffectBestList extends Component {
 
+	static contextTypes = {
+		hierarchyId: PropTypes.string,
+	};
+
 	  constructor(props, ctx) {
         super(props)
         this._onChanged = this._onChanged.bind(this);
@@ -68,7 +73,9 @@ export default class SaveEffectBestList extends Component {
 
 		state={
 			best:null,
-			saveSuccessText:null
+			saveSuccessText:null,
+			effectDetailShow:false,
+			detailEffect:null
 		}
 
 		_onChanged(){
@@ -101,17 +108,30 @@ export default class SaveEffectBestList extends Component {
          <CircularProgress  mode="indeterminate" size={80} />
        </div>
       )
+    }else if(this.state.effectDetailShow){
+      return(
+          <Detail effect={this.state.detailEffect.get("SolutionInfo").set("HierarchyName",this.state.detailEffect.get("HierarchyName"))}
+						      onBack={()=>{this.setState({effectDetailShow:false,detailEffect:null},
+                                                            ()=>{
+                                                              getBestSolution(this.props.router.params.customerId);
+                                                            })}}
+								  customerId={this.props.router.params.customerId}
+									hierarchyId={this.state.detailEffect.get("HierarchyId")}
+									isFromBestList={true}
+                  canEdit={false}/>
+      )
     }else{
 		return (
 			<div className="jazz-effect-overlay">
 				<div className="jazz-effect-best-list">
 					<div className="jazz-effect-best-list-header">{I18N.SaveEffect.BestLabel}</div>
-					{this.state.best.map(best=>{
-						return <Item key={best.getIn(["SolutionInfo","EnergyEffectId"])} solution={best}
+					{this.state.best.map(best=> <Item key={best.getIn(["SolutionInfo","EnergyEffectId"])} solution={best}
 							onIgnore={()=>{ignoreBestForList(best.getIn(["SolutionInfo","EnergyEffectId"]),this.props.router.params.customerId)}}
 							onItemClick={()=>{
-								openTab(RoutePath.saveEffect.list(this.props.params)+'/'+best.getIn(["SolutionInfo","EnergyProblemId"])+'?init_hierarchy_id='+best.get("HierarchyId"));
-							}}/>})}
+								this.setState({
+									effectDetailShow:true,
+									detailEffect:best
+								})}}/>)}
 					{BestStore.getIgnoredBest().size!==0 && <div className="jazz-effect-best-list-ignored-btn" 
 					onClick={()=>{
 						openTab(RoutePath.saveEffect.ignoredbBest(this.props.params)+'?init_hierarchy_id='+this.context.hierarchyId);
