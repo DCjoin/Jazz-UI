@@ -109,7 +109,7 @@ function getCategories(data) {
 	} );
 }
 
-function getSeries(data, isStack, color) {
+function getSeries(data, isStack, isWater, color) {
 	let base = 0;
 	return [{
 		type: 'line',
@@ -122,7 +122,7 @@ function getSeries(data, isStack, color) {
         zIndex: 2,
         color: '#ff5722',
         lineWidth: 1,
-		name: I18N.SaveEffect.Chart.PredictSaving,
+		name: isWater ? I18N.SaveEffect.Chart.PredictSavingWater : I18N.SaveEffect.Chart.PredictSaving,
 		data: data.PredictionSavingValues.map( item => {
 			return {
 				y: item.Value,
@@ -131,7 +131,7 @@ function getSeries(data, isStack, color) {
 		}),
 	}, {
         color: color,
-		name: I18N.SaveEffect.Chart.ActualSaving,
+		name: isWater ? I18N.SaveEffect.Chart.ActualSavingWater : I18N.SaveEffect.Chart.ActualSaving,
 		data: data.ActualSavingValues.map( item => {
 			let result = base + item.Value;
 			if(isStack) {
@@ -150,7 +150,7 @@ export default function BuildChart(props) {
 		colors: getColorByCommodityId(props.data.CommodityId).color,
 		unit: util.getUomById(props.data.UomId).Code,
 		categories: getCategories(props.data),
-		series: getSeries(props.data, props.isStack, props.color),
+		series: getSeries(props.data, props.isStack, props.isWater, props.color),
 	};
 	if( props.isStack ) {
 		return (<BasicStack {...childProps}/>);

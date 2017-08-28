@@ -26,7 +26,8 @@ module.exports = {
     GET_BUILDING_CHART:null,
     GET_MIN_YEAR:null,
     INIT_STORE:null,
-    IGNORE_SUCCESS:null
+    GET_CLASSIFICATION_DATA:null,
+    IGNORE_SUCCESS:null,
   }),
   calcState:{
     NotStarted:10,

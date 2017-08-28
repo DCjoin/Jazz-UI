@@ -2586,8 +2586,26 @@ I18N.SaveEffect.Create.StepTip = '所选数据点步长与计算步长不匹配�
 
 I18N.SaveEffect.Chart = {};
 I18N.SaveEffect.Chart.PredictSaving = '预计节能量';
+I18N.SaveEffect.Chart.PredictSavingWater = '预计节水量';
 I18N.SaveEffect.Chart.ActualSaving = '实际节能量';
+I18N.SaveEffect.Chart.ActualSavingWater = '实际节水量';
 I18N.SaveEffect.Chart.Benchmark = '基准值';
+I18N.SaveEffect.Chart.SavingValue = '年度节能量';
+I18N.SaveEffect.Chart.SavingWaterValue = '年度节水量';
+I18N.SaveEffect.Chart.SavingRate = '年度节能率';
+I18N.SaveEffect.Chart.SavingWaterRate = '年度节水率';
+I18N.SaveEffect.Chart.ByMonthValue = '逐月值';
+I18N.SaveEffect.EnergySavingWater='节水量';
+I18N.SaveEffect.SavingCoalValue='年度节约标准煤';
+I18N.SaveEffect.Tip = '暂无节能效果';
+
+I18N.SaveEffect.Table = {};
+I18N.SaveEffect.Table.SavingCost = '年度节约成本';
+I18N.SaveEffect.Table.SavingValue = '年度节能(水)量';
+I18N.SaveEffect.Table.SavingRate = '年度节能(水)率';
+I18N.SaveEffect.ByYear = '年度节能效果';
+I18N.SaveEffect.OrderByCommo = '按介质展示';
+I18N.SaveEffect.OrderByBuilding = '按建筑展示';
 
 I18N.SaveEffect.Best = {};
 

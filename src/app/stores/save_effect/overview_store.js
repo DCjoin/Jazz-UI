@@ -9,11 +9,13 @@ import TimeGranularity from 'constants/TimeGranularity.jsx';
 let 
   _overviewData,
   _minYear,
+  _classificationData,
   OverviewStore;
 
 function init() {
   _overviewData = undefined;
   _minYear = undefined;
+  _classificationData = undefined;
 }
 
 init();
@@ -31,6 +33,12 @@ export default OverviewStore = Object.assign({}, PrototypeStore, {
   getMinYear: () => {
     return _minYear;
   },
+  setClassificationData: data => {
+    _classificationData = data;
+  },
+  getClassificationData: () => {
+    return _classificationData;
+  },
 });
 OverviewStore.dispatchToken = AppDispatcher.register( action => {
   switch(action.type) {
@@ -41,6 +49,10 @@ OverviewStore.dispatchToken = AppDispatcher.register( action => {
         break;
     case Action.GET_MIN_YEAR:
         OverviewStore.setMinYear(action.data);
+        OverviewStore.emitChange();
+        break;
+    case Action.GET_CLASSIFICATION_DATA:
+        OverviewStore.setClassificationData(action.data);
         OverviewStore.emitChange();
         break;
     case Action.INIT_STORE:
