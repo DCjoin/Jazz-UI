@@ -368,6 +368,7 @@ I18N.Common.Button.Filter = '筛选';
 I18N.Common.Button.Close = '关闭';
 I18N.Common.Button.Cancel = '放弃';
 I18N.Common.Button.Cancel2 = '取消';
+I18N.Common.Button.Repeal = '撤销';
 I18N.Common.Button.Delete = '删除';
 I18N.Common.Button.Edit = '编辑';
 I18N.Common.Button.Exit = '退出';
@@ -2529,6 +2530,20 @@ I18N.SaveEffect.TagSum='数据总和';
 I18N.SaveEffect.Saving='节能量图';
 I18N.SaveEffect.Saving2='节约量图';
 I18N.SaveEffect.Contrast='实际值与基准值对比图';
+I18N.SaveEffect.SetBest='设置为最佳方案';
+I18N.SaveEffect.SelectCharacteristics='请选择方案特点';
+I18N.SaveEffect.HighCost='节约成本高';
+I18N.SaveEffect.LessInvest='投资金额少';
+I18N.SaveEffect.Easy='易实施';
+I18N.SaveEffect.HighReturn='回报率高';
+I18N.SaveEffect.RecommendReason='推荐原因';
+I18N.SaveEffect.RecommendReasonHint='请填写推荐原因';
+I18N.SaveEffect.FormatVaildTip='请输入大于等于0的数字，支持小数点后三位';
+I18N.SaveEffect.IgnoreSolution='忽略该方案';
+I18N.SaveEffect.SolutionIgnored='已忽略';
+I18N.SaveEffect.IgnoreTip='忽略的方案会进入到已忽略列表且不可恢复，确认忽略？';
+I18N.SaveEffect.Ignore='忽略';
+I18N.SaveEffect.CreateUser='方案来源：';
 
 I18N.SaveEffect.Model = {};
 I18N.SaveEffect.Model.Title = '基准值模型';
@@ -2568,5 +2583,8 @@ I18N.SaveEffect.Chart = {};
 I18N.SaveEffect.Chart.PredictSaving = '预计节能量';
 I18N.SaveEffect.Chart.ActualSaving = '实际节能量';
 I18N.SaveEffect.Chart.Benchmark = '基准值';
+
+I18N.SaveEffect.Best = {};
+
 
 module.exports = I18N;

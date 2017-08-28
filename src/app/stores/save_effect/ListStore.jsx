@@ -62,7 +62,7 @@ var ListStore = assign({}, PrototypeStore, {
     return _drafts
   },
   setDetailChart(data){
-    _detailChart=Immutable.fromJS(data)
+    _detailChart=data
   },
   getDetailChart(){
     return _detailChart
