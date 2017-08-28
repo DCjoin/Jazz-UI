@@ -333,8 +333,7 @@ export default class EffectDetail extends Component {
 		if(tags.size>1){
 			menus.push()
 		}
-			// {this.state.displayChartType===type.Saving?<SavingChart unit={util.getUomById(this.state.detailInfo.get("EnergySavingUomId")).Code} data={this.state.chartData}/>
-			// 																						:<ContrastChart unit={util.getUomById(this.state.detailInfo.get("EnergySavingUomId")).Code} data={this.state.chartData}/>}
+	
 		return(
 			<div className="jazz-effect-detail-content-chart-field">
 				<div className="operation">
@@ -364,7 +363,11 @@ export default class EffectDetail extends Component {
 					</div>
 
 				</div>
-			
+				<div className="chart">
+				{this.state.displayChartType===type.Saving?<SavingChart unit={util.getUomById(this.state.detailInfo.get("EnergySavingUomId")).Code} data={this.state.chartData}/>
+																									:<ContrastChart unit={util.getUomById(this.state.detailInfo.get("EnergySavingUomId")).Code} data={this.state.chartData}/>}
+				</div>
+
 			</div>
 		)
 	}
@@ -705,6 +708,7 @@ export default class EffectDetail extends Component {
 					{this._renderSubTitle()}
 					{this.state.isBest && this._renderBest()}
 					{this._renderContent()}
+						<div className="jazz-effect-detail-create-user">{`${I18N.SaveEffect.CreateUser}${this.state.detailInfo.get("SolutionCreateUser")}`}</div>
 					{this.state.deleteConfirmShow && this._renderDeleteDialog()}
 					{this.state.configBestShow && this._renderConfigBestDialog()}
 					{this.state.IgnoreBestShow && this._renderIgnoreBestDialog()}

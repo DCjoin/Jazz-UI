@@ -20,7 +20,7 @@ function Item(solution,onIgnore,onItemClick){
 				highReturn=isCharacterSelected(characterType.HighReturn);
 
 		return(
-			<div className="jazz-effect-best-list-item" onClick={}>
+			<div className="jazz-effect-best-list-item">
 				<div className="jazz-effect-best-list-item-info">
 					<div className="jazz-effect-best-list-item-info-side">
 						<div className="hierarchy">
