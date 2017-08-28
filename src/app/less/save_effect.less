@@ -610,3 +610,58 @@
 		}
 	}
 }
+
+.effect-table {
+	margin-top: 30px;
+
+	&-header {
+		color: #626469;
+
+		& .icon-building {
+			margin-right: 10px;
+		}
+	}
+
+	&-content {
+		margin-top: 10px;
+    width: 100%;
+    border: 1px solid #e6e6e6;
+    background-color: #f7faff;
+	}
+
+	&-th {
+		&:nth-of-type(1) {
+			width: 18.3%;
+			height: 40px;
+			text-align: left;
+		}
+		&:nth-of-type(2) {
+			width: 31.7%;
+			text-align: left;
+		}
+		&:nth-of-type(3) {
+			width: 29.9%;
+			text-align: left;
+		}
+		&:nth-of-type(4) {
+			width: 21.1%;
+			text-align: left;
+		}
+	}
+
+	&-td {
+		height: 46px;
+		color: @slate-grey;
+	}
+
+	&-td:first-of-type {
+		padding-left: 30px;
+		font-weight: bold;
+		display: flex;
+		align-items: center;
+
+		&>em {
+			margin-right: 10px;
+		}
+	}
+}

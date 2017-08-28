@@ -20,11 +20,12 @@ const CommodityMap = {
   Kerosene: 11,
 };
 
-function getConfigByCommodityId(commodityId) {
+export function getConfigByCommodityId(commodityId) {
 
   switch(commodityId) {
     case CommodityMap.ElectricOther:
       return {
+        name: I18N.Common.Commodity.ElectricOther,
         reportName: I18N.Common.Commodity.ElectricOther + I18N.SaveEffect.Saving,
         icon: 'icon-electricity',
         color: '#4caf50',
@@ -32,6 +33,7 @@ function getConfigByCommodityId(commodityId) {
       break;
     case CommodityMap.Water:
       return {
+        name: I18N.Common.Commodity.WaterOther,
         reportName: I18N.Common.Commodity.WaterOther + I18N.SaveEffect.Saving2,
         icon: 'icon-water',
         color: '#2196f3',
@@ -39,6 +41,7 @@ function getConfigByCommodityId(commodityId) {
       break;
     case CommodityMap.Gas:
       return {
+        name: I18N.Common.Commodity.Gas,
         reportName: I18N.Common.Commodity.Gas + I18N.SaveEffect.Saving,
         icon: 'icon-gas',
         color: '#6d80ff',
@@ -46,6 +49,7 @@ function getConfigByCommodityId(commodityId) {
       break;
     case CommodityMap.CoolQ:
       return {
+        name: I18N.Common.Commodity.CoolQ,
         reportName: I18N.Common.Commodity.CoolQ + I18N.SaveEffect.Saving,
         icon: 'icon-cool',
         color: '#88c0ff',
@@ -53,6 +57,7 @@ function getConfigByCommodityId(commodityId) {
       break;
     case CommodityMap.HeatQ:
       return {
+        name: I18N.Common.Commodity.HeatQ,
         reportName: I18N.Common.Commodity.HeatQ + I18N.SaveEffect.Saving,
         icon: 'icon-heat',
         color: '#ff7807',
@@ -60,6 +65,7 @@ function getConfigByCommodityId(commodityId) {
       break;
     case CommodityMap.LiquidGas:
       return {
+        name: I18N.Common.Commodity.LiquidGas,
         reportName: I18N.Common.Commodity.LiquidGas + I18N.SaveEffect.Saving,
         icon: 'icon-liquefied-gas',
         color: '#63daff',
@@ -67,6 +73,7 @@ function getConfigByCommodityId(commodityId) {
       break;
     case CommodityMap.CoalOther:
       return {
+        name: I18N.Common.Commodity.CoalOther,
         reportName: I18N.Common.Commodity.CoalOther + I18N.SaveEffect.Saving,
         icon: 'icon-coal',
         color: '#202326',
@@ -74,6 +81,7 @@ function getConfigByCommodityId(commodityId) {
       break;
     case CommodityMap.DieselOil:
       return {
+        name: I18N.Common.Commodity.DieselOil,
         reportName: I18N.Common.Commodity.DieselOil + I18N.SaveEffect.Saving,
         icon: 'icon-diesel',
         color: '#7500da',
@@ -81,6 +89,7 @@ function getConfigByCommodityId(commodityId) {
       break;
     case CommodityMap.HeavyOil:
       return {
+        name: I18N.Common.Commodity.HeavyOil,
         reportName: I18N.Common.Commodity.HeavyOil + I18N.SaveEffect.Saving,
         icon: 'icon-diesel',
         color: '#00897b',
@@ -88,6 +97,7 @@ function getConfigByCommodityId(commodityId) {
       break;
     case CommodityMap.Kerosene:
       return {
+        name: I18N.Common.Commodity.Kerosene,
         reportName: I18N.Common.Commodity.Kerosene + I18N.SaveEffect.Saving,
         icon: 'icon-diesel',
         color: '#8f5500',
@@ -95,6 +105,7 @@ function getConfigByCommodityId(commodityId) {
       break;
     default:
       return {
+        name: I18N.Setting.ECM.Other,
         reportName: I18N.Setting.ECM.Other + I18N.SaveEffect.Saving,
         icon: 'icon-other',
         color: '#97a698',
@@ -115,6 +126,7 @@ export default class EffectReport extends Component {
     let {data, year, isCustomer} = this.props,
     config = getConfigByCommodityId(data.CommodityId),
     isStack = this.state.isStack,
+    isWater = data.CommodityId === CommodityMap.Water,
 
     Comp = BuildChart;
     if( isCustomer ) {
@@ -135,7 +147,7 @@ export default class EffectReport extends Component {
               });
             }}>
               <em className='action-icon icon-area-chart1'/>
-              <span>{'累计值'}</span>
+              <span>{I18N.Setting.Tag.isAccumulated}</span>
             </a>
             <a href='javascript:void(0)' className={classnames('save-effect-report-actions-item', {active: !isStack})} onClick={() => {
               this.setState({
@@ -143,7 +155,7 @@ export default class EffectReport extends Component {
               });
             }}>
               <em className='action-icon icon-stacked-chart2'/>
-              <span>{'逐月值'}</span>
+              <span>{I18N.SaveEffect.Chart.ByMonthValue}</span>
             </a>
           </div>
         </header>
@@ -153,7 +165,7 @@ export default class EffectReport extends Component {
               <div>
                 <header className='report-sum-header'>
                   <em className='report-sum-icon icon-cost_saving'/>
-                  <span>{'年度节约成本'}</span>
+                  <span>{I18N.SaveEffect.Table.SavingCost}</span>
                 </header>
                 <div className='report-sum-content'>
                   <span className='report-sum-value'>{util.getLabelData(data.SavingCost)}</span>
@@ -165,7 +177,11 @@ export default class EffectReport extends Component {
               <div>
                 <header className='report-sum-header'>
                   <em className='report-sum-icon icon-energy_saving'/>
-                  <span>{'年度节能量／预计节能量'}</span>
+                  <span>{
+                    (isWater ? I18N.SaveEffect.Chart.SavingWaterValue : I18N.SaveEffect.Chart.SavingValue)
+                    + '/' +
+                    (isWater ? I18N.SaveEffect.Chart.PredictSavingWater : I18N.SaveEffect.Chart.PredictSaving)
+                }</span>
                 </header>
                 <div className='report-sum-content'>
                   <span className='report-sum-value'>{util.getLabelData(data.EnergySaving) + '/' + util.getLabelData(data.PredictionSaving)}</span>
@@ -177,11 +193,11 @@ export default class EffectReport extends Component {
               <div>
                 <header className='report-sum-header'>
                   <em className='report-sum-icon icon-energy-saving-rate'/>
-                  <span>{'年度节能率'}</span>
+                  <span>{isWater ? I18N.SaveEffect.Chart.SavingWaterRate : I18N.SaveEffect.Chart.SavingRate}</span>
                 </header>
                 <div className='report-sum-content'>
                   <span className='report-sum-value'>{
-                    (year === new Date().getFullYear() || data.EnergySavingRate === null) ? '-' : data.EnergySavingRate + '%'
+                    (year === new Date().getFullYear() || data.EnergySavingRate === null) ? '-' : data.EnergySavingRate * 100 + '%'
                   }</span>
                 </div>
               </div>
@@ -190,7 +206,7 @@ export default class EffectReport extends Component {
               <div>
                 <header className='report-sum-header'>
                   <em className='report-sum-icon icon-kgce'/>
-                  <span>{'年度节约标准煤'}</span>
+                  <span>{I18N.SaveEffect.SavingCoalValue}</span>
                 </header>
                 <div className='report-sum-content'>
                   <span className='report-sum-value'>{util.getLabelData(data.SavingStandardCoal)}</span>
@@ -199,7 +215,7 @@ export default class EffectReport extends Component {
               </div>
             </li>}
           </ul>
-          <Comp isStack={isStack} data={data} color={config.color}/>
+          <Comp isStack={isStack} isWater={isWater} data={data} color={config.color}/>
 				</div>
 			</div>
 		);
