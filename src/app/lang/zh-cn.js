@@ -2543,6 +2543,7 @@ I18N.SaveEffect.IgnoreSolution='忽略该方案';
 I18N.SaveEffect.SolutionIgnored='已忽略';
 I18N.SaveEffect.IgnoreTip='忽略的方案会进入到已忽略列表且不可恢复，确认忽略？';
 I18N.SaveEffect.Ignore='忽略';
+I18N.SaveEffect.CreateUser='方案来源：';
 
 I18N.SaveEffect.Model = {};
 I18N.SaveEffect.Model.Title = '基准值模型';
