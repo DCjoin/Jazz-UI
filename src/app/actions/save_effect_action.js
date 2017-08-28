@@ -250,11 +250,47 @@ export function getSavingChartData(energyEffectId,energyEffectItemId) {
 	});
 }
 
+export function saveBest(effectId,Characteristics,RecommendReason) {
+	Ajax.post( Util.replacePathParams(SaveEffect.saveBest,effectId), {
+		params: {Characteristics,RecommendReason},
+		success: () => {
+			getDetail(effectId)
+		}
+	});
+}
+
+export function deleteBest(effectId) {
+	Ajax.post( Util.replacePathParams(SaveEffect.deleteBest,effectId), {
+		success: () => {
+			getDetail(effectId)
+		}
+	});
+}
+
+export function ignoreBest(effectId) {
+	Ajax.post( Util.replacePathParams(SaveEffect.ignoreBest,effectId), {
+		success: () => {
+			getDetail(effectId)
+		}
+	});
+}
+
 export function getChartDataByCustomer(hierarchyId, year) {
 		Ajax.get( Util.replacePathParams(SaveEffect.groupOverviewCommodityShow, hierarchyId, year), {
 			success: (data) => {
       	AppDispatcher.dispatch({
         	type: Action.GET_GROUP_CHART,
+        	data
+      });
+		}
+	});
+}
+
+export function getBestSolution(customerId) {
+		Ajax.get( Util.replacePathParams(SaveEffect.getBest, customerId), {
+			success: (data) => {
+      	AppDispatcher.dispatch({
+        	type: Action.GET_BEST_SOLUTION,
         	data
       });
 		}
@@ -270,6 +306,7 @@ export function getChartDataByBuilding(hierarchyId, year) {
       });
 		}
 	});
+
 }
 
 export function getChartMinYear(hierarchyId, isCustomer) {

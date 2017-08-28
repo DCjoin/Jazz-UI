@@ -106,7 +106,12 @@ module.exports = {
     getitem:'/energyeffect/getitem/{energyEffectItemId}',
     getcontrast:'/energyeffect/detail/contrast/{energyEffectId}/{energyEffectItemId}',
     getsaving:'/energyeffect/detail/saving/{energyEffectId}/{energyEffectItemId}',
+    saveBest:'/energyeffect/bestsolution/save/{effectId}',
+    deleteBest:'/energyeffect/bestsolution/delete/{effectId}',
+    ignoreBest:'/energyeffect/bestsolution/ignore/{effectId}',
+    getBest:'/energyeffect/bestsolution/list/{customerId}',
     groupOverviewCommodityShow:'/energyeffect/group/Overview/CommodityShow/{customerId}/{year}',
     buildingOverviewCommodityShow:'/energyeffect/building/Overview/CommodityShow/{hierarchyId}/{year}',
+
   }
 };
