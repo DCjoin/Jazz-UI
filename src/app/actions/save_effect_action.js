@@ -322,6 +322,30 @@ export function getChartMinYear(hierarchyId, isCustomer) {
 	
 }
 
+export function getCommodityShow(hierarchyId, year, isCustomer) {	
+	Ajax.get( Util.replacePathParams(
+			isCustomer ? SaveEffect.groupOverviewCommodityShow : SaveEffect.buildingOverviewCommodityShow,
+			hierarchyId, year), {
+		success: (data) => {
+    	AppDispatcher.dispatch({
+      	type: Action.GET_CLASSIFICATION_DATA,
+      	data
+    	});
+		}
+	});	
+}
+
+export function getBuildingShow(customerId, year) {	
+	Ajax.get( Util.replacePathParams(SaveEffect.BuildingShow, customerId, year), {
+		success: (data) => {
+    	AppDispatcher.dispatch({
+      	type: Action.GET_CLASSIFICATION_DATA,
+      	data
+    	});
+		}
+	});	
+}
+
 export function initStore() {
 	AppDispatcher.dispatch({
   	type: Action.INIT_STORE,

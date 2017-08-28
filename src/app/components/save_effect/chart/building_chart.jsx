@@ -121,7 +121,7 @@ function getSeries(data, isStack) {
         zIndex: 2,
         color: '#ff5722',
         lineWidth: 1,
-		name: I18N.SaveEffect.Chart.PredictSaving,
+		name: isWater ? I18N.SaveEffect.Chart.PredictSavingWater : I18N.SaveEffect.Chart.PredictSaving,
 		data: data.PredictionSavingValues.map( item => {
 			return {
 				y: item.Value,
@@ -132,7 +132,7 @@ function getSeries(data, isStack) {
 	.concat(data.EnergySystemSavings.map( (sys, i) => {
 		let base = 0;
 		return {
-			name: getSystemNameById(sys.EnergySystem) + '节能量',
+			name: getSystemNameById(sys.EnergySystem) + (isWater ? I18N.SaveEffect.Chart.EnergySavingWater : I18N.SaveEffect.Chart.EnergySaving),
 			data: sys.EnergySavingValues.map( item => {
 				let result = base + item.Value;
 				if(isStack) {
