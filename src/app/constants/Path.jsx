@@ -108,5 +108,6 @@ module.exports = {
     getsaving:'/energyeffect/detail/saving/{energyEffectId}/{energyEffectItemId}',
     groupOverviewCommodityShow:'/energyeffect/group/Overview/CommodityShow/{customerId}/{year}',
     buildingOverviewCommodityShow:'/energyeffect/building/Overview/CommodityShow/{hierarchyId}/{year}',
+    overviewMinYear: '/energyeffect/Overview/MinYear/{isBuilding}/{hierarchyId}',
   }
 };

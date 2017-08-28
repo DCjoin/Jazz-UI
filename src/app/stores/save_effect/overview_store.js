@@ -43,6 +43,9 @@ OverviewStore.dispatchToken = AppDispatcher.register( action => {
         OverviewStore.setMinYear(action.data);
         OverviewStore.emitChange();
         break;
+    case Action.INIT_STORE:
+        init();
+        break;
     default:
   }
 
