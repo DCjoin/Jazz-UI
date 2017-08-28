@@ -26,6 +26,7 @@ import ReportPreview from './components/KPI/ReportPreview.jsx';
 import SaveEffect from './components/save_effect';
 import SaveEffectOverview from './components/save_effect/overview';
 import SaveEffectBestList from './components/save_effect/save_effect_best_list.jsx';
+import SaveEffectIgnoredBestList from './components/save_effect/best/ignored_best_list.jsx';
 import SaveEffectDrafts from './components/save_effect/list/Draft.jsx';
 import SaveEffectList from './components/save_effect/list/save_effect_list.jsx';
 import SaveEffectDetail from './components/save_effect/list/save_effect_detail.jsx';
@@ -253,8 +254,15 @@ ReactDom.render(<Router history={hashHistory} routes={{
           }]
         }, {
           path: 'best',
-          component: SaveEffectBestList
-        }, {
+          childRoutes: [
+            {
+              path: 'list',
+              component: SaveEffectBestList,
+            },{
+            path: 'ignored',
+            component: SaveEffectIgnoredBestList
+          }]
+          }, {
           path: 'detail'
         }]
       },{

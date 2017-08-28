@@ -18,7 +18,7 @@ function HeaderTabs({isCustomer, isOverview, onActive,context,param}) {
 	if( isCustomer ) {
 		secondTabProps.label = I18N.SaveEffect.BestLabel;
 		secondTabProps.path=RoutePath.saveEffect.best;
-		secondTabProps.basePath=RoutePath.saveEffect.best;
+		secondTabProps.basePath=RoutePath.saveEffect.bestBase;
 	}
 	return (
 		<div>
