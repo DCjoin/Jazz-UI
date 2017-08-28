@@ -2541,9 +2541,14 @@ I18N.SaveEffect.RecommendReasonHint='请填写推荐原因';
 I18N.SaveEffect.FormatVaildTip='请输入大于等于0的数字，支持小数点后三位';
 I18N.SaveEffect.IgnoreSolution='忽略该方案';
 I18N.SaveEffect.SolutionIgnored='已忽略';
+I18N.SaveEffect.IgnoredSolution='已忽略方案';
 I18N.SaveEffect.IgnoreTip='忽略的方案会进入到已忽略列表且不可恢复，确认忽略？';
 I18N.SaveEffect.Ignore='忽略';
 I18N.SaveEffect.CreateUser='方案来源：';
+I18N.SaveEffect.HierarchyFrom='来源建筑：';
+I18N.SaveEffect.IgnoreSuccess='方案已进入“已忽略方案”页面';
+I18N.SaveEffect.SolutionName='方案名称';
+I18N.SaveEffect.SolutionCharacter='方案特点';
 
 I18N.SaveEffect.Model = {};
 I18N.SaveEffect.Model.Title = '基准值模型';

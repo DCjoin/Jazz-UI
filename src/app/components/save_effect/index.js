@@ -20,7 +20,7 @@ function checkPathWithRouter(targetPathFunc) {
 
 let isOverview = checkPathWithRouter(RoutePath.saveEffect.overview);
 let isListBase = checkPathWithRouter(RoutePath.saveEffect.listBase);
-let isBest = checkPathWithRouter(RoutePath.saveEffect.best);
+let isBest = checkPathWithRouter(RoutePath.saveEffect.bestBase);
 
 export default class SaveEffect extends Component {
 	static contextTypes = {

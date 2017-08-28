@@ -275,6 +275,18 @@ export function ignoreBest(effectId) {
 	});
 }
 
+export function ignoreBestForList(effectId,customerId) {
+	Ajax.post( Util.replacePathParams(SaveEffect.ignoreBest,effectId), {
+		success: () => {
+			getBestSolution(customerId);
+			AppDispatcher.dispatch({
+        	type: Action.IGNORE_SUCCESS,
+      });
+		}
+	});
+}
+
+
 export function getChartDataByCustomer(hierarchyId, year) {
 		Ajax.get( Util.replacePathParams(SaveEffect.groupOverviewCommodityShow, hierarchyId, year), {
 			success: (data) => {
