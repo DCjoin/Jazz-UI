@@ -140,7 +140,8 @@ export default class EffectDetail extends Component {
 
 	_handlechartTypeChange(type,tags){
 		this.setState({
-			displayChartType:type
+			displayChartType:type,
+			chartData:null
 		},()=>{
 			this._getChartData(this.props.effect.get("EnergyEffectId"),getEffectItemId(this.state.displayTagId,tags));
 		})
@@ -348,7 +349,10 @@ export default class EffectDetail extends Component {
                     				 value={this.state.displayTagId}
                     				 underlineStyle={{display:"none"}}
                     				 onChange={(e, selectedIndex, value)=>{
-															 this.setState({displayTagId:value},
+															 this.setState({
+																 displayTagId:value,
+																 chartData:null
+																 },
 															 ()=>{
 																 this._getChartData(this.props.effect.get("EnergyEffectId"),getEffectItemId(this.state.displayTagId,tags));
 															 })
