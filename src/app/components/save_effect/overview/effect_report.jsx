@@ -181,12 +181,12 @@ export default class EffectReport extends Component {
                 </header>
                 <div className='report-sum-content'>
                   <span className='report-sum-value'>{
-                    year === new Date().getFullYear() ? '-' : data.EnergySavingRate + '%'
+                    (year === new Date().getFullYear() || data.EnergySavingRate === null) ? '-' : data.EnergySavingRate + '%'
                   }</span>
                 </div>
               </div>
             </li>
-            <li className='save-effect-report-content-sum-item'>
+            {data.CommodityId !== CommodityMap.Water && <li className='save-effect-report-content-sum-item'>
               <div>
                 <header className='report-sum-header'>
                   <em className='report-sum-icon icon-kgce'/>
@@ -197,7 +197,7 @@ export default class EffectReport extends Component {
                   <span className='report-sum-unit'>{'kgce'}</span>
                 </div>
               </div>
-            </li>
+            </li>}
           </ul>
           <Comp isStack={isStack} data={data} color={config.color}/>
 				</div>
