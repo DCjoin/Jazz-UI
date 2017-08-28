@@ -109,7 +109,7 @@ function getCategories(data) {
 	} );
 }
 
-function getSeries(data, isStack) {
+function getSeries(data, isStack, isWater ) {
 	return [{
 		type: 'line',
         marker: {
@@ -132,7 +132,7 @@ function getSeries(data, isStack) {
 	.concat(data.EnergySystemSavings.map( (sys, i) => {
 		let base = 0;
 		return {
-			name: getSystemNameById(sys.EnergySystem) + (isWater ? I18N.SaveEffect.Chart.EnergySavingWater : I18N.SaveEffect.Chart.EnergySaving),
+			name: getSystemNameById(sys.EnergySystem) + (isWater ? I18N.SaveEffect.EnergySavingWater : I18N.SaveEffect.EnergySaving),
 			data: sys.EnergySavingValues.map( item => {
 				let result = base + item.Value;
 				if(isStack) {
@@ -149,7 +149,7 @@ export default function BuildChart(props) {
 		colors: getColorByCommodityId(props.data.CommodityId).color,
 		unit: util.getUomById(props.data.UomId).Code,
 		categories: getCategories(props.data),
-		series: getSeries(props.data, props.isStack),
+		series: getSeries(props.data, props.isStack, props.isWater),
 	};
 	if( props.isStack ) {
 		return (<BasicStack {...childProps}/>);

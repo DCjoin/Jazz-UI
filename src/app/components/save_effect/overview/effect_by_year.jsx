@@ -25,7 +25,7 @@ export default class EffectByYear extends Component {
 		return (
 			<div className='effect-card'>
         <header className='effect-card-header'>
-          <span className='effect-card-header-text'>{'年度节能效果'}</span>
+          <span className='effect-card-header-text'>{I18N.SaveEffect.ByYear}</span>
           <SwitchBar 
             iconStyle={{
               color: '#505559',
@@ -46,8 +46,8 @@ export default class EffectByYear extends Component {
         </header>
 				<div className='effect-card-content'>
           {isCustomer && <div className='effect-card-content-tabs'>
-            <a href='javascript:void(0)' onClick={switchTab(0)} className={classnames('effect-card-content-tab', {'actived': showCommodity})}>{'按介质展示'}</a>
-            <a href='javascript:void(0)' onClick={switchTab(1)} className={classnames('effect-card-content-tab', {'actived': !showCommodity})}>{'按建筑展示'}</a>
+            <a href='javascript:void(0)' onClick={switchTab(0)} className={classnames('effect-card-content-tab', {'actived': showCommodity})}>{I18N.SaveEffect.OrderByCommo}</a>
+            <a href='javascript:void(0)' onClick={switchTab(1)} className={classnames('effect-card-content-tab', {'actived': !showCommodity})}>{I18N.SaveEffect.OrderByBuilding}</a>
           </div>}
           {content}
         </div>

@@ -5,14 +5,32 @@ module.exports = {
   Action: keyMirror({
     UPDATE_TAGS: null,
     GET_ENERGY_EFFECT:null,
-<<<<<<< HEAD
     GET_PREVIEW_CHART2:null,
     GET_PREVIEW_CHART3:null,
-=======
+    GET_ENERGY_EFFECT:null,
     GET_EFFECT_RATE_TAG:null,
     SAVE_EFFECT_RATE_TAG:null,
-    GET_EFFECT_DETAIL:null
->>>>>>> 0157b929fef4acad539f7c3e04ab6eed48bcb769
+    GET_EFFECT_DETAIL:null,
+    DELETE_EFFECT_ITEM:null,
+    GET_ENERGY_SOLUTION:null,
+    GET_DRAFTS_SUCCESS:null,
+    CHANGE_ENERGY_SYSTEM_FOR_EFFECT:null,
+    ADD_ITEM:null,
+    SET_ENERGY_EFFECT_ID:null,
+    CLEAN_CREATE_SAVE_EFFECT:null,
+    GET_ITEM_SUCCESS:null,
+    CLEAN_EDIT_SAVE_EFFECT:null,
+    GET_DETAIL_CHART:null,
+    GET_BEST_SOLUTION:null,
+    GET_GROUP_CHART:null,
+    GET_BUILDING_CHART:null,
+    GET_MIN_YEAR:null,
+    INIT_STORE:null,
+<<<<<<< HEAD
+    GET_CLASSIFICATION_DATA:null,
+=======
+    IGNORE_SUCCESS:null
+>>>>>>> 72c77fa54a804b8634b98d85f803225950fa03d1
   }),
   calcState:{
     NotStarted:10,
@@ -31,3 +49,681 @@ module.exports = {
   },
 
 };
+
+// Immutable.fromJS({
+// "Drafts": [
+// {
+//   "ConfigStep": 1,
+//   "EnergyProblemId": 2,
+//   "EnergySolutionName": "sample string 1",
+//   "TagId": 4,
+//   "TagName": "sample string 5",
+//   EnergyEffectItemId:1
+// },
+// {
+//   "ConfigStep": 1,
+//   "EnergyProblemId": 2,
+//   "EnergySolutionName": "sample string 2",
+//   "TagId": 4,
+//   "TagName": "sample string 5",
+//   EnergyEffectItemId:2
+// },
+// {
+//   "ConfigStep": 1,
+//   "EnergyProblemId": 2,
+//   "EnergySolutionName": "sample string 3",
+//   "TagId": 4,
+//   "TagName": "sample string 5",
+//   EnergyEffectItemId:3
+// },
+// {
+//   "ConfigStep": 1,
+//   "EnergyProblemId": 2,
+//   "EnergySolutionName": "sample string 3",
+//   "TagId": 4,
+//   "TagName": "sample string 5"
+// },
+// {
+//   "ConfigStep": 1,
+//   "EnergyProblemId": 2,
+//   "EnergySolutionName": "sample string 3",
+//   "TagId": 4,
+//   "TagName": "sample string 5"
+// },
+// {
+//   "ConfigStep": 1,
+//   "EnergyProblemId": 2,
+//   "EnergySolutionName": "sample string 3",
+//   "TagId": 4,
+//   "TagName": "sample string 5"
+// },
+// {
+//   "ConfigStep": 1,
+//   "EnergyProblemId": 2,
+//   "EnergySolutionName": "sample string 3",
+//   "TagId": 4,
+//   "TagName": "sample string 5"
+// },
+// {
+//   "ConfigStep": 1,
+//   "EnergyProblemId": 2,
+//   "EnergySolutionName": "sample string 3",
+//   "TagId": 4,
+//   "TagName": "sample string 5"
+// },
+// {
+//   "ConfigStep": 1,
+//   "EnergyProblemId": 2,
+//   "EnergySolutionName": "sample string 3",
+//   "TagId": 4,
+//   "TagName": "sample string 5"
+// },
+// {
+//   "ConfigStep": 1,
+//   "EnergyProblemId": 2,
+//   "EnergySolutionName": "sample string 3",
+//   "TagId": 4,
+//   "TagName": "sample string 5"
+// },
+// {
+//   "ConfigStep": 1,
+//   "EnergyProblemId": 2,
+//   "EnergySolutionName": "sample string 3",
+//   "TagId": 4,
+//   "TagName": "sample string 5"
+// },
+// {
+//   "ConfigStep": 1,
+//   "EnergyProblemId": 2,
+//   "EnergySolutionName": "sample string 3",
+//   "TagId": 4,
+//   "TagName": "sample string 5"
+// },
+// {
+//   "ConfigStep": 1,
+//   "EnergyProblemId": 2,
+//   "EnergySolutionName": "sample string 3",
+//   "TagId": 4,
+//   "TagName": "sample string 5"
+// },
+// {
+//   "ConfigStep": 1,
+//   "EnergyProblemId": 2,
+//   "EnergySolutionName": "sample string 3",
+//   "TagId": 4,
+//   "TagName": "sample string 5"
+// },
+// {
+//   "ConfigStep": 1,
+//   "EnergyProblemId": 2,
+//   "EnergySolutionName": "sample string 3",
+//   "TagId": 4,
+//   "TagName": "sample string 5"
+// },
+// {
+//   "ConfigStep": 1,
+//   "EnergyProblemId": 2,
+//   "EnergySolutionName": "sample string 3",
+//   "TagId": 4,
+//   "TagName": "sample string 5"
+// },
+// {
+//   "ConfigStep": 1,
+//   "EnergyProblemId": 2,
+//   "EnergySolutionName": "sample string 3",
+//   "TagId": 4,
+//   "TagName": "sample string 5"
+// },
+// {
+//   "ConfigStep": 1,
+//   "EnergyProblemId": 2,
+//   "EnergySolutionName": "sample string 3",
+//   "TagId": 4,
+//   "TagName": "sample string 5"
+// }
+// ],
+// "EnergyEffects": [
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 20,
+//   "ConfigedTagCount": 0,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6,
+//   EnergyEffectItemId:1,
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 6,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 2,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// },
+// {
+//   "AnnualCostSaving": 1.1,
+//   "CalcState": 1,
+//   "ConfigedTagCount": 1,
+//   "EnergyProblemId": 3,
+//   "EnergySolutionName": "sample string 4",
+//   "EnergySystem": 10,
+//   "ExecutedTime": "2017-08-07T08:20:22",
+//   "TotalTagCount": 6
+// }
+// ],
+// "SavingRateConfigState": 1
+// })
