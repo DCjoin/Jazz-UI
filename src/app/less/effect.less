@@ -312,7 +312,6 @@
   overflow-x: hidden;
   overflow-y: auto;
   position: absolute;
-  z-index: 2;
   height: 100%;
   background-color: #f3f5f7;
   &-header-container{
@@ -384,19 +383,22 @@
     border-radius: 2px;
     background-color: #ffffff;
     border: solid 1px @border;
-    padding:0 35px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     box-sizing: border-box;
+    flex: none;
     &-info{
       flex:1;
       display: flex;
       flex-direction: column;
+      margin:22px 35px;
       >.row{
         display: flex;
         flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
         .title-font{
           font-size: 16px;
           font-weight: 600;
@@ -588,6 +590,10 @@
         border-bottom: 1px solid @border;
         box-sizing: border-box;
         &-side{
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        flex: 1;
         >.hierarchy{
           display: flex;
           flex-direction: row;
@@ -597,16 +603,16 @@
             color: #505559;
           }
         }
+        &-middle{
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
         >.name{
           font-size: 16px;
           font-weight: 600;
           color: @slate-grey;
           margin:10px 0 5px;
-        }
-        >.reason{
-            font-size: 14px;
-            color: @medium-gray;
-        }
         }
         &-operation{
           font-size: 14px;
@@ -617,8 +623,19 @@
             cursor: pointer;
           }
         }
+        }
+
+        >.reason{
+            font-size: 14px;
+            color: @medium-gray;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+        }
+
         &:hover{
-          .jazz-effect-best-list-item-info-operation{
+          .jazz-effect-best-list-item-info-side-middle-operation{
             display:block;
           }
         }

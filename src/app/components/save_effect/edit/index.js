@@ -694,6 +694,7 @@ export default class Edit extends Component {
 		let { filterObj,chartData2,configStep} = this.state;
 			let {UomId, EnergyStartDate, EnergyEndDate, CalculationStep, PredictionDatas, BenchmarkStartDate, BenchmarkEndDate, ContrastStep} 
 			= (configStep===4 || configStep===null)?filterObj.toJS():CreateStore.getEffectItem().toJS();
+			console.log(ContrastStep);
 				return (<Step4
 					unit={UomId ? UOMStore.getUomById(UomId) : (chartData2 ? getUomByChartData(chartData2) : '')}
 					EnergyStartDate={UTC2Local(EnergyStartDate)}
