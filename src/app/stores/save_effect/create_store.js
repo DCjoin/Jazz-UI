@@ -118,7 +118,7 @@ CreateStore.dispatchToken = AppDispatcher.register(function(action) {
     case Action.CLEAN_CREATE_SAVE_EFFECT:
         init();
         break;
-    case Action.CLEAN_CREATE_SAVE_EFFECT:
+    case Action.CLEAN_EDIT_SAVE_EFFECT:
         _effectItem=null;
         break;
     case Action.GET_ITEM_SUCCESS:

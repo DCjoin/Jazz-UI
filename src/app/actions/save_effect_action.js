@@ -206,6 +206,8 @@ export function cleanCreate() {
 
 export function getItem(energyEffectItemId) {
 	Ajax.get( Util.replacePathParams(SaveEffect.getitem, energyEffectItemId), {
+		avoidDuplicate:true,
+    tag:'getItemdata',
 		success: (effectItem) => {
       AppDispatcher.dispatch({
         type: Action.GET_ITEM_SUCCESS,
