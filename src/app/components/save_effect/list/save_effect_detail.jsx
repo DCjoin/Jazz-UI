@@ -177,7 +177,10 @@ export default class EffectDetail extends Component {
 		}
 	}
 
-
+	_updateChart(data){
+		var tags=data.get('EffectItems');
+		this._getChartData(this.props.effect.get("EnergyEffectId"),getEffectItemId(this.state.displayTagId,tags));
+	}
   _renderTitle(){
 		var style={
       btn:{
@@ -786,7 +789,19 @@ export default class EffectDetail extends Component {
 							EnergyEffectId,
 							ExecutedTime,
 						EnergySystem}}
-						onSubmitDone={()=>{getDetail(this.props.effect.get('EnergyEffectId'));}}
+						onSubmitDone={()=>{
+							
+							this.setState({
+								chartData:null,
+								detailInfo:null,
+							},()=>{
+							getDetail(this.props.effect.get('EnergyEffectId'),(data)=>{
+								this._updateChart(data);
+							});
+							
+							})
+
+							}}
 						onClose={(isSuccess)=>{
 							if(isSuccess){
 								this.setState({
@@ -795,24 +810,41 @@ export default class EffectDetail extends Component {
 									detailInfo:null
 								})
 							}else {
+								
 								this.setState({
 									createShow:false,
-									detailInfo:null
+									detailInfo:null,
+									chartData:null,
 								},()=>{
-									getDetail(this.props.effect.get('EnergyEffectId'))
+									getDetail(this.props.effect.get('EnergyEffectId'),(data)=>{
+										this._updateChart(data);
+									});
+									
 								})
 							}
 
 						}}/>}
 						{this.state.editShow && <Edit effect={this.props.effect.set('EnergyEffectItemId',this.state.detailInfo.getIn(['EffectItems',this.state.editIndex,"EnergyEffectItemId"]))}
 																					editTagName={this.state.detailInfo.getIn(['EffectItems',this.state.editIndex,"TagName"])}
-																					onSubmitDone={()=>{getDetail(this.props.effect.get('EnergyEffectId'));}}
+																					onSubmitDone={()=>{																						
+																						this.setState({
+																							detailInfo:null,
+																							chartData:null,
+																						},()=>{
+																						getDetail(this.props.effect.get('EnergyEffectId'),(data)=>{
+																								this._updateChart(data);
+																							});																						
+																						})
+																						}}
 																					onClose={()=>{
 																										this.setState({
 																										editShow:false,
-																										editIndex:null
+																										editIndex:null,																										
 																						},()=>{
-																							getDetail(this.props.effect.get('EnergyEffectId'))
+																							{/*getDetail(this.props.effect.get('EnergyEffectId'),(data)=>{
+																								this._updateChart(data);
+																							});*/}
+																							
 																						})
 																					}
 																		

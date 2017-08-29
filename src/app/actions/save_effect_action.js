@@ -113,9 +113,12 @@ export function saveeffectratetag(customerId,hierarchyId,list) {
 	});
 }
 
-export function getDetail(energyEffectId) {
+export function getDetail(energyEffectId,callback) {
 	Ajax.get( Util.replacePathParams(SaveEffect.getDetail,energyEffectId), {
 		success: (detail) => {
+			if(callback){
+				callback(Immutable.fromJS(detail))
+			}
 			AppDispatcher.dispatch({
 				type: Action.GET_EFFECT_DETAIL,
 				detail

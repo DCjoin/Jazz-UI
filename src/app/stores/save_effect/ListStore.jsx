@@ -13,7 +13,7 @@ var ListStore = assign({}, PrototypeStore, {
   getAllEnergySystem(){
     return{
         'AirConditioning':{label:I18N.Setting.Effect.AirConditioning,value:10,icon:'icon-air-conditioner'},
-        'Power':{label:I18N.Setting.Effect.Power,value:20,icon:'icon-power'},
+        'Power':{label:I18N.Setting.Effect.Power,value:20,icon:'icon-power1'},
         'Lighting':{label:I18N.Setting.Effect.Lighting,value:30,icon:'icon-illumination'},
         'Product':{label:I18N.Setting.Effect.Product,value:40,icon:'icon-machine'},
         'AirCompressor':{label:I18N.Setting.Effect.AirCompressor,value:50,icon:'icon-air-compression'},
