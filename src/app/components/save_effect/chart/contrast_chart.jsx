@@ -15,13 +15,13 @@ function UTC2Local(date) {
 
 function getCategories(data) {
 	let existYears = [],
-	suffix = data.ContrastStep !== Monthly ? 'DD' + I18N.Map.Date.Day : '';
+	suffix = data.ContrastStep !== Monthly ? '/DD' : '';
 	return data.BenchmarkValues.map( item => {
 		if( existYears.indexOf( UTC2Local(item.Time).get('year') ) === -1 ) {
 			existYears.push( UTC2Local(item.Time).get('year') );
-			return UTC2Local(item.Time).format('YYYY' + I18N.Map.Date.Year + 'MM' + I18N.Map.Date.Month + suffix);
+			return UTC2Local(item.Time).format('YYYY/MM' + suffix);
 		}
-		return UTC2Local(item.Time).format('MM' + I18N.Map.Date.Month + suffix);
+		return UTC2Local(item.Time).format('MM' + suffix);
 	} );
 }
 
@@ -33,7 +33,7 @@ function getSeries(data) {
 			data: data.ActualValues.map( item => {
 				return {
 					y: item.Value,
-					tooltipTitle: UTC2Local(item.Time).format('YYYY' + I18N.Map.Date.Year + 'MM' + I18N.Map.Date.Month + suffix)
+					tooltipTitle: UTC2Local(item.Time).format('YYYY/MM' + suffix)
 				}
 			} )
 		},
@@ -42,7 +42,7 @@ function getSeries(data) {
 			data: data.BenchmarkValues.map( item => {
 				return {
 					y: item.Value,
-					tooltipTitle: UTC2Local(item.Time).format('YYYY' + I18N.Map.Date.Year + 'MM' + I18N.Map.Date.Month + suffix)
+					tooltipTitle: UTC2Local(item.Time).format('YYYY/MM' + suffix)
 				}
 			} )
 		},

@@ -24,7 +24,7 @@ export default class BuildingTable extends Component {
 						</td>
 						<td className='effect-table-td'>{util.isNumber(SavingCost) ? util.getLabelData(SavingCost) + ' RMB' : '-'}</td>
 						<td className='effect-table-td'>{util.isNumber(SavingValue) ? util.getLabelData(SavingValue) + ' ' + util.getUomById(UomId).Code : '-'}</td>
-						<td className='effect-table-td'>{util.isNumber(SavingRate) ? SavingRate * 100 + ' %' : '-'}</td>
+						<td className='effect-table-td'>{util.isNumber(SavingRate) ? util.toFixed(SavingRate * 100, 1) + ' %' : '-'}</td>
 					</tr>
 					) )}
 				</table>

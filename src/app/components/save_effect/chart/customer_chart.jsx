@@ -100,17 +100,22 @@ function UTC2Local(date) {
 
 function getCategories(data) {
 	let existYears = [];
+	if( !data || !data.PredictionSavingValues ) {
+		return existYears;
+	}
 	return data.PredictionSavingValues.map( item => {
 		if( existYears.indexOf( UTC2Local(item.Time).get('year') ) === -1 ) {
 			existYears.push( UTC2Local(item.Time).get('year') );
-			return UTC2Local(item.Time).format('YYYY' + I18N.Map.Date.Year + 'MM' + I18N.Map.Date.Month)
+			return UTC2Local(item.Time).format('YYYY/MM')
 		}
-		return UTC2Local(item.Time).format('MM' + I18N.Map.Date.Month);
+		return UTC2Local(item.Time).format('MM');
 	} );
 }
 
 function getSeries(data, isStack, isWater, color) {
 	let base = 0;
+	let predBase = 0;
+
 	return [{
 		type: 'line',
         marker: {
@@ -124,9 +129,14 @@ function getSeries(data, isStack, isWater, color) {
         lineWidth: 1,
 		name: isWater ? I18N.SaveEffect.Chart.PredictSavingWater : I18N.SaveEffect.Chart.PredictSaving,
 		data: data.PredictionSavingValues.map( item => {
+			let result = predBase + item.Value;
+			if(isStack) {
+				predBase = result;
+			}
 			return {
-				y: item.Value,
-				tooltipTitle: UTC2Local(item.Time).format('YYYY' + I18N.Map.Date.Year + 'MM' + I18N.Map.Date.Month),
+				y: result,
+				tooltipName: isWater ? I18N.SaveEffect.Chart.PredictSavingWater : I18N.SaveEffect.Chart.PredictSaving,
+				tooltipTitle: UTC2Local(item.Time).format('YYYY/MM'),
 			};
 		}),
 	}, {
@@ -139,7 +149,8 @@ function getSeries(data, isStack, isWater, color) {
 			}
 			return {
 				y: result,
-				tooltipTitle: UTC2Local(item.Time).format('YYYY' + I18N.Map.Date.Year + 'MM' + I18N.Map.Date.Month),
+				tooltipName: isWater ? I18N.SaveEffect.Chart.ActualSavingWater : I18N.SaveEffect.Chart.ActualSaving,
+				tooltipTitle: UTC2Local(item.Time).format('YYYY/MM'),
 			};
 		}),
 	}, ];
