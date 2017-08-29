@@ -227,7 +227,7 @@ export default class EffectDetail extends Component {
     }
     else if(this.props.isFromBestList){
 			return(
-				 <div className="jazz-effect-detail-header-subtitle">
+				 <div className="jazz-effect-detail-header-subtitle" style={{minHeight:'22px'}}>
           <div className="jazz-effect-detail-header-subtitle-info">
             <span style={{marginBottom:'5px'}}>
 							<FontIcon className="icon-building" color="#505559" style={{fontSize:'12px',marginRight:'7px'}}/>
