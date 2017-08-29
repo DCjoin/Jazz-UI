@@ -244,9 +244,9 @@ export default class EffectList extends Component {
               :(item.get('ConfigedTagCount')!==0 && <ItemForManager ref={`content_${index}`} effect={item} onClick={this._onItemClick.bind(this,item.get("EnergyProblemId"))} canEdit={isFull()}/>)))}
             </div>
             {this.state.configRateShow &&
-                <ConfigRate hierarchyName={this._getSelectedHierarchy().Name} hierarchyId={this.context.hierarchyId}
+              <ConfigRate hierarchyName={this._getSelectedHierarchy().Name} hierarchyId={this.context.hierarchyId}
                             onClose={()=>{this.setState({configRateShow:false})}} onSave={this._onRateTagSave}/>}
-            <Snackbar ref="snackbar" autoHideDuration={4000} open={!!this.state.saveSuccessText} onRequestClose={()=>{this.setState({saveSuccessText:null})}} message={this.state.saveSuccessText}/>
+              <Snackbar ref="snackbar" autoHideDuration={4000} open={!!this.state.saveSuccessText} onRequestClose={()=>{this.setState({saveSuccessText:null})}} message={this.state.saveSuccessText}/>
               {this.state.createShow && true && <Create
                 filterObj={{
                   EnergySolutionName: configEffect.get('EnergySolutionName'),

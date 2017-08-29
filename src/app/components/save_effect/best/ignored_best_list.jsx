@@ -5,6 +5,7 @@ import {LessInvest,HighCost,Easy,HighReturn} from './icon.jsx';
 import {openTab} from 'util/Util.jsx';
 import RoutePath from 'util/RoutePath.jsx';
 import { CircularProgress} from 'material-ui';
+import Detail from '../list/save_effect_detail.jsx';
 
 const characterType={
 			"HighCost":1,
@@ -52,6 +53,8 @@ export default class SaveEffectIgnoredBestList extends Component {
 
 		state={
 			best:null,
+			effectDetailShow:false,
+			detailEffect:null
 		}
 
 		_onChanged(){
@@ -76,6 +79,18 @@ export default class SaveEffectIgnoredBestList extends Component {
          <CircularProgress  mode="indeterminate" size={80} />
        </div>
       )
+    }else if(this.state.effectDetailShow){
+      return(
+          <Detail effect={this.state.detailEffect.get("SolutionInfo").set("HierarchyName",this.state.detailEffect.get("HierarchyName"))}
+						      onBack={()=>{this.setState({effectDetailShow:false,displayEffectProblemId:null},
+                                                            ()=>{
+                                                              getBestSolution(this.context.hierarchyId)
+                                                            })}}
+								  customerId={this.props.router.params.customerId}
+									hierarchyId={this.state.detailEffect.get("HierarchyId")}
+									isFromBestList={true}
+                  canEdit={false}/>
+      )
     }else{
 		return (
 			<div className="jazz-effect-overlay">
@@ -88,7 +103,10 @@ export default class SaveEffectIgnoredBestList extends Component {
 					{this.state.best.map(best=>{
 						return <Item key={best.getIn(["SolutionInfo","EnergyEffectId"])} solution={best}
 							onItemClick={()=>{
-								openTab(RoutePath.saveEffect.list(this.props.params)+'/'+best.getIn(["SolutionInfo","EnergyProblemId"])+'?init_hierarchy_id='+best.get("HierarchyId"));
+								this.setState({
+									effectDetailShow:true,
+									detailEffect:best
+								})
 							}}/>})}
 				</div>
 			</div>
