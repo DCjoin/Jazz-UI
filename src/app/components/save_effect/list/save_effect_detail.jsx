@@ -120,8 +120,8 @@ export default class EffectDetail extends Component {
 		})
 	}
 
-	isCharacterSelected(value){
-		return this.state.characteristics.indexOf(value+'')>-1
+	isCharacterSelected(value,characteristics=this.state.characteristics){
+		return characteristics.indexOf(value+'')>-1
 	}
 
   _handleEditTagChange(event, value){
@@ -295,10 +295,12 @@ export default class EffectDetail extends Component {
 
 	_renderBest(){
 		var bestIcon=<FontIcon className="icon-medal" style={{fontSize:'20px',marginRight:'10px'}} color="#ff9000"/>;
-		var highCost=this.isCharacterSelected(characterType.HighCost),
-				lessInvest=this.isCharacterSelected(characterType.LessInvest),
-				easy=this.isCharacterSelected(characterType.Easy),
-				highReturn=this.isCharacterSelected(characterType.HighReturn);
+		var characteristics=ListStore.getDetail().get("BestSolution")===null?'':ListStore.getDetail().getIn(["BestSolution","Characteristics"]),
+					recommendReason=ListStore.getDetail().get("BestSolution")===null?null:ListStore.getDetail().getIn(["BestSolution","RecommendReason"]);
+		var highCost=this.isCharacterSelected(characterType.HighCost,characteristics),
+				lessInvest=this.isCharacterSelected(characterType.LessInvest,characteristics),
+				easy=this.isCharacterSelected(characterType.Easy,characteristics),
+				highReturn=this.isCharacterSelected(characterType.HighReturn,characteristics);
 		var style={
 			btn:{
 				width: '68px',
@@ -360,11 +362,17 @@ export default class EffectDetail extends Component {
 																		:<FlatButton icon={ignoreIcon} label={I18N.SaveEffect.SolutionIgnored} style={style.ignoredBtn} labelStyle={style.ignoredLabel} disabled={true}/>
 							:<div className="jazz-effect-detail-best-operation">
 									<FlatButton label={I18N.Common.Button.Edit} style={style.btn} labelStyle={style.label} onClick={this._onBestShow.bind(this)}/>
-									<FlatButton label={I18N.Common.Button.Repeal} style={style.btn} labelStyle={style.label} onClick={()=>{deleteBest(this.props.effect.get('EnergyEffectId'))}}/>
+									<FlatButton label={I18N.Common.Button.Repeal} style={style.btn} labelStyle={style.label} onClick={()=>{
+										this.setState({
+											detailInfo:null
+										},()=>{
+											deleteBest(this.props.effect.get('EnergyEffectId'))
+										})
+										}}/>
 							</div>}
 
 					</div>
-					<div className="sub-font" style={{marginTop:'15px'}}>{this._renderMulti(this.state.recommendReason)}</div>
+					<div className="sub-font" style={{marginTop:'15px'}}>{this._renderMulti(recommendReason)}</div>
 				</div>
 
 			</div>
@@ -582,6 +590,7 @@ export default class EffectDetail extends Component {
 			onTouchTap={()=>{
 			this.setState({
 					configBestShow:false,
+					detailInfo:null
 				},()=>{
 					saveBest(this.props.effect.get('EnergyEffectId'),this.state.characteristics,this.state.recommendReason)
 				})
@@ -594,7 +603,7 @@ export default class EffectDetail extends Component {
 				this.setState({
 					configBestShow:false,
 					characteristics:ListStore.getDetail().get("BestSolution")===null?'':ListStore.getDetail().getIn(["BestSolution","Characteristics"]),
-					recommendReason:ListStore.getDetail().get("BestSolution")===null?null:ListStore.getDetail().getIn(["BestSolution","recommendReason"]),
+					recommendReason:ListStore.getDetail().get("BestSolution")===null?null:ListStore.getDetail().getIn(["BestSolution","RecommendReason"]),
 				})
 			}}
 			/>
@@ -695,6 +704,7 @@ export default class EffectDetail extends Component {
       onTouchTap={()=>{
         this.setState({
           IgnoreBestShow:false,
+					detailInfo:null
         },()=>{
           ignoreBest(this.props.effect.get('EnergyEffectId'));
         })
