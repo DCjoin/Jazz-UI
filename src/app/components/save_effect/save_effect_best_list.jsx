@@ -35,13 +35,17 @@ class Item extends Component {
 						<FontIcon className="icon-building" color="#505559" style={{fontSize:'12px',marginRight:'7px'}}/>
 						<div className="font">{`${I18N.SaveEffect.HierarchyFrom}${solution.get("HierarchyName")}`}</div>
 					</div>
-					<div className="name">{solution.getIn(["SolutionInfo","EnergySolutionName"])}</div>			
-					<div className="reason">{solution.getIn(["BestInfo","RecommendReason"])}</div>			
-				</div>
-				<div className="jazz-effect-best-list-item-info-operation" 
+					<div className="jazz-effect-best-list-item-info-side-middle">
+						<div className="name">{solution.getIn(["SolutionInfo","EnergySolutionName"])}</div>	
+										<div className="jazz-effect-best-list-item-info-side-middle-operation" 
 						 onClick={(e)=>{e.stopPropagation();
 													  onIgnore();
 														}}>{I18N.ALarm.IgnoreWindow.Ignore}</div>
+					</div>
+							
+					<div className="reason" title={solution.getIn(["BestInfo","RecommendReason"])}>{solution.getIn(["BestInfo","RecommendReason"])}</div>			
+				</div>
+
 			</div>
 			<div className="jazz-effect-best-list-item-character">
 						{lessInvest && <LessInvest/>}

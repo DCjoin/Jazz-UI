@@ -225,11 +225,39 @@ export default class EffectDetail extends Component {
         </div>
       )
     }
-    else {
+    else if(this.props.isFromBestList){
+			return(
+				 <div className="jazz-effect-detail-header-subtitle" style={{minHeight:'22px'}}>
+          <div className="jazz-effect-detail-header-subtitle-info">
+            <span style={{marginBottom:'5px'}}>
+							<FontIcon className="icon-building" color="#505559" style={{fontSize:'12px',marginRight:'7px'}}/>
+              <div className="font">{`${I18N.SaveEffect.HierarchyFrom}${this.props.effect.get("HierarchyName")}`}</div>
+							<div style={{margin:'0 20px'}} className="font">|</div>
+							<FontIcon className={ListStore.getEnergySystemIcon(EnergySystem)} style={{fontSize:'14px',marginRight:'10px',lineHeight:'14px'}} color="#434343"/>
+              <div className="font" style={{marginRight:'10px'}}>{ListStore.getEnergySystem(EnergySystem)}</div>
+							<div style={{margin:'0 20px'}} className="font">|</div>
+							 <FontIcon className="icon-calendar1" style={{fontSize:'14px',marginRight:'10px',lineHeight:'14px'}} color="#434343"/>
+              <div className="font">
+                <span>{moment(util.DataConverter.JsonToDateTime(ExecutedTime)).format(I18N.DateTimeFormat.IntervalFormat.FullDateMinute)}</span>
+                <span>{I18N.Setting.Effect.Start}</span>
+              </div>
+              <div style={{margin:'0 20px'}} className="font">|</div>
+              {CalcState===calcState.Being?<FontIcon className="icon-sandglass" style={{fontSize:'14px'}}/>
+						:<FontIcon className="icon-sync-ok" style={{fontSize:'14px',lineHeight:'14px'}} color="#434343"/>}
+                <div className="font" style={{marginLeft:'5px'}}>
+                  {CalcState===calcState.Being?`${I18N.MainMenu.SaveEffect}${I18N.SaveEffect.Calculating}`
+                    :`${I18N.MainMenu.SaveEffect}${I18N.SaveEffect.Calculated}`}
+                </div>
+            </span>
+          </div>
+        </div>
+			)
+		}else{
       return (
         <div className="jazz-effect-detail-header-subtitle">
           <div className="jazz-effect-detail-header-subtitle-info">
             <span style={{marginBottom:'5px'}}>
+							<FontIcon className={ListStore.getEnergySystemIcon(EnergySystem)} style={{fontSize:'14px',marginRight:'10px',lineHeight:'14px'}} color="#434343"/>
               <div className="font" style={{marginRight:'10px'}}>{ListStore.getEnergySystem(EnergySystem)}</div>
               {this.props.canEdit && <div className="operation" onClick={this._onEnergySystemDialogShow.bind(this)}>{I18N.Baseline.Button.Edit}</div>}
             </span>
@@ -253,6 +281,17 @@ export default class EffectDetail extends Component {
       )
     }
   }
+
+	_renderMulti(value){
+		var v=value,
+				arr = v.split('\n');
+        if (arr.length > 1) {
+          v = arr.map(item => {
+            return <div>{item}</div>;
+          });
+        }
+				return v;
+	}
 
 	_renderBest(){
 		var bestIcon=<FontIcon className="icon-medal" style={{fontSize:'20px',marginRight:'10px'}} color="#ff9000"/>;
@@ -304,17 +343,16 @@ export default class EffectDetail extends Component {
 		return(
 			<div className="jazz-effect-detail-best">
 				<div className="jazz-effect-detail-best-info">
-					<div className="row">
+					<div className="row" style={{height:"30px"}}>
+						<div style={{display:'flex',flexDirection:'row'}}>
 						{bestIcon}
 						<div className="title-font">{I18N.SaveEffect.BestLabel}</div>
 						{lessInvest && <LessInvest/>}
 						{highReturn && <HighReturn/>}
 						{highCost && <HighCost/>}
 						{easy && <Easy/>}
-					</div>
-					<div className="sub-font" style={{marginTop:'15px'}}>{this.state.recommendReason}</div>
-				</div>
-				{this.props.isFromBestList?
+						</div>
+						{this.props.isFromBestList?
 							this.state.detailInfo.get('Status')===1?
 																		<div className="jazz-effect-detail-best-operation">
 																				<FlatButton icon={ignoreIcon} label={I18N.SaveEffect.IgnoreSolution} style={style.ignoreBtn} labelStyle={style.ignoreLabel} onClick={this._onIgnoreBestShow.bind(this)}/>
@@ -324,6 +362,11 @@ export default class EffectDetail extends Component {
 									<FlatButton label={I18N.Common.Button.Edit} style={style.btn} labelStyle={style.label} onClick={this._onBestShow.bind(this)}/>
 									<FlatButton label={I18N.Common.Button.Repeal} style={style.btn} labelStyle={style.label} onClick={()=>{deleteBest(this.props.effect.get('EnergyEffectId'))}}/>
 							</div>}
+
+					</div>
+					<div className="sub-font" style={{marginTop:'15px'}}>{this._renderMulti(this.state.recommendReason)}</div>
+				</div>
+
 			</div>
 		)
 	}
