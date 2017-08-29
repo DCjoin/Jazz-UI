@@ -12,19 +12,23 @@ var _effect=null,_tags=null,_detail=null,_drafts=null,_detailChart=null;
 var ListStore = assign({}, PrototypeStore, {
   getAllEnergySystem(){
     return{
-        'AirConditioning':{label:I18N.Setting.Effect.AirConditioning,value:10},
-        'Power':{label:I18N.Setting.Effect.Power,value:20},
-        'Lighting':{label:I18N.Setting.Effect.Lighting,value:30},
-        'Product':{label:I18N.Setting.Effect.Product,value:40},
-        'AirCompressor':{label:I18N.Setting.Effect.AirCompressor,value:50},
-        'Heating':{label:I18N.Setting.Effect.Heating,value:60},
-        'Water':{label:I18N.Setting.Effect.Water,value:70},
-        'Other':{label:I18N.Setting.Effect.Other,value:200},
+        'AirConditioning':{label:I18N.Setting.Effect.AirConditioning,value:10,icon:'icon-air-conditioner'},
+        'Power':{label:I18N.Setting.Effect.Power,value:20,icon:'icon-power'},
+        'Lighting':{label:I18N.Setting.Effect.Lighting,value:30,icon:'icon-illumination'},
+        'Product':{label:I18N.Setting.Effect.Product,value:40,icon:'icon-machine'},
+        'AirCompressor':{label:I18N.Setting.Effect.AirCompressor,value:50,icon:'icon-air-compression'},
+        'Heating':{label:I18N.Setting.Effect.Heating,value:60,icon:'icon-heating'},
+        'Water':{label:I18N.Setting.Effect.Water,value:70,icon:'icon-water-supply-and-drainage'},
+        'Other':{label:I18N.Setting.Effect.Other,value:200,icon:'icon-others'},
       }
   },
   getEnergySystem(value){
     var energySys=Immutable.fromJS(this.getAllEnergySystem())
     return energySys.find(item=>(item.get('value')===value)).get('label')
+  },
+  getEnergySystemIcon(value){
+    var energySys=Immutable.fromJS(this.getAllEnergySystem())
+    return energySys.find(item=>(item.get('value')===value)).get('icon')
   },
   setEffect(effect){
   _effect=Immutable.fromJS(effect);
