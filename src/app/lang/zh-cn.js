@@ -2504,6 +2504,7 @@ I18N.SaveEffect.Step2='配置基准值模型';
 I18N.SaveEffect.Step3='计算节能量';
 I18N.SaveEffect.Step4='配置展示图';
 I18N.SaveEffect.CreateTitle='新建节能效果';
+I18N.SaveEffect.EditTitle='编辑节能效果';
 I18N.SaveEffect.Runtime='执行时间';
 I18N.SaveEffect.ShowSavePlanDetail='查看节能方案详情';
 I18N.SaveEffect.NoEffectList='暂无方案节能效果';

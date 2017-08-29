@@ -116,7 +116,7 @@ function Header({name, timeStr, onShowDetail, onClose}) {
 	return (
 		<header style={{marginLeft: 30,marginTop: 20, marginBottom: 10}}>
 			<div>
-				<div className='hiddenEllipsis' style={{fontWeight:'600',fontSize:'16px',color:'#0f0f0f'}}>{I18N.SaveEffect.CreateTitle + ' ' + name}</div>
+				<div className='hiddenEllipsis' style={{fontWeight:'600',fontSize:'16px',color:'#0f0f0f'}}>{I18N.SaveEffect.EditTitle + ' ' + name}</div>
 				<div style={{marginTop: 10}}>
 					{I18N.SaveEffect.Runtime + ': ' + timeStr}
 					<a style={{marginLeft: 30, color: '#32ad3d'}} href='javascript:void(0)' onClick={onShowDetail}>{I18N.SaveEffect.ShowSavePlanDetail}</a>
@@ -774,6 +774,8 @@ export default class Edit extends Component {
     }
     else{
        let {EnergyProblemId, EnergySolutionName, ExecutedTime, EnergySystem, ConfigStep, UomId, TagId, TagName} = this.state.filterObj.toJS();
+			 var uom=UomId ? UOMStore.getUomById(UomId) :
+							(this.state.chartData2 ? getUomByChartData(this.state.chartData2) : '');
     return(
     <div className='jazz-save-effect-create' style={{overflowY:'auto',display:'block'}}>     
       	<Header name={EnergySolutionName + (
@@ -781,10 +783,7 @@ export default class Edit extends Component {
 						 + (
 						 	editTagName
 						 )
-						 + '（' + (
-							UomId ? UOMStore.getUomById(UomId) :
-							(this.state.chartData2 ? getUomByChartData(this.state.chartData2) : '')
-						) + '）'
+						 + (uom?'（' + uom+ '）':'')
 					)
 				} timeStr={moment(ExecutedTime).add(8, 'hours').format('YYYY-MM-DD HH:mm')} onShowDetail={() => {
 					this.setState((state, props) => {
