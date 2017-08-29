@@ -19,6 +19,7 @@ module.exports = {
     SET_ENERGY_EFFECT_ID:null,
     CLEAN_CREATE_SAVE_EFFECT:null,
     GET_ITEM_SUCCESS:null,
+    UPDATE_ITEM_SUCCESS:null,
     CLEAN_EDIT_SAVE_EFFECT:null,
     GET_DETAIL_CHART:null,
     GET_BEST_SOLUTION:null,

@@ -228,7 +228,7 @@ export function cleanEdit() {
 
 export function updateItem(effectItem,chart2,chart3) {
 	AppDispatcher.dispatch({
-		type: Action.GET_ITEM_SUCCESS,
+		type: Action.UPDATE_ITEM_SUCCESS,
 		effectItem,chart2,chart3
 	});
 }

@@ -798,7 +798,12 @@ export default class Edit extends Component {
 							closeDlgShow: true
 						});
 					} else {
+						if(Immutable.is(CreateStore.getOriginEffectItem(),this.state.filterObj)){
+							this._onClose(false);
+						}else{
 						this._onSaveAndClose(false);
+						}
+
 					}
 				}}/>
           {this._renderMeasureDialog()}
