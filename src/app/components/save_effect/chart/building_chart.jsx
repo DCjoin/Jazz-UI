@@ -113,6 +113,7 @@ function getCategories(data) {
 }
 
 function getSeries(data, isStack, isWater ) {
+	let predBase = 0;
 	return [{
 		type: 'line',
         marker: {
@@ -126,8 +127,12 @@ function getSeries(data, isStack, isWater ) {
         lineWidth: 1,
 		name: isWater ? I18N.SaveEffect.Chart.PredictSavingWater : I18N.SaveEffect.Chart.PredictSaving,
 		data: data.PredictionSavingValues.map( item => {
+			let result = predBase + item.Value;
+			if(isStack) {
+				predBase = result;
+			}
 			return {
-				y: item.Value,
+				y: result,
 				tooltipTitle: UTC2Local(item.Time).format('YYYY' + I18N.Map.Date.Year + 'MM' + I18N.Map.Date.Month),
 			};
 		}),
