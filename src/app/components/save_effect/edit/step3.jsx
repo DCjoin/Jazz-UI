@@ -63,7 +63,6 @@ export default class Step3 extends Component {
   render(){
     var editDisabled=this.props.configStep!==3 && this.props.configStep!==null;
     let {EnergyStartDate, EnergyEndDate} = this.props;
-    console.log(EnergyStartDate+'-'+EnergyEndDate)
    return(
      <StepComponent step={3} title={I18N.SaveEffect.Step3}  isfolded={this.props.configStep!==3 && (!EnergyStartDate || !EnergyEndDate)}
                     isView={this.props.isView} editDisabled={editDisabled} onEdit={this.props.onEdit}>
