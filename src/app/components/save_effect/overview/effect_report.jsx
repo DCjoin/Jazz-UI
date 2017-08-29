@@ -197,7 +197,7 @@ export default class EffectReport extends Component {
                 </header>
                 <div className='report-sum-content'>
                   <span className='report-sum-value'>{
-                    (year === new Date().getFullYear() || data.EnergySavingRate === null) ? '-' : data.EnergySavingRate * 100 + '%'
+                    (year === new Date().getFullYear() || data.EnergySavingRate === null) ? '-' : util.toFixed(data.EnergySavingRate * 100, 1) + '%'
                   }</span>
                 </div>
               </div>

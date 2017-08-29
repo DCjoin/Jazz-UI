@@ -2598,6 +2598,7 @@ I18N.SaveEffect.Chart.ByMonthValue = '逐月值';
 I18N.SaveEffect.EnergySavingWater='节水量';
 I18N.SaveEffect.SavingCoalValue='年度节约标准煤';
 I18N.SaveEffect.Tip = '暂无节能效果';
+I18N.SaveEffect.NoDateTip = '暂无数据';
 
 I18N.SaveEffect.Table = {};
 I18N.SaveEffect.Table.SavingCost = '年度节约成本';

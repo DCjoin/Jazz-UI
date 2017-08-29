@@ -13,14 +13,22 @@ export default class EffectByYear extends Component {
     let { data, classData, isCustomer, year, showCommodity, onLeft, onRight, switchTab } = this.props,
     content = (<div className='flex-center' style={{height: 300}}><CircularProgress size={80}/></div>);
     
-    if( showCommodity && data ) {
-      content = data.map( item =>
-        (<EffectReport isCustomer={isCustomer} data={item} year={year}/>)
-      );
-    } else if( classData ) {
+    if( showCommodity) {
+      if( data && data.length > 0 ) {        
+        content = data.map( item =>
+          (<EffectReport isCustomer={isCustomer} data={item} year={year}/>)
+        );
+      } else if( data && data.length === 0 ) {
+        content = (<div className='flex-center' style={{height: 200}}>{I18N.SaveEffect.NoDateTip}</div>);
+      }
+    } else {
+      if( classDataa && classDataa.length > 0 ){
         content = classData.map( item =>
           (<BuildingTable {...item}/>)
         );
+      } else if( classDataa && classDataa.length === 0 ) {
+        content = (<div className='flex-center' style={{height: 200}}>{I18N.SaveEffect.NoDateTip}</div>);
+      }
     }
 		return (
 			<div className='effect-card'>

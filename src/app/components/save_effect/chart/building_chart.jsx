@@ -100,16 +100,20 @@ function UTC2Local(date) {
 
 function getCategories(data) {
 	let existYears = [];
+	if( !data || !data.PredictionSavingValues ) {
+		return existYears;
+	}
 	return data.PredictionSavingValues.map( item => {
 		if( existYears.indexOf( UTC2Local(item.Time).get('year') ) === -1 ) {
 			existYears.push( UTC2Local(item.Time).get('year') );
-			return UTC2Local(item.Time).format('YYYY' + I18N.Map.Date.Year + 'MM' + I18N.Map.Date.Month)
+			return UTC2Local(item.Time).format('YYYY/MM')
 		}
-		return UTC2Local(item.Time).format('MM' + I18N.Map.Date.Month);
+		return UTC2Local(item.Time).format('MM');
 	} );
 }
 
 function getSeries(data, isStack, isWater ) {
+	let predBase = 0;
 	return [{
 		type: 'line',
         marker: {
@@ -123,23 +127,31 @@ function getSeries(data, isStack, isWater ) {
         lineWidth: 1,
 		name: isWater ? I18N.SaveEffect.Chart.PredictSavingWater : I18N.SaveEffect.Chart.PredictSaving,
 		data: data.PredictionSavingValues.map( item => {
+			let result = predBase + item.Value;
+			if(isStack) {
+				predBase = result;
+			}
 			return {
-				y: item.Value,
-				tooltipTitle: UTC2Local(item.Time).format('YYYY' + I18N.Map.Date.Year + 'MM' + I18N.Map.Date.Month),
+				y: result,
+				tooltipName: isWater ? I18N.SaveEffect.Chart.PredictSavingWater : I18N.SaveEffect.Chart.PredictSaving,
+				tooltipTitle: UTC2Local(item.Time).format('YYYY/MM'),
 			};
 		}),
 	}]
 	.concat(data.EnergySystemSavings.map( (sys, i) => {
 		let base = 0;
 		return {
-			name: getSystemNameById(sys.EnergySystem) + (isWater ? I18N.SaveEffect.EnergySavingWater : I18N.SaveEffect.EnergySaving),
+			name: getSystemNameById(sys.EnergySystem),
 			data: sys.EnergySavingValues.map( item => {
 				let result = base + item.Value;
 				if(isStack) {
 					base = result;
 				}
-				return result;
-			})
+				return {
+					y: result,
+					tooltipName: getSystemNameById(sys.EnergySystem) + (isWater ? I18N.SaveEffect.EnergySavingWater : I18N.SaveEffect.EnergySaving),
+				};
+			}),
 		}
 	}));
 }
