@@ -479,7 +479,7 @@ export default class Edit extends Component {
 							// .set('IncludeEnergyEffectData', null)
 							.set('PredictionDatas', null)
 							.set('EnergyUnitPrice', '')
-							.set('CorrectionFactor','')
+							.set('CorrectionFactor',1)
 							.set('EnergyStartDate', null)
 							.set('EnergyEndDate', null)
 						this._setFilterObj(filterObj);
