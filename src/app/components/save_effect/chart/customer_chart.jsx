@@ -106,9 +106,9 @@ function getCategories(data) {
 	return data.PredictionSavingValues.map( item => {
 		if( existYears.indexOf( UTC2Local(item.Time).get('year') ) === -1 ) {
 			existYears.push( UTC2Local(item.Time).get('year') );
-			return UTC2Local(item.Time).format('YYYY' + I18N.Map.Date.Year + 'MM' + I18N.Map.Date.Month)
+			return UTC2Local(item.Time).format('YYYY/MM')
 		}
-		return UTC2Local(item.Time).format('MM' + I18N.Map.Date.Month);
+		return UTC2Local(item.Time).format('MM');
 	} );
 }
 
@@ -136,7 +136,7 @@ function getSeries(data, isStack, isWater, color) {
 			return {
 				y: result,
 				tooltipName: isWater ? I18N.SaveEffect.Chart.PredictSavingWater : I18N.SaveEffect.Chart.PredictSaving,
-				tooltipTitle: UTC2Local(item.Time).format('YYYY' + I18N.Map.Date.Year + 'MM' + I18N.Map.Date.Month),
+				tooltipTitle: UTC2Local(item.Time).format('YYYY/MM'),
 			};
 		}),
 	}, {
@@ -150,7 +150,7 @@ function getSeries(data, isStack, isWater, color) {
 			return {
 				y: result,
 				tooltipName: isWater ? I18N.SaveEffect.Chart.ActualSavingWater : I18N.SaveEffect.Chart.ActualSaving,
-				tooltipTitle: UTC2Local(item.Time).format('YYYY' + I18N.Map.Date.Year + 'MM' + I18N.Map.Date.Month),
+				tooltipTitle: UTC2Local(item.Time).format('YYYY/MM'),
 			};
 		}),
 	}, ];
