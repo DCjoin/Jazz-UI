@@ -135,6 +135,7 @@ function getSeries(data, isStack, isWater, color) {
 			}
 			return {
 				y: result,
+				tooltipName: isWater ? I18N.SaveEffect.Chart.PredictSavingWater : I18N.SaveEffect.Chart.PredictSaving,
 				tooltipTitle: UTC2Local(item.Time).format('YYYY' + I18N.Map.Date.Year + 'MM' + I18N.Map.Date.Month),
 			};
 		}),
@@ -148,6 +149,7 @@ function getSeries(data, isStack, isWater, color) {
 			}
 			return {
 				y: result,
+				tooltipName: isWater ? I18N.SaveEffect.Chart.ActualSavingWater : I18N.SaveEffect.Chart.ActualSaving,
 				tooltipTitle: UTC2Local(item.Time).format('YYYY' + I18N.Map.Date.Year + 'MM' + I18N.Map.Date.Month),
 			};
 		}),

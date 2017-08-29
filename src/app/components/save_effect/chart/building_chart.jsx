@@ -133,6 +133,7 @@ function getSeries(data, isStack, isWater ) {
 			}
 			return {
 				y: result,
+				tooltipName: isWater ? I18N.SaveEffect.Chart.PredictSavingWater : I18N.SaveEffect.Chart.PredictSaving,
 				tooltipTitle: UTC2Local(item.Time).format('YYYY' + I18N.Map.Date.Year + 'MM' + I18N.Map.Date.Month),
 			};
 		}),
@@ -140,14 +141,17 @@ function getSeries(data, isStack, isWater ) {
 	.concat(data.EnergySystemSavings.map( (sys, i) => {
 		let base = 0;
 		return {
-			name: getSystemNameById(sys.EnergySystem) + (isWater ? I18N.SaveEffect.EnergySavingWater : I18N.SaveEffect.EnergySaving),
+			name: getSystemNameById(sys.EnergySystem),
 			data: sys.EnergySavingValues.map( item => {
 				let result = base + item.Value;
 				if(isStack) {
 					base = result;
 				}
-				return result;
-			})
+				return {
+					y: result,
+					tooltipName: getSystemNameById(sys.EnergySystem) + (isWater ? I18N.SaveEffect.EnergySavingWater : I18N.SaveEffect.EnergySaving),
+				};
+			}),
 		}
 	}));
 }

@@ -67,14 +67,14 @@ function getOptions(categories, series, unit, colors){
 	    				header = data.point.tooltipTitle;
 			    		list += `
 			    		<tr>
-					    	<td style="color:${data.series.color};padding:0">● ${data.series.name}: </td>
+					    	<td style="color:${data.series.color};padding:0">● ${data.point.tooltipName}: </td>
 					    	<td style="padding:0">${util.getLabelData(data.y) + ' ' + unit}</td>
 				    	</tr>
 			    		`;
 	    			} else {
 			    		list += `
 			    		<tr>
-					    	<td style="color:${data.series.color};padding:0">■ ${data.series.name}: </td>
+					    	<td style="color:${data.series.color};padding:0">■ ${data.point.tooltipName}: </td>
 					    	<td style="padding:0">${util.getLabelData(data.y) + ' ' + unit}</td>
 				    	</tr>
 			    		`;
