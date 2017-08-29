@@ -234,7 +234,7 @@ ReactDom.render(<Router history={hashHistory} routes={{
         },
         indexRoute: {
           onEnter: (router, replaceState) => {
-            replaceState(RoutePath.saveEffect.list(router.params));
+            replaceState(RoutePath.saveEffect.overview(router.params));
           },
         },
         path: 'save_effect',
