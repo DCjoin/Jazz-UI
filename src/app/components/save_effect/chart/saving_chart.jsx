@@ -13,6 +13,9 @@ function UTC2Local(date) {
 
 function getCategories(data) {
 	let existYears = [];
+	if( !data || !data.PredictionSavingValues ) {
+		return existYears;
+	}
 	return data.PredictionSavingValues.map( item => {
 		if( existYears.indexOf( UTC2Local(item.Time).get('year') ) === -1 ) {
 			existYears.push( UTC2Local(item.Time).get('year') );
