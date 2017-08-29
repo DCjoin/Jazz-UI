@@ -51,7 +51,7 @@ export default class Step4 extends Component {
 					<div className='step4-block-content'>
 						<div className='step4-item'>
 							<header className='step4-item-title'>{I18N.EM.Report.Step}</header>
-							<div className='step4-item-value'>{find(getStepDataItems(), item => item.id === CalculationStep).label}</div>
+							<div className='step4-item-value'>{find(getStepDataItems(), item => item.id === ContrastStep).label}</div>
 						</div>
 					</div>
 				</div>
