@@ -45,7 +45,7 @@ export default class Step2 extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.configStep<=3|| nextProps.configStep===null
+    return nextProps.configStep<=3|| nextProps.configStep===null || this.props.configStep!==nextProps.configStep
   }
 
   render(){
