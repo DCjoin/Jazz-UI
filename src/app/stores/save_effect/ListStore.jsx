@@ -104,6 +104,10 @@ ListStore.dispatchToken = AppDispatcher.register(function(action) {
         ListStore.setDetailChart(action.data);
         ListStore.emitChange();
         break;
+    case Action.CLEAN_DETAIL_ALL_DATA:
+        _detailChart=null;
+        _detail=null;
+        break;
     default:
       // do nothing
   }

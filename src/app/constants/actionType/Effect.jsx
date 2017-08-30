@@ -29,6 +29,7 @@ module.exports = {
     INIT_STORE:null,
     GET_CLASSIFICATION_DATA:null,
     IGNORE_SUCCESS:null,
+    CLEAN_DETAIL_ALL_DATA:null
   }),
   calcState:{
     NotStarted:10,
