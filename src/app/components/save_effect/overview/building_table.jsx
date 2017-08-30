@@ -6,7 +6,7 @@ import {getConfigByCommodityId} from './effect_report.jsx';
 
 export default class BuildingTable extends Component {
 	render() {
-		let {BuildingName, CommoditySavings} = this.props;
+		let {BuildingName, CommoditySavings, year} = this.props;
 		return (
 			<div className='effect-table'>
 				<header className='effect-table-header'><em className='icon-building'/>{BuildingName}</header>
@@ -24,7 +24,7 @@ export default class BuildingTable extends Component {
 						</td>
 						<td className='effect-table-td'>{util.isNumber(SavingCost) ? util.getLabelData(SavingCost) + ' RMB' : '-'}</td>
 						<td className='effect-table-td'>{util.isNumber(SavingValue) ? util.getLabelData(SavingValue) + ' ' + util.getUomById(UomId).Code : '-'}</td>
-						<td className='effect-table-td'>{util.isNumber(SavingRate) ? util.toFixed(SavingRate * 100, 1) + ' %' : '-'}</td>
+						<td className='effect-table-td'>{(util.isNumber(SavingRate) && year !== new Date().getFullYear()) ? util.toFixed(SavingRate * 100, 1) + ' %' : '-'}</td>
 					</tr>
 					) )}
 				</table>

@@ -98,10 +98,15 @@ export default class SaveEffectOverview extends Component {
     };
     if( year < currentYear ) {
       byYearProps.onRight = () => {
-        getChartData(hierarchyId, year + 1, isCustomer);
+        let _year = year + 1;
+        if( showCommodity ) {
+          getChartData(hierarchyId, _year, isCustomer);
+        } else {
+          getBuildingShow(hierarchyId, _year);
+        }
         this.setState((state, props) => {
           return {
-            year: state.year + 1,
+            year: _year,
             chartData: undefined,
           }
         });
@@ -109,7 +114,13 @@ export default class SaveEffectOverview extends Component {
     }
     if( year > minYear ) {
       byYearProps.onLeft = () => {
-        getChartData(hierarchyId, year - 1, isCustomer);
+        let _year = year - 1;
+        if( showCommodity ) {
+          getChartData(hierarchyId, _year, isCustomer);
+        } else {
+          getBuildingShow(hierarchyId, _year);
+        }
+        getChartData(hierarchyId, _year, isCustomer);
         this.setState((state, props) => {
           return {
             year: state.year - 1,
