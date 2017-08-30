@@ -20,6 +20,25 @@ const CommodityMap = {
   Kerosene: 11,
 };
 
+function getCommodityNameById(commodityId){
+  return {
+    [1]: I18N.Common.Commodity.ElectricOther,
+    [2]: I18N.Common.Commodity.Water,
+    [3]: I18N.Common.Commodity.Gas,
+    [5]: I18N.Common.Commodity.Petrol,
+    [7]: I18N.Common.Commodity.DieselOil,
+    [11]: I18N.Common.Commodity.Kerosene,
+    [9]: I18N.Common.Commodity.CoolQ,
+    [8]: I18N.Common.Commodity.HeatQ,
+    [10]: I18N.Common.Commodity.CoalOther,
+    [13]: I18N.Common.Commodity.Cost,
+    [14]: I18N.Common.Commodity.LiquidGas,
+    [15]: I18N.Common.Commodity.HeavyOil,
+    [16]: I18N.Common.Commodity.Carbon,
+    [17]: I18N.Common.Commodity.StandardCoal,
+  }[commodityId];
+}
+
 export function getConfigByCommodityId(commodityId) {
 
   switch(commodityId) {
@@ -104,9 +123,10 @@ export function getConfigByCommodityId(commodityId) {
       };
       break;
     default:
+      let name = getCommodityNameById(commodityId) || I18N.Setting.ECM.Other;
       return {
-        name: I18N.Setting.ECM.Other,
-        reportName: I18N.Setting.ECM.Other + I18N.SaveEffect.Saving,
+        name,
+        reportName: name + I18N.SaveEffect.Saving,
         icon: 'icon-other',
         color: '#97a698',
       };

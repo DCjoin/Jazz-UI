@@ -52,6 +52,7 @@ export default function SavingChart(props) {
 	if( !props.data ) {
 		return (<div className='flex-center' style={{height: 305}}><CircularProgress mode="indeterminate" size={80} /></div>);
 	}
+	console.log(props.data.ActualSavingValues[0].Value);
 	return (
 		<BasicColumn unit={props.unit}
 			categories={getCategories(props.data)}
