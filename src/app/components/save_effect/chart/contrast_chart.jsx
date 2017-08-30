@@ -26,7 +26,7 @@ function getCategories(data) {
 }
 
 function getSeries(data) {
-	let suffix = data.ContrastStep !== Monthly ? 'DD' + I18N.Map.Date.Day : '';
+	let suffix = data.ContrastStep !== Monthly ? '/DD' : '';
 	return [
 		{
 			name: I18N.Kpi.ActualValues,

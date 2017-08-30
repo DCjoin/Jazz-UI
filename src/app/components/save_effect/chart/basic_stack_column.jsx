@@ -112,9 +112,9 @@ function getOptions(categories, series, unit, colors){
 }
 
 export default class BasicStack extends Component {
-	shouldComponentUpdate(nextProps, nextState) {
-		return this.props.data !== nextProps.data;
-	}
+	// shouldComponentUpdate(nextProps, nextState) {
+	// 	return this.props.data !== nextProps.data;
+	// }
 	render () {
 		let {series, categories, unit, colors} = this.props;
 	    return (<Highcharts options={getOptions(categories, series, unit, colors)} className='save_effect_chart'/>);

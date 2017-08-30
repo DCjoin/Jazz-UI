@@ -112,7 +112,7 @@ function getOptions(categories, series, unit){
 
 export default class BasicColumn extends Component {
 	shouldComponentUpdate(nextProps, nextState) {
-		return this.props.data !== nextProps.data;
+		return this.props.categories !== nextProps.categories;
 	}
 	render () {
 		let {series, categories, unit} = this.props;
