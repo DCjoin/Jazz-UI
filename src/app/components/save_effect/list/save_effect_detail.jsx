@@ -587,11 +587,23 @@ export default class EffectDetail extends Component {
 		_renderConfigBestDialog(){
 		let tag=this.state.detailInfo.getIn(['EffectItems',this.state.deleteIndex]);
 		let actions = [
+				<FlatButton
+			secondary={true}
+			label={I18N.Common.Button.Cancel2}
+			style={{float:'right'}}
+			onTouchTap={()=>{
+				this.setState({
+					configBestShow:false,
+					characteristics:ListStore.getDetail().get("BestSolution")===null?'':ListStore.getDetail().getIn(["BestSolution","Characteristics"]),
+					recommendReason:ListStore.getDetail().get("BestSolution")===null?null:ListStore.getDetail().getIn(["BestSolution","RecommendReason"]),
+				})
+			}}
+			/>,
 			<FlatButton
 			inDialog={true}
 			primary={true}
 			label={I18N.Common.Button.Save}
-			style={{marginRight:'20px'}}
+			style={{marginRight:'20px',float:'right'}}
 			disabled={!this.state.characteristics || !this.state.recommendReason}
 			onTouchTap={()=>{
 			this.setState({
@@ -599,17 +611,6 @@ export default class EffectDetail extends Component {
 					detailInfo:null
 				},()=>{
 					saveBest(this.props.effect.get('EnergyEffectId'),this.state.characteristics,this.state.recommendReason)
-				})
-			}}
-			/>,
-			<FlatButton
-			secondary={true}
-			label={I18N.Common.Button.Cancel2}
-			onTouchTap={()=>{
-				this.setState({
-					configBestShow:false,
-					characteristics:ListStore.getDetail().get("BestSolution")===null?'':ListStore.getDetail().getIn(["BestSolution","Characteristics"]),
-					recommendReason:ListStore.getDetail().get("BestSolution")===null?null:ListStore.getDetail().getIn(["BestSolution","RecommendReason"]),
 				})
 			}}
 			/>
@@ -620,19 +621,23 @@ export default class EffectDetail extends Component {
 			modal: true,
 			open: true,
 			title:I18N.SaveEffect.SetBest,
-			titleStyle:{fontSize:'16px',fontWeight:'600',color:'#0f0f0f',padding:'15px 30px',borderBottom:'1px solid #e6e6e6'},
+			titleStyle:{fontSize:'16px',fontWeight:'600',color:'#0f0f0f',margin:'0 30px',padding:'15px 0px',height:'22px',lineHeight:'22px',marginBottom:'0',borderBottom:'1px solid #e6e6e6'},
+			contentStyle:{margin:'0 30px'},
+			actionsContainerStyle:{margin:'25px 22px 30px 0'},
 			style:{overflowY:'auto'}
 		},style={
 			btn:{
 				selected:{
 					borderRadius: '2px',
   				backgroundColor: '#0cad04',
-					marginRight:'15px'
+					border: 'solid 1px #0cad04',
+					marginRight:'15px',
+					lineHeight:'34px'
 				},
 				notSelected:{
 					borderRadius: '2px',
   				border: 'solid 1px #9fa0a4',
-					marginRight:'15px'
+					marginRight:'15px',
 				}
 			},
 			label:{
