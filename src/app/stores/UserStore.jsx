@@ -33,6 +33,7 @@ let _userStatusList = Immutable.List([]),
   _allRolesList = [],
   _allUsersList = emptyList(),
   _selectedId = null,
+  _rawUserPrivilege = null,
   _userPrivilege = null;
 let SET_USER_STATUS_EVENT = 'setuserstatus',
   SET_USER_LIST_EVENT = 'setuserlist',
@@ -61,6 +62,7 @@ var UserStore = assign({}, PrototypeStore, {
     _allUsersList = emptyList();
     _selectedId = null;
     _userPrivilege = null;
+    _rawUserPrivilege = null;
     _filterObj = emptyMap();
     _updatingFilterObj = emptyMap();
     _persistedUser = emptyMap();
@@ -333,7 +335,8 @@ var UserStore = assign({}, PrototypeStore, {
     },
 
     setUserCustomers(userCustomers) {
-      _userPrivilege = userCustomers;
+      _rawUserPrivilege = {...userCustomers};
+      _userPrivilege = {...userCustomers};
       var customers = [];
       if (!!userCustomers.WholeSystem) {
         userCustomers.Privileges.forEach(privilege => {
@@ -379,6 +382,7 @@ var UserStore = assign({}, PrototypeStore, {
       _updatingFilterObj = _filterObj;
     },
     reset: function() {
+      _userPrivilege = _rawUserPrivilege;
       _updatingUser = _persistedUser;
       _updatingUserCustomers = _userCustomers;
     },
