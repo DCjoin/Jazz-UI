@@ -412,7 +412,7 @@ export default class Create extends Component {
 							// .set('IncludeEnergyEffectData', null)
 							.set('PredictionDatas', null)
 							.set('EnergyUnitPrice', '')
-							.set('CorrectionFactor','')
+							.set('CorrectionFactor',1)
 							.set('EnergyStartDate', null)
 							.set('EnergyEndDate', null)
 						this._setFilterObj(filterObj);
@@ -715,7 +715,9 @@ export default class Create extends Component {
 	}
 	render() {
 		let { onClose, filterObj } = this.props,
-		{EnergyProblemId, EnergySolutionName, ExecutedTime, EnergySystem, ConfigStep, UomId, TagId, TagName} = this.state.filterObj.toJS();
+		{EnergyProblemId, EnergySolutionName, ExecutedTime, EnergySystem, ConfigStep, UomId, TagId, TagName} = this.state.filterObj.toJS(),
+		uom=UomId ? UOMStore.getUomById(UomId) :
+							(this.state.chartData2 ? getUomByChartData(this.state.chartData2) : '');
 		if( !EnergySystem ) {
 			return <PreCreate onClose={() => {
 				onClose(false);
@@ -736,10 +738,7 @@ export default class Create extends Component {
 						 	TagName ? TagName :
 						 	this.state.tags.find(tag => tag.get('TagId') === TagId).get('Name')
 						 )
-						 + '（' + (
-							UomId ? UOMStore.getUomById(UomId) :
-							(this.state.chartData2 ? getUomByChartData(this.state.chartData2) : '')
-						) + '）'
+						 + (uom?'（' +uom+ '）':'')
 						: ''
 					)
 

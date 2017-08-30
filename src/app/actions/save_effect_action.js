@@ -113,9 +113,12 @@ export function saveeffectratetag(customerId,hierarchyId,list) {
 	});
 }
 
-export function getDetail(energyEffectId) {
+export function getDetail(energyEffectId,callback) {
 	Ajax.get( Util.replacePathParams(SaveEffect.getDetail,energyEffectId), {
 		success: (detail) => {
+			if(callback){
+				callback(Immutable.fromJS(detail))
+			}
 			AppDispatcher.dispatch({
 				type: Action.GET_EFFECT_DETAIL,
 				detail
@@ -206,6 +209,8 @@ export function cleanCreate() {
 
 export function getItem(energyEffectItemId) {
 	Ajax.get( Util.replacePathParams(SaveEffect.getitem, energyEffectItemId), {
+		avoidDuplicate:true,
+    tag:'getItemdata',
 		success: (effectItem) => {
       AppDispatcher.dispatch({
         type: Action.GET_ITEM_SUCCESS,
@@ -223,7 +228,7 @@ export function cleanEdit() {
 
 export function updateItem(effectItem,chart2,chart3) {
 	AppDispatcher.dispatch({
-		type: Action.GET_ITEM_SUCCESS,
+		type: Action.UPDATE_ITEM_SUCCESS,
 		effectItem,chart2,chart3
 	});
 }

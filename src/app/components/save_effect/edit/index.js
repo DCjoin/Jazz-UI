@@ -116,7 +116,7 @@ function Header({name, timeStr, onShowDetail, onClose}) {
 	return (
 		<header style={{marginLeft: 30,marginTop: 20, marginBottom: 10}}>
 			<div>
-				<div className='hiddenEllipsis' style={{fontWeight:'600',fontSize:'16px',color:'#0f0f0f'}}>{I18N.SaveEffect.CreateTitle + ' ' + name}</div>
+				<div className='hiddenEllipsis' style={{fontWeight:'600',fontSize:'16px',color:'#0f0f0f'}}>{I18N.SaveEffect.EditTitle + ' ' + name}</div>
 				<div style={{marginTop: 10}}>
 					{I18N.SaveEffect.Runtime + ': ' + timeStr}
 					<a style={{marginLeft: 30, color: '#32ad3d'}} href='javascript:void(0)' onClick={onShowDetail}>{I18N.SaveEffect.ShowSavePlanDetail}</a>
@@ -479,7 +479,7 @@ export default class Edit extends Component {
 							// .set('IncludeEnergyEffectData', null)
 							.set('PredictionDatas', null)
 							.set('EnergyUnitPrice', '')
-							.set('CorrectionFactor','')
+							.set('CorrectionFactor',1)
 							.set('EnergyStartDate', null)
 							.set('EnergyEndDate', null)
 						this._setFilterObj(filterObj);
@@ -694,7 +694,6 @@ export default class Edit extends Component {
 		let { filterObj,chartData2,configStep} = this.state;
 			let {UomId, EnergyStartDate, EnergyEndDate, CalculationStep, PredictionDatas, BenchmarkStartDate, BenchmarkEndDate, ContrastStep} 
 			= (configStep===4 || configStep===null)?filterObj.toJS():CreateStore.getEffectItem().toJS();
-			console.log(ContrastStep);
 				return (<Step4
 					unit={UomId ? UOMStore.getUomById(UomId) : (chartData2 ? getUomByChartData(chartData2) : '')}
 					EnergyStartDate={UTC2Local(EnergyStartDate)}
@@ -765,7 +764,7 @@ export default class Edit extends Component {
 							closeDlgShow: true
 						});
 					} else {
-						this._close(false);
+						this._onClose(false);
 					}
 				}}/>
          <div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>
@@ -775,7 +774,8 @@ export default class Edit extends Component {
     }
     else{
        let {EnergyProblemId, EnergySolutionName, ExecutedTime, EnergySystem, ConfigStep, UomId, TagId, TagName} = this.state.filterObj.toJS();
-			 console.log(EnergySolutionName);
+			 var uom=UomId ? UOMStore.getUomById(UomId) :
+							(this.state.chartData2 ? getUomByChartData(this.state.chartData2) : '');
     return(
     <div className='jazz-save-effect-create' style={{overflowY:'auto',display:'block'}}>     
       	<Header name={EnergySolutionName + (
@@ -783,10 +783,7 @@ export default class Edit extends Component {
 						 + (
 						 	editTagName
 						 )
-						 + '（' + (
-							UomId ? UOMStore.getUomById(UomId) :
-							(this.state.chartData2 ? getUomByChartData(this.state.chartData2) : '')
-						) + '）'
+						 + (uom?'（' + uom+ '）':'')
 					)
 				} timeStr={moment(ExecutedTime).add(8, 'hours').format('YYYY-MM-DD HH:mm')} onShowDetail={() => {
 					this.setState((state, props) => {
@@ -801,7 +798,12 @@ export default class Edit extends Component {
 							closeDlgShow: true
 						});
 					} else {
+						if(Immutable.is(CreateStore.getOriginEffectItem(),this.state.filterObj)){
+							this._onClose(false);
+						}else{
 						this._onSaveAndClose(false);
+						}
+
 					}
 				}}/>
           {this._renderMeasureDialog()}

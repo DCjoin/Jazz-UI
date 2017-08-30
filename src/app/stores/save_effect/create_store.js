@@ -15,7 +15,8 @@ let
   _energySolution,
   _energyEffectItemId,
   _effectItem,
-  CreateStore;
+  CreateStore,
+  _effectItem_origin;
 
 function init() {
   _tags = undefined;
@@ -24,6 +25,7 @@ function init() {
   _energySolution = undefined;
   _energyEffectItemId = undefined;
   _effectItem= null;
+  _effectItem_origin=null;
 }
 init();
 
@@ -54,9 +56,16 @@ export default CreateStore = Object.assign({}, PrototypeStore, {
   },
   setEffectItem:effectitem=>{
     _effectItem = Immutable.fromJS(effectitem);
+    _effectItem_origin = Immutable.fromJS(effectitem);
+  },
+  updateEffectItem:effectitem=>{
+    _effectItem = Immutable.fromJS(effectitem);
   },
   getEffectItem:()=>{
     return _effectItem
+  },
+  getOriginEffectItem:()=>{
+    return _effectItem_origin
   },
   // setEnergyEffectItemId: (id) => {
   //   _energyEffectItemId = id;
@@ -118,11 +127,18 @@ CreateStore.dispatchToken = AppDispatcher.register(function(action) {
     case Action.CLEAN_CREATE_SAVE_EFFECT:
         init();
         break;
-    case Action.CLEAN_CREATE_SAVE_EFFECT:
+    case Action.CLEAN_EDIT_SAVE_EFFECT:
         _effectItem=null;
+        _effectItem_origin=null;
         break;
     case Action.GET_ITEM_SUCCESS:
         CreateStore.setEffectItem(action.effectItem);
+        if(action.chart2===null) CreateStore.setChartData2(action.chart2);
+        if(action.chart3===null) CreateStore.setChartData3(action.chart3);
+        CreateStore.emitChange(true);
+        break;
+   case Action.UPDATE_ITEM_SUCCESS:
+        CreateStore.updateEffectItem(action.effectItem);
         if(action.chart2===null) CreateStore.setChartData2(action.chart2);
         if(action.chart3===null) CreateStore.setChartData3(action.chart3);
         CreateStore.emitChange(true);

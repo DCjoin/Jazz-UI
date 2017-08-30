@@ -82,9 +82,9 @@ export default class SaveEffectIgnoredBestList extends Component {
     }else if(this.state.effectDetailShow){
       return(
           <Detail effect={this.state.detailEffect.get("SolutionInfo").set("HierarchyName",this.state.detailEffect.get("HierarchyName"))}
-						      onBack={()=>{this.setState({effectDetailShow:false,displayEffectProblemId:null},
+						      onBack={()=>{this.setState({effectDetailShow:false,detailEffect:null},
                                                             ()=>{
-                                                              getBestSolution(this.context.hierarchyId)
+                                                              getBestSolution(this.props.router.params.customerId)
                                                             })}}
 								  customerId={this.props.router.params.customerId}
 									hierarchyId={this.state.detailEffect.get("HierarchyId")}
