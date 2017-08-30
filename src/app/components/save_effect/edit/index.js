@@ -434,7 +434,9 @@ export default class Edit extends Component {
                           .set('TagName',TagName)
                           .set('ConfigStep',2)
 													.set('EnergyStartDate', null)
-													.set('EnergyEndDate', null);          
+													.set('EnergyEndDate', null)
+													.set('BenchmarkStartDate',date2UTC(moment(UTC2Local(this.state.filterObj.get("ExecutedTime"))).subtract(31, 'days')))
+													.set('BenchmarkEndDate',date2UTC(UTC2Local(this.state.filterObj.get("ExecutedTime"))));          
               updateItem(filterObj.toJS(),null,null);
 							getPreviewChart2(filterObj.set("CorrectionFactor",1).toJS());
             });
