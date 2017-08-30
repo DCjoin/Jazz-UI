@@ -132,7 +132,7 @@ function getSeries(data, isStack, isWater ) {
 				predBase = result;
 			}
 			return {
-				y: result,
+				y: item.Value !== null ? result : null,
 				tooltipName: isWater ? I18N.SaveEffect.Chart.PredictSavingWater : I18N.SaveEffect.Chart.PredictSaving,
 				tooltipTitle: UTC2Local(item.Time).format('YYYY/MM'),
 			};
@@ -148,7 +148,7 @@ function getSeries(data, isStack, isWater ) {
 					base = result;
 				}
 				return {
-					y: result,
+					y: item.Value !== null ? result : null,
 					tooltipName: getSystemNameById(sys.EnergySystem) + (isWater ? I18N.SaveEffect.EnergySavingWater : I18N.SaveEffect.EnergySaving),
 				};
 			}),
