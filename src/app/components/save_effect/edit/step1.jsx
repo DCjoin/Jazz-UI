@@ -20,10 +20,10 @@ export default class Step1 extends Component {
   }
 
   _renderEditStauts(){
-    var {isView,onSave,onCancel,...other}=this.props;
+    var {isView,onSave,onCancel,onDeleteItem,...other}=this.props;
     var actions=[
         <FlatButton label={I18N.Common.Button.Cancel2} secondary={true} style={{float:'right',minWidth:'68px'}} onTouchTap={onCancel}/>,
-        <FlatButton label={I18N.Platform.Password.Confirm} primary={true} style={{float:'right',minWidth:'68px',marginRight:'20px'}} 
+        <FlatButton label={I18N.Platform.Password.Confirm} disabled={this.state.selectedId===null} primary={true} style={{float:'right',minWidth:'68px',marginRight:'20px'}} 
               onTouchTap={()=>{
                             if(this.state.selectedId!==this.props.selectedId) onSave(this.state.selectedId,this.state.TagName)
                                 else{
@@ -32,7 +32,14 @@ export default class Step1 extends Component {
     ]
     return(
       <div className="jazz-save-effect-edit-step1-edit">
-        <EditStep1 {...other} selectedId={this.state.selectedId} onClickItem={(TagId,TagName)=>{this.setState({selectedId:TagId,TagName})}}/>
+        <EditStep1 {...other} selectedId={this.state.selectedId} onClickItem={(TagId,TagName)=>{this.setState({selectedId:TagId,TagName})}}
+          onDeleteItem={(idx, tagId) => {
+            if(tagId===this.state.selectedId){
+              this.setState({
+                selectedId:null
+              })
+            }
+            onDeleteItem(idx, tagId)}}/>
         <div className="jazz-save-effect-edit-step1-edit-actions">
           {actions}
         </div>
