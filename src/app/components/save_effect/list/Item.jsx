@@ -53,10 +53,10 @@ class CalculatedIcon extends Component{
 export class ItemForConsultant extends Component {
 
   getTitle(){
-    var {CalcState,EnergySolutionName}=this.props.effect.toJS();
+    var {CalcState,EnergySolutionName,IsBestSolution}=this.props.effect.toJS();
     return(
       <div className="jazz-effect-item-info-title">
-        <span className="isPreferred"></span>
+        <span className="isPreferred">{IsBestSolution && <FontIcon className="icon-medal" style={{fontSize:'12px'}} color="#ff9000"/>}</span>
         <span className="name" title={EnergySolutionName}>{EnergySolutionName}</span>
         {CalcState!==null && (CalcState===calcState.Being?<CalculatingIcon/>:<CalculatedIcon/>)}
       </div>
@@ -125,10 +125,10 @@ ItemForConsultant.propTypes = {
 export class ItemForManager extends Component {
 
   getTitle(){
-    var {CalcState,EnergySolutionName}=this.props.effect.toJS();
+    var {CalcState,EnergySolutionName,IsBestSolution}=this.props.effect.toJS();
     return(
       <div className="jazz-effect-item-info-title">
-        <span className="isPreferred"></span>
+        <span className="isPreferred">{IsBestSolution && <FontIcon className="icon-medal" style={{fontSize:'12px'}} color="#ff9000"/>}</span>
         <span className="name" title={EnergySolutionName}>{EnergySolutionName}</span>
         {CalcState!==null && (CalcState===calcState.Being?<CalculatingIcon/>:<CalculatedIcon/>)}
       </div>
