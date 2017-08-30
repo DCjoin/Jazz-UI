@@ -24,7 +24,7 @@ export default class EffectByYear extends Component {
     } else {
       if( classData && classData.length > 0 ){
         content = classData.map( item =>
-          (<BuildingTable {...item}/>)
+          (<BuildingTable {...item} year={year}/>)
         );
       } else if( classData && classData.length === 0 ) {
         content = (<div className='flex-center' style={{height: 200}}>{I18N.SaveEffect.NoDateTip}</div>);
