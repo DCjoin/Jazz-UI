@@ -660,7 +660,6 @@ export default class EffectDetail extends Component {
 					fontSize:'15px'
 				}			
 			}
-
 		};
 		var highCost=this.isCharacterSelected(characterType.HighCost),
 				lessInvest=this.isCharacterSelected(characterType.LessInvest),
@@ -770,14 +769,15 @@ export default class EffectDetail extends Component {
 			 </div>
 			)
 		}else {
+			var tags=this.state.detailInfo.get('EffectItems');
 		 var {EnergySolutionName,EnergyProblemId,EnergyEffectId,ExecutedTime,EnergySystem}=this.props.effect.toJS();
 			return(
 				<div className="jazz-effect-detail">
 					{this._renderTitle()}
 					{this._renderSubTitle()}
-					{this.state.isBest && this._renderBest()}
+					{tags.size!==0 && this.state.isBest && this._renderBest()}
 					{this._renderContent()}
-						<div className="jazz-effect-detail-create-user">{`${I18N.SaveEffect.CreateUser}${this.state.detailInfo.get("SolutionCreateUser")}`}</div>
+					{tags.size!==0 && <div className="jazz-effect-detail-create-user">{`${I18N.SaveEffect.CreateUser}${this.state.detailInfo.get("SolutionCreateUser")}`}</div>}
 					{this.state.deleteConfirmShow && this._renderDeleteDialog()}
 					{this.state.configBestShow && this._renderConfigBestDialog()}
 					{this.state.IgnoreBestShow && this._renderIgnoreBestDialog()}
