@@ -150,6 +150,7 @@ function getSeries(data, isStack, isWater ) {
 				return {
 					y: item.Value !== null ? result : null,
 					tooltipName: getSystemNameById(sys.EnergySystem) + (isWater ? I18N.SaveEffect.EnergySavingWater : I18N.SaveEffect.EnergySaving),
+					tooltipTitle: UTC2Local(item.Time).format('YYYY/MM'),
 				};
 			}),
 		}
