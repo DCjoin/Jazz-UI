@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 
 import classnames from 'classnames';
+import find from 'lodash-es/find';
 
 import util from 'util/Util.jsx';
+
+import AllCommodityStore from 'stores/AllCommodityStore.jsx';
 
 import BuildChart from '../chart/building_chart.jsx';
 import CustomerChart from '../chart/customer_chart.jsx';
@@ -123,7 +126,8 @@ export function getConfigByCommodityId(commodityId) {
       };
       break;
     default:
-      let name = getCommodityNameById(commodityId) || I18N.Setting.ECM.Other;
+      let name = find(AllCommodityStore.getAllCommodities(), comm => comm.Id === commodityId).Comment;
+      // let name = getCommodityNameById(commodityId) || I18N.Setting.ECM.Other;
       return {
         name,
         reportName: name + I18N.SaveEffect.Saving,
