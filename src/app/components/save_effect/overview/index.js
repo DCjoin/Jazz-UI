@@ -107,7 +107,6 @@ export default class SaveEffectOverview extends Component {
         this.setState((state, props) => {
           return {
             year: _year,
-            chartData: undefined,
           }
         });
       }
@@ -120,11 +119,9 @@ export default class SaveEffectOverview extends Component {
         } else {
           getBuildingShow(hierarchyId, _year);
         }
-        getChartData(hierarchyId, _year, isCustomer);
         this.setState((state, props) => {
           return {
             year: state.year - 1,
-            chartData: undefined,
           }
         });
       }

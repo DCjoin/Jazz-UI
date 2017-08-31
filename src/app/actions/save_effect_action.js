@@ -299,6 +299,10 @@ export function ignoreBestForList(effectId,customerId) {
 
 
 export function getChartDataByCustomer(hierarchyId, year) {
+    AppDispatcher.dispatch({
+    	type: Action.GET_GROUP_CHART,
+    	data: undefined,
+    });
 		Ajax.get( Util.replacePathParams(SaveEffect.groupOverviewCommodityShow, hierarchyId, year), {
 			success: (data) => {
       	AppDispatcher.dispatch({
@@ -321,6 +325,10 @@ export function getBestSolution(customerId) {
 }
 
 export function getChartDataByBuilding(hierarchyId, year) {
+    AppDispatcher.dispatch({
+    	type: Action.GET_BUILDING_CHART,
+    	data: undefined,
+    });
 		Ajax.get( Util.replacePathParams(SaveEffect.buildingOverviewCommodityShow, hierarchyId, year), {
 			success: (data) => {
       	AppDispatcher.dispatch({
