@@ -35,6 +35,7 @@ script:
 before_deploy:
   - cp compose-template.yml build/
   - cd build && zip -r ../${ARTIFACT_NAME} ./ && cd ..
+  - docker build -t $TAG
 #  - echo -n "${PACKAGE_VERSION}" > version.txt
 #  - zip -r --exclude=*node_modules* /tmp/${ARTIFACT_NAME} ./
   - 'curl -o upload.sh -H "Authorization: token ${GITHUB_TOKEN}" ${GITHUB_UPLOAD_SCRIPT}'
@@ -53,6 +54,5 @@ deploy:
   on:
     all_branches: true
   script:
-    - docker build -t $TAG
 #    - ./upload.sh ${ARTIFACT_NAME} ${PROJECT} ${TRAVIS_BRANCH} ${ROLE} ${PACKAGE_VERSION} ${OSS_BUCKET} ${OSS_KEY} ${OSS_SECRET} && curl -X POST "http://114.215.253.133:8081/job/Jazz/buildWithParameters?environment=dev&ui_version=latest&main_version=latest&branch=${TRAVIS_BRANCH}" --user ${JENKINS_AUTH} && docker push $REMOTE_TAG && docker push $REMOTE_TAG_LATEST
     - ./upload.sh ${ARTIFACT_NAME} ${PROJECT} ${TRAVIS_BRANCH} ${ROLE} ${PACKAGE_VERSION} ${OSS_BUCKET} ${OSS_KEY} ${OSS_SECRET} && docker push $REMOTE_TAG && docker push $REMOTE_TAG_LATEST
