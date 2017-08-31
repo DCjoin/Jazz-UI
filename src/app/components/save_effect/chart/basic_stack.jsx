@@ -89,12 +89,6 @@ function getOptions(categories, series, unit, colors){
     	    }
 	    },
 	    plotOptions: {
-	        // series: {
-	        // 	stacking: 'normal',
-	        //     marker: {
-	        //         enabled: false
-	        //     }
-	        // },
 	        area: {
 	            stacking: 'normal',
 	            lineColor: '#666666',
