@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import classNames from 'classnames';
 import IconButton from 'material-ui/IconButton';
 import FontIcon from 'material-ui/FontIcon';
@@ -22,6 +22,7 @@ import ContrastChart from '../chart/contrast_chart.jsx';
 import SavingChart from '../chart/saving_chart.jsx';
 import {LessInvest,HighCost,Easy,HighReturn} from '../best/icon.jsx';
 
+
 const type={
 	"Saving":0,
 	"Contrast":1
@@ -44,6 +45,27 @@ function tansferReturnCycle(cycle){
 function getEffectItemId(tagId,tags){
 	return tagId===-1?null:tags.find(item=>item.get("TagId")===tagId).get('EnergyEffectItemId')
 }
+
+function Immu2PlainPureRender(Comp) {
+	return class Basic extends Component {		
+		shouldComponentUpdate(nextProps, nextState) {
+			return !util.shallowEqual(this.props, nextProps) || !util.shallowEqual(this.state, nextState);
+		}
+		render() {
+			let { immuKeys, ...other } = this.props,
+			plainProps = {};
+			if( immuKeys ) {
+				immuKeys.split(',').map( key => other[key] && (plainProps[key] = other[key].toJS()) );
+			}
+			return (
+				<Comp {...other} {...plainProps}/>
+			);
+		}
+	}
+}
+const SavingChartPure = Immu2PlainPureRender(SavingChart);
+const ContrastChartPure = Immu2PlainPureRender(ContrastChart);
+
 
 class IconLabel extends Component {
 	render(){
@@ -422,8 +444,8 @@ export default class EffectDetail extends Component {
 
 				</div>
 				<div className="chart">
-				{this.state.displayChartType===type.Saving?<SavingChart unit={util.getUomById(this.state.detailInfo.get("EnergySavingUomId")).Code} data={this.state.chartData}/>
-																									:<ContrastChart unit={util.getUomById(this.state.detailInfo.get("EnergySavingUomId")).Code} data={this.state.chartData}/>}
+				{this.state.displayChartType===type.Saving?<SavingChartPure immuKeys={'data'} unit={util.getUomById(this.state.detailInfo.get("EnergySavingUomId")).Code} data={this.state.chartData}/>
+																									:<ContrastChartPure immuKeys={'data'} unit={util.getUomById(this.state.detailInfo.get("EnergySavingUomId")).Code} data={this.state.chartData}/>}
 				</div>
 
 			</div>
