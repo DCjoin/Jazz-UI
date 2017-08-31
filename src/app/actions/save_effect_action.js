@@ -226,6 +226,12 @@ export function cleanEdit() {
 	});
 }
 
+export function cleanDetail() {
+	AppDispatcher.dispatch({
+		type: Action.CLEAN_DETAIL_ALL_DATA,
+	});
+}
+
 export function updateItem(effectItem,chart2,chart3) {
 	AppDispatcher.dispatch({
 		type: Action.UPDATE_ITEM_SUCCESS,

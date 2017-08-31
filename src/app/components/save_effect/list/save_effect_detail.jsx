@@ -11,7 +11,7 @@ import {calcState} from "constants/actionType/Effect.jsx";
 import FlatButton from "controls/NewFlatButton.jsx";
 import DropdownButton from '../../../controls/NewDropdownButton.jsx';
 import {IconText} from '../../ECM/MeasuresItem.jsx';
-import {getDetail,deleteItem,changeEnergySystemForEffect,getContrastChartData,getSavingChartData,saveBest,deleteBest,ignoreBest} from 'actions/save_effect_action.js';
+import {getDetail,deleteItem,changeEnergySystemForEffect,getContrastChartData,getSavingChartData,saveBest,deleteBest,ignoreBest,cleanDetail} from 'actions/save_effect_action.js';
 import { CircularProgress,Dialog,Snackbar} from 'material-ui';
 import NewDialog from 'controls/NewDialog.jsx';
 import PreCreate from '../create/pre_create.jsx';
@@ -220,7 +220,10 @@ export default class EffectDetail extends Component {
 			<div className="jazz-effect-detail-header-container">
 				<div className="jazz-effect-detail-header">
 					<span>
-						<IconButton iconClassName="icon-return" onTouchTap={this.props.onBack} iconStyle={{fontSize:'17px'}} style={{width:'17px',height:'19px',padding:'0'}}/>
+						<IconButton iconClassName="icon-return" onTouchTap={()=>{
+							cleanDetail();
+							this.props.onBack();
+							}} iconStyle={{fontSize:'17px'}} style={{width:'17px',height:'19px',padding:'0'}}/>
 						<div className="jazz-effect-detail-header-title">{this.props.effect.get('EnergySolutionName')}</div>
 					</span>
 					<span>
@@ -415,7 +418,7 @@ export default class EffectDetail extends Component {
 			<div className="jazz-effect-detail-content-chart-field">
 				<div className="operation">
 					<div className="tag-select">
-						{tags.size===0?<div className="single">{tags.getIn([0,"TagName"])}</div>
+						{tags.size===1?<div className="single">{tags.getIn([0,"TagName"])}</div>
 													:     
 													 <DropDownMenu
                    					 style={{height: '26px'}}
