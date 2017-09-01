@@ -188,7 +188,7 @@ export default class EffectReport extends Component {
 					<ul className='save-effect-report-content-sum'>
             <li className='save-effect-report-content-sum-item'>
               <div>
-                <header className='report-sum-header'>
+                <header className='report-sum-header hiddenEllipsis'>
                   <em className='report-sum-icon icon-cost_saving'/>
                   <span>{I18N.SaveEffect.Table.SavingCost}</span>
                 </header>
@@ -200,7 +200,7 @@ export default class EffectReport extends Component {
             </li>
             <li className='save-effect-report-content-sum-item'>
               <div>
-                <header className='report-sum-header'>
+                <header className='report-sum-header hiddenEllipsis'>
                   <em className='report-sum-icon icon-energy_saving'/>
                   <span>{
                     (isWater ? I18N.SaveEffect.Chart.SavingWaterValue : I18N.SaveEffect.Chart.SavingValue)
@@ -216,7 +216,7 @@ export default class EffectReport extends Component {
             </li>
             <li className='save-effect-report-content-sum-item'>
               <div>
-                <header className='report-sum-header'>
+                <header className='report-sum-header hiddenEllipsis'>
                   <em className='report-sum-icon icon-energy-saving-rate'/>
                   <span>{isWater ? I18N.SaveEffect.Chart.SavingWaterRate : I18N.SaveEffect.Chart.SavingRate}</span>
                 </header>
@@ -229,7 +229,7 @@ export default class EffectReport extends Component {
             </li>
             {data.CommodityId !== CommodityMap.Water && <li className='save-effect-report-content-sum-item'>
               <div>
-                <header className='report-sum-header'>
+                <header className='report-sum-header hiddenEllipsis'>
                   <em className='report-sum-icon icon-kgce'/>
                   <span>{I18N.SaveEffect.SavingCoalValue}</span>
                 </header>
