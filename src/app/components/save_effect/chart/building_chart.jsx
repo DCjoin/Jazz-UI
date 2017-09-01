@@ -112,33 +112,36 @@ function getCategories(data) {
 	} );
 }
 
-function getSeries(data, isStack, isWater ) {
+function getSeries(data, isStack, isWater, currentYear) {
 	let predBase = 0;
-	return [{
-		type: 'line',
-        marker: {
+	let series = [];
+	if(currentYear) {
+		series.push({
+			type: 'line',
+	        marker: {
+		        lineWidth: 1,
+		        lineColor: '#ff5722',
+		        fillColor: 'white',
+		        radius: 2,
+		    },
+	        zIndex: 2,
+	        color: '#ff5722',
 	        lineWidth: 1,
-	        lineColor: '#ff5722',
-	        fillColor: 'white',
-	        radius: 2,
-	    },
-        zIndex: 2,
-        color: '#ff5722',
-        lineWidth: 1,
-		name: isWater ? I18N.SaveEffect.Chart.PredictSavingWater : I18N.SaveEffect.Chart.PredictSaving,
-		data: data.PredictionSavingValues.map( item => {
-			let result = predBase + item.Value;
-			if(isStack) {
-				predBase = result;
-			}
-			return {
-				y: item.Value !== null ? result : null,
-				tooltipName: isWater ? I18N.SaveEffect.Chart.PredictSavingWater : I18N.SaveEffect.Chart.PredictSaving,
-				tooltipTitle: UTC2Local(item.Time).format('YYYY/MM'),
-			};
-		}),
-	}]
-	.concat(data.EnergySystemSavings.map( (sys, i) => {
+			name: isWater ? I18N.SaveEffect.Chart.PredictSavingWater : I18N.SaveEffect.Chart.PredictSaving,
+			data: data.PredictionSavingValues.map( item => {
+				let result = predBase + item.Value;
+				if(isStack) {
+					predBase = result;
+				}
+				return {
+					y: item.Value !== null ? result : null,
+					tooltipName: isWater ? I18N.SaveEffect.Chart.PredictSavingWater : I18N.SaveEffect.Chart.PredictSaving,
+					tooltipTitle: UTC2Local(item.Time).format('YYYY/MM'),
+				};
+			}),
+		});
+	}
+	return series.concat(data.EnergySystemSavings.map( (sys, i) => {
 		let base = 0;
 		return {
 			name: getSystemNameById(sys.EnergySystem),
@@ -162,7 +165,8 @@ export default function BuildChart(props) {
 		colors: getColorByCommodityId(props.data.CommodityId).color,
 		unit: util.getUomById(props.data.UomId).Code,
 		categories: getCategories(props.data),
-		series: getSeries(props.data, props.isStack, props.isWater),
+		series: getSeries(props.data, props.isStack, props.isWater, props.currentYear),
+		currentYear: props.currentYear,
 	};
 	if( props.isStack ) {
 		return (<BasicStack {...childProps}/>);

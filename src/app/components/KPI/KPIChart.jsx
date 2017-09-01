@@ -210,7 +210,7 @@ export default class KPIChart extends Component {
 	    	let actualVal = 0;
 	    	let predictionVal = 0;
     		let currentDataIndex = data1.point.index;
-	    	let header = util.replacePathParams(I18N.Kpi.YearMonth, period[currentDataIndex].year(), period[currentDataIndex].month() + 1);
+	    	let header = period[currentDataIndex].format('YYYY/MM');
 	    	this.points.forEach(data => {
 	    		if(data) {
 	    			if(data.series.name === I18N.Kpi.TargetValues) {
@@ -249,14 +249,6 @@ export default class KPIChart extends Component {
 	    			title += `<b>${util.replacePathParams(I18N.Kpi.MonthUsagedPrediction, (predictionVal * 100 / targetVal).toFixed(1) * 1)}</b>`;
 	    		}
 	    	}
-	    	// } else if(data.get('type') === 2 && ratioMonth) {
-	    	// 	let value = ratioMonth.get(currentDataIndex) !== null ? ratioMonth.get(currentDataIndex).toFixed(1) * 1 : 0;
-	    	// 	if(currentDataIndex <= currentMonthIndex || currentMonthIndex === -1) {
-	    	// 		title += `<b>${util.replacePathParams(I18N.Kpi.RatioMonthUsaged, value)}</b>`;
-	    	// 	} else {
-	    	// 		title += `<b>${util.replacePathParams(I18N.Kpi.RatioMonthUsagedPrediction, value)}</b>`;
-	    	// 	}
-	    	// }
 	    	return `
 	    	<table>
 	    		<b>${header}</b>
