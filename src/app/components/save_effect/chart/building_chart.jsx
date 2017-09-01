@@ -35,57 +35,156 @@ function getColorByCommodityId(commodityId) {
 	switch(commodityId) {
 		case CommodityMap.ElectricOther:
 			return {
-				color: ['#1B5E20', '#2E7D32', '#388E3C', '#43A047', '#4CAF50', '#66BB6A', '#81C784', '#C8E6C9'],
+				color: [{
+					value: '#1B5E20',
+					pri: 4,
+				}, {
+					value: '#2E7D32',
+					pri: 6,
+				}, {
+					value: '#388E3C',
+					pri: 2,
+				}, {
+					value: '#43A047',
+					pri: 8,
+				}, {
+					value: '#4CAF50',
+					pri: 1,
+				}, {
+					value: '#66BB6A',
+					pri: 7,
+				}, {
+					value: '#81C784',
+					pri: 3,
+				}, {
+					value: '#C8E6C9',
+					pri: 5,
+				}],
 			};
 			break;
 		case CommodityMap.Water:
 			return {
-				color: ['#0D47A1', '#1976D2', '#2196F3', '#64B5F6'],
+				color: [{
+					value: '#0D47A1',
+					pri: 4,
+				}, {
+					value: '#1976D2',
+					pri: 2,
+				}, {
+					value: '#2196F3',
+					pri: 1,
+				}, {
+					value: '#64B5F6',
+					pri: 3,
+				}],
 			};
 			break;
 		case CommodityMap.Gas:
 			return {
-				color: ['#283BBA', '#4255D4', '#6C7FFE', '#B4BEFF'],
+				color: [{
+					value: '#283BBA',
+					pri: 4,
+				}, {
+					value: '#4255D4',
+					pri: 2,
+				}, {
+					value: '#6C7FFE',
+					pri: 1,
+				}, {
+					value: '#B4BEFF',
+					pri: 3,
+				}],
 			};
 			break;
 		case CommodityMap.CoolQ:
 			return {
-				color: ['#5599ec', '#86bafd'],
+				color: [{
+					value: '#5599ec',
+					pri: 2,
+				}, {
+					value: '#86bafd',
+					pri: 1,
+				}],
 			};
 			break;
 		case CommodityMap.HeatQ:
 			return {
-				color: ['#f68024', '#ffb300', '#ffd54f'],
+				color: [{
+					value: '#f68024',
+					pri: 2,
+				}, {
+					value: '#ffb300',
+					pri: 1,
+				}, {
+					value: '#ffd54f',
+					pri: 3,
+				}],
 			};
 			break;
 		case CommodityMap.LiquidGas:
 			return {
-				color: ['#4dd5ff', '#82e2ff'],
+				color: [{
+					value: '#4dd5ff',
+					pri: 2,
+				}, {
+					value: '#82e2ff',
+					pri: 1,
+				}],
 			};
 			break;
 		case CommodityMap.CoalOther:
 			return {
-				color: ['#445773', '#7a91b5'],
+				color: [{
+					value: '#445773',
+					pri: 2,
+				}, {
+					value: '#7a91b5',
+					pri: 1,
+				}],
 			};
 			break;
 		case CommodityMap.DieselOil:
 			return {
-				color: ['#8e24aa', '#ab47bc'],
+				color: [{
+					value: '#8e24aa',
+					pri: 2,
+				}, {
+					value: '#ab47bc',
+					pri: 1,
+				}],
 			};
 			break;
 		case CommodityMap.HeavyOil:
 			return {
-				color: ['#00695c', '#009688'],
+				color: [{
+					value: '#00695c',
+					pri: 2,
+				}, {
+					value: '#009688',
+					pri: 1,
+				}],
 			};
 			break;
 		case CommodityMap.Kerosene:
 			return {
-				color: ['#4e342e', '#795548'],
+				color: [{
+					value: '#4e342e',
+					pri: 2,
+				}, {
+					value: '#795548',
+					pri: 1,
+				}],
 			};
 			break;
 		default:
 			return {
-				color: ['#38503a', '#59715b'],
+				color: [{
+					value: '#38503a',
+					pri: 2,
+				}, {
+					value: '#59715b',
+					pri: 1,
+				}],
 			};
 			break;
 	}
@@ -162,7 +261,7 @@ function getSeries(data, isStack, isWater, currentYear) {
 
 export default function BuildChart(props) {
 	let childProps = {
-		colors: getColorByCommodityId(props.data.CommodityId).color,
+		colors: getColorByCommodityId(props.data.CommodityId).color.filter(color => color.pri <= props.data.EnergySystemSavings.length).map(color => color.value),
 		unit: util.getUomById(props.data.UomId).Code,
 		categories: getCategories(props.data),
 		series: getSeries(props.data, props.isStack, props.isWater, props.currentYear),
