@@ -35,57 +35,57 @@ function getColorByCommodityId(commodityId) {
 	switch(commodityId) {
 		case CommodityMap.ElectricOther:
 			return {
-				color: ['#4CAF50', '#388E3C', '#81C784', '#1B5E20', '#C8E6C9', '#2E7D32', '#66BB6A', '#43A047'],
+				color: ['#1B5E20', '#2E7D32', '#388E3C', '#43A047', '#4CAF50', '#66BB6A', '#81C784', '#C8E6C9'],
 			};
 			break;
 		case CommodityMap.Water:
 			return {
-				color: ['#2196F3', '#1976D2', '#64B5F6', '#0D47A1'],
+				color: ['#0D47A1', '#1976D2', '#2196F3', '#64B5F6'],
 			};
 			break;
 		case CommodityMap.Gas:
 			return {
-				color: ['#6C7FFE', '#4255D4', '#B4BEFF', '#283BBA'],
+				color: ['#283BBA', '#4255D4', '#6C7FFE', '#B4BEFF'],
 			};
 			break;
 		case CommodityMap.CoolQ:
 			return {
-				color: ['#86bafd', '#5599ec'],
+				color: ['#5599ec', '#86bafd'],
 			};
 			break;
 		case CommodityMap.HeatQ:
 			return {
-				color: ['#ffb300', '#f68025', '#ffd54f'],
+				color: ['#f68024', '#ffb300', '#ffd54f'],
 			};
 			break;
 		case CommodityMap.LiquidGas:
 			return {
-				color: ['#82e2ff', '#4dd5ff'],
+				color: ['#4dd5ff', '#82e2ff'],
 			};
 			break;
 		case CommodityMap.CoalOther:
 			return {
-				color: ['#7a91b5', '#445773'],
+				color: ['#445773', '#7a91b5'],
 			};
 			break;
 		case CommodityMap.DieselOil:
 			return {
-				color: ['#ab47bc', '#8e24aa'],
+				color: ['#8e24aa', '#ab47bc'],
 			};
 			break;
 		case CommodityMap.HeavyOil:
 			return {
-				color: ['#009688', '#00695c'],
+				color: ['#00695c', '#009688'],
 			};
 			break;
 		case CommodityMap.Kerosene:
 			return {
-				color: ['#795548', '#4e342e'],
+				color: ['#4e342e', '#795548'],
 			};
 			break;
 		default:
 			return {
-				color: ['#59715b', '#38503a'],
+				color: ['#38503a', '#59715b'],
 			};
 			break;
 	}
