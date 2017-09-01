@@ -128,7 +128,7 @@ export default class SaveEffectOverview extends Component {
     }
 		return (
       <div className='jazz-save-effect-overview'>
-	      <header className='overview-header'>{hierarchyName + I18N.SaveEffect.OverviewLabel}</header>
+	      <header className='overview-header'>{hierarchyName + ' ' + I18N.SaveEffect.OverviewLabel}</header>
         {minYear ? 
         <div>
           <ActionComp triggerKey={hierarchyId} action={() => {
