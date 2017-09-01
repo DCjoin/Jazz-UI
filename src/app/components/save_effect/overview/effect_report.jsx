@@ -151,6 +151,7 @@ export default class EffectReport extends Component {
     config = getConfigByCommodityId(data.CommodityId),
     isStack = this.state.isStack,
     isWater = data.CommodityId === CommodityMap.Water,
+    currentYear = year === new Date().getFullYear(),
 
     Comp = BuildChart;
     if( isCustomer ) {
@@ -203,12 +204,12 @@ export default class EffectReport extends Component {
                   <em className='report-sum-icon icon-energy_saving'/>
                   <span>{
                     (isWater ? I18N.SaveEffect.Chart.SavingWaterValue : I18N.SaveEffect.Chart.SavingValue)
-                    + '/' +
-                    (isWater ? I18N.SaveEffect.Chart.PredictSavingWater : I18N.SaveEffect.Chart.PredictSaving)
+                    + (currentYear ? '/' : '') +
+                    (currentYear ? (isWater ? I18N.SaveEffect.Chart.PredictSavingWater : I18N.SaveEffect.Chart.PredictSaving) : '')
                 }</span>
                 </header>
                 <div className='report-sum-content'>
-                  <span className='report-sum-value'>{util.getLabelData(data.EnergySaving) + '/' + util.getLabelData(data.PredictionSaving)}</span>
+                  <span className='report-sum-value'>{util.getLabelData(data.EnergySaving) + (currentYear ? '/' : '') + (currentYear ? util.getLabelData(data.PredictionSaving): '')}</span>
                   <span className='report-sum-unit'>{util.getUomById(data.UomId).Code}</span>
                 </div>
               </div>
@@ -221,7 +222,7 @@ export default class EffectReport extends Component {
                 </header>
                 <div className='report-sum-content'>
                   <span className='report-sum-value'>{
-                    (year === new Date().getFullYear() || data.EnergySavingRate === null) ? '-' : util.toFixed(data.EnergySavingRate * 100, 1) + '%'
+                    (currentYear || data.EnergySavingRate === null) ? '-' : util.toFixed(data.EnergySavingRate * 100, 1) + '%'
                   }</span>
                 </div>
               </div>
@@ -239,7 +240,7 @@ export default class EffectReport extends Component {
               </div>
             </li>}
           </ul>
-          <Comp currentYear={year === new Date().getFullYear()} isStack={isStack} isWater={isWater} data={data} color={config.color}/>
+          <Comp currentYear={currentYear} isStack={isStack} isWater={isWater} data={data} color={config.color}/>
 				</div>
 			</div>
 		);
