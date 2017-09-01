@@ -27,7 +27,7 @@ export default class Reason extends Component {
 
       return(
         <TextField hintText={I18N.SaveEffect.RecommendReasonHint} value={this.state.text} onChange={this.props.onChange} 
-        style={{width:'100%',maxHeight:'162px'}}
+        style={{width:'100%',maxHeight:'162px',marginLeft:'15px'}}
         textareaStyle={{fontSize:'14px',height:'142px'}}
         hintStyle={{color: '#cbcbcb',fontSize:'14px'}}
            multiLine={true} 

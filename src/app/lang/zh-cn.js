@@ -2610,7 +2610,6 @@ I18N.SaveEffect.ByYear = '年度节能效果';
 I18N.SaveEffect.OrderByCommo = '按介质展示';
 I18N.SaveEffect.OrderByBuilding = '按建筑展示';
 
-I18N.SaveEffect.Best = {};
 
 
 module.exports = I18N;
