@@ -101,9 +101,9 @@ function RankNumber(props, isThisYear) {
 function getRanlLabelDate(year) {
 	if(year === new moment().year() ) {
 		let lastMonth = new moment().subtract('month', 1);
-		return util.replacePathParams(I18N.Kpi.YearMonth, lastMonth.get('year'), lastMonth.get('month') + 1);
+		return lastMonth.format('YYYY/MM');
 	} else {
-		return year + I18N.Baseline.BaselineModify.YearValue;
+		return year + I18N.Kpi.Yearly;
 	}
 }
 
@@ -209,7 +209,7 @@ export default class BuildingChartPanel extends Component {
 				{selectedRank && <RankHistory
 					renderTitle={!isThisYear && function() {
 						return (<div className="jazz-kpi-rank-history-subtitle">
-							<span>{year + I18N.Baseline.BaselineModify.YearValue}</span>
+							<span>{year + I18N.Kpi.Yearly}</span>
 							<span>{I18N.Setting.KPI.Rank.Name + ' ' + selectedRank.Index + '/' + selectedRank.Count}</span>
 							<span>{RankingKPIStore.getUnitType(selectedRank.UnitType) + ' ' + getValue(selectedRank)}</span>
 							<span/>

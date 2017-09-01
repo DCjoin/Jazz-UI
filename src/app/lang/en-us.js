@@ -1695,6 +1695,7 @@ I18N.Consultant = {
 I18N.Kpi = {
   Month: '{0}Month',
   YearMonth: '{0}Year{1}Month',
+  Yearly: '',
   ActualValues: 'Actual Values',
   TargetValues: 'Target Values',
   PredictionValues: 'Prediction Values',

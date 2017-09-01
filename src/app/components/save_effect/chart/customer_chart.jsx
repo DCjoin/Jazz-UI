@@ -112,34 +112,37 @@ function getCategories(data) {
 	} );
 }
 
-function getSeries(data, isStack, isWater, color) {
+function getSeries(data, isStack, isWater, color, currentYear) {
 	let base = 0;
 	let predBase = 0;
-
-	return [{
-		type: 'line',
-        marker: {
+	let series = [];
+	if( currentYear ) {
+		series.push({
+			type: 'line',
+	        marker: {
+		        lineWidth: 1,
+		        lineColor: '#ff5722',
+		        fillColor: 'white',
+		        radius: 2,
+		    },
+	        zIndex: 2,
+	        color: '#ff5722',
 	        lineWidth: 1,
-	        lineColor: '#ff5722',
-	        fillColor: 'white',
-	        radius: 2,
-	    },
-        zIndex: 2,
-        color: '#ff5722',
-        lineWidth: 1,
-		name: isWater ? I18N.SaveEffect.Chart.PredictSavingWater : I18N.SaveEffect.Chart.PredictSaving,
-		data: data.PredictionSavingValues.map( item => {
-			let result = predBase + item.Value;
-			if(isStack) {
-				predBase = result;
-			}
-			return {
-				y: item.Value !== null ? result : null,
-				tooltipName: isWater ? I18N.SaveEffect.Chart.PredictSavingWater : I18N.SaveEffect.Chart.PredictSaving,
-				tooltipTitle: UTC2Local(item.Time).format('YYYY/MM'),
-			};
-		}),
-	}, {
+			name: isWater ? I18N.SaveEffect.Chart.PredictSavingWater : I18N.SaveEffect.Chart.PredictSaving,
+			data: data.PredictionSavingValues.map( item => {
+				let result = predBase + item.Value;
+				if(isStack) {
+					predBase = result;
+				}
+				return {
+					y: item.Value !== null ? result : null,
+					tooltipName: isWater ? I18N.SaveEffect.Chart.PredictSavingWater : I18N.SaveEffect.Chart.PredictSaving,
+					tooltipTitle: UTC2Local(item.Time).format('YYYY/MM'),
+				};
+			}),
+		});
+	}
+	series.push({
         color: color,
 		name: isWater ? I18N.SaveEffect.Chart.ActualSavingWater : I18N.SaveEffect.Chart.ActualSaving,
 		data: data.ActualSavingValues.map( item => {
@@ -153,7 +156,9 @@ function getSeries(data, isStack, isWater, color) {
 				tooltipTitle: UTC2Local(item.Time).format('YYYY/MM'),
 			};
 		}),
-	}, ];
+	});
+
+	return series;
 }
 
 export default function BuildChart(props) {
@@ -161,7 +166,8 @@ export default function BuildChart(props) {
 		colors: getColorByCommodityId(props.data.CommodityId).color,
 		unit: util.getUomById(props.data.UomId).Code,
 		categories: getCategories(props.data),
-		series: getSeries(props.data, props.isStack, props.isWater, props.color),
+		series: getSeries(props.data, props.isStack, props.isWater, props.color, props.currentYear),
+		currentYear: props.currentYear,
 	};
 	if( props.isStack ) {
 		return (<BasicStack {...childProps}/>);

@@ -5,7 +5,7 @@ import util from 'util/Util.jsx';
 import Highcharts from 'components/highcharts/Highcharts.jsx';
 
 
-function getOptions(categories, series, unit, colors){
+function getOptions(categories, series, unit, colors, currentYear){
 	return {
 		colors: colors,
 	    credits: {
@@ -71,7 +71,7 @@ function getOptions(categories, series, unit, colors){
     	    	let header = this.points[0].point.tooltipTitle;
     	    	this.points.forEach((data, i) => {
     	    		if(data) {
-    	    			if(i === 0) {
+    	    			if(currentYear && i === 0) {
     			    		list += `
     			    		<tr>
     					    	<td style="color:${data.series.color};padding:0">● ${data.point.tooltipName}: </td>
@@ -113,7 +113,7 @@ function getOptions(categories, series, unit, colors){
 
 export default class BasicStack extends Component {
 	render () {
-		let {series, categories, unit, colors} = this.props;
-	    return (<Highcharts options={getOptions(categories, series, unit, colors)} className='save_effect_chart'/>);
+		let {series, categories, unit, colors, currentYear} = this.props;
+	    return (<Highcharts options={getOptions(categories, series, unit, colors, currentYear)} className='save_effect_chart'/>);
 	}
 }

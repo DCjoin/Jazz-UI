@@ -239,7 +239,7 @@ export default class EffectReport extends Component {
               </div>
             </li>}
           </ul>
-          <Comp isStack={isStack} isWater={isWater} data={data} color={config.color}/>
+          <Comp currentYear={year === new Date().getFullYear()} isStack={isStack} isWater={isWater} data={data} color={config.color}/>
 				</div>
 			</div>
 		);
