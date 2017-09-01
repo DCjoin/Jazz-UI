@@ -2530,6 +2530,7 @@ I18N.SaveEffect.TagSum='数据总和';
 I18N.SaveEffect.Saving='节能量图';
 I18N.SaveEffect.Saving2='节约量图';
 I18N.SaveEffect.Contrast='实际值与基准值对比图';
+I18N.SaveEffect.NoBest='暂无最佳方案';
 I18N.SaveEffect.SetBest='设置为最佳方案';
 I18N.SaveEffect.SelectCharacteristics='请选择方案特点';
 I18N.SaveEffect.HighCost='节约成本高';

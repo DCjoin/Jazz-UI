@@ -567,10 +567,18 @@
     width: 75%;
     margin: 0 auto;
     &-header{
-    font-size: 16px;
-    font-weight: 600;
-    color: #000000;
-    margin:18px 0;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      flex: none;
+      align-items: center;      
+      &-header{
+        font-size: 16px;
+        font-weight: 600;
+       color: #000000;
+         margin:18px 0;
+      }
+    
     }
     &-item{
       margin-bottom: 15px;
@@ -653,9 +661,9 @@
       font-size: 14px;
       font-weight: 600;
       color: @medium-green;
-      margin-bottom: 38px;
-      display: flex;
-      justify-content: flex-end; 
+      // margin-bottom: 38px;
+      // display: flex;
+      // justify-content: flex-end; 
       &:hover{
         cursor: pointer;
       }
