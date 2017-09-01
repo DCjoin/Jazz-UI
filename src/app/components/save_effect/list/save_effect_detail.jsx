@@ -21,7 +21,9 @@ import Reason from './reason.jsx';
 import ContrastChart from '../chart/contrast_chart.jsx';
 import SavingChart from '../chart/saving_chart.jsx';
 import {LessInvest,HighCost,Easy,HighReturn} from '../best/icon.jsx';
-
+import privilegeUtil from 'util/privilegeUtil.jsx';
+import PermissionCode from 'constants/PermissionCode.jsx';
+import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 
 const type={
 	"Saving":0,
@@ -32,6 +34,15 @@ const characterType={
 			"LessInvest":2,
 			"Easy":3,
 			"HighReturn":4
+}
+
+function privilegeWithSaveEffect( privilegeCheck ) {
+  //  return true
+	return privilegeCheck(PermissionCode.Save_Effect, CurrentUserStore.getCurrentPrivilege());
+}
+
+function isFull() {
+	return privilegeWithSaveEffect(privilegeUtil.isFull.bind(privilegeUtil));
 }
 
 function validValue(value) {
@@ -227,7 +238,7 @@ export default class EffectDetail extends Component {
 						<div className="jazz-effect-detail-header-title">{this.props.effect.get('EnergySolutionName')}</div>
 					</span>
 					<span>
-						{!this.state.isBest && <FlatButton label={I18N.SaveEffect.SetBest} onTouchTap={this._onBestShow.bind(this)}
+						{!this.state.isBest && isFull() && <FlatButton label={I18N.SaveEffect.SetBest} onTouchTap={this._onBestShow.bind(this)}
 													style={style.btn} labelStyle={style.lable} secondary={true}/>}
 					</span>
 				</div>
@@ -388,7 +399,7 @@ export default class EffectDetail extends Component {
 																				<FlatButton icon={ignoreIcon} label={I18N.SaveEffect.IgnoreSolution} style={style.ignoreBtn} labelStyle={style.ignoreLabel} onClick={this._onIgnoreBestShow.bind(this)}/>
 																		</div>					
 																		:<FlatButton icon={ignoreIcon} label={I18N.SaveEffect.SolutionIgnored} style={style.ignoredBtn} labelStyle={style.ignoredLabel} disabled={true}/>
-							:<div className="jazz-effect-detail-best-operation">
+							:isFull() && <div className="jazz-effect-detail-best-operation">
 									<FlatButton label={I18N.Common.Button.Edit} style={style.btn} labelStyle={style.label} onClick={this._onBestShow.bind(this)}/>
 									<FlatButton label={I18N.Common.Button.Repeal} style={style.btn} labelStyle={style.label} onClick={()=>{
 										this.setState({
