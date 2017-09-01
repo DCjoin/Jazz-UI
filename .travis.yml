@@ -7,6 +7,11 @@ services:
 node_js:
   - "6.10.2"
   
+cache:
+  yarn: true
+  directories:
+  - node_modules
+  
 env:
   global:
   - PROJECT="Jazz-UI"
@@ -26,11 +31,11 @@ before_script:
 script:
   - yarn run build-test
   - echo -n "${PACKAGE_VERSION}" > build/version.txt
-  - docker build -t $TAG .
 
 before_deploy:
   - cp compose-template.yml build/
   - cd build && zip -r ../${ARTIFACT_NAME} ./ && cd ..
+  - docker build -t $TAG
 #  - echo -n "${PACKAGE_VERSION}" > version.txt
 #  - zip -r --exclude=*node_modules* /tmp/${ARTIFACT_NAME} ./
   - 'curl -o upload.sh -H "Authorization: token ${GITHUB_TOKEN}" ${GITHUB_UPLOAD_SCRIPT}'
