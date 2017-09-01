@@ -164,7 +164,7 @@ export default class Step3 extends Component {
 							onClick={onGetChartData}
 							style={{height: 30, lineHeight: '28px'}}
 							label={I18N.Setting.Diagnose.PreviewButton}
-							disabled={disabledPreview}
+							disabled={!EnergyStartDate || !EnergyEndDate}
 							icon={<ActionVisibility style={{height:16}}/>}/>
 					</header>
 					<div className='step2-content-content'>
