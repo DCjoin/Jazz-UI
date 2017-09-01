@@ -91,8 +91,8 @@ function getOptions(categories, series, unit, colors, currentYear){
 	    plotOptions: {
 	        area: {
 	            stacking: 'normal',
-	            lineColor: '#666666',
-	            lineWidth: 1,
+	            fillOpacity : 1,
+	            lineWidth: 0,
 	            marker: {
 	                enabled: false
 	            },

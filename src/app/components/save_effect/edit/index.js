@@ -122,7 +122,7 @@ function Header({name, timeStr, onShowDetail, onClose}) {
 					<a style={{marginLeft: 30, color: '#32ad3d'}} href='javascript:void(0)' onClick={onShowDetail}>{I18N.SaveEffect.ShowSavePlanDetail}</a>
 				</div>
 			</div>
-			<IconButton style={{position: 'fixed', right: 14, top: 14}} iconClassName='icon-close' onClick={onClose}/>
+			<IconButton style={{position: 'absolute', right: 14, top: 0}} iconClassName='icon-close' onClick={onClose}/>
 		</header>
 	);
 }

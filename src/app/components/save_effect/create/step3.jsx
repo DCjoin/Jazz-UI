@@ -148,10 +148,10 @@ export default class Step3 extends Component {
 								<div style={{display: 'inline-block', padding: '0 16px'}}>{I18N.EM.To2}</div>
 								<ViewableDatePicker  hintText={I18N.Setting.Calendar.EndTime} onChange={onChangeEnergyEndDate} datePickerClassName='date-picker-inline' width={83} value={EnergyEndDate}/>
 							</div>
-							<ViewableTextField errorMessage={I18N.SaveEffect.FormatVaildTip} regex={/^(\+?)\d{1,9}([.]\d{1,3})?$/} floatingLabelFixed={true} style={{width: 170}} title={I18N.SaveEffect.Create.EnergyUnitPrice + `(RMB/${unit})`} hintText={I18N.SaveEffect.Create.EnterEnergyUnitPrice} defaultValue={EnergyUnitPrice} didChanged={onChangeEnergyUnitPrice}/>
+							<ViewableTextField errorMessage={I18N.SaveEffect.FormatVaildTip} regex={/^(\+?)\d{1,9}([.]\d{1,3})?$/} style={{width: 170}} title={I18N.SaveEffect.Create.EnergyUnitPrice + `(RMB/${unit})`} hintText={I18N.SaveEffect.Create.EnterEnergyUnitPrice} defaultValue={EnergyUnitPrice} didChanged={onChangeEnergyUnitPrice}/>
 							{ Model.Manual === BenchmarkModel && <ManualValue unit={unit} key={EnergyStartDate + EnergyEndDate} BenchmarkDatas={BenchmarkDatas} onChangeValue={onChangeBenchmarkDatas}/>}
 							{Model.Manual !== BenchmarkModel && 
-							<ViewableTextField errorMessage={I18N.SaveEffect.FormatVaildTip} regex={/^(\+?)\d{1,9}([.]\d{1,3})?$/} floatingLabelFixed={true} style={{width: 170}} title={I18N.SaveEffect.Create.CorrectionFactor} hintText={I18N.SaveEffect.Create.EnterCorrectionFactor} defaultValue={CorrectionFactor} didChanged={onChangeCorrectionFactor}/>
+							<ViewableTextField errorMessage={I18N.SaveEffect.FormatVaildTip} regex={/^(\+?)\d{1,9}([.]\d{1,3})?$/} style={{width: 170}} title={I18N.SaveEffect.Create.CorrectionFactor} hintText={I18N.SaveEffect.Create.EnterCorrectionFactor} defaultValue={CorrectionFactor} didChanged={onChangeCorrectionFactor}/>
 							}
 						</div>
 					</div>
@@ -164,7 +164,7 @@ export default class Step3 extends Component {
 							onClick={onGetChartData}
 							style={{height: 30, lineHeight: '28px'}}
 							label={I18N.Setting.Diagnose.PreviewButton}
-							disabled={disabledPreview}
+							disabled={!EnergyStartDate || !EnergyEndDate}
 							icon={<ActionVisibility style={{height:16}}/>}/>
 					</header>
 					<div className='step2-content-content'>
