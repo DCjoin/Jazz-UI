@@ -101,7 +101,7 @@ function RankNumber(props, isThisYear) {
 function getRanlLabelDate(year) {
 	if(year === new moment().year() ) {
 		let lastMonth = new moment().subtract('month', 1);
-		return util.replacePathParams(I18N.Kpi.YearMonth, lastMonth.get('year'), lastMonth.get('month') + 1);
+		return lastMonth.format('YYYY/MM');
 	} else {
 		return year + I18N.Baseline.BaselineModify.YearValue;
 	}
