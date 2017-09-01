@@ -139,7 +139,7 @@ export default class Step3 extends Component {
 		return (
 			<div className='step2-wrapper'>
 				<div className='create-block step2-side step3-side'>
-					<header className='step2-side-header'>{I18N.SaveEffect.Create.CalcSave}</header>
+					<header className='step2-side-header hiddenEclipse'>{I18N.SaveEffect.Create.CalcSave}</header>
 					<div className='step2-side-content step3-side-content'>
 						<div className='pop-viewableTextField'>
 							<header className='pop-viewable-title'>{I18N.SaveEffect.EnergyCalculatePeriod}</header>
