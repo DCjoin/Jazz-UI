@@ -2130,9 +2130,9 @@ let CommonFuns = {
   getDateLabelsFromMomentToKPI(dates) {
     return dates.map( (date, i) => {
       if( i === 0 || dates[i - 1].year() !== date.year() ) {
-        return this.replacePathParams(I18N.Kpi.YearMonth, date.year(), date.month() + 1);
+        return date.format('YYYY/MM');
       }
-      return this.replacePathParams(I18N.Kpi.Month,date.month() + 1);
+      return date.format('MM');
     } )
   },
 

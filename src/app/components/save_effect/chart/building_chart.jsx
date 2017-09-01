@@ -35,57 +35,156 @@ function getColorByCommodityId(commodityId) {
 	switch(commodityId) {
 		case CommodityMap.ElectricOther:
 			return {
-				color: ['#4CAF50', '#388E3C', '#81C784', '#1B5E20', '#C8E6C9', '#2E7D32', '#66BB6A', '#43A047'],
+				color: [{
+					value: '#1B5E20',
+					pri: 4,
+				}, {
+					value: '#2E7D32',
+					pri: 6,
+				}, {
+					value: '#388E3C',
+					pri: 2,
+				}, {
+					value: '#43A047',
+					pri: 8,
+				}, {
+					value: '#4CAF50',
+					pri: 1,
+				}, {
+					value: '#66BB6A',
+					pri: 7,
+				}, {
+					value: '#81C784',
+					pri: 3,
+				}, {
+					value: '#C8E6C9',
+					pri: 5,
+				}],
 			};
 			break;
 		case CommodityMap.Water:
 			return {
-				color: ['#2196F3', '#1976D2', '#64B5F6', '#0D47A1'],
+				color: [{
+					value: '#0D47A1',
+					pri: 4,
+				}, {
+					value: '#1976D2',
+					pri: 2,
+				}, {
+					value: '#2196F3',
+					pri: 1,
+				}, {
+					value: '#64B5F6',
+					pri: 3,
+				}],
 			};
 			break;
 		case CommodityMap.Gas:
 			return {
-				color: ['#6C7FFE', '#4255D4', '#B4BEFF', '#283BBA'],
+				color: [{
+					value: '#283BBA',
+					pri: 4,
+				}, {
+					value: '#4255D4',
+					pri: 2,
+				}, {
+					value: '#6C7FFE',
+					pri: 1,
+				}, {
+					value: '#B4BEFF',
+					pri: 3,
+				}],
 			};
 			break;
 		case CommodityMap.CoolQ:
 			return {
-				color: ['#86bafd', '#5599ec'],
+				color: [{
+					value: '#5599ec',
+					pri: 2,
+				}, {
+					value: '#86bafd',
+					pri: 1,
+				}],
 			};
 			break;
 		case CommodityMap.HeatQ:
 			return {
-				color: ['#ffb300', '#f68025', '#ffd54f'],
+				color: [{
+					value: '#f68024',
+					pri: 2,
+				}, {
+					value: '#ffb300',
+					pri: 1,
+				}, {
+					value: '#ffd54f',
+					pri: 3,
+				}],
 			};
 			break;
 		case CommodityMap.LiquidGas:
 			return {
-				color: ['#82e2ff', '#4dd5ff'],
+				color: [{
+					value: '#4dd5ff',
+					pri: 2,
+				}, {
+					value: '#82e2ff',
+					pri: 1,
+				}],
 			};
 			break;
 		case CommodityMap.CoalOther:
 			return {
-				color: ['#7a91b5', '#445773'],
+				color: [{
+					value: '#445773',
+					pri: 2,
+				}, {
+					value: '#7a91b5',
+					pri: 1,
+				}],
 			};
 			break;
 		case CommodityMap.DieselOil:
 			return {
-				color: ['#ab47bc', '#8e24aa'],
+				color: [{
+					value: '#8e24aa',
+					pri: 2,
+				}, {
+					value: '#ab47bc',
+					pri: 1,
+				}],
 			};
 			break;
 		case CommodityMap.HeavyOil:
 			return {
-				color: ['#009688', '#00695c'],
+				color: [{
+					value: '#00695c',
+					pri: 2,
+				}, {
+					value: '#009688',
+					pri: 1,
+				}],
 			};
 			break;
 		case CommodityMap.Kerosene:
 			return {
-				color: ['#795548', '#4e342e'],
+				color: [{
+					value: '#4e342e',
+					pri: 2,
+				}, {
+					value: '#795548',
+					pri: 1,
+				}],
 			};
 			break;
 		default:
 			return {
-				color: ['#59715b', '#38503a'],
+				color: [{
+					value: '#38503a',
+					pri: 2,
+				}, {
+					value: '#59715b',
+					pri: 1,
+				}],
 			};
 			break;
 	}
@@ -112,33 +211,36 @@ function getCategories(data) {
 	} );
 }
 
-function getSeries(data, isStack, isWater ) {
+function getSeries(data, isStack, isWater, currentYear) {
 	let predBase = 0;
-	return [{
-		type: 'line',
-        marker: {
+	let series = [];
+	if(currentYear) {
+		series.push({
+			type: 'line',
+	        marker: {
+		        lineWidth: 1,
+		        lineColor: '#ff5722',
+		        fillColor: 'white',
+		        radius: 2,
+		    },
+	        zIndex: 2,
+	        color: '#ff5722',
 	        lineWidth: 1,
-	        lineColor: '#ff5722',
-	        fillColor: 'white',
-	        radius: 2,
-	    },
-        zIndex: 2,
-        color: '#ff5722',
-        lineWidth: 1,
-		name: isWater ? I18N.SaveEffect.Chart.PredictSavingWater : I18N.SaveEffect.Chart.PredictSaving,
-		data: data.PredictionSavingValues.map( item => {
-			let result = predBase + item.Value;
-			if(isStack) {
-				predBase = result;
-			}
-			return {
-				y: item.Value !== null ? result : null,
-				tooltipName: isWater ? I18N.SaveEffect.Chart.PredictSavingWater : I18N.SaveEffect.Chart.PredictSaving,
-				tooltipTitle: UTC2Local(item.Time).format('YYYY/MM'),
-			};
-		}),
-	}]
-	.concat(data.EnergySystemSavings.map( (sys, i) => {
+			name: isWater ? I18N.SaveEffect.Chart.PredictSavingWater : I18N.SaveEffect.Chart.PredictSaving,
+			data: data.PredictionSavingValues.map( item => {
+				let result = predBase + item.Value;
+				if(isStack) {
+					predBase = result;
+				}
+				return {
+					y: item.Value !== null ? result : null,
+					tooltipName: isWater ? I18N.SaveEffect.Chart.PredictSavingWater : I18N.SaveEffect.Chart.PredictSaving,
+					tooltipTitle: UTC2Local(item.Time).format('YYYY/MM'),
+				};
+			}),
+		});
+	}
+	return series.concat(data.EnergySystemSavings.map( (sys, i) => {
 		let base = 0;
 		return {
 			name: getSystemNameById(sys.EnergySystem),
@@ -159,10 +261,11 @@ function getSeries(data, isStack, isWater ) {
 
 export default function BuildChart(props) {
 	let childProps = {
-		colors: getColorByCommodityId(props.data.CommodityId).color,
+		colors: getColorByCommodityId(props.data.CommodityId).color.filter(color => color.pri <= props.data.EnergySystemSavings.length).map(color => color.value),
 		unit: util.getUomById(props.data.UomId).Code,
 		categories: getCategories(props.data),
-		series: getSeries(props.data, props.isStack, props.isWater),
+		series: getSeries(props.data, props.isStack, props.isWater, props.currentYear),
+		currentYear: props.currentYear,
 	};
 	if( props.isStack ) {
 		return (<BasicStack {...childProps}/>);

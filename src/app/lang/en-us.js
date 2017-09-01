@@ -48,8 +48,8 @@ I18N.MainMenu.ParameterTemplate = 'Parameter template';
 I18N.MainMenu.KPI = 'KPI · Report';
 I18N.MainMenu.ActualityKPI = 'KPI';
 I18N.MainMenu.ActualityReport = 'Report';
-I18N.MainMenu.SaveSchemeTab = 'Energy Saving Scheme';
-I18N.MainMenu.SaveEffect = 'Energy Saving Effect';
+I18N.MainMenu.SaveSchemeTab = 'ECMs';
+I18N.MainMenu.SaveEffect = ' Savings';
 I18N.MainMenu.SmartDiagnose = 'Smart Diagnosis';
 I18N.MainMenu.DataAnalysis = 'Data Analysis';
 I18N.MainMenu.InputData = 'Input Data';
@@ -200,6 +200,7 @@ I18N.Common.Commodity = {};
 I18N.Common.Commodity.Electric = 'Electricity';
 I18N.Common.Commodity.ElectricOther = 'Electricity';
 I18N.Common.Commodity.Water = 'Water';
+I18N.Common.Commodity.WaterOther = 'Water';
 I18N.Common.Commodity.Gas = 'Gas';
 I18N.Common.Commodity.Air = 'AirQuality';
 I18N.Common.Commodity.Steam = 'Steam';
@@ -222,7 +223,7 @@ I18N.Common.Commodity.HeavyWater = 'Heavy water';
 I18N.Common.Commodity.ReclaimedWater = 'Recycled water';
 I18N.Common.Commodity.LightWater = 'Light water';
 I18N.Common.Commodity.DieselOil = 'Diesel oil';
-
+I18N.Common.Commodity.Unspecified = 'Not specified';
 I18N.Common.Commodity.Cost = 'Cost';
 I18N.Common.Commodity.LiquidGas = 'LP Gas';
 I18N.Common.Commodity.HeavyOil = 'Heavy Oil';
@@ -306,7 +307,7 @@ I18N.Common.Label.TimeOverlap = 'Time overlapped, please check';
 I18N.Common.Label.CommoEmptyText = 'Please select';
 I18N.Common.Label.MandatoryEmptyError = 'Required';
 I18N.Common.Label.OverValueError = 'Max value is: 999999999';
-I18N.Common.Label.UnspecifyCommodity = 'unasighed ##Common.Glossary.Commodity##';
+I18N.Common.Label.UnspecifyCommodity = 'Unassigned ##Common.Glossary.Commodity##';
 I18N.Common.Label.UnknownError = 'Sorry, Unknown Error';
 I18N.Common.Label.MandatoryNumberError = 'Number Mandatory';
 I18N.Common.Label.ExcelColumnError = 'Please fill in the cell name as C1，AB23';
@@ -367,7 +368,6 @@ I18N.Common.Button.Filter = 'Filter';
 I18N.Common.Button.Close = 'Close';
 I18N.Common.Button.Cancel = 'Cancel';
 I18N.Common.Button.Cancel2 = 'Cancel';
-I18N.Common.Button.Repeal = '撤销';
 I18N.Common.Button.Delete = 'Delete';
 I18N.Common.Button.Edit = 'Edit';
 I18N.Common.Button.Exit = 'Exit';
@@ -570,7 +570,7 @@ I18N.EM.CannotShowCalendarByTimeRange = 'No calendar background is seen? Change 
 I18N.EM.WeatherSupportsOnlySingleHierarchy = 'This function only supports single-building tags.';
 I18N.EM.WeatherSupportsOnlyHourlyStep = 'This function only supports hourly interval.';
 I18N.EM.WeatherSupportsNotMinuteStep = 'This function cannot support minute step';
-I18N.EM.WeatherSupportsNotMultiTime = 'This function cannot support mulitiple timespan';
+I18N.EM.WeatherSupportsNotMultiTime = 'This function cannot support multiple timespan';
 I18N.EM.TouSupportsMoreThanHourStep = 'This function only support steps larger than Hourly.';
 I18N.EM.TouSupportsOnlyElec = 'This function only support "Electricity" commodity.';
 
@@ -1083,7 +1083,7 @@ I18N.Message.M01405 = 'The hierarchy nodes already have calendar settings that c
 I18N.Message.M01406 = 'The hierarchy nodes already have cost settings that cannot be deleted.';
 I18N.Message.M01407 = 'The hierarchy nodes already have advanced attribute settings that cannot be deleted.';
 I18N.Message.M01408 = 'The hierarchy nodes already have tag associations that cannot be deleted.';
-I18N.Message.M01850 = 'The hierarchy used in Facilitymost that cannot be deleted, please delete in Facilitymost and try again.';
+I18N.Message.M01850 = 'The hierarchy used in Facility Expert cannot be deleted, please delete and try again.';
 
 //building picture
 I18N.Message.M01503 = 'Only jpg / png images can be uploaded. Please upload again.';
@@ -1236,7 +1236,7 @@ I18N.Message.M06001 = 'This Hierarchy node does not exist。';
 I18N.Message.M06100 = 'Tag has been deleted and cannot be loaded.';
 I18N.Message.M06104 = 'The name already exists.';
 I18N.Message.M06107 = 'The code already exists.';
-I18N.Message.M06109 = 'Same metercode and channel already exists.';
+I18N.Message.M06109 = 'Metercode and channel already exists.';
 I18N.Message.M06122 = 'The name already exists.';
 I18N.Message.M06127 = 'The code already exists.';
 I18N.Message.M06133 = 'Format of the formula is incorrect, please check it.';
@@ -1258,7 +1258,7 @@ I18N.Message.M06195 = 'The child nodes of the current regional dimension does no
 I18N.Message.M06196 = 'The current hierarchy node does not include tags that shares the same media unit with this tag. ';
 I18N.Message.M06197 = 'The current system dimension does not include tags that shares the same media with this tag. ';
 I18N.Message.M06198 = 'The current regional dimension does not include tags that shares the same media with this tag. ';
-I18N.Message.M06201 = 'Cannot modity the caculated interval to  "{0}", This  tag has been referred to by other tags. Newly calculated interval must be smaller or equal to the calculated interval of the tag referred to.';
+I18N.Message.M06201 = 'Cannot modify the caculated interval to  "{0}", This  tag has been referred to by other tags. Newly calculated interval must be smaller or equal to the calculated interval of the tag referred to.';
 I18N.Message.M06202 = 'The corresponding tag already has energy consumption tags of the same media.  ';
 I18N.Message.M06203 = 'This tag is not an energy consumption tag.';
 
@@ -1370,7 +1370,7 @@ I18N.Message.M05025 = 'The share has been deleted.';
 I18N.Message.M05024 = 'The user has been deleted.';
 I18N.Message.M05027 = 'The subscriber has been deleted.';
 I18N.Message.M05028 = 'The subscriber has been deleted.';
-I18N.Message.M05304 = 'Folder can not drog to sub-folder';
+I18N.Message.M05304 = 'Folder can not drag to sub-folder';
 I18N.Message.M00953 = 'Illegal entry.';
 
 I18N.Message.M11600 = 'The customized labeling already exists under this customer. Please use another name.';
@@ -1384,7 +1384,7 @@ I18N.Message.M20001 = 'Duplicate rule names.';
 I18N.Message.M20002 = 'Rule has been deleted.';
 I18N.Message.M20003 = 'Rule has been modified.';
 I18N.Message.M20006 = 'Customer has been deleted.';
-I18N.Message.M20007 = 'Total number of rules excceds limit.';
+I18N.Message.M20007 = 'Total number of rules exceeds limit.';
 I18N.Message.M20012 = 'Some of the tags have been associated to other rules.';
 I18N.Message.M20013 = 'You cannot modify the data under the following tags: {0}.';
 I18N.Message.M20014 = 'Some of the tags have been deleted or have no data access.';
@@ -1561,7 +1561,7 @@ I18N.Title.Energy = 'Energy';
 I18N.Mail = {};
 I18N.Mail.Mail = 'Platform Notification';
 I18N.Mail.SendButton = 'Send platform notification';
-I18N.Mail.Reciever = 'Reciever';
+I18N.Mail.Reciever = 'Receiver';
 I18N.Mail.Template = 'Template';
 I18N.Mail.Contactor = 'SP Contactor';
 I18N.Mail.User = 'Platform user';
@@ -1574,7 +1574,7 @@ I18N.Mail.SaveNewTemplate = 'Save as new template';
 I18N.Mail.Message = 'Send SMS';
 I18N.Mail.TemplateHintText = 'Please input template name';
 I18N.Mail.Error = {};
-I18N.Mail.Error.E090 = 'Please fill reviever then send it again';
+I18N.Mail.Error.E090 = 'Please fill receiver then send it again';
 I18N.Mail.Error.E091 = 'Please select template';
 I18N.Mail.Error.E094 = 'Please fill template name';
 I18N.Mail.Error.E095 = 'Name already exist';
@@ -1614,9 +1614,9 @@ I18N.Baseline.Button.Cancel = 'Cancel';
 I18N.Baseline.BaselineBasic = {};
 I18N.Baseline.BaselineBasic.Firstline = 'Please choose configured year to edit';
 I18N.Baseline.Error = {};
-I18N.Baseline.Error.Cal = 'This tag belonged hierarchy does not reference any calendar template. please reference and ensure configed content can be calculated';
+I18N.Baseline.Error.Cal = 'This tag belonged hierarchy does not reference any calendar template. please reference and ensure configured content can be calculated';
 I18N.Baseline.Error.TbnameError = 'Mandatory fields';
-I18N.Baseline.Error.TbnameValidError = 'Allowed characters: Chinese, English, Number, Underline and Blank Splace';
+I18N.Baseline.Error.TbnameValidError = 'Allowed characters: Chinese, English, Number, Underline and Blank Space';
 I18N.Baseline.Error.Calc = 'Selected duration more than one month, can not calculate, please select data again';
 I18N.Baseline.Error.SpecialError = 'Supplementary date Conflict, please other timespan';
 I18N.Baseline.Error.SpecialOtherError = 'Supplementary date illegal, please other timespan';
@@ -1636,7 +1636,7 @@ I18N.Baseline.BaselineModify.Month.Oct = 'Oct';
 I18N.Baseline.BaselineModify.Month.Nov = 'Nov';
 I18N.Baseline.BaselineModify.Month.Dec = 'Dec';
 I18N.Baseline.BaselineModify.Uom = 'KWH';
-I18N.Baseline.BaselineModify.YearSelect = 'Plase select configed year to edit';
+I18N.Baseline.BaselineModify.YearSelect = 'Please select configured year to edit';
 I18N.Baseline.BaselineModify.YearBaseline = 'Year Baseline';
 I18N.Baseline.BaselineModify.YearValue = 'Yearly';
 I18N.Baseline.BaselineModify.MonthBaseline = 'Month Baseline';
@@ -1687,7 +1687,7 @@ I18N.Paging.Button.PreStep = 'Pre Step';
 I18N.Paging.Button.NextStep = 'Next Step';
 
 I18N.Consultant = {
-  SeniorConsultant: 'Senoir Consultant',
+  SeniorConsultant: 'Senior Consultant',
   Description1: '“Hi, I am {0} \'s full-time energy saving consultant,',
   Description2: 'You are welcome to contact me in the following ways if you have any questions”',
 };
@@ -1695,6 +1695,7 @@ I18N.Consultant = {
 I18N.Kpi = {
   Month: '{0}Month',
   YearMonth: '{0}Year{1}Month',
+  Yearly: '',
   ActualValues: 'Actual Values',
   TargetValues: 'Target Values',
   PredictionValues: 'Prediction Values',
@@ -1722,7 +1723,7 @@ I18N.Kpi = {
   ByYearKPIUsagedValue: 'Annual Actual KPI Usage',
   ByYearUsagedTarget: 'Annual Targeted Usage',
   ByYearUsagedPredict: 'Annual Predicted Usage',
-  ByYearSavingPredict: 'Anuual Predicted Engergy Saving',
+  ByYearSavingPredict: 'Annual Predicted Energy Saving',
   ByYearUsagedValue: 'Annual Actual Usage',
   ByYearSavingValue: 'Annual Actual Energy Saving',
   ByYearKPI: 'Annual KPI Value',
@@ -1801,7 +1802,7 @@ I18N.Platform.About = {};
 I18N.Platform.About.Title = 'About';
 I18N.Platform.About.QrCode = 'EnergyMost mobile QR code';
 I18N.Platform.About.ipadQrCode = 'iPad client';
-I18N.Platform.About.WeChatQrCode = 'Wechat public number';
+I18N.Platform.About.WeChatQrCode = 'Wechat official account';
 I18N.Platform.About.ContactUs = 'Contact us';
 I18N.Platform.Password = {};
 I18N.Platform.Password.OldPassword = 'Original Password';
@@ -2149,7 +2150,7 @@ I18N.Setting.KPI.Group.Edit = 'Edit Index-{0}Year-{1}';
 I18N.Setting.KPI.Group.Prolong = 'Prolong the Index of last year-{0}Year';
 I18N.Setting.KPI.Group.Config = 'Configure';
 I18N.Setting.KPI.Group.GroupConfig ={};
-
+I18N.Setting.KPI.Group.GroupConfig.Title='Step Two：Group Index Setting';
 I18N.Setting.KPI.Group.GroupConfig.Title='Step Two: Group Index Setting';
 I18N.Setting.KPI.Group.GroupConfig.Annual= 'Group{0}Target Value';
 I18N.Setting.KPI.Group.GroupConfig.InputAnnual= 'Enter Group{0}';
@@ -2503,7 +2504,6 @@ I18N.SaveEffect.Step2='Configure benchmark model';
 I18N.SaveEffect.Step3='Calculate energy saving amount';
 I18N.SaveEffect.Step4='Configure display chart';
 I18N.SaveEffect.CreateTitle='Add effect';
-I18N.SaveEffect.EditTitle='编辑节能效果';
 I18N.SaveEffect.Runtime='Execution time';
 I18N.SaveEffect.ShowSavePlanDetail='View scheme detail';
 I18N.SaveEffect.NoEffectList='No scheme effect';
@@ -2524,8 +2524,8 @@ I18N.SaveEffect.Alert = 'Please reconfigure.';
 I18N.SaveEffect.BaselinePeriod='Benchmark determination period';
 I18N.SaveEffect.EnergyCalculatePeriod='Consumption calculation period';
 I18N.SaveEffect.EnergyUnitPrice='Energy unit price（{0}）';
-I18N.SaveEffect.ConfigSuccess='节能效果配置成功';
-I18N.SaveEffect.Predict='预计';
+I18N.SaveEffect.ConfigSuccess='Configured successfully';
+I18N.SaveEffect.Predict='Predict';
 I18N.SaveEffect.TagSum='数据总和';
 I18N.SaveEffect.Saving='节能量图';
 I18N.SaveEffect.Saving2='节约量图';
@@ -2578,42 +2578,42 @@ I18N.SaveEffect.Create.EnergyUnitPrice='Energy unit price';
 I18N.SaveEffect.Create.EnterEnergyUnitPrice='Input price';
 I18N.SaveEffect.Create.NeedEnterSaveTimeTip1='Select period on the left';
 I18N.SaveEffect.Create.NeedEnterSaveTimeTip2='to preview the comparative table between benchmark value and calculation tag';
-I18N.SaveEffect.Create.SavePreviewChart='Energy saving amount display chart';
+I18N.SaveEffect.Create.SavePreviewChart='Energy saving display chart';
 I18N.SaveEffect.Create.CalcSaveByMonth='Predicted amount by month';
 I18N.SaveEffect.Create.BenchmarkBattleCalc='Comparitive table between actual value and benchmark';
 I18N.SaveEffect.Create.StepTip = 'Step size does not match, please reselect data points.';
-I18N.SaveEffect.Create.CorrectionFactor='修正系数';
-I18N.SaveEffect.Create.EnterEnergyUnitPrice='输入价格';
-I18N.SaveEffect.Create.EnterCorrectionFactor='输入基准能耗修正系数';
-I18N.SaveEffect.Create.NeedEnterSaveTimeTip1='添加左侧列表中的节能量计算期';
-I18N.SaveEffect.Create.NeedEnterSaveTimeTip2='可预览此时间段内基准能耗值与计算tag是实际的对比图';
-I18N.SaveEffect.Create.SavePreviewChart='节能量展示图';
-I18N.SaveEffect.Create.CalcSaveByMonth='逐月预计节能量';
-I18N.SaveEffect.Create.BenchmarkBattleCalc='实际值与基准值对比图';
-I18N.SaveEffect.Create.StepTip = '所选数据点步长与计算步长不匹配，请重新选择数据点。';
-I18N.SaveEffect.NoDateTip = '暂无数据';
+I18N.SaveEffect.Create.CorrectionFactor='Correction Factor';
+I18N.SaveEffect.Create.EnterEnergyUnitPrice='Enter price';
+I18N.SaveEffect.Create.EnterCorrectionFactor='Enter benchmark correction factor';
+I18N.SaveEffect.Create.NeedEnterSaveTimeTip1='Select period on the left';
+I18N.SaveEffect.Create.NeedEnterSaveTimeTip2='to preview the comparative table between benchmark value and calculation tag';
+I18N.SaveEffect.Create.SavePreviewChart='Energy saving display chart';
+I18N.SaveEffect.Create.CalcSaveByMonth='Predicted energy saving by month';
+I18N.SaveEffect.Create.BenchmarkBattleCalc='Comparitive table between actual value and benchmark';
+I18N.SaveEffect.Create.StepTip = 'Step size does not match, please reselect data points.';
+I18N.SaveEffect.NoDateTip = 'No Data';
 
 I18N.SaveEffect.Chart = {};
-I18N.SaveEffect.Chart.PredictSaving = '预计节能量';
-I18N.SaveEffect.Chart.PredictSavingWater = '预计节水量';
-I18N.SaveEffect.Chart.ActualSaving = '实际节能量';
-I18N.SaveEffect.Chart.ActualSavingWater = '实际节水量';
-I18N.SaveEffect.Chart.Benchmark = '基准值';
-I18N.SaveEffect.Chart.SavingValue = '年度节能量';
-I18N.SaveEffect.Chart.SavingWaterValue = '年度节水量';
-I18N.SaveEffect.Chart.SavingRate = '年度节能率';
-I18N.SaveEffect.Chart.SavingWaterRate = '年度节水率';
-I18N.SaveEffect.Chart.ByMonthValue = '逐月值';
-I18N.SaveEffect.EnergySavingWater='节水量';
-I18N.SaveEffect.SavingCoalValue='年度节约标准煤';
-I18N.SaveEffect.Tip = '暂无节能效果';
+I18N.SaveEffect.Chart.PredictSaving = 'Predicted Energy Saving';
+I18N.SaveEffect.Chart.PredictSavingWater = 'Predicted Water Saving';
+I18N.SaveEffect.Chart.ActualSaving = 'Actual Energy Saving';
+I18N.SaveEffect.Chart.ActualSavingWater = 'Actual Water Saving';
+I18N.SaveEffect.Chart.Benchmark = 'Benchmark';
+I18N.SaveEffect.Chart.SavingValue = 'Annual Energy Saving';
+I18N.SaveEffect.Chart.SavingWaterValue = 'Annual Water Saving';
+I18N.SaveEffect.Chart.SavingRate = 'Annual Energy Saving Rate';
+I18N.SaveEffect.Chart.SavingWaterRate = 'Annual Water Saving Rate';
+I18N.SaveEffect.Chart.ByMonthValue = 'Monthly Value';
+I18N.SaveEffect.EnergySavingWater='Water Saving';
+I18N.SaveEffect.SavingCoalValue='Annual Saved Standard Coal';
+I18N.SaveEffect.Tip = 'No Energy Saving Effect';
 
 I18N.SaveEffect.Table = {};
-I18N.SaveEffect.Table.SavingCost = '年度节约成本';
-I18N.SaveEffect.Table.SavingValue = '年度节能(水)量';
-I18N.SaveEffect.Table.SavingRate = '年度节能(水)率';
-I18N.SaveEffect.ByYear = '年度节能效果';
-I18N.SaveEffect.OrderByCommo = '按介质展示';
-I18N.SaveEffect.OrderByBuilding = '按建筑展示';
+I18N.SaveEffect.Table.SavingCost = 'Annual Saved Cost';
+I18N.SaveEffect.Table.SavingValue = 'Annual Energy (Water) Saving';
+I18N.SaveEffect.Table.SavingRate = 'Annual Energy (Water) Saving Rate';
+I18N.SaveEffect.ByYear = 'Annual Energy Saving Effect';
+I18N.SaveEffect.OrderByCommo = 'Display by media';
+I18N.SaveEffect.OrderByBuilding = 'Display by building';
 
 module.exports = I18N;
