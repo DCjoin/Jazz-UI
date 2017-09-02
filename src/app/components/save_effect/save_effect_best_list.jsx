@@ -106,10 +106,18 @@ export default class SaveEffectBestList extends Component {
   }
 
 	render() {
+		
 		if(this.state.best===null){
       return (
         <div className="jazz-effect-best-list flex-center">
          <CircularProgress  mode="indeterminate" size={80} />
+       </div>
+      )
+    }else if(this.state.best.size===0){
+      return (
+        <div className="jazz-effect-list flex-center">
+          <FontIcon className="icon-weather-thunder" style={{fontSize:'60px'}} color="#32ad3d"/>
+         <div className="nolist-font">{I18N.SaveEffect.NoBest}</div>
        </div>
       )
     }else if(this.state.effectDetailShow){
@@ -128,7 +136,13 @@ export default class SaveEffectBestList extends Component {
 		return (
 			<div className="jazz-effect-overlay">
 				<div className="jazz-effect-best-list">
-					<div className="jazz-effect-best-list-header">{I18N.SaveEffect.BestLabel}</div>
+					<div className="jazz-effect-best-list-header">
+						<div className="jazz-effect-best-list-header-header">{I18N.SaveEffect.BestLabel}</div>
+						{BestStore.getIgnoredBest().size!==0 && <div className="jazz-effect-best-list-ignored-btn" 
+					onClick={()=>{
+						openTab(RoutePath.saveEffect.ignoredbBest(this.props.params)+'?init_hierarchy_id='+this.context.hierarchyId);
+						}}>{I18N.SaveEffect.IgnoredSolution}</div>}
+					</div>
 					{this.state.best.map(best=> <Item key={best.getIn(["SolutionInfo","EnergyEffectId"])} solution={best}
 							onIgnore={()=>{ignoreBestForList(best.getIn(["SolutionInfo","EnergyEffectId"]),this.props.router.params.customerId)}}
 							onItemClick={()=>{
@@ -136,10 +150,7 @@ export default class SaveEffectBestList extends Component {
 									effectDetailShow:true,
 									detailEffect:best
 								})}}/>)}
-					{BestStore.getIgnoredBest().size!==0 && <div className="jazz-effect-best-list-ignored-btn" 
-					onClick={()=>{
-						openTab(RoutePath.saveEffect.ignoredbBest(this.props.params)+'?init_hierarchy_id='+this.context.hierarchyId);
-						}}>{I18N.SaveEffect.IgnoredSolution}</div>}
+					
 				</div>
 				<Snackbar ref="snackbar" autoHideDuration={4000} open={!!this.state.saveSuccessText} onRequestClose={()=>{this.setState({saveSuccessText:null})}} message={this.state.saveSuccessText}/>
 			</div>

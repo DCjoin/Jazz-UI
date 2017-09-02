@@ -658,7 +658,7 @@ export default class Edit extends Component {
 						this._setFilterObj(filterObj.setIn(['BenchmarkDatas', idx, 'Value'], val));
 					}}
 					onGetChartData={() => {
-						getPreviewChart3(filterObj.toJS());
+						getPreviewChart3(filterObj.set("ConfigStep",3).toJS());
 					}}
           configStep={this.state.configStep}
           isView={this.state.configStep!==3}
