@@ -483,6 +483,9 @@ I18N.EM.UseMonth = 'By month';
 I18N.EM.UseYear = 'By year';
 I18N.EM.StepError = 'Selected tag does not support {0} interval. Please change to another interval and try.';
 
+I18N.EM.ConversionWan = 'W';
+I18N.EM.ConversionYi = 'Yi';
+
 I18N.EM.Tool = {};
 I18N.EM.Tool.ClearChart = 'Clear chart';
 I18N.EM.Tool.AssistCompare = 'Analysis supporting';

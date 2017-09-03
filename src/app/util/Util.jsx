@@ -2143,8 +2143,8 @@ let CommonFuns = {
     let isPlus = value >= 0,
     abbreviations = [
       // {label: '兆', value: Math.pow(10, 12)},
-      {label: '亿', value: Math.pow(10, 8)},
-      {label: '万', value: Math.pow(10, 4)},
+      {label: I18N.EM.ConversionYi, value: Math.pow(10, 8)},
+      {label: I18N.EM.ConversionWan, value: Math.pow(10, 4)},
       {label: '', value: Math.pow(10, 0)},
     ],
     label = '';
