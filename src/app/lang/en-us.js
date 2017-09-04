@@ -368,6 +368,7 @@ I18N.Common.Button.Filter = 'Filter';
 I18N.Common.Button.Close = 'Close';
 I18N.Common.Button.Cancel = 'Cancel';
 I18N.Common.Button.Cancel2 = 'Cancel';
+I18N.Common.Button.Repeal = '撤销';
 I18N.Common.Button.Delete = 'Delete';
 I18N.Common.Button.Edit = 'Edit';
 I18N.Common.Button.Exit = 'Exit';

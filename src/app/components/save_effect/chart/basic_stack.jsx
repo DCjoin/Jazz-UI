@@ -44,7 +44,10 @@ function getOptions(categories, series, unit, colors, currentYear){
 	        verticalAlign: 'top',
 	        layout: 'horizontal',
 	        y: -15,
-	        x: 200,
+	        x: 130,
+	        itemStyle: {
+	        	cursor: 'default',
+	        },
 	    },
 	    tooltip: {
 	        crosshairs: {
@@ -91,6 +94,7 @@ function getOptions(categories, series, unit, colors, currentYear){
 	    plotOptions: {
 	        area: {
 	            stacking: 'normal',
+	            connectNulls: true,
 	            fillOpacity : 1,
 	            lineWidth: 0,
 	            marker: {

@@ -29,8 +29,8 @@ function getSeries(data) {
 	let suffix = data.ContrastStep !== Monthly ? '/DD' : '';
 	return [
 		{
-			name: I18N.Kpi.ActualValues,
-			data: data.ActualValues.map( item => {
+			name: I18N.SaveEffect.Chart.Benchmark,
+			data: data.BenchmarkValues.map( item => {
 				return {
 					y: item.Value,
 					tooltipTitle: UTC2Local(item.Time).format('YYYY/MM' + suffix)
@@ -38,8 +38,8 @@ function getSeries(data) {
 			} )
 		},
 		{
-			name: I18N.SaveEffect.Chart.Benchmark,
-			data: data.BenchmarkValues.map( item => {
+			name: I18N.Kpi.ActualValues,
+			data: data.ActualValues.map( item => {
 				return {
 					y: item.Value,
 					tooltipTitle: UTC2Local(item.Time).format('YYYY/MM' + suffix)

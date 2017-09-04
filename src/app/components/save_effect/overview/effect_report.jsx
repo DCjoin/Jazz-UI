@@ -50,7 +50,7 @@ export function getConfigByCommodityId(commodityId) {
         name: I18N.Common.Commodity.ElectricOther,
         reportName: I18N.Common.Commodity.ElectricOther + I18N.SaveEffect.Saving,
         icon: 'icon-electricity',
-        color: '#4caf50',
+        color: '#4CAF50',
       };
       break;
     case CommodityMap.Water:
@@ -66,7 +66,7 @@ export function getConfigByCommodityId(commodityId) {
         name: I18N.Common.Commodity.Gas,
         reportName: I18N.Common.Commodity.Gas + I18N.SaveEffect.Saving,
         icon: 'icon-gas',
-        color: '#6d80ff',
+        color: '#6C7FFE',
       };
       break;
     case CommodityMap.CoolQ:
@@ -74,7 +74,7 @@ export function getConfigByCommodityId(commodityId) {
         name: I18N.Common.Commodity.CoolQ,
         reportName: I18N.Common.Commodity.CoolQ + I18N.SaveEffect.Saving,
         icon: 'icon-cool',
-        color: '#88c0ff',
+        color: '#86BAFD',
       };
       break;
     case CommodityMap.HeatQ:
@@ -82,7 +82,7 @@ export function getConfigByCommodityId(commodityId) {
         name: I18N.Common.Commodity.HeatQ,
         reportName: I18N.Common.Commodity.HeatQ + I18N.SaveEffect.Saving,
         icon: 'icon-heat',
-        color: '#ff7807',
+        color: '#FFB300',
       };
       break;
     case CommodityMap.LiquidGas:
@@ -90,7 +90,7 @@ export function getConfigByCommodityId(commodityId) {
         name: I18N.Common.Commodity.LiquidGas,
         reportName: I18N.Common.Commodity.LiquidGas + I18N.SaveEffect.Saving,
         icon: 'icon-liquefied-gas',
-        color: '#63daff',
+        color: '#82e2ff',
       };
       break;
     case CommodityMap.CoalOther:
@@ -98,7 +98,7 @@ export function getConfigByCommodityId(commodityId) {
         name: I18N.Common.Commodity.CoalOther,
         reportName: I18N.Common.Commodity.CoalOther + I18N.SaveEffect.Saving,
         icon: 'icon-coal',
-        color: '#202326',
+        color: '#7A91B5',
       };
       break;
     case CommodityMap.DieselOil:
@@ -106,7 +106,7 @@ export function getConfigByCommodityId(commodityId) {
         name: I18N.Common.Commodity.DieselOil,
         reportName: I18N.Common.Commodity.DieselOil + I18N.SaveEffect.Saving,
         icon: 'icon-diesel',
-        color: '#7500da',
+        color: '#ab47bc',
       };
       break;
     case CommodityMap.HeavyOil:
@@ -114,7 +114,7 @@ export function getConfigByCommodityId(commodityId) {
         name: I18N.Common.Commodity.HeavyOil,
         reportName: I18N.Common.Commodity.HeavyOil + I18N.SaveEffect.Saving,
         icon: 'icon-diesel',
-        color: '#00897b',
+        color: '#009688',
       };
       break;
     case CommodityMap.Kerosene:
@@ -122,7 +122,7 @@ export function getConfigByCommodityId(commodityId) {
         name: I18N.Common.Commodity.Kerosene,
         reportName: I18N.Common.Commodity.Kerosene + I18N.SaveEffect.Saving,
         icon: 'icon-diesel',
-        color: '#8f5500',
+        color: '#795548',
       };
       break;
     default:
@@ -132,7 +132,7 @@ export function getConfigByCommodityId(commodityId) {
         name,
         reportName: name + I18N.SaveEffect.Saving,
         icon: 'icon-other',
-        color: '#97a698',
+        color: '#59715b',
       };
       break;
   }

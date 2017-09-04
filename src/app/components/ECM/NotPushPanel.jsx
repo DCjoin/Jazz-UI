@@ -355,7 +355,7 @@ export default class NotPushPanel extends Component {
     return(
       <NewDialog
         open={this.state.measureShow}
-        modal={false}
+        hasClose
         isOutsideClose={false}
         onRequestClose={onClose}
         titleStyle={{margin:'0 7px',paddingTop:"7px"}}
