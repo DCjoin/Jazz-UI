@@ -28,15 +28,6 @@ function getCategories(data) {
 function getSeries(data) {
 	return [
 		{
-			name: I18N.SaveEffect.Chart.ActualSaving,
-			data: data.ActualSavingValues.map( item => {
-				return {
-					y: item.Value,
-					tooltipTitle: UTC2Local(item.Time).format('YYYY/MM')
-				}
-			} )
-		},
-		{
 			name: I18N.SaveEffect.Chart.PredictSaving,
 			data: data.PredictionSavingValues.map( item => {
 				return {
@@ -44,6 +35,15 @@ function getSeries(data) {
 					tooltipTitle: UTC2Local(item.Time).format('YYYY/MM')
 				} 
 			})
+		},
+		{
+			name: I18N.SaveEffect.Chart.ActualSaving,
+			data: data.ActualSavingValues.map( item => {
+				return {
+					y: item.Value,
+					tooltipTitle: UTC2Local(item.Time).format('YYYY/MM')
+				}
+			} )
 		},
 	];
 }
