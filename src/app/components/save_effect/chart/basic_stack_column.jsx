@@ -22,7 +22,10 @@ function getOptions(categories, series, unit, colors, currentYear){
 	        verticalAlign: 'top',
 	        layout: 'horizontal',
 	        y: -15,
-	        x: 200,
+	        x: 130,
+	        itemStyle: {
+	        	cursor: 'default',
+	        },
 	    },
 	    xAxis: {
 	    	tickLength: 0,
@@ -45,13 +48,6 @@ function getOptions(categories, series, unit, colors, currentYear){
 	            x: -10,
 	            text: unit,
 	        }
-	    },
-	    legend: {
-	        align: 'top',
-	        verticalAlign: 'top',
-	        layout: 'horizontal',
-	        y: -15,
-	        x: 200,
 	    },
 	    tooltip: {
 	        crosshairs: {
