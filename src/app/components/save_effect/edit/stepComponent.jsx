@@ -32,7 +32,7 @@ export default class StepComponent extends Component {
             <BubbleIcon number={this.props.step} style={styles.bubble} numberStyle={styles.number}/>
             <div className="jazz-save-effect-edit-step-component-title-label">{this.props.title}</div>
             {this.props.isfolded && <div className="jazz-save-effect-edit-step-component-title-alert">
-              <FontIcon className="icon-VIP" style={styles.icon} color="#ff4548"/>
+              <FontIcon className="icon-no_ecm" style={styles.icon} color="#ff4548"/>
               {I18N.SaveEffect.Alert}
             </div>}
           </div>
