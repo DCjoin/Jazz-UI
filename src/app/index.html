@@ -78,8 +78,8 @@
         <!-- <script src='http://localhost:3000/assets/zh-cn.js'></script> -->
         <div style='display: none;'>
         <script>
-          // window.APIPath = '${JAZZ_WEB_HOST}';
-            window.APIPath = '';
+           window.APIPath = '${JAZZ_WEBAPI_HOST}';
+            //window.APIPath = '';
           document.rawWrite = document.write;
           document.write = function(content) {
             if(content.indexOf('<script ') === 0) {
