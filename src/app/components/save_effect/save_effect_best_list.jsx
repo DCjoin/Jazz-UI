@@ -113,13 +113,6 @@ export default class SaveEffectBestList extends Component {
          <CircularProgress  mode="indeterminate" size={80} />
        </div>
       )
-    }else if(this.state.best.size===0){
-      return (
-        <div className="jazz-effect-list flex-center">
-          <FontIcon className="icon-weather-thunder" style={{fontSize:'60px'}} color="#32ad3d"/>
-         <div className="nolist-font">{I18N.SaveEffect.NoBest}</div>
-       </div>
-      )
     }else if(this.state.effectDetailShow){
       return(
           <Detail effect={this.state.detailEffect.get("SolutionInfo").set("HierarchyName",this.state.detailEffect.get("HierarchyName"))}
@@ -143,7 +136,12 @@ export default class SaveEffectBestList extends Component {
 						openTab(RoutePath.saveEffect.ignoredbBest(this.props.params)+'?init_hierarchy_id='+this.context.hierarchyId);
 						}}>{I18N.SaveEffect.IgnoredSolution}</div>}
 					</div>
-					{this.state.best.map(best=> <Item key={best.getIn(["SolutionInfo","EnergyEffectId"])} solution={best}
+					{this.state.best.size===0?
+							<div className="flex-center" style={{flexDirection:'column'}}>
+          			<FontIcon className="icon-weather-thunder" style={{fontSize:'60px'}} color="#32ad3d"/>
+         				<div className="nolist-font">{I18N.SaveEffect.NoBest}</div>
+       				</div>
+						:this.state.best.map(best=> <Item key={best.getIn(["SolutionInfo","EnergyEffectId"])} solution={best}
 							onIgnore={()=>{ignoreBestForList(best.getIn(["SolutionInfo","EnergyEffectId"]),this.props.router.params.customerId)}}
 							onItemClick={()=>{
 								this.setState({
