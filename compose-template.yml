@@ -2,7 +2,7 @@
   restart: always
   image: '{DOCKER:IMAGE_FULL_NAME:WebUI}'
   ports:
-    - '80/tcp'
+    - 9083:80
   dns:
     - '10.160.23.21'
     - '10.47.144.11'
@@ -17,8 +17,8 @@
     - JAZZ_UI_UMENG_CNZZ_SDK_URL=${JAZZ_UI_UMENG_CNZZ_SDK_URL}
   memswap_limit: 0
   labels:
-    aliyun.scale: '1'
-    aliyun.routing.port_80: '${JAZZ_WEB_HOST}'
+    aliyun.scale: '${JAZZ_UI_SCALE}'
+    aliyun.lb.port_80: '${JAZZ_UI_LB}'
   shm_size: 
   memswap_reservation: 0
   kernel_memory: 0

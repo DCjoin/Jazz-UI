@@ -517,7 +517,7 @@ export default class Edit extends Component {
 						this.setState({
 							chartData3: null
 						});
-						getPreviewChart2(filterObj.set("CorrectionFactor",1).toJS());
+						getPreviewChart2(filterObj.set("CorrectionFactor",1).set('ConfigStep',2).toJS());
 					}}
 					onChangeBenchmarkEndDate={(val) => {
 						val = date2UTC(val);
@@ -537,12 +537,12 @@ export default class Edit extends Component {
 						this.setState({
 							chartData3: null
 						});
-						getPreviewChart2(filterObj.set("CorrectionFactor",1).toJS());
+						getPreviewChart2(filterObj.set("CorrectionFactor",1).set('ConfigStep',2).toJS());
 					}}
 					onGetChartData={() => {
 						let newFilterObj = filterObj.set('IncludeEnergyEffectData', true);
 						this._setFilterObj(newFilterObj);
-						getPreviewChart2(newFilterObj.set("CorrectionFactor",1).toJS());
+						getPreviewChart2(newFilterObj.set("CorrectionFactor",1).set('ConfigStep',2).toJS());
 					}}
 					updateChartByNavgatorData={(filterObj) => {
 						let {chartData2} = this.state;

@@ -368,7 +368,7 @@ I18N.Common.Button.Filter = 'Filter';
 I18N.Common.Button.Close = 'Close';
 I18N.Common.Button.Cancel = 'Cancel';
 I18N.Common.Button.Cancel2 = 'Cancel';
-I18N.Common.Button.Repeal = '撤销';
+I18N.Common.Button.Repeal = 'Remove';
 I18N.Common.Button.Delete = 'Delete';
 I18N.Common.Button.Edit = 'Edit';
 I18N.Common.Button.Exit = 'Exit';
@@ -483,6 +483,9 @@ I18N.EM.UseDay = 'By day';
 I18N.EM.UseMonth = 'By month';
 I18N.EM.UseYear = 'By year';
 I18N.EM.StepError = 'Selected tag does not support {0} interval. Please change to another interval and try.';
+
+I18N.EM.ConversionWan = 'W';
+I18N.EM.ConversionYi = 'Yi';
 
 I18N.EM.Tool = {};
 I18N.EM.Tool.ClearChart = 'Clear chart';

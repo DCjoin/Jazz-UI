@@ -484,6 +484,9 @@ I18N.EM.UseMonth = '按月';
 I18N.EM.UseYear = '按年';
 I18N.EM.StepError = '所选数据点不支持{0}的步长显示，换个步长试试。';
 
+I18N.EM.ConversionWan = '万';
+I18N.EM.ConversionYi = '亿';
+
 I18N.EM.Tool = {};
 I18N.EM.Tool.ClearChart = '清空图表';
 I18N.EM.Tool.AssistCompare = '辅助分析';
