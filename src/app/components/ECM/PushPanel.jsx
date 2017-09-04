@@ -455,7 +455,7 @@ export default class PushPanel extends Component {
     return(
       <NewDialog
         open={this.state.measureShow}
-        modal={false}
+        hasClose
         isOutsideClose={false}
         onRequestClose={onClose}
         overlayStyle={{overflowY:"auto"}}
