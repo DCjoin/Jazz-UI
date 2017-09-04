@@ -20,6 +20,9 @@ function getOptions(categories, series, unit){
 	        layout: 'horizontal',
 	        y: -15,
 	        x: 200,
+	        itemStyle: {
+	        	cursor: 'default',
+	        },
 	    },
 	    xAxis: {
 	    	tickLength: 0,

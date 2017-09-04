@@ -44,7 +44,10 @@ function getOptions(categories, series, unit, colors, currentYear){
 	        verticalAlign: 'top',
 	        layout: 'horizontal',
 	        y: -15,
-	        x: 200,
+	        x: 130,
+	        itemStyle: {
+	        	cursor: 'default',
+	        },
 	    },
 	    tooltip: {
 	        crosshairs: {
