@@ -552,11 +552,11 @@ export default class EffectDetail extends Component {
 						</div>}
 					</div>
 					<div className="jazz-effect-detail-content-save-energy">
-							<IconText style={{width:'140px',marginLeft:'0px'}} icon={saveIcon} label={`${preTitle}${I18N.SaveEffect.EnergySaving}`} value={validValue(EnergySaving)} uom={util.getUomById(EnergySavingUomId).Code}/>
-							<IconText style={{width:'140px',marginLeft:'0px'}} icon={costIcon} label={`${preTitle}${I18N.Setting.Effect.Cost}`} value={validValue(EnergySavingCosts)} uom="RMB"/>
-							<IconText style={{width:'140px',marginLeft:'0px'}} icon={amountIcon} label={I18N.Setting.KPI.SavingRate} value={'-'}/>
-							<IconText style={{width:'140px',marginLeft:'0px'}} icon={amountIcon} label={I18N.Setting.ECM.InvestmentAmount} value={validValue(InvestmentAmount)} uom="RMB"/>
-							<IconText style={{width:'140px',marginLeft:'0px'}} icon={cycleIcon} label={`${prePeriod}${I18N.Setting.ECM.PaybackPeriod}`} value={tansferReturnCycle(InvestmentReturnCycle) || '-'}
+							<IconText style={{width:'140px',marginLeft:'0px'}} valueStyle={{fontSize:'22px'}} icon={saveIcon} label={`${preTitle}${I18N.SaveEffect.EnergySaving}`} value={validValue(EnergySaving)} uom={util.getUomById(EnergySavingUomId).Code}/>
+							<IconText style={{width:'140px',marginLeft:'0px'}} valueStyle={{fontSize:'22px'}} icon={costIcon} label={`${preTitle}${I18N.Setting.Effect.Cost}`} value={validValue(EnergySavingCosts)} uom="RMB"/>
+							<IconText style={{width:'140px',marginLeft:'0px'}} valueStyle={{fontSize:'22px'}} icon={amountIcon} label={I18N.Setting.KPI.SavingRate} value={'-'}/>
+							<IconText style={{width:'140px',marginLeft:'0px'}} valueStyle={{fontSize:'22px'}} icon={amountIcon} label={I18N.Setting.ECM.InvestmentAmount} value={validValue(InvestmentAmount)} uom="RMB"/>
+							<IconText style={{width:'140px',marginLeft:'0px'}} valueStyle={{fontSize:'22px'}} icon={cycleIcon} label={`${prePeriod}${I18N.Setting.ECM.PaybackPeriod}`} value={tansferReturnCycle(InvestmentReturnCycle) || '-'}
 												uom={util.isNumber(InvestmentReturnCycle) && InvestmentReturnCycle!==0?I18N.EM.Year:''}/>
 					</div>
 					{this._renderChart()}
@@ -656,7 +656,7 @@ export default class EffectDetail extends Component {
 			title:I18N.SaveEffect.SetBest,
 			titleStyle:{fontSize:'16px',fontWeight:'600',color:'#0f0f0f',margin:'0 30px',padding:'15px 0px',height:'22px',lineHeight:'22px',marginBottom:'0',borderBottom:'1px solid #e6e6e6'},
 			contentStyle:{margin:'0 30px'},
-			actionsContainerStyle:{margin:'25px 22px 30px 0'},
+			actionsContainerStyle:{margin:'25px 30px 30px 0'},
 			style:{overflowY:'auto'}
 		},style={
 			btn:{
