@@ -94,6 +94,7 @@ function getOptions(categories, series, unit, colors, currentYear){
 	    plotOptions: {
 	        area: {
 	            stacking: 'normal',
+	            connectNulls: true,
 	            fillOpacity : 1,
 	            lineWidth: 0,
 	            marker: {
