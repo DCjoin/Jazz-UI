@@ -26,8 +26,10 @@ export class IconText extends Component{
           {this.props.icon}
           <div style={{fontSize:'12px',marginLeft:'5px',color:"#626469"}}>{this.props.label}</div>
         </div>
-				{(this.props.value || this.props.uom) && <div style={{display:'flex',flexDirection:'row',marginTop:'10px',alignItems:'center',height:"32px"}}>
-					<div style={{fontSize: '25px',fontWeight: '500',color: '#0f0f0f'}}>{this.props.value}</div>
+				{(this.props.value || this.props.uom) && <div style={{display:'flex',flexDirection:'row',marginTop:'10px',alignItems:'baseline',height:"32px"}}>
+					<div style={assign({
+      fontSize: '25px',fontWeight: '500',color: '#0f0f0f'
+    }, this.props.valueStyle)}>{this.props.value}</div>
 					<div style={{fontSize: '14px',color: '#0f0f0f',marginLeft:this.props.value?'10px':'0px'}}>{this.props.uom}</div>
 				</div>}
 				{this.props.children}
@@ -41,7 +43,8 @@ IconText.propTypes = {
   label:React.PropTypes.bool,
   value:React.PropTypes.string,
 	uom:React.PropTypes.string,
-	style:React.PropTypes.object
+	style:React.PropTypes.object,
+  valueStyle:React.PropTypes.object
 };
 
 export class MeasuresItem extends Component {
