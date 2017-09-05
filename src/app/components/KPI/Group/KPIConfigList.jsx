@@ -78,8 +78,24 @@ class KPIItem extends Component {
 	render() {
 		let {item, onChangeState} = this.props;
 		return (
-			<li className='config-item'>
-				<span>{item.IndicatorName}</span>
+			<li className='config-item hiddenEllipsis'>
+				<span className='hiddenEllipsis'>{item.IndicatorName}</span>
+				<span className='config-item-action'>
+					<LinkButton label={I18N.Setting.KPI.Group.Config} onClick={() => {
+						onChangeState({
+							settingStatus: SettingStatus.Edit,
+							refId: item.KpiSettingsId,
+						});
+					}}/>
+					<span style={{margin: '0 10px', color: '#e6e6e6',}}>|</span>
+					<LinkButton iconName='icon-delete' onClick={() => {
+						onChangeState({
+							showDeleteDialog: true,
+							refId: item.KpiSettingsId,
+						});
+					}}/>
+				</span>
+				{/*
 				<span className='config-item-summary'>{getConfigSummary(item)}</span>
 				<LinkButton ref={'edit_icon'}
 					className={'fa icon-edit btn-icon'} onClick={() => {
@@ -123,6 +139,7 @@ class KPIItem extends Component {
 						}}/>
 					</Menu>
 				</Popover>
+				*/}
 			</li>
 		);
 	}
@@ -138,9 +155,22 @@ class KPIConfigItem extends Component {
 		super(props);
 		this._onChangeState = this._onChangeState.bind(this);
 		this.state = {
-			opened: false,
+			// opened: false,
 			rolongDisabled: true
 		};
+
+		GroupKPIAction.getGroupByYear(props.CustomerId, props.Year, null, (data) => {
+			this.setState({
+				rolongDisabled: !data || data.length === 0
+			});
+		});
+	}
+	componentWillReceiveProps(nextProps) {
+		GroupKPIAction.getGroupByYear(nextProps.CustomerId, nextProps.Year, null, (data) => {
+			this.setState({
+				rolongDisabled: !data || data.length === 0
+			});
+		});
 	}
 	_onChangeState(data) {
 		let {Year, onChangeState} = this.props;
@@ -152,7 +182,23 @@ class KPIConfigItem extends Component {
 			<section className='year-item'>
 				<header className='year-item-header'>
 					<span>{util.replacePathParams(I18N.Setting.KPI.Group.HeaderYear, Year)}</span>
-					{add && <LinkButton ref='add_icon'
+					<span className='year-item-header-action'>
+						<LinkButton label={I18N.Setting.KPI.create} onClick={() => {
+							this._onChangeState({
+								settingStatus: SettingStatus.New
+							});
+						}}/>
+						<span style={{margin: '0 10px', color: '#e6e6e6',}}>|</span>
+						<LinkButton disabled={this.state.rolongDisabled} label={I18N.Setting.KPI.Prolong} onClick={() => {
+							if(this.state.rolongDisabled) {
+								return;
+							}
+							this._onChangeState({
+								settingStatus: SettingStatus.Prolong
+							});
+						}}/>
+					</span>
+					{/*add && <LinkButton ref='add_icon'
 						onMouseOver={() => {
 							// var info={
 							// 		CustomerId,
@@ -172,7 +218,7 @@ class KPIConfigItem extends Component {
 						this.setState({
 							opened: true
 						});
-					}}/>}
+					}}/>
 					<Popover
           				open={this.state.opened}
           				anchorEl={this.state.opened && ReactDOM.findDOMNode(this.refs.add_icon)}
@@ -197,13 +243,14 @@ class KPIConfigItem extends Component {
 							}}/>
 						</Menu>
 					</Popover>
+					*/}
 				</header>
-				<ul>
+				{GroupKpiItems && GroupKpiItems.length > 0 && <ul className='year-item-content'>
 					{ GroupKpiItems.map( item => (<KPIItem
 						key={item.KpiSettingsId}
 						item={item}
 						onChangeState={this._onChangeState}/>) ) }
-				</ul>
+				</ul>}
 			</section>
 		);
 	}
@@ -302,17 +349,22 @@ export default class KPIConfigList extends Component<void, Props, State> {
 		}
 		return (
 			<div className='jazz-margin-up-main jazz-kpi-config-list'>
-				<header className='header-bar'>{I18N.Setting.KPI.GroupList.Header}</header>
-				<article className='content'>
-					{GroupKPIStore.getGroupSettingsList().map( data => (
-					<KPIConfigItem
-						key={data.Year}
-						CustomerId={parseInt(this.props.router.params.customerId)}
-						onChangeState={(state) => {
-							this.setState(state);
-						}}
-						{...data}/>) )}
-				</article>
+				<div className=''>
+					<header className='header-bar'>
+						<em onClick={this.props.onClose} className='icon-return' style={{marginRight: 20}}/>
+						{I18N.Setting.KPI.GroupList.Header}
+					</header>
+					<article className='content'>
+						{GroupKPIStore.getGroupSettingsList().map( data => (
+						<KPIConfigItem
+							key={data.Year}
+							CustomerId={parseInt(this.props.router.params.customerId)}
+							onChangeState={(state) => {
+								this.setState(state);
+							}}
+							{...data}/>) )}
+					</article>
+				</div>
 				<NewDialog
 					open={showDeleteDialog}
 					title={util.replacePathParams(I18N.Setting.KPI.GroupList.DeleteTitle, GroupKPIStore.findKPISettingByKPISettingId(refId).IndicatorName || '')}
