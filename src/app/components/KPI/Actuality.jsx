@@ -15,7 +15,7 @@ import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
 
 import KPIActuality from './KPIActuality.jsx';
 import ReportPreview from './ReportPreview.jsx';
-import ConfigMenu from './Group/ConfigMenu.jsx';
+import KPIConfigList from './Group/KPIConfigList.jsx';
 import ReportConfig from './Report/ReportConfig.jsx';
 
 import UserAction from 'actions/UserAction.jsx';
@@ -99,7 +99,6 @@ export default class Actuality extends Component {
 	};
 
 	componentWillMount() {
-		// this._configCB = this._configCB.bind(this);
 		this._showReportEdit = this._showReportEdit.bind(this);
 		this._removeEditPage = this._removeEditPage.bind(this);
 
@@ -121,15 +120,8 @@ export default class Actuality extends Component {
 	_getInitialState(props, ctx) {
 		this.setState({
 			edit: null,
-			isCustomer: props.router.params.customerId*1 === ctx.hierarchyId
-			// show: isFull() ? {
-			// 		kpi: true,
-			// 		report: true,
-			// 	} : (
-			// 		props.router.location.query.kpiId ? {
-			// 			report: false,
-			// 		} : {}
-			// 	),
+			isCustomer: props.router.params.customerId*1 === ctx.hierarchyId,
+			showKPIConfigList: false,
 		});
 	}
 	_loadInitData(props, context) {
@@ -142,15 +134,6 @@ export default class Actuality extends Component {
 			ReportAction.allBuildingsExistence(props.router.params.customerId);
 		}
 	}
-	// _configCB(type, value) {
-	// 	if( this.state.show[type] !== value ) {
-	// 		this.setState({
-	// 			show: {...this.state.show, ...{
-	// 				[type]: value
-	// 			}}
-	// 		});			
-	// 	}
-	// }
 	_getParams(props) {
 		return props.router.params;
 	}
@@ -195,7 +178,12 @@ export default class Actuality extends Component {
 				<div className='jazz-actuality-item-title'>{prefixTitle + I18N.Kpi.KPIActual}</div>
 				{hasKPIEdit && !singleKPI &&
 		    	<IconButton iconClassName='icon-setting' iconStyle={{color: '#32ad3d', fontSize: '20px'}} onClick={() => {
-			      	this.props.router.push(RoutePath.KPIGroupConfig(this.props.router.params));
+		    		this.setState((state, props) => {
+		    			return {
+		    				showKPIConfigList: true
+		    			};
+		    		});
+			      	// this.props.router.push(RoutePath.KPIGroupConfig(this.props.router.params));
 			      }}/>}
 				<KPIActuality router={this.props.router} hierarchyId={this._getHierarchyId(this.props.router, this.context)}/>
 			</div>}
@@ -294,8 +282,13 @@ export default class Actuality extends Component {
 		return (
 			<div className='jazz-actuality'>
 				{!hierarchyId && (<div className='flex-center'><b>{I18N.Kpi.Error.SelectBuilding}</b></div>)}
-				{this._renderActuality()}
-				{this._renderEditPage()}
+				{!this.state.showKPIConfigList && this._renderActuality()}
+				{!this.state.showKPIConfigList && this._renderEditPage()}
+				{this.state.showKPIConfigList && <KPIConfigList onClose={() => {
+					this.setState(() => {
+						return {showKPIConfigList: false};
+					});
+				}} customerId={this.props.router.params.customerId * 1}/>}
 			</div>
 		);
 	}

@@ -599,6 +599,8 @@
 .jazz-kpi-config-list {
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
   &.jazz-margin-up-main {
     background-color: @theme;
   }
@@ -609,22 +611,23 @@
     height: 60px;
     line-height: 60px;
     font-size: 16px;
-    padding: 0 40px;
     border-bottom: 1px solid @border;
+    font-weight: bold;
   }
   .content {
-    padding: 40px;
+    padding: 20px 0;
     flex: 1;
     flex: 1;
     display: flex;
     flex-direction: column;
     overflow-y: auto;
     overflow-x: hidden;
+  }
 
-    & .jazz-main-content {
-      display: flex;
-      flex-direction: column;
-    }
+
+  & .jazz-main-content {
+    // display: flex;
+    // flex-direction: column;
   }
 
   & .year-item {
@@ -668,6 +671,9 @@
     padding: 20px;
     display: flex;
     justify-content: space-between;
+    border-radius: 2px;
+    box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
 
     // &-summary {
     //   flex: 1;

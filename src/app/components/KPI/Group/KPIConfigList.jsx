@@ -264,7 +264,7 @@ KPIConfigItem.defaultProps = {
 
 
 type Props = {
-	router: object,
+	customerId: number,
 };
 
 type State = {
@@ -297,8 +297,8 @@ export default class KPIConfigList extends Component<void, Props, State> {
 		GroupKPIStore.removeChangeListener(this._onChange);
 	}
 	_onGetBuildingList() {
-		if(privilegedCustomer(this.props.router.params.customerId)) {
-			return GroupKPIAction.getGroupSettingsList(this.props.router.params.customerId);
+		if(privilegedCustomer(this.props.customerId)) {
+			return GroupKPIAction.getGroupSettingsList(this.props.customerId);
 		}
 		this._onChange();
 	}
@@ -316,11 +316,11 @@ export default class KPIConfigList extends Component<void, Props, State> {
 			refId: null,
 			refYear: null,
 		});
-		HierarchyAction.getBuildingListByCustomerId(props.router.params.customerId);
+		HierarchyAction.getBuildingListByCustomerId(props.customerId);
 
 	}
 	_deleteKPISetting() {
-		GroupKPIAction.deleteGroupSettings(this.state.refId, this.props.router.params.customerId);
+		GroupKPIAction.deleteGroupSettings(this.state.refId, this.props.customerId);
 		this.setState({
 			loading: true,
 			showDeleteDialog: false,
@@ -344,7 +344,7 @@ export default class KPIConfigList extends Component<void, Props, State> {
 						id={refId}
 						name={GroupKPIStore.findKPISettingByKPISettingId(refId).IndicatorName || ''}/>)
 		}
-		if( !privilegedCustomer(this.props.router.params.customerId) ) {
+		if( !privilegedCustomer(this.props.customerId) ) {
 			return (<div className='jazz-margin-up-main flex-center'>{I18N.Kpi.Error.KPINonMoreBuilding}</div>);
 		}
 		return (
@@ -358,7 +358,7 @@ export default class KPIConfigList extends Component<void, Props, State> {
 						{GroupKPIStore.getGroupSettingsList().map( data => (
 						<KPIConfigItem
 							key={data.Year}
-							CustomerId={parseInt(this.props.router.params.customerId)}
+							CustomerId={parseInt(this.props.customerId)}
 							onChangeState={(state) => {
 								this.setState(state);
 							}}
