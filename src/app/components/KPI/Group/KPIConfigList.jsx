@@ -349,7 +349,7 @@ export default class KPIConfigList extends Component<void, Props, State> {
 		}
 		return (
 			<div className='jazz-margin-up-main jazz-kpi-config-list'>
-				<div className=''>
+				<div className='jazz-main-content'>
 					<header className='header-bar'>
 						<em onClick={this.props.onClose} className='icon-return' style={{marginRight: 20}}/>
 						{I18N.Setting.KPI.GroupList.Header}
