@@ -2149,10 +2149,12 @@ I18N.Setting.KPI.Group = {};
 I18N.Setting.KPI.Group.Commodity = '指标介质';
 I18N.Setting.KPI.Group.Prolongkpi = '延续指标';
 I18N.Setting.KPI.Group.HeaderYear = '{0}年';
-I18N.Setting.KPI.Group.New = '新建指标-{0}年';
+I18N.Setting.KPI.Group.New = '{0}年-新建指标';
 I18N.Setting.KPI.Group.Edit = '编辑指标-{0}年-{1}';
-I18N.Setting.KPI.Group.Prolong = '延续上年指标-{0}年';
+I18N.Setting.KPI.Group.Prolong = '{0}年-延续往年指标';
 I18N.Setting.KPI.Group.Config = '配置';
+I18N.Setting.KPI.Group.SaveAndConfig = '保存并配置';
+I18N.Setting.KPI.Group.SelectPeolongKPI = '请选择要延续的指标';
 I18N.Setting.KPI.Group.GroupConfig ={};
 I18N.Setting.KPI.Group.GroupConfig.SelectTag='引用实际值数据点';
 I18N.Setting.KPI.Group.GroupConfig.SelectTagForPrediction='选择分项数据点';
@@ -2613,6 +2615,7 @@ I18N.SaveEffect.Table.SavingRate = '年度节能(水)率';
 I18N.SaveEffect.ByYear = '年度节能效果';
 I18N.SaveEffect.OrderByCommo = '按介质展示';
 I18N.SaveEffect.OrderByBuilding = '按建筑展示';
+
 
 
 
