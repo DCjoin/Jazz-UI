@@ -54,5 +54,4 @@ deploy:
   on:
     all_branches: true
   script:
-#    - ./upload.sh ${ARTIFACT_NAME} ${PROJECT} ${TRAVIS_BRANCH} ${ROLE} ${PACKAGE_VERSION} ${OSS_BUCKET} ${OSS_KEY} ${OSS_SECRET} && curl -X POST "http://114.215.253.133:8081/job/Jazz/buildWithParameters?environment=dev&ui_version=latest&main_version=latest&branch=${TRAVIS_BRANCH}" --user ${JENKINS_AUTH} && docker push $REMOTE_TAG && docker push $REMOTE_TAG_LATEST
-    - ./upload.sh ${ARTIFACT_NAME} ${PROJECT} ${TRAVIS_BRANCH} ${ROLE} ${PACKAGE_VERSION} ${OSS_BUCKET} ${OSS_KEY} ${OSS_SECRET} && docker push $REMOTE_TAG && docker push $REMOTE_TAG_LATEST
+    - ./upload.sh ${ARTIFACT_NAME} ${PROJECT} ${TRAVIS_BRANCH} ${ROLE} ${PACKAGE_VERSION} ${OSS_BUCKET} ${OSS_KEY} ${OSS_SECRET} && docker push $REMOTE_TAG && docker push $REMOTE_TAG_LATEST && curl -X POST -u "${JENKINS_USER}:${JENKINS_TOKEN}" "${JENKINS_HOST}/job/${PROJECT}/buildWithParameters?environment=dev&version=latest&branch=${TRAVIS_BRANCH}"
