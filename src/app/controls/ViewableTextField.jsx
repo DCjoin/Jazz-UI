@@ -257,7 +257,7 @@ var ViewableTextField = React.createClass({
         multiLine: this.props.multiLine ? true : false,
         // rows:this.state.value?this.state.value.split('\n').length:1,
         floatingLabelText: this.props.title,
-        floatingLabelStyle:{fontSize:'14px',color:'#9fa0a4'},
+        floatingLabelStyle:{fontSize:'12px',color:'#9fa0a4'},
         inputStyle:{fontSize:'14px',color:'#000000'},
         type: this.props.type
       };

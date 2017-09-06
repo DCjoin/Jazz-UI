@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import TitleComponent from 'controls/TitleComponent.jsx';
 import {SettingStatus,Type} from 'constants/actionType/KPI.jsx';
 import ViewableKPIType from './ViewableKPIType.jsx';
 import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
@@ -14,12 +13,12 @@ export default class BasicConfig extends Component {
   		this._onPrelongKpiChange = this._onPrelongKpiChange.bind(this);
   	}
 
-  _onCommodityChange(value){
-    GroupKPIAction.merge([{
-      path:'CommodityId',
-      value
-    }])
-    }
+  // _onCommodityChange(value){
+  //   GroupKPIAction.merge([{
+  //     path:'CommodityId',
+  //     value
+  //   }])
+  //   }
 
   _onNameChange(value){
     GroupKPIAction.merge([{
@@ -48,21 +47,13 @@ export default class BasicConfig extends Component {
       value
     },{
       path:'IndicatorType',
-      value:1
+      value:2
     }])
   }
 
   _renderNewBasic(){
-    let {CommodityId,IndicatorName,IndicatorType,IndicatorClass}=this.props.kpiInfo.toJS();
-    let commodityProps={
-      ref: 'commodity',
-      isViewStatus: false,
-      title: I18N.Setting.KPI.Group.Commodity,
-      defaultValue: CommodityId || -1,
-      dataItems: GroupKPIStore.getCommodityList(),// 2017/7/11 support all commodities
-      didChanged:this._onCommodityChange
-    },
-    nameProps={
+    let {IndicatorName,IndicatorType,IndicatorClass}=this.props.kpiInfo.toJS();
+    let  nameProps={
       ref: 'name',
       isViewStatus: false,
       didChanged: this._onNameChange,
@@ -70,9 +61,9 @@ export default class BasicConfig extends Component {
       hintText:I18N.Setting.KPI.Basic.NameHint,
       title: I18N.Setting.KPI.Basic.Name,
       isRequired: true,
+      autoFocus:true,
       style:{
-        marginTop:'15px',
-        marginBottom:'15px'
+        marginTop:'10px',
       }
     },
     typeProps={
@@ -84,7 +75,6 @@ export default class BasicConfig extends Component {
     };
     return(
       <div style={{display:'flex','flexDirection':'column'}}>
-        <ViewableDropDownMenu {...commodityProps}/>
         <ViewableTextField {...nameProps}/>
         <ViewableKPIType {...typeProps}/>
       </div>
@@ -104,12 +94,11 @@ export default class BasicConfig extends Component {
       ref: 'Prolongkpi',
       isViewStatus: false,
       title: I18N.Setting.KPI.Group.Prolongkpi,
+      titleStyle:{fontSize: '12px',color: '#9fa0a4',marginBottom:'0px'},
       defaultValue: GroupKPIStore.getProlongkpiId(),
       dataItems: GroupKPIStore.getGroupList(),
       didChanged:this._onPrelongKpiChange,
-      style:{
-        marginBottom:'30px'
-      }
+      style:{width:'200px'}
     },
     typeProps={
       status:SettingStatus.Prolong,
@@ -119,7 +108,7 @@ export default class BasicConfig extends Component {
       onClassChange:this._onClassChange
     };
     return(
-      <div>
+      <div style={{marginTop:'20px'}}>
         <ViewableDropDownMenu {...prolongkpiProps}/>
         <ViewableKPIType {...typeProps}/>
       </div>
@@ -132,9 +121,9 @@ export default class BasicConfig extends Component {
       case SettingStatus.New:
           content=this._renderNewBasic();
           break;
-      case SettingStatus.Edit:
-          content=this._renderEditBasic();
-          break;
+      // case SettingStatus.Edit:
+      //     content=this._renderEditBasic();
+      //     break;
       case SettingStatus.Prolong:
           content=this._renderProlongBasic();
           break;
@@ -145,13 +134,11 @@ export default class BasicConfig extends Component {
   }
 
 	render() {
-    let props={
-      title:I18N.Setting.KPI.Basic.Title
-    };
     return(
-      <TitleComponent {...props}>
+      <div>
         {this._renderConfig()}
-      </TitleComponent>
+      </div>
+        
     )
   }
 }

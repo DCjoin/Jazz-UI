@@ -15,7 +15,7 @@ import FlatButton from 'controls/FlatButton.jsx';
 import LinkButton from 'controls/LinkButton.jsx';
 import NewDialog from 'controls/NewDialog.jsx';
 
-import KPIConfig from './KPIConfig.jsx';
+import KPIConfig from './NewKPIConfig.jsx';
 
 import HierarchyAction from 'actions/HierarchyAction.jsx';
 import GroupKPIAction from 'actions/KPI/GroupKPIAction.jsx';

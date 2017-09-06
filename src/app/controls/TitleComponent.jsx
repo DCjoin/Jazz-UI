@@ -8,7 +8,8 @@ const Style={
     marginTop:'30px'
   },
   title:{
-    fontSize:'14px'
+    fontSize:'12px',
+    color:'#9fa0a4'
   },
   content:{
     marginTop:'30px',

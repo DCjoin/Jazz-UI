@@ -146,7 +146,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     });
     group=group.unshift({
       payload: -1,
-      text: I18N.EM.Report.Select,
+      text: I18N.Setting.KPI.Group.SelectPeolongKPI,
       disabled:true,
     });
     return group.toJS()
