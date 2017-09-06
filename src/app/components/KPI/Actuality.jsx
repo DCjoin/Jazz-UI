@@ -16,6 +16,7 @@ import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
 import KPIActuality from './KPIActuality.jsx';
 import ReportPreview from './ReportPreview.jsx';
 import KPIConfigList from './Group/KPIConfigList.jsx';
+import Ranking from './Group/Ranking.jsx';
 import ReportConfig from './Report/ReportConfig.jsx';
 
 import UserAction from 'actions/UserAction.jsx';
@@ -27,6 +28,11 @@ import UserStore from 'stores/UserStore.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import CurrentUserCustomerStore from 'stores/CurrentUserCustomerStore.jsx';
 import ReportStore from 'stores/ReportStore.jsx';
+
+const CONFIG_TYPE = {
+	KPI: 1,
+	RANK: 2,
+};
 
 function privilegeWithIndexAndReport( privilegeCheck ) {
 	return privilegeCheck(PermissionCode.INDEX_AND_REPORT, CurrentUserStore.getCurrentPrivilege());
@@ -121,7 +127,7 @@ export default class Actuality extends Component {
 		this.setState({
 			edit: null,
 			isCustomer: props.router.params.customerId*1 === ctx.hierarchyId,
-			showKPIConfigList: false,
+			configType: null,
 		});
 	}
 	_loadInitData(props, context) {
@@ -180,7 +186,7 @@ export default class Actuality extends Component {
 		    	<IconButton iconClassName='icon-setting' iconStyle={{color: '#32ad3d', fontSize: '20px'}} onClick={() => {
 		    		this.setState((state, props) => {
 		    			return {
-		    				showKPIConfigList: true
+		    				configType: CONFIG_TYPE.RANK
 		    			};
 		    		});
 			      	// this.props.router.push(RoutePath.KPIGroupConfig(this.props.router.params));
@@ -243,6 +249,23 @@ export default class Actuality extends Component {
 			}
 		});
 	}
+	_renderConfig() {
+		let configType = this.state.configType,
+		props = {
+			customerId: this.props.router.params.customerId * 1,
+			onClose: () => {
+				this.setState(() => {
+					return {configType: null};
+				});
+			},
+		};
+		if( configType === CONFIG_TYPE.KPI ) {
+			return (<KPIConfigList {...props} />);
+		} else if( configType === CONFIG_TYPE.RANK ) {
+			return (<Ranking {...props} />);
+		}
+		return null
+	}
 	render() {
 		let {buildingList, userCustomers} = this.state,
 		message;
@@ -282,13 +305,9 @@ export default class Actuality extends Component {
 		return (
 			<div className='jazz-actuality'>
 				{!hierarchyId && (<div className='flex-center'><b>{I18N.Kpi.Error.SelectBuilding}</b></div>)}
-				{!this.state.showKPIConfigList && this._renderActuality()}
-				{!this.state.showKPIConfigList && this._renderEditPage()}
-				{this.state.showKPIConfigList && <KPIConfigList onClose={() => {
-					this.setState(() => {
-						return {showKPIConfigList: false};
-					});
-				}} customerId={this.props.router.params.customerId * 1}/>}
+				{!this.state.configType && this._renderActuality()}
+				{!this.state.configType && this._renderEditPage()}
+				{this._renderConfig()}
 			</div>
 		);
 	}

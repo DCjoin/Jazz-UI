@@ -198,52 +198,6 @@ class KPIConfigItem extends Component {
 							});
 						}}/>
 					</span>
-					{/*add && <LinkButton ref='add_icon'
-						onMouseOver={() => {
-							// var info={
-							// 		CustomerId,
-							// 		Year,
-							// 		IndicatorType:Type.Quota
-							// 	};
-							var info=null;
-							GroupKPIAction.getGroupByYear(CustomerId, Year, info, (data) => {
-								this.setState({
-									rolongDisabled: !data || data.length === 0
-								});
-							});
-						}}
-						className={classnames('fa icon-add btn-icon', {
-							opened: this.state.opened
-						})} onClick={() => {
-						this.setState({
-							opened: true
-						});
-					}}/>
-					<Popover
-          				open={this.state.opened}
-          				anchorEl={this.state.opened && ReactDOM.findDOMNode(this.refs.add_icon)}
-          				onRequestClose={() => {
-          					this.setState( {
-          						opened: false
-          					} );
-          				}}>
-						<Menu>
-							<MenuItem primaryText={I18N.Setting.KPI.create} onClick={() => {
-								this._onChangeState({
-									settingStatus: SettingStatus.New
-								});
-							}} />
-							<MenuItem disabled={this.state.rolongDisabled} primaryText={I18N.Setting.KPI.Prolong} onClick={() => {
-								if(this.state.rolongDisabled) {
-									return;
-								}
-								this._onChangeState({
-									settingStatus: SettingStatus.Prolong
-								});
-							}}/>
-						</Menu>
-					</Popover>
-					*/}
 				</header>
 				{GroupKpiItems && GroupKpiItems.length > 0 && <ul className='year-item-content'>
 					{ GroupKpiItems.map( item => (<KPIItem
@@ -283,6 +237,7 @@ export default class KPIConfigList extends Component<void, Props, State> {
 		super(props);
 
 		this._deleteKPISetting = this._deleteKPISetting.bind(this);
+		this._onCancel = this._onCancel.bind(this);
 		this._onRefresh = this._onRefresh.bind(this);
 		this._onChange = this._onChange.bind(this);
 		this._onGetBuildingList = this._onGetBuildingList.bind(this);
@@ -307,17 +262,30 @@ export default class KPIConfigList extends Component<void, Props, State> {
 			loading: false
 		});
 	}
-	_onRefresh(props) {
-		props = props || this.props;
+	_onCancel() {
 		this.setState({
-			loading: true,
+			loading: false,
 			showDeleteDialog: false,
 			settingStatus: null,
 			refId: null,
 			refYear: null,
 		});
-		HierarchyAction.getBuildingListByCustomerId(props.customerId);
-
+	}
+	_onRefresh(id) {
+		let newState = {			
+			loading: true,
+			showDeleteDialog: false,
+		}
+		if( !this.state.settingStatus || this.state.settingStatus === SettingStatus.Edit ) {
+			newState.refId = null;
+			newState.refYear = null;
+			newState.settingStatus = null;
+		} else {
+			newState.refId = id;
+			newState.settingStatus = SettingStatus.Edit;
+		}
+		this.setState(newState);
+		HierarchyAction.getBuildingListByCustomerId(this.props.customerId);
 	}
 	_deleteKPISetting() {
 		GroupKPIAction.deleteGroupSettings(this.state.refId, this.props.customerId);
@@ -334,15 +302,22 @@ export default class KPIConfigList extends Component<void, Props, State> {
 		if( loading ) {
 			return (<div className='jazz-margin-up-main flex-center'><CircularProgress size={80}/></div>);
 		}
+		let dialog = null;
 		if( settingStatus ) {
-			return (<KPIConfig
-						onCancel={this._onRefresh}
-						onSave={this._onRefresh}
-						// onPending={()=>{this.setState({loading: true})}}
-						status={settingStatus}
-						year={refYear}
-						id={refId}
-						name={GroupKPIStore.findKPISettingByKPISettingId(refId).IndicatorName || ''}/>)
+			let configProps = {
+				onCancel: this._onCancel,
+				onSave: this._onRefresh,
+				status: settingStatus,
+				year: refYear,
+				id: refId,
+			};
+			if( settingStatus === SettingStatus.Edit ) {
+				configProps.name = GroupKPIStore.findKPISettingByKPISettingId(refId).IndicatorName || '';
+
+				return (<KPIConfig {...configProps}/>)
+			} else {
+				dialog = (<KPIConfig {...configProps}/>);
+			}
 		}
 		if( !privilegedCustomer(this.props.customerId) ) {
 			return (<div className='jazz-margin-up-main flex-center'>{I18N.Kpi.Error.KPINonMoreBuilding}</div>);
@@ -382,6 +357,7 @@ export default class KPIConfigList extends Component<void, Props, State> {
 					      })}} />
 				    ]}
 				>{I18N.Setting.KPI.GroupList.DeleteComment}</NewDialog>
+				{dialog}
 			</div>
 		);
 	}

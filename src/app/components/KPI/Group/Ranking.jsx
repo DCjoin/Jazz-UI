@@ -7,15 +7,11 @@ import RankingKPIStore from 'stores/KPI/RankingKPIStore.jsx';
 import RankingKPIAction from 'actions/KPI/RankingKPIAction.jsx';
 import TitleComponent from 'controls/TitleComponent.jsx';
 import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
-import FlatButton from 'controls/FlatButton.jsx';
+import NewFlatButton from 'controls/NewFlatButton.jsx';
 // import RankHistory from '../Single/RankHistory.jsx';
 
 var customerId;
 export default class Ranking extends Component {
-
-  	static contextTypes = {
-  		router: React.PropTypes.object,
-  	};
 
   	constructor(props) {
   		super(props);
@@ -66,61 +62,31 @@ export default class Ranking extends Component {
         CustomerId:customerId,
         GroupKpiIds,UnitType,TopGroupKpiId
       });
+      this.props.onClose();
     }
 
     _renderKpiRanking(){
-      let titleProps={
-        title:I18N.Setting.KPI.Group.Ranking.kpi,
-        style:{
-          marginTop:'0'
-        },
-        contentStyle:{
-          marginLeft:'0'
-        },
-        titleStyle:{
-          fontSize:'16px'
-        }
-      };
       return(
         <div className="jazz-kpi-group-ranking-block">
-          <TitleComponent {...titleProps}>
+          <header className='jazz-kpi-group-ranking-block-header'>{I18N.Setting.KPI.Group.Ranking.kpi}</header>
+          <div>
             {this.state.allKpis.map(kpi=>(
               <Checkbox value={kpi.get('Id')}
                         label={kpi.get("Name")}
                         checked={this.state.config.get('GroupKpiIds').findIndex(item=>item===kpi.get('Id'))>-1}
                         onCheck={this._onkpiChecked}
-                        style={{margin:'10px 0'}}/>
+                        style={{margin:'10px 0', width: 'auto'}}
+                        labelStyle={{width: 'auto'}}/>
             ))}
-          </TitleComponent>
+            </div>
         </div>
       )
     }
 
     _renderUpRanking(){
       let algorithmId=this.state.config.get('UnitType'),
-          kpiId=this.state.config.get('TopGroupKpiId');
-      let titleProps={
-        title:I18N.Setting.KPI.Group.Ranking.Up,
-        contentStyle:{
-          marginLeft:'0'
-        },
-        titleStyle:{
-          fontSize:'16px'
-        }
-      },
-      subTitileProps={
-        title:I18N.Setting.KPI.Group.Ranking.Algorithm,
-        style:{
-          marginTop:'0'
-        },
-        contentStyle:{
-          marginLeft:'0'
-        },
-        titleStyle:{
-          fontSize:'14px'
-        }
-      };
-      let sourceProps={
+      kpiId=this.state.config.get('TopGroupKpiId'),
+      sourceProps={
         ref: 'source',
         isViewStatus: false,
         title: I18N.Setting.KPI.Group.Ranking.SelectSource,
@@ -131,8 +97,10 @@ export default class Ranking extends Component {
 
       return(
         <div className="jazz-kpi-group-ranking-block">
-          <TitleComponent {...titleProps}>
-            <TitleComponent {...subTitileProps}>
+          <header className='jazz-kpi-group-ranking-block-header'>{I18N.Setting.KPI.Group.Ranking.Up}</header>
+          <div>
+            <header className='jazz-kpi-group-ranking-block-subheader'>{I18N.Setting.KPI.Group.Ranking.Algorithm}</header>
+            <div>
               <RadioButtonGroup name="type" valueSelected={algorithmId}
                                 onChange={this._onAlgorithmChange}>
                 {RankingKPIStore.getAlgorithmList().map(item=>(
@@ -144,14 +112,14 @@ export default class Ranking extends Component {
                 ))}
                 </RadioButtonGroup>
                 {algorithmId!==Unit.None && <ViewableDropDownMenu {...sourceProps}/>}
-            </TitleComponent>
-          </TitleComponent>
+            </div>
+          </div>
         </div>
       )
     }
 
     componentDidMount(){
-      customerId=parseInt(this.context.router.params.customerId);
+      customerId=this.props.customerId;
       RankingKPIStore.addChangeListener(this._onChange);
       RankingKPIAction.getGroupKpis(customerId);
     }
@@ -164,26 +132,36 @@ export default class Ranking extends Component {
       if(this.state.allKpis && this.state.allKpis.size===0){
         return(
           <div className="jazz-margin-up-main jazz-kpi-group-ranking">
-            <header className="header-bar">{I18N.Setting.KPI.Group.Ranking.Title}</header>
-            <article className="content" style={{display:'flex'}}>
-          <div className="flex-center">{I18N.Setting.KPI.Group.Ranking.NoKpi}</div>
-          </article>
+            <div className='jazz-main-content'>
+              <header className='header-bar'>
+                <em onClick={this.props.onClose} className='icon-return' style={{marginRight: 20}}/>
+                {I18N.Setting.KPI.Group.Ranking.Title}
+              </header>
+              <article className="content" style={{display:'flex'}}>
+                <div className="flex-center">{I18N.Setting.KPI.Group.Ranking.NoKpi}</div>
+              </article>
+            </div>
         </div>
         )
       }
       else if(this.state.config){
         return(
           <div className="jazz-margin-up-main jazz-kpi-group-ranking">
-            <header className="header-bar">{I18N.Setting.KPI.Group.Ranking.Title}</header>
-            <article className="content">
-              {this._renderKpiRanking()}
-              {this._renderUpRanking()}
-              <FlatButton
-                    style={{width:'88px',border:'1px solid #e4e7e9',marginTop:"30px",marginBottom:'40px'}}
-                    label={I18N.Common.Button.Save}
-                    onTouchTap={this._onSave}
-                     />
-            </article>
+            <div className='jazz-main-content'>
+              <header className='header-bar'>
+                <em onClick={this.props.onClose} className='icon-return' style={{marginRight: 20}}/>
+                {I18N.Setting.KPI.Group.Ranking.Title}
+              </header>
+              <article className="content">
+                {this._renderKpiRanking()}
+                {this._renderUpRanking()}
+              </article>
+              <NewFlatButton
+                primary
+                style={{alignSelf: 'flex-end', width:'88px',margin: '20px 0', flex: 'none'}}
+                label={I18N.Common.Button.Save}
+                onTouchTap={this._onSave}/>
+            </div>
           </div>
         )
       }

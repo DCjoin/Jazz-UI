@@ -4,12 +4,13 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import classNames from 'classnames';
 import { CircularProgress } from 'material-ui';
-import CommonFuns from '../../../util/Util.jsx';
-import SearchAndFilterBar from '../../../controls/SearchAndFilterBar.jsx';
-import Pagination from '../../../controls/paging/Pagination.jsx';
+import CommonFuns from 'util/Util.jsx';
+import SearchAndFilterBar from 'controls/SearchAndFilterBar.jsx';
+import Pagination from 'controls/paging/Pagination.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
-import Dialog from '../../../controls/NewDialog.jsx';
-import TagAction from '../../../actions/customerSetting/TagAction.jsx';
+import Dialog from 'controls/NewDialog.jsx';
+import UploadForm from 'controls/UploadForm.jsx';
+import TagAction from 'actions/customerSetting/TagAction.jsx';
 
 let TagList = React.createClass({
   propTypes: {
@@ -119,81 +120,10 @@ let TagList = React.createClass({
       CommonFuns.popupErrorMessage(I18N.EM.Report.WrongExcelFile, '', true);
       return;
     }
-    var createElement = window.Highcharts.createElement,
-      discardElement = window.Highcharts.discardElement;
-
-    var iframe = createElement('iframe', null, {
-      display: 'none'
-    }, document.body);
-    iframe.onload = function() {
-      var json = iframe.contentDocument.body.innerHTML;
-      var obj = JSON.parse(json);
-      if (obj.success === true) {
-        me.setState({
-          importResult: obj.TagImportHisDto,
-          isImporting: false,
-          importSuccess: true
-        });
-      } else {
-        var ErrorMsg = null;
-        if (obj.UploadResponse.ErrorCode === -7) {
-          ErrorMsg = I18N.Setting.TagBatchImport.ImportSizeErrorView;
-        } else if (obj.UploadResponse.ErrorCode === -9) {
-          ErrorMsg = I18N.Message.M9;
-        } else if (obj.UploadResponse.ErrorCode === -8) {
-          ErrorMsg = I18N.Message.M8;
-        } else {
-          ErrorMsg = I18N.Setting.TagBatchImport.ImportErrorView;
-        }
-
-        me.setState({
-          isImporting: false,
-          importSuccess: false,
-          ErrorMsg: ErrorMsg
-        });
-      // var errorCode = obj.UploadResponse.ErrorCode,
-      //   errorMessage;
-      // if (errorCode === -1) {
-      //   errorMessage = I18N.EM.Report.DuplicatedName;
-      // }
-      // if (errorMessage) {
-      //   CommonFuns.popupErrorMessage(errorMessage, '', true);
-      // }
-      }
-    };
-
-    var form = createElement('form', {
-      method: 'post',
-      action: 'TagImportExcel.aspx',
-      target: '_self',
-      enctype: 'multipart/form-data',
-      name: 'inputForm'
-    }, {
-      display: 'none'
-    }, iframe.contentDocument.body);
-
-    var input = ReactDom.findDOMNode(this.refs.fileInput);
-    form.appendChild(input);
-    var customerInput = createElement('input', {
-      type: 'hidden',
-      name: 'CustomerId',
-      value: parseInt(this.context.currentRoute.params.customerId)
-    }, null, form);
-    var typeInput = createElement('input', {
-      type: 'hidden',
-      name: 'TagType',
-      value: me.props.tagType === 1 ? 'PTag' : 'VTag'
-    }, null, form);
-
-    form.submit();
-    discardElement(form);
-    var label = ReactDom.findDOMNode(this.refs.fileInputLabel);
-    var tempForm = document.createElement('form');
-    document.body.appendChild(tempForm);
-    tempForm.appendChild(input);
-    tempForm.reset();
-    document.body.removeChild(tempForm);
-    label.appendChild(input);
+    this.refs.fileInput.upload({
+      CustomerId: parseInt(this.context.currentRoute.params.customerId),
+      TagType: this.props.tagType,
+    });
     me.setState({
       showImportDialog: true,
       isImporting: true
@@ -222,7 +152,43 @@ let TagList = React.createClass({
           <label ref="fileInputLabel" className="jazz-tag-leftpanel-header-item" htmlFor="fileInput">
             <span className="icon-import jazz-tag-leftpanel-header-item-icon"></span>
             {I18N.Common.Button.Import}
-            <input type="file" ref="fileInput" id='fileInput' name='fileInput' onChange={this._onImportBtnClick} style={fileInputStyle}/>
+            <div style={fileInputStyle}>
+              <UploadForm
+                id='fileInput'
+                ref='fileInput'
+                action='/tag/import'
+                method='post'
+                onChangeFile={this._onImportBtnClick}
+                onload={(iframe) => {
+                  var json = iframe.contentDocument.body.innerHTML;
+                  var obj = JSON.parse(json);
+                  if (obj.success === true) {
+                    this.setState({
+                      importResult: obj.TagImportHisDto,
+                      isImporting: false,
+                      importSuccess: true
+                    });
+                  } else {
+                    var ErrorMsg = null;
+                    if (obj.UploadResponse.ErrorCode === -7) {
+                      ErrorMsg = I18N.Setting.TagBatchImport.ImportSizeErrorView;
+                    } else if (obj.UploadResponse.ErrorCode === -9) {
+                      ErrorMsg = I18N.Message.M9;
+                    } else if (obj.UploadResponse.ErrorCode === -8) {
+                      ErrorMsg = I18N.Message.M8;
+                    } else {
+                      ErrorMsg = I18N.Setting.TagBatchImport.ImportErrorView;
+                    }
+
+                    this.setState({
+                      isImporting: false,
+                      importSuccess: false,
+                      ErrorMsg: ErrorMsg
+                    });
+                  }
+                }}
+              />
+            </div>
           </label>
           <span onClick={this.props.onExportBtnClick} className="jazz-tag-leftpanel-header-item">
             <span className="icon-export jazz-tag-leftpanel-header-item-icon"></span>

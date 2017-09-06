@@ -909,28 +909,53 @@
 .jazz-kpi-group-ranking {
   display: flex;
   flex-direction: column;
+  &.jazz-margin-up-main {
+    background-color: @theme;
+  }
+
+  & .jazz-main-content {
+    display: flex;
+    flex-direction: column;
+  }
   .header-bar {
-    height: 72px;
-    line-height: 72px;
-    font-size: 20px;
-    padding: 0 40px;
-    border-bottom: 1px solid @hoverGray;
+    height: 56px;
+    line-height: 56px;
+    font-size: 16px;
+    font-weight: bold;
   }
   .content {
-    padding: 40px 40px 0 40px;
     flex: 1;
-    background-color: #fbfbfb;
-    overflow-y: auto;
-    overflow-x: hidden;
-    margin-top:-16px;
+    display: flex;
   }
   .footer{
     padding: 40px;
     background-color: #fbfbfb;
   }
   &-block{
-    padding-bottom: 30px;
-    border-bottom: 1px solid @hoverGray;
+    flex: 1;
+    background-color: #fff;
+    border: solid 1px @border;
+    overflow-x: hidden;
+    overflow-y: auto;
+    border-radius: 2px;
+    padding: 20px;
+    &:first-of-type {
+      margin-right: 10px;
+    }
+
+    &-header {
+      color: @black;
+      font-size: 16px;
+      height: 22px;
+      line-height: 22px;
+      margin-bottom: 15px;
+    }
+
+    &-subheader {
+      font-size: 14px;
+      color: @slate-grey;
+      margin-bottom: 15px;
+    }
   }
 }
 .noContent{
