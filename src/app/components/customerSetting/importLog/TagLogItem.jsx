@@ -1,8 +1,9 @@
 'use strict';
 
 import React from 'react';
-import CommonFuns from '../../../util/Util.jsx';
+import CommonFuns from 'util/Util.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
+import downloadFile from 'actions/download_file.js';
 
 let TagLogItem = React.createClass({
   getInitialState: function() {
@@ -26,13 +27,14 @@ let TagLogItem = React.createClass({
     });
   },
   _downloadLog: function() {
-    var iframe = document.createElement('iframe');
-    iframe.style.display = 'none';
-    iframe.src = 'TagImportExcel.aspx?Id=' + this.props.id;
-    iframe.onload = function() {
-      document.body.removeChild(iframe);
-    };
-    document.body.appendChild(iframe);
+    downloadFile.get('/tag/exporttagimporthistory/' + this.props.id);
+    // var iframe = document.createElement('iframe');
+    // iframe.style.display = 'none';
+    // iframe.src = 'TagImportExcel.aspx?Id=' + this.props.id;
+    // iframe.onload = function() {
+    //   document.body.removeChild(iframe);
+    // };
+    // document.body.appendChild(iframe);
   },
 
   render() {

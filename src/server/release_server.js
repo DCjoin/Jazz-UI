@@ -33,10 +33,10 @@ function returnIndexHtml(request,reply){
   var html = fs.readFileSync(path.resolve(__dirname, "./index.html"), "utf-8");
 
   if(JAZZ_UI_UMENG_CNZZ_SDK_URL) {
-    html = html.replace('${JAZZ_UI_UMENG_CNZZ_SDK_URL}', JAZZ_UI_UMENG_CNZZ_SDK_URL);
+    html = html.replace('__JAZZ_UI_UMENG_CNZZ_SDK_URL__', JAZZ_UI_UMENG_CNZZ_SDK_URL);
   }
   if(JAZZ_WEBAPI_HOST) {
-    html = html.replace('${JAZZ_WEBAPI_HOST}', JAZZ_WEBAPI_HOST);
+    html = html.replace('__JAZZ_WEBAPI_HOST__', JAZZ_WEBAPI_HOST);
   }
   var res = reply(html).type("text/html");
   return res;

@@ -1,14 +1,15 @@
 'use strict';
 import React from "react";
 import { CircularProgress } from 'material-ui';
-import Item from '../../../controls/SelectableItem.jsx';
-import { formStatus } from '../../../constants/FormStatus.jsx';
+import Item from 'controls/SelectableItem.jsx';
+import { formStatus } from 'constants/FormStatus.jsx';
 import TagList from './TagList.jsx';
 import TagDetail from './TagDetail.jsx';
 import TagFilter from './TagFilter.jsx';
-import TagStore from '../../../stores/customerSetting/TagStore.jsx';
-import TagAction from '../../../actions/customerSetting/TagAction.jsx';
-import GlobalErrorMessageAction from '../../../actions/GlobalErrorMessageAction.jsx';
+import TagStore from 'stores/customerSetting/TagStore.jsx';
+import TagAction from 'actions/customerSetting/TagAction.jsx';
+import GlobalErrorMessageAction from 'actions/GlobalErrorMessageAction.jsx';
+import downloadFile from 'actions/download_file.js';
 import Immutable from 'immutable';
 import RawDataList from './RawDataList.jsx';
 
@@ -354,14 +355,15 @@ let Tag = React.createClass({
     });
   },
   _onExportTag: function() {
-    var filterObj = this.state.filterObj;
-    var iframe = document.createElement('iframe');
-    iframe.style.display = 'none';
-    iframe.src = 'TagImportExcel.aspx?filter=' + encodeURIComponent(JSON.stringify(filterObj));
-    iframe.onload = function() {
-      document.body.removeChild(iframe);
-    };
-    document.body.appendChild(iframe);
+    downloadFile.post('/tag/export', this.state.filterObj);
+    // var filterObj = this.state.filterObj;
+    // var iframe = document.createElement('iframe');
+    // iframe.style.display = 'none';
+    // iframe.src = 'TagImportExcel.aspx?filter=' + encodeURIComponent(JSON.stringify(filterObj));
+    // iframe.onload = function() {
+    //   document.body.removeChild(iframe);
+    // };
+    // document.body.appendChild(iframe);
   },
   _handleShowFilterSideNav: function() {
     this.setState({

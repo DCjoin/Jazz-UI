@@ -700,7 +700,7 @@ var MainAppBar = React.createClass({
       };
     var logo = (!!this.props.logoUrl)
       ? <div className='jazz_logo_img' style={{
-        backgroundImage: 'url(' + Config.ServeAddress + '/' + this.props.logoUrl + ')'
+        backgroundImage: 'url(' + Config.ServeAddress + Config.APIBasePath + '/' + this.props.logoUrl + ')'
       }}
       onClick={this._showCustomerList}></div>
       : null;

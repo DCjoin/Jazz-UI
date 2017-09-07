@@ -57,7 +57,7 @@ export default class UploadForm extends Component {
 		let {action, fileName, method, onChangeFile, id, inputProps} = this.props;
 		return (
 			<form target={UPLOAD_IFRAME} style={{display: 'inline'}}
-				action={'http://web-api-dev.energymost.com/' + action} 
+				action={'http://web-api-dev.energymost.com/api' + action} 
 				method={method} >
 				<input {...inputProps} id={id} name={id} type='file' ref='fileInput' 
 					style={{

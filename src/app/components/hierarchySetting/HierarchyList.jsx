@@ -17,6 +17,7 @@ import UploadForm from 'controls/UploadForm.jsx';
 
 import HierarchyStore from 'stores/hierarchySetting/HierarchyStore.jsx';
 import HierarchyAction from 'actions/hierarchySetting/HierarchyAction.jsx';
+import downloadFile from 'actions/download_file.js';
 
 let {nodeType} = TreeConstants;
 
@@ -123,14 +124,15 @@ var HierarchyList = React.createClass({
       ErrorMsg: null
     });
   },
-  _downloadLogFile: function() {
-    var iframe = document.createElement('iframe');
-    iframe.style.display = 'none';
-    iframe.src = 'ImpExpHierarchy.aspx?TagType=Hierarchy&Id=' + this.state.importResult.Id;
-    iframe.onload = function() {
-      document.body.removeChild(iframe);
-    };
-    document.body.appendChild(iframe);
+  _downloadLogFile: function() {    
+    downloadFile.get('/hierarchy/downloadhierarchylog' + this.context.currentRoute.params.customerId + '/' + this.state.importResult.Id);
+    // var iframe = document.createElement('iframe');
+    // iframe.style.display = 'none';
+    // iframe.src = 'ImpExpHierarchy.aspx?TagType=Hierarchy&Id=' + this.state.importResult.Id;
+    // iframe.onload = function() {
+    //   document.body.removeChild(iframe);
+    // };
+    // document.body.appendChild(iframe);
   },
   _renderImportDialog() {
     if (!this.state.showImportDialog) {

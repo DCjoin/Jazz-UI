@@ -43,14 +43,14 @@ var BackgroudImage = React.createClass({
         parmas += "&mode=" + 1; //parmas += "&mode=" + (this.props.mode == 'cover' ? 2 : 1);
       }
       parmas += "&random=" + Math.random();
-      url = "url(" + Config.ServeAddress + "/Logo.aspx" + parmas + ")";
+      url = "url(" + Config.ServeAddress + Config.APIBasePath + "/common/logo" + parmas + ")";
     } else if (this.props.imageId) {
       var parmas = "?logoId=" + this.props.imageId;
       if (this.props.width && this.props.height) {
         parmas += "&width=" + this.props.width + "&height=" + this.props.height;
         parmas += "&mode=" + 1; //parmas += "&mode=" + (this.props.mode == 'cover' ? 2 : 1);
       }
-      url = "url(" + Config.ServeAddress + "/Logo.aspx" + parmas + ")";
+      url = "url(" + Config.ServeAddress + Config.APIBasePath + "/common/logo" + parmas + ")";
     } else {
       url = this.props.url || "url()";
     }

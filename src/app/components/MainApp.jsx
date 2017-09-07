@@ -354,7 +354,7 @@ let MainApp = React.createClass({
               topSelectHierarchy={this._renderTopSelectHierarchy()}
               disabledSelectCustomer={!LoginStore.checkHasSpAdmin() && CurrentUserCustomerStore.getAll().length < 2}
               items={menuItems}
-              logoUrl={customerId && 'Logo.aspx?hierarchyId=' + customerId +`&random=${Math.random()}`}
+              logoUrl={customerId && 'common/logo?hierarchyId=' + customerId +`&random=${Math.random()}`}
               changeHierarchy={this._setHierarchyId}/>
             {customerId && this.props.children}
             <NetworkChecker />

@@ -69,7 +69,7 @@ let CustomerIdentity = React.createClass({
         id: 'logo',
         clip: false,
         background: 'customer-background-logo',
-        imageUrl: (!LogoContent ? (!Logo ? "" : "url(" + Config.ServeAddress + "/Logo.aspx?ossKey=" + Logo + ")") : "url(data:image/png;base64," + LogoContent + ")"),
+        imageUrl: (!LogoContent ? (!Logo ? "" : "url(" + Config.ServeAddress + Config.APIBasePath + "/common/logo?ossKey=" + Logo + ")") : "url(data:image/png;base64," + LogoContent + ")"),
         isViewState: isView,
         updateTips: (!LogoContent && !Logo) ? I18N.Platform.ServiceProvider.AddImage : I18N.Platform.ServiceProvider.UpdateImage,
         imageDidChanged: img => {
@@ -86,7 +86,7 @@ let CustomerIdentity = React.createClass({
         id: 'background',
         clip: false,
         background: 'customer-background-logo',
-        imageUrl: (!HomeBackgroundContent ? (!HomeBackground ? "" : "url(" + Config.ServeAddress + "/Logo.aspx?ossKey=" + HomeBackground + ")") : "url(data:image/png;base64," + HomeBackgroundContent + ")"),
+        imageUrl: (!HomeBackgroundContent ? (!HomeBackground ? "" : "url(" + Config.ServeAddress + Config.APIBasePath + "/common/logo?ossKey=" + HomeBackground + ")") : "url(data:image/png;base64," + HomeBackgroundContent + ")"),
         isViewState: isView,
         updateTips: (!HomeBackgroundContent && !HomeBackground) ? I18N.Platform.ServiceProvider.AddImage : I18N.Platform.ServiceProvider.UpdateImage,
         imageDidChanged: img => {
