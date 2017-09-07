@@ -2,19 +2,21 @@
 
 import React from "react";
 import ReactDom from 'react-dom';
-import { CircularProgress } from 'material-ui';
-import { formStatus } from '../../constants/FormStatus.jsx';
-import { treeSource } from '../../constants/TreeSource.jsx';
-import TreeConstants from '../../constants/TreeConstants.jsx';
-import CommonFuns from '../../util/Util.jsx';
 import classNames from 'classnames';
-import Tree from '../../controls/tree/Tree.jsx';
+import { CircularProgress, MenuItem } from 'material-ui';
+
+import { formStatus } from 'constants/FormStatus.jsx';
+import { treeSource } from 'constants/TreeSource.jsx';
+import TreeConstants from 'constants/TreeConstants.jsx';
+import CommonFuns from 'util/Util.jsx';
+import Tree from 'controls/tree/Tree.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
-import Dialog from '../../controls/NewDialog.jsx';
-import HierarchyStore from '../../stores/hierarchySetting/HierarchyStore.jsx';
-import DropdownButton from '../../controls/DropdownButton.jsx';
-import HierarchyAction from '../../actions/hierarchySetting/HierarchyAction.jsx';
-import MenuItem from 'material-ui/MenuItem';
+import Dialog from 'controls/NewDialog.jsx';
+import DropdownButton from 'controls/DropdownButton.jsx';
+import UploadForm from 'controls/UploadForm.jsx';
+
+import HierarchyStore from 'stores/hierarchySetting/HierarchyStore.jsx';
+import HierarchyAction from 'actions/hierarchySetting/HierarchyAction.jsx';
 
 let {nodeType} = TreeConstants;
 
@@ -181,78 +183,10 @@ var HierarchyList = React.createClass({
       CommonFuns.popupErrorMessage(I18N.EM.Report.WrongExcelFile, '', true);
       return;
     }
-    var createElement = window.Highcharts.createElement,
-      discardElement = window.Highcharts.discardElement;
-
-    var iframe = createElement('iframe', null, {
-      display: 'none'
-    }, document.body);
-    iframe.onload = function() {
-      var json = iframe.contentDocument.body.innerHTML;
-      var obj = JSON.parse(json);
-      if (obj.success === true) {
-        me.setState({
-          importResult: obj.TagImportHisDto,
-          isImporting: false,
-          importSuccess: true
-        });
-      } else {
-        var ErrorMsg = null;
-        if (obj.UploadResponse.ErrorCode === -7) {
-          ErrorMsg = I18N.Setting.TagBatchImport.ImportSizeErrorView;
-        } else if (obj.UploadResponse.ErrorCode === -9) {
-          ErrorMsg = I18N.Message.M9;
-        } else if (obj.UploadResponse.ErrorCode === -8) {
-          ErrorMsg = I18N.Message.M8;
-        } else {
-          ErrorMsg = I18N.Setting.TagBatchImport.ImportErrorView;
-        }
-
-        me.setState({
-          isImporting: false,
-          importSuccess: false,
-          ErrorMsg: ErrorMsg
-        });
-      }
-    };
-
-    var form = createElement('form', {
-      method: 'post',
-      action: 'ImpExpHierarchy.aspx',
-      target: '_self',
-      enctype: 'multipart/form-data',
-      name: 'inputForm'
-    }, {
-      display: 'none'
-    }, iframe.contentDocument.body);
-
-    var input = ReactDom.findDOMNode(this.refs.fileInput);
-    form.appendChild(input);
-    var customerInput = createElement('input', {
-      type: 'hidden',
-      name: 'CustomerId',
-      value: parseInt(this.context.currentRoute.params.customerId)
-    }, null, form);
-    var hierarchyInput = createElement('input', {
-      type: 'hidden',
-      name: 'HierarchyId',
-      value: me.props.selectedNode.get('Id')
-    }, null, form);
-    var typeInput = createElement('input', {
-      type: 'hidden',
-      name: 'TagType',
-      value: 'Hierarchy'
-    }, null, form);
-
-    form.submit();
-    discardElement(form);
-    var label = ReactDom.findDOMNode(me.refs.fileInputLabel);
-    var tempForm = document.createElement('form');
-    document.body.appendChild(tempForm);
-    tempForm.appendChild(input);
-    tempForm.reset();
-    document.body.removeChild(tempForm);
-    label.appendChild(input);
+    this.refs.fileInput.upload({
+      CustomerId: parseInt(this.context.currentRoute.params.customerId),
+      FileName: fileName,
+    });
     me.setState({
       showImportDialog: true,
       isImporting: true
@@ -327,7 +261,43 @@ var HierarchyList = React.createClass({
           <label ref="fileInputLabel" className="jazz-tag-leftpanel-header-item" htmlFor="fileInput">
             <span className="icon-import jazz-tag-leftpanel-header-item-icon"></span>
             {I18N.Common.Button.Import}
-            <input type="file" ref="fileInput" id='fileInput' name='fileInput' onChange={this._onImportBtnClick} style={fileInputStyle}/>
+            <div style={fileInputStyle}>
+              <UploadForm
+                ref='fileInput'
+                id='fileInput'
+                method='post'
+                action='/hierarchy/import'
+                onChangeFile={this._onImportBtnClick}
+                onload={(json) => {
+                  var json = iframe.contentDocument.body.innerHTML;
+                  var obj = JSON.parse(json);
+                  if (obj.success === true) {
+                    this.setState({
+                      importResult: obj.TagImportHisDto,
+                      isImporting: false,
+                      importSuccess: true
+                    });
+                  } else {
+                    var ErrorMsg = null;
+                    if (obj.UploadResponse.ErrorCode === -7) {
+                      ErrorMsg = I18N.Setting.TagBatchImport.ImportSizeErrorView;
+                    } else if (obj.UploadResponse.ErrorCode === -9) {
+                      ErrorMsg = I18N.Message.M9;
+                    } else if (obj.UploadResponse.ErrorCode === -8) {
+                      ErrorMsg = I18N.Message.M8;
+                    } else {
+                      ErrorMsg = I18N.Setting.TagBatchImport.ImportErrorView;
+                    }
+
+                    this.setState({
+                      isImporting: false,
+                      importSuccess: false,
+                      ErrorMsg: ErrorMsg
+                    });
+                  }
+                }}
+              />
+            </div>
           </label>
           <span onClick={this.props.onExportBtnClick} className="jazz-tag-leftpanel-header-item">
             <span className="icon-export jazz-tag-leftpanel-header-item-icon"></span>

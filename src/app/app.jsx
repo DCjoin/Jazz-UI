@@ -199,21 +199,21 @@ ReactDom.render(<Router history={hashHistory} routes={{
             component: BuildingReportActuality,
           }, {
             path: 'config',
-            component: KPIConfig,
-            indexRoute: {
-                onEnter: (router, replaceState) => {
-                    replaceState(RoutePath.KPIConfig(router.params));
-                },
-            },
-            childRoutes: [
-              {
-                 path: 'kpiconfig',
-                 component: KPIConfigList
-               },
-               {
-                 path: 'rankconfig',
-                 component: KPIRanking
-             }]
+            component: KPIConfigList,
+            // indexRoute: {
+            //     onEnter: (router, replaceState) => {
+            //         replaceState(RoutePath.KPIConfig(router.params));
+            //     },
+            // },
+            // childRoutes: [
+            //   {
+            //      path: 'kpiconfig',
+            //      component: KPIConfigList
+            //    },
+            //    {
+            //      path: 'rankconfig',
+            //      component: KPIRanking
+            //  }]
           },
           {
             path: 'template',

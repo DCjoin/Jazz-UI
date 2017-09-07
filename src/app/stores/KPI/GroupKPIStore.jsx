@@ -64,9 +64,10 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     // console.log(data);
     _rawData=Immutable.fromJS(data);
     let {CustomerId,UomId,CommodityId,IndicatorName,RatioUomId,AdvanceSettings}=data.GroupKpiSetting;
-    let {Year,IndicatorType,AnnualQuota,AnnualSavingRate,IndicatorClass}=AdvanceSettings;
+    let {Year,IndicatorType,AnnualQuota,AnnualSavingRate,IndicatorClass, PredictionSetting}=AdvanceSettings;
 
     _kpiInfo=Immutable.fromJS({
+      KpiSettingsId: PredictionSetting.KpiSettingsId,
       CustomerId,Year,IndicatorType,AnnualQuota,AnnualSavingRate,UomId,IndicatorName,CommodityId,IndicatorClass,RatioUomId,
       Buildings:data.BuildingKpiSettingsList.length?
                 data.BuildingKpiSettingsList.map(building=>{
@@ -546,7 +547,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
       _annualSum='-';
       _rawData=null;
       _info=null;
-      _groupSettingsList = null;
+      // _groupSettingsList = null;
       _groupKpis=[];
       _KpiSettings=Immutable.fromJS(KpiSettingsModel);
       _prolongkpiId=-1;
@@ -602,6 +603,7 @@ GroupKPIStore.dispatchToken = AppDispatcher.register(function(action) {
          GroupKPIStore.emitChange();
           break;
     case Action.KPI_GROUP_SUCCESS:
+         GroupKPIStore.setKpiInfo(action.data);
          GroupKPIStore.emitSuccessChange(action.year);
          break;
     case Action.KPI_GROUP_ERROR:

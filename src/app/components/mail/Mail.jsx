@@ -12,7 +12,6 @@ let Mail = React.createClass({
       currentRoute: React.PropTypes.object
   },
   render: function() {
-    var logoUrl = 'Logo.aspx?hierarchyId=' + this.context.currentRoute.params.customerId;
     return (
       <div className='jazz-content' style={{
         flex: 1,
