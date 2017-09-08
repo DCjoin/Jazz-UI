@@ -355,7 +355,7 @@ let Tag = React.createClass({
     });
   },
   _onExportTag: function() {
-    downloadFile.post('/tag/export', this.state.filterObj);
+    downloadFile.post('/tag/export', this.state.filterObj, true);
     // var filterObj = this.state.filterObj;
     // var iframe = document.createElement('iframe');
     // iframe.style.display = 'none';

@@ -95,10 +95,11 @@ var BuildingBasic = React.createClass({
           });
         }
       },
-      parmas = "&width=" + 480 + "&height=" + 320 + "&mode=" + 1,
+      parmas = "?width=" + 480 + "&height=" + 320 + "&mode=" + 1,
       imageProps = {
         clip: false,
-        imageUrl: buildingPictureIds.size !== 0 ? "url(" + Config.ServeAddress + "/BuildingPicture.aspx?pictureId=" + BuildingPictureIds[0] + parmas + ")" : '',
+        uploadAction: '/hierarchy/uploadbuildinglogo',
+        imageUrl: buildingPictureIds.size !== 0 ? '/hierarchy/buildinglogourl/' + BuildingPictureIds[0]  + '/false'+ parmas : '',
         isViewState: isView,
         updateTips: buildingPictureIds.size === 0 ? I18N.Setting.Building.AddImage : I18N.Setting.Building.UpdateImage,
         imageDidChanged: value => {

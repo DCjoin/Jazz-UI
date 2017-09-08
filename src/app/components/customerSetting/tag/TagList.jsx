@@ -161,8 +161,7 @@ let TagList = React.createClass({
                 action='/tag/import'
                 method='post'
                 onChangeFile={this._onImportBtnClick}
-                onload={(iframe) => {
-                  var json = iframe.contentDocument.body.innerHTML;
+                onload={(json) => {
                   var obj = JSON.parse(json);
                   if (obj.success === true) {
                     this.setState({

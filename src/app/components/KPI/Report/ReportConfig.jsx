@@ -260,8 +260,7 @@ export default class ReportConfig extends Component {
     // document.body.appendChild(iframe);
   }
 
-  _onUploadDone(iframe) {
-	var json = iframe.contentDocument.body.innerHTML;
+  _onUploadDone(json) {
 	var obj = JSON.parse(json);
 	var reportItem = this.state.reportItem;
 	if (obj.success === true) {

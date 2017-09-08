@@ -271,7 +271,6 @@ var HierarchyList = React.createClass({
                 action='/hierarchy/import'
                 onChangeFile={this._onImportBtnClick}
                 onload={(json) => {
-                  var json = iframe.contentDocument.body.innerHTML;
                   var obj = JSON.parse(json);
                   if (obj.success === true) {
                     this.setState({

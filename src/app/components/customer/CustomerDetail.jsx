@@ -216,6 +216,7 @@ var CustomerDetail = React.createClass({
     };
     var imageProps = {
       clip: false,
+      uploadAction: '/customer/uploadlogo',
       background: (customer.get('Id') || customer.get('LogoId') || customer.getIn(['LogoId', 'hierarchyId'])) && 'customer-background-logo',
       imageId: customer.get('LogoId'),
       imageSource: {

@@ -10,25 +10,26 @@ import set from 'lodash-es/set';
 import isObject from 'lodash-es/isObject';
 import SelectCustomer from './SelectCustomer.jsx';
 import lang from '../lang/lang.jsx';
-import MainMenu from '../controls/MainMenu.jsx';
-import SideNav from '../controls/SideNav.jsx';
-import NewDialog from '../controls/NewDialog.jsx';
-import LinkButton from '../controls/LinkButton.jsx';
-import ViewableTextField from '../controls/ViewableTextField.jsx';
-import ViewableDropDownMenu from '../controls/ViewableDropDownMenu.jsx';
+import MainMenu from 'controls/MainMenu.jsx';
+import SideNav from 'controls/SideNav.jsx';
+import BackgroundImage from 'controls/BackgroundImage.jsx';
+import NewDialog from 'controls/NewDialog.jsx';
+import LinkButton from 'controls/LinkButton.jsx';
+import ViewableTextField from 'controls/ViewableTextField.jsx';
+import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
 import CustomFlatButton from 'controls/FlatButton.jsx';
-import GlobalErrorMessageAction from '../actions/GlobalErrorMessageAction.jsx';
-import CurrentUserStore from '../stores/CurrentUserStore.jsx';
-import CurrentUserAction from '../actions/CurrentUserAction.jsx';
-import Regex from '../constants/Regex.jsx';
-import MailConfirmDialog from '../controls/OperationTemplate/BlankDialog.jsx';
-import MailStore from '../stores/MailStore.jsx';
-import FolderAction from '../actions/FolderAction.jsx';
-import FolderStore from '../stores/FolderStore.jsx';
+import MailConfirmDialog from 'controls/OperationTemplate/BlankDialog.jsx';
+import GlobalErrorMessageAction from 'actions/GlobalErrorMessageAction.jsx';
+import CurrentUserStore from 'stores/CurrentUserStore.jsx';
+import CurrentUserAction from 'actions/CurrentUserAction.jsx';
+import Regex from 'constants/Regex.jsx';
+import MailStore from 'stores/MailStore.jsx';
+import FolderAction from 'actions/FolderAction.jsx';
+import FolderStore from 'stores/FolderStore.jsx';
 import Config from 'config';
-import LoginActionCreator from '../actions/LoginActionCreator.jsx';
-import RoutePath from '../util/RoutePath.jsx';
-import privilegeUtil from '../util/privilegeUtil.jsx';
+import LoginActionCreator from 'actions/LoginActionCreator.jsx';
+import RoutePath from 'util/RoutePath.jsx';
+import privilegeUtil from 'util/privilegeUtil.jsx';
 
 var f = lang.f;
 const MAX_LENGTH = 200;
@@ -699,10 +700,9 @@ var MainAppBar = React.createClass({
         paddingRight:'3px'
       };
     var logo = (!!this.props.logoUrl)
-      ? <div className='jazz_logo_img' style={{
-        backgroundImage: 'url(' + Config.ServeAddress + Config.APIBasePath + '/' + this.props.logoUrl + ')'
-      }}
-      onClick={this._showCustomerList}></div>
+      ? <BackgroundImage style={{height: 54, width: 162}} 
+          url={this.props.logoUrl}
+          onClick={this._showCustomerList}/>
       : null;
     var title = (!!this.props.title)
       ? <div className='jazz-title' onClick={this._showCustomerList}>

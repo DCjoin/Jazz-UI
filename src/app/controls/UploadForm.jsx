@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 
 import Ajax from '../ajax/Ajax.jsx';
+import util from 'util/Util.jsx';
 
 const UPLOAD_IFRAME = 'UPLOAD_IFRAME';
 
@@ -22,12 +23,13 @@ export default class UploadForm extends Component {
         var reader = new FileReader();
         reader.readAsDataURL(this._file);
         reader.onload = function(){
-        	params.content = this.result;
+        	params.content = util.setUploadSource(this.result);
 
         	Ajax[method](action, {
         	    params: params,
+        	    noParseRes: true,
         	    success: function(data){
-       	    		onload && onload(data);
+       	    		onload && onload(data.text);
         	    },
         	    error: function(err, res){
        	    		onError && onError(data);

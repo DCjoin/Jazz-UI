@@ -261,7 +261,7 @@ var UserDetail = React.createClass({
         },
         wrapperWidth: 120,
         wrapperHeight: 160,
-        uploadUrl: null
+        uploadAction: null
       },
       userEmailProps = {
         key: 'email_' + isView,
