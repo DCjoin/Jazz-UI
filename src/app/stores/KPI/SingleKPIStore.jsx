@@ -346,7 +346,7 @@ const SingleKPIStore = assign({}, PrototypeStore, {
         return rate.TagName
       })
     }
-    tags.unshift(I18N.Setting.Tag.Tag);
+    // tags.unshift(I18N.Setting.Tag.Tag);
     return tags
   },
 
@@ -357,7 +357,7 @@ const SingleKPIStore = assign({}, PrototypeStore, {
         return rate.SavingRate
       })
     }
-    rates.unshift(I18N.Setting.KPI.Parameter.SavingRates)
+    // rates.unshift(I18N.Setting.KPI.Parameter.SavingRates)
     return rates
   },
 

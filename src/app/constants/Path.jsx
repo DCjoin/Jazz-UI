@@ -34,7 +34,8 @@ module.exports = {
       update:'/kpi/groupsettings/update',
       delete:'/kpi/groupsettings/delete/{kpiSettingsId}',
       getGroupKpis:'/kpi/getgroupkpis/{customerId}',
-      calckpigradualsumvalue:'/kpi/calckpigradualsumvalue'
+      calckpigradualsumvalue:'/kpi/calckpigradualsumvalue',
+      totalIndicator:'/kpi/SavingRateType/TotalIndicator/{customerId}/{year}'
     },
     Rank: {
       getBuildingRank: '/rank/buildingrank/{customerId}/{buildingId}/{year}',

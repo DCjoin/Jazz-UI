@@ -55,7 +55,7 @@ const GroupKPIAction = {
       success: function(list) {
         if(Year) {SingleKPIAction.getKPIPeriodByYear(customerId,Year);}
         AppDispatcher.dispatch({
-          type: Action.GET_GROUP_KPIS,
+        type: Action.GET_GROUP_KPIS,
           data: list,
         });
       },
@@ -165,6 +165,30 @@ const GroupKPIAction = {
     AppDispatcher.dispatch({
       type: Action.CLEAR_ALL_BUILDING_INFO,
     });
+  },
+  updateKpiInfo(kpiInfo){
+    AppDispatcher.dispatch({
+      type: Action.UPDATE_KPI_INFO,
+      kpiInfo
+    });
+  },
+  getSavingRateTotal(customerId,year){    
+     Ajax.post(util.replacePathParams(Path.KPI.Group.totalIndicator, customerId,year),
+      {
+      params: GroupKPIStore.getTotalParams(),
+      success: function(total) {
+        AppDispatcher.dispatch({
+          type: Action.UPDATE_KPI_GROUP_TOTAL,
+          total
+        });
+      },
+    });
+  },
+  updateTotal(total){
+        AppDispatcher.dispatch({
+          type: Action.UPDATE_KPI_GROUP_TOTAL,
+          total
+        });
   }
 }
 

@@ -3,14 +3,14 @@ import React, {Component} from 'react';
 import Immutable from 'immutable';
 import MonthKPIAction from 'actions/KPI/MonthKPIAction.jsx';
 import GroupKPIAction from 'actions/KPI/GroupKPIAction.jsx';
+import FlatButton from "controls/NewFlatButton.jsx";
+
 import MonthKPIStore from 'stores/KPI/MonthKPIStore.jsx'
-import TitleComponent from 'controls/TitleComponent.jsx';
 import FormBottomBar from 'controls/FormBottomBar.jsx';
 import { formStatus } from 'constants/FormStatus.jsx';
 import ActualTag from './ActualTag.jsx';
 import MonthValue from './MonthValue.jsx';
 import Prediction from './GroupPrediction.jsx';
-import CommonFuns from 'util/Util.jsx';
 
 export default class DosageMonthConfig extends Component {
 
@@ -54,6 +54,7 @@ export default class DosageMonthConfig extends Component {
 		var props={
 			kpiInfo:this.props.kpiInfo,
 			buildingInfo:this.state.buildingInfo,
+			isViewStatus:this.props.isViewStatus
 		};
 		return(
 			<MonthValue {...props}/>
@@ -61,8 +62,8 @@ export default class DosageMonthConfig extends Component {
   }
 
 	_renderPrediction(){
-		var {HierarchyId,HierarchyName,UomId,MonthPredictionValues,TagSavingRates,ActualTagId,ActualTagName}=this.state.buildingInfo.toJS();
-		var {Year,CommodityId}=this.props.kpiInfo.toJS();
+		var {HierarchyId,HierarchyName,MonthPredictionValues,TagSavingRates,ActualTagId,ActualTagName}=this.state.buildingInfo.toJS();
+		var {Year,CommodityId,UomId}=this.props.kpiInfo.toJS();
 		// var uom=CommonFuns.getUomById(this.props.kpiInfo.get('UomId')).Code;
 		var props={
 			PredictionSetting:{
@@ -77,16 +78,39 @@ export default class DosageMonthConfig extends Component {
 			}),
 	    hierarchyId:HierarchyId,
 	    hierarchyName:HierarchyName,
+			isViewStatus:this.props.isViewStatus
 		};
 		return(
 			<Prediction {...props}/>
 		)
 	}
 
+	  _renderFooter(){
+    return(
+      <div className="jazz-kpi-config-edit-step-action">
+                             {!this.props.isCreate && <FlatButton label={I18N.Common.Button.Cancel2} secondary={true} style={{float:'right',minWidth:'68px'}} onTouchTap={this.props.onCancel}/>}
+                             <FlatButton label={I18N.Common.Button.Save} disabled={!MonthKPIStore.validateMonthInfo(this.state.buildingInfo)} primary={true} style={{float:'right',minWidth:'68px',marginRight:'20px'}} 
+                                onTouchTap={this._onSave}/>    
+                      </div>
+    )
+  }
+
 	componentDidMount(){
 		MonthKPIStore.addChangeListener(this._onChange);
     let paths=['Buildings',this.props.index];
     MonthKPIAction.setDefalutMonthInfo(this.props.kpiInfo.getIn(paths));
+	}
+
+	componentWillReceiveProps(nextProps, nextContext) {
+		if( this.props.index!==nextProps.index) {
+			this.setState({
+				buildingInfo:null
+			},()=>{
+			let paths=['Buildings',nextProps.index];
+    	MonthKPIAction.setDefalutMonthInfo(this.props.kpiInfo.getIn(paths));
+			})
+
+		}
 	}
 
 	componentWillUnmount(){
@@ -97,39 +121,29 @@ export default class DosageMonthConfig extends Component {
     if(this.state.buildingInfo===null){
       return <div/>
     }
-    let {isCreate}=this.props;
+    let {isCreate,isViewStatus}=this.props;
 	  let {HierarchyName}=this.state.buildingInfo.toJS();
-    let titleProps={
-			title:`${HierarchyName}-${I18N.Setting.KPI.Group.MonthConfig.Title}`,
-			contentStyle:{
-				marginLeft:'0'
-			},
-			titleStyle:{
-				fontSize:'16px'
-			},
-      style:{
-        marginTop:'0px'
-      }
-			// className:'jazz-kpi-config-wrap'
-		},
-    tagProps={
+    let tagProps={
       kpiInfo:this.props.kpiInfo,
       buildingInfo:this.state.buildingInfo,
       isCreate:isCreate,
+			isViewStatus
     };
 
     return(
-      <TitleComponent {...titleProps}>
+      <div>
         <ActualTag {...tagProps}/>
         {this._renderMonthValue()}
 				{this._renderPrediction()}
-				  <FormBottomBar isShow={true} saveBtnProps={{label:I18N.Platform.Password.Confirm}} allowDelete={false} allowEdit={false} enableSave={MonthKPIStore.validateMonthInfo(this.state.buildingInfo)}
-				ref="actionBar" status={formStatus.EDIT} onSave={this._onSave} onCancel={this.props.onCancel}
-				cancelBtnProps={{label:I18N.Common.Button.Cancel2}}/>
-      </TitleComponent>
+				{!this.props.isViewStatus && this._renderFooter()}
+      </div>
     )
   }
 }
+
+				  /*<FormBottomBar isShow={true} saveBtnProps={{label:I18N.Platform.Password.Confirm}} allowDelete={false} allowEdit={false} enableSave={MonthKPIStore.validateMonthInfo(this.state.buildingInfo)}
+				ref="actionBar" status={formStatus.EDIT} onSave={this._onSave} onCancel={this.props.onCancel}
+				cancelBtnProps={{label:I18N.Common.Button.Cancel2}}/>*/
 
 DosageMonthConfig.propTypes = {
 	kpiInfo:React.PropTypes.object,
@@ -137,4 +151,5 @@ DosageMonthConfig.propTypes = {
 	isCreate:React.PropTypes.bool,
 	onSave:React.PropTypes.func,
 	onCancel:React.PropTypes.func,
+	isViewStatus:React.PropTypes.bool,
 };
