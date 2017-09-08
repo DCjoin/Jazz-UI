@@ -5,12 +5,12 @@ import _ from 'lodash-es';
 
 const DEFAULT_STYLE = {
   labelStyle: {
-    color: "#767a7a",
+    color: "#32ad3c",
     cursor: "pointer",
-    opacity: 0.9 //must have this, for right color #32ad3c
+    opacity: 1
   },
-  hoverColor: "#0cad04", // change by law 17/05/17
-  disableColor: "#abafae"
+  hoverColor: "#3dcd58",
+  disableColor: "#cbcbcb"
 };
 
 var LinkButton = React.createClass({

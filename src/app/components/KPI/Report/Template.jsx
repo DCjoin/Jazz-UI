@@ -97,93 +97,7 @@ var Template = React.createClass({
         showUploadConfirm:true
       })
 
-
-      // this.refs.upload_tempalte.upload();
-      // this.setState({
-      //   fileName,
-      //   showUploadDialog: true
-      // });
   },
-  /*
-  _handleFileSelect(event) {
-    var me = this;
-    var file = event.target.files[0];
-    var fileName = file.name;
-
-    if (!CommonFuns.endsWith(fileName.toLowerCase(), '.xlsx') && !CommonFuns.endsWith(fileName.toLowerCase(), '.xls')) {
-      me.setState({
-        errorMsg:I18N.EM.Report.WrongExcelFile
-      })
-      return;
-    }
-    var createElement = window.Highcharts.createElement,
-      discardElement = window.Highcharts.discardElement;
-
-
-    var iframe = createElement('iframe', null, {
-      display: 'none'
-    }, document.body);
-    iframe.onload = function() {
-      var json = iframe.contentDocument.body.innerHTML;
-      var obj = JSON.parse(json);
-      var uploadTemplate;
-      if (obj.success === true) {
-        ReportAction.getTemplateListByCustomerId(parseInt(me.context.currentRoute.params.customerId), me.state.sortBy, 'asc');
-        me.setState({
-          showUploadDialog: false
-        });
-      } else {
-        var errorCode = obj.UploadResponse.ErrorCode,
-          errorMessage=null;
-        if (errorCode === -1) {
-          errorMessage = I18N.format(I18N.EM.Report.DuplicatedName,fileName);
-        }
-        me.setState({
-          showUploadDialog: false,
-          fileName: '',
-          errorMsg:errorMessage
-        });
-      }
-    };
-
-    var form = createElement('form', {
-      method: 'post',
-      action: 'TagImportExcel.aspx?Type=ReportTemplate',
-      target: '_self',
-      enctype: 'multipart/form-data',
-      name: 'inputForm'
-    }, {
-      display: 'none'
-    }, iframe.contentDocument.body);
-
-    var input = ReactDom.findDOMNode(this.refs.fileInput);
-    form.appendChild(input);
-    var customerInput = createElement('input', {
-      type: 'hidden',
-      name: 'CustomerId',
-      value: parseInt(me.context.currentRoute.params.customerId)
-    }, null, form);
-    var activeInput = createElement('input', {
-      type: 'hidden',
-      name: 'IsActive',
-      value: 1
-    }, null, form);
-
-    form.submit();
-    discardElement(form);
-    var label = ReactDom.findDOMNode(me.refs.fileInputLabel);
-    var tempForm = document.createElement('form');
-    document.body.appendChild(tempForm);
-    tempForm.appendChild(input);
-    tempForm.reset();
-    document.body.removeChild(tempForm);
-    label.appendChild(input);
-    me.setState({
-      fileName: fileName,
-      showUploadDialog: true
-    });
-  },
-  */
   _renderUploadDialog() {
     if (!this.state.showUploadDialog) {
       return null;
@@ -201,26 +115,6 @@ var Template = React.createClass({
         I18N.EM.Report.DuplicatedName.replace(/{\w}/, '(.)*')
       ).test(this.state.errorMsg)
     ) {
-      // return (
-      //   <NewDialog open={true} title={I18N.EM.Report.UploadNewTemplate} actions={[
-      //     (<FlatButton label={I18N.EM.Report.Upload} onClick={() => {
-      //       this.refs.upload_tempalte.upload({IsReplace: true});
-      //       this.setState({
-      //         errorMsg: null,
-      //       }, () => {
-      //         this.refs.upload_tempalte.reset();
-      //       });
-      //     }}/>),
-      //     (<FlatButton label={I18N.Common.Button.Cancel2} onClick={() => {
-      //       this.refs.upload_tempalte.reset();
-      //       this.setState({
-      //         errorMsg: null,
-      //       });
-      //     }}/>),
-      //   ]}>
-      //   {this.state.errorMsg}
-      //   </NewDialog>
-      // );
       return null
     } else {
       var onClose = ()=> {
@@ -305,22 +199,28 @@ var Template = React.createClass({
                 <RaisedButton labelPosition="before" containerElement="label" label={I18N.EM.Report.UploadTemplate}>
                   <UploadForm
                     ref={'upload_tempalte'}
-                    action={'TagImportExcel.aspx?Type=ReportTemplate'}
+                    action={'/datareport/uploadtemplate'}
                     fileName={'templateFile'}
                     enctype={'multipart/form-data'}
                     method={'post'}
                     onload={this._onUploadDone}
                     onChangeFile={this._onChangeFile}>
-                    <input type="hidden" name='CustomerId' value={parseInt(this.context.currentRoute.params.customerId)}/>
-                    <input type="hidden" name='IsActive' value={true}/>
                   </UploadForm>
                 </RaisedButton>
                 {this.state.fileName!=='' && this.state.showUploadConfirm && <UploadConfirmDialog name={this.state.fileName}
                                      onConfirm={(status)=>{
                                        if(status===ReportStatus.NotExist){
-                                         this.refs.upload_tempalte.upload({IsReplace: false});
+                                         this.refs.upload_tempalte.upload({
+                                            IsReplace: false,
+                                            CustomerId: parseInt(this.context.currentRoute.params.customerId),
+                                            IsActive: true,
+                                          });
                                        }else {
-                                         this.refs.upload_tempalte.upload({IsReplace: true});
+                                         this.refs.upload_tempalte.upload({
+                                            IsReplace: true,
+                                            CustomerId: parseInt(this.context.currentRoute.params.customerId),
+                                            IsActive: true,
+                                          });
                                        }
 
                                        this.setState({

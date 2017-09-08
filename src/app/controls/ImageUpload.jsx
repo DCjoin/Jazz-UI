@@ -3,12 +3,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-
-
 import classnames from 'classnames';
-import BackgroundImage from '../controls/BackgroundImage.jsx';
-import util from '../util/Util.jsx';
-import AjaxDialog from '../controls/AjaxDialog.jsx';
+
+import util from 'util/Util.jsx';
+import BackgroundImage from 'controls/BackgroundImage.jsx';
+import AjaxDialog from 'controls/AjaxDialog.jsx';
+import UploadForm from 'controls/UploadForm.jsx';
 
 
 const FILE_TYPE_IMAGE_REG = /(image\/png|image\/jpe?g|image\/bmp|image\/gif)/;
@@ -39,7 +39,8 @@ let ImageUpload = React.createClass({
   },
 
   _handleClick() {
-    ReactDOM.findDOMNode(this.refs.pop_image_upload_button).value = '';
+    // ReactDOM.findDOMNode(this.refs.pop_image_upload_button).value = '';
+    this.refs.pop_image_upload_button.reset();
   },
   _handlerChangeImageUpload(event) {
     let that = this,
@@ -77,46 +78,9 @@ let ImageUpload = React.createClass({
 
           };
         } else {
-          var createElement = window.Highcharts.createElement,
-            discardElement = window.Highcharts.discardElement;
-          var iframe = createElement('iframe', null, {
-            display: 'none'
-          }, document.body);
-          iframe.onload = function() {
-            var json = iframe.contentDocument.body.innerHTML;
-            if (!json) return;
-            var obj = JSON.parse(json);
-            var uploadTemplate;
-            if (obj.success === true) {
-              that.props.imageDidChanged(obj);
-            } else {
-              console.log('fail');
-            }
-          };
-          var form = createElement('form', {
-            method: 'post',
-            action: this.props.uploadUrl,
-            enctype: 'multipart/form-data',
-            target: '_self',
-            name: 'inputForm'
-          }, {
-            display: 'none'
-          }, iframe.contentDocument.body);
-
-          var input = ReactDOM.findDOMNode(this.refs.pop_image_upload_button);
-          form.appendChild(input);
-          form.submit();
-          discardElement(form);
-          var label = ReactDOM.findDOMNode(this.refs.fileInputLabel);
-          label.appendChild(input);
-
-
-          // var tempForm = document.createElement('form');
-          // document.body.appendChild(tempForm);
-          // tempForm.appendChild(input);
-          // tempForm.reset();
-          // document.body.removeChild(tempForm);
-
+          this.refs.pop_image_upload_button.upload({
+            FileName: file.name
+          });
         }
 
       }
@@ -236,17 +200,36 @@ let ImageUpload = React.createClass({
       imageContent={!!this.props.imageId ? null : this.props.imageSource}
       background={this.props.background} >
 						{tips}
-						<input id={this.props.id || "pop_image_upload_button"}
-      name='imageFile'
-      ref="pop_image_upload_button"
-      type="file"
-      disabled={this.props.isViewState}
-      style={{
-        opacity: 0
-      }}
-      onClick={this._handleClick}
-      onChange={this._handlerChangeImageUpload}
-      accept="images/*"/>
+            <div style={{
+              opacity: 0,
+              position: 'absolute',
+              display: 'none',
+            }}>
+              <UploadForm 
+                id={this.props.id || 'pop_image_upload_button'}
+                fileName={'imageFile'}
+                ref={'pop_image_upload_button'}
+                action={'/common/uploadlogo'}
+                inputProps={{
+                  disabled: this.props.isViewState,
+                  accept: 'images/*'
+                }}
+                method={'post'}
+                onClick={this._handleClick}
+                onChangeFile={this._handlerChangeImageUpload}
+                onload={(iframe) => {
+                  var json = iframe.contentDocument.body.innerHTML;
+                  if (!json) return;
+                  var obj = JSON.parse(json);
+                  var uploadTemplate;
+                  if (obj.success === true) {
+                    this.props.imageDidChanged(obj);
+                  } else {
+                    console.log('fail');
+                  }
+                }}
+              />
+            </div>
           </BackgroundImage>
 				</label>
 				<AjaxDialog ref="errorDialog"/>

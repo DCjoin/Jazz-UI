@@ -59,7 +59,7 @@ export default class KPIConfig extends Component {
 		this.setState({
 			isLoading:false
 		},()=>{
-			this.props.onSave()
+			this.props.onSave(GroupKPIStore.getKpiInfo().get('KpiSettingsId'))
 		})
 
 	}

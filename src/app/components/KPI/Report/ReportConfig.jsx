@@ -632,7 +632,7 @@ export default class ReportConfig extends Component {
               <UploadForm
                 id={'upload_tempalte'}
                 ref={'upload_tempalte'}
-                action={'TagImportExcel.aspx?Type=ReportTemplate'}
+                action={'/datareport/uploadtemplate'}
                 fileName={'templateFile'}
                 enctype={'multipart/form-data'}
                 method={'post'}
@@ -647,9 +647,17 @@ export default class ReportConfig extends Component {
 					{this.state.fileName!=='' && this.state.showUploadConfirm && <UploadConfirmDialog name={this.state.fileName}
 															 onConfirm={(status)=>{
                                  if(status===ReportStatus.NotExist){
-                                   this.refs.upload_tempalte.upload({IsReplace: false});
+                                   this.refs.upload_tempalte.upload({
+                                    IsReplace: false,
+                                    CustomerId: parseInt(customerId),
+                                    IsActive: true,
+                                  });
                                  }else {
-                                   this.refs.upload_tempalte.upload({IsReplace: true});
+                                   this.refs.upload_tempalte.upload({
+                                    IsReplace: true,
+                                    CustomerId: parseInt(customerId),
+                                    IsActive: true,
+                                  });
                                  }
 																 this.setState({
 																	 showUploadConfirm:false,

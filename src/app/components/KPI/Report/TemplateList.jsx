@@ -143,68 +143,6 @@ let TemplateList = React.createClass({
     this._handleDialogDismiss();
     this.refs.upload_tempalte.reset();
   },
-  // _replaceTemplate: function(event) {
-  //   var me=this;
-  //   let createElement = window.Highcharts.createElement,
-  //     discardElement = window.Highcharts.discardElement;
-  //   let iframe = createElement('iframe', null, {
-  //     display: 'none'
-  //   }, document.body);
-  //   iframe.onload = function() {
-  //     var json = iframe.contentDocument.body.innerHTML;
-  //     var obj = JSON.parse(json);
-  //     if (obj.success === true) {
-  //       ReportAction.getTemplateListByCustomerId(parseInt(me.props.customerId), me.props.sortBy, 'asc');
-  //       me._handleDialogDismiss();
-  //       me.refs.fileInput.value="";
-  //     } else {
-  //       me.refs.fileInput.value="";
-  //       me.setState({
-  //         showUploadDialog: false,
-  //         fileName: ''
-  //       });
-  //     }
-  //   };
-  //
-  //   let form = createElement('form', {
-  //     method: 'post',
-  //     action: 'http://sp1.energymost.com/TagImportExcel.aspx?Type=ReportTemplate',
-  //     target: '_self',
-  //     enctype: 'multipart/form-data',
-  //     name: 'inputForm'
-  //   }, {
-  //     display: 'none'
-  //   }, iframe.contentDocument.body);
-  //
-  //   let input = this.refs.fileInput;
-  //   form.appendChild(input);
-  //   let replaceInput = createElement('input', {
-  //     type: 'hidden',
-  //     name: 'IsReplace',
-  //     value: true
-  //   }, null, form);
-  //   let replaceIdInput = createElement('input', {
-  //     type: 'hidden',
-  //     name: 'Id',
-  //     value: me.state.id
-  //   }, null, form);
-  //   let customerInput = createElement('input', {
-  //     type: 'hidden',
-  //     name: 'CustomerId',
-  //     value: parseInt(me.props.customerId)
-  //   }, null, form);
-  //   let activeInput = createElement('input', {
-  //     type: 'hidden',
-  //     name: 'IsActive',
-  //     value: 1
-  //   }, null, form);
-  //   form.submit();
-  //   discardElement(form);
-  //   // this._handleDialogDismiss();
-  //   me.setState({
-  //     showUploadDialog: true
-  //   });
-  // },
 
   _renderErrorMsg(){
     var that = this;
@@ -212,27 +150,7 @@ let TemplateList = React.createClass({
         I18N.EM.Report.DuplicatedName.replace(/{\w}/, '(.)*')
       ).test(this.state.errorMsg)
     ) {
-      return null
-      // return (
-      // 	<Dialog open={true} title={I18N.EM.Report.UploadNewTemplate} actions={[
-      // 		(<FlatButton label={I18N.EM.Report.Upload} onClick={() => {
-      // 			this.refs.upload_tempalte.upload({IsReplace: true});
-      // 			this.setState({
-      // 				errorMsg: null,
-      // 			}, () => {
-      // 				this.refs.upload_tempalte.reset();
-      // 			});
-      // 		}}/>),
-      // 		(<FlatButton label={I18N.Common.Button.Cancel2} onClick={() => {
-      // 			this.refs.upload_tempalte.reset();
-      // 			this.setState({
-      // 				errorMsg: null,
-      // 			});
-      // 		}}/>),
-      // 	]}>
-      // 	{this.state.errorMsg}
-      // 	</Dialog>
-      // );
+      return null;
     } else {
       var onClose = ()=> {
         if(this.state.errorMsg===I18N.EM.Report.WrongExcelFile){
@@ -300,7 +218,9 @@ let TemplateList = React.createClass({
                               //  this.refs.fileInput.value="";
                                this.setState({
                                  showUploadConfirm:false,
-                                 showUploadDialog: true
+                                 showUploadDialog: true,
+                                  CustomerId: parseInt(this.context.currentRoute.params.customerId),
+                                  IsActive: true,
                                });
                              }}
                              onCancel={()=>{
@@ -308,21 +228,21 @@ let TemplateList = React.createClass({
                                this.refs.upload_tempalte.reset();
                                this.setState({
                                 showUploadConfirm:false,
-                                fileName:''
+                                fileName:'',
+                                CustomerId: parseInt(this.context.currentRoute.params.customerId),
+                                IsActive: true,
                               });
                              }}/>}
           <div style={{zIndex: -1, position: 'relative'}}>
                              <UploadForm
                                id="templateFile" name='templateFile'
                                ref={'upload_tempalte'}
-                               action={'TagImportExcel.aspx?Type=ReportTemplate'}
+                               action={'/datareport/uploadtemplate'}
                                fileName={'templateFile'}
                                enctype={'multipart/form-data'}
                                method={'post'}
                                onload={this._onUploadDone}
                                onChangeFile={this._replaceTemplateConfirm}>
-                               <input type="hidden" name='CustomerId' value={parseInt(this.props.customerId)}/>
-                               <input type="hidden" name='IsActive' value={true}/>
                              </UploadForm>
                            </div>
       </div>
