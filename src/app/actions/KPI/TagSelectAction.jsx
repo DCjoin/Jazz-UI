@@ -37,7 +37,7 @@ const TagSelectAction = {
       UomId
     };
     if( !allTag ) {
-      filter.CalculationSteps = [0,1,2,6,7,8,9,10,11,12];
+      filter.CalculationSteps = [0,1,2,3,6,7,8,9,10,11,12];
     }
     Ajax.post(url,
       {
@@ -53,6 +53,32 @@ const TagSelectAction = {
         AppDispatcher.dispatch({
           type: Action.GET_KPI_TAGS_SUCCESS,
           data: resBody.Data,
+        });
+      },
+      error: function() {}
+    });
+  },
+  getTagInfo(id,callback){
+    var url = Path.KPI.getTags;
+        Ajax.post(url,
+      {
+      params: {
+          filter:{
+            Ids:[id]
+          },
+          filters:null,
+          limit:10000,
+          page:1,
+          size:10000,
+          start:0
+        },
+      success: function(result) {
+        // that.getDimension(hierarchyId,hierarchyName);
+        var tagInfo=result.Data[0];
+        callback(tagInfo.AreaDimensionId?tagInfo.AreaDimensionId:-1)
+        AppDispatcher.dispatch({
+          type: Action.GET_TAG_INFO_SUCCESS,
+          tagInfo
         });
       },
       error: function() {}

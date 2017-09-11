@@ -92,6 +92,7 @@ export default class MonthValue extends Component {
   getUom(){
     let {IndicatorClass,UomId}=this.props.kpiInfo.toJS();
     let {RatioUomId}=this.props.buildingInfo.toJS();
+    if(!UomId){UomId=this.props.buildingInfo.get("UomId")};
     if(IndicatorClass===Type.Dosage){
       if(UomId) {
         let uom=CommonFuns.getUomById(UomId).Code;
@@ -229,7 +230,8 @@ export default class MonthValue extends Component {
   componentWillReceiveProps(nextProps) {
     let {IndicatorClass}=nextProps.kpiInfo.toJS();
     if(IndicatorClass===Type.Dosage){
-      if(nextProps.buildingInfo.get('ActualTagId')!==this.props.buildingInfo.get('ActualTagId')){
+      if(nextProps.buildingInfo.get('ActualTagId')!==this.props.buildingInfo.get('ActualTagId') || 
+         nextProps.buildingInfo.get('AnnualSavingRate')!==this.props.buildingInfo.get('AnnualSavingRate')){
         this._init(nextProps)
       }
     }else {

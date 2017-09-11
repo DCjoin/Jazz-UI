@@ -8,6 +8,10 @@ import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx';
 
 export default class PredictionView extends Component {
 
+  static contextTypes = {
+		router: React.PropTypes.object,
+	};
+
   _onRatesSave(tag){
       SingleKPIAction.merge([{
         path:'AdvanceSettings.PredictionSetting.TagSavingRates',
@@ -60,6 +64,10 @@ export default class PredictionView extends Component {
       value,
     }])
   }
+
+  componentDidMount(){
+		SingleKPIAction.IsAutoCalculable(parseInt(this.context.router.params.customerId),this.props.tag.get("Id"),this.props.Year);
+	}
 
   render(){
     var props={
