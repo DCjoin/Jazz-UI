@@ -152,6 +152,34 @@ export default class KPIConfig extends Component {
 		GroupKPIStore.addErrorListener(this._onError);
 	}
 
+	componentWillReceiveProps(nextProps, nextContext) {
+		if( nextProps.status!==this.props.status || this.props.id!==nextProps.id) {
+		let {year,id,status}=this.nextProps;
+		switch(status){
+			case SettingStatus.Prolong:
+						var info={
+								CustomerId:customerId,
+								Year:year,
+								IndicatorType:Type.Quota
+							};
+						GroupKPIAction.getGroupByYear(customerId,year,info);
+						break;
+			case SettingStatus.New:
+					var info={
+						CustomerId:customerId,
+						Year:year,
+						IndicatorType:Type.Quota
+					};
+					GroupKPIAction.getBuildingListByCustomerId(customerId,info);
+					break;
+			case SettingStatus.Edit:
+					 GroupKPIAction.getGroupSettings(id);
+					 SingleKPIAction.getKPIPeriodByYear(customerId,year);
+					 break;
+		}
+		}
+	}
+
 	componentWillUnmount(){
 		GroupKPIStore.removeChangeListener(this._onChange);
 		GroupKPIStore.removeSuccessListener(this._onSuccess);

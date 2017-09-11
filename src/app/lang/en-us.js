@@ -378,7 +378,7 @@ I18N.Common.Button.Send = 'Send';
 I18N.Common.Button.GoOn = 'Continue';
 I18N.Common.Button.Confirmed = 'OK';
 I18N.Common.Button.More = 'More';
-
+I18N.Common.Button.Setting = '配置';
 
 I18N.Common.CarbonUomType = {};
 I18N.Common.CarbonUomType.StandardCoal = 'Standard coal';

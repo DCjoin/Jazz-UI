@@ -3,6 +3,8 @@ import CircularProgress from 'material-ui/CircularProgress';
 import IconButton from 'material-ui/IconButton';
 import {find} from 'lodash-es';
 
+import DropdownButton from 'controls/NewDropdownButton.jsx';
+
 import ReduxDecorator from 'decorator/ReduxDecorator.jsx';
 
 import PermissionCode from 'constants/PermissionCode.jsx';
@@ -28,6 +30,8 @@ import UserStore from 'stores/UserStore.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import CurrentUserCustomerStore from 'stores/CurrentUserCustomerStore.jsx';
 import ReportStore from 'stores/ReportStore.jsx';
+
+import MenuItem from 'material-ui/MenuItem';
 
 const CONFIG_TYPE = {
 	KPI: 1,
@@ -173,6 +177,22 @@ export default class Actuality extends Component {
 		// let reportHide = this.state.show.report === false;
 		let isCustomer = this.state.isCustomer;
 		let hasKPIEdit = isCustomer && isFull();
+		var settingProps = {
+      text: I18N.Common.Button.Setting,
+      menuItems: [
+				<MenuItem value={CONFIG_TYPE.KPI} primaryText={I18N.Setting.KPI.GroupList.Header} />,
+				<MenuItem value={CONFIG_TYPE.RANK} primaryText={I18N.Setting.KPI.Group.Ranking.Title} />
+			],
+      onItemClick: (event, value)=>{
+				this.setState((state, props) => {
+		    			return {
+		    				configType: value
+		    			};
+		    		});
+ 			 },
+      buttonIcon: 'icon-arrow-unfold',
+      buttonStyle:{marginLeft:'12px'}
+    };
 		if(singleKPI) {
     		prefixTitle = 
     			I18N.Setting.KPI.Building + 
@@ -182,15 +202,7 @@ export default class Actuality extends Component {
 		return (<div className='jazz-actuality-content'>
 			{!isReport(this.props) && <div className='jazz-actuality-item'>
 				<div className='jazz-actuality-item-title'>{prefixTitle + I18N.Kpi.KPIActual}</div>
-				{hasKPIEdit && !singleKPI &&
-		    	<IconButton iconClassName='icon-setting' iconStyle={{color: '#32ad3d', fontSize: '20px'}} onClick={() => {
-		    		this.setState((state, props) => {
-		    			return {
-		    				configType: CONFIG_TYPE.RANK
-		    			};
-		    		});
-			      	// this.props.router.push(RoutePath.KPIGroupConfig(this.props.router.params));
-			      }}/>}
+				{hasKPIEdit && !singleKPI && <DropdownButton {...settingProps}/>}
 				<KPIActuality router={this.props.router} hierarchyId={this._getHierarchyId(this.props.router, this.context)}/>
 			</div>}
 			{isReport(this.props) && <div className='jazz-actuality-item'>
