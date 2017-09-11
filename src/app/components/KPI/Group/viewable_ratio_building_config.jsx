@@ -35,7 +35,8 @@ export default class ViewableRatioBuildingConfig extends Component {
   }
 
   getUom(){
-    let {UomId}=this.props.kpiInfo.toJS();
+    let {UomId,RatioUomId}=this.props.kpiInfo.toJS();
+
 
       if(UomId) {
         let uom=CommonFuns.getUomById(UomId).Code;
