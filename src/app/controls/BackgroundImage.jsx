@@ -6,7 +6,8 @@ import _assign from 'lodash-es/assign';
 
 import Config from 'config';
 
-import Path from '../constants/Path.jsx';
+import Path from 'constants/Path.jsx';
+import {getOssPath} from 'actions/download_file.js';
 var _ = {
   assign: _assign
 };
@@ -25,43 +26,83 @@ var BackgroudImage = React.createClass({
     width: React.PropTypes.number,
     height: React.PropTypes.number
   },
+  componentWillMount() {
+    if( !this.props.url || this.props.url.indexOf('url(') !== 0 ) {
+
+      var url;
+
+      if (this.props.imageContent) {
+        var parmas = "?hierarchyId=" + this.props.imageContent.hierarchyId;
+
+        if (this.props.width && this.props.height) {
+          parmas += "&width=" + this.props.width + "&height=" + this.props.height;
+          parmas += "&mode=" + 1;
+        }
+        url = "/common/logo" + parmas;
+      } else if (this.props.imageId) {
+        var parmas = "?logoId=" + this.props.imageId;
+        if (this.props.width && this.props.height) {
+          parmas += "&width=" + this.props.width + "&height=" + this.props.height;
+          parmas += "&mode=" + 1;
+        }
+        url = "/common/logo" + parmas;
+      } else {
+        url = this.props.url;
+      }
+
+      getOssPath(url, (ossURL) => {
+        this.setState({ossURL});
+      });
+    }
+  },
+  componentWillReceiveProps(nextProps) {
+    if( !nextProps.url || this.props.url !== nextProps.url || nextProps.url.indexOf('url(') !== 0 ) {
+
+      var url;
+
+      if (nextProps.imageContent) {
+        var parmas = "?hierarchyId=" + nextProps.imageContent.hierarchyId;
+
+        if (nextProps.width && nextProps.height) {
+          parmas += "&width=" + nextProps.width + "&height=" + nextProps.height;
+          parmas += "&mode=" + 1;
+        }
+        url = "/common/logo" + parmas;
+      } else if (nextProps.imageId) {
+        var parmas = "?logoId=" + nextProps.imageId;
+        if (nextProps.width && nextProps.height) {
+          parmas += "&width=" + nextProps.width + "&height=" + nextProps.height;
+          parmas += "&mode=" + 1;
+        }
+        url = "/common/logo" + parmas;
+      } else {
+        url = this.props.url;
+      }
+
+      getOssPath(url, (ossURL) => {
+        this.setState({ossURL});
+      });
+    }    
+  },
   render: function() {
-    var style = _.assign({
+    let {url, mode, style, children, ...other} = this.props,
+    newStyle = _.assign({
       backgroundSize: this.props.mode || "contain",
       width: "100%",
       height: "100%",
       backgroundRepeat: "no-repeat",
       backgroundPosition: "center center"
-    }, this.props.style);
-    var url;
+    }, style);
 
-    if (this.props.imageContent) {
-      var parmas = "?hierarchyId=" + this.props.imageContent.hierarchyId;
-
-      if (this.props.width && this.props.height) {
-        parmas += "&width=" + this.props.width + "&height=" + this.props.height;
-        parmas += "&mode=" + 1; //parmas += "&mode=" + (this.props.mode == 'cover' ? 2 : 1);
-      }
-      parmas += "&random=" + Math.random();
-      url = "url(" + Config.ServeAddress + "/Logo.aspx" + parmas + ")";
-    } else if (this.props.imageId) {
-      var parmas = "?logoId=" + this.props.imageId;
-      if (this.props.width && this.props.height) {
-        parmas += "&width=" + this.props.width + "&height=" + this.props.height;
-        parmas += "&mode=" + 1; //parmas += "&mode=" + (this.props.mode == 'cover' ? 2 : 1);
-      }
-      url = "url(" + Config.ServeAddress + "/Logo.aspx" + parmas + ")";
+    if( url && url.indexOf('url(') === 0 ) {
+      newStyle.backgroundImage = url;
     } else {
-      url = this.props.url || "url()";
+      if( this.state && this.state.ossURL ) {
+        newStyle.backgroundImage = 'url(' + this.state.ossURL + ')';
+      }
     }
-
-    // IE error in customer, move to parent node
-    // if(this.props.background){
-    //     url += "," + this.props.background;
-    // }
-    style.backgroundImage = url;
     return (
-        <div className={"pop-image"} style={style}>{this.props.children}</div>
+        <div {...other} className={"pop-image"} style={newStyle}>{children}</div>
       );
   }
 

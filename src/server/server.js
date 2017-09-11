@@ -61,7 +61,7 @@ function returnIndexHtml(request,reply){
 	html = html.replace('STYLE_URL',STYLE_URL);
 
   if(JAZZ_UI_UMENG_CNZZ_SDK_URL) {
-    html = html.replace('${JAZZ_UI_UMENG_CNZZ_SDK_URL}', JAZZ_UI_UMENG_CNZZ_SDK_URL);
+    // html = html.replace('__JAZZ_UI_UMENG_CNZZ_SDK_URL__', JAZZ_UI_UMENG_CNZZ_SDK_URL);
   }
 	var res = reply(html).type("text/html");
 	return res;

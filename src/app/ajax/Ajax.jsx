@@ -21,7 +21,7 @@ import remove from 'lodash-es/remove';
 var reqList=[];
 var _generatorRequest = function( url, type, params ) {
   var type = type.toLowerCase(),
-    req = request[type]( url.split('?')[0] );
+    req = request[type](url/* url.split('?')[0] */);
   if( type === "get" ) {
     return req.query(params);
   } else {
@@ -74,37 +74,35 @@ var _ajax = function(url, options) {
 
 	var req =_generatorRequest(Config.ServeAddress + Config.APIBasePath + url, type, params)
 		.send(params)
-	.withCredentials()
-        .set('Accept', dataType)
-        .set('httpWebRequest.MediaType', dataType)
-        .set('Content-Type', dataType)
-        .end(function(err, res){
-          // remove(reqList, (reqObj) => {
-          //   return reqObj.key === options.tag;
-          // });
-        	if (res.ok && Util.isSuccess(res.body)) {
-    			success.call(options, Util.getResResult(res.body));
-        	} else {
+    .withCredentials()
+    .set('Accept', dataType)
+    .set('httpWebRequest.MediaType', dataType)
+    .set('Content-Type', dataType)
+    .end(function(err, res){
+      if( options.noParseRes ) {
+        return success.call(options, res);
+      }
+      if (res.ok && Util.isSuccess(res.body)) {
+  			success.call(options, Util.getResResult(res.body));
+      } else {
 				if(res.body){
 					if (res.status == 401) {
-						// session timeout or not auth
 						AjaxAction.handleGlobalError(401);
 					}else {
 						Util.ErrorHandler(options, res.body.error.Code);
 					}
-				}else if(res.text){
+				} else if(res.text){
 					let errorObj = JSON.parse(res.text);
 					Util.ErrorHandler(options, errorObj.error.Code);
 				}
 
-        		error.call(options, err, res);
-        	}
-        });
+      		error.call(options, err, res);
+      }
+    });
     if (options.tag && !options.isBackService) {
       reqList.push({
         key: options.tag,
         value: req,
-        //loadingLocation: loadingLocation
       });
     }
     return true;
