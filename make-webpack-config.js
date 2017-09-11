@@ -99,6 +99,7 @@ module.exports = function(options) {
     new webpack.PrefetchPlugin("react"),
     new HtmlWebpackPlugin({      
       template: './src/app/template.html',
+      filename: '../index.html',
       favicon: './src/app/favicon.ico',
       hash: true,
       cache: true

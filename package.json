@@ -15,7 +15,8 @@
     "build-test": "webpack --config webpack-test.config.js --progress --profile --colors > ret-test.log",
     "dev1": "webpack --config conf/webpack.conf.js --progress --profile --display-modules",
     "dll": "webpack --config conf/webpack.dll.conf.js",
-    "release:docker": "npm run build-test && node shell/copy_server.js && node ./build/release_server.js"
+    "release:docker": "npm run build-test && node shell/copy_server.js && node ./build/release_server.js",
+    "gulp": "gulp test"
   },
   "jest": {
     "scriptPreprocessor": "<rootDir>/node_modules/babel-jest",
@@ -56,7 +57,6 @@
     "eslint-plugin-react": "3.16.1",
     "extract-text-webpack-plugin": "2.1.0",
     "file-loader": "0.8.4",
-    "gulp": "gulpjs/gulp.git#4.0",
     "h2o2": "^5.4.0",
     "hapi": "15.2.0",
     "happypack": "^4.0.0-beta.1",
@@ -113,6 +113,8 @@
     "react-grid-layout": "0.13.2",
     "react-motion": "^0.4.7",
     "react-router": "3.0.0",
+    "gulp": "gulpjs/gulp#4ed9a4a3275559c73a396eff7e1fde3824951ebb",
+    "gulp-hub": "frankwallis/gulp-hub#d461b9c700df9010d0a8694e4af1fb96d9f38bf4",
     "superagent": "1.0.0"
   },
   "jshintConfig": {
