@@ -227,6 +227,7 @@ var ViewableTextField = React.createClass({
   },
   _onFocus() {
     var node = ReactDOM.findDOMNode(this.refs.TextField);
+    if(!node) return;
     node.className = 'pop-viewableTextField-focus';
     // if(this.props.height) node.style.height = this.props.height;
     if (this.props.didFocus) {
