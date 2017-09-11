@@ -68,8 +68,9 @@ let CustomerIdentity = React.createClass({
       logoImageProps = {
         id: 'logo',
         clip: false,
+        uploadAction: '/customer/uploadlogo',
         background: 'customer-background-logo',
-        imageUrl: (!LogoContent ? (!Logo ? "" : "url(" + Config.ServeAddress + "/Logo.aspx?ossKey=" + Logo + ")") : "url(data:image/png;base64," + LogoContent + ")"),
+        imageUrl: (!LogoContent ? (!Logo ? "" : "/common/logo?ossKey=" + Logo) : "url(data:image/png;base64," + LogoContent + ")"),
         isViewState: isView,
         updateTips: (!LogoContent && !Logo) ? I18N.Platform.ServiceProvider.AddImage : I18N.Platform.ServiceProvider.UpdateImage,
         imageDidChanged: img => {
@@ -85,8 +86,9 @@ let CustomerIdentity = React.createClass({
       backgroundImageProps = {
         id: 'background',
         clip: false,
+        uploadAction: '/customer/uploadlogo',
         background: 'customer-background-logo',
-        imageUrl: (!HomeBackgroundContent ? (!HomeBackground ? "" : "url(" + Config.ServeAddress + "/Logo.aspx?ossKey=" + HomeBackground + ")") : "url(data:image/png;base64," + HomeBackgroundContent + ")"),
+        imageUrl: (!HomeBackgroundContent ? (!HomeBackground ? "" : "/common/logo?ossKey=" + HomeBackground) : "url(data:image/png;base64," + HomeBackgroundContent + ")"),
         isViewState: isView,
         updateTips: (!HomeBackgroundContent && !HomeBackground) ? I18N.Platform.ServiceProvider.AddImage : I18N.Platform.ServiceProvider.UpdateImage,
         imageDidChanged: img => {

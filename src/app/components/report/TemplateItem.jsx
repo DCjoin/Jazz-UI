@@ -2,7 +2,8 @@
 
 import React from 'react';
 import CommonFuns from '../../util/Util.jsx';
-import ReportAction from '../../actions/ReportAction.jsx';
+import ReportAction from 'actions/ReportAction.jsx';
+import downloadFile from 'actions/download_file.js';
 import { CircularProgress, FontIcon, SelectField, TextField, RadioButton, Dialog, LinkButton } from 'material-ui';
 import FlatButton from 'controls/FlatButton.jsx';
 import classNames from 'classnames';
@@ -36,14 +37,15 @@ let TemplateItem = React.createClass({
     });
   },
   _downloadTemplate: function() {
-    var templateId = this.props.id;
-    var iframe = document.createElement('iframe');
-    iframe.style.display = 'none';
-    iframe.src = 'TagImportExcel.aspx?Type=ReportTemplate&Id=' + templateId;
-    iframe.onload = function() {
-      document.body.removeChild(iframe);
-    };
-    document.body.appendChild(iframe);
+    downloadFile.get(`/datareport/downloadreporttemplate/${this.props.id}`);
+    // var templateId = this.props.id;
+    // var iframe = document.createElement('iframe');
+    // iframe.style.display = 'none';
+    // iframe.src = 'TagImportExcel.aspx?Type=ReportTemplate&Id=' + templateId;
+    // iframe.onload = function() {
+    //   document.body.removeChild(iframe);
+    // };
+    // document.body.appendChild(iframe);
   },
 
   render() {

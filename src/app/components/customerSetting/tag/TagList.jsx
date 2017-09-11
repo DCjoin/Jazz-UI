@@ -11,6 +11,7 @@ import FlatButton from 'controls/FlatButton.jsx';
 import Dialog from 'controls/NewDialog.jsx';
 import UploadForm from 'controls/UploadForm.jsx';
 import TagAction from 'actions/customerSetting/TagAction.jsx';
+import downloadFile from 'actions/download_file.js';
 
 let TagList = React.createClass({
   propTypes: {
@@ -62,13 +63,14 @@ let TagList = React.createClass({
     });
   },
   _downloadLogFile: function() {
-    var iframe = document.createElement('iframe');
-    iframe.style.display = 'none';
-    iframe.src = 'TagImportExcel.aspx?Id=' + this.state.importResult.Id;
-    iframe.onload = function() {
-      document.body.removeChild(iframe);
-    };
-    document.body.appendChild(iframe);
+    downloadFile.get('/tag/exporttagimporthistory/' + this.state.importResult.Id);
+    // var iframe = document.createElement('iframe');
+    // iframe.style.display = 'none';
+    // iframe.src = 'TagImportExcel.aspx?Id=' + this.state.importResult.Id;
+    // iframe.onload = function() {
+    //   document.body.removeChild(iframe);
+    // };
+    // document.body.appendChild(iframe);
   },
   _renderImportDialog() {
     if (!this.state.showImportDialog) {
@@ -159,8 +161,7 @@ let TagList = React.createClass({
                 action='/tag/import'
                 method='post'
                 onChangeFile={this._onImportBtnClick}
-                onload={(iframe) => {
-                  var json = iframe.contentDocument.body.innerHTML;
+                onload={(json) => {
                   var obj = JSON.parse(json);
                   if (obj.success === true) {
                     this.setState({

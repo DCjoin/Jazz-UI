@@ -91,8 +91,7 @@ let TemplateList = React.createClass({
             fileName={'templateFile'}
             enctype={'multipart/form-data'}
             method={'post'}
-            onload={(iframe) => {
-              var json = iframe.contentDocument.body.innerHTML;
+            onload={(json) => {
               var obj = JSON.parse(json);
               if (obj.success === true) {
                 ReportAction.getTemplateListByCustomerId(parseInt(this.props.customerId), this.props.sortBy, 'asc');

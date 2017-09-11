@@ -9,6 +9,7 @@ import UploadForm from 'controls/UploadForm.jsx';
 import ViewableTextField from '../../controls/ViewableTextField.jsx';
 import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
 import ReportAction from '../../actions/ReportAction.jsx';
+import downloadFile from 'actions/download_file.js';
 import ReportDataItem from './ReportDataItem.jsx';
 import ReportStore from '../../stores/ReportStore.jsx';
 import GlobalErrorMessageAction from '../../actions/GlobalErrorMessageAction.jsx';
@@ -225,8 +226,7 @@ var ReportRightPanel = React.createClass({
       }).toJS();
     }
   },
-  _onUploadDone(iframe) {
-    var json = iframe.contentDocument.body.innerHTML;
+  _onUploadDone(json) {
     var obj = JSON.parse(json);
     var reportItem = this.state.reportItem;
     if (obj.success === true) {
@@ -322,42 +322,44 @@ var ReportRightPanel = React.createClass({
       </Dialog>);
   },
   _downloadTemplate: function() {
-    var templateId = this.state.reportItem.get('templateId');
-    var iframe = document.createElement('iframe');
-    iframe.style.display = 'none';
-    iframe.src = 'TagImportExcel.aspx?Type=ReportTemplate&Id=' + templateId;
-    iframe.onload = function() {
-      document.body.removeChild(iframe);
-    };
-    document.body.appendChild(iframe);
+    downloadFile.get(`/datareport/downloadreporttemplate/${this.state.reportItem.get('templateId')}`);
+    // var templateId = this.state.reportItem.get('templateId');
+    // var iframe = document.createElement('iframe');
+    // iframe.style.display = 'none';
+    // iframe.src = 'TagImportExcel.aspx?Type=ReportTemplate&Id=' + templateId;
+    // iframe.onload = function() {
+    //   document.body.removeChild(iframe);
+    // };
+    // document.body.appendChild(iframe);
   },
   _exportTemplate: function() {
-    var reportItem = this.state.reportItem;
-    var id = reportItem.get('id');
-    var iframe = document.createElement('iframe');
-    iframe.style.display = 'none';
-    iframe.src = 'TagImportExcel.aspx?Type=Report&Id=' + id;
+    downloadFile.get(`/datareport/downloadreport/${this.state.reportItem.get('id')}`);
+    // var reportItem = this.state.reportItem;
+    // var id = reportItem.get('id');
+    // var iframe = document.createElement('iframe');
+    // iframe.style.display = 'none';
+    // iframe.src = 'TagImportExcel.aspx?Type=Report&Id=' + id;
 
-    iframe.onload = function() {
-      var json = JSON.parse(iframe.contentDocument.body.innerHTML);
-      if (json) {
-        var code = json.UploadResponse.ErrorCode;
-        var msg;
-        if (code == -1) {
-          msg = I18N.Message.M02013;
-        } else if (code == -2) {
-          msg = I18N.format(I18N.Message.M21707, reportItem.get('name'));
-        } else if (code == -3) {
-          msg = I18N.format(I18N.EM.Report.ExportStepError);
-        } else if (code == -4) {
-          msg = I18N.format(I18N.EM.Report.ExportTagUnassociated);
-        }
-        if (msg) {
-          CommonFuns.popupErrorMessage(msg);
-        }
-      }
-    };
-    document.body.appendChild(iframe);
+    // iframe.onload = function() {
+    //   var json = JSON.parse(iframe.contentDocument.body.innerHTML);
+    //   if (json) {
+    //     var code = json.UploadResponse.ErrorCode;
+    //     var msg;
+    //     if (code == -1) {
+    //       msg = I18N.Message.M02013;
+    //     } else if (code == -2) {
+    //       msg = I18N.format(I18N.Message.M21707, reportItem.get('name'));
+    //     } else if (code == -3) {
+    //       msg = I18N.format(I18N.EM.Report.ExportStepError);
+    //     } else if (code == -4) {
+    //       msg = I18N.format(I18N.EM.Report.ExportTagUnassociated);
+    //     }
+    //     if (msg) {
+    //       CommonFuns.popupErrorMessage(msg);
+    //     }
+    //   }
+    // };
+    // document.body.appendChild(iframe);
   },
   _editReport: function() {
     this.setState({

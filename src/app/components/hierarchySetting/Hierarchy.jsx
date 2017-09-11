@@ -4,6 +4,7 @@ import React from "react";
 import Immutable from 'immutable';
 import HierarchyStore from 'stores/hierarchySetting/HierarchyStore.jsx';
 import HierarchyAction from 'actions/hierarchySetting/HierarchyAction.jsx';
+import downloadFile from 'actions/download_file.js';
 import HierarchyList from './HierarchyList.jsx';
 import { formStatus } from 'constants/FormStatus.jsx';
 import { dataStatus } from 'constants/DataStatus.jsx';
@@ -68,13 +69,14 @@ var Hierarchy = React.createClass({
     });
   },
   _onExportBtnClick: function() {
-    var iframe = document.createElement('iframe');
-    iframe.style.display = 'none';
-    iframe.src = './ImpExpHierarchy.aspx?Action=ExportHierarchy&customerId=' + parseInt(this.context.currentRoute.params.customerId);
-    iframe.onload = function() {
-      document.body.removeChild(iframe);
-    };
-    document.body.appendChild(iframe);
+    downloadFile.get('/hierarchy/export/' + this.context.currentRoute.params.customerId);
+    // var iframe = document.createElement('iframe');
+    // iframe.style.display = 'none';
+    // iframe.src = './ImpExpHierarchy.aspx?Action=ExportHierarchy&customerId=' + parseInt(this.context.currentRoute.params.customerId);
+    // iframe.onload = function() {
+    //   document.body.removeChild(iframe);
+    // };
+    // document.body.appendChild(iframe);
   },
   _getConsultants: function(hierarchyId, type) {
     if( ( type === -1 || type === 2) && _currentConsultantsHierarchyId !== hierarchyId ) {
