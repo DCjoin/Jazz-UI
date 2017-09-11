@@ -10,7 +10,7 @@ import GroupKPIAction from 'actions/KPI/GroupKPIAction.jsx';
 
 
 function getDisplayData(total,type){
-  return total===null?'－':type===Type.Quota?CommonFuns.getLabelData(parseFloat(total)):total
+  return total===null?'－':type===Type.Quota?CommonFuns.getLabelData(parseFloat(total)):parseFloat(total).toFixed(1)
 }
 
 function isView(building){
@@ -144,7 +144,7 @@ export default class BuildingConfig extends Component {
 
   render(){
     return(
-      <StepComponent step={2} isfolded={false} title={I18N.Setting.KPI.Config.Group} isfolded={this.props.isNew}
+      <StepComponent step={2} isfolded={false} title={I18N.Setting.KPI.Config.Building} isfolded={this.props.isNew}
                     isView={false}>
         <div className="jazz-kpi-config-edit-building-config-field">
           {this._renderBuildingList()}

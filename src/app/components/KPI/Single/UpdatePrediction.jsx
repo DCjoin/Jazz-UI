@@ -2,7 +2,7 @@
 import React, {Component} from 'react';
 import Immutable from 'immutable';
 import Dialog from 'controls/NewDialog.jsx';
-import FlatButton from 'controls/FlatButton.jsx';
+import FlatButton from 'controls/NewFlatButton.jsx';
 import CommonFuns from 'util/Util.jsx';
 import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx';
 import SingleKPIAction from 'actions/KPI/SingleKPIAction.jsx';
@@ -50,11 +50,11 @@ export default class UpdatePrediction extends Component {
   }
 
   getPredictionProps(){
-      let {UomId,AdvanceSettings,CommodityId}=this.state.kpiInfo.toJS();
+      let {UomId,AdvanceSettings,CommodityId,ActualTagId}=this.state.kpiInfo.toJS();
       let {PredictionSetting}=AdvanceSettings,
           {hierarchyId,hierarchyName}=this.props,
           uom=CommonFuns.getUomById(UomId).Code,
-          tag=Immutable.fromJS({UomId,CommodityId});
+          tag=Immutable.fromJS({Id:ActualTagId,UomId,CommodityId});
       return{
         PredictionSetting,
         onPredictioChange:this._onPredictioChange,
@@ -86,33 +86,21 @@ export default class UpdatePrediction extends Component {
 				<div/>
 			)
 		}
-		let actions = [
-			<FlatButton
-			label={I18N.Common.Button.Save}
-			onTouchTap={this._onSave}
-			disabled={!SingleKPIStore.validateKpiInfo(this.state.kpiInfo)}
-			/>,
-			<FlatButton
-			label={I18N.Common.Button.Cancel2}
-			onTouchTap={this.props.onCancel}
-			/>
-		];
+		let
+		actions=[
+        <FlatButton label={I18N.Common.Button.Cancel2} secondary={true} style={{float:'right',height:36,lineHeight:'34px'}} onTouchTap={this.props.onCancel}/>,
+        <FlatButton label={I18N.Common.Button.Save} primary={true} disabled={!SingleKPIStore.validateKpiInfo(this.state.kpiInfo)} 
+				style={{float:'right',marginRight:'20px',height:36,lineHeight:'34px'}} onTouchTap={this._onSave}/>
+      ];
 		let  dialogProps = {
 		        ref: 'prediction_dialog',
+						titleStyle:{margin:'0 22px',height:'19px',lineHeight:'19px',padding:"15px 0 15px 8px",fontSize:'16px', fontWeight: 600,borderBottom:'1px solid #e6e6e6'},
+          	contentStyle:{display:'block',paddingLeft:"8px",margin:"0 22px"},
+          	actionsContainerStyle:{margin:'35px 22px 20px 22px'},
 		        title: I18N.Setting.KPI.Parameter.UpdatePrediction,
 		        actions: actions,
 		        modal: true,
 		        open: true,
-						contentStyle:{
-							overflowY:'auto',
-							overflowX:'hidden',
-							maxHeight:'485px',
-							height:'480px'
-						},
-						wrapperStyle:{
-							width:'auto',
-							maxWidth:'75%'
-						}
 		      };
 		return(
 			<Dialog {...dialogProps}>

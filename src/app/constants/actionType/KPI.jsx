@@ -52,7 +52,8 @@ module.exports = {
     GET_TEMPLATE_REFERENCE:null,
     CLEAR_ALL_BUILDING_INFO:null,
     UPDATE_KPI_INFO:null,
-    UPDATE_KPI_GROUP_TOTAL:null
+    UPDATE_KPI_GROUP_TOTAL:null,
+    GET_TAG_INFO_SUCCESS:null
   }),
 
   Type:{

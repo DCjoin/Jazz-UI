@@ -9,7 +9,7 @@ import assign from 'object-assign';
 import TreeConstants from '../../constants/TreeConstants.jsx';
 
 let {nodeType} = TreeConstants;
-let _dimensions=null,_tags=null;
+let _dimensions=null,_tags=null,_tagInfo=null;
 const TagSelectStore = assign({}, PrototypeStore, {
   addtype(data){
     var f=function(item){
@@ -48,10 +48,19 @@ const TagSelectStore = assign({}, PrototypeStore, {
   getTags(){
     return _tags;
   },
-
+  setTagInfo(info){
+    _tagInfo=info;
+  },
+  getSelectedTreeNode(){
+    if(!_tagInfo) return null
+    return Immutable.fromJS({
+        Id:_tagInfo.AreaDimensionId?_tagInfo.AreaDimensionId:-1
+    })
+  },
   dispose(){
     _dimensions=null;
     _tags=null;
+    _tagInfo=null;
   }
 
 });
@@ -64,6 +73,10 @@ TagSelectStore.dispatchToken = AppDispatcher.register(function(action) {
          break;
     case Action.GET_KPI_TAGS_SUCCESS:
          TagSelectStore.setTags(action.data);
+         TagSelectStore.emitChange();
+         break;
+    case Action.GET_TAG_INFO_SUCCESS:
+         TagSelectStore.setTagInfo(action.tagInfo);
          TagSelectStore.emitChange();
          break;
     default:
