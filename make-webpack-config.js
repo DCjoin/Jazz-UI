@@ -12,7 +12,9 @@ module.exports = function(options) {
   var entry = {
     bundle: path.join(appRoot, "app.jsx"),
     // vendors: ['react']
-    vendors: "./reference.jsx"
+    vendors: "./reference.jsx",
+    // "en-us": path.join(__dirname, "src", "app", "lang", 'en-us'),
+    // "zh-cn": path.join(__dirname, "src", "app", "lang", 'zh-cn'),
   };
 
   var alias = {
@@ -128,7 +130,7 @@ module.exports = function(options) {
           use: [ "babel-loader"],
           exclude: [
             /node_modules/,
-            path.join(__dirname, "src", "app", "lang")
+            path.join(__dirname, "src", "app", "lang", "*.js")
           ]
         },
         {
