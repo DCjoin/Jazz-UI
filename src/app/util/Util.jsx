@@ -377,14 +377,14 @@ let CommonFuns = {
     return canvas.toDataURL();
   },
 
-  setImageUploadSource(source) {
+  setUploadSource(source) {
     return source.replace(/^url\("?/, "") // Remove header
       .replace(/"?\)$/, "") // Remove footer
-      .replace(/^data:image\/(\w+|\*);base64,/, ""); // Remove first/second header
+      .replace(/^data:.*;base64,/, ""); // Remove first/second header
   },
 
   getImageSourceUrl(source) {
-    return "data:image/*;base64," + this.setImageUploadSource(source);
+    return "data:image/*;base64," + this.setUploadSource(source);
   },
 
   getImageBackgroundStr(source) {

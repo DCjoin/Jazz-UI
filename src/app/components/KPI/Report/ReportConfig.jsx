@@ -22,6 +22,7 @@ import Dialog from 'controls/NewDialog.jsx';
 import TitleComponent from 'controls/TitleComponent.jsx';
 import Immutable from 'immutable';
 import ReportAction from 'actions/KPI/ReportAction.jsx';
+import downloadFile from 'actions/download_file.js';
 import ReportStore from 'stores/KPI/ReportStore.jsx';
 import ViewableTextField from 'controls/ViewableTextField.jsx';
 import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
@@ -248,18 +249,18 @@ export default class ReportConfig extends Component {
   }
 
   _downloadTemplate() {
-    var templateId = this.state.reportItem.get('templateId');
-    var iframe = document.createElement('iframe');
-    iframe.style.display = 'none';
-    iframe.src = 'TagImportExcel.aspx?Type=ReportTemplate&Id=' + templateId;
-    iframe.onload = function() {
-      document.body.removeChild(iframe);
-    };
-    document.body.appendChild(iframe);
-    }
+    downloadFile.get(`/datareport/downloadreporttemplate/${this.state.reportItem.get('templateId')}`);
+    // var templateId = this.state.reportItem.get('templateId');
+    // var iframe = document.createElement('iframe');
+    // iframe.style.display = 'none';
+    // iframe.src = 'TagImportExcel.aspx?Type=ReportTemplate&Id=' + templateId;
+    // iframe.onload = function() {
+    //   document.body.removeChild(iframe);
+    // };
+    // document.body.appendChild(iframe);
+  }
 
-  _onUploadDone(iframe) {
-	var json = iframe.contentDocument.body.innerHTML;
+  _onUploadDone(json) {
 	var obj = JSON.parse(json);
 	var reportItem = this.state.reportItem;
 	if (obj.success === true) {

@@ -3,6 +3,7 @@ module.exports = function(options) {
   var path = require("path");
   var webpack = require("webpack");
   var ExtractTextPlugin = require("extract-text-webpack-plugin");
+  var HtmlWebpackPlugin = require('html-webpack-plugin');
   var extractLessModule = require("./extract-less-webpack-module.js");
   var fs = require('fs');
   var modulePath = "node_modules";
@@ -58,28 +59,28 @@ module.exports = function(options) {
         });
       } else {
         this.plugin("done", function(stats) {
-          var APP_URL = "bundle.js",
-            VENDOR_URL = "vendors.js",
-            STYLE_URL = "main.css"
-          var html = fs.readFileSync(path.join(appRoot, "index.html"), "utf-8");
-          Object.keys(stats.compilation.assets).forEach(function(item) {
-            var pathAssets = "/assets/";
-            if (item.indexOf(APP_URL) >= 0) {
-              html = html.replace('APP_URL', pathAssets + item);
-            }
-            if (item.indexOf(VENDOR_URL) >= 0) {
-              html = html.replace('VENDOR_URL', pathAssets + item);
-            }
-            if (item.indexOf(STYLE_URL) >= 0) {
-              html = html.replace('STYLE_URL', pathAssets + item);
-            }
-          });
+          // var APP_URL = "bundle.js",
+          //   VENDOR_URL = "vendors.js",
+          //   STYLE_URL = "main.css"
+          // var html = fs.readFileSync(path.join(appRoot, "index.html"), "utf-8");
+          // Object.keys(stats.compilation.assets).forEach(function(item) {
+          //   var pathAssets = "/assets/";
+          //   if (item.indexOf(APP_URL) >= 0) {
+          //     html = html.replace('APP_URL', pathAssets + item);
+          //   }
+          //   if (item.indexOf(VENDOR_URL) >= 0) {
+          //     html = html.replace('VENDOR_URL', pathAssets + item);
+          //   }
+          //   if (item.indexOf(STYLE_URL) >= 0) {
+          //     html = html.replace('STYLE_URL', pathAssets + item);
+          //   }
+          // });
           var buildPath = path.join(__dirname, "build/");
 
           if (!fs.existsSync(buildPath)) { //check folder
             fs.mkdirSync(buildPath);
           }
-          fs.writeFileSync(path.join(buildPath, "index.html"), html);
+          // fs.writeFileSync(path.join(buildPath, "index.html"), html);
           fs.writeFileSync(path.join(buildPath,"UpdateBrowserTip.html"), fs.readFileSync(path.join(appRoot, "UpdateBrowserTip.html"), "utf-8"));
 
           (function(){
@@ -96,6 +97,12 @@ module.exports = function(options) {
       }
     },
     new webpack.PrefetchPlugin("react"),
+    new HtmlWebpackPlugin({      
+      template: './src/app/template.html',
+      favicon: './src/app/favicon.ico',
+      hash: true,
+      cache: true
+    }),
   ];
   plugins.push(new webpack.optimize.CommonsChunkPlugin({
     name: "vendors",

@@ -35,7 +35,7 @@ let ImageUpload = React.createClass({
     wrapperWidth: React.PropTypes.number,
     wrapperHeight: React.PropTypes.number,
     clipMode: React.PropTypes.string,
-    uploadUrl: React.PropTypes.string,
+    uploadAction: React.PropTypes.string,
   },
 
   _handleClick() {
@@ -53,7 +53,7 @@ let ImageUpload = React.createClass({
       } else if (file.size === 0) {
         this.refs.errorDialog._error(I18N.Setting.CustomerManagement.LogoUploadErrorTitle, I18N.Setting.CustomerManagement.LogoUploadErrorSizeContent);
       } else {
-        if (this.props.uploadUrl === null) {
+        if (this.props.uploadAction === null) {
           let render = new FileReader();
           render.readAsDataURL(file);
 
@@ -68,7 +68,7 @@ let ImageUpload = React.createClass({
             imgChecker.onload = function() {
 
 
-              let result = util.setImageUploadSource(ret);
+              let result = util.setUploadSource(ret);
 
               that.props.imageDidChanged(result);
             };
@@ -209,7 +209,7 @@ let ImageUpload = React.createClass({
                 id={this.props.id || 'pop_image_upload_button'}
                 fileName={'imageFile'}
                 ref={'pop_image_upload_button'}
-                action={'/common/uploadlogo'}
+                action={this.props.uploadAction}
                 inputProps={{
                   disabled: this.props.isViewState,
                   accept: 'images/*'
@@ -217,8 +217,7 @@ let ImageUpload = React.createClass({
                 method={'post'}
                 onClick={this._handleClick}
                 onChangeFile={this._handlerChangeImageUpload}
-                onload={(iframe) => {
-                  var json = iframe.contentDocument.body.innerHTML;
+                onload={(json) => {
                   if (!json) return;
                   var obj = JSON.parse(json);
                   var uploadTemplate;
