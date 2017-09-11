@@ -4,6 +4,7 @@ module.exports = function(options) {
   var webpack = require("webpack");
   var ExtractTextPlugin = require("extract-text-webpack-plugin");
   var HtmlWebpackPlugin = require('html-webpack-plugin');
+  var CopyWebpackPlugin = require('copy-webpack-plugin');
   var extractLessModule = require("./extract-less-webpack-module.js");
   var fs = require('fs');
   var modulePath = "node_modules";
@@ -59,28 +60,11 @@ module.exports = function(options) {
         });
       } else {
         this.plugin("done", function(stats) {
-          // var APP_URL = "bundle.js",
-          //   VENDOR_URL = "vendors.js",
-          //   STYLE_URL = "main.css"
-          // var html = fs.readFileSync(path.join(appRoot, "index.html"), "utf-8");
-          // Object.keys(stats.compilation.assets).forEach(function(item) {
-          //   var pathAssets = "/assets/";
-          //   if (item.indexOf(APP_URL) >= 0) {
-          //     html = html.replace('APP_URL', pathAssets + item);
-          //   }
-          //   if (item.indexOf(VENDOR_URL) >= 0) {
-          //     html = html.replace('VENDOR_URL', pathAssets + item);
-          //   }
-          //   if (item.indexOf(STYLE_URL) >= 0) {
-          //     html = html.replace('STYLE_URL', pathAssets + item);
-          //   }
-          // });
           var buildPath = path.join(__dirname, "build/");
 
           if (!fs.existsSync(buildPath)) { //check folder
             fs.mkdirSync(buildPath);
           }
-          // fs.writeFileSync(path.join(buildPath, "index.html"), html);
           fs.writeFileSync(path.join(buildPath,"UpdateBrowserTip.html"), fs.readFileSync(path.join(appRoot, "UpdateBrowserTip.html"), "utf-8"));
 
           (function(){
@@ -104,15 +88,19 @@ module.exports = function(options) {
       hash: true,
       cache: true
     }),
+    new CopyWebpackPlugin([{
+      context: 'src/app/lang',
+      from: '*.js',
+    }]),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: "vendors",
+      fiulename: "vendors.js" + (options.publish ? "?[chunkhash]" : "")
+    }),
+    new ExtractTextPlugin({
+      filename: "main.css" + (options.publish ? "?[contenthash]" : "")
+    }),
+    extractLessModule.getWebpackPlugin(),
   ];
-  plugins.push(new webpack.optimize.CommonsChunkPlugin({
-    name: "vendors",
-    fiulename: "vendors.js" + (options.publish ? "?[chunkhash]" : "")
-  }));
-  plugins.push(new ExtractTextPlugin({
-    filename: "main.css" + (options.publish ? "?[contenthash]" : "")
-  }));
-  plugins.push(extractLessModule.getWebpackPlugin());
   if (options.publish) {
     plugins.push(
       new webpack.optimize.UglifyJsPlugin(),
@@ -140,7 +128,7 @@ module.exports = function(options) {
           use: [ "babel-loader"],
           exclude: [
             /node_modules/,
-            // path.join(__dirname, "src", "app", "lang")
+            path.join(__dirname, "src", "app", "lang")
           ]
         },
         {
