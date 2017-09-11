@@ -42,7 +42,8 @@ export default class TagSelect extends Component {
 	_onChange(){
 		this.setState({
 			dimensions:TagSelectStore.getDimensions(),
-			tags:TagSelectStore.getTags()
+			tags:TagSelectStore.getTags(),
+			selectedDimension:this.state.selectedDimension?this.state.selectedDimension:TagSelectStore.getSelectedTreeNode()
 		})
 	}
 
@@ -138,12 +139,15 @@ export default class TagSelect extends Component {
 		)
 	}
 
-	componentWillMount(){
-		TagSelectAction.getDimension(this.props.hierarchyId,this.props.hierarchyName);
-	}
-
 	componentDidMount(){
 		TagSelectStore.addChangeListener(this._onChange);
+		if(this.props.tag.get("Id")){
+			TagSelectAction.getTagInfo(this.props.tag.get("Id"),(id)=>{
+				this._getTags(id);
+			});
+			
+		}
+		TagSelectAction.getDimension(this.props.hierarchyId,this.props.hierarchyName);
 	}
 
 	componentWillUnmount() {

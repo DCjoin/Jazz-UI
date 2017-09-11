@@ -61,7 +61,8 @@ export default class ActualTag extends Component {
     let {isCreate}=this.props;
     let {CommodityId,UomId}=this.props.kpiInfo.toJS();
     let {HierarchyName,HierarchyId,ActualTagId,ActualTagName}=this.props.buildingInfo.toJS();
-
+    if(!UomId){UomId=this.props.buildingInfo.get("UomId")}
+    if(!CommodityId){CommodityId=this.props.buildingInfo.get("CommodityId")}
     let tagSelectProps={
     	key:'tagselect',
       title:I18N.Setting.KPI.Group.GroupConfig.SelectTag,

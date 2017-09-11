@@ -178,7 +178,8 @@ export default class Prediction extends Component {
       label:{
         fontSize:'14px',
         lineHeight:'14px',
-        verticalAlign:'baseline'
+        verticalAlign:'baseline',
+        border:'none'
       }
     };
 
@@ -246,6 +247,7 @@ export default class Prediction extends Component {
     let {PredictionSetting,hierarchyId,hierarchyName,tag,uomId,isViewStatus}=this.props;
     PredictionSetting=PredictionSetting || {};
     let {MonthPredictionValues,TagSavingRates}=PredictionSetting;
+    let lastTag=TagSavingRates[TagSavingRates.length-1];
     let savingRateProps={
       title:I18N.Setting.KPI.Parameter.TagSavingRates,
       contentStyle:{
@@ -271,7 +273,11 @@ export default class Prediction extends Component {
           title:I18N.Setting.KPI.Group.GroupConfig.SelectTagForPrediction,
           hierarchyId,
           hierarchyName,
-          tag:tag,
+          tag:lastTag?Immutable.fromJS({
+			      	Id:lastTag.TagId,
+			      	UomId:tag.get("UomId"),
+              CommodityId:tag.get("CommodityId")
+			      }):tag,
           onSave:this._onRatesSave,
           onCancel:this._onDialogDismiss
           };
@@ -286,7 +292,7 @@ export default class Prediction extends Component {
           <div className="jazz-kpi-prediction-config-month-head">
             <div className="jazz-kpi-prediction-config-month-head-title">{`${I18N.Setting.KPI.Parameter.MonthPrediction} ${getUom(uomId)}`}</div>
             {!isViewStatus && <div className={classnames('jazz-kpi-prediction-config-month-head-calc-btn', {['disabled']:!tag.get("Id") || !this.state.hasHistory})}
-                   onClick={(!tag.get("Id") || !this.state.hasHistory)?this._onCalcValue.bind(this,TagSavingRates):()=>{}}>{I18N.Setting.KPI.Parameter.CalcViaSavingRates}</div>}
+                   onClick={(!tag.get("Id") || !this.state.hasHistory)?()=>{}:this._onCalcValue.bind(this,TagSavingRates)}>{I18N.Setting.KPI.Parameter.CalcViaSavingRates}</div>}
           </div>
           <MonthValueGroup {...monthGroupProps}/>
         </div>

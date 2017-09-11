@@ -64,6 +64,8 @@ export default class DosageMonthConfig extends Component {
 	_renderPrediction(){
 		var {HierarchyId,HierarchyName,MonthPredictionValues,TagSavingRates,ActualTagId,ActualTagName}=this.state.buildingInfo.toJS();
 		var {Year,CommodityId,UomId}=this.props.kpiInfo.toJS();
+		if(!UomId){UomId=this.state.buildingInfo.get("UomId")};
+		if(!CommodityId){CommodityId=this.state.buildingInfo.get("CommodityId")};
 		// var uom=CommonFuns.getUomById(this.props.kpiInfo.get('UomId')).Code;
 		var props={
 			PredictionSetting:{
@@ -72,7 +74,7 @@ export default class DosageMonthConfig extends Component {
 	    Year:Year,
 	    uomId:UomId,
 			tag:Immutable.fromJS({
-				Id:ActualTagId,
+				// Id:ActualTagId,
 				Name:ActualTagName,
 				UomId,CommodityId
 			}),

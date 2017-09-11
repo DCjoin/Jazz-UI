@@ -6,11 +6,12 @@ import GroupKPIStore from 'stores/KPI/GroupKPIStore.jsx';
 import RefreshIndicator from 'material-ui/RefreshIndicator';
 import CommonFuns from 'util/Util.jsx';
 import ViewableDosageBuildingConfig from './viewable_dosage_building_config.jsx';
+import ViewableRatioBuildingConfig from './viewable_ratio_building_config.jsx';
 import GroupKPIAction from 'actions/KPI/GroupKPIAction.jsx';
 
 
 function getDisplayData(total,type){
-  return total===null?'－':type===Type.Quota?CommonFuns.getLabelData(parseFloat(total)):total
+  return total===null?'－':type===Type.Quota?CommonFuns.getLabelData(parseFloat(total)):parseFloat(total).toFixed(1)
 }
 
 function isView(building){
@@ -130,7 +131,35 @@ export default class BuildingConfig extends Component {
                                   
                                   this.props.onSave();
                                 }}
-          />:<div/>
+          />:<ViewableRatioBuildingConfig isViewStatus={this.state.isConfigView}
+                                disableEdit={this.props.configStep===1}
+                                index={this.state.configIndex}
+                                kpiInfo={this.props.kpiInfo}
+                                indicatorType={IndicatorType}
+                                onEdit={()=>{
+                                              this.setState({isConfigView:false});
+                                              this.props.onEdit()
+                                              }}
+                                onCancel={()=>{
+                                              this.setState({isConfigView:true});
+                                              this.props.onCancel()
+                                              }}
+                                onSave={()=>{
+                                  this.setState({
+                                    isConfigView:true,
+                                    total:'loading'
+                                    },()=>{
+                                      if(IndicatorType===Type.Quota){
+                                          GroupKPIAction.updateTotal(GroupKPIStore.getBuildingSum(true))
+                                           }else{
+                                          GroupKPIAction.getSavingRateTotal(parseInt(this.context.router.params.customerId),this.props.year)
+                                        }
+                                    });
+                                  
+                                  
+                                  this.props.onSave();
+                                }}
+          />
     )
   }
 
@@ -144,7 +173,7 @@ export default class BuildingConfig extends Component {
 
   render(){
     return(
-      <StepComponent step={2} isfolded={false} title={I18N.Setting.KPI.Config.Group} isfolded={this.props.isNew}
+      <StepComponent step={2}  title={I18N.Setting.KPI.Config.Building} isfolded={this.props.isNew && this.props.configStep!==2}
                     isView={false}>
         <div className="jazz-kpi-config-edit-building-config-field">
           {this._renderBuildingList()}

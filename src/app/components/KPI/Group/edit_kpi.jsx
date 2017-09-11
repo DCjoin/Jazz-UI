@@ -108,6 +108,10 @@ export default class EditConfig extends Component {
 					configStep:2
 				})
 			}
+		}else{
+			this.setState({
+				configStep:1
+			})
 		}
 	}
 
@@ -115,7 +119,8 @@ export default class EditConfig extends Component {
 	// 	if(!Immutable.is(nextProps.kpiInfo,this.props.kpiInfo)){
   //     this.setState({
   //       kpiInfo:nextProps.kpiInfo,
-	// 			isNew:!nextProps.kpiInfo.get("AnnualQuota") && !nextProps.kpiInfo.get("AnnualSavingRate")
+	// 			isNew:!nextProps.kpiInfo.get("AnnualQuota") && !nextProps.kpiInfo.get("AnnualSavingRate"),
+	// 			configStep:(!nextProps.kpiInfo.get("AnnualQuota") && !nextProps.kpiInfo.get("AnnualSavingRate"))?1:2
   //     })
   //   }
 	// }

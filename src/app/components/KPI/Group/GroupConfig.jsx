@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Immutable from 'immutable'; 
+import {find} from 'lodash-es';
 import {Type} from 'constants/actionType/KPI.jsx';
 import ViewableTextField from 'controls/ViewableTextField.jsx';
 import GroupKPIStore from "stores/KPI/GroupKPIStore.jsx";
@@ -8,9 +9,18 @@ import CommonFuns from 'util/Util.jsx';
 import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx';
 import StepComponent from './stepComponent.jsx';
 import FlatButton from "controls/NewFlatButton.jsx";
+import CurrentUserCustomerStore from 'stores/CurrentUserCustomerStore.jsx';
+
+function getCustomerById(customerId) {
+  return find(CurrentUserCustomerStore.getAll(), customer => customer.Id === customerId * 1 );
+}
 
 export default class GroupConfig extends Component {
 
+	static contextTypes = {
+		router: React.PropTypes.object,
+	};
+  
   state={
     kpiInfo:this.props.kpiInfo
   }
@@ -46,8 +56,8 @@ export default class GroupConfig extends Component {
   _renderConfig(){
     let {IndicatorType,AnnualQuota,AnnualSavingRate}=this.state.kpiInfo.toJS();
     let type=IndicatorType===Type.Quota?I18N.Setting.KPI.Quota:I18N.Setting.KPI.SavingRate,
-        annualTitle=I18N.format(I18N.Setting.KPI.Group.GroupConfig.Annual,type),
-        annualHint=I18N.format(I18N.Setting.KPI.Group.GroupConfig.InputAnnual,type),
+        annualTitle=I18N.format(I18N.Setting.KPI.Group.GroupConfig.Annual,getCustomerById(parseInt(this.context.router.params.customerId)).Name,type),
+        annualHint=I18N.format(I18N.Setting.KPI.Group.GroupConfig.InputAnnual,getCustomerById(parseInt(this.context.router.params.customerId)).Name,type),
         title,
         // title=IndicatorType===Type.Quota?`${annualTitle} (${uom})`:`${annualTitle} (%)`,
         value=IndicatorType===Type.Quota?AnnualQuota:AnnualSavingRate;

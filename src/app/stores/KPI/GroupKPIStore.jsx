@@ -456,7 +456,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
 
   transit(){
     var result=_rawData;
-    if(_rawData===null){
+    if(!_rawData){
       result=Immutable.fromJS({
         GroupKpiSetting:_KpiSettings,
         BuildingKpiSettingsList:_.fill(Array(_buildings.length), assign({},KpiSettingsModel))

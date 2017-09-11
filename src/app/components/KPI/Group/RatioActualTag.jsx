@@ -66,9 +66,22 @@ export default class RatioActualTag extends Component {
   }
 
   _renderCreateTag(){
+    let {isCreate}=this.props;
     let {IndicatorName}=this.props.kpiInfo.toJS();
     let {ActualTagName,ActualRatioTagName}=this.props.buildingInfo.toJS();
     let addIcon=<FontIcon className="icon-add" color="#32ad3c"/>;
+    var styles={
+      button:{
+        marginRight:'15px',
+        height:'30px',
+        lineHeight:'30px'
+      },
+      label:{
+        fontSize:'14px',
+        lineHeight:'14px',
+        verticalAlign:'baseline'
+      }
+    };
     let props={
       tagBtn:{
         secondary:true,
@@ -88,9 +101,19 @@ export default class RatioActualTag extends Component {
         <span>{IndicatorName}</span>
         <span>=</span>
         <span>
-        <NewFlatButton {...props.tagBtn}/>
+          {ActualTagName && <div style={{color:'#626469'}}>{ActualTagName}</div>}
+          {isCreate && !ActualTagName && <NewFlatButton label={I18N.Setting.Tag.Tag} labelStyle={styles.label} secondary={true}
+                                                icon={<FontIcon className="icon-add" style={styles.label}/>} style={styles.button}
+                                                onClick={()=>{this._tagSelect(true,1)}}/>}
+          {isCreate && ActualTagName && <div className="reelect" onTouchTap={()=>{this._tagSelect(true)}}>{I18N.SaveEffect.SelectTagAgain}</div>}
+
           <hr/>
-        <NewFlatButton {...props.ratioTagBtn}/>
+
+          {ActualRatioTagName && <div style={{color:'#626469'}}>{ActualRatioTagName}</div>}
+          {isCreate && !ActualRatioTagName && <NewFlatButton label={I18N.Setting.Tag.Tag} labelStyle={styles.label} secondary={true}
+                                                icon={<FontIcon className="icon-add" style={styles.label}/>} style={styles.button}
+                                                onClick={()=>{this._tagSelect(true,1)}}/>}
+          {isCreate && ActualRatioTagName && <div className="reelect" onTouchTap={()=>{this._tagSelect(true,2)}}>{I18N.SaveEffect.SelectTagAgain}</div>}
         </span>
       </div>
     )
@@ -113,9 +136,9 @@ export default class RatioActualTag extends Component {
     )
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-      return (nextState!==this.state || nextProps.buildingInfo !== this.props.buildingInfo || nextProps.isCreate !== this.props.isCreate);
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //     return (nextState!==this.state || nextProps.buildingInfo !== this.props.buildingInfo || nextProps.isCreate !== this.props.isCreate);
+  // }
 
   render(){
     let {isCreate}=this.props;
@@ -141,10 +164,10 @@ export default class RatioActualTag extends Component {
       }
     };
     return(
-      <TitleComponent {...props}>
+      <div style={{marginTop:'25px'}}>
         {isCreate?this._renderCreateTag():this._renderViewTag()}
         {this.state.tagShow && <TagSelect {...tagSelectProps}/>}
-      </TitleComponent>
+      </div>
     )
   }
 }
