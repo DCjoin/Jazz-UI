@@ -8,6 +8,7 @@ import GroupKPIStore from 'stores/KPI/GroupKPIStore.jsx';
 import BasicConfig from './BasicConfig.jsx';
 import NewDialog from 'controls/NewDialog.jsx';
 import NewFlatButton from 'controls/NewFlatButton.jsx';
+import EditConfig from './edit_kpi.jsx';
 
 var customerId=null;
 export default class KPIConfig extends Component {
@@ -165,7 +166,7 @@ export default class KPIConfig extends Component {
 			if(this.state.kpiInfo && this.state.kpiInfo.size!==0){
 				return (<div className="jazz-kpi-config-wrap">
 						{this.props.status!==SettingStatus.Edit && this._renderBasic()}
-            {this.props.status===SettingStatus.Edit && this._renderEdit()}
+            {this.props.status===SettingStatus.Edit && <EditConfig kpiInfo={this.state.kpiInfo} {...this.props}/>}
 						{this._renderErrorDialog()}
 				</div>
 				);

@@ -23,7 +23,7 @@ const TagSelectAction = {
 			error: function() {}
 		});
 	},
-  getTags(allTag, hierarchyId,associationId,customerId,CommodityId){
+  getTags(allTag, hierarchyId,associationId,customerId,CommodityId,UomId){
     var url = Path.KPI.getTags;
     var filter = {
       AlarmStatus:null,
@@ -33,7 +33,8 @@ const TagSelectAction = {
       },
       CustomerId:customerId,
       IncludeAssociationName:true,
-      CommodityId
+      CommodityId,
+      UomId
     };
     if( !allTag ) {
       filter.CalculationSteps = [0,1,2,6,7,8,9,10,11,12];

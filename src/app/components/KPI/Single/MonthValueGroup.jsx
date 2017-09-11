@@ -6,14 +6,20 @@ import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx';
 import CommonFuns from 'util/Util.jsx';
 import {Type} from 'constants/actionType/KPI.jsx';
 
+function getDisplayData(value){
+  // console.log(value);
+  return value===null?'－':CommonFuns.getLabelData(parseFloat(value))
+}
+
 export default class MonthValueGroup extends Component {
 
   render(){
     return(
       <div className="jazz-kpi-calc-month">
-        {
+        {SingleKPIStore.getYearQuotaperiod()?
           SingleKPIStore.getYearQuotaperiod().map((el,index)=>{
             var props={
+                  isViewStatus:this.props.isViewStatus,
                   onBlur:this.props.onClickAway,
                   onChange:(value)=>{
                     value=CommonFuns.thousandsToNormal(value);
@@ -33,11 +39,12 @@ export default class MonthValueGroup extends Component {
                 }
             }
             else if(this.props.values && this.props.values[index]){
-                  props.value=CommonFuns.toThousands(this.props.values[index].Value);
+                  props.value=this.props.isViewStatus?getDisplayData(this.props.values[index].Value):CommonFuns.toThousands(this.props.values[index].Value);
               }
 
             return <DateTextField {...props}/>
           })
+          :<div/>
         }
       </div>
     )
@@ -48,7 +55,8 @@ MonthValueGroup.propTypes={
   values:PropTypes.array,
   onChange:PropTypes.func,
   IndicatorType:PropTypes.number,
-  onClickAway:PropTypes.func
+  onClickAway:PropTypes.func,
+  isViewStatus:React.PropTypes.bool,
 }
 MonthValueGroup.defaultProps = {
   value:[]

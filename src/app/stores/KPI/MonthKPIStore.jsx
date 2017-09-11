@@ -93,7 +93,7 @@ const MonthKPIStore = assign({}, PrototypeStore, {
       var resValid=_.filter(values,({Value})=>CommonFuns.isValidText(Value));
       var resInvalid=_.filter(values,({Value})=>validateQuota(Value)===false);
       if(resInvalid.length!==0 || values.length===0 || resValid.length===0){
-        _annualValueSum='-'
+        _annualValueSum=null
       }
       else {
         _annualValueSum=_.sum(_.map(values,(value)=>{
@@ -108,8 +108,14 @@ const MonthKPIStore = assign({}, PrototypeStore, {
     month,
     quotaValidator = SingleKPIStore.validateQuota,
     savingRateValidator = SingleKPIStore.validateSavingRate){
-      let {TargetMonthValues,TagSavingRates,MonthPredictionValues,ActualTagId}=month.toJS();
+      let {TargetMonthValues,TagSavingRates,MonthPredictionValues,ActualTagId,AnnualQuota,AnnualSavingRate}=month.toJS();
       TagSavingRates=TagSavingRates || [];
+
+      if(!AnnualQuota && !AnnualSavingRate) return false;
+
+      if(AnnualQuota && !quotaValidator(AnnualQuota)) return false;
+
+      if(AnnualSavingRate && !savingRateValidator(AnnualSavingRate)) return false;
 
       if(!_.isNumber(ActualTagId)) return false;
 

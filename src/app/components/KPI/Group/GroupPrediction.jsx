@@ -37,7 +37,7 @@ export default class GroupPrediction extends Component {
 
   _onTagRateChange(index,value){
     MonthKPIAction.merge([{
-      path:`TagSavingRates.${index-1}.SavingRate`,
+      path:`TagSavingRates.${index}.SavingRate`,
       value,
     }])
   }
@@ -49,17 +49,12 @@ export default class GroupPrediction extends Component {
       deleteRate:this._deleteRate,
       onTagRateChange:this._onTagRateChange,
       ...this.props
-    },
-    titleProps={
-          title:I18N.Setting.KPI.Parameter.MonthPrediction,
-          contentStyle:{
-            marginLeft:'0'
-          }
-        };
+    };
     return(
-      <TitleComponent {...titleProps}>
+      <div className="jazz-kpi-prediction-config">
+        <div className="jazz-kpi-prediction-config-title">{I18N.Setting.KPI.Parameter.MonthPrediction}</div>
         <Prediction {...props}/>
-      </TitleComponent>
+      </div>
 
   )
   }
@@ -71,4 +66,5 @@ GroupPrediction.propTypes={
     tag:PropTypes.object,
     hierarchyId:React.PropTypes.number,
     hierarchyName:React.PropTypes.string,
+    isViewStatus:React.PropTypes.bool,
 };

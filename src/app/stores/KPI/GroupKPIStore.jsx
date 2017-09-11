@@ -25,7 +25,8 @@ var _kpiInfo=null,
     _groupSettingsList = null,
     _groupKpis=[],
     _KpiSettings=Immutable.fromJS(KpiSettingsModel),
-    _prolongkpiId=-1;
+    _prolongkpiId=-1,
+    _total=null;
 
 function emptyList() {
       return new List();
@@ -63,9 +64,9 @@ const GroupKPIStore = assign({}, PrototypeStore, {
   setKpiInfo(data){
     // console.log(data);
     _rawData=Immutable.fromJS(data);
+    _total=data.Total;
     let {CustomerId,UomId,CommodityId,IndicatorName,RatioUomId,AdvanceSettings}=data.GroupKpiSetting;
     let {Year,IndicatorType,AnnualQuota,AnnualSavingRate,IndicatorClass, PredictionSetting}=AdvanceSettings;
-
     _kpiInfo=Immutable.fromJS({
       KpiSettingsId: PredictionSetting.KpiSettingsId,
       CustomerId,Year,IndicatorType,AnnualQuota,AnnualSavingRate,UomId,IndicatorName,CommodityId,IndicatorClass,RatioUomId,
@@ -81,6 +82,18 @@ const GroupKPIStore = assign({}, PrototypeStore, {
                   }
                 }):[]
     });
+  },
+
+  getTotal(){
+    return _total;
+  },
+
+  getTotalParams(){
+    return _kpiInfo.get("Buildings").map(building=>({
+      TagId:building.get("ActualTagId"),
+      TagName:building.get("ActualTagName"),
+      SavingRate:building.get("AnnualSavingRate"),
+    })).toJS()
   },
 
   getKpiInfo(){
@@ -551,6 +564,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
       _groupKpis=[];
       _KpiSettings=Immutable.fromJS(KpiSettingsModel);
       _prolongkpiId=-1;
+      _total=null;
     },
     emitSuccessChange: function() {
       this.emit(KPI_SUCCESS_EVENT);
@@ -625,7 +639,14 @@ GroupKPIStore.dispatchToken = AppDispatcher.register(function(action) {
     	GroupKPIStore.clearAllBuildingInfo();
         GroupKPIStore.emitChange();
         break;
-
+   case Action.UPDATE_KPI_INFO:
+    	  _kpiInfo=action.kpiInfo;
+        GroupKPIStore.emitChange();
+        break;
+   case Action.UPDATE_KPI_GROUP_TOTAL:
+    	  _total=action.total;
+        GroupKPIStore.emitChange();
+        break;
       default:
     }
   });

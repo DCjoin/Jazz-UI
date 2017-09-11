@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
-import TitleComponent from 'controls/TitleComponent.jsx';
+import Immutable from 'immutable'; 
 import {Type} from 'constants/actionType/KPI.jsx';
 import ViewableTextField from 'controls/ViewableTextField.jsx';
 import GroupKPIStore from "stores/KPI/GroupKPIStore.jsx";
 import GroupKPIAction from 'actions/KPI/GroupKPIAction.jsx';
 import CommonFuns from 'util/Util.jsx';
 import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx';
+import StepComponent from './stepComponent.jsx';
+import FlatButton from "controls/NewFlatButton.jsx";
 
 export default class GroupConfig extends Component {
+
+  state={
+    kpiInfo:this.props.kpiInfo
+  }
 
   _validateQuota(value){
     value=CommonFuns.thousandsToNormal(value);
@@ -20,7 +26,7 @@ export default class GroupConfig extends Component {
   }
 
   getUom(){
-    let {IndicatorClass,UomId,RatioUomId}=this.props.kpiInfo.toJS();
+    let {IndicatorClass,UomId,RatioUomId}=this.state.kpiInfo.toJS();
     if(IndicatorClass===Type.Dosage){
       if(UomId) {
         let uom=CommonFuns.getUomById(UomId).Code;
@@ -38,7 +44,7 @@ export default class GroupConfig extends Component {
   }
 
   _renderConfig(){
-    let {IndicatorType,AnnualQuota,AnnualSavingRate}=this.props.kpiInfo.toJS();
+    let {IndicatorType,AnnualQuota,AnnualSavingRate}=this.state.kpiInfo.toJS();
     let type=IndicatorType===Type.Quota?I18N.Setting.KPI.Quota:I18N.Setting.KPI.SavingRate,
         annualTitle=I18N.format(I18N.Setting.KPI.Group.GroupConfig.Annual,type),
         annualHint=I18N.format(I18N.Setting.KPI.Group.GroupConfig.InputAnnual,type),
@@ -53,46 +59,63 @@ export default class GroupConfig extends Component {
         }
     let  annualProps={
           ref: 'annual',
-          isViewStatus: false,
+          isViewStatus: this.props.configStep!==1,
           didChanged:value=>{
                       value=CommonFuns.thousandsToNormal(value);
                       let path=IndicatorType===Type.Quota?'AnnualQuota':'AnnualSavingRate';
-                      GroupKPIAction.merge([{
-                        path,
-                        value
-                      }]);
+
+                      this.setState({
+                        kpiInfo:this.state.kpiInfo.set(path,value)
+                      })
                               },
-          defaultValue: CommonFuns.toThousands(value) || '',
+          defaultValue: this.props.configStep!==1?CommonFuns.getLabelData(parseFloat(value)) || '':CommonFuns.toThousands(value) || '',
           title: title,
-          hintText:annualHint,
+          hintText:annualHint, 
+          autoFocus:true,
           regexFn:IndicatorType===Type.Quota?this._validateQuota:this._validateSavingRate,
+          style:{width:'150px'}
         };
     return(
       <ViewableTextField {...annualProps}/>
     )
   }
 
+	componentWillReceiveProps(nextProps, nextContext) {
+		if(!Immutable.is(nextProps.kpiInfo,this.props.kpiInfo)){
+      this.setState({
+        kpiInfo:nextProps.kpiInfo
+      })
+    }
+	}
+
 	render() {
-    var isActive=GroupKPIStore.IsActive(this.props.status,this.props.kpiInfo);
-    var props={
-      title:I18N.Setting.KPI.Group.GroupConfig.Title
-    };
-    if(isActive){
-      return(
-        <TitleComponent {...props}>
-          {this._renderConfig()}
-        </TitleComponent>
-      )
-    }
-    else {
-      return(
-        <TitleComponent {...props} titleStyle={{color:'#e4e7e9'}}/>
-      )
-    }
+    let {AnnualQuota,AnnualSavingRate}=this.state.kpiInfo.toJS();
+    return(
+      <StepComponent step={1} isfolded={false} title={I18N.Setting.KPI.Config.Group} 
+                    isView={this.props.configStep!==1} editDisabled={this.props.configStep!==null} onEdit={this.props.onEdit}>
+                    <div style={{display:'flex',flexDirection:'column',paddingRight:'15px'}}>
+                      {this._renderConfig()}
+                      {this.props.configStep===1 && 
+                          <div className="jazz-kpi-config-edit-step-action">
+                             <FlatButton label={I18N.Common.Button.Cancel2} secondary={true} style={{float:'right',minWidth:'68px'}} onTouchTap={this.props.onCancel}/>
+                             <FlatButton label={I18N.Common.Button.Save} disabled={!AnnualQuota && !AnnualSavingRate} primary={true} style={{float:'right',minWidth:'68px',marginRight:'20px'}} 
+                                onTouchTap={()=>{
+                                   GroupKPIAction.updateKpiInfo(this.state.kpiInfo);
+                                    this.props.onSave();
+                              }}/>    
+                      </div>}
+                    </div>
+
+      </StepComponent>
+    )
 
   }
 }
+
 GroupConfig.propTypes = {
-	status:React.PropTypes.string,
+	configStep:React.PropTypes.number || null,
 	kpiInfo:React.PropTypes.object,
+  onEdit:React.PropTypes.func,
+  onCancel:React.PropTypes.func,
+  onSave:React.PropTypes.func,
 };

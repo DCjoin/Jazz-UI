@@ -50,7 +50,9 @@ module.exports = {
     CLEAN_ACTUALITY:null,
     GET_KPI_RANK_BY_YEAR:null,
     GET_TEMPLATE_REFERENCE:null,
-    CLEAR_ALL_BUILDING_INFO:null
+    CLEAR_ALL_BUILDING_INFO:null,
+    UPDATE_KPI_INFO:null,
+    UPDATE_KPI_GROUP_TOTAL:null
   }),
 
   Type:{

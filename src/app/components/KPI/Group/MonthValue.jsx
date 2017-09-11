@@ -1,5 +1,6 @@
 'use strict';
 import React, {Component,PropTypes} from 'react';
+import classnames from 'classnames';
 import TitleComponent from 'controls/TitleComponent.jsx';
 // import ViewableTextField from 'controls/ViewableTextField.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
@@ -12,6 +13,11 @@ import MonthKPIAction from 'actions/KPI/MonthKPIAction.jsx';
 import MonthKPIStore from 'stores/KPI/MonthKPIStore.jsx';
 
 var customerId=null;
+
+function getDisplayData(value){
+  return value===null?'－':CommonFuns.getLabelData(parseFloat(value))
+}
+
 export default class MonthValue extends Component {
 
   static contextTypes = {
@@ -84,8 +90,8 @@ export default class MonthValue extends Component {
   }
 
   getUom(){
-    let {IndicatorClass}=this.props.kpiInfo.toJS();
-    let {UomId,RatioUomId}=this.props.buildingInfo.toJS();
+    let {IndicatorClass,UomId}=this.props.kpiInfo.toJS();
+    let {RatioUomId}=this.props.buildingInfo.toJS();
     if(IndicatorClass===Type.Dosage){
       if(UomId) {
         let uom=CommonFuns.getUomById(UomId).Code;
@@ -132,7 +138,7 @@ export default class MonthValue extends Component {
 
   }
 
-  _renderMonth(uom){
+  /*_renderMonth(uom){
     let {IndicatorClass}=this.props.kpiInfo.toJS();
     let {TargetMonthValues}=this.props.buildingInfo.toJS();
     let monthProps={
@@ -212,7 +218,7 @@ export default class MonthValue extends Component {
           </div>
         )
       }
-  }
+  }*/
 
   componentDidMount(){
     customerId=parseInt(this.context.router.params.customerId);
@@ -240,20 +246,37 @@ export default class MonthValue extends Component {
   }
 
   render(){
-      let props={
-        title:I18N.Setting.KPI.Parameter.MonthValue,
-        contentStyle:{
-          marginLeft:'0',
-          marginTop:'15px'
-          },
-        };
-      let uom=this.getUom();
+     var {IndicatorClass,IndicatorType}=this.props.kpiInfo.toJS();
+     var {TargetMonthValues,AnnualSavingRate,AnnualQuota}=this.props.buildingInfo.toJS();
+     var uom=this.getUom();
+     var monthGroupProps={
+      values:TargetMonthValues,
+      onChange:this._onTargetValueChange,
+      IndicatorType:Type.MonthValue,
+      onClickAway:this._onClickAway,
+      isViewStatus:this.props.isViewStatus
+    };
 
       return(
-        <TitleComponent {...props}>
-          {this._renderIndicator(uom)}
-          {this._renderMonth(uom)}
-        </TitleComponent>
+      <div>
+        {IndicatorType===Type.SavingRate && <div style={{fontSize:'14px',color:'#626469',marginTop:'25px'}}>{I18N.Setting.KPI.Group.MonthConfig.AnnualTotal+(uom)}</div>}
+        {IndicatorType===Type.SavingRate && <div style={{fontSize:'16px',color:'#626469',marginTop:'5px'}}>{CommonFuns.toThousands(this.state.calcSum) || '-'}</div>}
+        <div className="jazz-kpi-month-config">
+          <div className="jazz-kpi-month-config-month">
+            <div className="jazz-kpi-month-config-month-head">
+              <div className="jazz-kpi-month-config-month-head-title">{I18N.Setting.KPI.Parameter.MonthValue+uom}</div>
+              {!this.props.isViewStatus && <div className={classnames('jazz-kpi-month-config-month-head-history-btn', {['disabled']:(!AnnualSavingRate && !AnnualQuota)  || !this.state.hasHistory})}
+                   onClick={(AnnualSavingRate || AnnualQuota) && this.state.hasHistory?this._onCalcValue:()=>{}}>{I18N.Setting.KPI.Parameter.CalcViaHistory}</div>}
+            </div>      
+            <MonthValueGroup {...monthGroupProps}/>
+          </div>
+          {IndicatorClass===Type.Dosage && <div className="sum">
+            {I18N.SumWindow.Sum + "：" 
+            + (getDisplayData(MonthKPIStore.getValueSum(this.state.isCalc,this.props.buildingInfo.get('TargetMonthValues').toJS())))}
+          </div>}
+        </div>
+       </div>
+
       )
   }
 }
@@ -261,4 +284,5 @@ export default class MonthValue extends Component {
 MonthValue.propTypes={
   kpiInfo:React.PropTypes.object,
   buildingInfo:React.PropTypes.object,
+  isViewStatus:React.PropTypes.bool,
 };

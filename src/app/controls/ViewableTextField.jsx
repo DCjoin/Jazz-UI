@@ -280,7 +280,7 @@ var ViewableTextField = React.createClass({
         inputProps.className += " pop-viewableTextField-noempty";
       }
       textField = (
-        <div><TextField ref="TextField" {...inputProps} {...this.props}/></div>
+        <div style={{marginTop:'-20px'}}><TextField ref="TextField" {...inputProps} {...this.props}/></div>
       );
     } else {
       var v = this.props.defaultValue;
