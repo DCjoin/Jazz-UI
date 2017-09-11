@@ -87,6 +87,18 @@ export default class RatioMonthConfig extends Component {
     MonthKPIAction.setDefalutMonthInfo(this.props.kpiInfo.getIn(paths));
 	}
 
+  	componentWillReceiveProps(nextProps, nextContext) {
+		if( this.props.index!==nextProps.index) {
+			this.setState({
+				buildingInfo:null
+			},()=>{
+			let paths=['Buildings',nextProps.index];
+    	MonthKPIAction.setDefalutMonthInfo(this.props.kpiInfo.getIn(paths));
+			})
+
+		}
+	}
+  
 	componentWillUnmount(){
 		MonthKPIStore.removeChangeListener(this._onChange);
 	}
