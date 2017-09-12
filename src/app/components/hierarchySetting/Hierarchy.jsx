@@ -69,7 +69,7 @@ var Hierarchy = React.createClass({
     });
   },
   _onExportBtnClick: function() {
-    downloadFile.get('/hierarchy/export/' + this.context.currentRoute.params.customerId);
+    downloadFile.get('/hierarchy/export/' + this.context.currentRoute.params.customerId, {} , true);
     // var iframe = document.createElement('iframe');
     // iframe.style.display = 'none';
     // iframe.src = './ImpExpHierarchy.aspx?Action=ExportHierarchy&customerId=' + parseInt(this.context.currentRoute.params.customerId);

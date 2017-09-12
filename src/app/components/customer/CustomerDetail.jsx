@@ -226,7 +226,7 @@ var CustomerDetail = React.createClass({
       updateTips: I18N.Setting.CustomerManagement.LogoUploadInfo,
       imageDidChanged: value => {
         CustomerAction.merge({
-          value: value.logoId,
+          value: value,
           path: "LogoId"
         })
       },

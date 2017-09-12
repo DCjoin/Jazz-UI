@@ -56,9 +56,8 @@ var Template = React.createClass({
     return onlyRead;
   },
 
-  _onUploadDone(json) {
-    var obj = JSON.parse(json);
-    if (obj.success === true) {
+  _onUploadDone(obj) {
+    if (obj) {
       ReportAction.getTemplateListByCustomerId(parseInt(this.context.currentRoute.params.customerId), this.state.sortBy, 'asc');
       this.setState({
         showUploadDialog: false
@@ -66,7 +65,7 @@ var Template = React.createClass({
         this.refs.upload_tempalte.reset();
       });
     } else {
-      var errorCode = obj.UploadResponse.ErrorCode,
+      var errorCode = obj && obj.UploadResponse && obj.UploadResponse.ErrorCode,
       errorMessage=null;
       if (errorCode === -1) {
         errorMessage = I18N.format(I18N.EM.Report.DuplicatedName, this.state.fileName);

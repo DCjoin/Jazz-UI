@@ -14,11 +14,11 @@ function downloadByStream(res) {
 	let type = res.header['content-type'];
 	let blob = null;
 	try {
-		blob = new Blob([res], { type: type });
+		blob = res.xhr.response;//new Blob([res.xhr.response], { type: 'application/vnd.ms-excel' });
 	} catch( e ) {
 		if (e.name == 'InvalidStateError') {
           let bb = new MSBlobBuilder();
-          bb.append(res);
+          bb.append(res.xhr.response);
           blob = bb.getBlob(type);
         } else {
         	console.log(e);
