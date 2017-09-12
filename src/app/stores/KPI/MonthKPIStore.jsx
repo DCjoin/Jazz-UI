@@ -19,6 +19,7 @@ let _monthKpi=null,
     _hasHistory=false,
     _calcSum=null,
     _annualValueSum=null;
+let CHANGE_EVENT = 'change';
 const MonthKPIStore = assign({}, PrototypeStore, {
 
   setMonthKpi(data){
@@ -135,9 +136,10 @@ const MonthKPIStore = assign({}, PrototypeStore, {
       month,
       quotaValidator = SingleKPIStore.validateQuota,
       savingRateValidator = SingleKPIStore.validateSavingRate){
-        let {TargetMonthValues,ActualTagId,ActualRatioTagId}=month.toJS();
+        let {TargetMonthValues,ActualTagId,ActualRatioTagId,AnnualQuota,AnnualSavingRate}=month.toJS();
 
-
+        if(!AnnualQuota && !AnnualSavingRate) return false;
+        
         if(!_.isNumber(ActualTagId) || !_.isNumber(ActualRatioTagId)) return false;
 
         let res=_.filter(TargetMonthValues,({Value})=>quotaValidator(Value)===false);
@@ -145,13 +147,34 @@ const MonthKPIStore = assign({}, PrototypeStore, {
 
        return true
       },
+  
+  IsBuilidingConfigNull(){
+    let {TargetMonthValues,TagSavingRates,MonthPredictionValues,ActualTagId,AnnualQuota,AnnualSavingRate,
+      ActualRatioTagId}=_monthKpi.toJS()
+
+    if(ActualTagId || AnnualQuota || AnnualSavingRate || ActualRatioTagId) return false;
+
+    let res=_.filter(TargetMonthValues,({Value})=>(Value!==null || Value!==''));
+        if(res.length!==0) return false;
+
+        res=_.filter(TagSavingRates,({SavingRate})=>(SavingRate!==null || SavingRate!==''));
+        if(res.length!==0) return false;
+
+        res=_.filter(MonthPredictionValues,({Value})=>(Value!==null || Value!==''));
+        if(res.length!==0) return false;
+
+        return true;
+  },
 
   dispose(){
         _monthKpi=null;
         _hasHistory=false;
         _calcSum=null;
         _annualValueSum=null;
-  }
+  },
+  emitChange(args) {
+    this.emit(CHANGE_EVENT, args);
+  },
 
 });
 
@@ -171,7 +194,7 @@ MonthKPIStore.dispatchToken = AppDispatcher.register(function(action) {
          break;
     case Action.IS_AUTO_CALCUL_ABLE:
          MonthKPIStore.setHasHistory(action.data.has)
-         MonthKPIStore.emitChange();
+         MonthKPIStore.emitChange(action.index);
         break;
     case Action.GET_GROUP_CLAC_SUM_VALUE:
          MonthKPIStore.setCalcSumValue(action.data)

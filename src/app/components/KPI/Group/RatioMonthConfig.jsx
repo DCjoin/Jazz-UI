@@ -68,6 +68,7 @@ export default class RatioMonthConfig extends Component {
 		var props={
 			kpiInfo:this.props.kpiInfo,
 			buildingInfo:this.state.buildingInfo,
+      isViewStatus:this.props.isViewStatus
 		};
 		return(
 			<MonthValue {...props}/>
@@ -111,7 +112,7 @@ export default class RatioMonthConfig extends Component {
 
 	_renderIndicator(){
     let {IndicatorType}=this.props.kpiInfo.toJS();
-    let {AnnualQuota,AnnualSavingRate}=this.props.kpiInfo.getIn(['Buildings',this.props.index]).toJS();
+    let {AnnualQuota,AnnualSavingRate}=this.state.buildingInfo.toJS();
     let type=IndicatorType===Type.Quota?I18N.Setting.KPI.Quota:I18N.Setting.KPI.SavingRate,
         annualTitle=I18N.format(I18N.Setting.KPI.Group.BuildingConfig.Indicator,type),
         annualHint=I18N.format(I18N.Setting.KPI.Group.BuildingConfig.IndicatorHint,type),
@@ -136,7 +137,7 @@ export default class RatioMonthConfig extends Component {
         											value
      													 }])
                               },
-          value: CommonFuns.toThousands(value) || '',
+          defaultValue: CommonFuns.toThousands(value) || '',
           title: title,
           hintText:annualHint, 
           autoFocus:true,
@@ -180,6 +181,7 @@ export default class RatioMonthConfig extends Component {
       kpiInfo:this.props.kpiInfo,
       buildingInfo:this.state.buildingInfo,
       isCreate:isCreate,
+      isViewStatus:this.props.isViewStatus
     };
 
     return(

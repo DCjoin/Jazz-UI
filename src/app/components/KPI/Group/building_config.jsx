@@ -8,6 +8,10 @@ import CommonFuns from 'util/Util.jsx';
 import ViewableDosageBuildingConfig from './viewable_dosage_building_config.jsx';
 import ViewableRatioBuildingConfig from './viewable_ratio_building_config.jsx';
 import GroupKPIAction from 'actions/KPI/GroupKPIAction.jsx';
+import NewDialog from 'controls/NewDialog.jsx';
+import NewFlatButton from 'controls/NewFlatButton.jsx';
+import MonthKPIStore from 'stores/KPI/MonthKPIStore.jsx';
+import Immutable from 'immutable';
 
 
 function getDisplayData(total,type){
@@ -15,7 +19,7 @@ function getDisplayData(total,type){
 }
 
 function isView(building){
-  return building.get("AnnualQuota") || building.get("AnnualSavingRate")
+  return building.get("AnnualQuota")!==null || building.get("AnnualSavingRate")!==null
 }
 
 export default class BuildingConfig extends Component {
@@ -28,12 +32,16 @@ export default class BuildingConfig extends Component {
   constructor(props) {
     super(props);
     this._onChange = this._onChange.bind(this);
+    this._changeBuilding = this._changeBuilding.bind(this);
+    
   }
 
   state={
     configIndex:0,
+    willConfigIndex:0,
     isConfigView:isView(this.props.kpiInfo.getIn(['Buildings',0])),
-    total:GroupKPIStore.getTotal()
+    total:GroupKPIStore.getTotal(),
+    closeDlgShow:false
   }
 
   _onChange(){
@@ -60,6 +68,20 @@ export default class BuildingConfig extends Component {
     else return ''
   }
 
+  _changeBuilding(index){
+    var {AnnualQuota,AnnualSavingRate}=this.props.kpiInfo.getIn(['Buildings',index]);
+        this.setState({
+                      configIndex:index,
+                      isConfigView:CommonFuns.isNumber(AnnualQuota) || CommonFuns.isNumber(AnnualSavingRate)},
+                      ()=>{
+                        if(CommonFuns.isNumber(AnnualQuota) || CommonFuns.isNumber(AnnualSavingRate)){
+                                                        this.props.onCancel();
+                                                          }else{
+                                                            this.props.onEdit()
+                                                          }
+                                                        })}
+  
+
   _renderBuildingList(){
     var {IndicatorClass,IndicatorType,Buildings}=this.props.kpiInfo.toJS();
     return(
@@ -74,15 +96,15 @@ export default class BuildingConfig extends Component {
             var value=getDisplayData(IndicatorType===Type.Quota?AnnualQuota:AnnualSavingRate,IndicatorType);
             return(
                      <div className={classnames('building-item', {['selected']: index === this.state.configIndex})} 
-                          onClick={()=>{this.setState({configIndex:index,
-                                                        isConfigView:AnnualQuota || AnnualSavingRate},
-                                                        ()=>{
-                                                          if(AnnualQuota || AnnualSavingRate){
-                                                            this.props.onCancel();
-                                                          }else{
-                                                            this.props.onEdit()
-                                                          }
-                                                        })}}>
+                          onClick={()=>{
+                            if(!this.state.isConfigView && !Immutable.is(this.props.kpiInfo.getIn(["Buildings",this.state.configIndex]),MonthKPIStore.getMonthKpi())){
+                              this.setState({
+                                willConfigIndex:index,
+                                closeDlgShow:true
+                              })
+                            }else{
+                              this._changeBuilding(index)
+                            }}}>
                           <div className="name" title={HierarchyName}>{HierarchyName}</div>
                           <div>{(IndicatorType===Type.Quota?I18N.Setting.KPI.Quota:I18N.Setting.KPI.SavingRate)
                                 + '：'
@@ -110,7 +132,7 @@ export default class BuildingConfig extends Component {
                                 indicatorType={IndicatorType}
                                 onEdit={()=>{
                                               this.setState({isConfigView:false});
-                                              this.props.onEdit()
+                                              this.props.onEdit(this.state.configIndex)
                                               }}
                                 onCancel={()=>{
                                               this.setState({isConfigView:true});
@@ -182,6 +204,12 @@ export default class BuildingConfig extends Component {
             {this._renderBuildingConfig()}
           </div>
         </div>
+        <NewDialog open={this.state.closeDlgShow} actionsContainerStyle={{textAlign: 'right'}} actions={[
+					<NewFlatButton primary label={I18N.Common.Button.Confirm} onClick={()=>{this.setState({closeDlgShow:false},()=>{this._changeBuilding(this.state.willConfigIndex)})}}/>,
+					<NewFlatButton style={{marginLeft: 24}} secondary label={I18N.Common.Button.Cancel2} onClick={() =>{
+						this.setState({closeDlgShow:false})
+					}}/>
+				]}>{I18N.Setting.KPI.Config.LeaveTip}</NewDialog>
       </StepComponent>
     )
   }

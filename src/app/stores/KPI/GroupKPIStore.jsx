@@ -83,7 +83,9 @@ const GroupKPIStore = assign({}, PrototypeStore, {
                 }):[]
     });
   },
-
+  getRawData(){
+    return _rawData
+  },
   getTotal(){
     return _total;
   },

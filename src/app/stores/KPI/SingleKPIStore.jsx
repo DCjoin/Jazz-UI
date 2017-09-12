@@ -567,6 +567,12 @@ const SingleKPIStore = assign({}, PrototypeStore, {
       return date.format(I18N.DateTimeFormat.IntervalFormat.OnlyMonth)
     }
   },
+  fillMonthValue(value){
+   return  _quotaperiodYear.map(date=>({
+      'Month':this.DatetimeToJson(date),
+      'Value':value
+    }))
+  },
 
   dispose() {
     kpiInfo = Immutable.fromJS({});

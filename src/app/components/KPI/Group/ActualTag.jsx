@@ -138,6 +138,9 @@ export default class ActualTag extends Component {
       })
 			
     }
+     if(this.props.isViewStatus!==nextProps.isViewStatus){
+       this.isAutoCalculable(nextProps)
+     }
 	}
 
   shouldComponentUpdate(nextProps, nextState) {

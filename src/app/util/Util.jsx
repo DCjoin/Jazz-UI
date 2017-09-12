@@ -74,7 +74,7 @@ let CommonFuns = {
       return value
     }
     else{
-      return value.replace(/,/g, "")
+      return parseFloat(value.replace(/,/g, ""))
     }
   },
   log: function(content) {
