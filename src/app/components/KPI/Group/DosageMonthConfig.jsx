@@ -44,7 +44,10 @@ export default class DosageMonthConfig extends Component {
       },{
         path:`UomId`,
         value:this.state.buildingInfo.get('UomId')
-      }]);
+      },{
+				path:`NumeratorCommodityId`,
+        value:this.state.buildingInfo.get('NumeratorCommodityId')
+			}]);
     }
 
 		this.props.onSave();
@@ -63,9 +66,9 @@ export default class DosageMonthConfig extends Component {
 
 	_renderPrediction(){
 		var {HierarchyId,HierarchyName,MonthPredictionValues,TagSavingRates,ActualTagId,ActualTagName}=this.state.buildingInfo.toJS();
-		var {Year,CommodityId,UomId}=this.props.kpiInfo.toJS();
+		var {Year,NumeratorCommodityId,UomId}=this.props.kpiInfo.toJS();
 		if(!UomId){UomId=this.state.buildingInfo.get("UomId")};
-		if(!CommodityId){CommodityId=this.state.buildingInfo.get("CommodityId")};
+		if(!NumeratorCommodityId){NumeratorCommodityId=this.state.buildingInfo.get("NumeratorCommodityId")};
 		// var uom=CommonFuns.getUomById(this.props.kpiInfo.get('UomId')).Code;
 		var props={
 			PredictionSetting:{
@@ -76,7 +79,8 @@ export default class DosageMonthConfig extends Component {
 			tag:Immutable.fromJS({
 				// Id:ActualTagId,
 				Name:ActualTagName,
-				UomId,CommodityId
+				UomId,
+				CommodityId:NumeratorCommodityId
 			}),
 	    hierarchyId:HierarchyId,
 	    hierarchyName:HierarchyName,
