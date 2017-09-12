@@ -172,8 +172,9 @@ export default class BuildingConfig extends Component {
 	}
 
   render(){
+    var {AnnualQuota,AnnualSavingRate}=this.props.kpiInfo.toJS();
     return(
-      <StepComponent step={2}  title={I18N.Setting.KPI.Config.Building} isfolded={this.props.isNew && this.props.configStep!==2}
+      <StepComponent step={2}  title={I18N.Setting.KPI.Config.Building} isfolded={this.props.isNew && !AnnualQuota && !AnnualSavingRate}
                     isView={false}>
         <div className="jazz-kpi-config-edit-building-config-field">
           {this._renderBuildingList()}

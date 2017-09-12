@@ -13,6 +13,9 @@ import MonthValue from './MonthValue.jsx';
 import Prediction from './GroupPrediction.jsx';
 import CommonFuns from 'util/Util.jsx';
 import FlatButton from "controls/NewFlatButton.jsx";
+import ViewableTextField from 'controls/ViewableTextField.jsx';
+import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx';
+import {Type} from 'constants/actionType/KPI.jsx';
 
 export default class RatioMonthConfig extends Component {
 
@@ -81,6 +84,70 @@ export default class RatioMonthConfig extends Component {
     )
   }
 
+    getUom(){
+    let {UomId,RatioUomId}=this.props.kpiInfo.toJS();
+    if(!UomId){UomId=this.state.buildingInfo.get("UomId")}
+    if(!RatioUomId){RatioUomId=this.state.buildingInfo.get("RatioUomId")}
+
+      if(UomId && RatioUomId){
+      let uom=CommonFuns.getUomById(UomId).Code;
+      let ratioUom=CommonFuns.getUomById(RatioUomId).Code;
+      if(UomId===RatioUomId) return ''
+      return `(${uom}/${ratioUom})`
+    }
+    else return ''
+   
+  }
+
+  _validateQuota(value){
+    value=CommonFuns.thousandsToNormal(value);
+    return !SingleKPIStore.validateQuota(value) && I18N.Setting.KPI.Parameter.QuotaErrorText
+  }
+
+  _validateSavingRate(value){
+    value=CommonFuns.thousandsToNormal(value);
+    return !SingleKPIStore.validateSavingRate(value) && I18N.Setting.KPI.Parameter.SavingRateErrorText
+  }
+
+	_renderIndicator(){
+    let {IndicatorType}=this.props.kpiInfo.toJS();
+    let {AnnualQuota,AnnualSavingRate}=this.props.kpiInfo.getIn(['Buildings',this.props.index]).toJS();
+    let type=IndicatorType===Type.Quota?I18N.Setting.KPI.Quota:I18N.Setting.KPI.SavingRate,
+        annualTitle=I18N.format(I18N.Setting.KPI.Group.BuildingConfig.Indicator,type),
+        annualHint=I18N.format(I18N.Setting.KPI.Group.BuildingConfig.IndicatorHint,type),
+        title,
+        // title=IndicatorType===Type.Quota?`${annualTitle} (${uom})`:`${annualTitle} (%)`,
+        value=IndicatorType===Type.Quota?AnnualQuota:AnnualSavingRate;
+
+        if(IndicatorType===Type.Quota){
+          title=`${annualTitle}${this.getUom()}`
+        }else {
+          title=`${annualTitle} (%)`
+        }
+    let  annualProps={
+          ref: 'annual',
+          isViewStatus: this.props.isViewStatus,
+          didChanged:value=>{
+                      value=CommonFuns.thousandsToNormal(value);
+                      let path=IndicatorType===Type.Quota?'AnnualQuota':'AnnualSavingRate';
+
+											      MonthKPIAction.merge([{
+        											path,
+        											value
+     													 }])
+                              },
+          value: CommonFuns.toThousands(value) || '',
+          title: title,
+          hintText:annualHint, 
+          autoFocus:true,
+          regexFn:IndicatorType===Type.Quota?this._validateQuota:this._validateSavingRate,
+          style:{width:'150px'}
+        };
+    return(
+      <ViewableTextField {...annualProps}/>
+    )
+  }
+
 	componentDidMount(){
 		MonthKPIStore.addChangeListener(this._onChange);
     let paths=['Buildings',this.props.index];
@@ -98,7 +165,7 @@ export default class RatioMonthConfig extends Component {
 
 		}
 	}
-  
+
 	componentWillUnmount(){
 		MonthKPIStore.removeChangeListener(this._onChange);
 	}
@@ -117,6 +184,7 @@ export default class RatioMonthConfig extends Component {
 
     return(
       <div>
+          {this._renderIndicator()}
           <ActualTag {...tagProps}/>
           {this._renderMonthValue()}
           {!this.props.isViewStatus && this._renderFooter()}

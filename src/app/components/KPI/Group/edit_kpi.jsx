@@ -67,6 +67,7 @@ export default class EditConfig extends Component {
 
 	_renderGroupConfig(){
 		let props={
+			isNew:this.state.isNew,
 			configStep:this.state.configStep,
 			kpiInfo:this.props.kpiInfo,
 			onEdit:()=>{this.setState({configStep:1})},
