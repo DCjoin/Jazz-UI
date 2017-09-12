@@ -73,7 +73,7 @@ var _ajax = function(url, options) {
 		dataType = options.dataType || "application/json";
 
 	var req =_generatorRequest(Config.ServeAddress + Config.APIBasePath + url, type, params)
-		.send(params)
+    .send(params)
     .withCredentials()
     .set('Accept', dataType)
     .set('httpWebRequest.MediaType', dataType)
@@ -83,22 +83,25 @@ var _ajax = function(url, options) {
         return success.call(options, res);
       }
       if (res.ok && Util.isSuccess(res.body)) {
-  			success.call(options, Util.getResResult(res.body));
+        success.call(options, Util.getResResult(res.body));
       } else {
-				if(res.body){
-					if (res.status == 401) {
-						AjaxAction.handleGlobalError(401);
-					}else {
-						Util.ErrorHandler(options, res.body.error.Code);
-					}
-				} else if(res.text){
-					let errorObj = JSON.parse(res.text);
-					Util.ErrorHandler(options, errorObj.error.Code);
-				}
+        if(res.body){
+          if (res.status == 401) {
+            AjaxAction.handleGlobalError(401);
+          }else {
+            Util.ErrorHandler(options, res.body.error.Code);
+          }
+        } else if(res.text){
+          let errorObj = JSON.parse(res.text);
+          Util.ErrorHandler(options, errorObj.error.Code);
+        }
 
-      		error.call(options, err, res);
+          error.call(options, err, res);
       }
     });
+  if( options.noParseRes ) {
+    req.xhr.responseType = 'blob';
+  }
     if (options.tag && !options.isBackService) {
       reqList.push({
         key: options.tag,

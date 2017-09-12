@@ -76,7 +76,7 @@ var BackgroudImage = React.createClass({
         }
         url = "/common/logo" + parmas;
       } else {
-        url = this.props.url;
+        url = nextProps.url;
       }
 
       getOssPath(url, (ossURL) => {

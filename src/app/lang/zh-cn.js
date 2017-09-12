@@ -1,7 +1,7 @@
 'use strict';
 
 
-let I18N = {};
+window.I18N = {};
 I18N.getResourceString = function(resName) {
   resName = resName.replace(/#/ig, '');
   var resource = I18N;
@@ -2625,8 +2625,3 @@ I18N.SaveEffect.Table.SavingRate = '年度节能(水)率';
 I18N.SaveEffect.ByYear = '年度节能效果';
 I18N.SaveEffect.OrderByCommo = '按介质展示';
 I18N.SaveEffect.OrderByBuilding = '按建筑展示';
-
-
-
-
-module.exports = I18N;

@@ -212,16 +212,6 @@ let Login = React.createClass({
     return null;
   },
 
-  _onLangSwitch: function() {
-    LanguageAction.switchLanguage();
-    var lang = (window.currentLanguage === 0) ? 'zh-cn' : 'en-us';
-    var currentRoutes = this.context.router.getCurrentRoutes();
-    var activeRouteName = currentRoutes[currentRoutes.length - 1].name;
-    this.context.router.transitionTo(activeRouteName, {
-      lang: lang
-    });
-  },
-
   componentDidMount: function() {
     LoginStore.addChangeListener(this._onChange);
   },

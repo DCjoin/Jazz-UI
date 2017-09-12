@@ -1,7 +1,7 @@
 'use strict';
 
 
-let I18N = {};
+window.I18N = {};
 I18N.getResourceString = function(resName) {
   resName = resName.replace(/#/ig, '');
   var resource = I18N;
@@ -2631,5 +2631,3 @@ I18N.SaveEffect.Table.SavingRate = 'Annual Energy (Water) Saving Rate';
 I18N.SaveEffect.ByYear = 'Annual Energy Saving Effect';
 I18N.SaveEffect.OrderByCommo = 'Display by media';
 I18N.SaveEffect.OrderByBuilding = 'Display by building';
-
-module.exports = I18N;

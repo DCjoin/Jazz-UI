@@ -104,7 +104,7 @@ var BuildingBasic = React.createClass({
         updateTips: buildingPictureIds.size === 0 ? I18N.Setting.Building.AddImage : I18N.Setting.Building.UpdateImage,
         imageDidChanged: value => {
           this.props.merge({
-            value: [value.pictureId],
+            value: [value],
             path: "BuildingPictureIds"
           })
         },

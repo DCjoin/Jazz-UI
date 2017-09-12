@@ -125,7 +125,7 @@ var HierarchyList = React.createClass({
     });
   },
   _downloadLogFile: function() {    
-    downloadFile.get('/hierarchy/downloadhierarchylog' + this.context.currentRoute.params.customerId + '/' + this.state.importResult.Id);
+    downloadFile.get('/hierarchy/downloadhierarchylog/' + this.context.currentRoute.params.customerId + '/' + this.state.importResult.Id);
     // var iframe = document.createElement('iframe');
     // iframe.style.display = 'none';
     // iframe.src = 'ImpExpHierarchy.aspx?TagType=Hierarchy&Id=' + this.state.importResult.Id;
@@ -270,11 +270,10 @@ var HierarchyList = React.createClass({
                 method='post'
                 action='/hierarchy/import'
                 onChangeFile={this._onImportBtnClick}
-                onload={(json) => {
-                  var obj = JSON.parse(json);
-                  if (obj.success === true) {
+                onload={(obj) => {
+                  if (obj) {
                     this.setState({
-                      importResult: obj.TagImportHisDto,
+                      importResult: obj,
                       isImporting: false,
                       importSuccess: true
                     });

@@ -19,7 +19,6 @@ import LanguageAction from 'actions/LanguageAction.jsx';
 import LoginActionCreator from 'actions/LoginActionCreator.jsx';
 
 import GlobalErrorMessageStore from 'stores/GlobalErrorMessageStore.jsx';
-import LanguageStore from 'stores/LanguageStore.jsx';
 import LoginStore from 'stores/LoginStore.jsx';
 import AjaxStore from 'stores/AjaxStore.jsx';
 
@@ -104,23 +103,6 @@ let JazzApp = React.createClass({
       })()
     });
   },
-  _onLanguageSwitch: function() {
-    var lang = (window.currentLanguage === 0) ? 'zh-cn' : 'en-us',
-      url = location.href;
-    var me = this;
-    this._onClearGlobalError();
-    if (lang === 'en-us') {
-      url = url.replace('zh-cn', 'en-us');
-    } else {
-      url = url.replace('en-us', 'zh-cn');
-    }
-    me._setHighchartConfig();
-    var index0 = url.indexOf('#'),
-      index1 = url.indexOf('?'),
-      pre = index1 > -1 ? url.slice(0, index1) : url.slice(0, index0),
-      aft = url.slice(index0, url.length);
-    window.location.href = pre + '?' + Math.random() + aft;
-  },
   _onLanguageSwitchLoading: function() {
     this.setState({
       loading: true
@@ -130,9 +112,6 @@ let JazzApp = React.createClass({
     this._setHighchartConfig();
     GlobalErrorMessageStore.addChangeListener(this._onErrorMessageChanged);
     GlobalErrorMessageStore.addClearGlobalErrorListener(this._onClearGlobalError);
-    LanguageStore.addSwitchLanguageListener(this._onLanguageSwitch);
-    LanguageStore.addSwitchLanguageLoadingListener(this._onLanguageSwitchLoading);
-    LanguageStore.addFirstLanguageNoticeLoadingListener(this._onFirstLanguageNotice);
     AjaxStore.addErrorListener(this._globalError);
 
     LanguageAction.firstLanguageNotice(this.props.router.params.lang);
@@ -164,114 +143,6 @@ let JazzApp = React.createClass({
       this.refs.ajax._error(I18N.ServerError.Title, I18N.ServerError.Message, buttonActions, true);
 		}
 	},
-
-  _onFirstLanguageNotice: function() {
-    var params = getParams(this.props.router);
-    var query = getQuery(this.props.router);
-    var routes = getRoutes(this.props.router);
-    var me = this;
-    var afterLoadLang = function(b) {
-      window.I18N = b;
-      var customerCode = params.customerId || query.customerId || window.currentCustomerId;
-      var currentUser = window.currentUserId || getCookie('UserId');
-      me._setHighchartConfig();
-      if (getCurrentPath(me.props.router).indexOf('resetpwd') > -1) {
-        var {user, token, lang} = me.context.router.getCurrentParams();
-        me.setState({
-          isLangLoaded: true,
-          loading: false
-        }, () => {
-          replaceWith(me.props.router, 'resetPSW', {
-            user: user,
-            token: token,
-            lang: lang
-          });
-        });
-        return
-      } else if (getCurrentPath(me.props.router).indexOf('contactus') > -1) {
-        var {lang} = me.context.router.getCurrentParams();
-        me.setState({
-          isLangLoaded: true,
-          loading: false
-        }, () => {
-          replaceWith(me.props.router, 'contactus', {
-            lang: lang
-          });
-        });
-        return
-      } else if (getCurrentPath(me.props.router).indexOf('demologin') > -1) {
-        var {user, token, lang} = me.context.router.getCurrentParams();
-        me.setState({
-          isLangLoaded: true,
-          loading: false
-        }, () => {
-          replaceWith(me.props.router, 'demoLogin', {
-            user: user,
-            token: token,
-            lang: lang
-          });
-        });
-        return
-      } else if (getCurrentPath(me.props.router).indexOf('initpwd') > -1) {
-        var {lang} = me.context.router.getCurrentParams();
-        me.setState({
-          isLangLoaded: true,
-          loading: false
-        }, () => {
-          replaceWith(me.props.router, 'initChangePSW', {
-            lang: lang
-          });
-        });
-        return
-      }
-      else if (!currentUser) {
-        //console.log('登录');
-      } else {
-        //console.log('主页');
-        CurrentUserAction.getUser(currentUser);
-        me.setState({
-          isLangLoaded: true,
-          loading: false
-        }, () => {
-          var url = window.location.toLocaleString();
-          let subUrl = url.split('#');
-          if (subUrl.length === 2 && subUrl[1].indexOf('main/') > -1) {
-            return;
-          }
-          if (url.indexOf('menutype=platform') > -1) {
-            replaceWith(me.props.router, 'config', {
-              lang: lang,
-            });
-          } else if (url.indexOf('menutype=service') > -1) {
-            replaceWith(me.props.router, 'workday', {
-              lang: lang,
-            });
-          } else if (url.indexOf('menutype=energy') > -1) {
-            replaceWith(me.props.router, 'setting', {
-              lang: lang,
-              customerId: customerCode
-            });
-          } else if (url.indexOf('menutype=alarm') > -1) {
-            replaceWith(me.props.router, 'alarm', {
-              lang: lang,
-              customerId: customerCode
-            });
-          } else if (url.indexOf('menutype=map') > -1) {
-            replaceWith(me.props.router, 'map', {
-              lang: lang,
-              customerId: customerCode
-            });
-          }else{
-            //当访问url为http://127.0.0.1:8080/时
-            replaceWith(me.props.router, 'map', {
-              lang: getParams(me.props.router).lang,
-              customerId: customerCode
-            });
-          }
-        });
-      }
-    };
-  },
   _onClearGlobalError: function() {
     let errorMessage = GlobalErrorMessageStore.getErrorMessage();
     let errorCode = GlobalErrorMessageStore.getErrorCode();
@@ -299,9 +170,6 @@ let JazzApp = React.createClass({
   componentWillUnmount() {
     GlobalErrorMessageStore.removeChangeListener(this._onErrorMessageChanged);
     GlobalErrorMessageStore.removeClearGlobalErrorListener(this._onClearGlobalError);
-    LanguageStore.removeSwitchLanguageListener(this._onLanguageSwitch);
-    LanguageStore.removeSwitchLanguageLoadingListener(this._onLanguageSwitchLoading);
-    LanguageStore.removeFirstLanguageNoticeLoadingListener(this._onFirstLanguageNotice);
     AjaxStore.removeErrorListener(this._globalError);
   },
   getInitialState: function() {

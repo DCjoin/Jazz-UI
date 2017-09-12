@@ -70,6 +70,8 @@ function coverageRawToHighChartData(data) {
         IndicatorClass: indicator.IndicatorClass,
         RatioUomId: indicator.RatioUomId,
         CommodityId: indicator.CommodityId,
+        NumeratorCommodityId: indicator.NumeratorCommodityId,
+        RatioCommodityId: indicator.RatioCommodityId,
         id: indicator.KpiId,
         lastMonthSaving: indicator.LstMonthSaving,
         actual: indicator.ActualMonthValues && indicator.ActualMonthValues.map( val => val.Value ),

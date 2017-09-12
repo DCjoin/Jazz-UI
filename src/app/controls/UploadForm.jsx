@@ -8,49 +8,24 @@ const UPLOAD_IFRAME = 'UPLOAD_IFRAME';
 
 export default class UploadForm extends Component {
 	upload(params = {}, onLoad) {
-		// let newInputs = [];
-		// if( typeof params === 'object' ) {
-		// 	Object.keys(params).forEach( (key) => {
-		// 		let input = document.createElement('input');
-		// 		input.type = 'hidden';
-		// 		input.name = key;
-		// 		input.value = params[key];
-		// 		newInputs.push(input);
-		// 		ReactDOM.findDOMNode(this).appendChild(input);
-		// 	} )
-		// }
 		let {method, action, onload, onError} = this.props;
-        var reader = new FileReader();
+        var fileName = this._file.name,
+        reader = new FileReader();
         reader.readAsDataURL(this._file);
         reader.onload = function(){
         	params.content = util.setUploadSource(this.result);
+        	params.FileName = fileName;
 
         	Ajax[method](action, {
         	    params: params,
-        	    noParseRes: true,
         	    success: function(data){
-       	    		onload && onload(data.text);
+       	    		onload && onload(data);
         	    },
         	    error: function(err, res){
        	    		onError && onError(data);
         	    }
         	});
         }
-		// let iframe = document.createElement('iframe');
-		// iframe.setAttribute('style', {
-		// 	display: 'none'
-		// });
-		// iframe.name = 'UPLOAD_IFRAME';
-
-		// document.body.appendChild(iframe);
-		// ReactDOM.findDOMNode(this).enctype = this.props.enctype || 'multipart/form-data';
-		// ReactDOM.findDOMNode(this).submit();
-		// iframe.onload = () => {
-		// 	this.props.onload(iframe);
-		// 	document.body.removeChild(iframe);
-		// };
-		// this.forceUpdate();
-		// newInputs.forEach( input => ReactDOM.findDOMNode(this).removeChild(input) )
 	}
 	reset() {
 		this.refs.fileInput.value = '';

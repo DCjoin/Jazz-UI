@@ -6,7 +6,7 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import injectTapEventPlugin from "react-tap-event-plugin";
 
-import {Router, hashHistory, Route} from 'react-router';
+import {Router, browserHistory, Route} from 'react-router';
 
 import assign from 'object-assign';
 //import * as polyfill from 'babel/polyfill';
@@ -83,34 +83,7 @@ injectTapEventPlugin();
 function getLessVar(name) {
   return main["@" + name];
 }
-
-const SUPPORT_LANGUAGES = {
-  'zh-cn': true,
-  'en-us': true,
-};
-function loadLanguage({location, params, routes}, replace, callback) {
-  let lang = params.lang;
-  if( !lang || !SUPPORT_LANGUAGES[lang] ) {
-    if( location.query.langNum === '0' ) {
-      lang = 'zh-cn';
-    } else if( location.query.langNum === '1' ) {
-      lang = 'en-us';
-    } else {
-      // lang = window.navigator.language.toLowerCase();
-      // first login must be zh-cn 2017-6-27 by product team
-      lang= 'zh-cn';
-    }
-  }
-  require(['./lang/' + lang + '.js'], function(i18n) {
-    window.I18N = i18n;
-    if( params.lang !== lang ) {
-      replace(RoutePath.base({lang}));
-    }
-    callback();
-  });
-}
 function isLogin(global) {
-  console.log(getCookie('SkipLogin'));
   return getCookie('SkipLogin');
 }
 
@@ -134,9 +107,8 @@ function trackPageview(prevRoute, nextRoute) {
     _czc.push(﻿['_trackPageview',nextPath,prevPath]);
   }
 }
-ReactDom.render(<Router history={hashHistory} routes={{
+ReactDom.render(<Router history={browserHistory} routes={{
   path: '/',
-  onEnter: loadLanguage,
   onChange: trackPageview,
   childRoutes: [{
     path: ':lang',
@@ -199,20 +171,6 @@ ReactDom.render(<Router history={hashHistory} routes={{
           }, {
             path: 'config',
             component: KPIConfigList,
-            // indexRoute: {
-            //     onEnter: (router, replaceState) => {
-            //         replaceState(RoutePath.KPIConfig(router.params));
-            //     },
-            // },
-            // childRoutes: [
-            //   {
-            //      path: 'kpiconfig',
-            //      component: KPIConfigList
-            //    },
-            //    {
-            //      path: 'rankconfig',
-            //      component: KPIRanking
-            //  }]
           },
           {
             path: 'template',
@@ -347,4 +305,3 @@ ReactDom.render(<Router history={hashHistory} routes={{
     }]
   }]
 }} />, document.getElementById('emopapp'));
-/**/

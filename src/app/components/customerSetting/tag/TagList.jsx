@@ -161,21 +161,20 @@ let TagList = React.createClass({
                 action='/tag/import'
                 method='post'
                 onChangeFile={this._onImportBtnClick}
-                onload={(json) => {
-                  var obj = JSON.parse(json);
-                  if (obj.success === true) {
+                onload={(obj) => {
+                  if (obj) {
                     this.setState({
-                      importResult: obj.TagImportHisDto,
+                      importResult: obj,
                       isImporting: false,
                       importSuccess: true
                     });
                   } else {
                     var ErrorMsg = null;
-                    if (obj.UploadResponse.ErrorCode === -7) {
+                    if (obj && obj.UploadResponse && obj.UploadResponse.ErrorCode === -7) {
                       ErrorMsg = I18N.Setting.TagBatchImport.ImportSizeErrorView;
-                    } else if (obj.UploadResponse.ErrorCode === -9) {
+                    } else if (obj && obj.UploadResponse && obj.UploadResponse.ErrorCode === -9) {
                       ErrorMsg = I18N.Message.M9;
-                    } else if (obj.UploadResponse.ErrorCode === -8) {
+                    } else if (obj && obj.UploadResponse && obj.UploadResponse.ErrorCode === -8) {
                       ErrorMsg = I18N.Message.M8;
                     } else {
                       ErrorMsg = I18N.Setting.TagBatchImport.ImportErrorView;

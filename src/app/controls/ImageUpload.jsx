@@ -217,12 +217,9 @@ let ImageUpload = React.createClass({
                 method={'post'}
                 onClick={this._handleClick}
                 onChangeFile={this._handlerChangeImageUpload}
-                onload={(json) => {
-                  if (!json) return;
-                  var obj = JSON.parse(json);
-                  var uploadTemplate;
-                  if (obj.success === true) {
-                    this.props.imageDidChanged(obj);
+                onload={(obj) => {
+                  if (obj.Result) {
+                    this.props.imageDidChanged(obj.Id);
                   } else {
                     console.log('fail');
                   }
