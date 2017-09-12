@@ -52,6 +52,9 @@ export default class ActualTag extends Component {
       },{
         path:'UomId',
         value:tag.get('UomId')
+      },{
+        path:'NumeratorCommodityId',
+        value:tag.get('CommodityId')
       }])
     })
 
@@ -59,10 +62,10 @@ export default class ActualTag extends Component {
 
   _renderConfig(){
     let {isCreate}=this.props;
-    let {CommodityId,UomId}=this.props.kpiInfo.toJS();
+    let {NumeratorCommodityId,UomId}=this.props.kpiInfo.toJS();
     let {HierarchyName,HierarchyId,ActualTagId,ActualTagName}=this.props.buildingInfo.toJS();
     if(!UomId){UomId=this.props.buildingInfo.get("UomId")}
-    if(!CommodityId){CommodityId=this.props.buildingInfo.get("CommodityId")}
+    if(!NumeratorCommodityId){NumeratorCommodityId=this.props.buildingInfo.get("NumeratorCommodityId")}
     let tagSelectProps={
     	key:'tagselect',
       title:I18N.Setting.KPI.Group.GroupConfig.SelectTag,
@@ -71,7 +74,8 @@ export default class ActualTag extends Component {
       tag:Immutable.fromJS({
         Id:ActualTagId,
         Name:ActualTagName,
-        UomId,CommodityId
+        UomId,
+        CommodityId:NumeratorCommodityId
       }),
     	onSave:this._onTagSave,
     	onCancel:()=>{

@@ -50,11 +50,11 @@ export default class UpdatePrediction extends Component {
   }
 
   getPredictionProps(){
-      let {UomId,AdvanceSettings,CommodityId,ActualTagId}=this.state.kpiInfo.toJS();
+      let {UomId,AdvanceSettings,NumeratorCommodityId ,ActualTagId}=this.state.kpiInfo.toJS();
       let {PredictionSetting}=AdvanceSettings,
           {hierarchyId,hierarchyName}=this.props,
           uom=CommonFuns.getUomById(UomId).Code,
-          tag=Immutable.fromJS({Id:ActualTagId,UomId,CommodityId});
+          tag=Immutable.fromJS({Id:ActualTagId,UomId,CommodityId:NumeratorCommodityId });
       return{
         PredictionSetting,
         onPredictioChange:this._onPredictioChange,
