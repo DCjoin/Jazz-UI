@@ -209,7 +209,7 @@ let ReportAction = {
 
     let form = new CustomForm({
       target: '_blank',
-      action: window.location.href.split('#')[0] + 'API/DataReport/ExportEnergyUsageDataAccordingToTemplate'
+      action: require('config').ServeAddress + '/API/DataReport/ExportEnergyUsageDataAccordingToTemplate'
     });
     form.setParams({
       Id,
