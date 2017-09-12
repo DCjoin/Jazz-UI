@@ -101,19 +101,24 @@ export default class RatioActualTag extends Component {
         <span>{IndicatorName}</span>
         <span>=</span>
         <span>
+          <div style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
           {ActualTagName && <div style={{color:'#626469'}}>{ActualTagName}</div>}
           {isCreate && !ActualTagName && <NewFlatButton label={I18N.Setting.Tag.Tag} labelStyle={styles.label} secondary={true}
                                                 icon={<FontIcon className="icon-add" style={styles.label}/>} style={styles.button}
                                                 onClick={()=>{this._tagSelect(true,1)}}/>}
-          {isCreate && ActualTagName && <div className="reelect" onTouchTap={()=>{this._tagSelect(true)}}>{I18N.SaveEffect.SelectTagAgain}</div>}
+          {isCreate && ActualTagName && <div className="reelect" onTouchTap={()=>{this._tagSelect(true,1)}}>{I18N.SaveEffect.SelectTagAgain}</div>}
+
+          </div>
 
           <hr/>
 
+          <div style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
           {ActualRatioTagName && <div style={{color:'#626469'}}>{ActualRatioTagName}</div>}
           {isCreate && !ActualRatioTagName && <NewFlatButton label={I18N.Setting.Tag.Tag} labelStyle={styles.label} secondary={true}
                                                 icon={<FontIcon className="icon-add" style={styles.label}/>} style={styles.button}
-                                                onClick={()=>{this._tagSelect(true,1)}}/>}
+                                                onClick={()=>{this._tagSelect(true,2)}}/>}
           {isCreate && ActualRatioTagName && <div className="reelect" onTouchTap={()=>{this._tagSelect(true,2)}}>{I18N.SaveEffect.SelectTagAgain}</div>}
+          </div>
         </span>
       </div>
     )
@@ -141,8 +146,16 @@ export default class RatioActualTag extends Component {
   // }
 
   render(){
+    var that=this;
     let {isCreate}=this.props;
+    let {UomId,RatioUomId,RatioCommodityId,NumeratorCommodityId}=this.props.kpiInfo.toJS();
     let {HierarchyName,HierarchyId,ActualTagId,ActualTagName,ActualRatioTagId,ActualRatioTagName}=this.props.buildingInfo.toJS();
+
+    if(!UomId){UomId=this.props.buildingInfo.get("UomId")}
+    if(!RatioUomId){RatioUomId=this.props.buildingInfo.get("RatioUomId")}
+    if(!RatioCommodityId){RatioCommodityId=this.props.buildingInfo.get("RatioCommodityId")}
+    if(!NumeratorCommodityId){NumeratorCommodityId=this.props.buildingInfo.get("NumeratorCommodityId")}
+
     let props={
       title:I18N.Setting.KPI.Group.MonthConfig.TagSelect,
       contentStyle:{
@@ -155,9 +168,12 @@ export default class RatioActualTag extends Component {
       hierarchyId:HierarchyId,
       hierarchyName:HierarchyName,
       tag:Immutable.fromJS({
-        Id:this.state.tagIndex===1?ActualTagId:ActualRatioTagId,
-        Name:this.state.tagIndex===1?ActualTagName:ActualRatioTagName
+        Id:that.state.tagIndex===1?ActualTagId:ActualRatioTagId,
+        Name:that.state.tagIndex===1?ActualTagName:ActualRatioTagName,
+        UomId:that.state.tagIndex===1?UomId:RatioUomId,
+        CommodityId:that.state.tagIndex===1?NumeratorCommodityId:RatioCommodityId,
       }),
+
       onSave:(tag)=>this._onTagSave(tag,this.state.tagIndex),
       onCancel:()=>{
         this._tagSelect(false)

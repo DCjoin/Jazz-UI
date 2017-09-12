@@ -8,11 +8,16 @@ import CommonFuns from 'util/Util.jsx';
 import {Type} from 'constants/actionType/KPI.jsx';
 import classNames from 'classnames';
 import FontIcon from 'material-ui/FontIcon';
+import MonthKPIStore from 'stores/KPI/MonthKPIStore.jsx'
 
 export default class ViewableRatioBuildingConfig extends Component {
     constructor(props) {
       super(props);
+      this._onChange = this._onChange.bind(this);
+    }
 
+    _onChange(){
+      this.forceUpdate()
     }
 
   _renderContent(){
@@ -35,13 +40,17 @@ export default class ViewableRatioBuildingConfig extends Component {
   }
 
   getUom(){
-    let {UomId}=this.props.kpiInfo.toJS();
+    let {UomId,RatioUomId}=this.props.kpiInfo.toJS();
+    if(!UomId && MonthKPIStore.getMonthKpi()){UomId=MonthKPIStore.getMonthKpi().get("UomId")}
+    if(!RatioUomId && MonthKPIStore.getMonthKpi()){RatioUomId=MonthKPIStore.getMonthKpi().get("RatioUomId")}
 
-      if(UomId) {
-        let uom=CommonFuns.getUomById(UomId).Code;
-        return uom===''?'':`(${uom})`
-      }
-      else return ''
+      if(UomId && RatioUomId){
+      let uom=CommonFuns.getUomById(UomId).Code;
+      let ratioUom=CommonFuns.getUomById(RatioUomId).Code;
+      if(UomId===RatioUomId) return ''
+      return `(${uom}/${ratioUom})`
+    }
+    else return ''
    
   }
 
@@ -82,7 +91,7 @@ export default class ViewableRatioBuildingConfig extends Component {
         											value
      													 }])
                               },
-          defaultValue: CommonFuns.toThousands(value) || '',
+          value: CommonFuns.toThousands(value) || '',
           title: title,
           hintText:annualHint, 
           autoFocus:true,
@@ -93,6 +102,14 @@ export default class ViewableRatioBuildingConfig extends Component {
       <ViewableTextField {...annualProps}/>
     )
   }
+
+  	componentDidMount(){
+		MonthKPIStore.addChangeListener(this._onChange);
+	}
+
+  	componentWillUnmount(){
+		MonthKPIStore.removeChangeListener(this._onChange);
+	}
 
   render(){
   var building=this.props.kpiInfo.getIn(["Buildings",this.props.index]);
@@ -118,7 +135,6 @@ export default class ViewableRatioBuildingConfig extends Component {
         </div>
        
         <div className="jazz-viewable-building-config-content">
-          {this._renderIndicator()}
           {this._renderContent()}</div>
       </div>
     )

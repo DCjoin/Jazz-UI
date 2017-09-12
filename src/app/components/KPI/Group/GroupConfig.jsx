@@ -107,7 +107,7 @@ export default class GroupConfig extends Component {
                       {this._renderConfig()}
                       {this.props.configStep===1 && 
                           <div className="jazz-kpi-config-edit-step-action">
-                             <FlatButton label={I18N.Common.Button.Cancel2} secondary={true} style={{float:'right',minWidth:'68px'}} onTouchTap={this.props.onCancel}/>
+                             {!this.props.isNew && <FlatButton label={I18N.Common.Button.Cancel2} secondary={true} style={{float:'right',minWidth:'68px'}} onTouchTap={this.props.onCancel}/>}
                              <FlatButton label={I18N.Common.Button.Save} disabled={!AnnualQuota && !AnnualSavingRate} primary={true} style={{float:'right',minWidth:'68px',marginRight:'20px'}} 
                                 onTouchTap={()=>{
                                    GroupKPIAction.updateKpiInfo(this.state.kpiInfo);
@@ -128,4 +128,5 @@ GroupConfig.propTypes = {
   onEdit:React.PropTypes.func,
   onCancel:React.PropTypes.func,
   onSave:React.PropTypes.func,
+  isNew:React.PropTypes.bool,
 };
