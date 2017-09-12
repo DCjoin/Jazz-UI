@@ -222,7 +222,14 @@ const SingleKPIAction = {
       error: function() {}
     });
   },
-  IsAutoCalculable(customerId,tagId,year){
+  fillMonthValue(value){
+    var res=SingleKPIStore.fillMonthValue(value);
+     AppDispatcher.dispatch({
+        type: Action.GET_CALC_VALUE,
+        data: res
+       });
+  },
+  IsAutoCalculable(customerId,tagId,year,index){
     Ajax.get(util.replacePathParams(Path.KPI.IsAutoCalculable,customerId,tagId,year),
       {
       success: function(resBody) {
@@ -231,7 +238,8 @@ const SingleKPIAction = {
           data: {
             has:resBody,
             year,
-          }
+          },
+          index
         });
       },
       error: function() {}

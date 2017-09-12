@@ -4,13 +4,16 @@ import Immutable from 'immutable';
 import MonthKPIAction from 'actions/KPI/MonthKPIAction.jsx';
 import GroupKPIAction from 'actions/KPI/GroupKPIAction.jsx';
 import FlatButton from "controls/NewFlatButton.jsx";
-
+import CommonFuns from 'util/Util.jsx';
 import MonthKPIStore from 'stores/KPI/MonthKPIStore.jsx'
 import FormBottomBar from 'controls/FormBottomBar.jsx';
 import { formStatus } from 'constants/FormStatus.jsx';
 import ActualTag from './ActualTag.jsx';
 import MonthValue from './MonthValue.jsx';
 import Prediction from './GroupPrediction.jsx';
+import ViewableTextField from 'controls/ViewableTextField.jsx';
+import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx';
+import {Type} from 'constants/actionType/KPI.jsx';
 
 export default class DosageMonthConfig extends Component {
 
@@ -52,6 +55,67 @@ export default class DosageMonthConfig extends Component {
 
 		this.props.onSave();
 	}
+
+	  getUom(){
+    let {UomId}=this.props.kpiInfo.toJS();
+		if(!UomId){UomId=this.state.buildingInfo.get("UomId")}
+
+      if(UomId) {
+        let uom=CommonFuns.getUomById(UomId).Code;
+        return uom===''?'':`(${uom})`
+      }
+      else return ''
+   
+  }
+
+  _validateQuota(value){
+    value=CommonFuns.thousandsToNormal(value);
+    return !SingleKPIStore.validateQuota(value) && I18N.Setting.KPI.Parameter.QuotaErrorText
+  }
+
+  _validateSavingRate(value){
+    value=CommonFuns.thousandsToNormal(value);
+    return !SingleKPIStore.validateSavingRate(value) && I18N.Setting.KPI.Parameter.SavingRateErrorText
+  }
+
+	_renderIndicator(){
+    let {IndicatorType}=this.props.kpiInfo.toJS();
+    let {AnnualQuota,AnnualSavingRate}=this.state.buildingInfo.toJS();
+    let type=IndicatorType===Type.Quota?I18N.Setting.KPI.Quota:I18N.Setting.KPI.SavingRate,
+        annualTitle=I18N.format(I18N.Setting.KPI.Group.BuildingConfig.Indicator,type),
+        annualHint=I18N.format(I18N.Setting.KPI.Group.BuildingConfig.IndicatorHint,type),
+        title,
+        // title=IndicatorType===Type.Quota?`${annualTitle} (${uom})`:`${annualTitle} (%)`,
+        value=IndicatorType===Type.Quota?AnnualQuota:AnnualSavingRate;
+
+        if(IndicatorType===Type.Quota){
+          title=`${annualTitle}${this.getUom()}`
+        }else {
+          title=`${annualTitle} (%)`
+        }
+    let  annualProps={
+          ref: 'annual',
+          isViewStatus: this.props.isViewStatus,
+          didChanged:value=>{
+                      value=CommonFuns.thousandsToNormal(value);
+                      let path=IndicatorType===Type.Quota?'AnnualQuota':'AnnualSavingRate';
+
+											      MonthKPIAction.merge([{
+        											path,
+        											value
+     													 }])
+                              },
+          defaultValue: CommonFuns.toThousands(value) || '',
+          title: title,
+          hintText:annualHint, 
+          autoFocus:true,
+          regexFn:IndicatorType===Type.Quota?this._validateQuota:this._validateSavingRate,
+          style:{width:'150px'}
+        };
+    return(
+      <ViewableTextField {...annualProps}/>
+    )
+  }
 
   _renderMonthValue(){
 		var props={
@@ -138,6 +202,7 @@ export default class DosageMonthConfig extends Component {
 
     return(
       <div>
+				{this._renderIndicator()}
         <ActualTag {...tagProps}/>
         {this._renderMonthValue()}
 				{this._renderPrediction()}

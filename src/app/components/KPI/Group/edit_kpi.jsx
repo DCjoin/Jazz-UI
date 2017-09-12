@@ -6,7 +6,7 @@ import BuildingConfig from './building_config.jsx';
 import GroupConfig from './GroupConfig.jsx';
 import NewDialog from 'controls/NewDialog.jsx';
 import NewFlatButton from 'controls/NewFlatButton.jsx';
-
+import MonthKPIStore from 'stores/KPI/MonthKPIStore.jsx';
 
 import CircularProgress from 'material-ui/CircularProgress';
 
@@ -21,6 +21,8 @@ import { formStatus } from 'constants/FormStatus.jsx';
 import Dialog from 'controls/NewDialog.jsx';
 import DosageMonthConfig from './DosageMonthConfig.jsx';
 import RatioMonthConfig from './RatioMonthConfig.jsx';
+
+
 
 var customerId=null;
 
@@ -56,7 +58,8 @@ export default class EditConfig extends Component {
 	state={
 		// kpiInfo:this.props.kpiInfo,
 		configStep:null,
-		isNew:!this.props.kpiInfo.get("AnnualQuota") && !this.props.kpiInfo.get("AnnualSavingRate")
+		isNew:!this.props.kpiInfo.get("AnnualQuota") && !this.props.kpiInfo.get("AnnualSavingRate"),
+		configBuildingIndex:null
 	};
 
 	_onSave(){		
@@ -67,6 +70,7 @@ export default class EditConfig extends Component {
 
 	_renderGroupConfig(){
 		let props={
+			ref:'group',
 			isNew:this.state.isNew,
 			configStep:this.state.configStep,
 			kpiInfo:this.props.kpiInfo,
@@ -84,9 +88,9 @@ export default class EditConfig extends Component {
 			configStep:this.state.configStep,
 			isNew:this.state.isNew,
 			kpiInfo:this.props.kpiInfo,
-			onEdit:()=>{this.setState({configStep:2})},
-			onCancel:()=>{this.setState({configStep:null})},
-			onSave:()=>{this.setState({configStep:null})},
+			onEdit:(index)=>{this.setState({configStep:2,configBuildingIndex:index})},
+			onCancel:()=>{this.setState({configStep:null,configBuildingIndex:null})},
+			onSave:()=>{this.setState({configStep:null,configBuildingIndex:null})},
 			year:this.props.year
 		};
 		return(
@@ -140,14 +144,22 @@ export default class EditConfig extends Component {
          	<Header name={I18N.format(I18N.Setting.KPI.Config.Header,IndicatorName,this.props.year)}  
                   indicatorClass={IndicatorClass} indicatorType={IndicatorType}
                   onClose={()=>{
-												if(this.state.configStep!==null ) {
+												var close=true;
+												if(this.state.configStep===1 && 
+													 (GroupKPIStore.getRawData().getIn(["GroupKpiSetting","AdvanceSettings","AnnualQuota"])!==this.refs.group.state.kpiInfo.get("AnnualQuota")
+													 || GroupKPIStore.getRawData().getIn(["GroupKpiSetting","AdvanceSettings","AnnualSavingRate"])!==this.refs.group.state.kpiInfo.get("AnnualSavingRate"))) {
+														close=false;
 														this.setState({
 															closeDlgShow: true
 														});
-													} else {
-						this._onSave();
-
-					}
+													} 
+													if(this.state.configStep===2 && !Immutable.is(this.props.kpiInfo.getIn(["Buildings",this.state.configBuildingIndex]),MonthKPIStore.getMonthKpi())){
+														close=false;
+														this.setState({
+															closeDlgShow: true
+														});
+													}
+													if(close){this._onSave();}
 									
 					}}/>
           {this._renderGroupConfig()}
