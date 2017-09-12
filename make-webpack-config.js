@@ -53,12 +53,12 @@ module.exports = function(options) {
     function() {
       if (!options.publish) {
         this.plugin("done", function(stats) {
-          var jsonStats = stats.toJson({
-            chunkModules: true,
-            exclude: excludeFromStats
-          });
-          jsonStats.publicPath = publicPath;
-          fs.writeFileSync(path.join(__dirname, "build", "stats.json"), JSON.stringify(jsonStats));
+          // var jsonStats = stats.toJson({
+          //   chunkModules: true,
+          //   exclude: excludeFromStats
+          // });
+          // jsonStats.publicPath = publicPath;
+          fs.writeFileSync(path.join(__dirname, "stats.json"), stats);
         });
       } else {
         this.plugin("done", function(stats) {

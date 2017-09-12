@@ -2196,7 +2196,7 @@ let CommonFuns = {
     }
   },
   openTab(path) {
-    let fullPath = window.location.href.split('#')[0] + '#';
+    let fullPath = document.location.protocol + '//' + document.location.host;
     if( path ) {
       fullPath += path;
     }

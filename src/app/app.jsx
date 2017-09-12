@@ -6,7 +6,7 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import injectTapEventPlugin from "react-tap-event-plugin";
 
-import {Router, hashHistory, Route} from 'react-router';
+import {Router, browserHistory, Route} from 'react-router';
 
 import assign from 'object-assign';
 //import * as polyfill from 'babel/polyfill';
@@ -84,7 +84,6 @@ function getLessVar(name) {
   return main["@" + name];
 }
 function isLogin(global) {
-  console.log(getCookie('SkipLogin'));
   return getCookie('SkipLogin');
 }
 
@@ -108,7 +107,7 @@ function trackPageview(prevRoute, nextRoute) {
     _czc.push(﻿['_trackPageview',nextPath,prevPath]);
   }
 }
-ReactDom.render(<Router history={hashHistory} routes={{
+ReactDom.render(<Router history={browserHistory} routes={{
   path: '/',
   onChange: trackPageview,
   childRoutes: [{
