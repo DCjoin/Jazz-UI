@@ -68,8 +68,9 @@ export default class BuildingConfig extends Component {
     else return ''
   }
 
+
   _changeBuilding(index){
-    var {AnnualQuota,AnnualSavingRate}=this.props.kpiInfo.getIn(['Buildings',index]);
+    var {AnnualQuota,AnnualSavingRate}=this.props.kpiInfo.getIn(['Buildings',index]).toJS();
         this.setState({
                       configIndex:index,
                       isConfigView:CommonFuns.isNumber(AnnualQuota) || CommonFuns.isNumber(AnnualSavingRate)},

@@ -148,7 +148,8 @@ export default class DosageMonthConfig extends Component {
 			}),
 	    hierarchyId:HierarchyId,
 	    hierarchyName:HierarchyName,
-			isViewStatus:this.props.isViewStatus
+			isViewStatus:this.props.isViewStatus,
+      buildingInfo:this.state.buildingInfo
 		};
 		return(
 			<Prediction {...props}/>
