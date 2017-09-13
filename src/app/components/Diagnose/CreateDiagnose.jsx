@@ -1628,12 +1628,17 @@ class CreateDiagnose extends Component {
 				getCanSelectTimeGranularity(tmpFilterDiagnoseTags).map(time =>
 					<FlatButton key={time} label={I18N.Setting.Diagnose.By + _.find(getStepItems(),item => item.step === time * 1).text}
 						onClick={() => {
-							this.setState({
-								checkedTags: tmpFilterDiagnoseTags,
+							let newState = {								
 								filterObj: filterObj.set('Step', time * 1),
 								tmpFilterDiagnoseTags: null,
 								tmpFilterStep: null,
-							}, this._getChartData);
+							}
+							if( tmpFilterDiagnoseTags.length === 1 && this.state.associateTag.get('Tags').find(tag => tag.get('Id') === tmpFilterDiagnoseTags[0].Id) ) {
+								newState.checkedAssociateTag = tmpFilterDiagnoseTags;
+							} else {
+								newState.checkedTags = tmpFilterDiagnoseTags;
+							}
+							this.setState(newState, this._getChartData);
 						}}/>)
 			}>
 				{I18N.format(I18N.Setting.Diagnose.SelectTagsUnsupportSteps,_.find(getStepItems(),item => item.step === tmpFilterStep).text)}
