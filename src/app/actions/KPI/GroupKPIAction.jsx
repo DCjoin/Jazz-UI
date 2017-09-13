@@ -39,12 +39,13 @@ const GroupKPIAction = {
           cb(resBody);
         } else {
           SingleKPIAction.getKPIPeriodByYear(customerId,year);
-        }
         AppDispatcher.dispatch({
           type: Action.GET_KPI_GROUP_BY_YEAR,
           data: resBody,
           info
         });
+        }
+
       },
       error: function() {}
     });
