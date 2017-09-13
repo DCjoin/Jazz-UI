@@ -260,10 +260,9 @@ export default class ReportConfig extends Component {
     // document.body.appendChild(iframe);
   }
 
-  _onUploadDone(json) {
-	var obj = JSON.parse(json);
+  _onUploadDone(obj) {
 	var reportItem = this.state.reportItem;
-	if (obj.success === true) {
+	if (obj) {
 		reportItem = reportItem.set('templateId', obj.TemplateId);
 		ReportAction.getTemplateListByCustomerId(this.context.currentRoute.params.customerId, 'Name', 'asc');
 		this.setState({
@@ -271,10 +270,10 @@ export default class ReportConfig extends Component {
 			saveDisabled: !this._isValid(),
 			showUploadDialog: false
 		},()=>{
-			this._updateReportItem(reportItem,Immutable.fromJS(obj.SheetList))
+			this._updateReportItem(reportItem,Immutable.fromJS(obj.SheetNames))
 		});
 	} else {
-		var errorCode = obj.UploadResponse.ErrorCode,
+		var errorCode = obj && obj.UploadResponse && obj.UploadResponse.ErrorCode,
 		errorMessage=null;
 		if (errorCode === -1) {
 			errorMessage = I18N.format(I18N.EM.Report.DuplicatedName, this.state.fileName);
