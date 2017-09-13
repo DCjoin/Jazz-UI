@@ -111,7 +111,7 @@ export default class Prediction extends Component {
   	}
 
   _onCalcValue(TagSavingRates){
-    SingleKPIAction.getCalcPredicate(this.context.router.params.customerId,this.props.Year,TagSavingRates)
+    SingleKPIAction.getCalcPredicate(this.context.router.params.customerId,this.props.Year,this.props.buildingInfo.get("ActualTagId"),TagSavingRates)
   }
 
   _deleteRate(index){
