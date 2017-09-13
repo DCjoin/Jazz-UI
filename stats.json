@@ -1,6 +1,6 @@
-Hash: f2d3d232ef81530b13a7
+Hash: 69905ba5d05160356ea3
 Version: webpack 2.2.1
-Time: 2305ms
+Time: 1954ms
                                Asset       Size  Chunks                    Chunk Names
                         raw-data.png    1.49 kB                            
                           QRIcon.png    4.87 kB                            
@@ -23,21 +23,21 @@ Time: 2305ms
                      step5-zh-cn.png     196 kB                            
                            bundle.js    7.67 MB       0  [emitted]  [big]  bundle
                           vendors.js     3.9 MB       1  [emitted]  [big]  vendors
-0.c8ead0f853a9f73d5cbc.hot-update.js    31.5 kB       0  [emitted]         bundle
-c8ead0f853a9f73d5cbc.hot-update.json   43 bytes          [emitted]         
+0.ae9577d1301d2e8cf440.hot-update.js    12.1 kB       0  [emitted]         bundle
+ae9577d1301d2e8cf440.hot-update.json   43 bytes          [emitted]         
                             main.css     292 kB       0  [emitted]  [big]  bundle
                          favicon.ico    7.38 MB          [emitted]  [big]  
                        ../index.html    1.72 kB          [emitted]         
-chunk    {0} bundle.js, 0.c8ead0f853a9f73d5cbc.hot-update.js, main.css (bundle) 6.2 MB {1} [initial] [rendered]
+chunk    {0} bundle.js, 0.ae9577d1301d2e8cf440.hot-update.js, main.css (bundle) 6.2 MB {1} [initial] [rendered]
     [7] ./~/object-assign/index.js 484 bytes {0}
  [1303] ./src/app/app.jsx 14.6 kB {0}
  [1475] ./src/app/components/resetPSWApp.jsx 8.58 kB {0}
  [1476] ./src/app/components/save_effect/best/ignored_best_list.jsx 7.22 kB {0}
  [1487] ./src/app/components/save_effect/index.js 4.27 kB {0}
- [1489] ./src/app/components/save_effect/list/Draft.jsx 9.94 kB {0}
- [1491] ./src/app/components/save_effect/list/save_effect_list.jsx 17.4 kB {0} [built]
+ [1489] ./src/app/components/save_effect/list/Draft.jsx 9.93 kB {0}
+ [1491] ./src/app/components/save_effect/list/save_effect_list.jsx 17.4 kB {0}
  [1494] ./src/app/components/save_effect/overview/index.js 8.8 kB {0}
- [1495] ./src/app/components/save_effect/save_effect_best_list.jsx 10.1 kB {0}
+ [1495] ./src/app/components/save_effect/save_effect_best_list.jsx 10.1 kB {0} [built]
  [1496] ./src/app/components/service/ServiceApp.jsx 4.19 kB {0}
  [1504] ./src/app/components/setting/Setting.jsx 24.9 kB {0}
  [1510] ./src/app/components/userManage/role/Role.jsx 7.06 kB {0}

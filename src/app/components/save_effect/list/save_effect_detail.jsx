@@ -528,7 +528,7 @@ export default class EffectDetail extends Component {
 	  if(tags.size===0){
 			return(
 				<div className="jazz-effect-detail-content flex-center" style={{flexDirection:'column'}}>
-					<FontIcon className="icon-weather-thunder" style={{fontSize:'60px'}} color="#32ad3d"/>
+					<FontIcon className="icon-energymost" style={{fontSize:'60px'}} color="#32ad3d"/>
 				 <div className="nolist-font" style={{display:'flex',flexDirection:'row'}}>
 					 {I18N.SaveEffect.NoEffectDetail}
 					 <div className="operation" onClick={this._onCreateShow.bind(this)}>{I18N.Setting.Effect.Config}</div>

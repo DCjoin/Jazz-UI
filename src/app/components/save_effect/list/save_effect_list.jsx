@@ -198,7 +198,7 @@ export default class EffectList extends Component {
     }else if(this.state.effect.get('EnergyEffects').size===0){
       return (
         <div className="jazz-effect-list flex-center">
-          <FontIcon className="icon-weather-thunder" style={{fontSize:'60px'}} color="#32ad3d"/>
+          <FontIcon className="icon-energymost" style={{fontSize:'60px'}} color="#32ad3d"/>
          <div className="nolist-font">{I18N.SaveEffect.NoEffectList}</div>
        </div>
       )
