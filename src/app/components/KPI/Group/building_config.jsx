@@ -15,7 +15,7 @@ import Immutable from 'immutable';
 
 
 function getDisplayData(total,type){
-  return total===null?'－':type===Type.Quota?CommonFuns.getLabelData(parseFloat(total)):parseFloat(total).toFixed(1)
+  return total===null?'－':type===Type.Quota?CommonFuns.getLabelData(parseFloat(total)):parseFloat(parseFloat(total).toFixed(1))
 }
 
 function isView(building){
