@@ -277,7 +277,7 @@ export default class Prediction extends Component {
     },
     ratesTagProps={
         key:'ratestagselect',
-          title:I18N.Setting.KPI.Group.GroupConfig.SelectTagForPrediction,
+          title:I18N.EM.Report.SelectTag,
           hierarchyId,
           hierarchyName,
           tag:lastTag?Immutable.fromJS({
