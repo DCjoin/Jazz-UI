@@ -226,21 +226,20 @@ var ReportRightPanel = React.createClass({
       }).toJS();
     }
   },
-  _onUploadDone(json) {
-    var obj = JSON.parse(json);
+  _onUploadDone(obj) {
     var reportItem = this.state.reportItem;
-    if (obj.success === true) {
+    if (obj) {
       reportItem = reportItem.set('templateId', obj.TemplateId);
       ReportAction.getTemplateListByCustomerId(this.context.currentRoute.params.customerId, this.state.sortBy, 'asc');
       this.setState({
         reportItem: reportItem,
-        sheetNames: Immutable.fromJS(obj.SheetList),
+        sheetNames: Immutable.fromJS(obj.SheetName),
         showUploadDialog: false
       },()=>{
         this._updateReportItem(reportItem,Immutable.fromJS(obj.SheetList))
       });
     } else {
-      var errorCode = obj.UploadResponse.ErrorCode,
+      var errorCode = obj && obj.UploadResponse && obj.UploadResponse.ErrorCode,
         errorMessage;
       if (errorCode === -1) {
         errorMessage = I18N.format(I18N.EM.Report.DuplicatedName,this.state.fileName);

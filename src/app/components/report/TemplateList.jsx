@@ -91,9 +91,8 @@ let TemplateList = React.createClass({
             fileName={'templateFile'}
             enctype={'multipart/form-data'}
             method={'post'}
-            onload={(json) => {
-              var obj = JSON.parse(json);
-              if (obj.success === true) {
+            onload={(obj) => {
+              if (obj) {
                 ReportAction.getTemplateListByCustomerId(parseInt(this.props.customerId), this.props.sortBy, 'asc');
                 this._handleDialogDismiss();
               } else {
