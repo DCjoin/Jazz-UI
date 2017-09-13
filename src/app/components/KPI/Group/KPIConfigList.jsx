@@ -166,11 +166,11 @@ class KPIConfigItem extends Component {
 		});
 	}
 	componentWillReceiveProps(nextProps) {
-		GroupKPIAction.getGroupByYear(nextProps.CustomerId, nextProps.Year, null, (data) => {
-			this.setState({
-				rolongDisabled: !data || data.length === 0
-			});
-		});
+		// GroupKPIAction.getGroupByYear(nextProps.CustomerId, nextProps.Year, null, (data) => {
+		// 	this.setState({
+		// 		rolongDisabled: !data || data.length === 0
+		// 	});
+		// });
 	}
 	_onChangeState(data) {
 		let {Year, onChangeState} = this.props;
