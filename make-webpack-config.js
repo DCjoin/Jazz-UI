@@ -58,7 +58,7 @@ module.exports = function(options) {
           //   exclude: excludeFromStats
           // });
           // jsonStats.publicPath = publicPath;
-          fs.writeFileSync(path.join(__dirname, "stats.json"), stats);
+          // fs.writeFileSync(path.join(__dirname, "stats.json"), stats);
         });
       } else {
         this.plugin("done", function(stats) {
