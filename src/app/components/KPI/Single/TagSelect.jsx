@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import TagSelectAction from 'actions/KPI/TagSelectAction.jsx';
 import TagSelectStore from 'stores/KPI/TagSelectStore.jsx';
 import Dialog from 'controls/NewDialog.jsx';
-import FlatButton from 'controls/FlatButton.jsx';
+import NewFlatButton from 'controls/NewFlatButton.jsx';
 import Tree from 'controls/tree/Tree.jsx';
 import CommonFuns from 'util/Util.jsx';
 
@@ -156,15 +156,8 @@ export default class TagSelect extends Component {
 
 	render(){
 		let actions = [
-			<FlatButton
-			label={I18N.Common.Button.Save}
-			onTouchTap={this._onSave}
-			disabled={this.state.selectedTag===null}
-			/>,
-			<FlatButton
-			label={I18N.Common.Button.Cancel2}
-			onTouchTap={this.props.onCancel}
-			/>
+			<NewFlatButton style={{marginLeft: 24,float:'right'}} secondary label={I18N.Common.Button.Cancel2} onClick={this.props.onCancel}/>,
+			<NewFlatButton primary label={I18N.Common.Button.Select} disabled={this.state.selectedTag===null} onClick={this._onSave} style={{float:'right'}}/>	
 		];
 		let  dialogProps = {
 		        ref: 'tag_dialog',
@@ -175,6 +168,9 @@ export default class TagSelect extends Component {
 						wrapperStyle:{
 							width:'852px',
 							maxWidth:'852px'
+						},
+						actionsContainerStyle:{
+							margin:'24px'
 						}
 		      };
 		return(
