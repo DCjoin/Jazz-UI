@@ -252,7 +252,7 @@ export default class RatioActualTag extends Component {
     };
     let tagSelectProps={
       key:'tagselect',
-      title:I18N.Setting.KPI.Group.GroupConfig.SelectTag,
+      title:I18N.EM.Report.SelectTag,
       hierarchyId:HierarchyId,
       hierarchyName:HierarchyName,
       tag:Immutable.fromJS({
