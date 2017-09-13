@@ -89,7 +89,7 @@ export default class BuildingConfig extends Component {
       <div className="jazz-kpi-config-edit-building-config-field-building-info">
         {IndicatorClass===Type.Dosage && <div className="jazz-kpi-config-edit-building-config-field-building-info-total" style={{position:'relative'}}>
           {I18N.SumWindow.Sum+"："}
-          {this.state.total==='loading'?<RefreshIndicator status="loading" top={6} left={50}/>:getDisplayData(this.state.total,IndicatorType)+this.getUom()}
+          {this.state.total==='loading'?<RefreshIndicator status="loading" top={6} left={50}/>:getDisplayData(this.state.total,IndicatorType)+IndicatorType===Type.Quota?this.getUom():'%'}
           </div>}
         <div className="jazz-kpi-config-edit-building-config-field-building-info-list">
           {Buildings.map((building,index)=>{
@@ -107,9 +107,9 @@ export default class BuildingConfig extends Component {
                               this._changeBuilding(index)
                             }}}>
                           <div className="name" title={HierarchyName}>{HierarchyName}</div>
-                          <div>{(IndicatorType===Type.Quota?I18N.Setting.KPI.Quota:I18N.Setting.KPI.SavingRate)
+                          <div>{(IndicatorType===Type.Quota?I18N.Setting.KPI.Quota+ '：'+ (value==='－'?value:value+this.getUom()):I18N.Setting.KPI.SavingRate)
                                 + '：'
-                                + (value==='－'?value:value+this.getUom())}</div>
+                                + (value==='－'?value:value+'%')}</div>
                      </div>
               )
           }
