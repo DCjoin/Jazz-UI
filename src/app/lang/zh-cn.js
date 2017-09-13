@@ -2180,6 +2180,7 @@ I18N.Setting.KPI.Group.MonthConfig = {};
 I18N.Setting.KPI.Group.MonthConfig.Title='配置逐月值';
 I18N.Setting.KPI.Group.MonthConfig.TagSelect='引用实际值数据点';
 I18N.Setting.KPI.Group.MonthConfig.AnnualTotal='年度指标总量';
+I18N.Setting.KPI.Group.MonthConfig.AnnualTotalForRatio='年度指标';
 I18N.Setting.KPI.Group.MonthConfig.MonthValueSum='逐月指标值总计 {0}';
 I18N.Setting.KPI.GroupList = {};
 I18N.Setting.KPI.GroupList.Header = '指标配置';
@@ -2258,6 +2259,8 @@ I18N.Setting.KPI.Config.TableDataNameTip = '此名称已存在，请重新输入
 I18N.Setting.KPI.Config.Header = '{0}指标配置({1}年)';
 I18N.Setting.KPI.Config.Group = '配置集团指标';
 I18N.Setting.KPI.Config.Building = '配置建筑指标';
+I18N.Setting.KPI.Config.FillBuilding = '填充建筑定额指标';
+I18N.Setting.KPI.Config.FillAnnual = '填充年度指标';
 I18N.Setting.KPI.Config.LeaveTip = '信息尚未保存，该操作将导致信息丢失，确定执行该操作?';
 
 I18N.Setting.DataAnalysis = {};

@@ -35,7 +35,7 @@ export default class MonthValue extends Component {
 
   state={
     hasHistory:false,
-    calcSum:'-',
+    calcSum:null,
     isCalc:this.props.buildingInfo.get('ActualTagId')?true:false
   };
 
@@ -124,7 +124,10 @@ export default class MonthValue extends Component {
             RatioValue:AnnualSavingRate
           });
         })
+  }
 
+  _onFillValue(value){
+    SingleKPIAction.fillMonthValue(value)
   }
 
   _onTargetValueChange(index,value){
@@ -221,6 +224,12 @@ export default class MonthValue extends Component {
       }
   }*/
 
+
+  _validateSavingRate(value){
+    value=CommonFuns.thousandsToNormal(value);
+    return SingleKPIStore.validateSavingRate(value)
+  }
+
   componentDidMount(){
     customerId=parseInt(this.context.router.params.customerId);
     MonthKPIStore.addChangeListener(this._onChange);
@@ -231,13 +240,15 @@ export default class MonthValue extends Component {
     let {IndicatorClass}=nextProps.kpiInfo.toJS();
     if(IndicatorClass===Type.Dosage){
       if(nextProps.buildingInfo.get('ActualTagId')!==this.props.buildingInfo.get('ActualTagId') || 
-         nextProps.buildingInfo.get('AnnualSavingRate')!==this.props.buildingInfo.get('AnnualSavingRate')){
+         (this._validateSavingRate(nextProps.buildingInfo.get('AnnualSavingRate')) && nextProps.buildingInfo.get('AnnualSavingRate')!==this.props.buildingInfo.get('AnnualSavingRate'))){
         this._init(nextProps)
       }
     }else {
-      if(nextProps.buildingInfo.get('ActualTagId') && nextProps.buildingInfo.get('ActualRatioTagId') &&
+      if((nextProps.buildingInfo.get('ActualTagId') && nextProps.buildingInfo.get('ActualRatioTagId') &&
         (nextProps.buildingInfo.get('ActualTagId')!==this.props.buildingInfo.get('ActualTagId') ||
-        nextProps.buildingInfo.get('ActualRatioTagId')!==this.props.buildingInfo.get('ActualRatioTagId'))){
+        nextProps.buildingInfo.get('ActualRatioTagId')!==this.props.buildingInfo.get('ActualRatioTagId')))
+        || (nextProps.buildingInfo.get('AnnualSavingRate') && this._validateSavingRate(nextProps.buildingInfo.get('AnnualSavingRate')) &&
+        nextProps.buildingInfo.get('AnnualSavingRate')!==this.props.buildingInfo.get('AnnualSavingRate'))){
         this._init(nextProps)
       }
     }
@@ -261,14 +272,24 @@ export default class MonthValue extends Component {
 
       return(
       <div>
-        {IndicatorType===Type.SavingRate && <div style={{fontSize:'14px',color:'#626469',marginTop:'25px'}}>{I18N.Setting.KPI.Group.MonthConfig.AnnualTotal+(uom)}</div>}
+        {IndicatorType===Type.SavingRate && <div style={{fontSize:'14px',color:'#626469',marginTop:'25px'}}>
+          {IndicatorClass===Type.Dosage?I18N.Setting.KPI.Group.MonthConfig.AnnualTotal+(uom):I18N.Setting.KPI.Group.MonthConfig.AnnualTotalForRatio+(uom)}</div>}
         {IndicatorType===Type.SavingRate && <div style={{fontSize:'16px',color:'#626469',marginTop:'5px'}}>{CommonFuns.toThousands(this.state.calcSum) || '-'}</div>}
         <div className="jazz-kpi-month-config">
           <div className="jazz-kpi-month-config-month">
             <div className="jazz-kpi-month-config-month-head">
               <div className="jazz-kpi-month-config-month-head-title">{I18N.Setting.KPI.Parameter.MonthValue+uom}</div>
-              {!this.props.isViewStatus && <div className={classnames('jazz-kpi-month-config-month-head-history-btn', {['disabled']:(!AnnualSavingRate && !AnnualQuota)  || !this.state.hasHistory})}
+
+              {!this.props.isViewStatus && IndicatorClass===Type.Dosage && <div className={classnames('jazz-kpi-month-config-month-head-history-btn', {['disabled']:(!AnnualSavingRate && !AnnualQuota)  || !this.state.hasHistory})}
                    onClick={(AnnualSavingRate || AnnualQuota) && this.state.hasHistory?this._onCalcValue:()=>{}}>{I18N.Setting.KPI.Parameter.CalcViaHistory}</div>}
+              
+              {!this.props.isViewStatus && IndicatorClass===Type.Ratio && IndicatorType===Type.Quota && 
+              <div className={classnames('jazz-kpi-month-config-month-head-history-btn', {['disabled']:(!AnnualSavingRate && !AnnualQuota)})}
+                   onClick={(AnnualSavingRate || AnnualQuota)?()=>{this._onFillValue(AnnualQuota)}:()=>{}}>{I18N.Setting.KPI.Config.FillBuilding}</div>}
+             
+             {!this.props.isViewStatus && IndicatorClass===Type.Ratio && IndicatorType===Type.SavingRate && 
+              <div className={classnames('jazz-kpi-month-config-month-head-history-btn', {['disabled']:this.state.calcSum===null})}
+                   onClick={this.state.calcSum!==null?()=>{this._onFillValue(this.state.calcSum)}:()=>{}}>{I18N.Setting.KPI.Config.FillAnnual}</div>}          
             </div>      
             <MonthValueGroup {...monthGroupProps}/>
           </div>

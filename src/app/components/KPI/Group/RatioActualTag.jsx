@@ -1,23 +1,40 @@
 'use strict';
 import React, {Component,PropTypes} from 'react';
 import Immutable from 'immutable';
-import TitleComponent from 'controls/TitleComponent.jsx';
 import TagSelect from '../Single/TagSelect.jsx';
 import MonthKPIAction from 'actions/KPI/MonthKPIAction.jsx';
 import NewFlatButton from 'controls/NewFlatButton.jsx';
 import FontIcon from 'material-ui/FontIcon';
+import SingleKPIAction from 'actions/KPI/SingleKPIAction.jsx';
+import MonthKPIStore from 'stores/KPI/MonthKPIStore.jsx';
 
+var customerId;
 export default class RatioActualTag extends Component {
+
+  static contextTypes = {
+    router: React.PropTypes.object,
+  };
 
   constructor(props) {
     super(props);
     this._onTagSave = this._onTagSave.bind(this);
+    this._onChange = this._onChange.bind(this);
+    
   }
 
   state={
     tagShow:false,
-    tagIndex:1 //1:target1 2:target2  target1/target2
+    tagIndex:1, //1:target1 2:target2  target1/target2
+    tagHasHistory:true,
+    ratioTagHasHistory:true
   };
+
+ _onChange(index){
+    this.setState({
+      tagHasHistory:index===1?MonthKPIStore.getHasHistory():this.state.tagHasHistory,
+      ratioTagHasHistory:index===2?MonthKPIStore.getHasHistory():this.state.ratioTagHasHistory
+    })
+  }
 
   _tagSelect(show,index){
     this.setState({
@@ -44,7 +61,8 @@ export default class RatioActualTag extends Component {
         },{
           path:'NumeratorCommodityId',
           value:tag.get('CommodityId')
-        }])
+        }]);
+
       }else {
         MonthKPIAction.merge([{
           path:'ActualRatioTagName',
@@ -82,20 +100,7 @@ export default class RatioActualTag extends Component {
         verticalAlign:'baseline'
       }
     };
-    let props={
-      tagBtn:{
-        secondary:true,
-        icon:!ActualTagName && addIcon,
-        label:ActualTagName,
-        onTouchTap:()=>{this._tagSelect(true,1)}
-      },
-      ratioTagBtn:{
-        secondary:true,
-        icon:!ActualRatioTagName && addIcon,
-        label:ActualRatioTagName,
-        onTouchTap:()=>{this._tagSelect(true,2)}
-      }
-    }
+
     return(
       <div className="jazz-kpi-tag-wrap" style={{color:'#9fa0a4'}}>
         <span>{IndicatorName}</span>
@@ -108,6 +113,7 @@ export default class RatioActualTag extends Component {
                                                 onClick={()=>{this._tagSelect(true,1)}}/>}
           {isCreate && ActualTagName && <div className="reelect" onTouchTap={()=>{this._tagSelect(true,1)}}>{I18N.SaveEffect.SelectTagAgain}</div>}
 
+
           </div>
 
           <hr/>
@@ -118,7 +124,25 @@ export default class RatioActualTag extends Component {
                                                 icon={<FontIcon className="icon-add" style={styles.label}/>} style={styles.button}
                                                 onClick={()=>{this._tagSelect(true,2)}}/>}
           {isCreate && ActualRatioTagName && <div className="reelect" onTouchTap={()=>{this._tagSelect(true,2)}}>{I18N.SaveEffect.SelectTagAgain}</div>}
+          
           </div>
+
+        </span>
+        <span>
+          <div style={{height:'22px',marginBottom:'5px'}}>
+                {!this.state.tagHasHistory && ActualTagName && !this.props.isViewStatus && <div style={{color:'#dc0a0a',fontSize:'16px',display:'flex',alignItems:'baseline'}}>
+                                            <FontIcon className="icon-no_ecm" color="#dc0a0a" style={{fontSize:'16px',marginRight:'5px'}}/>
+                                            {I18N.Setting.KPI.Parameter.NoCalcViaHistory}
+                </div>}
+          </div>
+          <div style={{marginTop:'14px',height:'22px'}}>
+            {!this.state.ratioTagHasHistory && ActualRatioTagName && !this.props.isViewStatus && <div style={{color:'#dc0a0a',fontSize:'16px',display:'flex',alignItems:'baseline'}}>
+                                            <FontIcon className="icon-no_ecm" color="#dc0a0a" style={{fontSize:'16px',marginRight:'5px'}}/>
+                                            {I18N.Setting.KPI.Parameter.NoCalcViaHistory}
+                </div>}
+          </div>
+      
+
         </span>
       </div>
     )
@@ -137,6 +161,22 @@ export default class RatioActualTag extends Component {
           <hr/>
           {ActualRatioTagName}
         </span>
+                <span>
+          <div style={{height:'22px',marginBottom:'5px'}}>
+                {!this.state.tagHasHistory && ActualTagName && !this.props.isViewStatus && <div style={{color:'#dc0a0a',fontSize:'16px',display:'flex',alignItems:'baseline'}}>
+                                            <FontIcon className="icon-no_ecm" color="#dc0a0a" style={{fontSize:'16px',marginRight:'5px'}}/>
+                                            {I18N.Setting.KPI.Parameter.NoCalcViaHistory}
+                </div>}
+          </div>
+          <div style={{marginTop:'14px',height:'22px'}}>
+            {!this.state.ratioTagHasHistory && ActualRatioTagName && !this.props.isViewStatus && <div style={{color:'#dc0a0a',fontSize:'16px',display:'flex',alignItems:'baseline'}}>
+                                            <FontIcon className="icon-no_ecm" color="#dc0a0a" style={{fontSize:'16px',marginRight:'5px'}}/>
+                                            {I18N.Setting.KPI.Parameter.NoCalcViaHistory}
+                </div>}
+          </div>
+      
+
+        </span>
       </div>
     )
   }
@@ -144,6 +184,54 @@ export default class RatioActualTag extends Component {
   // shouldComponentUpdate(nextProps, nextState) {
   //     return (nextState!==this.state || nextProps.buildingInfo !== this.props.buildingInfo || nextProps.isCreate !== this.props.isCreate);
   // }
+
+   isAutoCalculable(id,index,props){
+    var {Year}=props.kpiInfo.toJS();
+    SingleKPIAction.IsAutoCalculable(customerId,id,Year,index);
+  }
+
+    componentDidMount(){
+   let {ActualTagId,ActualRatioTagId}=this.props.buildingInfo.toJS();
+    customerId=parseInt(this.context.router.params.customerId);
+    MonthKPIStore.addChangeListener(this._onChange);
+    if(!this.props.isCreate){
+      this.isAutoCalculable(ActualTagId,1,this.props);
+      this.isAutoCalculable(ActualRatioTagId,2,this.props);
+    }
+    
+  }
+
+  	componentWillReceiveProps(nextProps, nextContext) {
+      if(this.props.buildingInfo.get("ActualTagId")!==nextProps.buildingInfo.get("ActualTagId")){
+        this.setState({
+        tagHasHistory:true,
+      },()=>{
+        if(nextProps.buildingInfo.get("ActualTagId")){this.isAutoCalculable(nextProps.buildingInfo.get("ActualTagId"),1,nextProps);}
+      })
+      }
+		if(this.props.buildingInfo.get("ActualRatioTagId")!==nextProps.buildingInfo.get("ActualRatioTagId")) {
+      this.setState({
+        ratioTagHasHistory:true
+      },()=>{
+        if(nextProps.buildingInfo.get("ActualRatioTagId")){this.isAutoCalculable(nextProps.buildingInfo.get("ActualRatioTagId"),2,nextProps);}
+      })
+			
+    }
+
+    if(this.props.isViewStatus!==nextProps.isViewStatus){
+      this.isAutoCalculable(nextProps.buildingInfo.get("ActualTagId"),1,nextProps);
+      this.isAutoCalculable(nextProps.buildingInfo.get("ActualRatioTagId"),2,nextProps);
+    }
+	}
+
+  shouldComponentUpdate(nextProps, nextState) {
+      return (nextState!==this.state || nextProps.buildingInfo !== this.props.buildingInfo || nextProps.isCreate !== this.props.isCreate);
+  }
+
+  componentWillUnmount(){
+    MonthKPIStore.removeChangeListener(this._onChange);
+  }
+
 
   render(){
     var that=this;
@@ -192,4 +280,5 @@ RatioActualTag.propTypes={
   	kpiInfo:React.PropTypes.object,
     buildingInfo:React.PropTypes.object,
     isCreate:PropTypes.bool,
+    isViewStatus:PropTypes.bool,
 }

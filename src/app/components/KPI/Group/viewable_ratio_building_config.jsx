@@ -39,69 +39,69 @@ export default class ViewableRatioBuildingConfig extends Component {
     )
   }
 
-  getUom(){
-    let {UomId,RatioUomId}=this.props.kpiInfo.toJS();
-    if(!UomId && MonthKPIStore.getMonthKpi()){UomId=MonthKPIStore.getMonthKpi().get("UomId")}
-    if(!RatioUomId && MonthKPIStore.getMonthKpi()){RatioUomId=MonthKPIStore.getMonthKpi().get("RatioUomId")}
+  // getUom(){
+  //   let {UomId,RatioUomId}=this.props.kpiInfo.toJS();
+  //   if(!UomId && MonthKPIStore.getMonthKpi()){UomId=MonthKPIStore.getMonthKpi().get("UomId")}
+  //   if(!RatioUomId && MonthKPIStore.getMonthKpi()){RatioUomId=MonthKPIStore.getMonthKpi().get("RatioUomId")}
 
-      if(UomId && RatioUomId){
-      let uom=CommonFuns.getUomById(UomId).Code;
-      let ratioUom=CommonFuns.getUomById(RatioUomId).Code;
-      if(UomId===RatioUomId) return ''
-      return `(${uom}/${ratioUom})`
-    }
-    else return ''
+  //     if(UomId && RatioUomId){
+  //     let uom=CommonFuns.getUomById(UomId).Code;
+  //     let ratioUom=CommonFuns.getUomById(RatioUomId).Code;
+  //     if(UomId===RatioUomId) return ''
+  //     return `(${uom}/${ratioUom})`
+  //   }
+  //   else return ''
    
-  }
+  // }
 
-  _validateQuota(value){
-    value=CommonFuns.thousandsToNormal(value);
-    return !SingleKPIStore.validateQuota(value) && I18N.Setting.KPI.Parameter.QuotaErrorText
-  }
+  // _validateQuota(value){
+  //   value=CommonFuns.thousandsToNormal(value);
+  //   return !SingleKPIStore.validateQuota(value) && I18N.Setting.KPI.Parameter.QuotaErrorText
+  // }
 
-  _validateSavingRate(value){
-    value=CommonFuns.thousandsToNormal(value);
-    return !SingleKPIStore.validateSavingRate(value) && I18N.Setting.KPI.Parameter.SavingRateErrorText
-  }
+  // _validateSavingRate(value){
+  //   value=CommonFuns.thousandsToNormal(value);
+  //   return !SingleKPIStore.validateSavingRate(value) && I18N.Setting.KPI.Parameter.SavingRateErrorText
+  // }
 
-	_renderIndicator(){
-    let {IndicatorType}=this.props.kpiInfo.toJS();
-    let {AnnualQuota,AnnualSavingRate}=this.props.kpiInfo.getIn(['Buildings',this.props.index]).toJS();
-    let type=IndicatorType===Type.Quota?I18N.Setting.KPI.Quota:I18N.Setting.KPI.SavingRate,
-        annualTitle=I18N.format(I18N.Setting.KPI.Group.BuildingConfig.Indicator,type),
-        annualHint=I18N.format(I18N.Setting.KPI.Group.BuildingConfig.IndicatorHint,type),
-        title,
-        // title=IndicatorType===Type.Quota?`${annualTitle} (${uom})`:`${annualTitle} (%)`,
-        value=IndicatorType===Type.Quota?AnnualQuota:AnnualSavingRate;
+	// _renderIndicator(){
+  //   let {IndicatorType}=this.props.kpiInfo.toJS();
+  //   let {AnnualQuota,AnnualSavingRate}=this.props.kpiInfo.getIn(['Buildings',this.props.index]).toJS();
+  //   let type=IndicatorType===Type.Quota?I18N.Setting.KPI.Quota:I18N.Setting.KPI.SavingRate,
+  //       annualTitle=I18N.format(I18N.Setting.KPI.Group.BuildingConfig.Indicator,type),
+  //       annualHint=I18N.format(I18N.Setting.KPI.Group.BuildingConfig.IndicatorHint,type),
+  //       title,
+  //       // title=IndicatorType===Type.Quota?`${annualTitle} (${uom})`:`${annualTitle} (%)`,
+  //       value=IndicatorType===Type.Quota?AnnualQuota:AnnualSavingRate;
 
-        if(IndicatorType===Type.Quota){
-          title=`${annualTitle}${this.getUom()}`
-        }else {
-          title=`${annualTitle} (%)`
-        }
-    let  annualProps={
-          ref: 'annual',
-          isViewStatus: this.props.isViewStatus,
-          didChanged:value=>{
-                      value=CommonFuns.thousandsToNormal(value);
-                      let path=IndicatorType===Type.Quota?'AnnualQuota':'AnnualSavingRate';
+  //       if(IndicatorType===Type.Quota){
+  //         title=`${annualTitle}${this.getUom()}`
+  //       }else {
+  //         title=`${annualTitle} (%)`
+  //       }
+  //   let  annualProps={
+  //         ref: 'annual',
+  //         isViewStatus: this.props.isViewStatus,
+  //         didChanged:value=>{
+  //                     value=CommonFuns.thousandsToNormal(value);
+  //                     let path=IndicatorType===Type.Quota?'AnnualQuota':'AnnualSavingRate';
 
-											      MonthKPIAction.merge([{
-        											path,
-        											value
-     													 }])
-                              },
-          value: CommonFuns.toThousands(value) || '',
-          title: title,
-          hintText:annualHint, 
-          autoFocus:true,
-          regexFn:IndicatorType===Type.Quota?this._validateQuota:this._validateSavingRate,
-          style:{width:'150px'}
-        };
-    return(
-      <ViewableTextField {...annualProps}/>
-    )
-  }
+	// 										      MonthKPIAction.merge([{
+  //       											path,
+  //       											value
+  //    													 }])
+  //                             },
+  //         value: CommonFuns.toThousands(value) || '',
+  //         title: title,
+  //         hintText:annualHint, 
+  //         autoFocus:true,
+  //         regexFn:IndicatorType===Type.Quota?this._validateQuota:this._validateSavingRate,
+  //         style:{width:'150px'}
+  //       };
+  //   return(
+  //     <ViewableTextField {...annualProps}/>
+  //   )
+  // }
 
   	componentDidMount(){
 		MonthKPIStore.addChangeListener(this._onChange);
