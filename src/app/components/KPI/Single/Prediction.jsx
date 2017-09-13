@@ -237,7 +237,14 @@ export default class Prediction extends Component {
 
   componentDidMount(){
     MonthKPIStore.addChangeListener(this._onChange);
+    SingleKPIAction.IsAutoCalculable(parseInt(this.context.router.params.customerId),this.props.buildingInfo.get("ActualTagId"),this.props.Year);
   }
+
+  componentWillReceiveProps(nextProps, nextContext) {
+		if(nextProps.isViewStatus!==this.props.isViewStatus || nextProps.buildingInfo.get("ActualTagId")!==this.props.buildingInfo.get("ActualTagId")) {
+			SingleKPIAction.IsAutoCalculable(parseInt(this.context.router.params.customerId),nextProps.buildingInfo.get("ActualTagId"),nextProps.Year);
+		}
+	}
 
   componentWillUnmount(){
     MonthKPIStore.removeChangeListener(this._onChange);
@@ -291,8 +298,8 @@ export default class Prediction extends Component {
         <div className="jazz-kpi-prediction-config-month">
           <div className="jazz-kpi-prediction-config-month-head">
             <div className="jazz-kpi-prediction-config-month-head-title">{`${I18N.Setting.KPI.Parameter.MonthPrediction} ${getUom(uomId)}`}</div>
-            {!isViewStatus && <div className={classnames('jazz-kpi-prediction-config-month-head-calc-btn', {['disabled']:!tag.get("Id") || !this.state.hasHistory})}
-                   onClick={(!tag.get("Id") || !this.state.hasHistory)?()=>{}:this._onCalcValue.bind(this,TagSavingRates)}>{I18N.Setting.KPI.Parameter.CalcViaSavingRates}</div>}
+            {!isViewStatus && <div className={classnames('jazz-kpi-prediction-config-month-head-calc-btn', {['disabled']:!this.props.buildingInfo.get("ActualTagId") || !this.state.hasHistory})}
+                   onClick={(!this.props.buildingInfo.get("ActualTagId") || !this.state.hasHistory)?()=>{}:this._onCalcValue.bind(this,TagSavingRates)}>{I18N.Setting.KPI.Parameter.CalcViaSavingRates}</div>}
           </div>
           <MonthValueGroup {...monthGroupProps}/>
         </div>
@@ -314,4 +321,5 @@ Prediction.propTypes={
     hierarchyId:React.PropTypes.number,
     hierarchyName:React.PropTypes.string,
     isViewStatus:React.PropTypes.bool,
+    buildingInfo:React.PropTypes.object,
 };

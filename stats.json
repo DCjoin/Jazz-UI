@@ -1,0 +1,68 @@
+Hash: 3935e21af54cc4c511a1
+Version: webpack 2.2.1
+Time: 843ms
+             Asset       Size  Chunks                    Chunk Names
+        marker.png  907 bytes                            
+        QRIcon.png    4.87 kB                            
+        column.png    1.61 kB                            
+       favicon.png    40.3 kB                            
+        folder.png    1.45 kB                            
+    icon_baidu.png    6.27 kB                            
+  icon_tencent.png    10.4 kB                            
+icon_wandoujia.png    5.42 kB                            
+      labeling.png    2.04 kB                            
+          line.png    2.83 kB                            
+          logo.png    10.7 kB                            
+     app-store.png     380 kB                     [big]  
+           pie.png     2.8 kB                            
+      raw-data.png    1.49 kB                            
+   step1-zh-cn.png     160 kB                            
+   step2-zh-cn.png     129 kB                            
+   step3-zh-cn.png     144 kB                            
+   step4-zh-cn.png     171 kB                            
+   step5-zh-cn.png     196 kB                            
+         bundle.js    7.67 MB       0             [big]  bundle
+        vendors.js     3.9 MB       1             [big]  vendors
+          main.css     292 kB       0  [emitted]  [big]  bundle
+chunk    {0} bundle.js, main.css (bundle) 6.2 MB {1} [initial]
+    [7] ./~/object-assign/index.js 484 bytes {0}
+ [1303] ./src/app/app.jsx 14.6 kB {0}
+ [1475] ./src/app/components/resetPSWApp.jsx 8.58 kB {0}
+ [1476] ./src/app/components/save_effect/best/ignored_best_list.jsx 7.22 kB {0}
+ [1487] ./src/app/components/save_effect/index.js 4.27 kB {0}
+ [1489] ./src/app/components/save_effect/list/Draft.jsx 9.94 kB {0}
+ [1491] ./src/app/components/save_effect/list/save_effect_list.jsx 17.3 kB {0}
+ [1494] ./src/app/components/save_effect/overview/index.js 8.8 kB {0}
+ [1495] ./src/app/components/save_effect/save_effect_best_list.jsx 10.1 kB {0}
+ [1496] ./src/app/components/service/ServiceApp.jsx 4.19 kB {0}
+ [1504] ./src/app/components/setting/Setting.jsx 24.9 kB {0}
+ [1510] ./src/app/components/userManage/role/Role.jsx 7.06 kB {0}
+ [1513] ./src/app/components/userManage/user/User.jsx 11.7 kB {0}
+ [2160] ./~/react-tap-event-plugin/src/injectTapEventPlugin.js 1.04 kB {0}
+ [2230] multi (webpack)-dev-server/client?http://localhost:3000 webpack/hot/dev-server ./src/app/app.jsx 52 bytes {0}
+     + 1328 hidden modules
+chunk    {1} vendors.js (vendors) 3.17 MB [entry]
+   [21] ./~/react-dom/index.js 59 bytes {1}
+   [22] ./~/react-router/lib/index.js 3.62 kB {1}
+  [482] (webpack)-dev-server/client?http://localhost:3000 5.68 kB {1}
+  [483] (webpack)/hot/dev-server.js 1.57 kB {1}
+ [1302] ./reference.jsx 545 bytes {1}
+ [1749] ./src/app/less/images/app-store.png 58 bytes {1}
+ [1751] ./src/app/less/images/favicon.png 56 bytes {1}
+ [1753] ./src/app/less/images/icon_baidu.png 59 bytes {1}
+ [1754] ./src/app/less/images/icon_tencent.png 61 bytes {1}
+ [1755] ./src/app/less/images/icon_wandoujia.png 63 bytes {1}
+ [2217] ./~/strip-ansi/index.js 161 bytes {1}
+ [2221] (webpack)-dev-server/client/overlay.js 3.73 kB {1}
+ [2222] (webpack)-dev-server/client/socket.js 897 bytes {1}
+ [2225] (webpack)/hot/log-apply-result.js 1.02 kB {1}
+ [2229] multi (webpack)-dev-server/client?http://localhost:3000 webpack/hot/dev-server ./reference.jsx 52 bytes {1}
+     + 873 hidden modules
+Child html-webpack-plugin for "..\index.html":
+            Asset    Size  Chunks  Chunk Names
+    ../index.html  588 kB       0  
+    chunk    {0} ../index.html 542 kB [entry]
+        [0] ./~/lodash/lodash.js 540 kB {0}
+        [1] (webpack)/buildin/global.js 509 bytes {0}
+        [2] (webpack)/buildin/module.js 517 bytes {0}
+        [3] ./~/html-webpack-plugin/lib/loader.js!./src/app/template.html 1.79 kB {0}
