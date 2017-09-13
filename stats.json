@@ -1,6 +1,6 @@
-Hash: 109296d6b006fa9a6d7f
+Hash: 0af71be347083cf9b0f5
 Version: webpack 2.2.1
-Time: 3390ms
+Time: 5623ms
                                Asset       Size  Chunks                    Chunk Names
                         raw-data.png    1.49 kB                            
                           QRIcon.png    4.87 kB                            
@@ -23,12 +23,12 @@ Time: 3390ms
                      step5-zh-cn.png     196 kB                            
                            bundle.js    7.67 MB       0  [emitted]  [big]  bundle
                           vendors.js     3.9 MB       1  [emitted]  [big]  vendors
-0.b2337f0425f077bb6654.hot-update.js    83.6 kB       0  [emitted]         bundle
-b2337f0425f077bb6654.hot-update.json   43 bytes          [emitted]         
+0.09e3579807585b962d21.hot-update.js     159 kB       0  [emitted]         bundle
+09e3579807585b962d21.hot-update.json   43 bytes          [emitted]         
                             main.css     292 kB       0  [emitted]  [big]  bundle
                          favicon.ico    7.38 MB          [emitted]  [big]  
                        ../index.html    1.72 kB          [emitted]         
-chunk    {0} bundle.js, 0.b2337f0425f077bb6654.hot-update.js, main.css (bundle) 6.2 MB {1} [initial] [rendered]
+chunk    {0} bundle.js, 0.09e3579807585b962d21.hot-update.js, main.css (bundle) 6.2 MB {1} [initial] [rendered]
     [7] ./~/object-assign/index.js 484 bytes {0}
  [1303] ./src/app/app.jsx 14.6 kB {0}
  [1475] ./src/app/components/resetPSWApp.jsx 8.58 kB {0}
