@@ -95,7 +95,10 @@ export default class EffectList extends Component {
       configRateShow:false,
 			configEnergyProblemId:null
     },()=>{
-        saveeffectratetag(this.props.router.params.customerId,this.context.hierarchyId,list)
+        saveeffectratetag(this.props.router.params.customerId,this.context.hierarchyId,list,()=>{
+          getenergyeffect(this.context.hierarchyId);
+        });
+        
     })
   }
 
