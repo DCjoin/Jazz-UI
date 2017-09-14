@@ -111,7 +111,7 @@ export default class Prediction extends Component {
   	}
 
   _onCalcValue(TagSavingRates){
-    SingleKPIAction.getCalcPredicate(this.context.router.params.customerId,this.props.Year,TagSavingRates)
+    SingleKPIAction.getCalcPredicate(this.context.router.params.customerId,this.props.Year,this.props.buildingInfo.get("ActualTagId"),TagSavingRates)
   }
 
   _deleteRate(index){
@@ -277,7 +277,7 @@ export default class Prediction extends Component {
     },
     ratesTagProps={
         key:'ratestagselect',
-          title:I18N.Setting.KPI.Group.GroupConfig.SelectTagForPrediction,
+          title:I18N.EM.Report.SelectTag,
           hierarchyId,
           hierarchyName,
           tag:lastTag?Immutable.fromJS({

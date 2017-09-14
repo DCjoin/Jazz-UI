@@ -141,7 +141,7 @@ export default class TagSelect extends Component {
 
 	componentDidMount(){
 		TagSelectStore.addChangeListener(this._onChange);
-		if(this.props.tag.get("Id")){
+		if(this.props.tag && this.props.tag.get("Id")){
 			TagSelectAction.getTagInfo(this.props.tag.get("Id"),(id)=>{
 				this._getTags(id);
 			});

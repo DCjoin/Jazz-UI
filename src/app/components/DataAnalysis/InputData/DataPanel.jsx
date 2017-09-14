@@ -378,9 +378,12 @@ export default class DataPanel extends Component {
 					<span>{I18N.Setting.Calendar.Time}</span>
 					<span style={{borderLeft:'solid 1px #e6e6e6'}}>{getUom(this.props.selectedTag.get('UomId'))}</span>
 				</div>
+				<div style={{flex:1,overflowY:'auto'}}>
 				{this.state.dataList.map((data,index)=>(
 					<DateTimeItem key={data.get("UtcTime")} data={data} onValueChange={(val)=>{this._onValueChange(val,index)}} CalculationStep={CalculationStep}/>
 				))}
+				</div>
+
 			</div>
 		)
 	}

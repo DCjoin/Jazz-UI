@@ -245,12 +245,12 @@ const SingleKPIAction = {
       error: function() {}
     });
   },
-  getCalcPredicate(CustomerId,Year,TagRatios){
+  getCalcPredicate(CustomerId,Year,ActualTagId,TagRateItems){
     var url = Path.KPI.getCalcPredicate;
     Ajax.post(url,
       {
       params: {
-          CustomerId,Year,TagRatios
+          CustomerId,Year,ActualTagId,TagRateItems
         },
       success: function(resBody) {
         AppDispatcher.dispatch({

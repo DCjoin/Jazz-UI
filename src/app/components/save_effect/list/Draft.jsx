@@ -141,7 +141,7 @@ export default class Draft extends Component {
           </div>
           {this.state.drafts.size===0?
             <div className="jazz-effect-list-content flex-center">
-              <FontIcon className="icon-weather-thunder" style={{fontSize:'60px'}} color="#32ad3d"/>
+              <FontIcon className="icon-energymost" style={{fontSize:'60px'}} color="#32ad3d"/>
              <div className="nolist-font">{I18N.SaveEffect.NoDraft}</div>
            </div>
             :<div className="jazz-effect-list-content">
