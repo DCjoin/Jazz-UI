@@ -6,6 +6,7 @@ import {findLastIndex, fill, map, some, find, sum, filter} from 'lodash-es';
 import CircularProgress from 'material-ui/CircularProgress';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
+import FontIcon from 'material-ui/FontIcon';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 import UserAction from 'actions/UserAction.jsx';
@@ -157,7 +158,10 @@ class ActualityContent extends Component {
 }
 
 const TipMessage = (props, context, updater) => {
-	return (<div style={{height: 400, flex: 'none'}} className='jazz-kpi-actuality flex-center'><b>{props.message}</b></div>)
+	return (<div style={{height: 400, flex: 'none'}} className='jazz-kpi-actuality flex-center'>
+		<FontIcon className="icon-energymost" style={{fontSize:'60px'}} color="#32ad3d"/>
+		<div>{props.message}</div>
+	</div>)
 }
 
 export default class Actuality extends Component {
