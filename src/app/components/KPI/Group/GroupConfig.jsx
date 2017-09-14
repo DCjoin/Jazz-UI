@@ -83,7 +83,7 @@ export default class GroupConfig extends Component {
           hintText:annualHint, 
           autoFocus:true,
           regexFn:IndicatorType===Type.Quota?this._validateQuota:this._validateSavingRate,
-          style:{width:'260px'}
+          style:{width:'260px',marginBottom:'15px'}
           
         };
     return(
@@ -107,9 +107,9 @@ export default class GroupConfig extends Component {
                     <div style={{display:'flex',flexDirection:'column',paddingRight:'15px'}}>
                       {this._renderConfig()}
                       {this.props.configStep===1 && 
-                          <div className="jazz-kpi-config-edit-step-action">
+                          <div className="jazz-kpi-config-edit-step-action" style={{marginTop:'-20px'}}>
                              {!this.props.isNew && <FlatButton label={I18N.Common.Button.Cancel2} secondary={true} style={{float:'right',minWidth:'68px'}} onTouchTap={this.props.onCancel}/>}
-                             <FlatButton label={I18N.Common.Button.Save} disabled={!AnnualQuota && !AnnualSavingRate} primary={true} style={{float:'right',minWidth:'68px',marginRight:'20px'}} 
+                             <FlatButton label={I18N.Common.Button.Save} disabled={!AnnualQuota && !AnnualSavingRate} primary={true} style={this.props.isNew?{float:'right',minWidth:'68px'}:{float:'right',minWidth:'68px',marginRight:'20px'}} 
                                 onTouchTap={()=>{
                                    GroupKPIAction.updateKpiInfo(this.state.kpiInfo);
                                     this.props.onSave();

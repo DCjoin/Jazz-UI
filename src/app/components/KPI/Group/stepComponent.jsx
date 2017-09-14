@@ -41,7 +41,7 @@ export default class StepComponent extends Component {
           </div>}
 
         </header>
-        {!this.props.isfolded && <div className="jazz-kpi-config-edit-step-component-content" style={{paddingRight:'0'}}>
+        {!this.props.isfolded && <div className="jazz-kpi-config-edit-step-component-content" style={{paddingRight:'0',paddingBottom:'0px'}}>
           {this.props.children}
         </div>}
       </div>
