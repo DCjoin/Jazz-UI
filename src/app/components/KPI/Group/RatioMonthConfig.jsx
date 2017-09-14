@@ -79,7 +79,7 @@ export default class RatioMonthConfig extends Component {
     return(
       <div className="jazz-kpi-config-edit-step-action">
                              {!this.props.isCreate && <FlatButton label={I18N.Common.Button.Cancel2} secondary={true} style={{float:'right',minWidth:'68px'}} onTouchTap={this.props.onCancel}/>}
-                             <FlatButton label={I18N.Common.Button.Save} disabled={!MonthKPIStore.validateRatioMonthInfo(this.state.buildingInfo)} primary={true} style={{float:'right',minWidth:'68px',marginRight:'20px'}} 
+                             <FlatButton label={I18N.Common.Button.Save} disabled={!MonthKPIStore.validateRatioMonthInfo(this.state.buildingInfo)} primary={true} style={this.props.isCreate?{float:'right',minWidth:'68px'}:{float:'right',minWidth:'68px',marginRight:'20px'}} 
                                 onTouchTap={this._onSave}/>    
                       </div>
     )

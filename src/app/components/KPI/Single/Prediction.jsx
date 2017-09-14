@@ -194,6 +194,7 @@ export default class Prediction extends Component {
               <div className="title">{I18N.Setting.KPI.Parameter.SavingRates+'(%)'}</div>
             </div>
           </div>}
+          {tags.length===0 && isViewStatus && '－'}
           {tags.map((tag,index)=>{
             let rateProps={
                       ref: 'rate',
