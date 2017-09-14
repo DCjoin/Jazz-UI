@@ -10,6 +10,18 @@ import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
 import NewFlatButton from 'controls/NewFlatButton.jsx';
 // import RankHistory from '../Single/RankHistory.jsx';
 
+function getDataItems(algorithmId) {
+  let rawList = RankingKPIStore.getKpiList().toJS();
+  if(
+    algorithmId === Unit.TotalAreaUnit ||
+    algorithmId === Unit.TotalRoomUnit ||
+    algorithmId === Unit.TotalPersonUnit
+  ) {
+    rawList = rawList.filter(kpi => !kpi.ActualRatioTagId);
+  }
+  return rawList;
+}
+
 var customerId;
 export default class Ranking extends Component {
 
@@ -17,6 +29,7 @@ export default class Ranking extends Component {
   		super(props);
       this._onChange = this._onChange.bind(this);
       this._onSave = this._onSave.bind(this);
+      this._onAlgorithmChange = this._onAlgorithmChange.bind(this);
   	}
 
     state={
@@ -43,7 +56,22 @@ export default class Ranking extends Component {
       RankingKPIAction.merge({
         path:'UnitType',
         value
-      })
+      });
+      if(
+        (
+          value === Unit.TotalAreaUnit ||
+          value === Unit.TotalRoomUnit ||
+          value === Unit.TotalPersonUnit
+        ) &&
+        !RankingKPIStore.getKpiList().find(kpi => kpi.payload === this.state.config.get('TopGroupKpiId')).ActualRatioTagId
+      ) {      
+        RankingKPIAction.merge({
+          path:'TopGroupKpiId',
+          value: RankingKPIStore.getKpiList()
+                  .filter(kpi => !kpi.ActualRatioTagId)
+                  .get(0).payload,
+        })      
+      }
     }
 
     _onKpiSourceChange(value){
@@ -89,9 +117,9 @@ export default class Ranking extends Component {
       sourceProps={
         ref: 'source',
         isViewStatus: false,
-        title: I18N.Setting.KPI.Group.Ranking.SelectSource,
+        title: I18N.Setting.KPI.Basic.Name,
         defaultValue: kpiId || Unit.None,
-        dataItems: RankingKPIStore.getKpiList().toJS(),
+        dataItems: getDataItems(algorithmId),
         didChanged:this._onKpiSourceChange
       };
 
@@ -106,7 +134,7 @@ export default class Ranking extends Component {
                 {RankingKPIStore.getAlgorithmList().map(item=>(
                           <RadioButton
                             value={item.Id}
-                            label={item.Name}
+                            label={item.Id === Unit.OrignValue ? I18N.Kpi.ActualValues : item.Name}
                             style={{width:'200px',marginBottom:'15px'}}
                             />
                 ))}

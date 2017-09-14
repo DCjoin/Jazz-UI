@@ -249,7 +249,7 @@ export default class ReportConfig extends Component {
   }
 
   _downloadTemplate() {
-    downloadFile.get(`/datareport/downloadreporttemplate/${this.state.reportItem.get('templateId')}`);
+    downloadFile.get(`/datareport/downloadreporttemplate/${this.state.reportItem.get('templateId')}`, {}, true);
     // var templateId = this.state.reportItem.get('templateId');
     // var iframe = document.createElement('iframe');
     // iframe.style.display = 'none';
@@ -637,6 +637,27 @@ export default class ReportConfig extends Component {
                 enctype={'multipart/form-data'}
                 method={'post'}
                 onload={this._onUploadDone}
+                onError={(err, res) => {
+                  var ErrorCode = '';
+                  try {
+                    ErrorCode = res.body.error.Code.split('-')[1] * 1;
+                  } catch(e) {}
+                  var ErrorMsg = null;
+                  if (ErrorCode === 7) {
+                    ErrorMsg = I18N.Setting.TagBatchImport.ImportSizeErrorView;
+                  } else if (ErrorCode === 9) {
+                    ErrorMsg = I18N.Message.M9;
+                  } else if (ErrorCode === 8) {
+                    ErrorMsg = I18N.Message.M8;
+                  } else {
+                    ErrorMsg = I18N.Setting.TagBatchImport.ImportErrorView;
+                  }
+                  this.setState({
+                    isImporting: false,
+                    importSuccess: false,
+                    ErrorMsg: ErrorMsg
+                  });
+                }}
                 onChangeFile={this._onChangeFile}>
                 <input type="hidden" name='CustomerId' value={parseInt(customerId)}/>
                 <input type="hidden" name='IsActive' value={true}/>

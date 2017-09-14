@@ -18,11 +18,12 @@ export default class UploadForm extends Component {
 
         	Ajax[method](action, {
         	    params: params,
+        	    commonErrorHandling: false,
         	    success: function(data){
        	    		onload && onload(data);
         	    },
         	    error: function(err, res){
-       	    		onError && onError(data);
+       	    		onError && onError(err, res);
         	    }
         	});
         }

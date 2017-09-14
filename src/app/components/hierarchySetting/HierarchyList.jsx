@@ -296,6 +296,27 @@ var HierarchyList = React.createClass({
                     });
                   }
                 }}
+                onError={(err, res) => {
+                  var ErrorCode = '';
+                  try {
+                    ErrorCode = res.body.error.Code.split('-')[1] * 1;
+                  } catch(e) {}
+                  var ErrorMsg = null;
+                  if (ErrorCode === 7) {
+                    ErrorMsg = I18N.Setting.TagBatchImport.ImportSizeErrorView;
+                  } else if (ErrorCode === 9) {
+                    ErrorMsg = I18N.Message.M9;
+                  } else if (ErrorCode === 8) {
+                    ErrorMsg = I18N.Message.M8;
+                  } else {
+                    ErrorMsg = I18N.Setting.TagBatchImport.ImportErrorView;
+                  }
+                  this.setState({
+                    isImporting: false,
+                    importSuccess: false,
+                    ErrorMsg: ErrorMsg
+                  });
+                }}
               />
             </div>
           </label>

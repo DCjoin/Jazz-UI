@@ -34,7 +34,7 @@ let TemplateItem = React.createClass({
   },
   _downloadTemplate: function() {
 
-    downloadFile.get(`/datareport/downloadreporttemplate/${this.props.id}`);
+    downloadFile.get(`/datareport/downloadreporttemplate/${this.props.id}`, {}, true);
     // var templateId = this.props.id;
     // var iframe = document.createElement('iframe');
     // iframe.style.display = 'none';

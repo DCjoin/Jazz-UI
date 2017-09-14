@@ -98,6 +98,7 @@ const RankingKPIStore = assign({}, PrototypeStore, {
     return _allKpis.map(kpi=>({
               payload: kpi.get('Id'),
               text: kpi.get('Name'),
+              ActualRatioTagId: kpi.get('ActualRatioTagId'),
     }))
   },
 

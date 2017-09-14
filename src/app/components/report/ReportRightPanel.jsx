@@ -321,7 +321,7 @@ var ReportRightPanel = React.createClass({
       </Dialog>);
   },
   _downloadTemplate: function() {
-    downloadFile.get(`/datareport/downloadreporttemplate/${this.state.reportItem.get('templateId')}`);
+    downloadFile.get(`/datareport/downloadreporttemplate/${this.state.reportItem.get('templateId')}`, {}, true);
     // var templateId = this.state.reportItem.get('templateId');
     // var iframe = document.createElement('iframe');
     // iframe.style.display = 'none';
