@@ -2,6 +2,7 @@ import React, { Component} from 'react';
 import { DataStatus,UnitType as Unit} from 'constants/actionType/KPI.jsx';
 import CircularProgress from 'material-ui/CircularProgress';
 import Checkbox from 'material-ui/Checkbox';
+import FontIcon from 'material-ui/FontIcon';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import RankingKPIStore from 'stores/KPI/RankingKPIStore.jsx';
 import RankingKPIAction from 'actions/KPI/RankingKPIAction.jsx';
@@ -165,8 +166,11 @@ export default class Ranking extends Component {
                 <em onClick={this.props.onClose} className='icon-return' style={{marginRight: 20}}/>
                 {I18N.Setting.KPI.Group.Ranking.Title}
               </header>
-              <article className="content" style={{display:'flex'}}>
-                <div className="flex-center">{I18N.Setting.KPI.Group.Ranking.NoKpi}</div>
+              <article className="content" style={{display:'flex', height: 300}}>
+                <div className="flex-center" style={{flexDirection: 'column'}}>
+                  <FontIcon className="icon-energymost" style={{fontSize:'60px'}} color="#32ad3d"/>
+                  <div>{I18N.Setting.KPI.Group.Ranking.NoKpi}</div>
+                </div>
               </article>
             </div>
         </div>
