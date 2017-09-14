@@ -117,7 +117,7 @@ export default class Ranking extends Component {
       sourceProps={
         ref: 'source',
         isViewStatus: false,
-        title: I18N.Setting.KPI.Group.Ranking.SelectSource,
+        title: I18N.Setting.KPI.Basic.Name,
         defaultValue: kpiId || Unit.None,
         dataItems: getDataItems(algorithmId),
         didChanged:this._onKpiSourceChange
@@ -134,7 +134,7 @@ export default class Ranking extends Component {
                 {RankingKPIStore.getAlgorithmList().map(item=>(
                           <RadioButton
                             value={item.Id}
-                            label={item.Name}
+                            label={item.Id === Unit.OrignValue ? I18N.Kpi.ActualValues : item.Name}
                             style={{width:'200px',marginBottom:'15px'}}
                             />
                 ))}
