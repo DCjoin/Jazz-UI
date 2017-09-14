@@ -138,7 +138,7 @@ export default class SaveEffectBestList extends Component {
 					</div>
 					{this.state.best.size===0?
 							<div className="flex-center" style={{flexDirection:'column'}}>
-          			<FontIcon className="icon-weather-thunder" style={{fontSize:'60px'}} color="#32ad3d"/>
+          			<FontIcon className="icon-energymost" style={{fontSize:'60px'}} color="#32ad3d"/>
          				<div className="nolist-font">{I18N.SaveEffect.NoBest}</div>
        				</div>
 						:this.state.best.map(best=> <Item key={best.getIn(["SolutionInfo","EnergyEffectId"])} solution={best}

@@ -102,10 +102,11 @@ export function getEffectRateTag(hierarchyId) {
 	});
 }
 
-export function saveeffectratetag(customerId,hierarchyId,list) {
+export function saveeffectratetag(customerId,hierarchyId,list,callback) {
 	Ajax.post( Util.replacePathParams(SaveEffect.saveenergyeffectratetags,customerId,hierarchyId), {
 		params: list.toJS(),
 		success: () => {
+			if(callback)callback();
 			AppDispatcher.dispatch({
 				type: Action.SAVE_EFFECT_RATE_TAG,
 			});

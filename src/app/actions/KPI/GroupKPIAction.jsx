@@ -39,12 +39,13 @@ const GroupKPIAction = {
           cb(resBody);
         } else {
           SingleKPIAction.getKPIPeriodByYear(customerId,year);
-        }
         AppDispatcher.dispatch({
           type: Action.GET_KPI_GROUP_BY_YEAR,
           data: resBody,
           info
         });
+        }
+
       },
       error: function() {}
     });
@@ -132,7 +133,8 @@ const GroupKPIAction = {
       commonErrorHandling: false,
       success: function(resBody) {
         AppDispatcher.dispatch({
-          type: Action.KPI_GROUP_SUCCESS
+          type: Action.KPI_GROUP_SUCCESS,
+          data: resBody
         });
       },
       error: function(err, res) {

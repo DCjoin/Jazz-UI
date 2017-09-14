@@ -57,7 +57,7 @@ export default class GroupConfig extends Component {
     let {IndicatorType,AnnualQuota,AnnualSavingRate}=this.state.kpiInfo.toJS();
     let type=IndicatorType===Type.Quota?I18N.Setting.KPI.Quota:I18N.Setting.KPI.SavingRate,
         annualTitle=I18N.format(I18N.Setting.KPI.Group.GroupConfig.Annual,getCustomerById(parseInt(this.context.router.params.customerId)).Name,type),
-        annualHint=I18N.format(I18N.Setting.KPI.Group.GroupConfig.InputAnnual,getCustomerById(parseInt(this.context.router.params.customerId)).Name,type),
+        annualHint=I18N.format(I18N.Setting.KPI.Group.GroupConfig.InputAnnual,"",type),
         title,
         // title=IndicatorType===Type.Quota?`${annualTitle} (${uom})`:`${annualTitle} (%)`,
         value=IndicatorType===Type.Quota?AnnualQuota:AnnualSavingRate;
@@ -83,7 +83,8 @@ export default class GroupConfig extends Component {
           hintText:annualHint, 
           autoFocus:true,
           regexFn:IndicatorType===Type.Quota?this._validateQuota:this._validateSavingRate,
-          style:{width:'150px'}
+          style:{width:'260px'}
+          
         };
     return(
       <ViewableTextField {...annualProps}/>
@@ -91,7 +92,7 @@ export default class GroupConfig extends Component {
   }
 
 	componentWillReceiveProps(nextProps, nextContext) {
-		if(!Immutable.is(nextProps.kpiInfo,this.props.kpiInfo)){
+		if(!Immutable.is(nextProps.kpiInfo,this.props.kpiInfo) || !Immutable.is(nextProps.kpiInfo,this.state.kpiInfo)){
       this.setState({
         kpiInfo:nextProps.kpiInfo
       })

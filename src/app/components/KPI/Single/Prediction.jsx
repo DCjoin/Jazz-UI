@@ -111,7 +111,7 @@ export default class Prediction extends Component {
   	}
 
   _onCalcValue(TagSavingRates){
-    SingleKPIAction.getCalcPredicate(this.context.router.params.customerId,this.props.Year,TagSavingRates)
+    SingleKPIAction.getCalcPredicate(this.context.router.params.customerId,this.props.Year,this.props.buildingInfo.get("ActualTagId"),TagSavingRates)
   }
 
   _deleteRate(index){
@@ -277,7 +277,7 @@ export default class Prediction extends Component {
     },
     ratesTagProps={
         key:'ratestagselect',
-          title:I18N.Setting.KPI.Group.GroupConfig.SelectTagForPrediction,
+          title:I18N.EM.Report.SelectTag,
           hierarchyId,
           hierarchyName,
           tag:lastTag?Immutable.fromJS({
@@ -297,7 +297,7 @@ export default class Prediction extends Component {
         </div>
         <div className="jazz-kpi-prediction-config-month">
           <div className="jazz-kpi-prediction-config-month-head">
-            <div className="jazz-kpi-prediction-config-month-head-title">{`${I18N.Setting.KPI.Parameter.MonthPrediction} ${getUom(uomId)}`}</div>
+            <div className="jazz-kpi-prediction-config-month-head-title">{`${I18N.Setting.KPI.Parameter.MonthPredictionValue} ${getUom(uomId)}`}</div>
             {!isViewStatus && <div className={classnames('jazz-kpi-prediction-config-month-head-calc-btn', {['disabled']:!this.props.buildingInfo.get("ActualTagId") || !this.state.hasHistory})}
                    onClick={(!this.props.buildingInfo.get("ActualTagId") || !this.state.hasHistory)?()=>{}:this._onCalcValue.bind(this,TagSavingRates)}>{I18N.Setting.KPI.Parameter.CalcViaSavingRates}</div>}
           </div>
