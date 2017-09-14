@@ -78,7 +78,9 @@ const GroupKPIStore = assign({}, PrototypeStore, {
                   let {TagSavingRates,MonthPredictionValues}=PredictionSetting;
                   return{
                     HierarchyId,HierarchyName,ActualTagId,ActualTagName,AnnualQuota,AnnualSavingRate,ActualRatioTagId,ActualRatioTagName,RatioUomId,UomId,
-                    TargetMonthValues,TagSavingRates,MonthPredictionValues
+                    TargetMonthValues:TargetMonthValues.length===0?_KpiSettings.getIn(['AdvanceSettings','TargetMonthValues']).toJS():TargetMonthValues,
+                    TagSavingRates,
+                    MonthPredictionValues:MonthPredictionValues.length===0?_KpiSettings.getIn(['AdvanceSettings','PredictionSetting','MonthPredictionValues']).toJS():MonthPredictionValues
                   }
                 }):[]
     });
