@@ -80,10 +80,11 @@ export default class GroupConfig extends Component {
                               },
           defaultValue: this.props.configStep!==1?CommonFuns.getLabelData(parseFloat(value)) || '':CommonFuns.toThousands(value) || '',
           title: title,
-          hintText:annualHint, 
+          // hintText:annualHint, 
           autoFocus:true,
           regexFn:IndicatorType===Type.Quota?this._validateQuota:this._validateSavingRate,
-          style:{width:'150px'}
+          style:{width:'auto'}
+          
         };
     return(
       <ViewableTextField {...annualProps}/>

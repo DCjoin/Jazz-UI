@@ -61,6 +61,7 @@ export default class UpdatePrediction extends Component {
         Year:this.props.year,
         onSelectTagShow:this._onSelectTagShow,
         uom,hierarchyId,hierarchyName,tag,
+				buildingInfo:this.state.kpiInfo
       }
     }
 
