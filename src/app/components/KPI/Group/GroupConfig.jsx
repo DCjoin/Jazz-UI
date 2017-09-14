@@ -92,7 +92,7 @@ export default class GroupConfig extends Component {
   }
 
 	componentWillReceiveProps(nextProps, nextContext) {
-		if(!Immutable.is(nextProps.kpiInfo,this.props.kpiInfo)){
+		if(!Immutable.is(nextProps.kpiInfo,this.props.kpiInfo) || !Immutable.is(nextProps.kpiInfo,this.state.kpiInfo)){
       this.setState({
         kpiInfo:nextProps.kpiInfo
       })
