@@ -208,9 +208,14 @@ MonthKPIStore.dispatchToken = AppDispatcher.register(function(action) {
          MonthKPIStore.emitChange();
         break;
     case Action.GET_CALC_PREDICATE:
+         var data=action.data.map(el=>({
+           Month:el.Month,
+           Value:CommonFuns.toFixed(el.Value,2)
+         }));
+
         MonthKPIStore.merge([{
             path:'MonthPredictionValues',
-            value:Immutable.fromJS(action.data)
+            value:Immutable.fromJS(data)
           }]);
        MonthKPIStore.emitChange();
         break;
