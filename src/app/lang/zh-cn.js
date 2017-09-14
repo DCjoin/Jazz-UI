@@ -1739,7 +1739,7 @@ I18N.Kpi = {
     SelectBuilding: '请点击上方按钮，选择要查看或配置项目吧～',
     NonKPIConguredInThisYear: '本年度未配置指标，切换其他年份看看～',
     NonKPIConguredSingleBuilding: '未配置指标报表，请联系您的咨询顾问。',
-    NonKPICongured: '暂无指标，点击上方编辑按钮，开始配置吧~',
+    NonKPICongured: '暂无指标现状，请点击上方按钮进行配置',
     NonKPIConguredInBuilding: '暂无指标，选择集团节点并配置吧~',
     KPIConguredNotAnyBuilding: '未配置任何数据权限，请联系您的咨询顾问。',
     KPIConguredNotAnyBuildingAdmin: '未配置任何数据权限，请配置您的数据权限。',
