@@ -78,7 +78,7 @@ export default class BuildingConfig extends Component {
                         if(CommonFuns.isNumber(AnnualQuota) || CommonFuns.isNumber(AnnualSavingRate)){
                                                         this.props.onCancel();
                                                           }else{
-                                                            this.props.onEdit()
+                                                            this.props.onEdit(this.state.configIndex)
                                                           }
                                                         })}
   
