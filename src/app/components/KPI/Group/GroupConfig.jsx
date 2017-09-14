@@ -57,7 +57,7 @@ export default class GroupConfig extends Component {
     let {IndicatorType,AnnualQuota,AnnualSavingRate}=this.state.kpiInfo.toJS();
     let type=IndicatorType===Type.Quota?I18N.Setting.KPI.Quota:I18N.Setting.KPI.SavingRate,
         annualTitle=I18N.format(I18N.Setting.KPI.Group.GroupConfig.Annual,getCustomerById(parseInt(this.context.router.params.customerId)).Name,type),
-        annualHint=I18N.format(I18N.Setting.KPI.Group.GroupConfig.InputAnnual,getCustomerById(parseInt(this.context.router.params.customerId)).Name,type),
+        annualHint=I18N.format(I18N.Setting.KPI.Group.GroupConfig.InputAnnual,"",type),
         title,
         // title=IndicatorType===Type.Quota?`${annualTitle} (${uom})`:`${annualTitle} (%)`,
         value=IndicatorType===Type.Quota?AnnualQuota:AnnualSavingRate;
@@ -80,10 +80,10 @@ export default class GroupConfig extends Component {
                               },
           defaultValue: this.props.configStep!==1?CommonFuns.getLabelData(parseFloat(value)) || '':CommonFuns.toThousands(value) || '',
           title: title,
-          // hintText:annualHint, 
+          hintText:annualHint, 
           autoFocus:true,
           regexFn:IndicatorType===Type.Quota?this._validateQuota:this._validateSavingRate,
-          style:{width:'auto'}
+          style:{width:'260px'}
           
         };
     return(
