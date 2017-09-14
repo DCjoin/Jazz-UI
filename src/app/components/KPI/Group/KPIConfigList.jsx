@@ -316,7 +316,11 @@ export default class KPIConfigList extends Component<void, Props, State> {
 
 				return (<KPIConfig {...configProps}/>)
 			} else {
-				dialog = (<KPIConfig {...configProps}/>);
+				dialog = (
+					<div style={{position: 'fixed', left: 0, top: 0, width: '100%', height: '100%', display: 'flex'}}>
+						<KPIConfig {...configProps}/>
+					</div>
+				);
 			}
 		}
 		if( !privilegedCustomer(this.props.customerId) ) {
