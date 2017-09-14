@@ -379,6 +379,7 @@ I18N.Common.Button.GoOn = '继续';
 I18N.Common.Button.Confirmed = '已确认';
 I18N.Common.Button.More = '更多';
 I18N.Common.Button.Setting = '配置';
+I18N.Common.Button.Select = '选择';
 
 I18N.Common.CarbonUomType = {};
 I18N.Common.CarbonUomType.StandardCoal = '标煤';
@@ -2135,6 +2136,7 @@ I18N.Setting.KPI.Parameter.UpdatePrediction= '更新预测值';
 I18N.Setting.KPI.Parameter.TagSavingRates= '分项节能率配置';
 I18N.Setting.KPI.Parameter.SavingRates= '分项节能率';
 I18N.Setting.KPI.Parameter.MonthPrediction= '逐月预测值配置';
+I18N.Setting.KPI.Parameter.MonthPredictionValue= '逐月预测值';
 I18N.Setting.KPI.Parameter.CalcViaSavingRates= '根据分项节能率计算';
 I18N.Setting.KPI.GroupQuotaType= '集团定额';
 I18N.Setting.KPI.GroupSavingRateType= '节能率';

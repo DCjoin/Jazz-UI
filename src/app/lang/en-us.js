@@ -379,6 +379,7 @@ I18N.Common.Button.GoOn = 'Continue';
 I18N.Common.Button.Confirmed = 'OK';
 I18N.Common.Button.More = 'More';
 I18N.Common.Button.Setting = '配置';
+I18N.Common.Button.Select = '选择';
 
 I18N.Common.CarbonUomType = {};
 I18N.Common.CarbonUomType.StandardCoal = 'Standard coal';
@@ -2134,6 +2135,7 @@ I18N.Setting.KPI.Parameter.UpdatePrediction= 'Update Prediction';
 I18N.Setting.KPI.Parameter.TagSavingRates= 'Set Subitem Saving Rates';
 I18N.Setting.KPI.Parameter.SavingRates= 'Subitem Saving Rates';
 I18N.Setting.KPI.Parameter.MonthPrediction= 'Monthly Predictions Value';
+I18N.Setting.KPI.Parameter.MonthPredictionValue= '逐月预测值';
 I18N.Setting.KPI.Parameter.CalcViaSavingRates= 'Calculated Based on Subitem Saving Rates';
 I18N.Setting.KPI.GroupQuotaType= 'Group Quota';
 I18N.Setting.KPI.GroupSavingRateType= 'Energy Saving Rate';

@@ -1,41 +1,49 @@
-Hash: d0ac3c91cfa737c04b87
+Hash: 2995c08267dbdf077f40
 Version: webpack 2.2.1
-Time: 3182ms
-                               Asset       Size  Chunks                    Chunk Names
-                        raw-data.png    1.49 kB                            
-                          QRIcon.png    4.87 kB                            
-                          column.png    1.61 kB                            
-                         favicon.png    40.3 kB                            
-                          folder.png    1.45 kB                            
-                      icon_baidu.png    6.27 kB                            
-                    icon_tencent.png    10.4 kB                            
-                  icon_wandoujia.png    5.42 kB                            
-                        labeling.png    2.04 kB                            
-                            line.png    2.83 kB                            
-                            logo.png    10.7 kB                            
-                          marker.png  907 bytes                            
-                             pie.png     2.8 kB                            
-                       app-store.png     380 kB                     [big]  
-                     step1-zh-cn.png     160 kB                            
-                     step2-zh-cn.png     129 kB                            
-                     step3-zh-cn.png     144 kB                            
-                     step4-zh-cn.png     171 kB                            
-                     step5-zh-cn.png     196 kB                            
-                           bundle.js    7.67 MB       0  [emitted]  [big]  bundle
-                          vendors.js     3.9 MB       1  [emitted]  [big]  vendors
-0.0f6eedc37881b59f82c3.hot-update.js    18.7 kB       0  [emitted]         bundle
-0f6eedc37881b59f82c3.hot-update.json   43 bytes          [emitted]         
-                            main.css     292 kB       0  [emitted]  [big]  bundle
-                         favicon.ico    7.38 MB          [emitted]  [big]  
-                       ../index.html    1.72 kB          [emitted]         
-chunk    {0} bundle.js, 0.0f6eedc37881b59f82c3.hot-update.js, main.css (bundle) 6.2 MB {1} [initial] [rendered]
+Time: 2831ms
+                                           Asset       Size  Chunks                    Chunk Names
+                                    labeling.png    2.04 kB                            
+                               report-layout.png    40.1 kB                            
+ fontcustom_350773af1996d04eea6ba7ca91cc8b92.eot    70.7 kB                            
+ fontcustom_350773af1996d04eea6ba7ca91cc8b92.svg     503 kB                     [big]  
+                                      QRIcon.png    4.87 kB                            
+                                      QRcode.png    43.8 kB                            
+                                login-leftbg.png     443 kB                     [big]  
+                                   schneider.png    6.88 kB                            
+ fontcustom_350773af1996d04eea6ba7ca91cc8b92.ttf    70.5 kB                            
+fontcustom_350773af1996d04eea6ba7ca91cc8b92.woff    39.4 kB                            
+                                   app-store.png     380 kB                     [big]  
+                                      column.png    1.61 kB                            
+                                     favicon.png    40.3 kB                            
+                                      folder.png    1.45 kB                            
+                                  icon_baidu.png    6.27 kB                            
+                                icon_tencent.png    10.4 kB                            
+                              icon_wandoujia.png    5.42 kB                            
+                                      iPadQR.png    14.7 kB                            
+                                        line.png    2.83 kB                            
+                                        logo.png    10.7 kB                            
+                                      marker.png  907 bytes                            
+                                         pie.png     2.8 kB                            
+                                    raw-data.png    1.49 kB                            
+                                 step1-zh-cn.png     160 kB                            
+                                 step2-zh-cn.png     129 kB                            
+                                 step3-zh-cn.png     144 kB                            
+                                 step4-zh-cn.png     171 kB                            
+                                 step5-zh-cn.png     196 kB                            
+                                       bundle.js    7.67 MB       0             [big]  bundle
+                                      vendors.js     3.9 MB       1  [emitted]  [big]  vendors
+            37b0a975ea8f8adace5e.hot-update.json   35 bytes          [emitted]         
+                                        main.css     292 kB       0  [emitted]  [big]  bundle
+                                     favicon.ico    7.38 MB          [emitted]  [big]  
+                                   ../index.html    1.72 kB          [emitted]         
+chunk    {0} bundle.js, main.css (bundle) 6.2 MB {1} [initial]
     [7] ./~/object-assign/index.js 484 bytes {0}
  [1303] ./src/app/app.jsx 14.6 kB {0}
  [1475] ./src/app/components/resetPSWApp.jsx 8.58 kB {0}
  [1476] ./src/app/components/save_effect/best/ignored_best_list.jsx 7.22 kB {0}
  [1487] ./src/app/components/save_effect/index.js 4.27 kB {0}
- [1489] ./src/app/components/save_effect/list/Draft.jsx 9.94 kB {0}
- [1491] ./src/app/components/save_effect/list/save_effect_list.jsx 17.3 kB {0}
+ [1489] ./src/app/components/save_effect/list/Draft.jsx 9.93 kB {0}
+ [1491] ./src/app/components/save_effect/list/save_effect_list.jsx 17.4 kB {0}
  [1494] ./src/app/components/save_effect/overview/index.js 8.8 kB {0}
  [1495] ./src/app/components/save_effect/save_effect_best_list.jsx 10.1 kB {0}
  [1496] ./src/app/components/service/ServiceApp.jsx 4.19 kB {0}
@@ -70,3 +78,30 @@ Child html-webpack-plugin for "..\index.html":
         [1] (webpack)/buildin/global.js 509 bytes {0}
         [2] (webpack)/buildin/module.js 517 bytes {0}
         [3] ./~/html-webpack-plugin/lib/loader.js!./src/app/template.html 1.79 kB {0}
+Child extract-text-webpack-plugin:
+                                               Asset     Size  Chunks         Chunk Names
+                                   report-layout.png  40.1 kB                 
+                                          iPadQR.png  14.7 kB                 
+     fontcustom_350773af1996d04eea6ba7ca91cc8b92.eot  70.7 kB                 
+     fontcustom_350773af1996d04eea6ba7ca91cc8b92.svg   503 kB          [big]  
+                                          QRIcon.png  4.87 kB                 
+                                          QRcode.png  43.8 kB                 
+                                    login-leftbg.png   443 kB          [big]  
+                                       schneider.png  6.88 kB                 
+     fontcustom_350773af1996d04eea6ba7ca91cc8b92.ttf  70.5 kB                 
+    fontcustom_350773af1996d04eea6ba7ca91cc8b92.woff  39.4 kB                 
+    chunk    {0} extract-text-webpack-plugin-output-filename 308 kB [entry] [rendered]
+        [0] ./src/app/less/images/report-layout.png 62 bytes {0}
+        [1] ./~/css-loader/lib/css-base.js 1.51 kB {0}
+        [2] ./src/app/less/images/iPadQR.png 55 bytes {0}
+        [3] ./src/app/less/fonts/fontcustom_350773af1996d04eea6ba7ca91cc8b92.eot 92 bytes {0}
+        [4] ./src/app/less/fonts/fontcustom_350773af1996d04eea6ba7ca91cc8b92.svg 92 bytes {0}
+        [5] ./~/css-loader!./~/react-grid-layout/css/styles.css 1.95 kB {0}
+        [6] ./~/css-loader!./src/app/less/fonts/fontcustom.css 18.7 kB {0}
+        [7] ./src/app/less/images/QRIcon.png 55 bytes {0}
+        [8] ./src/app/less/images/QRcode.png 55 bytes {0}
+        [9] ./src/app/less/images/login-leftbg.png 61 bytes {0}
+       [10] ./src/app/less/images/schneider.png 58 bytes {0}
+       [11] ./src/app/less/fonts/fontcustom_350773af1996d04eea6ba7ca91cc8b92.ttf 92 bytes {0}
+       [12] ./src/app/less/fonts/fontcustom_350773af1996d04eea6ba7ca91cc8b92.woff 93 bytes {0}
+       [13] ./~/css-loader!./~/less-loader/dist?{"plugins":[{}]}!./src/app/less/main.less 285 kB {0} [built]

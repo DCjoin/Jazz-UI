@@ -15,7 +15,7 @@ import Immutable from 'immutable';
 
 
 function getDisplayData(total,type){
-  return total===null?'－':type===Type.Quota?CommonFuns.getLabelData(parseFloat(total)):parseFloat(total).toFixed(1)
+  return total===null?'－':type===Type.Quota?CommonFuns.getLabelData(parseFloat(total)):parseFloat(parseFloat(total).toFixed(1))
 }
 
 function isView(building){
@@ -55,7 +55,7 @@ export default class BuildingConfig extends Component {
     if(IndicatorClass===Type.Dosage){
       if(UomId) {
         let uom=CommonFuns.getUomById(UomId).Code;
-        return uom===''?'':`(${uom})`
+        return ' '+uom
       }
       else return ''
     }
@@ -63,7 +63,7 @@ export default class BuildingConfig extends Component {
       let uom=CommonFuns.getUomById(UomId).Code;
       let ratioUom=CommonFuns.getUomById(RatioUomId).Code;
       if(UomId===RatioUomId) return ''
-      return `(${uom}/${ratioUom})`
+      return ` ${uom}/${ratioUom}`
     }
     else return ''
   }
