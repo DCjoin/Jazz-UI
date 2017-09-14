@@ -96,6 +96,7 @@
     "webpack-node-externals": "^1.5.4"
   },
   "dependencies": {
+    "ali-oss": "^4.10.1",
     "babel-polyfill": "6.0.2",
     "classnames": "2.1.1",
     "create-react-class": "^15.5.2",

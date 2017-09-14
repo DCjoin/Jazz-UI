@@ -35,7 +35,7 @@ module.exports = function(options) {
 
   var publicPath = options.devServer ?
     "http://localhost:3000/build/" :
-    "/assets/";
+    "__GOTHIC_STATIC_CDN__";
   var output = {
     path: path.join(__dirname, "build", "assets"),
     publicPath: publicPath,
