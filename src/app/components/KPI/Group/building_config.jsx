@@ -73,9 +73,9 @@ export default class BuildingConfig extends Component {
     var {AnnualQuota,AnnualSavingRate}=this.props.kpiInfo.getIn(['Buildings',index]).toJS();
         this.setState({
                       configIndex:index,
-                      isConfigView:CommonFuns.isNumber(AnnualQuota) || CommonFuns.isNumber(AnnualSavingRate)},
+                      isConfigView:AnnualQuota!==null || AnnualSavingRate!==null},
                       ()=>{
-                        if(CommonFuns.isNumber(AnnualQuota) || CommonFuns.isNumber(AnnualSavingRate)){
+                        if(AnnualQuota!==null || AnnualSavingRate!==null){
                                                         this.props.onCancel();
                                                           }else{
                                                             this.props.onEdit(this.state.configIndex)
