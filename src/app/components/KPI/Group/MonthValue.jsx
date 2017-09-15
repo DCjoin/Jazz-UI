@@ -274,7 +274,7 @@ export default class MonthValue extends Component {
       <div>
         {IndicatorType===Type.SavingRate && <div style={{fontSize:'14px',color:'#626469',marginTop:'25px'}}>
           {IndicatorClass===Type.Dosage?I18N.Setting.KPI.Group.MonthConfig.AnnualTotal+(uom):I18N.Setting.KPI.Group.MonthConfig.AnnualTotalForRatio+(uom)}</div>}
-        {IndicatorType===Type.SavingRate && <div style={{fontSize:'16px',color:'#626469',marginTop:'5px'}}>{CommonFuns.toThousands(this.state.calcSum) || '－'}</div>}
+        {IndicatorType===Type.SavingRate && <div style={{fontSize:'16px',color:'#626469',marginTop:'5px'}}>{this.state.calcSum===null?'－':CommonFuns.getLabelData(this.state.calcSum*1)}</div>}
         <div className="jazz-kpi-month-config">
           <div className="jazz-kpi-month-config-month">
             <div className="jazz-kpi-month-config-month-head">
