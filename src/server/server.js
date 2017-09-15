@@ -58,11 +58,11 @@ var SUPPORT_BROWSERS = [
   {type: "Chrome", version: 50},
 ];
 
-function returnUpdateBrowserHtml(request,reply){
-  var html = fs.readFileSync(path.resolve(__dirname, "./UpdateBrowserTip.html"), "utf-8");
-  var res = reply(html).type("text/html");
-  return res;
-}
+// function returnUpdateBrowserHtml(request,reply){
+//   var html = fs.readFileSync(path.resolve(__dirname, "./UpdateBrowserTip.html"), "utf-8");
+//   var res = reply(html).type("text/html");
+//   return res;
+// }
 
 
 var JAZZ_UI_UMENG_CNZZ_SDK_URL = process.env.JAZZ_UI_UMENG_CNZZ_SDK_URL;
@@ -84,6 +84,7 @@ function getLang(request) {
 
 function verifyBrowser(user_agent) {
   var currentBrowser = useragent.parse(user_agent);
+  console.log(currentBrowser);
   var supportCurrentBrowser = false;
   for(var index = 0, detectOption; index < SUPPORT_BROWSERS.length ; index++ ) {
     detectOption = SUPPORT_BROWSERS[index];
