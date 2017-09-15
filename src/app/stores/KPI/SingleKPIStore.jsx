@@ -664,9 +664,13 @@ SingleKPIStore.dispatchToken = AppDispatcher.register(function (action) {
       SingleKPIStore.emitChange();
       break;
     case Action.GET_CALC_VALUE:
+        var data=action.data.map(el=>({
+           Month:el.Month,
+           Value:toFixed(el.Value,2)
+         }));
       SingleKPIStore.merge([{
         path: 'AdvanceSettings.TargetMonthValues',
-        value: Immutable.fromJS(action.data)
+        value: Immutable.fromJS(data)
       }]);
       SingleKPIStore.emitChange();
       break;
