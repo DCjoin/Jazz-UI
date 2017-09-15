@@ -57,6 +57,7 @@ function emptyList() {
 }
 
 function toFixed(num, s) {
+  if(num===null) return null;
   var times = Math.pow(10, s)
   var des = num * times + 0.5
   des = parseInt(des, 10) / times
