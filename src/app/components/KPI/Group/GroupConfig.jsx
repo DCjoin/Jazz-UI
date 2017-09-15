@@ -108,8 +108,8 @@ export default class GroupConfig extends Component {
                       {this._renderConfig()}
                       {this.props.configStep===1 && 
                           <div className="jazz-kpi-config-edit-step-action" style={{marginTop:'-20px'}}>
-                             {!this.props.isNew && <FlatButton label={I18N.Common.Button.Cancel2} secondary={true} style={{float:'right',minWidth:'68px'}} onTouchTap={this.props.onCancel}/>}
-                             <FlatButton label={I18N.Common.Button.Save} disabled={!AnnualQuota && !AnnualSavingRate} primary={true} style={this.props.isNew?{float:'right',minWidth:'68px'}:{float:'right',minWidth:'68px',marginRight:'20px'}} 
+                             {(this.props.kpiInfo.get("AnnualQuota")!==null || this.props.kpiInfo.get("AnnualSavingRate")!==null) && <FlatButton label={I18N.Common.Button.Cancel2} secondary={true} style={{float:'right',minWidth:'68px'}} onTouchTap={this.props.onCancel}/>}
+                             <FlatButton label={I18N.Common.Button.Save} disabled={!AnnualQuota && !AnnualSavingRate} primary={true} style={(this.props.kpiInfo.get("AnnualQuota")!==null || this.props.kpiInfo.get("AnnualSavingRate")!==null)?{float:'right',minWidth:'68px',marginRight:'20px'}:{float:'right',minWidth:'68px'}} 
                                 onTouchTap={()=>{
                                    GroupKPIAction.updateKpiInfo(this.state.kpiInfo);
                                     this.props.onSave();

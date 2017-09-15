@@ -16,6 +16,7 @@ function emptyList() {
     }
 
 function toFixed(num, s) {
+  if(num===null) return null;
   var times = Math.pow(10, s)
   var des = num * times + 0.5
   des = parseInt(des, 10) / times
@@ -204,8 +205,11 @@ MonthKPIStore.dispatchToken = AppDispatcher.register(function(action) {
          MonthKPIStore.emitChange(action.index);
         break;
     case Action.GET_GROUP_CLAC_SUM_VALUE:
+        if(_monthKpi.get('HierarchyId')===action.buildingId){
          MonthKPIStore.setCalcSumValue(action.data)
          MonthKPIStore.emitChange();
+        }
+
          break;
     case Action.GET_CALC_VALUE:
          MonthKPIStore.merge([{

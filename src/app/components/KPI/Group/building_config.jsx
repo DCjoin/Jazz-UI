@@ -22,6 +22,7 @@ function isView(building){
   return building.get("AnnualQuota")!==null || building.get("AnnualSavingRate")!==null
 }
 
+
 export default class BuildingConfig extends Component {
 
   static contextTypes = {
@@ -73,9 +74,9 @@ export default class BuildingConfig extends Component {
     var {AnnualQuota,AnnualSavingRate}=this.props.kpiInfo.getIn(['Buildings',index]).toJS();
         this.setState({
                       configIndex:index,
-                      isConfigView:CommonFuns.isNumber(AnnualQuota) || CommonFuns.isNumber(AnnualSavingRate)},
+                      isConfigView:AnnualQuota!==null || AnnualSavingRate!==null},
                       ()=>{
-                        if(CommonFuns.isNumber(AnnualQuota) || CommonFuns.isNumber(AnnualSavingRate)){
+                        if(AnnualQuota!==null || AnnualSavingRate!==null){
                                                         this.props.onCancel();
                                                           }else{
                                                             this.props.onEdit(this.state.configIndex)
@@ -92,6 +93,7 @@ export default class BuildingConfig extends Component {
           {I18N.SumWindow.Sum+"："}
           {this.state.total==='loading'?<RefreshIndicator status="loading" top={6} left={50}/>:(this.state.total===null?sum:sum+(IndicatorType===Type.Quota?this.getUom():'%'))}
           </div>}
+        {IndicatorClass!==Type.Dosage && <div style={{marginBottom:'15px'}}/>}
         <div className="jazz-kpi-config-edit-building-config-field-building-info-list">
           {Buildings.map((building,index)=>{
             var {HierarchyName,AnnualQuota,AnnualSavingRate}=building;
@@ -99,7 +101,7 @@ export default class BuildingConfig extends Component {
             return(
                      <div className={classnames('building-item', {['selected']: index === this.state.configIndex})} 
                           onClick={()=>{
-                            if(!this.state.isConfigView && !Immutable.is(this.props.kpiInfo.getIn(["Buildings",this.state.configIndex]),MonthKPIStore.getMonthKpi())){
+                            if((this.props.configStep===1 && this.props.isGroupChanged()) || (!this.state.isConfigView && !Immutable.is(this.props.kpiInfo.getIn(["Buildings",this.state.configIndex]),MonthKPIStore.getMonthKpi()))){
                               this.setState({
                                 willConfigIndex:index,
                                 closeDlgShow:true
@@ -207,9 +209,9 @@ export default class BuildingConfig extends Component {
             {this._renderBuildingConfig()}
           </div>
         </div>
-        <NewDialog open={this.state.closeDlgShow} actionsContainerStyle={{textAlign: 'right'}} actions={[
+        <NewDialog open={this.state.closeDlgShow} actionsContainerStyle={{textAlign: 'right',marginRight:'20px',marginBottom:'20px'}} actions={[
 					<NewFlatButton primary label={I18N.Common.Button.Confirm} onClick={()=>{this.setState({closeDlgShow:false},()=>{this._changeBuilding(this.state.willConfigIndex)})}}/>,
-					<NewFlatButton style={{marginLeft: 24}} secondary label={I18N.Common.Button.Cancel2} onClick={() =>{
+					<NewFlatButton style={{marginLeft: 20}} secondary label={I18N.Common.Button.Cancel2} onClick={() =>{
 						this.setState({closeDlgShow:false})
 					}}/>
 				]}>{I18N.Setting.KPI.Config.LeaveTip}</NewDialog>
