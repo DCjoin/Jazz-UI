@@ -92,6 +92,7 @@ export default class BuildingConfig extends Component {
           {I18N.SumWindow.Sum+"："}
           {this.state.total==='loading'?<RefreshIndicator status="loading" top={6} left={50}/>:(this.state.total===null?sum:sum+(IndicatorType===Type.Quota?this.getUom():'%'))}
           </div>}
+        {IndicatorClass!==Type.Dosage && <div style={{marginBottom:'15px'}}/>}
         <div className="jazz-kpi-config-edit-building-config-field-building-info-list">
           {Buildings.map((building,index)=>{
             var {HierarchyName,AnnualQuota,AnnualSavingRate}=building;
