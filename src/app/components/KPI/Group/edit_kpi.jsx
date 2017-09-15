@@ -26,6 +26,12 @@ import RatioMonthConfig from './RatioMonthConfig.jsx';
 
 var customerId=null;
 
+
+function formatValue(value){
+  if(value===null) return null;
+  return value*1
+}
+
 function Header({name, indicatorClass, indicatorType,onClose}) {
 	return (
 		<header style={{marginLeft: 20,marginTop: 20, marginBottom: 10}}>
@@ -91,7 +97,12 @@ export default class EditConfig extends Component {
 			onEdit:(index)=>{this.setState({configStep:2,configBuildingIndex:index})},
 			onCancel:()=>{this.setState({configStep:null,configBuildingIndex:null})},
 			onSave:()=>{this.setState({configStep:null,configBuildingIndex:null})},
-			year:this.props.year
+			year:this.props.year,
+			isGroupChanged:()=>{
+				return this.refs.group && (formatValue(GroupKPIStore.getRawData().getIn(["GroupKpiSetting","AdvanceSettings","AnnualQuota"]))!==formatValue(this.refs.group.state.kpiInfo.get("AnnualQuota"))
+													 || formatValue(GroupKPIStore.getRawData().getIn(["GroupKpiSetting","AdvanceSettings","AnnualSavingRate"]))!==formatValue(this.refs.group.state.kpiInfo.get("AnnualSavingRate")))
+			}
+			
 		};
 		return(
 			<BuildingConfig {...props}/>
@@ -146,8 +157,8 @@ export default class EditConfig extends Component {
                   onClose={()=>{
 												var close=true;
 												if(this.state.configStep===1 && 
-													 (GroupKPIStore.getRawData().getIn(["GroupKpiSetting","AdvanceSettings","AnnualQuota"])!==this.refs.group.state.kpiInfo.get("AnnualQuota")
-													 || GroupKPIStore.getRawData().getIn(["GroupKpiSetting","AdvanceSettings","AnnualSavingRate"])!==this.refs.group.state.kpiInfo.get("AnnualSavingRate"))) {
+													 (formatValue(GroupKPIStore.getRawData().getIn(["GroupKpiSetting","AdvanceSettings","AnnualQuota"]))!==formatValue(this.refs.group.state.kpiInfo.get("AnnualQuota"))
+													 || formatValue(GroupKPIStore.getRawData().getIn(["GroupKpiSetting","AdvanceSettings","AnnualSavingRate"]))!==formatValue(this.refs.group.state.kpiInfo.get("AnnualSavingRate")))) {
 														close=false;
 														this.setState({
 															closeDlgShow: true

@@ -22,6 +22,7 @@ function isView(building){
   return building.get("AnnualQuota")!==null || building.get("AnnualSavingRate")!==null
 }
 
+
 export default class BuildingConfig extends Component {
 
   static contextTypes = {
@@ -100,7 +101,7 @@ export default class BuildingConfig extends Component {
             return(
                      <div className={classnames('building-item', {['selected']: index === this.state.configIndex})} 
                           onClick={()=>{
-                            if(!this.state.isConfigView && !Immutable.is(this.props.kpiInfo.getIn(["Buildings",this.state.configIndex]),MonthKPIStore.getMonthKpi())){
+                            if((this.props.configStep===1 && this.props.isGroupChanged()) || (!this.state.isConfigView && !Immutable.is(this.props.kpiInfo.getIn(["Buildings",this.state.configIndex]),MonthKPIStore.getMonthKpi()))){
                               this.setState({
                                 willConfigIndex:index,
                                 closeDlgShow:true
