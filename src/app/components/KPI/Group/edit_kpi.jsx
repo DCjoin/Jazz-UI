@@ -28,7 +28,7 @@ var customerId=null;
 
 function Header({name, indicatorClass, indicatorType,onClose}) {
 	return (
-		<header style={{marginLeft: 30,marginTop: 20, marginBottom: 10}}>
+		<header style={{marginLeft: 20,marginTop: 20, marginBottom: 10}}>
 			<div style={{display:'flex',flexDirection:'row'}}>
 				<div className='hiddenEllipsis' style={{fontWeight:'600',fontSize:'16px',color:'#0f0f0f'}}>{name}</div>
         <div style={{borderRadius: '1px',border: 'solid 1px #32ad3c',color:'#32ad3c',padding:'4px 8px',fontSize:'10px',marginLeft:'20px'}}>
