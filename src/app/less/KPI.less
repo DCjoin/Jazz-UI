@@ -1598,12 +1598,18 @@
     &-head{
       display: flex;
       flex-direction: row;
+      >em{
+        width: 4px;
+        height: 16px;
+        border-radius: 2px;
+        background-color: @medium-green;
+      }
     &-title{
-      border-left:4px solid  @medium-green;
       padding-left: 8px;
       font-size: 14px;
       font-weight: 600;
       color: @normal-black;
+      line-height: 16px;
     }
     &-history-btn{
       margin-left: 20px;
@@ -1642,13 +1648,25 @@
   border: solid 1px @border;
   margin-top: 20px;
   padding:20px 15px 15px 15px;
-  &-title{
-      border-left:4px solid  @medium-green;
+  &-head{
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    >em{
+      width: 4px;
+      height: 16px;
+      border-radius: 2px;
+      background-color: @medium-green;
+    }
+      &-title{
       padding-left: 8px;
       font-size: 14px;
       font-weight: 600;
       color: @normal-black;
+      line-height: 16px;
   }
+  }
+
   &-tags{
     margin-top:20px;
     &-title{

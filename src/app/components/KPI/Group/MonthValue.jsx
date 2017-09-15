@@ -278,6 +278,7 @@ export default class MonthValue extends Component {
         <div className="jazz-kpi-month-config">
           <div className="jazz-kpi-month-config-month">
             <div className="jazz-kpi-month-config-month-head">
+              <em/>
               <div className="jazz-kpi-month-config-month-head-title">{I18N.Setting.KPI.Parameter.MonthValue+uom}</div>
 
               {!this.props.isViewStatus && IndicatorClass===Type.Dosage && <div className={classnames('jazz-kpi-month-config-month-head-history-btn', {['disabled']:(!AnnualSavingRate && !AnnualQuota)  || !this.state.hasHistory})}
