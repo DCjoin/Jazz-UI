@@ -53,7 +53,7 @@ export default class MonthValue extends Component {
   }
 
   _init(props){
-    var {ActualTagId,AnnualSavingRate,ActualRatioTagId}=props.buildingInfo.toJS(),
+    var {ActualTagId,AnnualSavingRate,ActualRatioTagId,HierarchyId}=props.buildingInfo.toJS(),
         {Year,IndicatorType,IndicatorClass}=props.kpiInfo.toJS();
         if(IndicatorClass===Type.Dosage){
           if(ActualTagId){
@@ -67,7 +67,7 @@ export default class MonthValue extends Component {
                 QuotaType:IndicatorType,
                 RatioValue:AnnualSavingRate
               };
-              MonthKPIAction.getCalcSumValue(params);
+              MonthKPIAction.getCalcSumValue(params,HierarchyId);
             }
           }
         }else {
@@ -82,7 +82,7 @@ export default class MonthValue extends Component {
                 QuotaType:IndicatorType,
                 RatioValue:AnnualSavingRate
               };
-              MonthKPIAction.getCalcSumValue(params);
+              MonthKPIAction.getCalcSumValue(params,HierarchyId);
             }
           }
         }

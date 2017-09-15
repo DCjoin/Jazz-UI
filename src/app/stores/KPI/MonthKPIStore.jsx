@@ -204,8 +204,11 @@ MonthKPIStore.dispatchToken = AppDispatcher.register(function(action) {
          MonthKPIStore.emitChange(action.index);
         break;
     case Action.GET_GROUP_CLAC_SUM_VALUE:
+        if(_monthKpi.get('HierarchyId')===action.buildingId){
          MonthKPIStore.setCalcSumValue(action.data)
          MonthKPIStore.emitChange();
+        }
+
          break;
     case Action.GET_CALC_VALUE:
          MonthKPIStore.merge([{

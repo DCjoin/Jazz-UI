@@ -20,7 +20,7 @@ const MonthKPIAction = {
       data: data
     });
   },
-  getCalcSumValue(param){
+  getCalcSumValue(param,buildingId){
     var url = Path.KPI.Group.calckpigradualsumvalue;
     Ajax.post(url,
       {
@@ -28,7 +28,8 @@ const MonthKPIAction = {
       success: function(resBody) {
         AppDispatcher.dispatch({
           type: Action.GET_GROUP_CLAC_SUM_VALUE,
-          data: resBody
+          data: resBody,
+          buildingId
         });
       },
       error: function() {}
