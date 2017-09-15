@@ -85,11 +85,12 @@ export default class BuildingConfig extends Component {
 
   _renderBuildingList(){
     var {IndicatorClass,IndicatorType,Buildings}=this.props.kpiInfo.toJS();
+    var sum=getDisplayData(this.state.total,IndicatorType);
     return(
       <div className="jazz-kpi-config-edit-building-config-field-building-info">
         {IndicatorClass===Type.Dosage && <div className="jazz-kpi-config-edit-building-config-field-building-info-total" style={{position:'relative'}}>
           {I18N.SumWindow.Sum+"："}
-          {this.state.total==='loading'?<RefreshIndicator status="loading" top={6} left={50}/>:(getDisplayData(this.state.total,IndicatorType)+(IndicatorType===Type.Quota?this.getUom():'%'))}
+          {this.state.total==='loading'?<RefreshIndicator status="loading" top={6} left={50}/>:(this.state.total===null?sum:sum+(IndicatorType===Type.Quota?this.getUom():'%'))}
           </div>}
         <div className="jazz-kpi-config-edit-building-config-field-building-info-list">
           {Buildings.map((building,index)=>{

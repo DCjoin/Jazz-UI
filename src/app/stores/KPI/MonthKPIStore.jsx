@@ -15,6 +15,13 @@ function emptyList() {
       return new List();
     }
 
+function toFixed(num, s) {
+  var times = Math.pow(10, s)
+  var des = num * times + 0.5
+  des = parseInt(des, 10) / times
+  return des + ''
+}
+
 let _monthKpi=null,
     _hasHistory=false,
     _calcSum=null,
@@ -208,9 +215,14 @@ MonthKPIStore.dispatchToken = AppDispatcher.register(function(action) {
          MonthKPIStore.emitChange();
         break;
     case Action.GET_CALC_PREDICATE:
+         var data=action.data.map(el=>({
+           Month:el.Month,
+           Value:toFixed(el.Value,2)
+         }));
+
         MonthKPIStore.merge([{
             path:'MonthPredictionValues',
-            value:Immutable.fromJS(action.data)
+            value:Immutable.fromJS(data)
           }]);
        MonthKPIStore.emitChange();
         break;
