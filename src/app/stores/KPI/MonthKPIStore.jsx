@@ -84,7 +84,7 @@ const MonthKPIStore = assign({}, PrototypeStore, {
   },
 
   setCalcSumValue(data){
-    _calcSum=data;
+    _calcSum=toFixed(data,2);
   },
 
   getCalcSumValue(){
@@ -212,9 +212,13 @@ MonthKPIStore.dispatchToken = AppDispatcher.register(function(action) {
 
          break;
     case Action.GET_CALC_VALUE:
+    var data=action.data.map(el=>({
+           Month:el.Month,
+           Value:toFixed(el.Value,2)
+         }));
          MonthKPIStore.merge([{
             path:'TargetMonthValues',
-            value:Immutable.fromJS(action.data)
+            value:Immutable.fromJS(data)
           }]);
          MonthKPIStore.emitChange();
         break;
