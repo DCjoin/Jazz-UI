@@ -103,7 +103,7 @@ export default class RatioActualTag extends Component {
 
     return(
       <div className="jazz-kpi-tag-wrap" style={{color:'#9fa0a4'}}>
-        <span>{IndicatorName}</span>
+        <span style={{fontSize:'14px',color:'#626469'}}>{IndicatorName}</span>
         <span>=</span>
         <span>
           <div style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
@@ -154,12 +154,12 @@ export default class RatioActualTag extends Component {
 
     return(
       <div className="jazz-kpi-tag-wrap" style={{color:'#9fa0a4'}}>
-        <span>{IndicatorName}</span>
+        <span style={{fontSize:'14px',color:'#626469'}}>{IndicatorName}</span>
         <span>=</span>
         <span>
-          {ActualTagName}
+          <div style={{fontSize:'14px',color:'#626469'}}>{ActualTagName}</div>
           <hr/>
-          {ActualRatioTagName}
+          <div style={{fontSize:'14px',color:'#626469'}}>{ActualRatioTagName}</div>
         </span>
                 <span>
           <div style={{height:'22px',marginBottom:'5px'}}>
