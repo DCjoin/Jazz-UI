@@ -164,9 +164,9 @@ export default class EditConfig extends Component {
 					}}/>
           {this._renderGroupConfig()}
 					{this._renderBuildingConfig()}
-					<NewDialog open={this.state.closeDlgShow} actionsContainerStyle={{textAlign: 'right'}} actions={[
+					<NewDialog open={this.state.closeDlgShow} actionsContainerStyle={{textAlign: 'right',marginRight:'20px',marginBottom:'20px'}} actions={[
 					<NewFlatButton primary label={I18N.Common.Button.Confirm} onClick={this._onSave}/>,
-					<NewFlatButton style={{marginLeft: 24}} secondary label={I18N.Common.Button.Cancel2} onClick={() =>{
+					<NewFlatButton style={{marginLeft: 20}} secondary label={I18N.Common.Button.Cancel2} onClick={() =>{
 						this.setState({closeDlgShow:false})
 					}}/>
 				]}>{I18N.Setting.KPI.Config.LeaveTip}</NewDialog>
