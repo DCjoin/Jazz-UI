@@ -26,9 +26,15 @@ import RatioMonthConfig from './RatioMonthConfig.jsx';
 
 var customerId=null;
 
+
+function formatValue(value){
+  if(value===null) return null;
+  return value*1
+}
+
 function Header({name, indicatorClass, indicatorType,onClose}) {
 	return (
-		<header style={{marginLeft: 30,marginTop: 20, marginBottom: 10}}>
+		<header style={{marginLeft: 20,marginTop: 20, marginBottom: 10}}>
 			<div style={{display:'flex',flexDirection:'row'}}>
 				<div className='hiddenEllipsis' style={{fontWeight:'600',fontSize:'16px',color:'#0f0f0f'}}>{name}</div>
         <div style={{borderRadius: '1px',border: 'solid 1px #32ad3c',color:'#32ad3c',padding:'4px 8px',fontSize:'10px',marginLeft:'20px'}}>
@@ -91,7 +97,12 @@ export default class EditConfig extends Component {
 			onEdit:(index)=>{this.setState({configStep:2,configBuildingIndex:index})},
 			onCancel:()=>{this.setState({configStep:null,configBuildingIndex:null})},
 			onSave:()=>{this.setState({configStep:null,configBuildingIndex:null})},
-			year:this.props.year
+			year:this.props.year,
+			isGroupChanged:()=>{
+				return this.refs.group && (formatValue(GroupKPIStore.getRawData().getIn(["GroupKpiSetting","AdvanceSettings","AnnualQuota"]))!==formatValue(this.refs.group.state.kpiInfo.get("AnnualQuota"))
+													 || formatValue(GroupKPIStore.getRawData().getIn(["GroupKpiSetting","AdvanceSettings","AnnualSavingRate"]))!==formatValue(this.refs.group.state.kpiInfo.get("AnnualSavingRate")))
+			}
+			
 		};
 		return(
 			<BuildingConfig {...props}/>
@@ -146,8 +157,8 @@ export default class EditConfig extends Component {
                   onClose={()=>{
 												var close=true;
 												if(this.state.configStep===1 && 
-													 (GroupKPIStore.getRawData().getIn(["GroupKpiSetting","AdvanceSettings","AnnualQuota"])!==this.refs.group.state.kpiInfo.get("AnnualQuota")
-													 || GroupKPIStore.getRawData().getIn(["GroupKpiSetting","AdvanceSettings","AnnualSavingRate"])!==this.refs.group.state.kpiInfo.get("AnnualSavingRate"))) {
+													 (formatValue(GroupKPIStore.getRawData().getIn(["GroupKpiSetting","AdvanceSettings","AnnualQuota"]))!==formatValue(this.refs.group.state.kpiInfo.get("AnnualQuota"))
+													 || formatValue(GroupKPIStore.getRawData().getIn(["GroupKpiSetting","AdvanceSettings","AnnualSavingRate"]))!==formatValue(this.refs.group.state.kpiInfo.get("AnnualSavingRate")))) {
 														close=false;
 														this.setState({
 															closeDlgShow: true
@@ -164,9 +175,9 @@ export default class EditConfig extends Component {
 					}}/>
           {this._renderGroupConfig()}
 					{this._renderBuildingConfig()}
-					<NewDialog open={this.state.closeDlgShow} actionsContainerStyle={{textAlign: 'right'}} actions={[
+					<NewDialog open={this.state.closeDlgShow} actionsContainerStyle={{textAlign: 'right',marginRight:'20px',marginBottom:'20px'}} actions={[
 					<NewFlatButton primary label={I18N.Common.Button.Confirm} onClick={this._onSave}/>,
-					<NewFlatButton style={{marginLeft: 24}} secondary label={I18N.Common.Button.Cancel2} onClick={() =>{
+					<NewFlatButton style={{marginLeft: 20}} secondary label={I18N.Common.Button.Cancel2} onClick={() =>{
 						this.setState({closeDlgShow:false})
 					}}/>
 				]}>{I18N.Setting.KPI.Config.LeaveTip}</NewDialog>

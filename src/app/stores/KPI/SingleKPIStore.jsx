@@ -57,6 +57,7 @@ function emptyList() {
 }
 
 function toFixed(num, s) {
+  if(num===null) return null;
   var times = Math.pow(10, s)
   var des = num * times + 0.5
   des = parseInt(des, 10) / times
@@ -663,9 +664,13 @@ SingleKPIStore.dispatchToken = AppDispatcher.register(function (action) {
       SingleKPIStore.emitChange();
       break;
     case Action.GET_CALC_VALUE:
+        var data=action.data.map(el=>({
+           Month:el.Month,
+           Value:toFixed(el.Value,2)
+         }));
       SingleKPIStore.merge([{
         path: 'AdvanceSettings.TargetMonthValues',
-        value: Immutable.fromJS(action.data)
+        value: Immutable.fromJS(data)
       }]);
       SingleKPIStore.emitChange();
       break;

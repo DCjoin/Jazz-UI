@@ -53,7 +53,7 @@ export default class MonthValue extends Component {
   }
 
   _init(props){
-    var {ActualTagId,AnnualSavingRate,ActualRatioTagId}=props.buildingInfo.toJS(),
+    var {ActualTagId,AnnualSavingRate,ActualRatioTagId,HierarchyId}=props.buildingInfo.toJS(),
         {Year,IndicatorType,IndicatorClass}=props.kpiInfo.toJS();
         if(IndicatorClass===Type.Dosage){
           if(ActualTagId){
@@ -67,7 +67,7 @@ export default class MonthValue extends Component {
                 QuotaType:IndicatorType,
                 RatioValue:AnnualSavingRate
               };
-              MonthKPIAction.getCalcSumValue(params);
+              MonthKPIAction.getCalcSumValue(params,HierarchyId);
             }
           }
         }else {
@@ -82,7 +82,7 @@ export default class MonthValue extends Component {
                 QuotaType:IndicatorType,
                 RatioValue:AnnualSavingRate
               };
-              MonthKPIAction.getCalcSumValue(params);
+              MonthKPIAction.getCalcSumValue(params,HierarchyId);
             }
           }
         }
@@ -274,10 +274,11 @@ export default class MonthValue extends Component {
       <div>
         {IndicatorType===Type.SavingRate && <div style={{fontSize:'14px',color:'#626469',marginTop:'25px'}}>
           {IndicatorClass===Type.Dosage?I18N.Setting.KPI.Group.MonthConfig.AnnualTotal+(uom):I18N.Setting.KPI.Group.MonthConfig.AnnualTotalForRatio+(uom)}</div>}
-        {IndicatorType===Type.SavingRate && <div style={{fontSize:'16px',color:'#626469',marginTop:'5px'}}>{CommonFuns.toThousands(this.state.calcSum) || '－'}</div>}
+        {IndicatorType===Type.SavingRate && <div style={{fontSize:'16px',color:'#626469',marginTop:'5px'}}>{this.state.calcSum===null?'－':CommonFuns.getLabelData(this.state.calcSum*1)}</div>}
         <div className="jazz-kpi-month-config">
           <div className="jazz-kpi-month-config-month">
             <div className="jazz-kpi-month-config-month-head">
+              <em/>
               <div className="jazz-kpi-month-config-month-head-title">{I18N.Setting.KPI.Parameter.MonthValue+uom}</div>
 
               {!this.props.isViewStatus && IndicatorClass===Type.Dosage && <div className={classnames('jazz-kpi-month-config-month-head-history-btn', {['disabled']:(!AnnualSavingRate && !AnnualQuota)  || !this.state.hasHistory})}

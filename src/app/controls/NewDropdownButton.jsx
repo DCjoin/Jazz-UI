@@ -97,7 +97,7 @@ var NewDropdownButton = React.createClass({
           {this.props.labelPosition==='before' && <span className="mui-flat-button-label new-btn-text">{this.props.text}</span>}
           <FontIcon className={
             classSet("fa new-btn-icon", this.props.buttonIcon)
-          } color="#32ad3d" style={this.props.buttonStyle}/>
+          } color="#32ad3d" style={assign({marginLeft:'8px'},this.props.iconStyle)}/>
         {this.props.labelPosition==='after' && <span className="mui-flat-button-label new-btn-text">{this.props.text}</span>}
         </FlatButton>
         <Popover

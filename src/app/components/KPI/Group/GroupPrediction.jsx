@@ -52,7 +52,11 @@ export default class GroupPrediction extends Component {
     };
     return(
       <div className="jazz-kpi-prediction-config">
-        <div className="jazz-kpi-prediction-config-title">{I18N.Setting.KPI.Parameter.MonthPrediction}</div>
+        <div className="jazz-kpi-prediction-config-head">
+          <em/>
+          <div className="jazz-kpi-prediction-config-head-title">{I18N.Setting.KPI.Parameter.MonthPrediction}</div>
+        </div>
+        
         <Prediction {...props}/>
       </div>
 
