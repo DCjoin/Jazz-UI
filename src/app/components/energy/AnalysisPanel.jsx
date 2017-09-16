@@ -932,6 +932,9 @@ let AnalysisPanel = React.createClass({
     return null;
   },
   showStepError(step, EnergyStore) {
+    if( !EnergyStore.getParamsObj() ) {
+      return ;
+    }
     let btns = [],
     msgs=['UseRaw','UseHour','UseDay','UseMonth','','UseWeek'],
       msg = [],

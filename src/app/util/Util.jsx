@@ -1493,8 +1493,10 @@ let CommonFuns = {
   },
   getTagIdsFromTagOptions(tagOptions) {
     let tagIds = [];
-    for (let i = 0, len = tagOptions.length; i < len; i++) {
-      tagIds.push(tagOptions[i].tagId);
+    if( tagOptions ) {      
+      for (let i = 0, len = tagOptions.length; i < len; i++) {
+        tagIds.push(tagOptions[i].tagId);
+      }
     }
     return tagIds;
   },
@@ -1531,6 +1533,9 @@ let CommonFuns = {
       tag,
       hieNameArr,
       hieName = '';
+    if( !tagOptions ) {
+      return nodeNameAssociation;
+    }
     for (let i = 0, len = tagOptions.length; i < len; i++) {
       tag = tagOptions[i];
       if (tag.hierName) {

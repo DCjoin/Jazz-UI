@@ -548,6 +548,10 @@ class AnalysisPanel extends Component {
   }
 
   getCurrentWidgetDto(){
+    
+    if( !EnergyStore.getParamsObj() ) {
+      return ;
+    }
     let chartType = this.state.selectedChartType;
     let tagOptions = EnergyStore.getTagOpions();
     let tagIds = CommonFuns.getTagIdsFromTagOptions(tagOptions);
@@ -663,6 +667,9 @@ class AnalysisPanel extends Component {
   }
 
   _handleEnergyStepChange(step) {
+    if( !EnergyStore.getParamsObj() ) {
+      return ;
+    }
     let tagOptions = EnergyStore.getTagOpions(),
       paramsObj = EnergyStore.getParamsObj(),
       timeRanges = paramsObj.timeRanges;
