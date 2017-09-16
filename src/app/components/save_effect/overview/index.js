@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import find from 'lodash-es/find';
 import CircularProgress from 'material-ui/CircularProgress';
+import FontIcon from 'material-ui/FontIcon';
 
 import ReduxDecorator from 'decorator/ReduxDecorator.jsx';
 
@@ -75,7 +76,10 @@ export default class SaveEffectOverview extends Component {
     ).Name ,
     {minYear, chartData, year, showCommodity} = this.state;
     if( minYear === null ) {
-      return (<div className='flex-center'>{I18N.SaveEffect.Tip}</div>);
+      return (<div className='flex-center' style={{flexDirection: 'column'}}>
+        <FontIcon className="icon-energymost" style={{fontSize:'60px'}} color="#32ad3d"/>
+        {I18N.SaveEffect.Tip}
+      </div>);
     }
     let byYearProps = {
       isCustomer,

@@ -346,7 +346,7 @@ export default class KPIConfigList extends Component<void, Props, State> {
 				</div>
 				<NewDialog
 					open={showDeleteDialog}
-					title={util.replacePathParams(I18N.Setting.KPI.GroupList.DeleteTitle, GroupKPIStore.findKPISettingByKPISettingId(refId).IndicatorName || '')}
+					actionsContainerStyle={{textAlign: 'right'}}
 					actions={[
 				      <FlatButton
 					      label={I18N.Common.Button.Delete}
