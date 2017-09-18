@@ -1492,12 +1492,11 @@ let CommonFuns = {
     return yaxisConfig;
   },
   getTagIdsFromTagOptions(tagOptions) {
-    let tagIds = [];
-    if( tagOptions ) {      
+    let tagIds = [];   
       for (let i = 0, len = tagOptions.length; i < len; i++) {
         tagIds.push(tagOptions[i].tagId);
       }
-    }
+
     return tagIds;
   },
   getViewAssociation(hierarchyId, dimNode) {

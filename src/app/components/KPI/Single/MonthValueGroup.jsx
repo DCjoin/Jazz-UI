@@ -27,6 +27,7 @@ export default class MonthValueGroup extends Component {
                   },
                   date:SingleKPIStore.formatDateByPeriod(el),
                   regexFn:(value)=>{
+                    if(value==='－') return ''
                     value=CommonFuns.thousandsToNormal(value);
                     return !SingleKPIStore.validateQuota(value) && I18N.Setting.KPI.Parameter.QuotaErrorText}
                 };

@@ -322,6 +322,7 @@ export default class EffectDetail extends Component {
   }
 
 	_renderMulti(value){
+		if(value===null) return null;
 		var v=value,
 				arr = v.split('\n');
         if (arr.length > 1) {

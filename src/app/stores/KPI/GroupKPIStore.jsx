@@ -624,6 +624,10 @@ GroupKPIStore.dispatchToken = AppDispatcher.register(function(action) {
          GroupKPIStore.setKpiInfo(action.data);
          GroupKPIStore.emitSuccessChange(action.year);
          break;
+    case Action.UPDATE_KPI_GROUP_SUCCESS:
+         GroupKPIStore.setKpiInfo(action.data);
+         GroupKPIStore.emitSuccessChange(action.year);
+         break;
     case Action.KPI_GROUP_ERROR:
         GroupKPIStore.emitErrorChange({
           title: action.title,
@@ -649,6 +653,10 @@ GroupKPIStore.dispatchToken = AppDispatcher.register(function(action) {
         break;
    case Action.UPDATE_KPI_GROUP_TOTAL:
     	  _total=action.total;
+        GroupKPIStore.emitChange();
+        break;
+   case Action.CLEAR_KPI_INFO:
+    	  _kpiInfo=null;
         GroupKPIStore.emitChange();
         break;
       default:
