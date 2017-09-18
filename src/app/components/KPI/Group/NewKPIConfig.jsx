@@ -137,6 +137,7 @@ export default class KPIConfig extends Component {
 						Year:year,
 						IndicatorType:Type.Quota
 					};
+					GroupKPIAction.clearKpiInfo();
 					GroupKPIAction.getBuildingListByCustomerId(customerId,info);
 					break;
 			case SettingStatus.Edit:
@@ -170,6 +171,7 @@ export default class KPIConfig extends Component {
 						Year:year,
 						IndicatorType:Type.Quota
 					};
+					GroupKPIAction.clearKpiInfo();
 					GroupKPIAction.getBuildingListByCustomerId(customerId,info);
 					break;
 			case SettingStatus.Edit:

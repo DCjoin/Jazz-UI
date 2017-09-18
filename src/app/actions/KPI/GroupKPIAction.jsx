@@ -192,6 +192,11 @@ const GroupKPIAction = {
           type: Action.UPDATE_KPI_GROUP_TOTAL,
           total
         });
+  },
+  clearKpiInfo(){
+        AppDispatcher.dispatch({
+          type: Action.CLEAR_KPI_INFO,
+        });    
   }
 }
 
