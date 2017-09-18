@@ -2187,7 +2187,7 @@ I18N.Setting.KPI.Group.MonthConfig.MonthValueSum='逐月指标值总计 {0}';
 I18N.Setting.KPI.GroupList = {};
 I18N.Setting.KPI.GroupList.Header = '指标配置';
 I18N.Setting.KPI.GroupList.DeleteTitle = '删除指标“{0}”';
-I18N.Setting.KPI.GroupList.DeleteComment = '删除指标将导致所有相关图表都被删除。';
+I18N.Setting.KPI.GroupList.DeleteComment = '删除指标将导致所有相关信息被删除，确认删除?';
 
 I18N.Setting.KPI.Group.Ranking = {};
 I18N.Setting.KPI.Group.Ranking.Title='排名配置';
