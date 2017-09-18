@@ -1493,9 +1493,10 @@ let CommonFuns = {
   },
   getTagIdsFromTagOptions(tagOptions) {
     let tagIds = [];
-    for (let i = 0, len = tagOptions.length; i < len; i++) {
+          for (let i = 0, len = tagOptions.length; i < len; i++) {
       tagIds.push(tagOptions[i].tagId);
     }
+
     return tagIds;
   },
   getViewAssociation(hierarchyId, dimNode) {

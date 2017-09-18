@@ -133,7 +133,7 @@ const GroupKPIAction = {
       commonErrorHandling: false,
       success: function(resBody) {
         AppDispatcher.dispatch({
-          type: Action.KPI_GROUP_SUCCESS,
+          type: Action.UPDATE_KPI_GROUP_SUCCESS,
           data: resBody
         });
       },
