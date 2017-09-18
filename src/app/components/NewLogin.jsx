@@ -552,7 +552,7 @@ export default class NewLogin extends Component {
 				  			<div>yujin.guo@schneider-electric.com</div>
 				  		</div>
 				  	</a>|
-				    <a href={`#${RoutePath.login({
+				    <a href={`${RoutePath.login({
 				    	lang: (this.props.router.params.lang === 'en-us') ? 'zh-cn' : 'en-us'
 				   })}`} target="_blank">{I18N.Platform.InEnglish}</a>
 				  </div>
