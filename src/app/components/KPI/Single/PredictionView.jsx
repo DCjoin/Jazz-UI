@@ -60,7 +60,7 @@ export default class PredictionView extends Component {
 
   _onTagRateChange(index,value){
     SingleKPIAction.merge([{
-      path:`AdvanceSettings.PredictionSetting.TagSavingRates.${index-1}.SavingRate`,
+      path:`AdvanceSettings.PredictionSetting.TagSavingRates.${index}.SavingRate`,
       value,
     }])
   }
