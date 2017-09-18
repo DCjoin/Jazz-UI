@@ -7,6 +7,7 @@ import Dialog from 'controls/NewDialog.jsx';
 import NewFlatButton from 'controls/NewFlatButton.jsx';
 import Tree from 'controls/tree/Tree.jsx';
 import CommonFuns from 'util/Util.jsx';
+import {nodeType} from 'constants/TreeConstants.jsx';
 
 export default class TagSelect extends Component {
 
@@ -77,6 +78,26 @@ export default class TagSelect extends Component {
 		})
 	}
 
+	  _renderDimTreeNode(nodeData){
+    var type = nodeData.get("Type");
+    var icon = (type !== nodeType.Building && 
+    <div className="node-content-icon">
+          <div className="icon-label"/>
+        </div>
+    );
+
+    var text = (
+    <div className="node-content-text">{nodeData.get("Name")}</div>
+    );
+    return (
+      <div className="tree-node-content" style={{maxWidth:300}}>
+        {icon}
+        {text}
+
+      </div>
+      );
+  }
+
 	_renderDimensions(){
 		let treeProps={
 			key: 'tagtree',
@@ -86,7 +107,13 @@ export default class TagSelect extends Component {
 			allDisabled: false,
 			onSelectNode: this._onSelectDimension,
 			selectedNode: this.state.selectedDimension,
-			treeNodeClass: 'jazz-copy-tree'
+			generateNodeConent:this._renderDimTreeNode,
+      nodeOriginPaddingLeft:0,
+          //treeNodeClass: 'jazz-copy-tree',
+      arrowClass: 'jazz-new-foldertree-arrow',
+      arrowIconCollapsedClass: 'icon-arrow-fold',
+      arrowIconExpandClass: 'icon-arrow-unfold',
+      treeNodeClass: 'jazz-new-foldertree-node',
 		}
 		return(
 			<div className='jazz-kpi-tag-dimension'>
@@ -162,6 +189,7 @@ export default class TagSelect extends Component {
 		let  dialogProps = {
 		        ref: 'tag_dialog',
 		        title: this.props.title?this.props.title:I18N.Setting.KPI.Tag.Title,
+						titleStyle:{margin:'0 22px',height:'19px',lineHeight:'19px',padding:"15px 0",fontSize:'14px', fontWeight: 600,borderBottom:'1px solid #e6e6e6'},
 		        actions: actions,
 		        modal: true,
 		        open: true,
