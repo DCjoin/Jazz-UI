@@ -54,7 +54,8 @@ module.exports = {
     UPDATE_KPI_INFO:null,
     UPDATE_KPI_GROUP_TOTAL:null,
     GET_TAG_INFO_SUCCESS:null,
-    UPDATE_KPI_GROUP_SUCCESS:null
+    UPDATE_KPI_GROUP_SUCCESS:null,
+    CLEAR_KPI_INFO:null
   }),
 
   Type:{
