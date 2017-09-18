@@ -9,7 +9,7 @@ function downloadByStream(res) {
 	if (disposition && disposition.indexOf('attachment') !== -1) {
 	    let filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
 	    let matches = filenameRegex.exec(disposition);
-	    if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
+	    if (matches != null && matches[1]) filename = decodeURI(matches[1].replace(/['"]/g, ''));
 	}
 	let type = res.header['content-type'];
 	let blob = null;
