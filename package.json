@@ -15,7 +15,7 @@
     "build-test": "webpack --config webpack-test.config.js --progress --colors > ret-test.log",
     "dev1": "webpack --config conf/webpack.conf.js --progress --profile --display-modules",
     "dll": "webpack --config conf/webpack.dll.conf.js",
-    "release:docker": "npm run build-test && node shell/copy_server && node shell/upload && node ./build/release_server",
+    "release:docker": "npm run build-test && node shell/copy_server.js && node ./build/release_server.js",
     "gulp": "gulp test"
   },
   "jest": {
