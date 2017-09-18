@@ -36,7 +36,6 @@ function returnUpdateBrowserHtml(request,reply){
 
 var JAZZ_UI_UMENG_CNZZ_SDK_URL = process.env.JAZZ_UI_UMENG_CNZZ_SDK_URL;
 var JAZZ_WEBAPI_HOST = process.env.JAZZ_WEBAPI_HOST;
-var JAZZ_STATIC_CDN = process.env.JAZZ_STATIC_CDN;
 
 function getLang(request) {
   var lang = request.params.lang;
@@ -74,26 +73,26 @@ function returnIndexHtml(request,reply){
 
   html = html.replace('__LANG_JS__', '/assets/' + getLang(request) + '.js');
 
-  html = html.replace('__JAZZ_STATIC_CDN__', __JAZZ_STATIC_CDN__)
-            .replace('__JAZZ_WEBAPI_HOST__', JAZZ_WEBAPI_HOST);
-
   if(JAZZ_UI_UMENG_CNZZ_SDK_URL) {
     html = html.replace('__JAZZ_UI_UMENG_CNZZ_SDK_URL__', JAZZ_UI_UMENG_CNZZ_SDK_URL);
+  }
+  if(JAZZ_WEBAPI_HOST) {
+    html = html.replace('__JAZZ_WEBAPI_HOST__', JAZZ_WEBAPI_HOST);
   }
   var res = reply(html).type("text/html");
   return res;
 }
 
 
-// server.route({
-//   method: 'GET',
-//   path: '/assets/{files*}',
-//   handler: {
-//     directory: { 
-//       path: './build/assets'
-//     }
-//   }
-// });
+server.route({
+  method: 'GET',
+  path: '/assets/{files*}',
+  handler: {
+    directory: { 
+      path: './build/assets'
+    }
+  }
+});
 server.route({
   method: 'GET',
   path: '/{lang}/{path*}',
