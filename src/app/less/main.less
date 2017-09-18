@@ -253,17 +253,14 @@ button {
 
 
 .jazz-mainmenu{
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.15);
-  background-color: @normal-black;
-  height: 56px;
-    width:100%;
+    background-color: @normal-black;
+    height: 56px;
+    padding: 0 20px;
     font-size:14px;
     display: flex;
     .jazz-menu{
         flex:1;
-        justify-content: center;
-        // height:80px;
-        // height:88px;
+        justify-content: space-around;
         height: 56px;
         margin:auto;
         display:flex;
@@ -385,22 +382,12 @@ button {
     }
     .jazz-logo{
         position: relative;
-        width: 162px;
-        height: 70px;
         cursor: pointer;
-        // top:12px;
-        left: 57px;
+        display: flex;
+        align-self: center;
 
-        .jazz_logo_img{
-          background-size: contain;
-          height:54px;
-          width:162px;
-          background-repeat: no-repeat;
-          background-position: center center;
-          //background-image: url(/api/picture/img-logo-300086);
-        }
         .jazz-title{
-          font-size: 18px;
+          font-size: 16px;
           color:#ffffff;
         }
     }
@@ -659,8 +646,7 @@ input:focus{
     display: flex;
     justify-content: flex-end;
     align-items: flex-start;
-    padding-top: 10px;
-    padding-right:20px;
+    align-items: center;
     .jazz-mainmenu-user{
         padding-left:10px;
         border-right: 1px solid white;
