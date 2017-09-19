@@ -713,7 +713,7 @@ var MainAppBar = React.createClass({
     if (!!this.props.items) {
       mainmenu = ( this.props.items.length > 0 && this.props.items[0].name == 'config')
         ? <div className="jazz-menu">
-          <div className={classnames({
+          <div className={classnames('jazz-mainmenu-item', {
           "jazz-mainmenu-main": true,
           "active": this.state.configSelected
         })} style={configStyle} onClick={this._onConfigClick}>

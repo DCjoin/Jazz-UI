@@ -123,7 +123,7 @@ var SubMainMenu = React.createClass({
     return (
       <div
       ref="root"
-      className={"jazz-mainmenu-level-main"}>
+      className={"jazz-mainmenu-level-main jazz-mainmenu-item"}>
 
           <a className={classnames({
         "jazz-mainmenu-main": true,
@@ -211,7 +211,7 @@ var MainMenu = React.createClass({
             }
           }
           if(item.title){
-            return (<Link key={item.name} activeClassName={'active'} className={classnames({
+            return (<Link key={item.name} activeClassName={'active'} className={classnames('jazz-mainmenu-item', {
                 "jazz-mainmenu-main": parent,
                 "jazz-mainmenu-sub": !parent
               })} to={item.getPath(params)} onClick={this.props.onClick}>
