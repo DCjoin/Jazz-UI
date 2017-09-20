@@ -12,8 +12,21 @@ import AlarmTagStore from 'stores/AlarmTagStore.jsx';
 import EnergyStore from 'stores/Energy/EnergyStore.jsx';
 import ChartStatusStore from 'stores/Energy/ChartStatusStore.jsx';
 import MultipleTimespanStore from 'stores/Energy/MultipleTimespanStore.jsx';
+import IconButton from 'material-ui/IconButton';
+import PermissionCode from 'constants/PermissionCode.jsx';
+import CurrentUserStore from 'stores/CurrentUserStore.jsx';
+import privilegeUtil from 'util/privilegeUtil.jsx';
 // import {GatherInfo} from '../../../../../mockData/DataAnalysis.js';
 var isMultiTime;
+
+function privilegeWithSeniorDataAnalyse( privilegeCheck ) {
+  return true
+	// return privilegeCheck(PermissionCode.SENIOR_DATA_ANALYSE, CurrentUserStore.getCurrentPrivilege());
+}
+//能源经理
+function SeniorDataAnalyseIsFull() {
+	return privilegeWithSeniorDataAnalyse(privilegeUtil.isFull.bind(privilegeUtil));
+}
 
 function getTime(time){
   if (time !== null) {
@@ -99,6 +112,11 @@ TableRow.propTypes={
   style:React.PropTypes.string,
 }
 
+const Model={
+  "Basic":0,
+  "Senior":1
+}
+
 export default class StatisticsDialog extends Component {
 
   constructor(props) {
@@ -108,8 +126,8 @@ export default class StatisticsDialog extends Component {
   }
 
   state={
-    gatherInfo:null
-    // gatherInfo:GatherInfo
+    gatherInfo:null,
+    showModel:Model.Basic
   }
 
   _onChange(){
@@ -407,7 +425,17 @@ export default class StatisticsDialog extends Component {
         paddingTop:'0',
         lineHeight:'52px',
         marginBottom:'0',
-        paddingLeft:'10px'
+        paddingLeft:'10px',
+        marginLeft:'72px',
+        marginRight:'72px'
+      },
+      content:{
+        marginLeft:'72px',
+        marginRight:'72px',
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        overflowY:'auto'
       }
     };
         if(this.state.gatherInfo===null){
@@ -421,8 +449,22 @@ export default class StatisticsDialog extends Component {
           content=this._renderContent()
         }
     return(
-      <Dialog title={title} titleStyle={style.title} open={true}  modal={false} onRequestClose={this.props.onCloseDialog} contentStyle={{overflowY:'auto'}}>
+      <Dialog title={title} titleStyle={style.title} style={{position:'relative'}} open={true}  modal={false} onRequestClose={this.props.onCloseDialog} contentStyle={style.content}>
+        {this.state.showModel===Model.Senior && <IconButton iconClassName="icon-left-switch" 
+                    iconStyle={{fontSize:'43px',height:'43px',width:'43px',color:'#9fa0a4'}} 
+                    style={{position:'absolute',left:'14px',padding:'0'}}
+                    onClick={()=>{
+                                 this.setState({
+                                   showModel:Model.Basic
+                                 })}}/>}
         {content}
+        {this.state.showModel===Model.Basic && SeniorDataAnalyseIsFull() && <IconButton iconClassName="icon-right-switch" 
+                    iconStyle={{fontSize:'43px',height:'43px',width:'43px',color:'#9fa0a4'}}
+                    style={{position:'absolute',right:'14px',padding:'0'}}
+                    onClick={()=>{
+                                 this.setState({
+                                   showModel:Model.Senior
+                                 })}}/>}
       </Dialog>
     )
   }
