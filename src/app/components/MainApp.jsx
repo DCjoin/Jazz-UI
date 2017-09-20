@@ -290,18 +290,21 @@ let MainApp = React.createClass({
     let isFull = PrivilegeUtil.isFull(PermissionCode.BUILDING_LIST, CurrentUserStore.getCurrentPrivilege());
     return this.state.hierarchyId && (<div className='jazz-top-select-hierarchy' style={{
           marginTop: isFull ? 0 : 10,
-          marginLeft : isFull ? 10 : 30,
+          marginLeft : isFull ? 20 : 20,
           color: '#fff'
         }}>
       <ViewableDropDownMenu
             isViewStatus={!isFull}
             defaultValue={this.state.hierarchyId}
             style={{
-              width: 200,
-              margin: '0 20px'
+              width: 164,
             }}
             labelStyle={{
               color: '#fff',
+              paddingRight: 24,
+            }}
+            iconStyle={{
+              paddingRight: 0,
             }}
             listStyle={{
               width: 200,

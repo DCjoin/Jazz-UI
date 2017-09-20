@@ -700,7 +700,7 @@ var MainAppBar = React.createClass({
         paddingRight:'3px'
       };
     var logo = (!!this.props.logoUrl)
-      ? <BackgroundImage style={{height: 54, width: 162}} 
+      ? <BackgroundImage style={{height: 40, width: 120}} 
           url={this.props.logoUrl}
           onClick={this._showCustomerList}/>
       : null;
@@ -713,7 +713,7 @@ var MainAppBar = React.createClass({
     if (!!this.props.items) {
       mainmenu = ( this.props.items.length > 0 && this.props.items[0].name == 'config')
         ? <div className="jazz-menu">
-          <div className={classnames({
+          <div className={classnames('jazz-mainmenu-item', {
           "jazz-mainmenu-main": true,
           "active": this.state.configSelected
         })} style={configStyle} onClick={this._onConfigClick}>
@@ -735,9 +735,7 @@ var MainAppBar = React.createClass({
         </div>) : null;
     return (
       <div className="jazz-mainmenu">
-        <div className="jazz-logo" style={{
-          left: topSelectHierarchy && 20
-        }}>
+        <div className="jazz-logo">
             {logo}
             {title}
         </div>
@@ -746,27 +744,21 @@ var MainAppBar = React.createClass({
         <div className="jazz-mainmenu-info">
             {mail}
             <div className="jazz-mainmenu-user" style={{
-        display: 'flex'
-      }}>
-                <FlatButton label={user.RealName} labelStyle={nameLableStyle} onClick={this._showUserInfo} style={{
-        backgroundColor: 'transparent',
-        color: 'white',
-        lineHeight: '16px'
-      }} linkButton={true} title={user.RealName}>
-                    <FontIcon className="icon-user" color="white" style={{
-        fontSize: '14px',
-        float: 'left'
-      }}/>
-                </FlatButton>
-
+              height: 20,
+              display: 'flex',
+              paddingRight: 15
+            }}>
+              <a href="javascript:void(0)" className='hiddenEllipsis' style={{width: 110}} onClick={this._showUserInfo}>
+                <FontIcon className="icon-user" color="white" style={{fontSize: '14px', marginRight: 8}}/>
+                <span>{user.RealName}</span>
+              </a>
             </div>
             <div style={{
-        display: 'flex'
-      }}>
+              display: 'flex'
+            }}>
                 <em className="icon-schneider-style" onClick={this._showIntroducer}>
                     <div className="icon-schneider-en"></div>
                 </em>
-
             </div>
 
         </div>

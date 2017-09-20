@@ -1633,7 +1633,7 @@ class CreateDiagnose extends Component {
 								tmpFilterDiagnoseTags: null,
 								tmpFilterStep: null,
 							}
-							if( tmpFilterDiagnoseTags.length === 1 && this.state.associateTag.get('Tags').find(tag => tag.get('Id') === tmpFilterDiagnoseTags[0].Id) ) {
+							if( tmpFilterDiagnoseTags.length === 1 && this.state.associateTag && this.state.associateTag.get('Tags').find(tag => tag.get('Id') === tmpFilterDiagnoseTags[0].Id) ) {
 								newState.checkedAssociateTag = tmpFilterDiagnoseTags;
 							} else {
 								newState.checkedTags = tmpFilterDiagnoseTags;
