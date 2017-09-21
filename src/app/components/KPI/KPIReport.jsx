@@ -417,8 +417,12 @@ export default class KPIReport extends Component {
 		);
 	}
 	_renderTip() {
-		let hasPermission = privilegeUtil.canView(PermissionCode.PUSH_SOLUTION, CurrentUserStore.getCurrentPrivilege())
-							|| privilegeUtil.isFull(PermissionCode.SENIOR_DATA_ANALYSE, CurrentUserStore.getCurrentPrivilege());
+		//changed from shilei
+		// let hasPermission = privilegeUtil.canView(PermissionCode.PUSH_SOLUTION, CurrentUserStore.getCurrentPrivilege())
+		// 					|| privilegeUtil.isFull(PermissionCode.SENIOR_DATA_ANALYSE, CurrentUserStore.getCurrentPrivilege());
+
+		let hasPermission = privilegeUtil.canView(PermissionCode.PUSH_SOLUTION, CurrentUserStore.getCurrentPrivilege());
+
 		return <div className={classnames('summary-item-tip', {
 			hoverable: hasPermission
 		})} onClick={() => {

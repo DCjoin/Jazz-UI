@@ -101,8 +101,10 @@ function PushAndNotPushIsFull() {
 }
 
 function privilegeWithECM(){
-  return CurrentUserStore.permit(PermissionCode.SENIOR_DATA_ANALYSE.FULL) ||
-        CurrentUserStore.permit(PermissionCode.PUSH_SOLUTION.READONLY)
+  //changed from shilei
+  // return CurrentUserStore.permit(PermissionCode.SENIOR_DATA_ANALYSE.FULL) ||
+  //       CurrentUserStore.permit(PermissionCode.PUSH_SOLUTION.READONLY)
+  return CurrentUserStore.permit(PermissionCode.PUSH_SOLUTION.READONLY)
 }
 
 let MainApp = React.createClass({

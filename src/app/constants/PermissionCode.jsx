@@ -116,7 +116,7 @@ const PermissionCode = function() {
 
 	SENIOR_DATA_ANALYSE: {
 		getLabel: () => I18N.Privilege.Role.SeniorDataAnalyse,
-		FULL: 1313,
+		FULL: 1315,
 	},
 
 	PUSH_SOLUTION: {
