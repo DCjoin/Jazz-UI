@@ -139,7 +139,7 @@ let TemplateList = React.createClass({
     })
   },
   _onUploadDone(){
-    ReportAction.getTemplateListByCustomerId(parseInt(this.props.customerId), this.props.sortBy, 'asc');
+    ReportAction.getTemplateListByCustomerId(parseInt(this.context.currentRoute.params.customerId), this.props.sortBy, 'asc');
     this._handleDialogDismiss();
     this.refs.upload_tempalte.reset();
   },
