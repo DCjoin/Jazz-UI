@@ -54,6 +54,7 @@ module.exports = {
   },
   DataAnalysis:{
     getWidgetGatherInfo:'/Widget/GetWidgetGatherInfo',
+    getProwidgetgatherinfo:'/widget/prowidgetgatherinfo',
     getLatestRawData:'/energy/Tag/{tagId}/LatestRawData'
   },
   ECM:{

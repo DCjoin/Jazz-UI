@@ -21,7 +21,8 @@ export default class AuxiliaryFunction extends Component {
   state={
     showAddIntervalDialog:false,
     showYaxisDialog:false,
-    showSumDialog:false
+    showSumDialog:false,
+    showIntervalDialog:false,
   }
 
   _onConfigBtnItemTouchTap(e,menuParam, value){
@@ -31,6 +32,11 @@ export default class AuxiliaryFunction extends Component {
     case 'sum':
       this.setState({
         showSumDialog: true
+      });
+      break;
+    case 'interval':
+      this.setState({
+        showIntervalDialog: true
       });
       break;
     case 'background':{
@@ -115,6 +121,7 @@ export default class AuxiliaryFunction extends Component {
           marginLeft: '10px'
         }} backgroundColor="#f3f5f7" onItemTouchTap={this._onConfigBtnItemTouchTap} disabled={this.getMoreBtnDisableStatus()}>
        <MenuItem primaryText={I18N.EM.Tool.DataStatistics} value='sum' disabled={disabled}/>
+       <MenuItem primaryText={I18N.EM.Tool.IntervalStatistics} value='interval' disabled={disabled}/>
          {calendarEl}
       <MenuItem primaryText={I18N.EM.Tool.YaxisConfig} value='yaxis' disabled={disabled}/>
      </ButtonMenu>
@@ -163,6 +170,7 @@ export default class AuxiliaryFunction extends Component {
     var props={
       timeRanges:this.props.timeRanges,
       analysisPanel:this.props.analysisPanel,
+      step:this.props.analysisPanel.state.step,
       onCloseDialog:()=>{
         this.setState({
           showSumDialog:false
@@ -170,6 +178,10 @@ export default class AuxiliaryFunction extends Component {
       }
     }
       return <StatisticsDialog {...props}/>
+  }
+
+  _renderIntervalDialog(){
+    return(<div/>)
   }
 
   render(){
@@ -193,6 +205,7 @@ export default class AuxiliaryFunction extends Component {
         {this.state.showAddIntervalDialog && this._renderHistoryCompareDialog()}
         {this.state.showYaxisDialog && this._renderYaxisConfigDialog()}
         {this.state.showSumDialog && this._renderStatisticsDialog()}
+        {this.state.showIntervalDialog && this._renderIntervalDialog()}
         </div>
     )
   }

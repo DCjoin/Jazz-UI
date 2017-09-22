@@ -505,6 +505,7 @@ I18N.EM.Tool.HistoryCompare = '历史对比';
 I18N.EM.Tool.BenchmarkSetting = '基准值设置';
 I18N.EM.Tool.DataSum = '数据求和';
 I18N.EM.Tool.DataStatistics = '数据统计';
+I18N.EM.Tool.IntervalStatistics = '分时统计';
 I18N.EM.Tool.YaxisConfig = 'Y轴设置';
 I18N.EM.Tool.MoreAnalysis = '更多分析';
 
@@ -2300,6 +2301,12 @@ I18N.Setting.DataAnalysis.InputDataLeaveTip = '数据未保存，是否保存数
 I18N.Setting.DataAnalysis.InputDataErrorTip = '格式错误，请重新输入';
 I18N.Setting.DataAnalysis.InputDataSaveSuccess = '数据保存成功';
 I18N.Setting.DataAnalysis.InputDataUom = '数值';
+I18N.Setting.DataAnalysis.Sum = '求和类数据';
+I18N.Setting.DataAnalysis.Avg = '平均值数据';
+I18N.Setting.DataAnalysis.Max = '最大值数据';
+I18N.Setting.DataAnalysis.Total = '合计';
+I18N.Setting.DataAnalysis.NoCanlendarConfig = '此数据点没有配置工作日非工作日';
+I18N.Setting.DataAnalysis.TimeSpan = '时间';
 
 I18N.Setting.ECM = {};
 I18N.Setting.ECM.EstimatedAnnualCostSavings = '预计年节约成本';

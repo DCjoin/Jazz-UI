@@ -36,10 +36,11 @@ class DialogInline extends Component {
 			actions,
 			modal,
 			hasClose,
-			isOutsideClose
+			isOutsideClose,
+			closeIconStyle
 		} = this.props,
 
-		close = (!hasClose && modal)  ? null : <div className="dialog-close icon-close" onClick={this.onClickAway.bind(this)}></div>;
+		close = (!hasClose && modal)  ? null : <div className="dialog-close icon-close"  style={closeIconStyle} onClick={this.onClickAway.bind(this)}></div>;
 
 		return (
 			<div {...dialogProps}>
@@ -72,7 +73,8 @@ class NewDialog extends Component {
 			titleClassName,
 			titleStyle,
 			wrapperStyle,
-			isOutsideClose
+			isOutsideClose,
+			closeIconStyle
 		} = this.props,
 
 		dialogWrapperProps = {
@@ -110,7 +112,7 @@ class NewDialog extends Component {
 				}
 			}
 		},
-		dialogInlineProps = { dialogProps, contentProps, titleProps, actionsContainerProps, title, actions,modal, onRequestClose,isOutsideClose, hasClose};
+		dialogInlineProps = { dialogProps, contentProps, titleProps, actionsContainerProps, title, actions,modal, onRequestClose,isOutsideClose, hasClose,closeIconStyle};
 
 		let HighOrderDialogInline = DialogInline;
 		// if( !modal  && isOutsideClose) {
