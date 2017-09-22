@@ -18,7 +18,8 @@ import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
 // import {GatherInfo} from '../../../../../mockData/DataAnalysis.js';
 var isMultiTime;
-
+var display_timeRanges=[],display_tagOptions=[];
+var step_config=[I18N.EM.Raw,I18N.EM.Hour,I18N.EM.Day,I18N.EM.Month,I18N.EM.Year,I18N.EM.Week]
 function privilegeWithSeniorDataAnalyse( privilegeCheck ) {
   return true
 	// return privilegeCheck(PermissionCode.SENIOR_DATA_ANALYSE, CurrentUserStore.getCurrentPrivilege());
@@ -35,6 +36,8 @@ function getTime(time){
     return '';
   }
 }
+
+
 class ItemComponent extends Component{
   render(){
     return(
@@ -64,7 +67,7 @@ class TableHeader extends Component{
     return(
       <div style={style}>
         <div style={{paddingLeft:'10px',width:'181px'}}>{this.props.columnName}</div>
-        <div style={{width:'220px'}}>{this.props.hasTime?I18N.Setting.Calendar.Time:''}</div>
+        <div style={{width:'220px'}}>{this.props.hasTime?(this.props.additionColumnName?this.props.additionColumnName:I18N.Setting.Calendar.Time):''}</div>
         <div>
           {this.props.typeName}
         </div>
@@ -78,6 +81,7 @@ TableHeader.propTypes={
   typeName:React.PropTypes.string,
   hasTime:React.PropTypes.bool,
   style:React.PropTypes.object,
+  additionColumnName:React.PropTypes.string,
 }
 
 class TableRow extends Component{
@@ -136,10 +140,9 @@ export default class StatisticsDialog extends Component {
     })
   }
 
-  _renderSum(){
+  _renderBasicSum(){
     var header={},content;
     var SumGroup=this.state.gatherInfo.SumGroup;
-    if(SumGroup===null) return null;
     if(isMultiTime){
       header={
         columnName:I18N.SumWindow.TimeSpan,
@@ -215,17 +218,108 @@ export default class StatisticsDialog extends Component {
       })
     }
     return(
-      <ItemComponent title={I18N.Common.CaculationType.Sum}>
+      <ItemComponent title={I18N.Setting.DataAnalysis.Sum}>
         <TableHeader {...header}/>
         {content}
       </ItemComponent>
     )
   }
 
-  _renderAverage(){
+    _renderSeniorSum(){
     var header={},content;
+    var SumGroup=this.state.gatherInfo.SumGroup;
+    var style={height:'36px',
+      minHeight:'36px',
+      fontSize:'12px',
+      border:'1px solid #e6e6e6',
+      borderTop:'none',
+      display:'flex',
+      alignItems:'center',
+      justifyContent:'center',
+      color:'#626469'};
+    if(isMultiTime){
+      header={
+        columnName:I18N.Setting.DataAnalysis.TimeSpan,
+        typeName:I18N.Common.CaculationType.Avg,
+        additionColumnName:I18N.Common.CaculationType.Sum,
+        hasTime:true,
+        style:{'marginBottom':'none'}
+      };
+      content=SumGroup.map((sum,sunIndex)=>{
+        var {CommodityId,UomName,GatherSumValue,GatherAvgValue,TimeRange,WorkdaySumValue,WorkdayAvgValue,HolidaySumValue,HolidayAvgValue,IsConfigCalendar}=sum;
+        var {StartTime,EndTime}=TimeRange;
+        var j2d = CommonFuns.DataConverter.JsonToDateTime;
+        var start=new Date(j2d(StartTime)),end=new Date(j2d(EndTime));
+        var title=(
+          <div style={{paddingLeft:'10px',height:'30px',minHeight:'30px',backgroundColor:'#f7f7f7',lineHeight:'30px',fontSize:'12px',color:'#626469',borderLeft:'1px solid #e6e6e6',borderRight:'1px solid #e6e6e6'}}>
+            {DataAnalysisStore.getDisplayDate(start,false)+I18N.Setting.DataAnalysis.To+DataAnalysisStore.getDisplayDate(end,true)}
+          </div>
+        );
+      var group=IsConfigCalendar?
+                <div>
+                <TableRow columnValue={I18N.Setting.Calendar.WorkDay} time={WorkdaySumValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:WorkdaySumValue} typeValue={WorkdayAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:WorkdayAvgValue+'/'+step_config[this.props.step]}/>
+                <TableRow columnValue={I18N.Setting.Calendar.Holiday} time={HolidaySumValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:HolidaySumValue} typeValue={HolidayAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:HolidayAvgValue+'/'+step_config[this.props.step]}/>
+                <TableRow columnValue={I18N.Setting.DataAnalysis.Total} time={GatherSumValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:GatherSumValue} typeValue={GatherAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:GatherAvgValue+'/'+step_config[this.props.step]}/>
+                </div>
+                :<div style={style}>{I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
+        return(
+          <div>
+            {title}
+            {group}
+          </div>
+        )
+
+      })
+    }else {
+      header={
+        columnName:I18N.Setting.DataAnalysis.TimeSpan,
+        typeName:I18N.Common.CaculationType.Avg,
+        additionColumnName:I18N.Common.CaculationType.Sum,
+        hasTime:true,
+        style:{'marginBottom':'none'}
+      };
+      content=SumGroup.map((sum,sunIndex)=>{
+        var {CommodityId,UomName,GatherSumValue,GatherAvgValue,TagName,WorkdaySumValue,WorkdayAvgValue,HolidaySumValue,HolidayAvgValue,IsConfigCalendar}=sum;
+        var commodity=CommonFuns.getCommodityById(CommodityId).Comment;
+        var title=(
+          <div style={{paddingLeft:'10px',height:'30px',minHeight:'30px',backgroundColor:'#f7f7f7',lineHeight:'30px',fontSize:'12px',color:'#626469',borderLeft:'1px solid #e6e6e6',borderRight:'1px solid #e6e6e6'}}>
+            {TagName+'  '+I18N.Common.Glossary.Commodity+":"+commodity+" "+I18N.Common.Glossary.UOM+':'+UomName}
+          </div>
+        );
+      var group=IsConfigCalendar?
+                <div>
+                <TableRow columnValue={I18N.Setting.Calendar.WorkDay} time={WorkdaySumValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:WorkdaySumValue} typeValue={WorkdayAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:WorkdayAvgValue+'/'+step_config[this.props.step]}/>
+                <TableRow columnValue={I18N.Setting.Calendar.Holiday} time={HolidaySumValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:HolidaySumValue} typeValue={HolidayAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:HolidayAvgValue+'/'+step_config[this.props.step]}/>
+                <TableRow columnValue={I18N.Setting.DataAnalysis.Total} time={GatherSumValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:GatherSumValue} typeValue={GatherAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:GatherAvgValue+'/'+step_config[this.props.step]}/>
+                </div>
+                :<div style={style}>{I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
+        return(
+          <div>
+            {title}
+            {group}
+          </div>
+        )
+
+      })
+    }
+    return(
+      <ItemComponent title={I18N.Setting.DataAnalysis.Sum}>
+        <TableHeader {...header}/>
+        {content}
+      </ItemComponent>
+    )
+  }
+
+  _renderSum(){
+    if(this.state.gatherInfo.SumGroup===null) return null;
+    if(this.state.showModel===Model.Basic) return this._renderBasicSum()
+    else return this._renderSeniorSum()
+  
+  }
+
+  _renderBasicAve(){
+      var header={},content;
     var AvgGroup=this.state.gatherInfo.AvgGroup;
-    if(AvgGroup===null) return null;
     if(isMultiTime){
       header={
         columnName:I18N.SumWindow.TimeSpan,
@@ -274,17 +368,105 @@ export default class StatisticsDialog extends Component {
       })
     }
     return(
-      <ItemComponent title={I18N.Common.CaculationType.Avg} style={{marginTop:'30px'}}>
+      <ItemComponent title={I18N.Setting.DataAnalysis.Avg} style={{marginTop:'30px'}}>
         <TableHeader {...header}/>
         {content}
       </ItemComponent>
     )
   }
 
-  _renderMax(){
+  _renderSeniorAve(){
+    var header={},content;
+    var AvgGroup=this.state.gatherInfo.AvgGroup;
+    var style={height:'36px',
+      minHeight:'36px',
+      fontSize:'12px',
+      border:'1px solid #e6e6e6',
+      borderTop:'none',
+      display:'flex',
+      alignItems:'center',
+      justifyContent:'center',
+      color:'#626469'};
+    if(isMultiTime){
+      header={
+        columnName:I18N.Setting.DataAnalysis.TimeSpan,
+        typeName:I18N.Common.CaculationType.Avg,
+        hasTime:false,
+        style:{'marginBottom':'none'}
+      };
+      content=AvgGroup.map((avg,sunIndex)=>{
+        var {CommodityId,UomName,GatherAvgValue,HolidayAvgValue,IsConfigCalendar,TimeRange,WorkdayAvgValue}=avg;
+        var commodity=CommonFuns.getCommodityById(CommodityId).Comment;
+        var {StartTime,EndTime}=TimeRange;
+        var j2d = CommonFuns.DataConverter.JsonToDateTime;
+        var start=new Date(j2d(StartTime)),end=new Date(j2d(EndTime));
+        var title=(
+          <div style={{paddingLeft:'10px',height:'30px',minHeight:'30px',backgroundColor:'#f7f7f7',lineHeight:'30px',fontSize:'12px',color:'#626469',borderLeft:'1px solid #e6e6e6',borderRight:'1px solid #e6e6e6'}}>
+            {DataAnalysisStore.getDisplayDate(start,false)+I18N.Setting.DataAnalysis.To+DataAnalysisStore.getDisplayDate(end,true)}
+          </div>
+        );
+      var group=IsConfigCalendar?<div>
+                <TableRow columnValue={I18N.Setting.Calendar.WorkDay} typeValue={WorkdayAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:WorkdayAvgValue+'/'+step_config[this.props.step]}/>
+                <TableRow columnValue={I18N.Setting.Calendar.Holiday} typeValue={HolidayAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:HolidayAvgValue+'/'+step_config[this.props.step]}/>
+                <TableRow columnValue={I18N.Common.Glossary.Order.All} typeValue={GatherAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:GatherAvgValue+'/'+step_config[this.props.step]}/>
+                </div>
+                :<div style={style}>{I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
+        return(
+          <div>
+            {title}
+            {group}
+          </div>
+        )
+
+      })
+    }else {
+      header={
+        columnName:I18N.Setting.DataAnalysis.TimeSpan,
+        typeName:I18N.Common.CaculationType.Avg,
+        hasTime:false,
+        style:{'marginBottom':'none'}
+      };
+      content=AvgGroup.map((avg,sunIndex)=>{
+        var {CommodityId,UomName,TagName,GatherAvgValue,HolidayAvgValue,IsConfigCalendar,WorkdayAvgValue}=avg;
+        var commodity=CommonFuns.getCommodityById(CommodityId).Comment;
+        var title=(
+          <div style={{paddingLeft:'10px',height:'30px',minHeight:'30px',backgroundColor:'#f7f7f7',lineHeight:'30px',fontSize:'12px',color:'#626469',borderLeft:'1px solid #e6e6e6',borderRight:'1px solid #e6e6e6'}}>
+            {TagName+'  '+I18N.Common.Glossary.Commodity+":"+commodity+" "+I18N.Common.Glossary.UOM+':'+UomName}
+          </div>
+        );
+      var group=IsConfigCalendar?<div>
+                <TableRow columnValue={I18N.Setting.Calendar.WorkDay} typeValue={WorkdayAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:WorkdayAvgValue+'/'+step_config[this.props.step]}/>
+                <TableRow columnValue={I18N.Setting.Calendar.Holiday} typeValue={HolidayAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:HolidayAvgValue+'/'+step_config[this.props.step]}/>
+                <TableRow columnValue={I18N.Common.Glossary.Order.All} typeValue={GatherAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:GatherAvgValue+'/'+step_config[this.props.step]}/>
+                </div>
+                :<div style={style}>{I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
+        return(
+          <div>
+            {title}
+            {group}
+          </div>
+        )
+
+      })
+    }
+    return(
+      <ItemComponent title={I18N.Setting.DataAnalysis.Avg}>
+        <TableHeader {...header}/>
+        {content}
+      </ItemComponent>
+    )
+  }
+
+  _renderAverage(){
+
+    if(this.state.gatherInfo.AvgGroup===null) return null;
+    if(this.state.showModel===Model.Basic) return this._renderBasicAve()
+        else return this._renderSeniorAve()
+  }
+
+  _renderBasicMax(){
     var header={},content;
     var MaxGroup=this.state.gatherInfo.MaxGroup;
-    if(MaxGroup===null) return null;
     if(isMultiTime){
       header={
         columnName:I18N.SumWindow.TimeSpan,
@@ -334,17 +516,114 @@ export default class StatisticsDialog extends Component {
       })
     }
     return(
-      <ItemComponent title={I18N.Common.CaculationType.Max} style={{marginTop:'30px'}}>
+      <ItemComponent title={I18N.Setting.DataAnalysis.Max} style={{marginTop:'30px'}}>
         <TableHeader {...header}/>
         {content}
       </ItemComponent>
     )
   }
 
+  _renderSeniorMax(){
+    var header={},content;
+    var MaxGroup=this.state.gatherInfo.MaxGroup;
+    var style={height:'36px',
+      minHeight:'36px',
+      fontSize:'12px',
+      border:'1px solid #e6e6e6',
+      borderTop:'none',
+      display:'flex',
+      alignItems:'center',
+      justifyContent:'center',
+      color:'#626469'};
+    if(isMultiTime){
+
+      header={
+        columnName:I18N.Setting.DataAnalysis.TimeSpan,
+        typeName:I18N.Common.CaculationType.Max,
+        hasTime:false
+      };
+
+      content=MaxGroup.map((item,index)=>{
+        var {CommodityId,UomName,TimeRange,HodidayMaxValue,HolidayTimes,WorkdayMaxValue,WorkdayTimes,IsConfigCalendar}=item;
+        var commodity=CommonFuns.getCommodityById(CommodityId).Comment;
+        var {StartTime,EndTime}=TimeRange;
+        var j2d = CommonFuns.DataConverter.JsonToDateTime;
+        var start=new Date(j2d(StartTime)),end=new Date(j2d(EndTime));
+        var title=(
+          <div style={{paddingLeft:'10px',height:'30px',minHeight:'30px',backgroundColor:'#f7f7f7',lineHeight:'30px',fontSize:'12px',color:'#626469',borderLeft:'1px solid #e6e6e6',borderRight:'1px solid #e6e6e6'}}>
+            {DataAnalysisStore.getDisplayDate(start,false)+I18N.Setting.DataAnalysis.To+DataAnalysisStore.getDisplayDate(end,true)}
+          </div>
+        );
+        var group;
+        if(!IsConfigCalendar) group=<div style={style}>{I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
+        else{
+          group=WorkdayTimes.map(workday=>(
+            <TableRow columnValue={getTime(new Date(j2d(workday)))+" ("+I18N.Setting.Calendar.WorkDay+')'} typeValue={WorkdayMaxValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:WorkdayMaxValue}/>
+          )).concat(HolidayTimes.map(holiday=>(
+            <TableRow columnValue={getTime(new Date(j2d(holiday)))+" ("+I18N.Setting.Calendar.Holiday+')'} typeValue={HodidayMaxValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:HodidayMaxValue}/>
+          )))
+        
+        }
+        return(
+          <div>
+            {title}
+            {group}
+          </div>
+        )
+       })
+    }
+    else {
+      header={
+        columnName:I18N.Setting.DataAnalysis.TimeSpan,
+        typeName:I18N.Common.CaculationType.Max,
+        hasTime:false
+      };
+
+      content=MaxGroup.map((item,index)=>{
+        var {CommodityId,TagName,UomName,HodidayMaxValue,HolidayTimes,WorkdayMaxValue,WorkdayTimes,IsConfigCalendar}=item;
+        var commodity=CommonFuns.getCommodityById(CommodityId).Comment;
+         var j2d = CommonFuns.DataConverter.JsonToDateTime;
+        var title=(
+          <div style={{paddingLeft:'10px',height:'30px',minHeight:'30px',backgroundColor:'#f7f7f7',lineHeight:'30px',fontSize:'12px',color:'#626469',borderLeft:'1px solid #e6e6e6',borderRight:'1px solid #e6e6e6'}}>
+            {TagName+'  '+I18N.Common.Glossary.Commodity+":"+commodity+" "+I18N.Common.Glossary.UOM+':'+UomName}
+          </div>
+        );
+        var group;
+        if(!IsConfigCalendar) group=<div style={style}>{I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
+        else{
+          group=WorkdayTimes.map(workday=>(
+            <TableRow columnValue={getTime(new Date(j2d(workday)))+" ("+I18N.Setting.Calendar.WorkDay+')'} typeValue={WorkdayMaxValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:WorkdayMaxValue}/>
+          )).concat(HolidayTimes.map(holiday=>(
+            <TableRow columnValue={getTime(new Date(j2d(holiday)))+" ("+I18N.Setting.Calendar.Holiday+')'} typeValue={HodidayMaxValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:HodidayMaxValue}/>
+          )))
+        
+        }
+        return(
+          <div>
+            {title}
+            {group}
+          </div>
+        )
+       })
+    }
+    return(
+      <ItemComponent title={I18N.Setting.DataAnalysis.Max}>
+        <TableHeader {...header}/>
+        {content}
+      </ItemComponent>
+    )
+  }
+
+  _renderMax(){
+    if(this.state.gatherInfo.MaxGroup===null) return null;
+    if(this.state.showModel===Model.Basic) return this._renderBasicMax()
+        else return this._renderSeniorMax()
+  }
+
   _renderContent(){
     // var isMultiTime=false;
     return(
-      <div style={{overflow:'auto'}}>
+      <div style={{flex:'1',width:'100%',display:'flex',flexDirection:'column'}}>
         {this._renderSum()}
         {this._renderAverage()}
         {this._renderMax()}
@@ -364,6 +643,25 @@ export default class StatisticsDialog extends Component {
     }
   }
 
+  getGatherInfo(model){
+    if(display_timeRanges.length!==0 && display_tagOptions.length!==0){
+      if(model===Model.Basic){
+        BasicAnalysisAction.getWidgetGatherInfo(display_timeRanges,this.props.analysisPanel.state.step,display_tagOptions);
+      }else{
+        BasicAnalysisAction.getProWidgetGatherInfo(display_timeRanges,this.props.analysisPanel.state.step,display_tagOptions);
+      }      
+    }
+    else {
+      this.setState({
+        gatherInfo:{
+          MaxGroup:null,
+          AvgGroup:null,
+          SumGroup:null
+        }
+      })
+    }
+  }
+
   componentWillMount(){
     isMultiTime=MultipleTimespanStore.getSubmitTimespans()!==null;
   }
@@ -375,7 +673,6 @@ export default class StatisticsDialog extends Component {
       paramsObj = EnergyStore.getParamsObj(),
       timeRanges = paramsObj.timeRanges;
     var seriesStatusArray = ChartStatusStore.getSeriesStatus();
-    var display_timeRanges=[],display_tagOptions=[];
 
     if(isMultiTime){
       seriesStatusArray.forEach((series,index)=>{
@@ -393,18 +690,7 @@ export default class StatisticsDialog extends Component {
       })
       display_timeRanges=timeRanges
     }
-    if(display_timeRanges.length!==0 && display_tagOptions.length!==0){
-      BasicAnalysisAction.getWidgetGatherInfo(display_timeRanges,this.props.analysisPanel.state.step,display_tagOptions);
-    }
-    else {
-      this.setState({
-        gatherInfo:{
-          MaxGroup:null,
-          AvgGroup:null,
-          SumGroup:null
-        }
-      })
-    }
+    this.getGatherInfo(Model.Basic);
 
   }
 
@@ -418,7 +704,7 @@ export default class StatisticsDialog extends Component {
     var style={
       title:{
         fontSize:'16px',
-        fontWeight:'500',
+        fontWeight:'600',
         color:'#0f0f0f',
         height:'52px',
         borderBottom:'1px solid #e6e6e6',
@@ -427,15 +713,27 @@ export default class StatisticsDialog extends Component {
         marginBottom:'0',
         paddingLeft:'10px',
         marginLeft:'72px',
-        marginRight:'72px'
+        marginRight:'72px',
+        alignItems:'center'
       },
       content:{
         marginLeft:'72px',
-        marginRight:'72px',
+        marginRight:'0',
         display: 'flex',
-        flexDirection: 'row',
+        flexDirection: 'column',
         alignItems: 'center',
-        overflowY:'auto'
+        justifyContent:'center',
+        overflowY:'auto',
+        paddingRight:'72px'
+      },
+      closeIcon:{
+        fontSize:'15px',
+        lingHeight:'15px',
+        height:'15px',
+        margin:'0',
+        color:'#505559',
+        position:'absolute',
+        right:'20px'
       }
     };
         if(this.state.gatherInfo===null){
@@ -449,21 +747,29 @@ export default class StatisticsDialog extends Component {
           content=this._renderContent()
         }
     return(
-      <Dialog title={title} titleStyle={style.title} style={{position:'relative'}} open={true}  modal={false} onRequestClose={this.props.onCloseDialog} contentStyle={style.content}>
-        {this.state.showModel===Model.Senior && <IconButton iconClassName="icon-left-switch" 
+      <Dialog title={title} titleStyle={style.title} style={{position:'relative'}} closeIconStyle={{fontSize:'15px',lingHeight:'15px',height:'15px',margin:'0',color:'#505559'}} open={true}  modal={false} onRequestClose={this.props.onCloseDialog} contentStyle={style.content}>
+        
+        {this.state.gatherInfo!==null && this.state.showModel===Model.Senior && <IconButton iconClassName="icon-left-switch" 
                     iconStyle={{fontSize:'43px',height:'43px',width:'43px',color:'#9fa0a4'}} 
                     style={{position:'absolute',left:'14px',padding:'0'}}
                     onClick={()=>{
                                  this.setState({
-                                   showModel:Model.Basic
+                                   showModel:Model.Basic,
+                                   gatherInfo:null
+                                 },()=>{
+                                   this.getGatherInfo(Model.Basic)
                                  })}}/>}
         {content}
-        {this.state.showModel===Model.Basic && SeniorDataAnalyseIsFull() && <IconButton iconClassName="icon-right-switch" 
+        {this.state.gatherInfo!==null && this.state.showModel===Model.Basic && SeniorDataAnalyseIsFull() && <IconButton iconClassName="icon-right-switch" 
                     iconStyle={{fontSize:'43px',height:'43px',width:'43px',color:'#9fa0a4'}}
                     style={{position:'absolute',right:'14px',padding:'0'}}
                     onClick={()=>{
                                  this.setState({
-                                   showModel:Model.Senior
+                                   showModel:Model.Senior,
+                                   gatherInfo:null
+                                  }
+                                 ,()=>{
+                                   this.getGatherInfo(Model.Senior)
                                  })}}/>}
       </Dialog>
     )
@@ -473,5 +779,6 @@ export default class StatisticsDialog extends Component {
 StatisticsDialog.propTypes = {
   onCloseDialog:React.PropTypes.func,
   timeRanges:React.PropTypes.object,
-  analysisPanel:React.PropTypes.object
+  analysisPanel:React.PropTypes.object,
+  step:React.PropTypes.number
 };

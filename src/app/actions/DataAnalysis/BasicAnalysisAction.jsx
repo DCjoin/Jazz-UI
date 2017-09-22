@@ -44,6 +44,37 @@ const BasicAnalysisAction = {
       }
     });
   },
+  getProWidgetGatherInfo(timeRanges,step,tagOptions){
+    var url = Path.DataAnalysis.getProwidgetgatherinfo;
+    var tagIds = getTagIdsFromTagOptions(tagOptions);
+    Ajax.post(url,
+      {
+      params: {
+        tagIds: tagIds,
+        viewOption: {
+          DataUsageType: 1,
+          IncludeNavigatorData: true,
+          Step: step,
+          TimeRanges: timeRanges
+        }
+      },
+      success: function(resBody) {
+        AppDispatcher.dispatch({
+          type: Action.GET_WIDGET_GATHER_INFO,
+          data:resBody
+        });
+      },
+      error: function(err, res) {
+        // let ErrorMsg = I18N.format(util.getErrorMessageByRes(res.text),params.GroupKpiSetting.IndicatorName);
+        // AppDispatcher.dispatch({
+        //   type: Action.KPI_GROUP_ERROR,
+        //   title: I18N.Platform.ServiceProvider.ErrorNotice,
+        //   content: ErrorMsg,
+        // });
+        console.log(err, res);
+      }
+    });
+  },
   setInitialWidgetDto(dto){
     AppDispatcher.dispatch({
       type: Action.SET_INITIAL_WIDGET_DTO,

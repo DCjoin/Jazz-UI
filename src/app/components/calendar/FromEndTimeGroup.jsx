@@ -146,7 +146,8 @@ var FromEndTimeGroup = React.createClass({
           lang: window.currentLanguage,
           onTimeChange: me._onTimeChange,
           onDeleteTimeData: me._onDeleteTimeData,
-          setErrorText: me._setErrorText
+          setErrorText: me._setErrorText,
+          deleteButton:me.props.deleteButton
         };
         return (
           <FromEndTime {...props}></FromEndTime>

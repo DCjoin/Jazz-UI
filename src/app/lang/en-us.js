@@ -504,6 +504,7 @@ I18N.EM.Tool.HistoryCompare = 'History comparison';
 I18N.EM.Tool.BenchmarkSetting = 'Baseline setting';
 I18N.EM.Tool.DataSum = 'Data Sum';
 I18N.EM.Tool.DataStatistics = 'Data Statistics';
+I18N.EM.Tool.IntervalStatistics = '分时统计';
 I18N.EM.Tool.YaxisConfig = 'Y-Axis Options';
 I18N.EM.Tool.MoreAnalysis = 'More Analysis';
 
@@ -2300,6 +2301,12 @@ I18N.Setting.DataAnalysis.InputDataSaveSuccess = 'Data saved successfully';
 I18N.Setting.DataAnalysis.InputDataUom = 'Value';
 I18N.Setting.DataAnalysis.SaveTip = 'Chart not saved，save and quit？';
 I18N.Setting.DataAnalysis.LeaveTip = 'Empty chart will be deleted if you quit，confirm to quit？';
+I18N.Setting.DataAnalysis.Sum = '求和类数据';
+I18N.Setting.DataAnalysis.Avg = '平均值数据';
+I18N.Setting.DataAnalysis.Max = '最大值数据';
+I18N.Setting.DataAnalysis.Total = '合计';
+I18N.Setting.DataAnalysis.NoCanlendarConfig = '此数据点没有配置工作日非工作日';
+I18N.Setting.DataAnalysis.TimeSpan = '时间';
 
 I18N.Setting.ECM = {};
 I18N.Setting.ECM.EstimatedAnnualCostSavings = 'Estimated Annual Cost Savings';
