@@ -101,7 +101,7 @@ server.route({
 });
 server.route({
   method: 'GET',
-  path: '/DownloadApp.html',
+  path: '/download-app',
   handler: returnDownloadHtml,
 });
 server.route({
