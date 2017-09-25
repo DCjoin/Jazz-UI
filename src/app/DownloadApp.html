@@ -144,6 +144,16 @@
 				visibility: hidden;
 			}
 		</style>
+		<script>
+			window.__options = {
+				Version: "${APP_VERSION}",
+				Size: "${APP_SIZE}",
+				LoacalURL: "${APP_DOWNLOAD_LOCAL}",
+				QQURL: "${APP_DOWNLOAD_QQ}",
+				WDJURL: "${APP_DOWNLOAD_WDJ}",
+				BaiduURL: "${APP_DOWNLOAD_BAIDU}",
+			};
+		</script>
 	</head>
 
 	<body>
@@ -166,34 +176,34 @@
 				<div id="title" class="title center"><span>云能效</span><span id="test_os"></span></div>
 				<div id="app-info" class="app-info center">
 					<!-- 版本号 -->
-					<span id="app-version" class="app-version">版本：v0.4.22</span>
+					<span id="app-version" class="app-version">版本：<span id="version">v0.4.22</span></span>
 					<!-- App文件大小 -->
-					<span id="app-size" class="app-size">大小：13.86M</span>
+					<span id="app-size" class="app-size">大小：<span id="size">13.86M</span></span>
 				</div>
 				<div class="down-link center">
 					<!-- 本地下载地址 -->
-						<a href="http://energymost-upload.oss-cn-hangzhou.aliyuncs.com/brownie-app-prod-release-0.4.22.apk" onclick="localDownload()">本地下载</a>
+						<a id="local-url" href="http://energymost-upload.oss-cn-hangzhou.aliyuncs.com/brownie-app-prod-release-0.4.22.apk" onclick="localDownload()">本地下载</a>
 					<div id="mms_text" class="mms-text">请选择用其他浏览器打开本页，然后点击本地下载</div>
 				</div>
 				<div class="down-other-title center">其他下载方式</div>
 				<div class="down-other-links center">
 					<div class="down-other-link">
 						<!-- 在应用宝中的下载地址 -->
-						<a class="link-icon" href="http://app.qq.com/#id=detail&appid=1106196772">
+						<a id="qq-url" class="link-icon" href="http://app.qq.com/#id=detail&appid=1106196772">
 							<div class="icon-tencent download-icon"></div>
 							<div class="link-text">应用宝</div>
 						</a>
 					</div>
 					<div class="down-other-link">
 						<!-- 在豌豆荚中的下载地址 -->
-						<a class="link-icon" href="http://www.wandoujia.com/apps/com.energymost.brownie">
+						<a id="wdj-url" class="link-icon" href="http://www.wandoujia.com/apps/com.energymost.brownie">
 							<div class="icon-wandoujia download-icon"></div>
 							<div class="link-text">豌豆荚</div>
 						</a>
 					</div>
 					<div class="down-other-link">
 						<!-- 在百度应用中的下载地址 -->
-						<a class="link-icon" href="http://shouji.baidu.com/software/11792743.html">
+						<a id="baidu-url" class="link-icon" href="http://shouji.baidu.com/software/11792743.html">
 							<div class="icon-baidu download-icon"></div>
 							<div class="link-text">百度助手</div>
 						</a>
@@ -206,6 +216,12 @@
 			</div>
 		</div>
 		<script>
+			document.getElementById("version").innerHTML = window.__options.Version;
+			document.getElementById("size").innerHTML = window.__options.Size;
+			document.getElementById("local-url").href = window.__options.LoacalURL;
+			document.getElementById("qq-url").href = window.__options.QQURL;
+			document.getElementById("wdj-url").href = window.__options.WDJURL;
+			document.getElementById("baidu-url").href = window.__options.BaiduURL;
 			function iOS() {
 				var iDevices = [
 					'iPad Simulator',
