@@ -204,7 +204,7 @@ export default class AuxiliaryFunction extends Component {
     return(
       <div>
         <div style={{display:'flex'}}>
-          {this.props.weatherTag!==null && this.getWeatherBtn()}
+          {this.getWeatherBtn()}
           <FlatButton disabled={this.getHistoryBtnStatus()} label={I18N.EM.Tool.HistoryCompare} labelStyle={styles.label}
             icon={<FontIcon className="icon-historical-comparison" style={styles.label}/>}
             onClick={()=>{this.setState({showAddIntervalDialog:true})}}/>

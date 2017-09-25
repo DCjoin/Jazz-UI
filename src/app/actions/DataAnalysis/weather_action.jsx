@@ -25,10 +25,11 @@ const WeatherAction = {
           type: Action.CLEAR_SELECTED_TAG,
         })
   },
-  checkedTag(tag){
+  checkedTag(tag,ischecked){
         AppDispatcher.dispatch({
           type: Action.CHECKED_TAG,
-          tag
+          tag,
+          ischecked
         })
   }
 }

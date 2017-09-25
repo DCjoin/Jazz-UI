@@ -105,25 +105,25 @@ export default class DataAnalysis extends Component {
 		  this._loadInitData(this.props, this.context);
     }
 
-		// if(findBuilding(this._getHierarchyId(this.context))){
-		// 	WeatherAction.getCityWeatherTag(findBuilding(this._getHierarchyId(this.context))[0].CityId)
-		// }else{
-		// 	WeatherAction.clearCityWeatherTag()
-		// }
-
-		WeatherAction.getCityWeatherTag(1)
+		if(findBuilding(this._getHierarchyId(this.context)) && findBuilding(this._getHierarchyId(this.context))[0].Location){
+			// WeatherAction.getCityWeatherTag(findBuilding(this._getHierarchyId(this.context))[0].Location.CityId)
+			WeatherAction.getCityWeatherTag(1)
+		}else{
+			WeatherAction.clearCityWeatherTag()
+		}
 	}
 
 	componentWillReceiveProps(nextProps, nextContext) {
 		if( !util.shallowEqual(nextContext.hierarchyId, this.context.hierarchyId) ) {
 			this.setState(this._getInitialState(nextProps));
 			this._loadInitData(nextProps, nextContext);
-			WeatherAction.getCityWeatherTag(2)
-		// 	if(findBuilding(this._getHierarchyId(nextContext))){
-		// 		WeatherAction.getCityWeatherTag(findBuilding(this._getHierarchyId(nextContext))[0].CityId)
-		// 	}else{
-		// 	WeatherAction.clearCityWeatherTag()
-		// }
+			// WeatherAction.getCityWeatherTag(2)
+			if(findBuilding(this._getHierarchyId(nextContext)) && findBuilding(this._getHierarchyId(nextContext))[0].Location){
+				// WeatherAction.getCityWeatherTag(findBuilding(this._getHierarchyId(nextContext))[0].Location.CityId)
+				WeatherAction.getCityWeatherTag(2)
+			}else{
+			WeatherAction.clearCityWeatherTag()
+		}
       if( this.context.hierarchyId ) {
         nextProps.router.push(RoutePath.dataAnalysis(nextProps.params));
       }

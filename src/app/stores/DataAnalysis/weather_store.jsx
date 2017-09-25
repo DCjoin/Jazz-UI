@@ -2,6 +2,8 @@
 
 import AppDispatcher from '../../dispatcher/AppDispatcher.jsx';
 import { Action } from 'constants/actionType/DataAnalysis.jsx';
+import Folder from 'constants/actionType/Folder.jsx';
+import AlarmTag from 'constants/actionType/AlarmTag.jsx';
 import PrototypeStore from '../PrototypeStore.jsx';
 import assign from 'object-assign';
 import {findIndex} from 'lodash-es';
@@ -25,9 +27,17 @@ const WeatherStore = assign({}, PrototypeStore, {
   },
   getSelectedTag(){
     return _selectedTag
-  }
+  },
+  doWidgetDtos: function(widgetDto) {
+    _selectedTag=Immutable.fromJS([]);
+    if (widgetDto.WidgetType == 'Labelling' || widgetDto.WidgetType == 'Ratio' || widgetDto.BizType == 'Energy' || widgetDto.BizType == 'UnitEnergy') {
+      _selectedTag = Immutable.fromJS(widgetDto.WidgetOptions);
+    }
+  },
 })
 
+let FolderAction = Folder.Action;
+let AlarmTagAction = AlarmTag.Action;
 WeatherStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
     case Action.GET_WEATHER_TAG:
@@ -44,7 +54,15 @@ WeatherStore.dispatchToken = AppDispatcher.register(function(action) {
   case Action.CHECKED_TAG:
        WeatherStore.checkedTag(action.tag);
        WeatherStore.emitChange()
-      break;      
-  }
+      break;  
+  case FolderAction.GET_WIDGETDTOS_SUCCESS:
+       WeatherStore.doWidgetDtos(action.widgetDto[0]);
+       WeatherStore.emitChange()
+       break;   
+  case AlarmTagAction.REMOVE_SEARCH_TAGLIST_CHANGED:
+      WeatherStore.checkedTag(action.tagNode);
+      WeatherStore.emitChange()
+      break; 
+  } 
 });
 export default WeatherStore

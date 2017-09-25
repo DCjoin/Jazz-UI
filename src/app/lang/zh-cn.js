@@ -2308,6 +2308,10 @@ I18N.Setting.DataAnalysis.Max = '最大值数据';
 I18N.Setting.DataAnalysis.Total = '合计';
 I18N.Setting.DataAnalysis.NoCanlendarConfig = '此数据点没有配置工作日非工作日';
 I18N.Setting.DataAnalysis.TimeSpan = '时间';
+I18N.Setting.DataAnalysis.Weather = {};
+I18N.Setting.DataAnalysis.Weather.To = '前往';
+I18N.Setting.DataAnalysis.Weather.Location = '地理位置';
+I18N.Setting.DataAnalysis.Weather.Config = '进行配置';
 
 I18N.Setting.ECM = {};
 I18N.Setting.ECM.EstimatedAnnualCostSavings = '预计年节约成本';
