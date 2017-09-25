@@ -36,7 +36,7 @@ var ViewableMap = React.createClass({
   _defaultPositionLabel: null,
   _defaultCity: null,
 
-  _initMap() {
+  _initMap(props=this.props) {
     if (this._map != null) {
       this._map.destroy();
     }
@@ -45,16 +45,16 @@ var ViewableMap = React.createClass({
       view: new AMap.View2D({})
     });
     this._map.setStatus({
-      dragEnable: !this.props.isView,
+      dragEnable: !props.isView,
     });
-    if (!this.props.isView) {
+    if (!props.isView) {
       AMap.event.addListener(this._map, 'moveend', this._onMapMove);
     }
 
-    if (this.props.lng && this.props.lat) {
-      this._map.setZoomAndCenter(ZOOM_LEVEL, new AMap.LngLat(this.props.lng, this.props.lat));
-    } else if (this.props.address) {
-      this._locationTextChanged(this.props.address, 0);
+    if (props.lng && props.lat) {
+      this._map.setZoomAndCenter(ZOOM_LEVEL, new AMap.LngLat(props.lng, props.lat));
+    } else if (props.address) {
+      this._locationTextChanged(props.address, 0);
     }
 
 
@@ -179,7 +179,10 @@ var ViewableMap = React.createClass({
     var text = nextProps.address;
     if (this.props.address !== text && text !== null && text.trim() !== "") {
       //node.style.display = "block";
-      this._initMap();
+      this._initMap(nextProps);
+    }
+    if (this.props.isView!==nextProps.isView) {
+      this._initMap(nextProps);
     }
     if (!nextProps.isAdd) {
       var node = ReactDom.findDOMNode(this.refs.map);
