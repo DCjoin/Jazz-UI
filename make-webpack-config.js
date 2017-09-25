@@ -74,6 +74,31 @@ module.exports = function(options) {
             var html = fs.readFileSync(path.join(appRoot, "DownloadApp.html"), "utf-8");
             html = html.replace(/FAVICON_ICON/g,assetsPath + 'favicon.png');
             html = html.replace(/PUBLIC_PATH/g,publicPath);
+            // for app download
+            if (process.env["APP_VERSION"]) {
+              let APP_VERSION = process.env["APP_VERSION"];
+              html = html.replace('${APP_VERSION}', APP_VERSION); 
+            }
+            if (process.env["APP_SIZE"]) {
+              let APP_SIZE = process.env["APP_SIZE"];
+              html = html.replace('${APP_SIZE}', APP_SIZE); 
+            }
+            if (process.env["APP_DOWNLOAD_LOCAL"]) {
+              let APP_DOWNLOAD_LOCAL = process.env["APP_DOWNLOAD_LOCAL"];
+              html = html.replace('${APP_DOWNLOAD_LOCAL}', APP_DOWNLOAD_LOCAL); 
+            }
+            if (process.env["APP_DOWNLOAD_QQ"]) {
+              let APP_DOWNLOAD_QQ = process.env["APP_DOWNLOAD_QQ"];
+              html = html.replace('${APP_DOWNLOAD_QQ}', APP_DOWNLOAD_QQ); 
+            }
+            if (process.env["APP_DOWNLOAD_WDJ"]) {
+              let APP_DOWNLOAD_WDJ = process.env["APP_DOWNLOAD_WDJ"];
+              html = html.replace('${APP_DOWNLOAD_WDJ}', APP_DOWNLOAD_WDJ); 
+            }
+            if (process.env["APP_DOWNLOAD_BAIDU"]) {
+              let APP_DOWNLOAD_BAIDU = process.env["APP_DOWNLOAD_BAIDU"];
+              html = html.replace('${APP_DOWNLOAD_BAIDU}', APP_DOWNLOAD_BAIDU); 
+            }
             fs.writeFileSync(path.join(buildPath,"DownloadApp.html"), html);
           })();
 

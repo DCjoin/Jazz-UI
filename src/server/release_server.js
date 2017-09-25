@@ -84,6 +84,12 @@ function returnIndexHtml(request,reply){
   return res;
 }
 
+function returnDownloadHtml(request,reply){
+  var html = fs.readFileSync(path.resolve(__dirname, "./DownloadApp.html"), "utf-8");
+  var res = reply(html).type("text/html");
+  return res;
+}
+
 
 // server.route({
 //   method: 'GET',
@@ -94,6 +100,11 @@ function returnIndexHtml(request,reply){
 //     }
 //   }
 // });
+server.route({
+  method: 'GET',
+  path: '/DownloadApp.html',
+  handler: returnDownloadHtml,
+});
 server.route({
   method: 'GET',
   path: '/{lang}/{path*}',
