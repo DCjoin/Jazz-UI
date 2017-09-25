@@ -492,6 +492,7 @@ I18N.EM.Tool = {};
 I18N.EM.Tool.ClearChart = 'Clear chart';
 I18N.EM.Tool.AssistCompare = 'Analysis supporting';
 I18N.EM.Tool.Weather = {};
+I18N.EM.Tool.Weather.WeatherData = '天气数据';
 I18N.EM.Tool.Weather.WeatherInfo = 'Weather';
 I18N.EM.Tool.Weather.Temperature = 'Temperature';
 I18N.EM.Tool.Weather.Humidity = 'Humidity';

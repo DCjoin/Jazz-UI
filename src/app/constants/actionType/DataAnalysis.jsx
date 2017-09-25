@@ -9,7 +9,11 @@ module.exports = {
       GET_LATEST_RAW_DATA:null,
       SAVE_RAW_DATA_SUCCESS:null,
       JUDGET_IF_LEAVE:null,
-      SELECTED_TAG_CHANGE:null
+      SELECTED_TAG_CHANGE:null,
+      GET_WEATHER_TAG:null,
+      CLEAR_WEATHER_TAG:null,
+      CLEAR_SELECTED_TAG:null,
+      CHECKED_TAG:null
   }),
   // calculationType:{
   //   Sum:1,
