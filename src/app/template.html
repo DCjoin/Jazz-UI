@@ -18,7 +18,7 @@
             document.rawWrite = document.write;
             document.write = function(content) {
                 if(content.indexOf('<script ') === 0) {
-                    let el = document.createElement("div");
+                    var el = document.createElement("div");
                     document.getElementById('JAZZ_UI_UMENG_CNZZ_SDK').appendChild(el);
                 } else {
                     document.rawWrite();

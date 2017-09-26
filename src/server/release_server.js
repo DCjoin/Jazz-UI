@@ -66,7 +66,7 @@ function verifyBrowser(user_agent) {
 
 function returnIndexHtml(request,reply){
 
-  if( !verifyBrowser( request.headers['user-agent'] ) ) {
+  if( !request.state.skip_detect && !verifyBrowser( request.headers['user-agent'] ) ) {
     return returnUpdateBrowserHtml(request, reply);
   }
 
@@ -90,6 +90,12 @@ function returnDownloadHtml(request,reply){
   return res;
 }
 
+function returnDownloadHtml(request,reply){
+  var html = fs.readFileSync(path.resolve(__dirname, "./DownloadApp.html"), "utf-8");
+  var res = reply(html).type("text/html");
+  return res;
+}
+
 
 // server.route({
 //   method: 'GET',
@@ -103,6 +109,11 @@ function returnDownloadHtml(request,reply){
 server.route({
   method: 'GET',
   path: '/DownloadApp.html',
+  handler: returnDownloadHtml,
+});
+server.route({
+  method: 'GET',
+  path: '/download-app',
   handler: returnDownloadHtml,
 });
 server.route({
