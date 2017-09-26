@@ -74,7 +74,7 @@ function returnIndexHtml(request,reply){
 
   html = html.replace('__LANG_JS__', '/assets/' + getLang(request) + '.js');
 
-  html = html.replace('__JAZZ_STATIC_CDN__', __JAZZ_STATIC_CDN__)
+  html = html.replace('__JAZZ_STATIC_CDN__', JAZZ_STATIC_CDN)
             .replace('__JAZZ_WEBAPI_HOST__', JAZZ_WEBAPI_HOST);
 
   if(JAZZ_UI_UMENG_CNZZ_SDK_URL) {
