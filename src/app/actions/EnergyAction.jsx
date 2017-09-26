@@ -9,7 +9,7 @@ let {DataConverter, isNumber} = CommonFuns;
 let getTagIdsFromTagOptions = function(tagOptions) {
   let tagIds = [];
   for (let i = 0, len = tagOptions.length; i < len; i++) {
-    tagIds.push(tagOptions[i].tagId);
+    tagIds.push(tagOptions[i].tagId?tagOptions[i].tagId:tagOptions[i].TagId);
   }
   return tagIds;
 };

@@ -42,10 +42,16 @@ var AlarmTagStore = assign({}, PrototypeStore, {
     AlarmTagStore.setUseTagListSelect(true);
 
     searchTagList.forEach(function(nodeData, i) {
-
-      if (tagNode.tagId == nodeData.tagId) {
+      if(tagNode.tagId){
+        if (tagNode.tagId == nodeData.tagId || tagNode.tagId == nodeData.TagId) {
         flag = true;
       }
+      }else{
+        if (tagNode.TagId == nodeData.tagId || tagNode.TagId == nodeData.TagId) {
+        flag = true;
+      }
+      }
+
     });
     if (!flag) {
       if(push){searchTagList.push(tagNode);}
@@ -57,8 +63,14 @@ var AlarmTagStore = assign({}, PrototypeStore, {
 
     AlarmTagStore.setUseTagListSelect(true);
     searchTagList.forEach(function(nodeData, i) {
-      if (tagNode.tagId == nodeData.tagId || tagNode.TagId == nodeData.TagId) {
-        searchTagList.splice(i, 1);
+      if(tagNode.TagId){
+        if(tagNode.TagId===nodeData.tagId || tagNode.TagId == nodeData.TagId){
+          searchTagList.splice(i, 1);
+        }
+      }else{
+        if(tagNode.tagId===nodeData.tagId || tagNode.tagId == nodeData.TagId){
+          searchTagList.splice(i, 1);
+        }
       }
     });
 

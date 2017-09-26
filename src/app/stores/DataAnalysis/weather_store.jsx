@@ -12,17 +12,25 @@ import Immutable from 'immutable';
 var _tagList=null,_selectedTag=Immutable.fromJS([]);
 const WeatherStore = assign({}, PrototypeStore, {
   setTagList(list){
-    _tagList=list
+    if(list===null){
+      _tagList=null
+    }else{
+    _tagList=list.map(item=>({
+      tagId:item.TagId,
+      tagName:item.TagName
+    }))
+    }
+
   },
   getTagList(){
     return _tagList
   },
   checkedTag(tag){
-    var index=_selectedTag.findIndex((selected)=>selected.TagId===tag.TagId);
+    var index=_selectedTag.findIndex((selected)=>(selected.get("tagId")===tag.tagId));
     if(index>-1){
       _selectedTag=_selectedTag.delete(index)
     }else{
-      _selectedTag=_selectedTag.push(tag)
+      _selectedTag=_selectedTag.push(Immutable.fromJS(tag))
     }
   },
   getSelectedTag(){
@@ -31,7 +39,29 @@ const WeatherStore = assign({}, PrototypeStore, {
   doWidgetDtos: function(widgetDto) {
     _selectedTag=Immutable.fromJS([]);
     if (widgetDto.WidgetType == 'Labelling' || widgetDto.WidgetType == 'Ratio' || widgetDto.BizType == 'Energy' || widgetDto.BizType == 'UnitEnergy') {
-      _selectedTag = Immutable.fromJS(widgetDto.WidgetOptions);
+      let convertWidgetOptions2TagOption = function(WidgetOptions) {
+      let tagOptions = [];
+        WidgetOptions.forEach(item => {
+          if(item.NodeName){
+          tagOptions.push({
+            hierId: item.HierId,
+            hierName: item.NodeName,
+            dimId: item.DimensionId,
+            dimName: item.DimensionName,
+            tagId: item.TargetId,
+            tagName: item.TargetName
+          });
+          }else{
+          tagOptions.push({
+            tagId: item.TargetId,
+            tagName: item.TargetName
+          });
+          }
+
+        });
+        return Immutable.fromJS(tagOptions);
+      };
+      _selectedTag = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
     }
   },
 })
