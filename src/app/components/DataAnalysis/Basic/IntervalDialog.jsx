@@ -43,7 +43,7 @@ class TableHeader extends Component{
   render(){
     var defaultStyle={
       height:'29px',minHeight:'29px',lineHeight:'29px',border:'1px solid #e6e6e6',display:'flex',fontSize:'10px',color:'#626469',
-      borderTopLeftRadius: '2px',borderTopRightRadius: '2px'
+      borderTopLeftRadius: '2px',borderTopRightRadius: '2px',backgroundColor:'#e6e6e6'
     };
     var style=assign({},defaultStyle,this.props.style);
     return(
@@ -132,12 +132,12 @@ export default class IntervalDialog extends Component {
   getTitle(){
     // var isMultiTime=false;
     if(isMultiTime){
-      var tagName=AlarmTagStore.getSearchTagList()[0].tagName;
-      return I18N.EM.Tool.DataStatistics+' '+tagName
+      var tagName=AlarmTagStore. getSearchTagList()[0].tagName;
+      return I18N.EM.Tool.IntervalStatistics+' '+tagName
     }else {
       let j2d = CommonFuns.DataConverter.JsonToDateTime;
       var startDate=new Date(j2d(this.props.timeRanges[0].StartTime)),endDate=new Date(j2d(this.props.timeRanges[0].EndTime));
-      return I18N.EM.Tool.DataStatistics+'   '+DataAnalysisStore.getDisplayDate(startDate,false)+' '+I18N.Setting.DataAnalysis.To+' '+DataAnalysisStore.getDisplayDate(endDate,true)
+      return I18N.EM.Tool.IntervalStatistics+'   '+DataAnalysisStore.getDisplayDate(startDate,false)+' '+I18N.Setting.DataAnalysis.To+' '+DataAnalysisStore.getDisplayDate(endDate,true)
     }
   }
 
@@ -209,7 +209,7 @@ export default class IntervalDialog extends Component {
         var {StartTime,EndTime}=TimeRange;
         var j2d = CommonFuns.DataConverter.JsonToDateTime;
         var start=new Date(j2d(StartTime)),end=new Date(j2d(EndTime));
-        var title=isMultiTime?TagName:DataAnalysisStore.getDisplayDate(start,false)+I18N.Setting.DataAnalysis.To+DataAnalysisStore.getDisplayDate(end,true);
+        var title=!isMultiTime?TagName:DataAnalysisStore.getDisplayDate(start,false)+I18N.Setting.DataAnalysis.To+DataAnalysisStore.getDisplayDate(end,true);
         
         var head={
           column2Name:`${type[CalculationType]}(${UomName})`,
@@ -217,7 +217,7 @@ export default class IntervalDialog extends Component {
         }
 
         return(
-            <ItemComponent title={title} style={index===0?{marginTop:'30px'}:{}}>
+            <ItemComponent title={title} style={index===0?{marginTop:'30px'}:null}>
               <TableHeader {...head}/>
               {Items.map((item,index)=>(
                 <TableRow time={formatSplit(item.TimeSplit)}
@@ -234,7 +234,7 @@ export default class IntervalDialog extends Component {
 
   _renderContent(){
     return(
-      <div style={{display:'flex',flexDirection:'column'}}>
+      <div style={{display:'flex',flexDirection:'column',width:'100%'}}>
         {this._renderTimes()}
         {this.state.gatherInfo!==null && this._renderTable()}
         {this.state.gatherInfo===null && <div className="flex-center" style={{flexDirection:'column'}}>

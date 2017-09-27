@@ -106,8 +106,8 @@ export default class DataAnalysis extends Component {
     }
 
 		if(findBuilding(this._getHierarchyId(this.context)) && findBuilding(this._getHierarchyId(this.context)).Location){
-			// WeatherAction.getCityWeatherTag(findBuilding(this._getHierarchyId(this.context)).Location.CityId)
-			WeatherAction.getCityWeatherTag(1)
+			WeatherAction.getCityWeatherTag(findBuilding(this._getHierarchyId(this.context)).Location.CityId)
+			// WeatherAction.getCityWeatherTag(1)
 		}else{
 			WeatherAction.clearCityWeatherTag()
 		}
@@ -119,8 +119,8 @@ export default class DataAnalysis extends Component {
 			this._loadInitData(nextProps, nextContext);
 			// WeatherAction.getCityWeatherTag(2)
 			if(findBuilding(this._getHierarchyId(nextContext)) && findBuilding(this._getHierarchyId(nextContext)).Location){
-				// WeatherAction.getCityWeatherTag(findBuilding(this._getHierarchyId(nextContext)).Location.CityId)
-				WeatherAction.getCityWeatherTag(2)
+				WeatherAction.getCityWeatherTag(findBuilding(this._getHierarchyId(nextContext)).Location.CityId)
+				// WeatherAction.getCityWeatherTag(2)
 			}else{
 			WeatherAction.clearCityWeatherTag()
 		}
