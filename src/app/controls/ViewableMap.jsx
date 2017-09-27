@@ -34,8 +34,9 @@ var ViewableMap = React.createClass({
   _timeoutHandler: null,
 
   _defaultPositionLabel: null,
+  _defaultCity: null,
 
-  _initMap() {
+  _initMap(props=this.props) {
     if (this._map != null) {
       this._map.destroy();
     }
@@ -44,16 +45,16 @@ var ViewableMap = React.createClass({
       view: new AMap.View2D({})
     });
     this._map.setStatus({
-      dragEnable: !this.props.isView,
+      dragEnable: !props.isView,
     });
-    if (!this.props.isView) {
+    if (!props.isView) {
       AMap.event.addListener(this._map, 'moveend', this._onMapMove);
     }
 
-    if (this.props.lng && this.props.lat) {
-      this._map.setZoomAndCenter(ZOOM_LEVEL, new AMap.LngLat(this.props.lng, this.props.lat));
-    } else if (this.props.address) {
-      this._locationTextChanged(this.props.address, 0);
+    if (props.lng && props.lat) {
+      this._map.setZoomAndCenter(ZOOM_LEVEL, new AMap.LngLat(props.lng, props.lat));
+    } else if (props.address) {
+      this._locationTextChanged(props.address, 0);
     }
 
 
@@ -78,15 +79,17 @@ var ViewableMap = React.createClass({
       });
 
       MGeocoder.getAddress(center, function(status, result) {
+        var city=result.regeocode.addressComponent.city?result.regeocode.addressComponent.city:result.regeocode.addressComponent.province;
         if (status === 'complete' && result.info === 'OK') {
           that._defaultPositionLabel = result.regeocode.formattedAddress;
+          that._defaultCity = city;
           that._changeTip(result.regeocode.formattedAddress);
         } else {
           that._changeTip(I18N.Setting.Building.MapTip1, "showWarning");
         }
         if (that.props.didChanged) {
           var text = that.refs.mapText.getValue();
-          that.props.didChanged(center.lng, center.lat, text);
+          that.props.didChanged(center.lng, center.lat, text,city);
         }
       });
     });
@@ -113,7 +116,8 @@ var ViewableMap = React.createClass({
     if (this.props.didChanged) {
       var center = this._map.getCenter();
       var text = this._defaultPositionLabel;
-      this.props.didChanged(center.lng, center.lat, text);
+      var city=this._defaultCity;
+      this.props.didChanged(center.lng, center.lat, text,city);
     }
     this._changeTip(null, 'hide');
   },
@@ -123,22 +127,23 @@ var ViewableMap = React.createClass({
       clearTimeout(this._timeoutHandler);
     }
     if (text === null || text === "" || text.trim() === "") {
-      this.props.didChanged(null, null, null);
+      this.props.didChanged(null, null, null,null);
       return;
     }
     this._timeoutHandler = setTimeout(() => {
       if (this.props.didChanged) {
         var center = this._map.getCenter();
-        this.props.didChanged(center.lng, center.lat, text);
+        this.props.didChanged(center.lng, center.lat, text,this._defaultCity);
       }
       AMap.service(["AMap.Geocoder"], () => {
         var MGeocoder = new AMap.Geocoder();
         MGeocoder.getLocation(text, (status, result) => {
           if (status === 'complete' && result.info === 'OK' && result.resultNum > 0) {
             var loc = result.geocodes[0].location;
+            var city=result.geocodes[0].addressComponent.city?result.geocodes[0].addressComponent.city:result.geocodes[0].addressComponent.province;
             this._map.setZoomAndCenter(ZOOM_LEVEL, new AMap.LngLat(loc.lng, loc.lat));
             if (this.props.didChanged) {
-              this.props.didChanged(loc.lng, loc.lat, text);
+              this.props.didChanged(loc.lng, loc.lat, text,city);
             }
           } else {
             this._changeTip(I18N.Setting.Building.MapTip3, "showWarning");
@@ -174,7 +179,10 @@ var ViewableMap = React.createClass({
     var text = nextProps.address;
     if (this.props.address !== text && text !== null && text.trim() !== "") {
       //node.style.display = "block";
-      this._initMap();
+      this._initMap(nextProps);
+    }
+    if (this.props.isView!==nextProps.isView) {
+      this._initMap(nextProps);
     }
     if (!nextProps.isAdd) {
       var node = ReactDom.findDOMNode(this.refs.map);

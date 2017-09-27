@@ -27,11 +27,12 @@ var BuildingBasic = React.createClass({
     setEditBtnStatus: React.PropTypes.func
   },
   //mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
-  _locationChanged(lng, lat, address) {
+  _locationChanged(lng, lat, address,city) {
     //  console.debug(lng+","+lat+","+address);
     var value = this.props.selectedNode.get('Location');
     if (value) {
-      value = value.set('Province', address);
+      value = value.set('Address', address);
+      value = value.set('CityName', city);
       if (lat !== null) {
         value = value.set('Latitude', lat);
       }
@@ -41,7 +42,8 @@ var BuildingBasic = React.createClass({
 
     } else {
       value = Immutable.fromJS({
-        Province: address
+        Address: address,
+        CityName:city
       });
       if (lat !== null) {
         value = value.set('Latitude', lat);
@@ -185,7 +187,7 @@ var BuildingBasic = React.createClass({
           })
         }
       };
-    var locationText = this.props.selectedNode.getIn(["Location", "Province"]);
+    var locationText = this.props.selectedNode.getIn(["Location", "Address"]);
     var lng = this.props.selectedNode.getIn(["Location", "Longitude"]);
     var lat = this.props.selectedNode.getIn(["Location", "Latitude"]);
     var map = <ViewableMap title={I18N.Setting.Building.Address} address={locationText} lng={lng}  lat={lat} isAdd={isAdd} isView={isView} didChanged={this._locationChanged}></ViewableMap>;

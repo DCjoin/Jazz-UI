@@ -55,7 +55,9 @@ module.exports = {
   DataAnalysis:{
     getWidgetGatherInfo:'/Widget/GetWidgetGatherInfo',
     getProwidgetgatherinfo:'/widget/prowidgetgatherinfo',
-    getLatestRawData:'/energy/Tag/{tagId}/LatestRawData'
+    getLatestRawData:'/energy/Tag/{tagId}/LatestRawData',
+    getCityWeatherTag:'/Dashboard/cityWeatherTag/{cityId}',
+    getWidgetsplitgatherinfo:'/widget/widgetsplitgatherinfo'
   },
   ECM:{
     getEnergysolution:'/energysolution/{hierarchyId}/{status}/{smallSize}/{size}',

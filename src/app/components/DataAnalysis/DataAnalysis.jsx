@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import {Snackbar, CircularProgress} from 'material-ui';
 import Immutable from 'immutable';
-
+import {find} from 'lodash-es';
 import { nodeType } from 'constants/TreeConstants.jsx';
 import PermissionCode from 'constants/PermissionCode.jsx';
 import { MenuAction } from 'constants/AnalysisConstants.jsx';
@@ -30,6 +30,8 @@ import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import FolderStore from 'stores/FolderStore.jsx';
 import WidgetStore from 'stores/Energy/WidgetStore.jsx';
 import UserStore from 'stores/UserStore.jsx';
+import HierarchyStore from 'stores/HierarchyStore.jsx';
+import WeatherAction from 'actions/DataAnalysis/weather_action.jsx';
 
 function isWidget(node) {
 	return node.get('Type') === nodeType.Widget;
@@ -47,6 +49,10 @@ function getNodeId(props) {
 
 function SolutionFull() {
 	return PrivilegeUtil.isFull(PermissionCode.SOLUTION_FULL, CurrentUserStore.getCurrentPrivilege());
+}
+
+function findBuilding(hierarchyId){
+  return find(HierarchyStore.getBuildingList(), building => building.Id === hierarchyId * 1 );
 }
 
 export default class DataAnalysis extends Component {
@@ -99,15 +105,29 @@ export default class DataAnalysis extends Component {
 		  this._loadInitData(this.props, this.context);
     }
 
+		if(findBuilding(this._getHierarchyId(this.context)) && findBuilding(this._getHierarchyId(this.context)).Location){
+			WeatherAction.getCityWeatherTag(findBuilding(this._getHierarchyId(this.context)).Location.CityId)
+			// WeatherAction.getCityWeatherTag(1)
+		}else{
+			WeatherAction.clearCityWeatherTag()
+		}
 	}
 
 	componentWillReceiveProps(nextProps, nextContext) {
 		if( !util.shallowEqual(nextContext.hierarchyId, this.context.hierarchyId) ) {
 			this.setState(this._getInitialState(nextProps));
 			this._loadInitData(nextProps, nextContext);
+			// WeatherAction.getCityWeatherTag(2)
+			if(findBuilding(this._getHierarchyId(nextContext)) && findBuilding(this._getHierarchyId(nextContext)).Location){
+				WeatherAction.getCityWeatherTag(findBuilding(this._getHierarchyId(nextContext)).Location.CityId)
+				// WeatherAction.getCityWeatherTag(2)
+			}else{
+			WeatherAction.clearCityWeatherTag()
+		}
       if( this.context.hierarchyId ) {
         nextProps.router.push(RoutePath.dataAnalysis(nextProps.params));
       }
+
 		}
 	}
 	componentWillUnmount() {

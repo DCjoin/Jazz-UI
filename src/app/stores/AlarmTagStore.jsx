@@ -8,6 +8,7 @@ import Tag from '../constants/actionType/Tag.jsx';
 import Commodity from '../constants/actionType/Commodity.jsx';
 import Folder from '../constants/actionType/Folder.jsx';
 import CommodityStore from '../stores/CommodityStore.jsx';
+import Weather from 'constants/actionType/DataAnalysis.jsx';
 
 let searchTagList = [];
 let interData = null;
@@ -15,6 +16,7 @@ let AlarmTagAction = AlarmTag.Action;
 let TagAction = Tag.Action;
 let CommodityAction = Commodity.Action;
 let FolderAction = Folder.Action;
+let WeatherAction = Weather.Action;
 /*
  if change checked state of the tags from the tag list,than it is true;
  when select item of alarm list, set it false in AlarmList.jsx
@@ -35,18 +37,25 @@ var AlarmTagStore = assign({}, PrototypeStore, {
   getUseTaglistSelect() {
     return _useTaglistSelect;
   },
-  addSearchTagList(tagNode) {
+  addSearchTagList(tagNode,push=true) {
     var flag = false;
     AlarmTagStore.setUseTagListSelect(true);
 
     searchTagList.forEach(function(nodeData, i) {
-
-      if (tagNode.tagId == nodeData.tagId) {
+      if(tagNode.tagId){
+        if (tagNode.tagId == nodeData.tagId || tagNode.tagId == nodeData.TagId) {
         flag = true;
       }
+      }else{
+        if (tagNode.TagId == nodeData.tagId || tagNode.TagId == nodeData.TagId) {
+        flag = true;
+      }
+      }
+
     });
     if (!flag) {
-      searchTagList.push(tagNode);
+      if(push){searchTagList.push(tagNode);}
+      else{searchTagList.unshift(tagNode);}
     }
 
   },
@@ -54,8 +63,14 @@ var AlarmTagStore = assign({}, PrototypeStore, {
 
     AlarmTagStore.setUseTagListSelect(true);
     searchTagList.forEach(function(nodeData, i) {
-      if (tagNode.tagId == nodeData.tagId) {
-        searchTagList.splice(i, 1);
+      if(tagNode.TagId){
+        if(tagNode.TagId===nodeData.tagId || tagNode.TagId == nodeData.TagId){
+          searchTagList.splice(i, 1);
+        }
+      }else{
+        if(tagNode.tagId===nodeData.tagId || tagNode.tagId == nodeData.TagId){
+          searchTagList.splice(i, 1);
+        }
       }
     });
 
@@ -76,6 +91,14 @@ var AlarmTagStore = assign({}, PrototypeStore, {
       this.addSearchTagList(tagData);
     } else {
       this.removeSearchTagList(tagData);
+    }
+  },
+    searchTagChangeForWeather(tagNode, selected) {
+
+    if (selected) {
+      this.addSearchTagList(tagNode,false);
+    } else {
+      this.removeSearchTagList(tagNode);
     }
   },
   searchTagListChange(tagList, selected) {
@@ -215,6 +238,10 @@ AlarmTagStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case TagAction.SET_TAGSTATUS_TAG:
       AlarmTagStore.searchTagChange(action.node, action.selected);
+      AlarmTagStore.emitChange();
+      break;
+    case WeatherAction.CHECKED_TAG:
+      AlarmTagStore.searchTagChangeForWeather(action.tag, action.ischecked);
       AlarmTagStore.emitChange();
       break;
     case TagAction.SET_TAGSTATUS_TAGLIST:
