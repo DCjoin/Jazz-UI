@@ -8,6 +8,6 @@ RUN yarn --force
 
 RUN yarn global add pm2
 
-RUN npm run build-test && node shell/copy_server.js
+RUN npm run build-test && node shell/upload && node shell/copy_server.js
 
 CMD ["node", "./build/release_server.js"]
