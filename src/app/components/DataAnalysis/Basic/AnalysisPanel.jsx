@@ -53,6 +53,7 @@ import NewFlatButton from 'controls/NewFlatButton.jsx';
 import Remark from './Remark.jsx';
 import WeatherStore from 'stores/DataAnalysis/weather_store.jsx';
 import WeatherAction from 'actions/DataAnalysis/weather_action.jsx';
+import IntervalStatisticAction from 'actions/DataAnalysis/interval_statistic_action.jsx';
 
 const DIALOG_TYPE = {
   SWITCH_WIDGET: "switchwidget",
@@ -1511,6 +1512,7 @@ class AnalysisPanel extends Component {
     CommodityAction.setCurrentHierarchyInfo({Id:null,name:null});//清空hierarchy 信息，否则会影响能源
     MultipleTimespanStore.clearMultiTimespan('both');
     WeatherAction.clearSelectedTag();
+    IntervalStatisticAction.clearAll();
   }
 
   render(){

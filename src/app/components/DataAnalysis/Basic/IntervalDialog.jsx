@@ -171,10 +171,18 @@ export default class IntervalDialog extends Component {
     IntervalStatisticAction.modifySplit(index, status.DELETE,{});
   }
 
+  _valid(){
+    var valid=true;
+      this.state.splits.forEach(split=>{
+        if(split.get('StartMoment')===-1 || split.get('EndMoment')===-1){valid=false}
+      })
+      return valid
+  }
+
   _renderTimes(){
     var me=this;
     return(
-      <div style={{display:'flex',flexDirection:'row'}}>
+      <div style={{display:'flex',flexDirection:'row',alignItems:'center',flexWrap: 'wrap'}}>
         {this.state.splits.map((item,i)=>{
           let props = {
           index: i,
@@ -193,9 +201,9 @@ export default class IntervalDialog extends Component {
           <FromEndTime {...props}></FromEndTime>
           );
         })}
-        <IconButton iconClassName="icon-add" style={{width:'33px',height:'30px',borderRadius:'1px',border:'solid 1px #e6e6e6',marginLeft:'25px'}} 
+        <IconButton iconClassName="icon-add" style={{padding:0,width:'33px',height:'30px',borderRadius:'1px',border:'solid 1px #e6e6e6',marginLeft:'25px'}} 
           iconStyle={{fontSize:'13px',height:'13px',width:'13px',color:'#32ad3d'}} onClick={()=>{IntervalStatisticAction.modifySplit(-1, status.ADD,{StartMoment:-1,EndMoment:-1});}}/>
-        <NewFlatButton label={I18N.Setting.DataAnalysis.Statistics} primary={true} style={{width:'76px',minWidth:'76px',height:'30px',marginLeft:'20px'}} onClick={()=>{this.setState({gatherInfo:'loading'},()=>{this._getGatherInfo()})}}/>
+        <NewFlatButton label={I18N.Setting.DataAnalysis.Statistics} disabled={!this._valid()} primary={true} style={{width:'76px',minWidth:'76px',height:'30px',marginLeft:'20px',lineHeight:'28px'}} onClick={()=>{this.setState({gatherInfo:'loading'},()=>{this._getGatherInfo()})}}/>
       </div>
     )
   }
@@ -256,12 +264,15 @@ export default class IntervalDialog extends Component {
     }else{
       this.setState({
         gatherInfo:null
+      },()=>{
+        IntervalStatisticAction.modifySplit(-1, status.ADD,{StartMoment:-1,EndMoment:-1});
       })
     }
   }
 
   componentWillUnmount(){
     IntervalStatisticStore.removeChangeListener(this._onChange);
+    IntervalStatisticAction.refreshSplit();
   }
 
 

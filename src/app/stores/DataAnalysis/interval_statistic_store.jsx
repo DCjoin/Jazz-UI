@@ -8,10 +8,11 @@ import PrototypeStore from '../PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
 
-var _gatherInfo=null,_splits=null;
+var _gatherInfo=null,_splits=null,_lastSplits=null;
 const IntervalStatisticStore = assign({}, PrototypeStore, {
   setGatherInfo(info){
-    _gatherInfo=Immutable.fromJS(info)
+    _gatherInfo=Immutable.fromJS(info);
+    _lastSplits=_splits;
   },
   getGatherInfo(){
     return _gatherInfo;
@@ -34,18 +35,26 @@ const IntervalStatisticStore = assign({}, PrototypeStore, {
         break;
     }
   },
+  refreshSplits(){
+    _splits=_lastSplits;
+  },
   doWidgetDtos(widgetDto){
     _splits=Immutable.fromJS([]);
     var array=widgetDto.WidgetParamArray;
     array.forEach(item=>{
       if(item.ParamKey==='SplitGatherTimeInterval'){
         var timeArr=item.ParamValue.split('-');
-        _splits=_splits.push({
+        _splits=_splits.push(Immutable.fromJS({
           StartMoment:timeArr[0]*1,
           EndMoment:timeArr[1]*1
-        })
+        }))
       }
     })
+  },
+  clearAll(){
+    _gatherInfo=null;
+    _splits=null;
+    _lastSplits=null;
   }
 })
 
@@ -63,7 +72,13 @@ IntervalStatisticStore.dispatchToken = AppDispatcher.register(function(action) {
     case Action.MODIFY_SPLIT:
           IntervalStatisticStore.modifySplit(action.index,action.split,action.status);
           IntervalStatisticStore.emitChange()
-      break;       
+      break;     
+    case Action.REFRESH_SPLITS:
+          IntervalStatisticStore.refreshSplits();
+      break;  
+    case Action.CLEAR_INTERVAL_INFO:
+          IntervalStatisticStore.clearAll();
+      break;    
   }
 });
 

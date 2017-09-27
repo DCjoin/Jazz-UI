@@ -17,7 +17,8 @@ const WeatherStore = assign({}, PrototypeStore, {
     }else{
     _tagList=list.map(item=>({
       tagId:item.TagId,
-      tagName:item.TagName
+      tagName:item.TagName,
+      weatherType:item.WeatherType
     }))
     }
 

@@ -23,6 +23,16 @@ const IntervalStatisticAction = {
       type: Action.MODIFY_SPLIT,
         index,split,status
       });
+  },
+  refreshSplit(){
+    AppDispatcher.dispatch({
+      type: Action.REFRESH_SPLITS,
+      });
+  },
+  clearAll(){
+    AppDispatcher.dispatch({
+      type: Action.CLEAR_INTERVAL_INFO,
+      }); 
   }
 }
 
