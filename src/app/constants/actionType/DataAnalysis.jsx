@@ -15,7 +15,9 @@ module.exports = {
       CLEAR_SELECTED_TAG:null,
       CHECKED_TAG:null,
       GET_SPLIT_GATHER_INFO:null,
-      MODIFY_SPLIT:null
+      MODIFY_SPLIT:null,
+      REFRESH_SPLITS:null,
+      CLEAR_INTERVAL_INFO:null
   }),
   status:{
     ADD:1,

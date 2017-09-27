@@ -41,6 +41,9 @@ export default class WeatherButton extends Component {
   	_getHierarchyId(context) {
 		return context.hierarchyId;
 	}
+  _weatherTagdisabled(tag){
+    return this.props.step<2 && (tag.weatherType===3 || tag.weatherType===4)
+  }
 
   componentDidMount(){
     WeatherStore.addChangeListener(this._onChanged);
@@ -61,7 +64,8 @@ export default class WeatherButton extends Component {
         {building.Location && this.props.taglist && this.props.taglist.map(tag=>{
           return(
           <Checkbox label={tag.tagName} iconStyle={{width:'16px',height:'16px',marginTop:'2px'}} labelStyle={{fontSize:'14px',color:'#505559'}} style={{marginLeft:'15px'}} checked={this.state.selectedTag.findIndex((selected)=>selected.get("tagId")===tag.tagId)>-1}
-                    onCheck={(e,isInputChecked)=>{this._onCheck(tag,isInputChecked)}}/>
+                    onCheck={(e,isInputChecked)=>{this._onCheck(tag,isInputChecked)}}
+                    disabled={this._weatherTagdisabled(tag)}/>
         )
         })}
         {building.Location===null && <div className="no_weather_config">
