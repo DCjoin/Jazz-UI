@@ -72,7 +72,7 @@ function returnIndexHtml(request,reply){
 
   var html = fs.readFileSync(path.resolve(__dirname, "./index.html"), "utf-8");
 
-  html = html.replace('__LANG_JS__', JAZZ_STATIC_CDN + getLang(request) + '.js');
+  html = html.replace('__LANG_JS__', JAZZ_STATIC_CDN + '/' + getLang(request) + '.js');
 
   html = html.replace(/__JAZZ_STATIC_CDN__/g, JAZZ_STATIC_CDN)
             .replace(/__JAZZ_WEBAPI_HOST__/g, JAZZ_WEBAPI_HOST);
