@@ -11,6 +11,7 @@ import AddIntervalWindow from './HistoryWindow.jsx';
 import YaxisSelector from './YaxisSelector.jsx';
 import StatisticsDialog from './StatisticsDialog.jsx';
 import WeatherButton from'./weather_button.jsx';
+import IntervalDialog from './IntervalDialog.jsx';
 
 export default class AuxiliaryFunction extends Component {
 
@@ -114,9 +115,9 @@ export default class AuxiliaryFunction extends Component {
  }
 
   getWeatherBtn(){
-    var disabled=this.getMoreBtnDisableStatus();
+    var disabled=this.getMoreBtnDisableStatus() || this.props.analysisPanel.state.step===0;
 
-    return <WeatherButton taglist={this.props.weatherTag} disabled={disabled}/>
+    return <WeatherButton taglist={this.props.weatherTag} disabled={disabled} step={this.props.analysisPanel.state.step}/>
   } 
 
   getAuxiliaryCompareBtn(){
@@ -188,7 +189,17 @@ export default class AuxiliaryFunction extends Component {
   }
 
   _renderIntervalDialog(){
-    return(<div/>)
+    var props={
+      timeRanges:this.props.timeRanges,
+      widgetId:this.props.analysisPanel.props.widgetDto.Id,
+      step:this.props.analysisPanel.state.step,
+      onCloseDialog:()=>{
+        this.setState({
+          showIntervalDialog:false
+        })
+      }
+    }
+    return(<IntervalDialog {...props}/>)
   }
 
   render(){

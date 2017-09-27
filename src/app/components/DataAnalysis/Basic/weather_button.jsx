@@ -15,7 +15,8 @@ function findBuilding(hierarchyId){
 export default class WeatherButton extends Component {
 
 	static contextTypes = {
-		hierarchyId: PropTypes.string
+		hierarchyId: PropTypes.string,
+    currentRoute:React.PropTypes.object,
 	};
 
  constructor(props) {
@@ -51,21 +52,21 @@ export default class WeatherButton extends Component {
 
   render(){
     var building=findBuilding(this._getHierarchyId(this.context));
-    if(building && this.props.taglist){
+    if(building){
       return(
       <div className="jazz-AuxiliaryCompareBtn-container">
         <ButtonMenu ref={'button_menu'} label={I18N.EM.Tool.Weather.WeatherData}  style={{
           marginLeft: '10px'
         }} backgroundColor="#f3f5f7" disabled={this.props.disabled}>
-        {building.Location && this.props.taglist.map(tag=>{
+        {building.Location && this.props.taglist && this.props.taglist.map(tag=>{
           return(
-          <Checkbox label={tag.tagName} checked={this.state.selectedTag.findIndex((selected)=>selected.get("tagId")===tag.tagId)>-1}
+          <Checkbox label={tag.tagName} iconStyle={{width:'16px',height:'16px',marginTop:'2px'}} labelStyle={{fontSize:'14px',color:'#505559'}} style={{marginLeft:'15px'}} checked={this.state.selectedTag.findIndex((selected)=>selected.get("tagId")===tag.tagId)>-1}
                     onCheck={(e,isInputChecked)=>{this._onCheck(tag,isInputChecked)}}/>
         )
         })}
         {building.Location===null && <div className="no_weather_config">
           <span>{I18N.Setting.DataAnalysis.Weather.To}</span>
-          <div onClick={()=>{util.openTab(RoutePath.customerSetting.hierNode(this.props.params)+'?init_hierarchy_id='+this.context.hierarchyId)}}>{I18N.Setting.DataAnalysis.Weather.Location}</div>
+          <div onClick={()=>{util.openTab(RoutePath.customerSetting.hierNode(this.context.currentRoute.params)+'?init_hierarchy_id='+this.context.hierarchyId)}}>{I18N.Setting.DataAnalysis.Weather.Location}</div>
           <span>{I18N.Setting.DataAnalysis.Weather.Config}</span>
           </div>}
        </ButtonMenu>
@@ -81,4 +82,5 @@ export default class WeatherButton extends Component {
 WeatherButton.propTypes = {
   disabled:React.PropTypes.bool,
   taglist:React.PropTypes.array,
+  step:React.PropTypes.number
 };

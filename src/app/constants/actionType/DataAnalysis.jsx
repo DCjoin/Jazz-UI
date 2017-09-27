@@ -13,13 +13,14 @@ module.exports = {
       GET_WEATHER_TAG:null,
       CLEAR_WEATHER_TAG:null,
       CLEAR_SELECTED_TAG:null,
-      CHECKED_TAG:null
+      CHECKED_TAG:null,
+      GET_SPLIT_GATHER_INFO:null,
+      MODIFY_SPLIT:null
   }),
-  // calculationType:{
-  //   Sum:1,
-  //   Average:2,
-  //   Max:3,
-  //   Min:4
-  // },
+  status:{
+    ADD:1,
+    MODIFY:2,
+    DELETE:3,
+  },
 
 };
