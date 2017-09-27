@@ -23,9 +23,7 @@
 			function skip() {
 				if( document.cookie !== undefined ) {
 					document.cookie = "skip_detect=true; path=/";
-					var next = ( window.location.hash.length > 1 && decodeURIComponent( window.location.hash.substring(1) ) ) || 
-								window.location.href.substr(0, window.location.href.indexOf(currentUrl));
-					location.href = next;
+					document.location.reload();
 				}
 			}
 		</script>

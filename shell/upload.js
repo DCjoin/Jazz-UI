@@ -44,7 +44,7 @@ co(function* () {
       let file = files[i];
       let filePath = path.join(process.cwd(), "build/assets", file);
       // console.log(file);
-      if(file.endsWith('.css')) {
+      if(file.endsWith('.css') || file.endsWith('.js')) {
         replaceCSS(filePath);
       }
       let result = yield client.put(`jazz/${file}`, filePath);

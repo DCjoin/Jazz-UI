@@ -17,6 +17,7 @@ var server = new Hapi.Server();
 server.connection({
   port: 80
 });
+
 server.register(
   [
     {register: require('inert')},
@@ -66,20 +67,26 @@ function verifyBrowser(user_agent) {
 
 function returnIndexHtml(request,reply){
 
-  if( !verifyBrowser( request.headers['user-agent'] ) ) {
+  if( !request.state.skip_detect && !verifyBrowser( request.headers['user-agent'] ) ) {
     return returnUpdateBrowserHtml(request, reply);
   }
 
   var html = fs.readFileSync(path.resolve(__dirname, "./index.html"), "utf-8");
 
-  html = html.replace('__LANG_JS__', '/assets/' + getLang(request) + '.js');
+  html = html.replace('__LANG_JS__', JAZZ_STATIC_CDN + '/' + getLang(request) + '.js');
 
-  html = html.replace('__JAZZ_STATIC_CDN__', __JAZZ_STATIC_CDN__)
-            .replace('__JAZZ_WEBAPI_HOST__', JAZZ_WEBAPI_HOST);
+  html = html.replace(/__JAZZ_STATIC_CDN__/g, JAZZ_STATIC_CDN)
+            .replace(/__JAZZ_WEBAPI_HOST__/g, JAZZ_WEBAPI_HOST);
 
   if(JAZZ_UI_UMENG_CNZZ_SDK_URL) {
     html = html.replace('__JAZZ_UI_UMENG_CNZZ_SDK_URL__', JAZZ_UI_UMENG_CNZZ_SDK_URL);
   }
+  var res = reply(html).type("text/html");
+  return res;
+}
+
+function returnDownloadHtml(request,reply){
+  var html = fs.readFileSync(path.resolve(__dirname, "./DownloadApp.html"), "utf-8");
   var res = reply(html).type("text/html");
   return res;
 }
@@ -103,6 +110,11 @@ function returnDownloadHtml(request,reply){
 server.route({
   method: 'GET',
   path: '/DownloadApp.html',
+  handler: returnDownloadHtml,
+});
+server.route({
+  method: 'GET',
+  path: '/download-app',
   handler: returnDownloadHtml,
 });
 server.route({
