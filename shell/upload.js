@@ -8,6 +8,10 @@ var accessKeyId = process.env["ALI_SDK_STS_ID"];
 var accessKeySecret = process.env["ALI_SDK_STS_SECRET"];
 var bucket = process.env["OSS_BUCKET"];
 
+console.error("OSS_REGION:%s", region)
+console.error("ALI_SDK_STS_ID:%s", accessKeyId)
+console.error("ALI_SDK_STS_SECRET:%s", accessKeySecret)
+console.error("OSS_BUCKET:%s", bucket)
 if(!region || !accessKeyId || !accessKeySecret || !bucket){
   console.error("ERROR:environment not set");
   console.error("Please set environment variable: OSS_REGION,ALI_SDK_STS_ID,ALI_SDK_STS_SECRET,OSS_BUCKET")

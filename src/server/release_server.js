@@ -17,6 +17,7 @@ var server = new Hapi.Server();
 server.connection({
   port: 80
 });
+
 server.register(
   [
     {register: require('inert')},
