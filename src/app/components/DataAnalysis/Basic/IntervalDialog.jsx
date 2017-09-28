@@ -300,7 +300,7 @@ export default class IntervalDialog extends Component {
         marginLeft:'72px',
         marginRight:'72px',
         display: 'flex',
-        flexDirection: 'row',
+        flexDirection: 'column',
         alignItems: 'center',
         overflowY:'auto'
       },
