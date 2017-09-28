@@ -1023,7 +1023,8 @@ var Cost = React.createClass({
               }
             },
             priceProps = {
-              defaultValue: Immutable.fromJS(Items).getIn([0, 'SimpleItem', 'Price']),
+              ref:id+""+Immutable.fromJS(Items).getIn([0, 'SimpleItem', 'Price']),
+              defaultValue: Immutable.fromJS(Items).getIn([0, 'SimpleItem', 'Price']) || '',
               isViewStatus: isView,
               title: I18N.MainMenu.Price + '(' + I18N.Setting.Cost.PriceUom + '/' + HierarchyStore.findUOMById(UomId) + ')',
               didChanged: value => {
