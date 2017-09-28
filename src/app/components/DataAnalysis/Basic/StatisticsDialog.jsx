@@ -676,6 +676,8 @@ export default class StatisticsDialog extends Component {
 
   componentDidMount(){
     DataAnalysisStore.addChangeListener(this._onChange);
+    display_timeRanges=[];
+    display_tagOptions=[];
 
     let tagOptions = EnergyStore.getTagOpions(),
       paramsObj = EnergyStore.getParamsObj(),
