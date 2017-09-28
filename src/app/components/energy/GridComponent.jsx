@@ -116,8 +116,8 @@ let GridComponent = React.createClass({
     for (let i = 0; i < tagOptions.length; i++) {
       option = tagOptions[i];
       if (option.tagId === tagId) {
-        hieName = option.hierName.split('\\');
-        hieName = hieName[hieName.length - 1];
+        hieName = option.hierName?option.hierName.split('\\'):null;
+        hieName = hieName?hieName[hieName.length - 1]:null;
         uom = getUomById(target.UomId);
         uomName = (uom.Code==="null" || uom.Code==="")?"":'/'+uom.Code;
         commodity = getCommodityById(target.CommodityId);

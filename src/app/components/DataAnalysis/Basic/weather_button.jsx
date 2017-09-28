@@ -70,7 +70,7 @@ export default class WeatherButton extends Component {
         })}
         {building.Location===null && <div className="no_weather_config">
           <span>{I18N.Setting.DataAnalysis.Weather.To}</span>
-          <div onClick={()=>{util.openTab(RoutePath.customerSetting.hierNode(this.context.currentRoute.params)+'?init_hierarchy_id='+this.context.hierarchyId)}}>{I18N.Setting.DataAnalysis.Weather.Location}</div>
+          <div onClick={()=>{util.openTab(RoutePath.customerSetting.hierNode(this.context.currentRoute.params)+'/'+this._getHierarchyId(this.context)+'?init_hierarchy_id='+this.context.hierarchyId)}}>{I18N.Setting.DataAnalysis.Weather.Location}</div>
           <span>{I18N.Setting.DataAnalysis.Weather.Config}</span>
           </div>}
        </ButtonMenu>

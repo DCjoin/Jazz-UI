@@ -66,6 +66,7 @@ import Label from './components/customerSetting/label/Label.jsx';
 import KPICycle from './components/customerSetting/KPICycle';
 //for hierarchySetting
 import Hierarchy from './components/hierarchySetting/Hierarchy.jsx';
+import HierarchyDetail from './components/hierarchySetting/hierarchy_detail.jsx';
 import HierarchyLog from './components/hierarchySetting/importLog/HierarchyLog.jsx';
 // var theme = new ThemeManager();
 // import './less/main.less';
@@ -259,7 +260,8 @@ ReactDom.render(<Router history={browserHistory} routes={{
         component: Label
       }, {
         path: 'hierNode',
-        component: Hierarchy
+        component: Hierarchy,
+        childRoutes: [{path:':nodeId', component: HierarchyDetail} ]
       }, {
         path: 'hierLog',
         component: HierarchyLog
