@@ -15,6 +15,7 @@ import EnergyStore from 'stores/Energy/EnergyStore.jsx';
 import FromEndTime from 'controls/FromEndTime.jsx';
 import { status } from 'constants/actionType/DataAnalysis.jsx';
 import NewFlatButton from 'controls/NewFlatButton.jsx';
+import Immutable from 'immutable';
 
 var isMultiTime;
 
@@ -202,7 +203,8 @@ export default class IntervalDialog extends Component {
           );
         })}
         <IconButton iconClassName="icon-add" style={{padding:0,width:'33px',height:'30px',borderRadius:'1px',border:'solid 1px #e6e6e6',marginLeft:'25px'}} 
-          iconStyle={{fontSize:'13px',height:'13px',width:'13px',color:'#32ad3d'}} onClick={()=>{IntervalStatisticAction.modifySplit(-1, status.ADD,{StartMoment:-1,EndMoment:-1});}}/>
+          iconStyle={{fontSize:'13px',height:'13px',width:'13px',color:'#32ad3d'}} disabled={this.state.splits.size===4}
+          onClick={()=>{IntervalStatisticAction.modifySplit(-1, status.ADD,{StartMoment:-1,EndMoment:-1});}}/>
         <NewFlatButton label={I18N.Setting.DataAnalysis.Statistics} disabled={!this._valid()} primary={true} style={{width:'76px',minWidth:'76px',height:'30px',marginLeft:'20px',lineHeight:'28px'}} onClick={()=>{this.setState({gatherInfo:'loading'},()=>{this._getGatherInfo()})}}/>
       </div>
     )
@@ -263,7 +265,7 @@ export default class IntervalDialog extends Component {
       this._getGatherInfo()
     }else{
       this.setState({
-        gatherInfo:null
+        gatherInfo:null,
       },()=>{
         IntervalStatisticAction.modifySplit(-1, status.ADD,{StartMoment:-1,EndMoment:-1});
       })
@@ -323,7 +325,8 @@ export default class IntervalDialog extends Component {
           content=this._renderContent()
         }
     return(
-      <Dialog title={title} titleStyle={style.title} style={{position:'relative'}} closeIconStyle={{fontSize:'15px',lingHeight:'15px',height:'15px',margin:'0',color:'#505559'}} open={true}  modal={false} onRequestClose={this.props.onCloseDialog} contentStyle={style.content}>
+      <Dialog title={title} titleStyle={style.title} hasClose
+        isOutsideClose={false} style={{position:'relative'}} closeIconStyle={{fontSize:'15px',lingHeight:'15px',height:'15px',margin:'0',color:'#505559'}} open={true} onRequestClose={this.props.onCloseDialog} contentStyle={style.content}>
 
         {content}
 

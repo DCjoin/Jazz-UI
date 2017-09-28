@@ -8,7 +8,7 @@ import PrototypeStore from '../PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
 
-var _gatherInfo=null,_splits=null,_lastSplits=null;
+var _gatherInfo=null,_splits=Immutable.fromJS([]),_lastSplits=Immutable.fromJS([]);
 const IntervalStatisticStore = assign({}, PrototypeStore, {
   setGatherInfo(info){
     _gatherInfo=Immutable.fromJS(info);
@@ -53,8 +53,8 @@ const IntervalStatisticStore = assign({}, PrototypeStore, {
   },
   clearAll(){
     _gatherInfo=null;
-    _splits=null;
-    _lastSplits=null;
+    _splits=Immutable.fromJS([]);
+    _lastSplits=Immutable.fromJS([]);
   }
 })
 
