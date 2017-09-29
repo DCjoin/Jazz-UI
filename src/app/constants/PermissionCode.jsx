@@ -213,6 +213,11 @@ const PermissionCode = function() {
 		getLabel: () => I18N.Privilege.Role.SaveEffect,
 		FULL: 1329,
 		READONLY: 1328,
+	},
+
+	C_LEVEL_APP: {
+		getLabel: () => I18N.Privilege.Role.CLevelAPP,
+		FULL: 1331,
 	}
 
 };

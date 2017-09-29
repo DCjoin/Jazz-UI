@@ -467,7 +467,6 @@ var MainAppBar = React.createClass({
   _getFuncAuthNav: function() {
     var user = currentUser() || {};
     var codeList = CurrentUserStore.getCurrentPrivilege();
-    // var commonPrivilege = CurrentUserStore.getCommonPrivilegeList();
     var role = privilegeUtil.getRolePrivilegeList(),
       rolePrivilege = [];
 

@@ -160,6 +160,7 @@ export default class BuildingChartPanel extends Component {
 					if( !currentRank || year > SingleKPIStore.getCustomerCurrentYear() ) {
 						return (
 							<KPIReport
+								idx={i}
 								currentYearDone={last(period).clone().add(1, 'months').isBefore(new Date())}
 								isGroup={false}
 								buildingId={buildingId}
@@ -194,6 +195,7 @@ export default class BuildingChartPanel extends Component {
 						</div>
 						<div className='jazz-building-kpi-rank-report'>
 							<KPIReport
+								idx={i}
 								hasRank={true}
 								currentYearDone={last(period).clone().add(1, 'months').isBefore(new Date())}
 								isGroup={false}

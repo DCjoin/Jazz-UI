@@ -26,6 +26,7 @@ module.exports = {
     updateKpiReportSettings:'/kpi/settings/update',
     updatePredictionSetting:'/kpi/PredictionSetting/update',
     customerCurrentYear:'/kpi/customercurrentyear/{customerId}',
+    updateMobileViewState: '/kpi/updatemobileviewstate/{kpiId}/{state}',
     Group:{
       groupSettingsList: '/kpi/groupsettings/list/{customerId}',
       groupcontinuous:'/kpi/groupcontinuous/{KpiId}/{year}',
@@ -45,6 +46,7 @@ module.exports = {
       getRank:'/rank/getrank/{customerId}',
       setRank:'/rank/setrank',
       rankRecord:'/rank/rankrecord/{customerId}/{groupKpiId}/{rankType}/{buildingId}/{year}',
+      setMobileViewState: '/rank/setmobileviewstate/{rankType}/{kpiId}/{state}',
     }
 	},
   DataReport: {
