@@ -1467,6 +1467,7 @@ class AnalysisPanel extends Component {
     AlarmTagStore.addChangeListener(this._onTagChanged);
     FolderStore.addCheckWidgetUpdateChangeListener(this._onCheckWidgetUpdate);
     WeatherStore.addChangeListener(this._onWeatherTagChanged);
+    
     if(!this.props.isNew){
       this._initChartPanelByWidgetDto();
     }
@@ -1506,6 +1507,7 @@ class AnalysisPanel extends Component {
     AlarmTagStore.removeChangeListener(this._onTagChanged);
     FolderStore.removeCheckWidgetUpdateChangeListener(this._onCheckWidgetUpdate);
     WeatherStore.removeChangeListener(this._onWeatherTagChanged);
+    
     this.resetCalendarType();
     // TagAction.clearAlarmSearchTagList();
     TagAction.setCurrentHierarchyId(null);

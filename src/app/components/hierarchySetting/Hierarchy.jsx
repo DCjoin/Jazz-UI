@@ -4,6 +4,7 @@ import React from "react";
 import Immutable from 'immutable';
 import HierarchyStore from 'stores/hierarchySetting/HierarchyStore.jsx';
 import HierarchyAction from 'actions/hierarchySetting/HierarchyAction.jsx';
+import HierarchyListAction from 'actions/HierarchyAction.jsx';
 import downloadFile from 'actions/download_file.js';
 import HierarchyList from './HierarchyList.jsx';
 import { formStatus } from 'constants/FormStatus.jsx';
@@ -284,8 +285,12 @@ var Hierarchy = React.createClass({
           node = node.set('ParentType', parent.get('Type'));
         }
         HierarchyAction.createHierarchy(node.toJS());
+        HierarchyListAction.getBuildingListByCustomerId(customerId);
       } else {
         HierarchyAction.modifyHierarchy(node.toJS());
+        if(!Immutable.is(HierarchyStore.getNodeById(this.state.selectedNode.get('Id')).get('Location'),this.state.selectedNode.get('Location'))){
+          HierarchyListAction.getBuildingListByCustomerId(customerId);
+        }
       }
       this.setState({
         isLoading: true
