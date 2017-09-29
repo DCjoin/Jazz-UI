@@ -9,6 +9,7 @@ import RoutePath from 'util/RoutePath.jsx';
 import {find} from 'lodash-es';
 import HierarchyAction from 'actions/HierarchyAction.jsx';
 import { CircularProgress} from 'material-ui';
+import FontIcon from 'material-ui/FontIcon';
 
 function findBuilding(hierarchyId,buildinglist=HierarchyStore.getBuildingList()){
   return find(buildinglist, building => building.Id === hierarchyId * 1 );
@@ -103,6 +104,7 @@ export default class WeatherButton extends Component {
                    
                   })
                 })}}>{I18N.Common.Button.Refresh}</div>
+                <FontIcon className="icon-sync" color="#32ad3c" style={{fontSize:'14px',lineHeight:'14px',marginLeft:'8px'}}/>
             </div>}
           {this.state.loading && <div className="no_weather_config">
             <CircularProgress  mode="indeterminate" size={40} />
