@@ -1921,6 +1921,7 @@ I18N.Privilege.Role.PushSolution = 'Pushed Solutions';
 I18N.Privilege.Role.SolutionFull = 'All Solutions';
 I18N.Privilege.Role.BuildingList = 'Project List';
 I18N.Privilege.Role.SaveEffect = 'Energy Saving Effect';
+I18N.Privilege.Role.CLevelAPP = 'C-Level APP';
 
 I18N.Remark = {};
 I18N.Remark.Label = 'Comment';

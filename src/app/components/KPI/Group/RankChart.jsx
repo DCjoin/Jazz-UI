@@ -4,6 +4,7 @@ import moment from 'moment';
 import {slice, fill} from 'lodash-es';
 import {isNull, isUndefined} from 'lodash-es';
 import Chip from 'material-ui/Chip';
+import Toggle from 'material-ui/Toggle';
 
 import KPIType from 'constants/actionType/KPI.jsx';
 import util from 'util/Util.jsx';
@@ -14,6 +15,7 @@ import LinkButton from 'controls/LinkButton.jsx';
 
 import Highcharts from '../../highcharts/Highcharts.jsx';
 
+import SingleKPIAction from 'actions/KPI/SingleKPIAction.jsx';
 import UOMStore from 'stores/UOMStore.jsx';
 
 function noValue(value) {
@@ -30,6 +32,7 @@ const DEFAULT_OPTIONS = {
     chart: {
         type: 'column',
         height: 238,
+        animation: false,
     },
     title: {
     	text: '',
@@ -130,6 +133,28 @@ function getValueLabel(value, data) {
 	}
 	return (isScale(data.UnitType) ? value.toFixed(1)*1 : util.getLabelData(value)) + getUnitLabel(data);
 }
+
+// workground code
+class Chart extends Component {
+	shouldComponentUpdate(nextProps) {
+		if( 
+			this.props.byYear !== nextProps.byYear || 
+			this.props.monthIndex !== nextProps.monthIndex || 
+			this.props.rankIndex !== nextProps.rankIndex
+		) {
+			return true;
+		}
+		return false;
+	}
+	render() {
+		return (
+            <Highcharts
+                ref="highcharts"
+                options={this.props.options}/>
+		);
+	}
+}
+
 
 export default class RankChart extends Component {
 	static contextTypes = {
@@ -270,7 +295,11 @@ export default class RankChart extends Component {
 		let {
 			RankName,
 			RankType,
+			GroupKpiId,
 			MonthRank,
+			MobileViewState,
+			idx,
+			disabledToggle,
 		} = this.props,
 		{
 			monthIndex,
@@ -326,7 +355,12 @@ export default class RankChart extends Component {
 
         return (
         	<div className='kpi-rank-chart'>
-        		<div className='kpi-rank-chart-title'>{RankName}</div>
+        		<div className='kpi-rank-chart-title'>
+					<div className='kpi-rank-chart-title-name'>{RankName}</div>
+					<Toggle style={{width: 'auto'}} label={'移动端可见'} disabled={!MobileViewState && disabledToggle} toggled={MobileViewState} onToggle={(e, val) => {
+						SingleKPIAction.toggleMobileVisable(GroupKpiId, idx, +val, true, rankType);
+					}}/>
+        		</div>
         		<div className='kpi-rank-chart-action'>
         			<div style={{display: 'flex'}}>
 		        		{hasRankByYear && <div className='kpi-rank-chart-type'>
@@ -350,8 +384,10 @@ export default class RankChart extends Component {
 	        			onRight={onNextRank}
 	        			/>
         		</div>
-	            <Highcharts
-	                ref="highcharts"
+	            <Chart
+	            	byYear={byYear}
+	            	monthIndex={monthIndex}
+	            	rankIndex={rankIndex}
 	                options={this._generatorOptions()}/>
             </div>
         );

@@ -46,6 +46,7 @@ const PRIVILEGE_ADMIN = [
   PermissionCode.BASIC_SMART_DIACRISIS_LIST.FULL,
   PermissionCode.SENIOR_SMART_DIACRISIS_LIST.FULL,
   PermissionCode.Save_Effect.FULL,
+  PermissionCode.C_LEVEL_APP.FULL,
 ].map( code => '' + code );
 
 var CurrentUserStore = assign({}, PrototypeStore, {
@@ -87,59 +88,6 @@ var CurrentUserStore = assign({}, PrototypeStore, {
       I18N.Setting.User.ServerManager,
       I18N.Setting.User.RegisterEngr,
     ]);
-  },
-  getCommonPrivilegeList: function() {
-    return ([
-      // I18N.Privilege.Common.DashboardView,
-      // I18N.Privilege.Common.DashboardManagement,
-      // I18N.Privilege.Common.MapView,
-      // I18N.Privilege.Common.EnergyManager,
-      I18N.Privilege.Common.PersonalInfoManagement,
-    ]);
-  },
-  getRolePrivilegeList: function() {
-    var array = [],
-      role = [];
-
-    // role = [I18N.Privilege.Role.DashboardSharing,
-    //   I18N.Privilege.Role.EnergyUsage,
-    //   I18N.Privilege.Role.CarbonEmission,
-    //   I18N.Privilege.Role.EnergyCost,
-    //   '',
-    //   I18N.Privilege.Role.EnergyExport,
-    //   I18N.Privilege.Role.SPManagement,
-    //   I18N.Privilege.Role.HierarchyManagement,
-    //   I18N.Privilege.Role.TagManagement,
-    //   '',
-    //   I18N.Privilege.Role.TagMapping,
-    //   I18N.Privilege.Role.CustomerInfoView,
-    //   I18N.Privilege.Role.CustomerInfoManagement,
-    //   I18N.Privilege.Role.UnitIndicator,
-    //   I18N.Privilege.Role.RatioIndicator,
-    //   I18N.Privilege.Role.CorporateRanking,
-    //   I18N.Privilege.Role.LabelingIndicator,
-    //   I18N.Privilege.Role.CustomLabeling,
-    //   I18N.Privilege.Role.ReportView,
-    //   I18N.Privilege.Role.ReportManagement,
-    //   I18N.Privilege.Role.ChartRemarking,
-    //   I18N.Privilege.Role.EnergyAlarm,
-    //   '',
-    //   I18N.Privilege.Role.BaselineConfiguration,
-    // ];
-    // role.forEach((item, index) => {
-    //   array[1200 + index] = item;
-    // });
-    // array[1205] = I18N.Privilege.Role.EnergyExport;
-    array[1218] = I18N.Privilege.Role.ReportView;
-    // array[1219] = I18N.Privilege.Role.ReportManagement;
-    array[1221] = I18N.Privilege.Role.EnergyAlarm;
-    array[1206] = I18N.Privilege.Role.SPManagement;
-    array[1207] = I18N.Privilege.Role.HierarchyManagement;
-    array[1208] = I18N.Privilege.Role.TagManagement;
-    //  array[1210] = I18N.Privilege.Role.TagMapping;
-    array[1217] = I18N.Privilege.Role.CustomLabeling;
-    array[1223] = I18N.Privilege.Role.BaselineConfiguration;
-    return array;
   },
   setPasswordSuccess: function() {
     _error = null;

@@ -701,11 +701,18 @@
 
   &-header {
     height: 40px;
-    padding-left: 15px;
+    padding: 0 15px;
     line-height: 40px;
-    font-weight: bold;
-    color: @slate-grey;
     background-color: #f7f7f7;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+
+    &-name {
+      font-weight: bold;
+      color: @slate-grey;      
+    }
   }
 
   &-chart {
@@ -1276,9 +1283,15 @@
     border-radius: 2px;
     background-color: @Tabletopfill-gray;
     color: @slate-grey;
-    padding-left: 15px;
+    padding: 0 15px;
     font-size: 14px;
-    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &-name {      
+      font-weight: bold;
+    }
   }
   &-action {
     display: flex;

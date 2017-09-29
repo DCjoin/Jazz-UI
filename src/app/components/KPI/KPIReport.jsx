@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import {find, partial} from 'lodash-es';
-import { FontIcon } from 'material-ui';
+import FontIcon from 'material-ui/FontIcon';
+import Toggle from 'material-ui/Toggle';
 
 import PermissionCode from 'constants/PermissionCode.jsx';
 
@@ -10,6 +11,8 @@ import LinkButton from 'controls/LinkButton.jsx';
 import util from 'util/Util.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
 import RoutePath from 'util/RoutePath.jsx';
+
+import SingleKPIAction from 'actions/KPI/SingleKPIAction.jsx';
 
 import UOMStore from 'stores/UOMStore.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
@@ -438,7 +441,7 @@ export default class KPIReport extends Component {
 		</div>
 	}
 	render() {
-		let {data, summaryData, period, onEdit, onRefresh, isGroup, currentYearDone, hasRank} = this.props;
+		let {data, summaryData, period, onEdit, onRefresh, isGroup, currentYearDone, hasRank, idx} = this.props;
 		let overproof = isOverproof(data.get('IndicatorClass'), summaryData);
 		let showTip = !!overproof && !currentYearDone && !isGroup;
 
@@ -454,7 +457,12 @@ export default class KPIReport extends Component {
 					      	onRefresh(data.get('id'));
 					      }} label={I18N.Common.Button.Edit}/>}
 				</div>
-				<div className='jazz-kpi-report-header'>{data.get('name')}</div>
+				<div className='jazz-kpi-report-header'>
+					<div className='jazz-kpi-report-header-name'>{data.get('name')}</div>
+					<Toggle style={{width: 'auto'}} label={'移动端可见'} defaultToggled={data.get('MobileViewState')} onToggle={(e, val) => {
+						SingleKPIAction.toggleMobileVisable(data.get('id'), idx, +val);
+					}}/>
+				</div>
 				<div className='jazz-kpi-report'>
 					<div className='jazz-kpi-report-chart'>
 						<KPIChart hasRank={hasRank} LastMonthRatio={summaryData && summaryData.LastMonthRatio} period={period} data={data}/>
