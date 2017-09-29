@@ -111,13 +111,18 @@ function returnDownloadHtml(request,reply){
 //   }
 // });
 
-server.ext('onRequest', function (request, reply) {
-  if ( /^http$/.test( request.headers["x-forwarded-proto"] || request.server.info.protocol ) ) {
-    return reply('Forwarding to secure route')
-      .redirect('https://' + request.headers.host + request.path);
-  }
-  reply();
-});
+// server.ext('onRequest', function (request, reply) {
+//   if ( /^http$/.test( request.headers["x-forwarded-proto"] || request.server.info.protocol ) ) {
+//     return reply('Forwarding to secure route')
+//       .redirect('https://' + request.headers.host + request.path);
+//   }
+//   reply();
+// });
+
+server.register({
+  register: require('hapi-require-https'),
+  options: {}
+})
 
 server.route({
   method: 'GET',
