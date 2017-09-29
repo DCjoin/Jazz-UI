@@ -358,7 +358,7 @@ export default class RankChart extends Component {
         		<div className='kpi-rank-chart-title'>
 					<div className='kpi-rank-chart-title-name'>{RankName}</div>
 					<Toggle style={{width: 'auto'}} label={'移动端可见'} disabled={!MobileViewState && disabledToggle} toggled={MobileViewState} onToggle={(e, val) => {
-						SingleKPIAction.toggleMobileVisable(GroupKpiId, idx, +val, true, rankType);
+						SingleKPIAction.toggleMobileVisable(GroupKpiId, idx, +val, true, RankType);
 					}}/>
         		</div>
         		<div className='kpi-rank-chart-action'>
