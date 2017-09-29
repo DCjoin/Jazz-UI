@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDom from 'react-dom';
 import FontIcon from 'material-ui/FontIcon';
+import IconButton from 'material-ui/IconButton';
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
 import MeasuresAction from 'actions/ECM/MeasuresAction.jsx';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -106,7 +107,7 @@ class RemarkItem extends Component{
           <span style={{marginLeft:'10px',marginRight:'10px'}}>{time}</span>
           {CreateUserName}
         </div>
-          {canDelete(this.props.canEdit,CreateUserId) && <FontIcon className="icon-delete" color='#505559' style={{marginLeft:'10px',fontSize:'14px'}} onClick={this.props.onDelete}/>}
+          {canDelete(this.props.canEdit,CreateUserId) && <IconButton iconClassName="icon-delete" iconStyle={{marginLeft:'10px',fontSize:'14px',color:"#505559"}} style={{padding:'0',width:'14px',height:'14px'}} onClick={this.props.onDelete}/>}
         </div>
       </div>
     )
@@ -122,6 +123,7 @@ export default class Remark extends Component {
 
     constructor(props) {
       super(props);
+      this._onChanged = this._onChanged.bind(this);
     }
 
     state={
@@ -143,7 +145,12 @@ export default class Remark extends Component {
     }
 
     _onDelete(remarkId){
-        MeasuresAction.deleteRemark(this.props.problemId,remarkId)
+      this.setState({
+        remarkList:null
+      },()=>{
+         MeasuresAction.deleteRemark(this.props.problemId,remarkId)
+      })
+       
     }
 
     _onSave(remark){
@@ -158,7 +165,7 @@ export default class Remark extends Component {
     }
 
     componentDidMount(){
-      MeasuresStore.addChangeListener(this._onChanged.bind(this));
+      MeasuresStore.addChangeListener(this._onChanged);
       !this.props.remarkList && MeasuresAction.getRemarkList(this.props.problemId);
     }
 
@@ -169,7 +176,7 @@ export default class Remark extends Component {
     }
 
     componentWillUnmount(){
-      MeasuresStore.removeChangeListener(this._onChanged.bind(this));
+      MeasuresStore.removeChangeListener(this._onChanged);
     }
 
     render(){
