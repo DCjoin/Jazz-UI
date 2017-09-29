@@ -67,9 +67,9 @@ function verifyBrowser(user_agent) {
 
 function returnIndexHtml(request,reply){
 
-  if( /^http$/.test( request.headers["x-forwarded-proto"] || request.server.info.protocol ) ) {
-    return reply.redirect("https://" + request.headers.host + request.path)
-  }
+  // if( /^http$/.test( request.headers["x-forwarded-proto"] || request.server.info.protocol ) ) {
+  //   return reply.redirect("https://" + request.headers.host + request.path)
+  // }
   if( !request.state.skip_detect && !verifyBrowser( request.headers['user-agent'] ) ) {
     return returnUpdateBrowserHtml(request, reply);
   }
@@ -110,6 +110,15 @@ function returnDownloadHtml(request,reply){
 //     }
 //   }
 // });
+
+server.ext('onRequest', function (request, reply) {
+  if ( /^http$/.test( request.headers["x-forwarded-proto"] || request.server.info.protocol ) ) {
+    return reply('Forwarding to secure route')
+      .redirect('https://' + request.headers.host + request.path);
+  }
+  reply();
+});
+
 server.route({
   method: 'GET',
   path: '/DownloadApp.html',
