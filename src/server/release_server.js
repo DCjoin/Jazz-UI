@@ -67,7 +67,7 @@ function verifyBrowser(user_agent) {
 
 function returnIndexHtml(request,reply){
 
-  if( /^http$/.test( request.server.info.protocol || request.headers["x-forwarded-proto"]) ) {
+  if( request.server.info.protocol === 'http' ) {
     return reply.redirect("https://" + request.headers.host + request.path)
   }
   if( !request.state.skip_detect && !verifyBrowser( request.headers['user-agent'] ) ) {
