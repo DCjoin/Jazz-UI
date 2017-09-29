@@ -51,6 +51,9 @@ import AuxiliaryFunction from './AuxiliaryFunction.jsx';
 import ChartAction from 'actions/ChartAction.jsx';
 import NewFlatButton from 'controls/NewFlatButton.jsx';
 import Remark from './Remark.jsx';
+import WeatherStore from 'stores/DataAnalysis/weather_store.jsx';
+import WeatherAction from 'actions/DataAnalysis/weather_action.jsx';
+import IntervalStatisticAction from 'actions/DataAnalysis/interval_statistic_action.jsx';
 
 const DIALOG_TYPE = {
   SWITCH_WIDGET: "switchwidget",
@@ -94,6 +97,7 @@ class AnalysisPanel extends Component {
     this._onDialogChanged  = this._onDialogChanged.bind(this);
     this._handleSave  = this._handleSave.bind(this);
     this._onChartTypeChanged  = this._onChartTypeChanged.bind(this);
+    this._onWeatherTagChanged=this._onWeatherTagChanged.bind(this);
   }
 
   state={
@@ -120,6 +124,7 @@ class AnalysisPanel extends Component {
       dimId:null,
       tagId:null,
       isViewName: true,
+      weatherTagList:WeatherStore.getTagList()
   }
 
   isMultiTime=false;
@@ -549,9 +554,9 @@ class AnalysisPanel extends Component {
 
   getCurrentWidgetDto(){
     
-    if( !EnergyStore.getParamsObj() ) {
-      return ;
-    }
+    // if( !EnergyStore.getParamsObj() ) {
+    //   return ;
+    // }
     let chartType = this.state.selectedChartType;
     let tagOptions = EnergyStore.getTagOpions();
     let tagIds = CommonFuns.getTagIdsFromTagOptions(tagOptions);
@@ -667,9 +672,9 @@ class AnalysisPanel extends Component {
   }
 
   _handleEnergyStepChange(step) {
-    if( !EnergyStore.getParamsObj() ) {
-      return ;
-    }
+    // if( !EnergyStore.getParamsObj() ) {
+    //   return ;
+    // }
     let tagOptions = EnergyStore.getTagOpions(),
       paramsObj = EnergyStore.getParamsObj(),
       timeRanges = paramsObj.timeRanges;
@@ -915,6 +920,12 @@ class AnalysisPanel extends Component {
     )
   }
 
+  _onWeatherTagChanged(){
+    this.setState({
+      weatherTagList:WeatherStore.getTagList()
+    })
+  }
+
   _onRelativeDateChange(e, selectedIndex, value,refresh=true) {
     let dateSelector = this.refs.subToolBar.refs.dateTimeSelector;
 
@@ -1067,6 +1078,7 @@ class AnalysisPanel extends Component {
         onYaxisSelectorDialogSubmit:this._onYaxisSelectorDialogSubmit,
         handleCalendarChange:this._handleCalendarChange,
         analysisPanel:this,
+        weatherTag:this.state.weatherTagList
       }
     }
     return(
@@ -1454,6 +1466,8 @@ class AnalysisPanel extends Component {
     EnergyStore.addEnergyDataLoadErrorsListener(this._onGetEnergyDataErrors);
     AlarmTagStore.addChangeListener(this._onTagChanged);
     FolderStore.addCheckWidgetUpdateChangeListener(this._onCheckWidgetUpdate);
+    WeatherStore.addChangeListener(this._onWeatherTagChanged);
+    
     if(!this.props.isNew){
       this._initChartPanelByWidgetDto();
     }
@@ -1492,11 +1506,15 @@ class AnalysisPanel extends Component {
     EnergyStore.removeEnergyDataLoadErrorsListener(this._onGetEnergyDataErrors);
     AlarmTagStore.removeChangeListener(this._onTagChanged);
     FolderStore.removeCheckWidgetUpdateChangeListener(this._onCheckWidgetUpdate);
+    WeatherStore.removeChangeListener(this._onWeatherTagChanged);
+    
     this.resetCalendarType();
     // TagAction.clearAlarmSearchTagList();
     TagAction.setCurrentHierarchyId(null);
     CommodityAction.setCurrentHierarchyInfo({Id:null,name:null});//清空hierarchy 信息，否则会影响能源
     MultipleTimespanStore.clearMultiTimespan('both');
+    WeatherAction.clearSelectedTag();
+    IntervalStatisticAction.clearAll();
   }
 
   render(){

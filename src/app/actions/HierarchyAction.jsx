@@ -35,13 +35,13 @@ let HierarchyAction = {
     });
   },
 
-  getBuildingListByCustomerId(customerId) {
+  getBuildingListByCustomerId(customerId,callback) {
     Ajax.get(util.replacePathParams(Path.Hierarchy.GetBuildingList, customerId), {
       params: {customerId},
       tag: 'getBuildingListByCustomerId',
       avoidDuplicate: true,
       success: function(buildingList) {
-
+        if(callback) callback(buildingList)
         AppDispatcher.dispatch({
           type: Action.GET_BUILDING_LIST_BY_CUSTOMER_ID,
           data: buildingList,

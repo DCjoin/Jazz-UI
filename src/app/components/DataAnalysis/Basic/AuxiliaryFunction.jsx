@@ -10,6 +10,8 @@ import TagStore from 'stores/TagStore.jsx';
 import AddIntervalWindow from './HistoryWindow.jsx';
 import YaxisSelector from './YaxisSelector.jsx';
 import StatisticsDialog from './StatisticsDialog.jsx';
+import WeatherButton from'./weather_button.jsx';
+import IntervalDialog from './IntervalDialog.jsx';
 
 export default class AuxiliaryFunction extends Component {
 
@@ -112,6 +114,12 @@ export default class AuxiliaryFunction extends Component {
   return calendarEl;
  }
 
+  getWeatherBtn(){
+    var disabled=this.getMoreBtnDisableStatus() || this.props.analysisPanel.state.step===0;
+
+    return <WeatherButton taglist={this.props.weatherTag} disabled={disabled} step={this.props.analysisPanel.state.step}/>
+  } 
+
   getAuxiliaryCompareBtn(){
     var disabled=!this.getConfigBtnStatus();
     let calendarEl = this.getCalenderBgBtnEl();
@@ -181,7 +189,17 @@ export default class AuxiliaryFunction extends Component {
   }
 
   _renderIntervalDialog(){
-    return(<div/>)
+    var props={
+      timeRanges:this.props.timeRanges,
+      widgetId:this.props.analysisPanel.props.widgetDto.Id,
+      step:this.props.analysisPanel.state.step,
+      onCloseDialog:()=>{
+        this.setState({
+          showIntervalDialog:false
+        })
+      }
+    }
+    return(<IntervalDialog {...props}/>)
   }
 
   render(){
@@ -197,6 +215,7 @@ export default class AuxiliaryFunction extends Component {
     return(
       <div>
         <div style={{display:'flex'}}>
+          {this.getWeatherBtn()}
           <FlatButton disabled={this.getHistoryBtnStatus()} label={I18N.EM.Tool.HistoryCompare} labelStyle={styles.label}
             icon={<FontIcon className="icon-historical-comparison" style={styles.label}/>}
             onClick={()=>{this.setState({showAddIntervalDialog:true})}}/>
@@ -218,4 +237,5 @@ AuxiliaryFunction.propTypes = {
   initYaxisDialog:React.PropTypes.func,
   onYaxisSelectorDialogSubmit:React.PropTypes.func,
   timeRanges:React.PropTypes.object,
+  weatherTag:React.PropTypes.array || null,
 };

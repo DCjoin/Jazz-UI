@@ -12,7 +12,8 @@ var FromEndTime = React.createClass({
     hasDeleteButton: React.PropTypes.bool,
     errorText: React.PropTypes.string,
     startTime: React.PropTypes.number,
-    endTime: React.PropTypes.number
+    endTime: React.PropTypes.number,
+    style:React.PropTypes.object,
   },
   getDefaultProps() {
     return {
@@ -153,7 +154,7 @@ var FromEndTime = React.createClass({
       
     }
     return (
-      <div className="jazz-fromendtime">
+      <div className="jazz-fromendtime" style={this.props.style}>
         <div className='jazz-fromendtime-content'>
           <ViewableDropDownMenu {...startTimeProps}></ViewableDropDownMenu>
           <div className='jazz-fromendtime-content-to'>{'-'}</div>

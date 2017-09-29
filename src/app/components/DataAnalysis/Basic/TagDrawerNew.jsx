@@ -457,7 +457,6 @@ export default class TagDrawer extends Component {
         width={237}
         open={this.props.open}
         onRequestChange={this.props.onClose}
-        overlayStyle={{opacity:'0'}}
         containerStyle={{display:'flex',overflow:'hidden'}}>
         <div className="jazz-analysis-tag">
           {this.state.selectedDimNode===null && <div className="header">

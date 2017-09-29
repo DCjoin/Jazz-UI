@@ -147,6 +147,7 @@ var HierarchyStore = assign({}, PrototypeStore, {
     return _property;
   },
   setSelectedNode: function(selectedNode) {
+    if(!selectedNode) return null
     if (selectedNode.get('Type') !== -1) {
       _customer = emptyMap();
     }

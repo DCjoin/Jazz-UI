@@ -4,6 +4,7 @@ import React from "react";
 import Immutable from 'immutable';
 import HierarchyStore from 'stores/hierarchySetting/HierarchyStore.jsx';
 import HierarchyAction from 'actions/hierarchySetting/HierarchyAction.jsx';
+import HierarchyListAction from 'actions/HierarchyAction.jsx';
 import downloadFile from 'actions/download_file.js';
 import HierarchyList from './HierarchyList.jsx';
 import { formStatus } from 'constants/FormStatus.jsx';
@@ -15,12 +16,16 @@ import Customer from './CustomerForHierarchy.jsx';
 import Organization from './Organization/Organization.jsx';
 import Building from './Building/Building.jsx';
 import Dim from './Dim/Dim.jsx';
+import RoutePath from 'util/RoutePath.jsx';
 
 function emptyMap() {
   return new Map();
 }
 function emptyList() {
   return new List();
+}
+function getNodeId(props) {
+	return +props.params.nodeId;
 }
 var customerId=null;
 var _currentConsultantsHierarchyId = null;
@@ -43,7 +48,8 @@ var Hierarchy = React.createClass({
     };
   },
   _onChange: function(selectedNode) {
-    if (!!selectedNode) {
+    if(this.state.selectedNode.size>0 || !getNodeId(this.props)){
+          if (!!selectedNode) {
       this._setViewStatus(selectedNode);
     }
     this.setState({
@@ -51,6 +57,22 @@ var Hierarchy = React.createClass({
       errorTitle: null,
       errorContent: null
     });
+    }else{
+          if(getNodeId(this.props)){
+      this.setState({
+        isLoading: false,
+        errorTitle: null,
+        errorContent: null
+      },()=>{
+        this._setViewStatus(HierarchyStore.getNodeById(getNodeId(this.props)));
+        HierarchyAction.setCurrentSelectedNode(HierarchyStore.getNodeById(getNodeId(this.props)));
+        this._changeNodeId(getNodeId(this.props))
+      })
+      
+    }
+    }
+
+
   },
   _onDataChange: function() {
     this._setViewStatus();
@@ -98,6 +120,8 @@ var Hierarchy = React.createClass({
       selectedNode: selectedNode,
       hierarchys: HierarchyStore.getHierarchys(),
       infoTabNo: infoNo
+    },()=>{
+      this._changeNodeId(selectedNode.get('Id'));
     });
   },
   _setAddStatus: function(newType) {
@@ -112,6 +136,8 @@ var Hierarchy = React.createClass({
       selectedNode: Immutable.fromJS({
         Type: newType
       }),
+    },()=>{
+      this._changeNodeId(-1);
     });
   },
   _setEditStatus: function() {
@@ -224,6 +250,8 @@ var Hierarchy = React.createClass({
     if (this.state.infoTabNo === 1) {
       this.setState({
         selectedNode: mData,
+      },()=>{
+        this._changeNodeId(mData.get('Id'));
       });
     } else {
     }
@@ -257,8 +285,12 @@ var Hierarchy = React.createClass({
           node = node.set('ParentType', parent.get('Type'));
         }
         HierarchyAction.createHierarchy(node.toJS());
+        HierarchyListAction.getBuildingListByCustomerId(customerId);
       } else {
         HierarchyAction.modifyHierarchy(node.toJS());
+        if(!Immutable.is(HierarchyStore.getNodeById(this.state.selectedNode.get('Id')).get('Location'),this.state.selectedNode.get('Location'))){
+          HierarchyListAction.getBuildingListByCustomerId(customerId);
+        }
       }
       this.setState({
         isLoading: true
@@ -286,8 +318,15 @@ var Hierarchy = React.createClass({
     });
 
   },
+	_changeNodeId(nodeId) {
+    if( nodeId !== getNodeId(this.props) ) {
+		  this.props.router.push(RoutePath.customerSetting.hierNode(this.props.params) + '/' + nodeId);
+    }
+	},
   _renderContent: function() {
-    var detailProps = {
+
+    if(this.state.selectedNode && this.state.selectedNode.size>0){
+          var detailProps = {
       selectedNode: this.state.selectedNode,
       key: this.state.selectedNode.get('Id') === null ? Math.random() : this.state.selectedNode.get('Id'),
       formStatus: this.state.formStatus,
@@ -301,7 +340,15 @@ var Hierarchy = React.createClass({
       closedList: this.state.closedList,
       merge: this._handlerMerge
     };
-    var type = this.state.selectedNode.get('Type'),
+    return React.cloneElement(this.props.children, {detailProps})
+  }
+  else{
+    return(<div className="content flex-center">
+					<CircularProgress  mode="indeterminate" size={80} />
+				</div>)
+  }
+
+    /*var type = this.state.selectedNode.get('Type'),
       detail = null;
     switch (type) {
       case -1:
@@ -342,7 +389,7 @@ var Hierarchy = React.createClass({
         detail = <Dim {...detailProps}/>;
         break;
     }
-    return detail;
+    return detail;*/
   },
   _renderErrorDialog: function() {
     var that = this;

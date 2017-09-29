@@ -21,8 +21,8 @@ var isMultiTime;
 var display_timeRanges=[],display_tagOptions=[];
 var step_config=[I18N.EM.Raw,I18N.EM.Hour,I18N.EM.Day,I18N.EM.Month,I18N.EM.Year,I18N.EM.Week]
 function privilegeWithSeniorDataAnalyse( privilegeCheck ) {
-  return true
-	// return privilegeCheck(PermissionCode.SENIOR_DATA_ANALYSE, CurrentUserStore.getCurrentPrivilege());
+  // return true
+	return privilegeCheck(PermissionCode.SENIOR_DATA_ANALYSE, CurrentUserStore.getCurrentPrivilege());
 }
 //能源经理
 function SeniorDataAnalyseIsFull() {
@@ -42,7 +42,7 @@ class ItemComponent extends Component{
   render(){
     return(
       <div style={this.props.style}>
-        <div style={{fontSize:'14px',color:'#626469',marginBottom:'7px',marginTop:'25px',paddingLeft:'10px'}}>
+        <div style={{fontSize:'14px',fontWeight:'600',color:'#626469',marginBottom:'7px',marginTop:'25px',paddingLeft:'10px'}}>
           {this.props.title}
         </div>
         {this.props.children}
@@ -239,7 +239,7 @@ export default class StatisticsDialog extends Component {
       color:'#626469'};
     if(isMultiTime){
       header={
-        columnName:I18N.Setting.DataAnalysis.TimeSpan,
+        columnName:I18N.SumWindow.TimeSpan,
         typeName:I18N.Common.CaculationType.Avg,
         additionColumnName:I18N.Common.CaculationType.Sum,
         hasTime:true,
@@ -272,7 +272,7 @@ export default class StatisticsDialog extends Component {
       })
     }else {
       header={
-        columnName:I18N.Setting.DataAnalysis.TimeSpan,
+        columnName:I18N.SumWindow.TimeSpan,
         typeName:I18N.Common.CaculationType.Avg,
         additionColumnName:I18N.Common.CaculationType.Sum,
         hasTime:true,
@@ -281,9 +281,12 @@ export default class StatisticsDialog extends Component {
       content=SumGroup.map((sum,sunIndex)=>{
         var {CommodityId,UomName,GatherSumValue,GatherAvgValue,TagName,WorkdaySumValue,WorkdayAvgValue,HolidaySumValue,HolidayAvgValue,IsConfigCalendar}=sum;
         var commodity=CommonFuns.getCommodityById(CommodityId).Comment;
+        // {TagName+' '+I18N.Common.Glossary.Commodity+":"+commodity+" "+I18N.Common.Glossary.UOM+':'+UomName}
         var title=(
-          <div style={{paddingLeft:'10px',height:'30px',minHeight:'30px',backgroundColor:'#f7f7f7',lineHeight:'30px',fontSize:'12px',color:'#626469',borderLeft:'1px solid #e6e6e6',borderRight:'1px solid #e6e6e6'}}>
-            {TagName+'  '+I18N.Common.Glossary.Commodity+":"+commodity+" "+I18N.Common.Glossary.UOM+':'+UomName}
+          <div style={{display:'flex',paddingLeft:'10px',height:'30px',minHeight:'30px',backgroundColor:'#f7f7f7',lineHeight:'30px',fontSize:'12px',color:'#626469',borderLeft:'1px solid #e6e6e6',borderRight:'1px solid #e6e6e6'}}>
+            <div>{TagName}</div>
+            <div style={{marginLeft:'8px'}}>{I18N.Common.Glossary.Commodity+":"+commodity}</div>
+            <div style={{marginLeft:'8px'}}>{I18N.Common.Glossary.UOM+':'+UomName}</div>
           </div>
         );
       var group=IsConfigCalendar?
@@ -311,7 +314,7 @@ export default class StatisticsDialog extends Component {
   }
 
   _renderSum(){
-    if(this.state.gatherInfo.SumGroup===null) return null;
+    if(this.state.gatherInfo.SumGroup===null || this.state.gatherInfo.SumGroup.length===0) return null;
     if(this.state.showModel===Model.Basic) return this._renderBasicSum()
     else return this._renderSeniorSum()
   
@@ -389,7 +392,7 @@ export default class StatisticsDialog extends Component {
       color:'#626469'};
     if(isMultiTime){
       header={
-        columnName:I18N.Setting.DataAnalysis.TimeSpan,
+        columnName:I18N.SumWindow.TimeSpan,
         typeName:I18N.Common.CaculationType.Avg,
         hasTime:false,
         style:{'marginBottom':'none'}
@@ -421,7 +424,7 @@ export default class StatisticsDialog extends Component {
       })
     }else {
       header={
-        columnName:I18N.Setting.DataAnalysis.TimeSpan,
+        columnName:I18N.SumWindow.TimeSpan,
         typeName:I18N.Common.CaculationType.Avg,
         hasTime:false,
         style:{'marginBottom':'none'}
@@ -430,10 +433,13 @@ export default class StatisticsDialog extends Component {
         var {CommodityId,UomName,TagName,GatherAvgValue,HolidayAvgValue,IsConfigCalendar,WorkdayAvgValue}=avg;
         var commodity=CommonFuns.getCommodityById(CommodityId).Comment;
         var title=(
-          <div style={{paddingLeft:'10px',height:'30px',minHeight:'30px',backgroundColor:'#f7f7f7',lineHeight:'30px',fontSize:'12px',color:'#626469',borderLeft:'1px solid #e6e6e6',borderRight:'1px solid #e6e6e6'}}>
-            {TagName+'  '+I18N.Common.Glossary.Commodity+":"+commodity+" "+I18N.Common.Glossary.UOM+':'+UomName}
+          <div style={{display:'flex',paddingLeft:'10px',height:'30px',minHeight:'30px',backgroundColor:'#f7f7f7',lineHeight:'30px',fontSize:'12px',color:'#626469',borderLeft:'1px solid #e6e6e6',borderRight:'1px solid #e6e6e6'}}>
+            <div>{TagName}</div>
+            <div style={{marginLeft:'8px'}}>{I18N.Common.Glossary.Commodity+":"+commodity}</div>
+            <div style={{marginLeft:'8px'}}>{I18N.Common.Glossary.UOM+':'+UomName}</div>
           </div>
         );
+        
       var group=IsConfigCalendar?<div>
                 <TableRow columnValue={I18N.Setting.Calendar.WorkDay} typeValue={WorkdayAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:WorkdayAvgValue+'/'+step_config[this.props.step]}/>
                 <TableRow columnValue={I18N.Setting.Calendar.Holiday} typeValue={HolidayAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:HolidayAvgValue+'/'+step_config[this.props.step]}/>
@@ -459,7 +465,7 @@ export default class StatisticsDialog extends Component {
 
   _renderAverage(){
 
-    if(this.state.gatherInfo.AvgGroup===null) return null;
+    if(this.state.gatherInfo.AvgGroup===null || this.state.gatherInfo.AvgGroup.length===0) return null;
     if(this.state.showModel===Model.Basic) return this._renderBasicAve()
         else return this._renderSeniorAve()
   }
@@ -538,7 +544,7 @@ export default class StatisticsDialog extends Component {
     if(isMultiTime){
 
       header={
-        columnName:I18N.Setting.DataAnalysis.TimeSpan,
+        columnName:I18N.SumWindow.TimeSpan,
         typeName:I18N.Common.CaculationType.Max,
         hasTime:false
       };
@@ -574,7 +580,7 @@ export default class StatisticsDialog extends Component {
     }
     else {
       header={
-        columnName:I18N.Setting.DataAnalysis.TimeSpan,
+        columnName:I18N.SumWindow.TimeSpan,
         typeName:I18N.Common.CaculationType.Max,
         hasTime:false
       };
@@ -584,8 +590,10 @@ export default class StatisticsDialog extends Component {
         var commodity=CommonFuns.getCommodityById(CommodityId).Comment;
          var j2d = CommonFuns.DataConverter.JsonToDateTime;
         var title=(
-          <div style={{paddingLeft:'10px',height:'30px',minHeight:'30px',backgroundColor:'#f7f7f7',lineHeight:'30px',fontSize:'12px',color:'#626469',borderLeft:'1px solid #e6e6e6',borderRight:'1px solid #e6e6e6'}}>
-            {TagName+'  '+I18N.Common.Glossary.Commodity+":"+commodity+" "+I18N.Common.Glossary.UOM+':'+UomName}
+          <div style={{display:'flex',paddingLeft:'10px',height:'30px',minHeight:'30px',backgroundColor:'#f7f7f7',lineHeight:'30px',fontSize:'12px',color:'#626469',borderLeft:'1px solid #e6e6e6',borderRight:'1px solid #e6e6e6'}}>
+            <div>{TagName}</div>
+            <div style={{marginLeft:'8px'}}>{I18N.Common.Glossary.Commodity+":"+commodity}</div>
+            <div style={{marginLeft:'8px'}}>{I18N.Common.Glossary.UOM+':'+UomName}</div>
           </div>
         );
         var group;
@@ -615,7 +623,7 @@ export default class StatisticsDialog extends Component {
   }
 
   _renderMax(){
-    if(this.state.gatherInfo.MaxGroup===null) return null;
+    if(this.state.gatherInfo.MaxGroup===null || this.state.gatherInfo.MaxGroup.length===0) return null;
     if(this.state.showModel===Model.Basic) return this._renderBasicMax()
         else return this._renderSeniorMax()
   }
@@ -668,6 +676,8 @@ export default class StatisticsDialog extends Component {
 
   componentDidMount(){
     DataAnalysisStore.addChangeListener(this._onChange);
+    display_timeRanges=[];
+    display_tagOptions=[];
 
     let tagOptions = EnergyStore.getTagOpions(),
       paramsObj = EnergyStore.getParamsObj(),

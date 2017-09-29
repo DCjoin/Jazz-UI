@@ -7,6 +7,7 @@ import Tag from '../constants/actionType/Tag.jsx';
 import AlarmTag from '../constants/actionType/AlarmTag.jsx';
 import AlarmSetting from '../constants/actionType/Setting.jsx';
 import Folder from '../constants/actionType/Folder.jsx';
+import Weather from 'constants/actionType/DataAnalysis.jsx';
 
 let LOAD_TAG_NODE_EVENT = 'loadtagnode';
 let LOAD_ALARM_TAG_NODE_EVENT = 'loadalarmtagnode';
@@ -546,7 +547,8 @@ var TagStore = assign({}, PrototypeStore, {
 var TagAction = Tag.Action,
   AlarmTagAction = AlarmTag.Action,
   AlarmSettingAction = AlarmSetting.Action,
-  FolderAction = Folder.Action;
+  FolderAction = Folder.Action,
+  WeatherAction=Weather.Action;
 TagStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
     case TagAction.LOAD_TAG_NODE:
@@ -563,6 +565,10 @@ TagStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case TagAction.SET_TAGSTATUS_TAG:
       TagStore.setTagStatusByTag(action.node, action.selected);
+      TagStore.emitTagStatusChange();
+      break;
+    case WeatherAction.CHECKED_TAG:
+      TagStore.setTagStatusByTag(action.tag, action.ischecked);
       TagStore.emitTagStatusChange();
       break;
     case TagAction.SET_TAGSTATUS_ID:

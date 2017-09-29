@@ -1537,6 +1537,7 @@ let CommonFuns = {
     }
     for (let i = 0, len = tagOptions.length; i < len; i++) {
       tag = tagOptions[i];
+      if(tag.hierId){
       if (tag.hierName) {
         hieNameArr = tag.hierName.split('\\');
         hieName = hieNameArr[hieNameArr.length - 1];
@@ -1562,6 +1563,18 @@ let CommonFuns = {
           DimensionId: null
         });
       }
+      }else{
+        nodeNameAssociation.push({
+          Id: tag.tagId,
+          Name: tag.tagName,
+          HierId: null,
+          NodeName: null,
+          AssociationOption: 0,
+          DimensionName: null,
+          DimensionId: null
+        });
+      }
+
 
     }
     return nodeNameAssociation;
