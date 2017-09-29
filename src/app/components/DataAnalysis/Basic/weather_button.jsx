@@ -7,9 +7,11 @@ import HierarchyStore from 'stores/HierarchyStore.jsx';
 import util from 'util/Util.jsx';
 import RoutePath from 'util/RoutePath.jsx';
 import {find} from 'lodash-es';
+import HierarchyAction from 'actions/HierarchyAction.jsx';
+import { CircularProgress} from 'material-ui';
 
-function findBuilding(hierarchyId){
-  return find(HierarchyStore.getBuildingList(), building => building.Id === hierarchyId * 1 );
+function findBuilding(hierarchyId,buildinglist=HierarchyStore.getBuildingList()){
+  return find(buildinglist, building => building.Id === hierarchyId * 1 );
 }
 
 export default class WeatherButton extends Component {
@@ -17,6 +19,7 @@ export default class WeatherButton extends Component {
 	static contextTypes = {
 		hierarchyId: PropTypes.string,
     currentRoute:React.PropTypes.object,
+    router:React.PropTypes.object,
 	};
 
  constructor(props) {
@@ -26,11 +29,16 @@ export default class WeatherButton extends Component {
 
   state={
     selectedTag:WeatherStore.getSelectedTag(),
+    showRefresh:false,
+    taglist:this.props.taglist,
+    loading:false
   }
 
   _onChanged(){
     this.setState({
-      selectedTag:WeatherStore.getSelectedTag()
+      taglist:WeatherStore.getTagList(),
+      selectedTag:WeatherStore.getSelectedTag(),
+      loading:false
     })
   }
 
@@ -61,18 +69,44 @@ export default class WeatherButton extends Component {
         <ButtonMenu ref={'button_menu'} label={I18N.EM.Tool.Weather.WeatherData}  style={{
           marginLeft: '10px'
         }} backgroundColor="#f3f5f7" disabled={this.props.disabled}>
-        {building.Location && this.props.taglist && this.props.taglist.map(tag=>{
+        {building.Location && !this.state.showRefresh &&! this.state.loading  && this.state.taglist && this.state.taglist.map(tag=>{
           return(
           <Checkbox label={tag.tagName} iconStyle={{width:'16px',height:'16px',marginTop:'2px'}} labelStyle={{fontSize:'14px',color:'#505559'}} style={{marginLeft:'15px'}} checked={this.state.selectedTag.findIndex((selected)=>selected.get("tagId")===tag.tagId)>-1}
                     onCheck={(e,isInputChecked)=>{this._onCheck(tag,isInputChecked)}}
                     disabled={this._weatherTagdisabled(tag)}/>
         )
         })}
-        {building.Location===null && <div className="no_weather_config">
+        {building.Location===null && !this.state.showRefresh && !this.state.loading  && <div className="no_weather_config">
           <span>{I18N.Setting.DataAnalysis.Weather.To}</span>
-          <div onClick={()=>{util.openTab(RoutePath.customerSetting.hierNode(this.context.currentRoute.params)+'/'+this._getHierarchyId(this.context)+'?init_hierarchy_id='+this.context.hierarchyId)}}>{I18N.Setting.DataAnalysis.Weather.Location}</div>
+          <div onClick={()=>{
+                            this.setState({
+                              showRefresh:true
+                            },()=>{
+                              util.openTab(RoutePath.customerSetting.hierNode(this.context.currentRoute.params)+'/'+this._getHierarchyId(this.context)+'?init_hierarchy_id='+this.context.hierarchyId)
+                            })
+            }}>{I18N.Setting.DataAnalysis.Weather.Location}</div>
           <span>{I18N.Setting.DataAnalysis.Weather.Config}</span>
           </div>}
+          {this.state.showRefresh && !this.state.loading  && <div className="no_weather_config">
+              <div onClick={()=>{
+                this.setState({
+                  showRefresh:false,
+                  loading:true
+                },()=>{
+                  HierarchyAction.getBuildingListByCustomerId(parseInt(this.context.router.params.customerId),(buildinglist)=>{
+                    
+                      if(findBuilding(this._getHierarchyId(this.context),buildinglist) && findBuilding(this._getHierarchyId(this.context),buildinglist).Location){
+		                      	WeatherAction.getCityWeatherTag(findBuilding(this._getHierarchyId(this.context),buildinglist).Location.CityId)
+	                  	}else{
+		                	    WeatherAction.clearCityWeatherTag()
+	                  	}
+                   
+                  })
+                })}}>{I18N.Common.Button.Refresh}</div>
+            </div>}
+          {this.state.loading && <div className="no_weather_config">
+            <CircularProgress  mode="indeterminate" size={40} />
+         </div>}
        </ButtonMenu>
       </div>
     )

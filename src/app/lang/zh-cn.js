@@ -380,6 +380,7 @@ I18N.Common.Button.Confirmed = '已确认';
 I18N.Common.Button.More = '更多';
 I18N.Common.Button.Setting = '配置';
 I18N.Common.Button.Select = '选择';
+I18N.Common.Button.Refresh = '刷新';
 
 I18N.Common.CarbonUomType = {};
 I18N.Common.CarbonUomType.StandardCoal = '标煤';
