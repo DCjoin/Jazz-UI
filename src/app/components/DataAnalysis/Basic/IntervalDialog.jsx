@@ -105,7 +105,7 @@ function formatSplit(split){
   var end_h = Math.floor(EndMoment / 60),
       end_m = EndMoment % 60;
 
-      return `${start_h}:${start_m}-${end_h}:${end_m}`
+      return `${start_h}:${start_m===0?'00':start_m}-${end_h}:${end_m===0?'00':end_m}`
 }
 
 export default class IntervalDialog extends Component {
