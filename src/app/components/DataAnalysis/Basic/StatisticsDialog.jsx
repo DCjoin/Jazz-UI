@@ -263,7 +263,7 @@ export default class StatisticsDialog extends Component {
                 <TableRow columnValue={I18N.Setting.DataAnalysis.Total} time={GatherSumValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:GatherSumValue} typeValue={GatherAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:GatherAvgValue+'/'+step_config[this.props.step]}/>
                 </div>
                 :<div style={style}>
-                  <FontIcon className="icon-sync-fail" style={{fontSize:'14px',marginRight:'10px'}} color="#505559"/>
+                  <FontIcon className="icon-sync-fail" style={{fontSize:'14px',height:'14px',width:'14px',marginRight:'10px'}} color="#505559"/>
                   {I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
         return(
           <div>
@@ -283,7 +283,6 @@ export default class StatisticsDialog extends Component {
       };
       content=SumGroup.map((sum,sunIndex)=>{
         var {CommodityId,UomName,GatherSumValue,GatherAvgValue,TagName,WorkdaySumValue,WorkdayAvgValue,HolidaySumValue,HolidayAvgValue,IsConfigCalendar}=sum;
-        IsConfigCalendar=false;
         var commodity=CommonFuns.getCommodityById(CommodityId).Comment;
         // {TagName+' '+I18N.Common.Glossary.Commodity+":"+commodity+" "+I18N.Common.Glossary.UOM+':'+UomName}
         var title=(
@@ -300,7 +299,7 @@ export default class StatisticsDialog extends Component {
                 <TableRow columnValue={I18N.Setting.DataAnalysis.Total} time={GatherSumValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:GatherSumValue} typeValue={GatherAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:GatherAvgValue+'/'+step_config[this.props.step]}/>
                 </div>
                 :<div style={style}>
-                  <FontIcon className="icon-sync-fail" style={{fontSize:'14px',marginRight:'10px'}} color="#505559"/>
+                  <FontIcon className="icon-sync-fail" style={{fontSize:'14px',height:'14px',width:'14px',marginRight:'10px'}} color="#505559"/>
                   {I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
         return(
           <div>
@@ -420,7 +419,7 @@ export default class StatisticsDialog extends Component {
                 <TableRow columnValue={I18N.Common.Glossary.Order.All} typeValue={GatherAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:GatherAvgValue+'/'+step_config[this.props.step]}/>
                 </div>
                 :<div style={style}>
-                  <FontIcon className="icon-sync-fail" style={{fontSize:'14px',marginRight:'10px'}} color="#505559"/>
+                  <FontIcon className="icon-sync-fail" style={{fontSize:'14px',height:'14px',width:'14px',marginRight:'10px'}} color="#505559"/>
                   {I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
         return(
           <div>
@@ -454,7 +453,7 @@ export default class StatisticsDialog extends Component {
                 <TableRow columnValue={I18N.Common.Glossary.Order.All} typeValue={GatherAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:GatherAvgValue+'/'+step_config[this.props.step]}/>
                 </div>
                 :<div style={style}>
-                  <FontIcon className="icon-sync-fail" style={{fontSize:'14px',marginRight:'10px'}} color="#505559"/>
+                  <FontIcon className="icon-sync-fail" style={{fontSize:'14px',height:'14px',width:'14px',marginRight:'10px'}} color="#505559"/>
                   {I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
         return(
           <div>
@@ -572,7 +571,7 @@ export default class StatisticsDialog extends Component {
         );
         var group;
         if(!IsConfigCalendar) group=<div style={style}>
-          <FontIcon className="icon-sync-fail" style={{fontSize:'14px',marginRight:'10px'}} color="#505559"/>
+          <FontIcon className="icon-sync-fail" style={{fontSize:'14px',height:'14px',width:'14px',marginRight:'10px'}} color="#505559"/>
           {I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
         else{
           group=WorkdayTimes.map(workday=>(
@@ -610,7 +609,7 @@ export default class StatisticsDialog extends Component {
         );
         var group;
         if(!IsConfigCalendar) group=<div style={style}>
-          <FontIcon className="icon-sync-fail" style={{fontSize:'14px',marginRight:'10px'}} color="#505559"/>
+          <FontIcon className="icon-sync-fail" style={{fontSize:'14px',height:'14px',width:'14px',marginRight:'10px'}} color="#505559"/>
           {I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
         else{
           group=WorkdayTimes.map(workday=>(
