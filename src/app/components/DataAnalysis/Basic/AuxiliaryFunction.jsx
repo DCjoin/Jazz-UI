@@ -115,7 +115,9 @@ export default class AuxiliaryFunction extends Component {
  }
 
   getWeatherBtn(){
-    var disabled=this.getMoreBtnDisableStatus() || this.props.analysisPanel.state.step===0;
+    var chartType=this.props.selectedChartType;
+
+    var disabled=chartType === "pie" || chartType === "rawdata" || this.props.analysisPanel.state.step===0;
 
     return <WeatherButton taglist={this.props.weatherTag} disabled={disabled} step={this.props.analysisPanel.state.step}/>
   } 
