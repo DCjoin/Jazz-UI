@@ -183,7 +183,7 @@ export default class IntervalDialog extends Component {
   _renderTimes(){
     var me=this;
     return(
-      <div style={{display:'flex',flexDirection:'row',alignItems:'center',flexWrap: 'wrap'}}>
+      <div style={{display:'flex',flexDirection:'row',alignItems:'center',flexWrap: 'wrap',width:'100%'}}>
         {this.state.splits.map((item,i)=>{
           let props = {
           index: i,

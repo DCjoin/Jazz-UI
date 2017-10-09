@@ -42,7 +42,7 @@ function getTime(time){
 class ItemComponent extends Component{
   render(){
     return(
-      <div style={this.props.style}>
+      <div style={assign({width:'100%'},this.props.style)}>
         <div style={{fontSize:'14px',fontWeight:'600',color:'#626469',marginBottom:'7px',marginTop:'25px',paddingLeft:'10px'}}>
           {this.props.title}
         </div>
@@ -643,8 +643,10 @@ export default class StatisticsDialog extends Component {
 
   _renderContent(){
     // var isMultiTime=false;
+
+    // <div style={{flex:'1',width:'100%',display:'flex',flexDirection:'column'}}>
     return(
-      <div style={{flex:'1',width:'100%',display:'flex',flexDirection:'column'}}>
+      <div style={{width:'100%'}}>
         {this._renderSum()}
         {this._renderAverage()}
         {this._renderMax()}
