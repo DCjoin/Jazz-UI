@@ -56,25 +56,6 @@ var RoleStore = assign({}, PrototypeStore, {
   getPersistedRole: function() {
     return _persistedRole;
   },
-  getPrivatePermissionList: function(isView) {
-    var roleList = CurrentUserStore.getRolePrivilegeList(),
-      rolePrivilege = [];
-    roleList.forEach((role, index) => {
-      var id = index + '';
-      if (role !== '') {
-        let privilegeCodes = (isView) ? _persistedRole.toJS().PrivilegeCodes : _updatingRole.toJS().PrivilegeCodes;
-        if (!!privilegeCodes) {
-          rolePrivilege.push({
-            Id: id,
-            Name: role,
-            isChecked: privilegeCodes.indexOf(id) > -1
-          });
-        }
-
-      }
-    });
-    return rolePrivilege;
-  },
   setSelectedId: function(id) {
     _selectedId = id;
   },

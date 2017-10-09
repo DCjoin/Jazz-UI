@@ -81,6 +81,7 @@ function coverageRawToHighChartData(data) {
         CommodityId: indicator.CommodityId,
         NumeratorCommodityId: indicator.NumeratorCommodityId,
         RatioCommodityId: indicator.RatioCommodityId,
+        MobileViewState: indicator.MobileViewState,
         id: indicator.KpiId,
         lastMonthSaving: indicator.LstMonthSaving,
         actual: indicator.ActualMonthValues && indicator.ActualMonthValues.map( val => val.Value ),
@@ -205,6 +206,9 @@ const SingleKPIStore = assign({}, PrototypeStore, {
   },
   getKPIChart() {
     return _KPIChart;
+  },
+  updateMobileVisable(idx, val) {
+    _KPIRank[idx].MobileViewState = val;
   },
 
   setKPIChartSummary(data) {
@@ -719,6 +723,12 @@ SingleKPIStore.dispatchToken = AppDispatcher.register(function (action) {
       if(every(SingleKPIStore.getKPIRank(), rank => rank && rank.YearRank )) {
         SingleKPIStore.emitChange();
       }
+      break;
+
+    case Action.UPDATE_MOBILE_VISABLE:
+      SingleKPIStore.updateMobileVisable(action.idx, action.val);
+      SingleKPIStore.emitChange();
+      break;
 
     default:
   }

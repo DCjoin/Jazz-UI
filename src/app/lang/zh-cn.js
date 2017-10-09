@@ -1924,6 +1924,7 @@ I18N.Privilege.Role.PushSolution = '已推送方案';
 I18N.Privilege.Role.SolutionFull = '已推送+未推送方案';
 I18N.Privilege.Role.BuildingList = '项目列表';
 I18N.Privilege.Role.SaveEffect = '节能效果';
+I18N.Privilege.Role.CLevelAPP = 'C-Level APP';
 
 I18N.Remark = {};
 I18N.Remark.Label = '备注';

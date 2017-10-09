@@ -356,6 +356,28 @@ const SingleKPIAction = {
         });
       }
     })
+  },
+
+  toggleMobileVisable(kpiId, idx, val, isRank, rankType) {
+    if( isRank ) {
+      Ajax.get(util.replacePathParams(Path.KPI.Rank,setMobileViewState, rankType, kpiId, val),
+        {
+        success: function() {
+          AppDispatcher.dispatch({
+            type: Action.UPDATE_MOBILE_VISABLE,
+            idx,
+            val,
+          });
+        },
+        error: function() {}
+      });
+    } else {
+      Ajax.get(util.replacePathParams(Path.KPI.updateMobileViewState, kpiId, val),
+        {
+        success: () => {},
+        error: () => {}
+      });
+    }
   }
 }
 

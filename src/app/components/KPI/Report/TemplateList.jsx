@@ -214,12 +214,12 @@ let TemplateList = React.createClass({
         {this._renderErrorMsg()}
         {this.state.fileName!=='' && this.state.showUploadConfirm && <UploadConfirmDialog name={this.state.name} replaceName={this.state.fileName}
                              onConfirm={()=>{
-                               this.refs.upload_tempalte.upload({IsReplace: true,Id:this.state.id});
+                               this.refs.upload_tempalte.upload({IsReplace: true,Id:this.state.id, CustomerId: parseInt(this.props.customerId)});
                               //  this.refs.fileInput.value="";
                                this.setState({
                                  showUploadConfirm:false,
                                  showUploadDialog: true,
-                                  CustomerId: parseInt(this.context.currentRoute.params.customerId),
+                                  CustomerId: parseInt(this.props.customerId),
                                   IsActive: true,
                                });
                              }}
@@ -229,7 +229,7 @@ let TemplateList = React.createClass({
                                this.setState({
                                 showUploadConfirm:false,
                                 fileName:'',
-                                CustomerId: parseInt(this.context.currentRoute.params.customerId),
+                                CustomerId: parseInt(this.props.customerId),
                                 IsActive: true,
                               });
                              }}/>}

@@ -102,6 +102,7 @@
     "create-react-class": "^15.5.2",
     "events": "1.0.2",
     "flux": "3.1.0",
+    "hapi-require-https": "^2.1.0",
     "immutable": "3.7.2",
     "inert": "^4.2.1",
     "keymirror": "0.1.1",

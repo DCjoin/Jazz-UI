@@ -84,7 +84,6 @@ function getLang(request) {
 
 function verifyBrowser(user_agent) {
   var currentBrowser = useragent.parse(user_agent);
-  console.log(currentBrowser);
   var supportCurrentBrowser = false;
   for(var index = 0, detectOption; index < SUPPORT_BROWSERS.length ; index++ ) {
     detectOption = SUPPORT_BROWSERS[index];
