@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html style="height:100%;overflow:hidden;background-color:#fbfbfb;font-family:Lantinghei sc,Microsoft YaHei Light,Microsoft YaHei!important">
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		
 		<title>需要升级浏览器</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	</head>
 	<body style="height:100%;margin:0;overflow:hidden;">
 		<table style="height:100%;width:100%;">
@@ -21,6 +23,7 @@
 			}
 			// console.log( ( window.location.hash.length > 1 && decodeURIComponent( window.location.hash.substring(1) ) ) || "/" );
 			function skip() {
+				console.log(document.cookie);
 				if( document.cookie !== undefined ) {
 					document.cookie = "skip_detect=true; path=/";
 					document.location.reload();
