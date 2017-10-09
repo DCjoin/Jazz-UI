@@ -646,7 +646,7 @@ export default class StatisticsDialog extends Component {
 
     // <div style={{flex:'1',width:'100%',display:'flex',flexDirection:'column'}}>
     return(
-      <div style={{width:'100%'}}>
+      <div style={{width:'100%',display:'flex'}}>
         {this._renderSum()}
         {this._renderAverage()}
         {this._renderMax()}
@@ -776,7 +776,7 @@ export default class StatisticsDialog extends Component {
         
         {this.state.gatherInfo!==null && this.state.showModel===Model.Senior && <IconButton iconClassName="icon-left-switch" 
                     iconStyle={{fontSize:'43px',height:'43px',width:'43px',color:'#9fa0a4'}} 
-                    style={{position:'absolute',left:'14px',padding:'0'}}
+                    style={{position:'absolute',left:'14px',padding:'0',top:'50%'}}
                     onClick={()=>{
                                  this.setState({
                                    showModel:Model.Basic,
@@ -787,7 +787,7 @@ export default class StatisticsDialog extends Component {
         {content}
         {this.state.gatherInfo!==null && this.state.showModel===Model.Basic && SeniorDataAnalyseIsFull() && <IconButton iconClassName="icon-right-switch" 
                     iconStyle={{fontSize:'43px',height:'43px',width:'43px',color:'#9fa0a4'}}
-                    style={{position:'absolute',right:'14px',padding:'0'}}
+                    style={{position:'absolute',right:'14px',padding:'0',top:'50%'}}
                     onClick={()=>{
                                  this.setState({
                                    showModel:Model.Senior,
