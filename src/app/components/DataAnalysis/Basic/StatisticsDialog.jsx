@@ -16,6 +16,7 @@ import IconButton from 'material-ui/IconButton';
 import PermissionCode from 'constants/PermissionCode.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
+import FontIcon from 'material-ui/FontIcon';
 // import {GatherInfo} from '../../../../../mockData/DataAnalysis.js';
 var isMultiTime;
 var display_timeRanges=[],display_tagOptions=[];
@@ -261,7 +262,9 @@ export default class StatisticsDialog extends Component {
                 <TableRow columnValue={I18N.Setting.Calendar.Holiday} time={HolidaySumValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:HolidaySumValue} typeValue={HolidayAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:HolidayAvgValue+'/'+step_config[this.props.step]}/>
                 <TableRow columnValue={I18N.Setting.DataAnalysis.Total} time={GatherSumValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:GatherSumValue} typeValue={GatherAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:GatherAvgValue+'/'+step_config[this.props.step]}/>
                 </div>
-                :<div style={style}>{I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
+                :<div style={style}>
+                  <FontIcon className="icon-sync-fail" style={{fontSize:'14px',marginRight:'10px'}} color="#505559"/>
+                  {I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
         return(
           <div>
             {title}
@@ -280,6 +283,7 @@ export default class StatisticsDialog extends Component {
       };
       content=SumGroup.map((sum,sunIndex)=>{
         var {CommodityId,UomName,GatherSumValue,GatherAvgValue,TagName,WorkdaySumValue,WorkdayAvgValue,HolidaySumValue,HolidayAvgValue,IsConfigCalendar}=sum;
+        IsConfigCalendar=false;
         var commodity=CommonFuns.getCommodityById(CommodityId).Comment;
         // {TagName+' '+I18N.Common.Glossary.Commodity+":"+commodity+" "+I18N.Common.Glossary.UOM+':'+UomName}
         var title=(
@@ -295,7 +299,9 @@ export default class StatisticsDialog extends Component {
                 <TableRow columnValue={I18N.Setting.Calendar.Holiday} time={HolidaySumValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:HolidaySumValue} typeValue={HolidayAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:HolidayAvgValue+'/'+step_config[this.props.step]}/>
                 <TableRow columnValue={I18N.Setting.DataAnalysis.Total} time={GatherSumValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:GatherSumValue} typeValue={GatherAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:GatherAvgValue+'/'+step_config[this.props.step]}/>
                 </div>
-                :<div style={style}>{I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
+                :<div style={style}>
+                  <FontIcon className="icon-sync-fail" style={{fontSize:'14px',marginRight:'10px'}} color="#505559"/>
+                  {I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
         return(
           <div>
             {title}
@@ -413,7 +419,9 @@ export default class StatisticsDialog extends Component {
                 <TableRow columnValue={I18N.Setting.Calendar.Holiday} typeValue={HolidayAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:HolidayAvgValue+'/'+step_config[this.props.step]}/>
                 <TableRow columnValue={I18N.Common.Glossary.Order.All} typeValue={GatherAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:GatherAvgValue+'/'+step_config[this.props.step]}/>
                 </div>
-                :<div style={style}>{I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
+                :<div style={style}>
+                  <FontIcon className="icon-sync-fail" style={{fontSize:'14px',marginRight:'10px'}} color="#505559"/>
+                  {I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
         return(
           <div>
             {title}
@@ -445,7 +453,9 @@ export default class StatisticsDialog extends Component {
                 <TableRow columnValue={I18N.Setting.Calendar.Holiday} typeValue={HolidayAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:HolidayAvgValue+'/'+step_config[this.props.step]}/>
                 <TableRow columnValue={I18N.Common.Glossary.Order.All} typeValue={GatherAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:GatherAvgValue+'/'+step_config[this.props.step]}/>
                 </div>
-                :<div style={style}>{I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
+                :<div style={style}>
+                  <FontIcon className="icon-sync-fail" style={{fontSize:'14px',marginRight:'10px'}} color="#505559"/>
+                  {I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
         return(
           <div>
             {title}
@@ -561,7 +571,9 @@ export default class StatisticsDialog extends Component {
           </div>
         );
         var group;
-        if(!IsConfigCalendar) group=<div style={style}>{I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
+        if(!IsConfigCalendar) group=<div style={style}>
+          <FontIcon className="icon-sync-fail" style={{fontSize:'14px',marginRight:'10px'}} color="#505559"/>
+          {I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
         else{
           group=WorkdayTimes.map(workday=>(
             <TableRow columnValue={getTime(new Date(j2d(workday)))+" ("+I18N.Setting.Calendar.WorkDay+')'} typeValue={WorkdayMaxValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:WorkdayMaxValue}/>
@@ -597,7 +609,9 @@ export default class StatisticsDialog extends Component {
           </div>
         );
         var group;
-        if(!IsConfigCalendar) group=<div style={style}>{I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
+        if(!IsConfigCalendar) group=<div style={style}>
+          <FontIcon className="icon-sync-fail" style={{fontSize:'14px',marginRight:'10px'}} color="#505559"/>
+          {I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
         else{
           group=WorkdayTimes.map(workday=>(
             <TableRow columnValue={getTime(new Date(j2d(workday)))+" ("+I18N.Setting.Calendar.WorkDay+')'} typeValue={WorkdayMaxValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:WorkdayMaxValue}/>

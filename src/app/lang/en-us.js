@@ -2312,6 +2312,7 @@ I18N.Setting.DataAnalysis.Statistics = '统计';
 I18N.Setting.DataAnalysis.NoCanlendarConfig = '此数据点没有配置工作日非工作日';
 I18N.Setting.DataAnalysis.TimeSpan = '时间';
 I18N.Setting.DataAnalysis.AddTimeSpanTip = '添加时间段，点击“统计”按钮进行数据获取';
+I18N.Setting.DataAnalysis.NotSupportIntervalAnalysis = '该数据点不支持分时统计';
 I18N.Setting.DataAnalysis.Weather = {};
 I18N.Setting.DataAnalysis.Weather.To = '前往';
 I18N.Setting.DataAnalysis.Weather.Location = '地理位置';

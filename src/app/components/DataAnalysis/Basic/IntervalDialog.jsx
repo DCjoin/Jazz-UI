@@ -189,14 +189,14 @@ export default class IntervalDialog extends Component {
           index: i,
           key: this.state.splits.size - i,
           ref: 'fromEndTime' + (i + 1),
-          style:i===0?{}:{marginLeft:'50px'},
+          style:i===this.state.splits.size-1?{}:{marginRight:'50px'},
           isViewStatus: false,
           hasDeleteButton: this.state.splits.size === 1 ? false : true,
           startTime: item.get('StartMoment'),
           endTime: item.get('EndMoment'),
           onTimeChange: me._onTimeChange,
           onDeleteTimeData: me._onDeleteTimeData,
-          deleteButton:<FontIcon className="icon-close" style={{fontSize:'14px'}} color="#505559" hoverColor="#32ad3d"/>
+          deleteButton:<FontIcon className="icon-close" style={{fontSize:'11px',marginLeft:'8px'}} color="#505559" hoverColor="#32ad3d"/>
         };
         return (
           <FromEndTime {...props}></FromEndTime>
@@ -214,7 +214,17 @@ export default class IntervalDialog extends Component {
     return(
       <div>{this.state.gatherInfo.map((info,index)=>{
 
-        var {TimeRange,TagName,CalculationType,UomName,Items,IsConfigCost}=info.toJS();
+        var {TimeRange,TagName,CalculationType,UomName,Items,ErrorCode}=info.toJS();
+
+        var style={height:'36px',
+            minHeight:'36px',
+            fontSize:'12px',
+            borderBottom:'1px solid #e6e6e6',
+            display:'flex',
+            alignItems:'center',
+            justifyContent:'center',
+            color:'#626469'};
+
 
         var {StartTime,EndTime}=TimeRange;
         var j2d = CommonFuns.DataConverter.JsonToDateTime;
@@ -229,10 +239,14 @@ export default class IntervalDialog extends Component {
         return(
             <ItemComponent title={title} style={index===0?{marginTop:'30px'}:null}>
               <TableHeader {...head}/>
-              {Items.map((item,index)=>(
+              {ErrorCode===102?
+                <div style={style}>
+                  <FontIcon className="icon-sync-fail" style={{fontSize:'14px',height:'14px',width:'14px',marginRight:'10px'}} color="#505559"/>
+                  {I18N.Setting.DataAnalysis.NotSupportIntervalAnalysis}</div>
+              :Items.map((item,index)=>(
                 <TableRow time={formatSplit(item.TimeSplit)}
                           column2Value={item.EnergyValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:item.EnergyValue}
-                          column3Value={IsConfigCost===false?'－':(CalculationType===1?(item.CostValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:item.CostValue):null)}
+                          column3Value={ErrorCode===103?'－':(CalculationType===1?(item.CostValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:item.CostValue):null)}
                           style={index===Items.length-1?{borderBottomRightRadius: '2px',borderBottomLeftRadius: '2px'}:{}}/>
               ))}
              </ItemComponent>
@@ -244,7 +258,7 @@ export default class IntervalDialog extends Component {
 
   _renderContent(){
     return(
-      <div style={{display:'flex',flexDirection:'column',width:'100%'}}>
+      <div style={{width:'100%'}}>
         {this._renderTimes()}
         {this.state.gatherInfo!==null && this._renderTable()}
         {this.state.gatherInfo===null && <div className="flex-center" style={{flexDirection:'column'}}>
