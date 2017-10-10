@@ -744,7 +744,7 @@ export default class StatisticsDialog extends Component {
       content:{
         marginLeft:'72px',
         marginRight:'0',
-        display: 'flex',
+        display: 'block',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent:'center',
