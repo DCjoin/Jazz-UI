@@ -227,7 +227,7 @@ function getSeries(data, isStack, isWater, currentYear) {
 	        color: '#ff5722',
 	        lineWidth: 1,
 			name: isWater ? I18N.SaveEffect.Chart.PredictSavingWater : I18N.SaveEffect.Chart.PredictSaving,
-			data: data.PredictionSavingValues.map( item => {
+			data: data.PredictionSavingValues.map( (item, i) => {
 				let result = predBase + item.Value;
 				if(isStack) {
 					predBase = result;
@@ -240,17 +240,22 @@ function getSeries(data, isStack, isWater, currentYear) {
 			}),
 		});
 	}
-	return series.concat(data.EnergySystemSavings.map( (sys, i) => {
-		let base = 0;
+	return series.concat(data.EnergySystemSavings.map( sys => {
+		let base = null;
 		return {
 			name: getSystemNameById(sys.EnergySystem),
-			data: sys.EnergySavingValues.map( item => {
-				let result = base + item.Value;
+			data: sys.EnergySavingValues.map( (item, i) => {
+				// let result = base + item.Value;
+				let result = base;
+				if( item.Value !== null ) {
+					result += item.Value;
+				}
 				if(isStack) {
 					base = result;
 				}
 				return {
-					y: item.Value !== null ? result : null,
+					y: currentYear && i > new Date().getMonth() ? null : result,
+					// y: item.Value !== null || sys.EnergySavingValues.slice(i).filter( i => i.Value !== null ).length > 0 ? result : null,
 					tooltipName: getSystemNameById(sys.EnergySystem) + (isWater ? I18N.SaveEffect.EnergySavingWater : I18N.SaveEffect.EnergySaving),
 					tooltipTitle: UTC2Local(item.Time).format('YYYY/MM'),
 				};

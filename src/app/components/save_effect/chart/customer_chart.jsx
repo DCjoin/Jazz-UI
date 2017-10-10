@@ -129,7 +129,7 @@ function getSeries(data, isStack, isWater, color, currentYear) {
 	        color: '#ff5722',
 	        lineWidth: 1,
 			name: isWater ? I18N.SaveEffect.Chart.PredictSavingWater : I18N.SaveEffect.Chart.PredictSaving,
-			data: data.PredictionSavingValues.map( item => {
+			data: data.PredictionSavingValues.map( (item, i) => {
 				let result = predBase + item.Value;
 				if(isStack) {
 					predBase = result;
@@ -145,13 +145,18 @@ function getSeries(data, isStack, isWater, color, currentYear) {
 	series.push({
         color: color,
 		name: isWater ? I18N.SaveEffect.Chart.ActualSavingWater : I18N.SaveEffect.Chart.ActualSaving,
-		data: data.ActualSavingValues.map( item => {
-			let result = base + item.Value;
+		data: data.ActualSavingValues.map( (item, i) => {
+			// let result = base + item.Value;
+			let result = base;
+			if( item.Value !== null ) {
+				result += item.Value;
+			}
 			if(isStack) {
 				base = result;
 			}
 			return {
-				y: item.Value !== null ? result : null,
+				y: currentYear && i > new Date().getMonth() ? null : result,
+				// y: item.Value !== null || data.ActualSavingValues.slice(i).filter( i => i.Vaule !== null ).length > 0 ? result : null,
 				tooltipName: isWater ? I18N.SaveEffect.Chart.ActualSavingWater : I18N.SaveEffect.Chart.ActualSaving,
 				tooltipTitle: UTC2Local(item.Time).format('YYYY/MM'),
 			};
