@@ -289,7 +289,7 @@ export default class StatisticsDialog extends Component {
           <div style={{display:'flex',paddingLeft:'10px',height:'30px',minHeight:'30px',backgroundColor:'#f7f7f7',lineHeight:'30px',fontSize:'12px',color:'#626469',borderLeft:'1px solid #e6e6e6',borderRight:'1px solid #e6e6e6'}}>
             <div>{TagName}</div>
             <div style={{marginLeft:'8px'}}>{I18N.Common.Glossary.Commodity+":"+commodity}</div>
-            <div style={{marginLeft:'8px'}}>{I18N.Common.Glossary.UOM+':'+UomName}</div>
+            <div style={{marginLeft:'8px'}}>{I18N.Common.Glossary.UOM+':'+(UomName==='null'?'':UomName)}</div>
           </div>
         );
       var group=IsConfigCalendar?
@@ -443,7 +443,7 @@ export default class StatisticsDialog extends Component {
           <div style={{display:'flex',paddingLeft:'10px',height:'30px',minHeight:'30px',backgroundColor:'#f7f7f7',lineHeight:'30px',fontSize:'12px',color:'#626469',borderLeft:'1px solid #e6e6e6',borderRight:'1px solid #e6e6e6'}}>
             <div>{TagName}</div>
             <div style={{marginLeft:'8px'}}>{I18N.Common.Glossary.Commodity+":"+commodity}</div>
-            <div style={{marginLeft:'8px'}}>{I18N.Common.Glossary.UOM+':'+UomName}</div>
+            <div style={{marginLeft:'8px'}}>{I18N.Common.Glossary.UOM+':'+(UomName==='null'?'':UomName)}</div>
           </div>
         );
         
@@ -604,7 +604,7 @@ export default class StatisticsDialog extends Component {
           <div style={{display:'flex',paddingLeft:'10px',height:'30px',minHeight:'30px',backgroundColor:'#f7f7f7',lineHeight:'30px',fontSize:'12px',color:'#626469',borderLeft:'1px solid #e6e6e6',borderRight:'1px solid #e6e6e6'}}>
             <div>{TagName}</div>
             <div style={{marginLeft:'8px'}}>{I18N.Common.Glossary.Commodity+":"+commodity}</div>
-            <div style={{marginLeft:'8px'}}>{I18N.Common.Glossary.UOM+':'+UomName}</div>
+            <div style={{marginLeft:'8px'}}>{I18N.Common.Glossary.UOM+':'+(UomName==='null'?'':UomName)}</div>
           </div>
         );
         var group;
