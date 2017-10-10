@@ -232,7 +232,7 @@ export default class IntervalDialog extends Component {
         var title=!isMultiTime?TagName:DataAnalysisStore.getDisplayDate(start,false)+I18N.Setting.DataAnalysis.To+DataAnalysisStore.getDisplayDate(end,true);
         
         var head={
-          column2Name:`${type[CalculationType]}(${UomName})`,
+          column2Name:type[CalculationType]+UomName==='null'?'':`(${UomName})`,
           column3Name:CalculationType===1?`${I18N.Common.Commodity.Cost}(RMB)`:null,
         }
 
@@ -313,7 +313,7 @@ export default class IntervalDialog extends Component {
       content:{
         marginLeft:'72px',
         marginRight:'72px',
-        display: 'flex',
+        display: 'block',
         flexDirection: 'column',
         alignItems: 'center',
         overflowY:'auto'

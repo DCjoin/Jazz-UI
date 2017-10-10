@@ -593,8 +593,8 @@ let ChartCmpStrategyFactor = {
         count = 0,
         offset = yAxisOffset;
       
-      var hasWeatherTag=WeatherStore.getTagList()?Immutable.fromJS(WeatherStore.getTagList()).findIndex(item=>item.get('tagId')===data[0].uid)>-1
-                        :false;
+      // var hasWeatherTag=WeatherStore.getTagList()?Immutable.fromJS(WeatherStore.getTagList()).findIndex(item=>item.get('tagId')===data[0].uid)>-1
+                        // :false;
       for (let i = 0; i < data.length; i++) {
         let uom = data[i].option.uom;
     
@@ -634,7 +634,7 @@ let ChartCmpStrategyFactor = {
             formatter: dataLabelFormatter
           },
           offset: (yList.length >= 2 ? -10000 :0),
-          opposite:hasWeatherTag?(count===0):!(count===0) //,
+          opposite:!(count===0) //,
         //gridLineWidth: count == 0 ? 1 : 0//for contour 等高线对齐，要使用此属性
         });
         count++;
