@@ -16,13 +16,14 @@ import IconButton from 'material-ui/IconButton';
 import PermissionCode from 'constants/PermissionCode.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
+import FontIcon from 'material-ui/FontIcon';
 // import {GatherInfo} from '../../../../../mockData/DataAnalysis.js';
 var isMultiTime;
 var display_timeRanges=[],display_tagOptions=[];
 var step_config=[I18N.EM.Raw,I18N.EM.Hour,I18N.EM.Day,I18N.EM.Month,I18N.EM.Year,I18N.EM.Week]
 function privilegeWithSeniorDataAnalyse( privilegeCheck ) {
   // return true
-	return privilegeCheck(PermissionCode.SENIOR_DATA_ANALYSE, CurrentUserStore.getCurrentPrivilege());
+return privilegeCheck(PermissionCode.SENIOR_DATA_ANALYSE, CurrentUserStore.getCurrentPrivilege());
 }
 //能源经理
 function SeniorDataAnalyseIsFull() {
@@ -41,7 +42,7 @@ function getTime(time){
 class ItemComponent extends Component{
   render(){
     return(
-      <div style={this.props.style}>
+      <div style={assign({width:'100%'},this.props.style)}>
         <div style={{fontSize:'14px',fontWeight:'600',color:'#626469',marginBottom:'7px',marginTop:'25px',paddingLeft:'10px'}}>
           {this.props.title}
         </div>
@@ -61,7 +62,7 @@ class TableHeader extends Component{
   render(){
     var defaultStyle={
       height:'29px',minHeight:'29px',lineHeight:'29px',border:'1px solid #e6e6e6',display:'flex',fontSize:'10px',color:'#626469',
-      borderTopLeftRadius: '2px',borderTopRightRadius: '2px'
+      borderTopLeftRadius: '2px',borderTopRightRadius: '2px',width:'100%'
     };
     var style=assign({},defaultStyle,this.props.style);
     return(
@@ -209,7 +210,7 @@ export default class StatisticsDialog extends Component {
           )
         }
         return(
-          <div>
+          <div style={{width:'100%'}}>
             {title}
             {group}
           </div>
@@ -257,13 +258,15 @@ export default class StatisticsDialog extends Component {
         );
       var group=IsConfigCalendar?
                 <div>
-                <TableRow columnValue={I18N.Setting.Calendar.WorkDay} time={WorkdaySumValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:WorkdaySumValue} typeValue={WorkdayAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:WorkdayAvgValue+'/'+step_config[this.props.step]}/>
-                <TableRow columnValue={I18N.Setting.Calendar.Holiday} time={HolidaySumValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:HolidaySumValue} typeValue={HolidayAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:HolidayAvgValue+'/'+step_config[this.props.step]}/>
-                <TableRow columnValue={I18N.Setting.DataAnalysis.Total} time={GatherSumValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:GatherSumValue} typeValue={GatherAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:GatherAvgValue+'/'+step_config[this.props.step]}/>
+                <TableRow columnValue={I18N.Setting.Calendar.WorkDay} time={WorkdaySumValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:WorkdaySumValue} typeValue={WorkdayAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:WorkdayAvgValue+'/'+I18N.EM.Day}/>
+                <TableRow columnValue={I18N.Setting.Calendar.Holiday} time={HolidaySumValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:HolidaySumValue} typeValue={HolidayAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:HolidayAvgValue+'/'+I18N.EM.Day}/>
+                <TableRow columnValue={I18N.Setting.DataAnalysis.Total} time={GatherSumValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:GatherSumValue} typeValue={GatherAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:GatherAvgValue+'/'+I18N.EM.Day}/>
                 </div>
-                :<div style={style}>{I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
+                :<div style={style}>
+                  <FontIcon className="icon-sync-fail" style={{fontSize:'14px',height:'14px',width:'14px',marginRight:'10px'}} color="#505559"/>
+                  {I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
         return(
-          <div>
+          <div style={{width:'100%'}}>
             {title}
             {group}
           </div>
@@ -286,18 +289,20 @@ export default class StatisticsDialog extends Component {
           <div style={{display:'flex',paddingLeft:'10px',height:'30px',minHeight:'30px',backgroundColor:'#f7f7f7',lineHeight:'30px',fontSize:'12px',color:'#626469',borderLeft:'1px solid #e6e6e6',borderRight:'1px solid #e6e6e6'}}>
             <div>{TagName}</div>
             <div style={{marginLeft:'8px'}}>{I18N.Common.Glossary.Commodity+":"+commodity}</div>
-            <div style={{marginLeft:'8px'}}>{I18N.Common.Glossary.UOM+':'+UomName}</div>
+            <div style={{marginLeft:'8px'}}>{I18N.Common.Glossary.UOM+':'+(UomName==='null'?'':UomName)}</div>
           </div>
         );
       var group=IsConfigCalendar?
                 <div>
-                <TableRow columnValue={I18N.Setting.Calendar.WorkDay} time={WorkdaySumValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:WorkdaySumValue} typeValue={WorkdayAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:WorkdayAvgValue+'/'+step_config[this.props.step]}/>
-                <TableRow columnValue={I18N.Setting.Calendar.Holiday} time={HolidaySumValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:HolidaySumValue} typeValue={HolidayAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:HolidayAvgValue+'/'+step_config[this.props.step]}/>
-                <TableRow columnValue={I18N.Setting.DataAnalysis.Total} time={GatherSumValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:GatherSumValue} typeValue={GatherAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:GatherAvgValue+'/'+step_config[this.props.step]}/>
+                <TableRow columnValue={I18N.Setting.Calendar.WorkDay} time={WorkdaySumValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:WorkdaySumValue} typeValue={WorkdayAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:WorkdayAvgValue+'/'+I18N.EM.Day}/>
+                <TableRow columnValue={I18N.Setting.Calendar.Holiday} time={HolidaySumValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:HolidaySumValue} typeValue={HolidayAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:HolidayAvgValue+'/'+I18N.EM.Day}/>
+                <TableRow columnValue={I18N.Setting.DataAnalysis.Total} time={GatherSumValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:GatherSumValue} typeValue={GatherAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:GatherAvgValue+'/'+I18N.EM.Day}/>
                 </div>
-                :<div style={style}>{I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
+                :<div style={style}>
+                  <FontIcon className="icon-sync-fail" style={{fontSize:'14px',height:'14px',width:'14px',marginRight:'10px'}} color="#505559"/>
+                  {I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
         return(
-          <div>
+          <div style={{width:'100%'}}>
             {title}
             {group}
           </div>
@@ -409,13 +414,15 @@ export default class StatisticsDialog extends Component {
           </div>
         );
       var group=IsConfigCalendar?<div>
-                <TableRow columnValue={I18N.Setting.Calendar.WorkDay} typeValue={WorkdayAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:WorkdayAvgValue+'/'+step_config[this.props.step]}/>
-                <TableRow columnValue={I18N.Setting.Calendar.Holiday} typeValue={HolidayAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:HolidayAvgValue+'/'+step_config[this.props.step]}/>
-                <TableRow columnValue={I18N.Common.Glossary.Order.All} typeValue={GatherAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:GatherAvgValue+'/'+step_config[this.props.step]}/>
+                <TableRow columnValue={I18N.Setting.Calendar.WorkDay} typeValue={WorkdayAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:WorkdayAvgValue+'/'+I18N.EM.Day}/>
+                <TableRow columnValue={I18N.Setting.Calendar.Holiday} typeValue={HolidayAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:HolidayAvgValue+'/'+I18N.EM.Day}/>
+                <TableRow columnValue={I18N.Common.Glossary.Order.All} typeValue={GatherAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:GatherAvgValue+'/'+I18N.EM.Day}/>
                 </div>
-                :<div style={style}>{I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
+                :<div style={style}>
+                  <FontIcon className="icon-sync-fail" style={{fontSize:'14px',height:'14px',width:'14px',marginRight:'10px'}} color="#505559"/>
+                  {I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
         return(
-          <div>
+          <div style={{width:'100%'}}>
             {title}
             {group}
           </div>
@@ -436,18 +443,20 @@ export default class StatisticsDialog extends Component {
           <div style={{display:'flex',paddingLeft:'10px',height:'30px',minHeight:'30px',backgroundColor:'#f7f7f7',lineHeight:'30px',fontSize:'12px',color:'#626469',borderLeft:'1px solid #e6e6e6',borderRight:'1px solid #e6e6e6'}}>
             <div>{TagName}</div>
             <div style={{marginLeft:'8px'}}>{I18N.Common.Glossary.Commodity+":"+commodity}</div>
-            <div style={{marginLeft:'8px'}}>{I18N.Common.Glossary.UOM+':'+UomName}</div>
+            <div style={{marginLeft:'8px'}}>{I18N.Common.Glossary.UOM+':'+(UomName==='null'?'':UomName)}</div>
           </div>
         );
         
       var group=IsConfigCalendar?<div>
-                <TableRow columnValue={I18N.Setting.Calendar.WorkDay} typeValue={WorkdayAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:WorkdayAvgValue+'/'+step_config[this.props.step]}/>
-                <TableRow columnValue={I18N.Setting.Calendar.Holiday} typeValue={HolidayAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:HolidayAvgValue+'/'+step_config[this.props.step]}/>
-                <TableRow columnValue={I18N.Common.Glossary.Order.All} typeValue={GatherAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:GatherAvgValue+'/'+step_config[this.props.step]}/>
+                <TableRow columnValue={I18N.Setting.Calendar.WorkDay} typeValue={WorkdayAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:WorkdayAvgValue+'/'+I18N.EM.Day}/>
+                <TableRow columnValue={I18N.Setting.Calendar.Holiday} typeValue={HolidayAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:HolidayAvgValue+'/'+I18N.EM.Day}/>
+                <TableRow columnValue={I18N.Common.Glossary.Order.All} typeValue={GatherAvgValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:GatherAvgValue+'/'+I18N.EM.Day}/>
                 </div>
-                :<div style={style}>{I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
+                :<div style={style}>
+                  <FontIcon className="icon-sync-fail" style={{fontSize:'14px',height:'14px',width:'14px',marginRight:'10px'}} color="#505559"/>
+                  {I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
         return(
-          <div>
+          <div style={{width:'100%'}}>
             {title}
             {group}
           </div>
@@ -561,7 +570,9 @@ export default class StatisticsDialog extends Component {
           </div>
         );
         var group;
-        if(!IsConfigCalendar) group=<div style={style}>{I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
+        if(!IsConfigCalendar) group=<div style={style}>
+          <FontIcon className="icon-sync-fail" style={{fontSize:'14px',height:'14px',width:'14px',marginRight:'10px'}} color="#505559"/>
+          {I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
         else{
           group=WorkdayTimes.map(workday=>(
             <TableRow columnValue={getTime(new Date(j2d(workday)))+" ("+I18N.Setting.Calendar.WorkDay+')'} typeValue={WorkdayMaxValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:WorkdayMaxValue}/>
@@ -571,7 +582,7 @@ export default class StatisticsDialog extends Component {
         
         }
         return(
-          <div>
+          <div style={{width:'100%'}}>
             {title}
             {group}
           </div>
@@ -593,11 +604,13 @@ export default class StatisticsDialog extends Component {
           <div style={{display:'flex',paddingLeft:'10px',height:'30px',minHeight:'30px',backgroundColor:'#f7f7f7',lineHeight:'30px',fontSize:'12px',color:'#626469',borderLeft:'1px solid #e6e6e6',borderRight:'1px solid #e6e6e6'}}>
             <div>{TagName}</div>
             <div style={{marginLeft:'8px'}}>{I18N.Common.Glossary.Commodity+":"+commodity}</div>
-            <div style={{marginLeft:'8px'}}>{I18N.Common.Glossary.UOM+':'+UomName}</div>
+            <div style={{marginLeft:'8px'}}>{I18N.Common.Glossary.UOM+':'+(UomName==='null'?'':UomName)}</div>
           </div>
         );
         var group;
-        if(!IsConfigCalendar) group=<div style={style}>{I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
+        if(!IsConfigCalendar) group=<div style={style}>
+          <FontIcon className="icon-sync-fail" style={{fontSize:'14px',height:'14px',width:'14px',marginRight:'10px'}} color="#505559"/>
+          {I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
         else{
           group=WorkdayTimes.map(workday=>(
             <TableRow columnValue={getTime(new Date(j2d(workday)))+" ("+I18N.Setting.Calendar.WorkDay+')'} typeValue={WorkdayMaxValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:WorkdayMaxValue}/>
@@ -607,7 +620,7 @@ export default class StatisticsDialog extends Component {
         
         }
         return(
-          <div>
+          <div style={{width:'100%'}}>
             {title}
             {group}
           </div>
@@ -630,8 +643,10 @@ export default class StatisticsDialog extends Component {
 
   _renderContent(){
     // var isMultiTime=false;
+
+    // <div style={{flex:'1',width:'100%',display:'flex',flexDirection:'column'}}>
     return(
-      <div style={{flex:'1',width:'100%',display:'flex',flexDirection:'column'}}>
+      <div style={{width:'100%'}}>
         {this._renderSum()}
         {this._renderAverage()}
         {this._renderMax()}
@@ -729,7 +744,7 @@ export default class StatisticsDialog extends Component {
       content:{
         marginLeft:'72px',
         marginRight:'0',
-        display: 'flex',
+        display: 'block',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent:'center',
@@ -761,7 +776,7 @@ export default class StatisticsDialog extends Component {
         
         {this.state.gatherInfo!==null && this.state.showModel===Model.Senior && <IconButton iconClassName="icon-left-switch" 
                     iconStyle={{fontSize:'43px',height:'43px',width:'43px',color:'#9fa0a4'}} 
-                    style={{position:'absolute',left:'14px',padding:'0'}}
+                    style={{position:'absolute',left:'14px',padding:'0',top:'50%'}}
                     onClick={()=>{
                                  this.setState({
                                    showModel:Model.Basic,
@@ -772,7 +787,7 @@ export default class StatisticsDialog extends Component {
         {content}
         {this.state.gatherInfo!==null && this.state.showModel===Model.Basic && SeniorDataAnalyseIsFull() && <IconButton iconClassName="icon-right-switch" 
                     iconStyle={{fontSize:'43px',height:'43px',width:'43px',color:'#9fa0a4'}}
-                    style={{position:'absolute',right:'14px',padding:'0'}}
+                    style={{position:'absolute',right:'14px',padding:'0',top:'50%'}}
                     onClick={()=>{
                                  this.setState({
                                    showModel:Model.Senior,

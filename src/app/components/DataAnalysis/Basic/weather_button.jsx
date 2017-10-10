@@ -51,6 +51,7 @@ export default class WeatherButton extends Component {
 		return context.hierarchyId;
 	}
   _weatherTagdisabled(tag){
+    if(this.props.step===null) return false;
     return this.props.step<2 && (tag.weatherType===3 || tag.weatherType===4)
   }
 
