@@ -646,7 +646,7 @@ export default class StatisticsDialog extends Component {
 
     // <div style={{flex:'1',width:'100%',display:'flex',flexDirection:'column'}}>
     return(
-      <div style={{width:'100%',display:'flex'}}>
+      <div style={{width:'100%',flex:'1'}}>
         {this._renderSum()}
         {this._renderAverage()}
         {this._renderMax()}
