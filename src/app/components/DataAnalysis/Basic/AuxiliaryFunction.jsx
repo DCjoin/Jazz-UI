@@ -13,6 +13,20 @@ import StatisticsDialog from './StatisticsDialog.jsx';
 import WeatherButton from'./weather_button.jsx';
 import IntervalDialog from './IntervalDialog.jsx';
 
+import PermissionCode from 'constants/PermissionCode.jsx';
+import CurrentUserStore from 'stores/CurrentUserStore.jsx';
+import privilegeUtil from 'util/privilegeUtil.jsx';
+
+function privilegeWithSeniorDataAnalyse( privilegeCheck ) {
+  // return true
+return privilegeCheck(PermissionCode.SENIOR_DATA_ANALYSE, CurrentUserStore.getCurrentPrivilege());
+}
+//能源经理
+function SeniorDataAnalyseIsFull() {
+	return privilegeWithSeniorDataAnalyse(privilegeUtil.isFull.bind(privilegeUtil));
+}
+
+
 export default class AuxiliaryFunction extends Component {
 
   constructor(props) {
@@ -115,6 +129,8 @@ export default class AuxiliaryFunction extends Component {
  }
 
   getWeatherBtn(){
+
+    if(!SeniorDataAnalyseIsFull()) return null;
     var chartType=this.props.selectedChartType;
 
     var disabled=chartType === "pie" || chartType === "rawdata" || this.props.analysisPanel.state.step===0;
@@ -131,7 +147,7 @@ export default class AuxiliaryFunction extends Component {
           marginLeft: '10px'
         }} backgroundColor="#f3f5f7" onItemTouchTap={this._onConfigBtnItemTouchTap} disabled={this.getMoreBtnDisableStatus()}>
        <MenuItem primaryText={I18N.EM.Tool.DataStatistics} value='sum' disabled={disabled}/>
-       <MenuItem primaryText={I18N.EM.Tool.IntervalStatistics} value='interval' disabled={disabled}/>
+       {SeniorDataAnalyseIsFull() && <MenuItem primaryText={I18N.EM.Tool.IntervalStatistics} value='interval' disabled={disabled}/>}
          {calendarEl}
       <MenuItem primaryText={I18N.EM.Tool.YaxisConfig} value='yaxis' disabled={disabled}/>
      </ButtonMenu>
