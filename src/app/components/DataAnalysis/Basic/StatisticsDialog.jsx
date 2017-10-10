@@ -62,7 +62,7 @@ class TableHeader extends Component{
   render(){
     var defaultStyle={
       height:'29px',minHeight:'29px',lineHeight:'29px',border:'1px solid #e6e6e6',display:'flex',fontSize:'10px',color:'#626469',
-      borderTopLeftRadius: '2px',borderTopRightRadius: '2px'
+      borderTopLeftRadius: '2px',borderTopRightRadius: '2px',width:'100%'
     };
     var style=assign({},defaultStyle,this.props.style);
     return(
@@ -210,7 +210,7 @@ export default class StatisticsDialog extends Component {
           )
         }
         return(
-          <div>
+          <div style={{width:'100%'}}>
             {title}
             {group}
           </div>
@@ -266,7 +266,7 @@ export default class StatisticsDialog extends Component {
                   <FontIcon className="icon-sync-fail" style={{fontSize:'14px',height:'14px',width:'14px',marginRight:'10px'}} color="#505559"/>
                   {I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
         return(
-          <div>
+          <div style={{width:'100%'}}>
             {title}
             {group}
           </div>
@@ -302,7 +302,7 @@ export default class StatisticsDialog extends Component {
                   <FontIcon className="icon-sync-fail" style={{fontSize:'14px',height:'14px',width:'14px',marginRight:'10px'}} color="#505559"/>
                   {I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
         return(
-          <div>
+          <div style={{width:'100%'}}>
             {title}
             {group}
           </div>
@@ -422,7 +422,7 @@ export default class StatisticsDialog extends Component {
                   <FontIcon className="icon-sync-fail" style={{fontSize:'14px',height:'14px',width:'14px',marginRight:'10px'}} color="#505559"/>
                   {I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
         return(
-          <div>
+          <div style={{width:'100%'}}>
             {title}
             {group}
           </div>
@@ -456,7 +456,7 @@ export default class StatisticsDialog extends Component {
                   <FontIcon className="icon-sync-fail" style={{fontSize:'14px',height:'14px',width:'14px',marginRight:'10px'}} color="#505559"/>
                   {I18N.Setting.DataAnalysis.NoCanlendarConfig}</div>
         return(
-          <div>
+          <div style={{width:'100%'}}>
             {title}
             {group}
           </div>
@@ -582,7 +582,7 @@ export default class StatisticsDialog extends Component {
         
         }
         return(
-          <div>
+          <div style={{width:'100%'}}>
             {title}
             {group}
           </div>
@@ -620,7 +620,7 @@ export default class StatisticsDialog extends Component {
         
         }
         return(
-          <div>
+          <div style={{width:'100%'}}>
             {title}
             {group}
           </div>
@@ -646,7 +646,7 @@ export default class StatisticsDialog extends Component {
 
     // <div style={{flex:'1',width:'100%',display:'flex',flexDirection:'column'}}>
     return(
-      <div style={{width:'100%',flex:'1'}}>
+      <div style={{width:'100%'}}>
         {this._renderSum()}
         {this._renderAverage()}
         {this._renderMax()}
