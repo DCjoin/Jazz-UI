@@ -76,6 +76,9 @@ var Building = React.createClass({
       if (node.get('CalcStatus') !== true && node.get('CalcStatus') !== false) {
         node = node.set('CalcStatus', true);
       }
+      if(node.getIn(['Location','Address'])===null){
+        node=node.set('Location',null)
+      }
       this.props.handleSave(node);
     } else if (this.props.infoTabNo === 2) {
       if (this.refs.jazz_building_tag) {
