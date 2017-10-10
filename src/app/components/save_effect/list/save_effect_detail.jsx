@@ -526,6 +526,9 @@ export default class EffectDetail extends Component {
           cycleIcon=<FontIcon className="icon-pay-back-period" iconStyle ={iconStyle} color="#626469" style = {icontextstyle} />,
 					savingIcon=<FontIcon className="icon-energy-saving-rate" iconStyle ={iconStyle} color="#626469" style = {icontextstyle} />;
 
+	// <IconText style={{width:'140px',marginLeft:'0px'}} valueStyle={{fontSize:'22px'}} icon={savingIcon} label={I18N.Setting.KPI.SavingRate} value={'-'}/>
+	// delete savingIcon
+
 	  if(tags.size===0){
 			return(
 				<div className="jazz-effect-detail-content flex-center" style={{flexDirection:'column'}}>
@@ -556,7 +559,7 @@ export default class EffectDetail extends Component {
 					<div className="jazz-effect-detail-content-save-energy">
 							<IconText style={{width:'140px',marginLeft:'0px'}} valueStyle={{fontSize:'22px'}} icon={saveIcon} label={`${preTitle}${I18N.SaveEffect.EnergySaving}`} value={validValue(EnergySaving)} uom={util.getUomById(EnergySavingUomId).Code}/>
 							<IconText style={{width:'140px',marginLeft:'0px'}} valueStyle={{fontSize:'22px'}} icon={costIcon} label={`${preTitle}${I18N.Setting.Effect.Cost}`} value={validValue(EnergySavingCosts)} uom="RMB"/>
-							<IconText style={{width:'140px',marginLeft:'0px'}} valueStyle={{fontSize:'22px'}} icon={savingIcon} label={I18N.Setting.KPI.SavingRate} value={'-'}/>
+						
 							<IconText style={{width:'140px',marginLeft:'0px'}} valueStyle={{fontSize:'22px'}} icon={amountIcon} label={I18N.Setting.ECM.InvestmentAmount} value={validValue(InvestmentAmount)} uom="RMB"/>
 							<IconText style={{width:'140px',marginLeft:'0px'}} valueStyle={{fontSize:'22px'}} icon={cycleIcon} label={`${prePeriod}${I18N.Setting.ECM.PaybackPeriod}`} value={tansferReturnCycle(InvestmentReturnCycle) || '-'}
 												uom={util.isNumber(InvestmentReturnCycle) && InvestmentReturnCycle!==0?I18N.EM.Year:''}/>
