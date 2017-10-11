@@ -241,7 +241,7 @@ export default class IntervalDialog extends Component {
               <TableHeader {...head}/>
               {ErrorCode===102?
                 <div style={style}>
-                  <FontIcon className="icon-sync-fail" style={{fontSize:'14px',height:'14px',width:'14px',marginRight:'10px'}} color="#505559"/>
+                  <FontIcon className="icon-glyph" style={{fontSize:'14px',height:'14px',width:'14px',marginRight:'10px'}} color="#505559"/>
                   {I18N.Setting.DataAnalysis.NotSupportIntervalAnalysis}</div>
               :Items.map((item,index)=>(
                 <TableRow time={formatSplit(item.TimeSplit)}
