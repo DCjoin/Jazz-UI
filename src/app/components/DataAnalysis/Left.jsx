@@ -18,6 +18,13 @@ function isWidget(node) {
 	return node.get('Type') === nodeType.Widget;
 }
 
+import PermissionCode from 'constants/PermissionCode.jsx';
+import privilegeUtil from 'util/privilegeUtil.jsx';
+import CurrentUserStore from 'stores/CurrentUserStore.jsx';
+function isFullBasicAnalysis() {
+	return privilegeUtil.isFull(PermissionCode.BASIC_DATA_ANALYSE.READONLY, CurrentUserStore.getCurrentPrivilege());
+}
+
 export default class Left extends Component {
 	componentWillMount() {
 		this._onNewWidget = this._onNewWidget.bind(this);
@@ -77,7 +84,7 @@ export default class Left extends Component {
 	        generateNodeConent: this._generateNodeConent,
 	        onSelectNode: this.props.onSelectNode,
 	        selectedNode: this.props.selectedNode,
-	        onGragulaNode: this._onGragulaNode,
+	        onGragulaNode: isFullBasicAnalysis() && this._onGragulaNode,
 	        arrowClass: 'jazz-new-foldertree-arrow',
 	        arrowIconCollapsedClass: 'icon-arrow-fold',
 	        arrowIconExpandClass: 'icon-arrow-unfold',
@@ -97,7 +104,7 @@ export default class Left extends Component {
 			color: '#767a7a',
 			paddingLeft: '44px'
 		},
-		disabledButton = isWidget(this.props.selectedNode),
+		disabledButton = isWidget(this.props.selectedNode) || !isFullBasicAnalysis(),
 		buttonStyle = {
 			height: 32,
 			lineHeight: '32px',

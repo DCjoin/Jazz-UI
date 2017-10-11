@@ -153,15 +153,17 @@ var CurrentUserStore = assign({}, PrototypeStore, {
                     name: 'analysis',
                     getPath: RoutePath.dataAnalysis,
                     title: I18N.MainMenu.DataAnalysis
-                  },
-                  {
-                    name: 'inputData',
-                    getPath: RoutePath.inputData,
-                    title: I18N.MainMenu.InputData
-                  }
+                  },                  
                 ]
               }]
             }
+      if ( this.permit(PermissionCode.BASIC_DATA_ANALYSE.READONLY) ) {
+        _dataAnalysisMenu.children.push({
+          name: 'inputData',
+          getPath: RoutePath.inputData,
+          title: I18N.MainMenu.InputData
+        });
+      }
     }
     else {
       _dataAnalysisMenu={

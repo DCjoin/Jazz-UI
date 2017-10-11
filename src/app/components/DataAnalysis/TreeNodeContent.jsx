@@ -96,6 +96,12 @@ const parentStyle = {
   color: '#32ad3d'
 };
 
+import PermissionCode from 'constants/PermissionCode.jsx';
+import privilegeUtil from 'util/privilegeUtil.jsx';
+import CurrentUserStore from 'stores/CurrentUserStore.jsx';
+function isFullBasicAnalysis() {
+  return privilegeUtil.isFull(PermissionCode.BASIC_DATA_ANALYSE.READONLY, CurrentUserStore.getCurrentPrivilege());
+}
 var TreeNodeContent = React.createClass({
 
   propTypes: {
@@ -104,11 +110,11 @@ var TreeNodeContent = React.createClass({
     panel: React.PropTypes.object,
   },
   _onClick: function() {
-    if (this.state.isSelect === null) {
+    if (this.state.isSelect === null && isFullBasicAnalysis()) {
       this.setState({
         isSelect: true,
       });
-    } else if (this.state.isSelect) {
+    } else if (this.state.isSelect ) {
       this.props.panel.setEditNode(this.props.nodeData);
     }
 
