@@ -16,7 +16,7 @@ env:
   global:
   - PROJECT="Jazz-UI"
   - ROLE="WebUI"
-  - PACKAGE_VERSION="v4.9.0.${TRAVIS_BUILD_NUMBER}"
+  - PACKAGE_VERSION="v5.0.0.${TRAVIS_BUILD_NUMBER}"
   - DOCKER_NS="se-rem-test"
 
 before_script:
