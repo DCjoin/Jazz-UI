@@ -121,4 +121,19 @@ module.exports = {
 		});
 	},
 
+	trialSubmit(info) {
+		// setTimeout(() =>{
+		Ajax.post('', {
+			params: info,
+			success: function() {
+				AppDispatcher.dispatch({
+					type: Action.TRIAL_SUCCESS
+				});
+			},
+			error: function(err, res) {
+			}
+		});		
+		// }, 1000);
+	}
+
 };

@@ -108,6 +108,7 @@ I18N.Login.Copyright = '© Copyright. All rights reserved. Schneider Electric (C
 I18N.Login.ForgerPSW = 'Forget Password';
 I18N.Login.ForgerPSWTips = 'Please enter your user name and the e-mail address you have already filled out in the system, and click the continue button.';
 I18N.Login.WrongEmail = 'eg:user@example.com';
+I18N.Login.WrongTelephone = '请输入11位的手机号';
 I18N.Login.ForgeremailTips = 'If you forget the registered email address, please contact your system administrator.';
 I18N.Login.ReqPSWResetTip1 = 'E-mail has been sent to ';
 I18N.Login.ReqPSWResetTip2 = 'Click the link in e-mail to reset password.';

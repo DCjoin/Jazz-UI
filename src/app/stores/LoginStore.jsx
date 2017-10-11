@@ -14,6 +14,7 @@ import PermissionCode from '../constants/PermissionCode.jsx';
 let { EventEmitter } = events;
 
 let CHANGE_EVENT = 'change';
+let CHANGE_TRIAL_EVENT = 'change_trial_event';
 
 let _currentUserId = null;
 let _currentUser = null;
@@ -102,6 +103,18 @@ let LoginStore = assign({}, EventEmitter.prototype, {
   removeChangeListener: function(callback) {
     this.removeListener(CHANGE_EVENT, callback);
   },
+  emitChange: function(arg) {
+    this.emit(arg || CHANGE_EVENT);
+  },
+  addTrialListener: function(callback) {
+    this.on(CHANGE_TRIAL_EVENT, callback);
+  },
+  removeTrialListener: function(callback) {
+    this.removeListener(CHANGE_TRIAL_EVENT, callback);
+  },
+  emitTrialChange: function(arg) {
+    this.emit(arg || CHANGE_TRIAL_EVENT);
+  },
   empty: function() {
     CookieUtil.set('UserId', null, {
       expires: -1
@@ -115,9 +128,6 @@ let LoginStore = assign({}, EventEmitter.prototype, {
   },
   getLastError: function(argument) {
     return _lastError;
-  },
-  emitChange: function(arg) {
-    this.emit(arg || CHANGE_EVENT);
   },
 	receiveAuthCode: function (data, success) {
 		if(success){
@@ -172,6 +182,9 @@ LoginStore.dispatchToken = AppDispatcher.register(function(action) {
     case LoginActionType.Action.REQ_DEMO_APPLY_ERROR :
       LoginStore.reqTrialUseReset(action.data, false);
       LoginStore.emitChange();
+      break;
+    case LoginActionType.Action.TRIAL_SUCCESS :
+      LoginStore.emitTrialChange();
       break;
     default:
       // do nothing

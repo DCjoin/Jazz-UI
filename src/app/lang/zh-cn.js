@@ -108,6 +108,7 @@ I18N.Login.Copyright = '©版权所有   施耐德电气（中国）有限公司
 I18N.Login.ForgerPSW = '找回密码';
 I18N.Login.ForgerPSWTips = '请输入您的用户名，及在系统中您已经填写的电子邮箱地址，然后单击“继续”。';
 I18N.Login.WrongEmail = '请按照\"user@example.com\"的格式输入';
+I18N.Login.WrongTelephone = '请输入11位的手机号';
 I18N.Login.ForgeremailTips = '如果您忘记了系统中已填写的电子邮箱地址，请联系您的系统管理员。';
 I18N.Login.ReqPSWResetTip1 = '重置密码的邮件已发送至';
 I18N.Login.ReqPSWResetTip2 = '点击邮件中的链接以重置密码。';

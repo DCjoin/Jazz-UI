@@ -135,7 +135,7 @@ function getSeries(data, isStack, isWater, color, currentYear) {
 					predBase = result;
 				}
 				return {
-					y: item.Value !== null ? result : null,
+					y: result,
 					tooltipName: isWater ? I18N.SaveEffect.Chart.PredictSavingWater : I18N.SaveEffect.Chart.PredictSaving,
 					tooltipTitle: UTC2Local(item.Time).format('YYYY/MM'),
 				};
