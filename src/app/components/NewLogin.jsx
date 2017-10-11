@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
+import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
+import Checkbox from 'material-ui/Checkbox';
+import Snackbar from 'material-ui/Snackbar';
+
 import Regex from 'constants/Regex.jsx';
 import RoutePath from 'util/RoutePath.jsx';
 import _lang from '../lang/lang.jsx';
@@ -93,7 +97,7 @@ function checkScrollEnable() {
 	if( getComputedStyle(document.querySelector('.contact-us-card')).display !== 'none' ) {
 		return false;
 	}
-	if( document.querySelector('.jazz-login-dialog') ) {
+	if( document.querySelector('.jazz-login-dialog') || document.querySelector('.dialog') ) {
 		return false;
 	}
 	return true;
@@ -318,11 +322,14 @@ export default class NewLogin extends Component {
 		super(props);
 		this.state = this._getInitState();
 		this._onChange = this._onChange.bind(this);
+		this._onTrialSuccess = this._onTrialSuccess.bind(this);
 		this._onLogin = this._onLogin.bind(this);
 		this._onClickLogin = this._onClickLogin.bind(this);
+		this._onSubmitTrial = this._onSubmitTrial.bind(this);
 		this._doneForgetPSWDialog = this._doneForgetPSWDialog.bind(this);
 
 		LoginStore.addChangeListener(this._onChange);
+		LoginStore.addTrialListener(this._onTrialSuccess);
 
 		if(d.addEventListener){
 			d.addEventListener('DOMMouseScroll', scrollListener, false);
@@ -335,6 +342,7 @@ export default class NewLogin extends Component {
 	}
   componentWillUnmount() {
     LoginStore.removeChangeListener(this._onChange);
+    LoginStore.removeTrialListener(this._onTrialSuccess);
 		w.onmousewheel = d.onmousewheel = function() {};
   }
 	_getInitState() {
@@ -344,6 +352,8 @@ export default class NewLogin extends Component {
 			password: '',
 			errorMsg: '',
 			showForgetPSWDialog: false,
+			showTrialDialog: false,
+			trialSuccess: false,
 			resetEmail: '',
 		};
 	}
@@ -369,6 +379,11 @@ export default class NewLogin extends Component {
       });
     }
   }
+  _onTrialSuccess() {  	
+	this.setState({
+		trialSuccess: true,
+	});
+  }
 	_onClickLogin() {
 		if( LoginStore.hasAuthLoginToken() ) {
 			LoginAction.authLogin( LoginStore.getCurrentUserId(), LoginStore.getAuthLoginToken() );
@@ -383,6 +398,12 @@ export default class NewLogin extends Component {
 			userName: this.state.username,
 			password: this.state.password,
 		})
+	}
+	_onSubmitTrial(data) {
+		LoginAction.trialSubmit(data);
+		this.setState({
+		  showTrialDialog: false,
+		});
 	}
   _doneForgetPSWDialog(resetEmail) {
     this.setState({
@@ -433,6 +454,17 @@ export default class NewLogin extends Component {
 		return (
 			<div id='login-wrapper'>
 				{this._renderLoginDialog()}
+
+		        <Snackbar
+		          open={this.state.trialSuccess}
+		          message={'试用链接已发送至申请人邮箱(24h有效)，请查收！'}
+		          onRequestClose={() => {
+		          	this.setState({
+		          		trialSuccess: false,
+		          	});
+		          }}
+		        />
+				{this.state.showTrialDialog && <TrialDialog open={this.state.showTrialDialog} onSubmit={this._onSubmitTrial} onCancel={() => {this.setState((state, props) => {return {showTrialDialog: false}});}}/>}
 				<ForgetPSWDialog open={this.state.showForgetPSWDialog} onDone={this._doneForgetPSWDialog} onCancel={() => {
 					this.setState({
 						showForgetPSWDialog: false
@@ -441,6 +473,9 @@ export default class NewLogin extends Component {
 				<header id='login-header'>
 					<img style={{height: 33, width: 266, marginTop: 20, marginLeft: 30}} src={require('../less/images/logo.png')} />
 					<div id='login-header-actions'>
+						{false && <a href="javascript:void(0)" style={{marginRight: 50, color: '#fff'}} onClick={() => {
+							this.setState((state, props) => {return {showTrialDialog: true}});
+						}}>{'申请试用'}</a>}
 						<a className='jazz-mobile-qr-link' href="javascript:void(0)">
 							{I18N.Login.APP}
 							<div className='jazz-mobile-qr'>
@@ -668,9 +703,228 @@ var ForgetPSWDialog = React.createClass({
   }
 });
 
-function mouseMoveParallax() {
-	console.log(arguments, this);
+const INLINE_BLOCK_SWITCH_STYLE = {
+	style: {
+		width: 'auto',
+		display: 'inline-block',
+		marginRight: 20,
+	},
+	labelStyle: {
+		wordBreak: 'keep-all',
+	},
+};
+const TEXT_FIELD_ERROR_STYLE = {
+	position: 'absolute',
+	bottom: -5,
+};
+
+class TrialDialog extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			Intention: [],
+		};
+	}
+	_updateInfoByMutilSwtich(key, val, checked) {
+		let newVal = this.state[key];
+		if(checked) {
+			newVal.push(val);
+		} else {
+			newVal.splice( newVal.indexOf(val), 1);
+		}
+		this._updateInfo(key, newVal);
+	}
+	_updateInfo(key, val) {
+		this.setState({
+			[key]: val
+		});
+	}
+	_enabledSubmit() {
+	    let { 
+	    	Name, 
+	    	Email, 
+		    Phone, 
+		    Company, 
+		    Industry, 
+		    CustomerType, 
+		    Intention, 
+		    ContactName, 
+		    ContactPosition, 
+		    ContactEmail, 
+		    ContactPhone, 
+		} = this.state;
+
+		if( !Email || !Company || !Industry || !CustomerType ) {
+			return false;
+		}
+
+		if( !/^[a-zA-Z0-9_-]+$/.test(Email) ) {
+			return false;
+		}
+		if( Phone && !Regex.MobilePhoneRule.test(Phone) ) {
+			return false;
+		}
+		if( ContactEmail && !Regex.Email.test(ContactEmail) ) {
+			return false;
+		}
+		if( ContactPhone && !Regex.MobilePhoneRule.test(ContactPhone) ) {
+			return false;
+		}
+
+		return true;
+	}
+	render() {
+	    let { 
+	    	Name, 
+	    	Email, 
+		    Phone, 
+		    Company, 
+		    Industry, 
+		    CustomerType, 
+		    Intention, 
+		    ContactName, 
+		    ContactPosition, 
+		    ContactEmail, 
+		    ContactPhone, 
+		} = this.state,
+	    submitProps = {
+	        inDialog: true,
+	        highlight: true,
+	        key: 'send_email',
+	        disabled: !this._enabledSubmit(),
+	        onClick: () => {
+	        	this.props.onSubmit({...this.state});
+	        },
+	        label: I18N.Common.Button.GoOn
+	      },
+	      cancelProps = {
+	        key: 'cancel_email',
+	        onClick: this.props.onCancel,
+	        label: I18N.Common.Button.Cancel,
+	        style: {
+	        	marginLeft: 20
+	        }
+	      },
+	      actions = [
+	        <FlatButton primary {...submitProps} />,
+	        <FlatButton {...cancelProps} />
+	      ];
+		return (
+			<Dialog wrapperStyle={{width: 640}} open={this.props.open} actions={actions} title={'申请试用'} contentStyle={{overflowY: 'auto', height: 'calc(100% - 129px)', marginRight: 0}}>
+				<div className='jazz-trial-info-block'>
+					<header className='jazz-trial-info-block-title'>{'申请人信息'}</header>
+					<div className='jazz-trial-info-field'>
+						<ViewableTextField 
+							defaultValue={Name}
+							didChanged={v => this._updateInfo('Name', v)}
+							errorStyle={TEXT_FIELD_ERROR_STYLE} 
+							title={'姓名'} 
+							hintText={'请输入姓名'}/>
+					</div>
+					<div className='jazz-trial-info-field'>
+						<ViewableTextField 
+							defaultValue={Email}
+							didChanged={v => this._updateInfo('Email', v)}
+							errorStyle={TEXT_FIELD_ERROR_STYLE} 
+							isRequired regex={/^[a-zA-Z0-9_-]+$/} errorMessage={I18N.Login.WrongEmail}
+							title={'邮箱（必填）'} 
+							hintText={'请输入邮箱'} 
+							style={{width: 230}}/>
+						<span style={{display: 'inline-block', width: 200, textAlign: 'right'}}>@schneider-electric.com</span>
+					</div>
+					<div className='jazz-trial-info-field'>
+						<ViewableTextField 
+							defaultValue={Phone}
+							didChanged={v => this._updateInfo('Phone', v)}
+							errorStyle={TEXT_FIELD_ERROR_STYLE} 
+							regex={Regex.MobilePhoneRule} errorMessage={I18N.Login.WrongTelephone}
+							title={'手机'} 
+							hintText={'请输入手机'}/>
+					</div>
+				</div>
+				<div className='jazz-trial-info-block'>
+					<header className='jazz-trial-info-block-title'>{'客户信息'}</header>
+					<div className='jazz-trial-info-field'>
+						<ViewableTextField 
+							isRequired 
+							defaultValue={Company}
+							didChanged={v => this._updateInfo('Company', v)}
+							errorStyle={TEXT_FIELD_ERROR_STYLE} 
+							title={'公司名称（必填）'} 
+							hintText={'请输入公司名称'}/>
+					</div>
+					<div className='jazz-trial-info-field'>
+						<span className='custom-title'>{'所属行业（必填）'}</span>						
+						<RadioButtonGroup valueSelected={Industry} onChange={(e, v) => {
+							this._updateInfo('Industry', v)
+						}}>
+						  <RadioButton {...INLINE_BLOCK_SWITCH_STYLE} value={1} label={'轻工'} />
+						  <RadioButton {...INLINE_BLOCK_SWITCH_STYLE} value={2} label={'建筑'} />
+						</RadioButtonGroup>
+					</div>
+					<div className='jazz-trial-info-field'>
+						<span className='custom-title'>{'客户类型（必填）'}</span>						
+						<RadioButtonGroup valueSelected={CustomerType} onChange={(e, v) => {
+							this._updateInfo('CustomerType', v)
+						}}>
+						  <RadioButton {...INLINE_BLOCK_SWITCH_STYLE} value={1} label={'集团客户'} />
+						  <RadioButton {...INLINE_BLOCK_SWITCH_STYLE} value={2} label={'非集团客户'} />
+						</RadioButtonGroup>
+					</div>
+					<div className='jazz-trial-info-field'>
+						<span className='custom-title'>{'客户意向'}</span>
+						<div>
+							<Checkbox {...INLINE_BLOCK_SWITCH_STYLE} checked={Intention.indexOf(1) > -1} onCheck={(e, checked) => {this._updateInfoByMutilSwtich('Intention', 1, checked)}} label={'能源数据可视化'}/>
+							<Checkbox {...INLINE_BLOCK_SWITCH_STYLE} checked={Intention.indexOf(2) > -1} onCheck={(e, checked) => {this._updateInfoByMutilSwtich('Intention', 2, checked)}} label={'能源指标管理'}/>
+							<Checkbox {...INLINE_BLOCK_SWITCH_STYLE} checked={Intention.indexOf(3) > -1} onCheck={(e, checked) => {this._updateInfoByMutilSwtich('Intention', 3, checked)}} label={'节能技改'}/>
+							<Checkbox {...INLINE_BLOCK_SWITCH_STYLE} checked={Intention.indexOf(4) > -1} onCheck={(e, checked) => {this._updateInfoByMutilSwtich('Intention', 4, checked)}} label={'其他'}/>
+						</div>
+					</div>
+				</div>
+				<div className='jazz-trial-info-block'>
+					<header className='jazz-trial-info-block-title'>{'客户联系人信息'}</header>
+					<div className='jazz-trial-info-field'>
+						<ViewableTextField 
+							defaultValue={ContactName}
+							didChanged={v => this._updateInfo('ContactName', v)}
+							errorStyle={TEXT_FIELD_ERROR_STYLE} 
+							title={'姓名'} 
+							hintText={'请输入姓名'}/>
+					</div>
+					<div className='jazz-trial-info-field'>
+						<span className='custom-title'>{'职位'}</span>						
+						<RadioButtonGroup valueSelected={ContactPosition} onChange={(e, v) => {
+							this._updateInfo('ContactPosition', v)
+						}}>
+						  <RadioButton {...INLINE_BLOCK_SWITCH_STYLE} value={1} label={'高管'} />
+						  <RadioButton {...INLINE_BLOCK_SWITCH_STYLE} value={2} label={'集团能源经理'} />
+						  <RadioButton {...INLINE_BLOCK_SWITCH_STYLE} value={3} label={'工厂或建筑能源经理'} />
+						</RadioButtonGroup>
+					</div>
+					<div className='jazz-trial-info-field'>
+						<ViewableTextField 
+							defaultValue={ContactEmail}
+							didChanged={v => this._updateInfo('ContactEmail', v)}
+							regex={Regex.Email} errorMessage={I18N.Login.WrongEmail}
+							errorStyle={TEXT_FIELD_ERROR_STYLE} 
+							title={'邮箱'} 
+							hintText={'请输入邮箱'}/>
+					</div>
+					<div className='jazz-trial-info-field'>
+						<ViewableTextField 
+							defaultValue={ContactPhone}
+							didChanged={v => this._updateInfo('ContactPhone', v)}
+							regex={Regex.MobilePhoneRule} errorMessage={I18N.Login.WrongTelephone}
+							errorStyle={TEXT_FIELD_ERROR_STYLE} 
+							title={'手机'} 
+							hintText={'请输入手机'}/>
+					</div>
+				</div>
+			</Dialog>
+		);
+	}
 }
+
 
 class Parallax extends Component {
 

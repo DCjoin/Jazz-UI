@@ -17,6 +17,7 @@ module.exports = {
     REQ_PSWRESET_ERROR:null,
     REQ_DEMO_APPLY_SUCCESS:null,
     REQ_DEMO_APPLY_ERROR:null,
+    TRIAL_SUCCESS:null,
   })
 
 };
