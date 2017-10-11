@@ -135,13 +135,14 @@ module.exports = {
 		});		
 		// }, 1000);
 	},
-	trialLogin: function(params) {
+	trialLogin: function(params, expiresDate) {
 		Ajax.post('/AccessControl/ValidateUser', {
 			params,
 			success: (res) => {
 				AppDispatcher.dispatch({
 					type: Action.LOGIN_SUCCESS,
-					data: res
+					expiresDate: expiresDate,
+					data: res,
 				});
 			},
 			error: (err, res) => {

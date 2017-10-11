@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 
 import RoutePath from 'util/RoutePath.jsx';
 
@@ -16,7 +17,7 @@ export default class TrialLogin extends Component {
 		this.state = {
 			error: false
 		}
-		LoginAction.trialLogin(props.router.location.query);
+		LoginAction.trialLogin(props.router.location.query, moment().add(2, 'minutes').toDate());
 		LoginStore.addChangeListener(this._onChange);
 	}
 	componentWillUnmount() {

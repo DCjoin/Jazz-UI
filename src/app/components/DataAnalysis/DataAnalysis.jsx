@@ -33,6 +33,11 @@ import UserStore from 'stores/UserStore.jsx';
 import HierarchyStore from 'stores/HierarchyStore.jsx';
 import WeatherAction from 'actions/DataAnalysis/weather_action.jsx';
 
+
+function isFullBasicAnalysis() {
+	return PrivilegeUtil.isFull(PermissionCode.BASIC_DATA_ANALYSE.READONLY, CurrentUserStore.getCurrentPrivilege());
+}
+
 function isWidget(node) {
 	return node.get('Type') === nodeType.Widget;
 }

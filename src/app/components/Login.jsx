@@ -435,6 +435,10 @@ export default class NewLogin extends Component {
 								this.setState({
 									password: e.target.value
 								});
+							}} onKeyPress={(e) => {
+								if(e.charCode === 13) {
+									this._onLogin();
+								}
 							}}/>
 						</div>
 						<div className='jazz-login-dialog-err'>{errorMsg}</div>
@@ -876,8 +880,8 @@ class TrialDialog extends Component {
 						<div>
 							<Checkbox {...INLINE_BLOCK_SWITCH_STYLE} checked={Intention.indexOf(1) > -1} onCheck={(e, checked) => {this._updateInfoByMutilSwtich('Intention', 1, checked)}} label={'能源数据可视化'}/>
 							<Checkbox {...INLINE_BLOCK_SWITCH_STYLE} checked={Intention.indexOf(2) > -1} onCheck={(e, checked) => {this._updateInfoByMutilSwtich('Intention', 2, checked)}} label={'能源指标管理'}/>
-							<Checkbox {...INLINE_BLOCK_SWITCH_STYLE} checked={Intention.indexOf(3) > -1} onCheck={(e, checked) => {this._updateInfoByMutilSwtich('Intention', 3, checked)}} label={'节能技改'}/>
-							<Checkbox {...INLINE_BLOCK_SWITCH_STYLE} checked={Intention.indexOf(4) > -1} onCheck={(e, checked) => {this._updateInfoByMutilSwtich('Intention', 4, checked)}} label={'其他'}/>
+							<Checkbox {...INLINE_BLOCK_SWITCH_STYLE} checked={Intention.indexOf(4) > -1} onCheck={(e, checked) => {this._updateInfoByMutilSwtich('Intention', 4, checked)}} label={'节能技改'}/>
+							<Checkbox {...INLINE_BLOCK_SWITCH_STYLE} checked={Intention.indexOf(8) > -1} onCheck={(e, checked) => {this._updateInfoByMutilSwtich('Intention', 8, checked)}} label={'其他'}/>
 						</div>
 					</div>
 				</div>

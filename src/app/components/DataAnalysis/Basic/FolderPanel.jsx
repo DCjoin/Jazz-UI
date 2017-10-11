@@ -38,6 +38,14 @@ function flat(node, coll = []) {
 	return coll;
 }
 
+
+import PermissionCode from 'constants/PermissionCode.jsx';
+import privilegeUtil from 'util/privilegeUtil.jsx';
+import CurrentUserStore from 'stores/CurrentUserStore.jsx';
+function isFullBasicAnalysis() {
+	return privilegeUtil.isFull(PermissionCode.BASIC_DATA_ANALYSE.READONLY, CurrentUserStore.getCurrentPrivilege());
+}
+
 export default class FolderPanel extends Component {
 	constructor(props) {
 		super(props);
@@ -53,6 +61,9 @@ export default class FolderPanel extends Component {
 		});
 	}
 	_onMenuSelect(node) {
+		if(!isFullBasicAnalysis()) {
+			return;
+		}
 		return (e, item) => {
 			this.props.onOperationSelect(item.key, node);
 		}
@@ -79,13 +90,13 @@ export default class FolderPanel extends Component {
 				color: '#464949',
 			},
 		    iconMenuProps = {
-				iconButtonElement: (<IconButton iconClassName='icon-more' style={{fontSize: '18px'}}/>),
+				iconButtonElement: (<IconButton disabled={!isFullBasicAnalysis()} iconClassName='icon-more' style={{fontSize: '18px'}}/>),
 				anchorOrigin:{horizontal: 'left', vertical: 'top'},
 				targetOrigin:{horizontal: 'left', vertical: 'top'},
-				onItemTouchTap: this._onMenuSelect(node)
+				onItemTouchTap: this._onMenuSelect(node),
 		    };
 			action = (<div>
-				{this.props.isBuilding && <GenerateSolutionButton onOpen={this.props.onOpenGenerateSolution} nodes={flat(node)} disabled={flat(node).length===0}/>}
+				{this.props.isBuilding && <GenerateSolutionButton onOpen={this.props.onOpenGenerateSolution} nodes={flat(node)} disabled={flat(node).length===0 || !isFullBasicAnalysis()}/>}
 				{this._renderMenu(node, iconMenuProps)}
 			</div>)
 		}
@@ -106,7 +117,7 @@ export default class FolderPanel extends Component {
 					}}
 				/>
 				{!isBase(node) && this.state.isViewName && 
-				<IconButton iconClassName='icon-edit' onClick={() => {
+				<IconButton disabled={!isFullBasicAnalysis()} iconClassName='icon-edit' onClick={() => {
 					this.setState({
 						isViewName: false
 					});
@@ -149,13 +160,18 @@ export default class FolderPanel extends Component {
 			color: '#464949'
 		},
 	    iconMenuProps = {
+	    	disabled: !isFullBasicAnalysis(),
 			iconButtonElement: (
-				<button style={{
+				<IconButton disabled={!isFullBasicAnalysis()} style={{
+					width: 'auto',
+					height: 'auto',
+					padding: 0,
 					backgroundColor: 'transparent',
 					border: 10,
-				}}>
-					<FontIcon className='icon-more' style={{fontSize: '26px'}}/>
-				</button>),
+				}} iconStyle={{top: -4}}>
+					<FontIcon disabled={!isFullBasicAnalysis()} className='icon-more' style={{fontSize: '26px', top: -4}}/>
+				</IconButton>),
+			// iconButtonElement: (<IconButton disabled={!isFullBasicAnalysis()} iconClassName='icon-more' style={{fontSize: '18px'}}/>),
 			anchorOrigin:{horizontal: 'left', vertical: 'top'},
 			targetOrigin:{horizontal: 'left', vertical: 'top'},
 			onItemTouchTap: this._onMenuSelect(child)
