@@ -657,6 +657,7 @@ GroupKPIStore.dispatchToken = AppDispatcher.register(function(action) {
         break;
    case Action.CLEAR_KPI_INFO:
     	  _kpiInfo=null;
+        _rawData=null;
         GroupKPIStore.emitChange();
         break;
       default:
