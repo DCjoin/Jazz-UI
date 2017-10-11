@@ -14,7 +14,7 @@ import assign from 'object-assign';
 import BlankPage from './components/BlankPage.jsx';
 import JazzApp from './components/JazzApp.jsx';
 import Login from './components/Login.jsx';
-import NewLogin from './components/NewLogin.jsx';
+import TrialLogin from './components/trial_login.jsx';
 import MainApp from './components/MainApp.jsx';
 import resetPSWApp from './components/resetPSWApp.jsx';
 import demoLoginApp from './components/DemoLogin.jsx';
@@ -132,10 +132,10 @@ ReactDom.render(<Router history={browserHistory} routes={{
     },
     childRoutes: [{
       path: 'login',
-      component: NewLogin
+      component: Login
     }, {
-      path: 'new_login',
-      component: NewLogin
+      path: 'triallogin',
+      component: TrialLogin
     }, {
       path: 'contactus',
       component: contactusApp
@@ -147,6 +147,9 @@ ReactDom.render(<Router history={browserHistory} routes={{
       component: demoLoginApp 
     }, {
       path: 'u=:user&t=:token&a=initpwd&lang=:lang2',
+      component: initChangePSWApp
+    }, {
+      path: '',
       component: initChangePSWApp
     }, {
       _auth: true,

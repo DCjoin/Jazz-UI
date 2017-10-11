@@ -134,6 +134,24 @@ module.exports = {
 			}
 		});		
 		// }, 1000);
-	}
+	},
+	trialLogin: function(params) {
+		Ajax.post('/AccessControl/ValidateUser', {
+			params,
+			success: (res) => {
+				AppDispatcher.dispatch({
+					type: Action.LOGIN_SUCCESS,
+					data: res
+				});
+			},
+			error: (err, res) => {
+				AppDispatcher.dispatch({
+					type: Action.LOGIN_ERROR,
+					data: res.body
+				});
+			},
+			commonErrorHandling: false,
+		});
+	},
 
 };
