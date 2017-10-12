@@ -38,6 +38,12 @@ function returnUpdateBrowserHtml(request,reply){
 var JAZZ_UI_UMENG_CNZZ_SDK_URL = process.env.JAZZ_UI_UMENG_CNZZ_SDK_URL;
 var JAZZ_WEBAPI_HOST = process.env.JAZZ_WEBAPI_HOST;
 var JAZZ_STATIC_CDN = process.env.JAZZ_STATIC_CDN;
+var APP_VERSION = process.env.APP_VERSION;
+var APP_SIZE = process.env.APP_SIZE;
+var APP_DOWNLOAD_LOCAL = process.env.APP_DOWNLOAD_LOCAL;
+var APP_DOWNLOAD_QQ = process.env.APP_DOWNLOAD_QQ;
+var APP_DOWNLOAD_WDJ = process.env.APP_DOWNLOAD_WDJ;
+var APP_DOWNLOAD_BAIDU = process.env.APP_DOWNLOAD_BAIDU;
 
 function getLang(request) {
   var lang = request.params.lang;
@@ -67,9 +73,6 @@ function verifyBrowser(user_agent) {
 
 function returnIndexHtml(request,reply){
 
-  // if( /^http$/.test( request.headers["x-forwarded-proto"] || request.server.info.protocol ) ) {
-  //   return reply.redirect("https://" + request.headers.host + request.path)
-  // }
   if( !request.state.skip_detect && !verifyBrowser( request.headers['user-agent'] ) ) {
     return returnUpdateBrowserHtml(request, reply);
   }
@@ -89,35 +92,16 @@ function returnIndexHtml(request,reply){
 }
 
 function returnDownloadHtml(request,reply){
-  var html = fs.readFileSync(path.resolve(__dirname, "./DownloadApp.html"), "utf-8");
+  var html = fs.readFileSync(path.resolve(__dirname, "./DownloadApp.html"), "utf-8")
+                .replace('${APP_VERSION}', APP_VERSION)
+                .replace('${APP_SIZE}', APP_SIZE)
+                .replace('${APP_DOWNLOAD_LOCAL}', APP_DOWNLOAD_LOCAL)
+                .replace('${APP_DOWNLOAD_QQ}', APP_DOWNLOAD_QQ)
+                .replace('${APP_DOWNLOAD_WDJ}', APP_DOWNLOAD_WDJ)
+                .replace('${APP_DOWNLOAD_BAIDU}', APP_DOWNLOAD_BAIDU);
   var res = reply(html).type("text/html");
   return res;
 }
-
-function returnDownloadHtml(request,reply){
-  var html = fs.readFileSync(path.resolve(__dirname, "./DownloadApp.html"), "utf-8");
-  var res = reply(html).type("text/html");
-  return res;
-}
-
-
-// server.route({
-//   method: 'GET',
-//   path: '/assets/{files*}',
-//   handler: {
-//     directory: { 
-//       path: './build/assets'
-//     }
-//   }
-// });
-
-// server.ext('onRequest', function (request, reply) {
-//   if ( /^http$/.test( request.headers["x-forwarded-proto"] || request.server.info.protocol ) ) {
-//     return reply('Forwarding to secure route')
-//       .redirect('https://' + request.headers.host + request.path);
-//   }
-//   reply();
-// });
 
 server.register({
   register: require('hapi-require-https'),
