@@ -93,6 +93,7 @@ function returnIndexHtml(request,reply){
 
 function returnDownloadHtml(request,reply){
   var html = fs.readFileSync(path.resolve(__dirname, "./DownloadApp.html"), "utf-8")
+                .replace(/__JAZZ_STATIC_CDN__/g, JAZZ_STATIC_CDN)
                 .replace('${APP_VERSION}', APP_VERSION)
                 .replace('${APP_SIZE}', APP_SIZE)
                 .replace('${APP_DOWNLOAD_LOCAL}', APP_DOWNLOAD_LOCAL)
