@@ -134,10 +134,11 @@ let JazzApp = React.createClass({
         onClick:() => {
           this.refs.ajax._hide();
   				LoginActionCreator.logout();
-          var _redirectFunc = this.context.router.replaceWith;
-          _redirectFunc('login', {
-            lang: ((window.currentLanguage === 0) ? 'zh-cn' : 'en-us')
-          });
+          RoutePath.login(this.props.router.params);
+          // var _redirectFunc = this.props.router.replace;
+          // _redirectFunc('login', {
+          //   lang: ((window.currentLanguage === 0) ? 'zh-cn' : 'en-us')
+          // });
   			}
       }];
       this.refs.ajax._error(I18N.ServerError.Title, I18N.ServerError.Message, buttonActions, true);
