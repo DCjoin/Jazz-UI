@@ -78,7 +78,7 @@ function addClassName(el, className) {
 	}
 }
 
-function removeClassName(el, className) {		
+function removeClassName(el, className) {
 	var newClassNames = getClassNames(el);
 	if( newClassNames.indexOf(className) > -1 ) {
 		newClassNames.splice( newClassNames.indexOf(className), 1 );
@@ -116,7 +116,7 @@ function go(targetIdx) {
 					header.style.transform = '';
 				}, DEACTIVE_ANIMATION_DURATION);
 			}
-		} else {			
+		} else {
 			if(header.style.display !== 'none') {
 				header.style.transform = 'translate3d(0, -100%, 0)';
 				setTimeout(function() {
@@ -131,8 +131,8 @@ function go(targetIdx) {
 		deactive(currentIdx, type);
 		currentIdx = targetIdx;
 		active(targetIdx, type);
-	
-		
+
+
 		var footer = getFooter();
 		if(footer.style.display !== 'none') {
 
@@ -147,7 +147,7 @@ function go(targetIdx) {
 }
 
 function scrollListener(e) {
-	if( checkScrollEnable() && animationed ) {	
+	if( checkScrollEnable() && animationed ) {
 		if( e.wheelDelta < 0 ) {
 			scrollDown();
 		} else {
@@ -168,7 +168,7 @@ function scrollUp() {
 			footer.style.display = 'none';
 		}, DEACTIVE_ANIMATION_DURATION);
 
-	} else if(currentIdx > 0) {	
+	} else if(currentIdx > 0) {
 		toggleContainer(ANIMATION_TYPE.DOWN);
 	}
 	var header = getHeader();
@@ -194,7 +194,7 @@ function scrollDown() {
 			}, DEACTIVE_ANIMATION_DURATION);
 		}
 
-	} else {	
+	} else {
 
 		var footer = getFooter();
 		if(footer.style.display === 'none') {
@@ -214,9 +214,9 @@ function toggleContainer(type) {
 	deactive(currentIdx, type);
 
 	if( type === ANIMATION_TYPE.UP) {
-		active(++currentIdx, type);	
+		active(++currentIdx, type);
 	} else {
-		active(--currentIdx, type);	
+		active(--currentIdx, type);
 	}
 }
 
@@ -253,7 +253,7 @@ function deactive(currentIdx, type) {
 
 	}, DEACTIVE_ANIMATION_DURATION)
 }
-function active(currentIdx, type) {		
+function active(currentIdx, type) {
 
 	animationed = false;
 	setTimeout(function() {
@@ -336,7 +336,7 @@ export default class NewLogin extends Component {
 		}
 		w.onmousewheel = d.onmousewheel = scrollListener;
 	}
-	componentDidMount() {		
+	componentDidMount() {
 		init();
 		active(currentIdx, ANIMATION_TYPE.UP);
 	}
@@ -379,7 +379,7 @@ export default class NewLogin extends Component {
       });
     }
   }
-  _onTrialSuccess() {  	
+  _onTrialSuccess() {
 	this.setState({
 		trialSuccess: true,
 	});
@@ -416,7 +416,7 @@ export default class NewLogin extends Component {
 		return showLoginDialog && (
 			<div className='jazz-login-dialog-wrapper'>
 				<div className='jazz-login-dialog'>
-					
+
 					<em className='icon-close' onClick={() => {
 						this.setState(this._getInitState);
 					}}/>
@@ -508,7 +508,7 @@ export default class NewLogin extends Component {
 							<div className='content-text'>{I18N.Login.Step1.Line3}</div>
 						</div>
 					</div>
-					</div>	
+					</div>
 				</Container>
 
 				<Container imageUrl={require(`../less/images/step2-${'zh-cn'||this.props.params.lang}.png`)} style={{
@@ -544,7 +544,7 @@ export default class NewLogin extends Component {
 							<div className='content-text'>{I18N.Login.Step3.Line2}</div>
 							<div className='content-text'>{I18N.Login.Step3.Line3}</div>
 						</div>
-					</div>					
+					</div>
 				</Container>
 
 				<Container imageUrl={require(`../less/images/step4-${'zh-cn'||this.props.params.lang}.png`)} style={{
@@ -561,7 +561,7 @@ export default class NewLogin extends Component {
 							<div className='content-text'>{I18N.Login.Step4.Line1}</div>
 							<div className='content-text'>{I18N.Login.Step4.Line2}</div>
 						</div>
-					</div>					
+					</div>
 				</Container>
 
 
@@ -579,7 +579,7 @@ export default class NewLogin extends Component {
 							<div className='content-text'>{I18N.Login.Step5.Line1}</div>
 							<div className='content-text'>{I18N.Login.Step5.Line2}</div>
 						</div>
-					</div>					
+					</div>
 				</Container>
 
 				<footer className="jazz-public-footer" id='login-footer' style={{display: 'none'}}>
@@ -744,18 +744,18 @@ class TrialDialog extends Component {
 		});
 	}
 	_enabledSubmit() {
-	    let { 
-	    	Name, 
-	    	Email, 
-		    Phone, 
-		    Company, 
-		    Industry, 
-		    CustomerType, 
-		    Intention, 
-		    ContactName, 
-		    ContactPosition, 
-		    ContactEmail, 
-		    ContactPhone, 
+	    let {
+	    	Name,
+	    	Email,
+		    Phone,
+		    Company,
+		    Industry,
+		    CustomerType,
+		    Intention,
+		    ContactName,
+		    ContactPosition,
+		    ContactEmail,
+		    ContactPhone,
 		} = this.state;
 
 		if( !Email || !Company || !Industry || !CustomerType ) {
@@ -778,18 +778,18 @@ class TrialDialog extends Component {
 		return true;
 	}
 	render() {
-	    let { 
-	    	Name, 
-	    	Email, 
-		    Phone, 
-		    Company, 
-		    Industry, 
-		    CustomerType, 
-		    Intention, 
-		    ContactName, 
-		    ContactPosition, 
-		    ContactEmail, 
-		    ContactPhone, 
+	    let {
+	    	Name,
+	    	Email,
+		    Phone,
+		    Company,
+		    Industry,
+		    CustomerType,
+		    Intention,
+		    ContactName,
+		    ContactPosition,
+		    ContactEmail,
+		    ContactPhone,
 		} = this.state,
 	    submitProps = {
 	        inDialog: true,
@@ -797,7 +797,9 @@ class TrialDialog extends Component {
 	        key: 'send_email',
 	        disabled: !this._enabledSubmit(),
 	        onClick: () => {
-	        	this.props.onSubmit({...this.state});
+	        	this.props.onSubmit({...this.state, ...{
+              Email: this.state.Email + '@schneider-electric.com'
+            }});
 	        },
 	        label: I18N.Common.Button.GoOn
 	      },
@@ -818,47 +820,47 @@ class TrialDialog extends Component {
 				<div className='jazz-trial-info-block'>
 					<header className='jazz-trial-info-block-title'>{'申请人信息'}</header>
 					<div className='jazz-trial-info-field'>
-						<ViewableTextField 
+						<ViewableTextField
 							defaultValue={Name}
 							didChanged={v => this._updateInfo('Name', v)}
-							errorStyle={TEXT_FIELD_ERROR_STYLE} 
-							title={'姓名'} 
+							errorStyle={TEXT_FIELD_ERROR_STYLE}
+							title={'姓名'}
 							hintText={'请输入姓名'}/>
 					</div>
 					<div className='jazz-trial-info-field'>
-						<ViewableTextField 
+						<ViewableTextField
 							defaultValue={Email}
 							didChanged={v => this._updateInfo('Email', v)}
-							errorStyle={TEXT_FIELD_ERROR_STYLE} 
+							errorStyle={TEXT_FIELD_ERROR_STYLE}
 							isRequired regex={/^[a-zA-Z0-9_.-]+$/} errorMessage={I18N.Login.WrongEmail}
-							title={'邮箱（必填）'} 
-							hintText={'请输入邮箱'} 
+							title={'邮箱（必填）'}
+							hintText={'请输入邮箱'}
 							style={{width: 230}}/>
 						<span style={{display: 'inline-block', width: 200, textAlign: 'right'}}>@schneider-electric.com</span>
 					</div>
 					<div className='jazz-trial-info-field'>
-						<ViewableTextField 
+						<ViewableTextField
 							defaultValue={Phone}
 							didChanged={v => this._updateInfo('Phone', v)}
-							errorStyle={TEXT_FIELD_ERROR_STYLE} 
+							errorStyle={TEXT_FIELD_ERROR_STYLE}
 							regex={Regex.MobilePhoneRule} errorMessage={I18N.Login.WrongTelephone}
-							title={'手机'} 
+							title={'手机'}
 							hintText={'请输入手机'}/>
 					</div>
 				</div>
 				<div className='jazz-trial-info-block'>
 					<header className='jazz-trial-info-block-title'>{'客户信息'}</header>
 					<div className='jazz-trial-info-field'>
-						<ViewableTextField 
-							isRequired 
+						<ViewableTextField
+							isRequired
 							defaultValue={Company}
 							didChanged={v => this._updateInfo('Company', v)}
-							errorStyle={TEXT_FIELD_ERROR_STYLE} 
-							title={'公司名称（必填）'} 
+							errorStyle={TEXT_FIELD_ERROR_STYLE}
+							title={'公司名称（必填）'}
 							hintText={'请输入公司名称'}/>
 					</div>
 					<div className='jazz-trial-info-field'>
-						<span className='custom-title'>{'所属行业（必填）'}</span>						
+						<span className='custom-title'>{'所属行业（必填）'}</span>
 						<RadioButtonGroup valueSelected={Industry} onChange={(e, v) => {
 							this._updateInfo('Industry', v)
 						}}>
@@ -867,7 +869,7 @@ class TrialDialog extends Component {
 						</RadioButtonGroup>
 					</div>
 					<div className='jazz-trial-info-field'>
-						<span className='custom-title'>{'客户类型（必填）'}</span>						
+						<span className='custom-title'>{'客户类型（必填）'}</span>
 						<RadioButtonGroup valueSelected={CustomerType} onChange={(e, v) => {
 							this._updateInfo('CustomerType', v)
 						}}>
@@ -888,15 +890,15 @@ class TrialDialog extends Component {
 				<div className='jazz-trial-info-block'>
 					<header className='jazz-trial-info-block-title'>{'客户联系人信息'}</header>
 					<div className='jazz-trial-info-field'>
-						<ViewableTextField 
+						<ViewableTextField
 							defaultValue={ContactName}
 							didChanged={v => this._updateInfo('ContactName', v)}
-							errorStyle={TEXT_FIELD_ERROR_STYLE} 
-							title={'姓名'} 
+							errorStyle={TEXT_FIELD_ERROR_STYLE}
+							title={'姓名'}
 							hintText={'请输入姓名'}/>
 					</div>
 					<div className='jazz-trial-info-field'>
-						<span className='custom-title'>{'职位'}</span>						
+						<span className='custom-title'>{'职位'}</span>
 						<RadioButtonGroup valueSelected={ContactPosition} onChange={(e, v) => {
 							this._updateInfo('ContactPosition', v)
 						}}>
@@ -906,21 +908,21 @@ class TrialDialog extends Component {
 						</RadioButtonGroup>
 					</div>
 					<div className='jazz-trial-info-field'>
-						<ViewableTextField 
+						<ViewableTextField
 							defaultValue={ContactEmail}
 							didChanged={v => this._updateInfo('ContactEmail', v)}
 							regex={Regex.Email} errorMessage={I18N.Login.WrongEmail}
-							errorStyle={TEXT_FIELD_ERROR_STYLE} 
-							title={'邮箱'} 
+							errorStyle={TEXT_FIELD_ERROR_STYLE}
+							title={'邮箱'}
 							hintText={'请输入邮箱'}/>
 					</div>
 					<div className='jazz-trial-info-field'>
-						<ViewableTextField 
+						<ViewableTextField
 							defaultValue={ContactPhone}
 							didChanged={v => this._updateInfo('ContactPhone', v)}
 							regex={Regex.MobilePhoneRule} errorMessage={I18N.Login.WrongTelephone}
-							errorStyle={TEXT_FIELD_ERROR_STYLE} 
-							title={'手机'} 
+							errorStyle={TEXT_FIELD_ERROR_STYLE}
+							title={'手机'}
 							hintText={'请输入手机'}/>
 					</div>
 				</div>
@@ -941,7 +943,7 @@ class Parallax extends Component {
 	componentWillUnmount() {
 		if(d.removeEventListener){
 			d.removeEventListener('mousemove', this._mouseMoveParallax);
-		}		
+		}
 	}
 	_mouseMoveParallax(e) {
 		let horizontal = (e.x / d.body.clientWidth) * 100,
