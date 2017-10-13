@@ -1040,7 +1040,8 @@ class AnalysisPanel extends Component {
         columnIcon=<FontIcon className="icon-column" iconStyle ={iconStyle} style = {style}  />,
         stackIcon=<FontIcon className="icon-stack" iconStyle ={iconStyle} style = {style} />,
         pieIcon=<FontIcon className="icon-pie" iconStyle ={iconStyle} style = {style} />,
-        rawdataIcon=<FontIcon className="icon-raw-data" iconStyle ={iconStyle} style = {style} />;
+        rawdataIcon=<FontIcon className="icon-raw-data" iconStyle ={iconStyle} style = {style} />,
+        heatmapIcon=<FontIcon className="icon-heat-map" iconStyle ={iconStyle} style = {style} />;
 
   let chartType = this.state.selectedChartType || 'line';
   return(
@@ -1051,6 +1052,7 @@ class AnalysisPanel extends Component {
     <MenuItem primaryText={I18N.EM.CharType.Stack} value="stack" leftIcon={stackIcon}/>
     <MenuItem primaryText={I18N.EM.CharType.Pie} value="pie" leftIcon={pieIcon}/>
     <MenuItem primaryText={I18N.EM.CharType.GridTable} value="rawdata" leftIcon={rawdataIcon}/>
+    <MenuItem primaryText={I18N.EM.CharType.HeatMap} value="heatmap" leftIcon={heatmapIcon}/>
   </DropDownMenu>
   )
   }

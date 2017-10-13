@@ -591,6 +591,7 @@ I18N.EM.CharType.Stack = '堆积图';
 I18N.EM.CharType.Pie = '饼状图';
 I18N.EM.CharType.RawData = '原始数据';
 I18N.EM.CharType.GridTable = '数据表';
+I18N.EM.CharType.HeatMap = '热压图';
 
 I18N.EM.RawData = {};
 I18N.EM.RawData.ErrorForEnergy = '原始数据仅支持查看7天以内的数据';

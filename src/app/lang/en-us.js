@@ -590,6 +590,7 @@ I18N.EM.CharType.Stack = 'Stack';
 I18N.EM.CharType.Pie = 'Pie';
 I18N.EM.CharType.RawData = 'Raw data';
 I18N.EM.CharType.GridTable = 'Grid';
+I18N.EM.CharType.HeatMap = '热压图';
 
 I18N.EM.RawData = {};
 I18N.EM.RawData.ErrorForEnergy = 'Raw data only support with 7 days';
