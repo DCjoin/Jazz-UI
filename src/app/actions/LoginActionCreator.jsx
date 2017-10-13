@@ -122,8 +122,7 @@ module.exports = {
 	},
 
 	trialSubmit(info) {
-		// setTimeout(() =>{
-		Ajax.post('', {
+		Ajax.post('/user/trial', {
 			params: info,
 			success: function() {
 				AppDispatcher.dispatch({
@@ -132,11 +131,10 @@ module.exports = {
 			},
 			error: function(err, res) {
 			}
-		});		
-		// }, 1000);
+		});
 	},
 	trialLogin: function(params, expiresDate) {
-		Ajax.post('/AccessControl/ValidateUser', {
+		Ajax.get('/user/triallogin', {
 			params,
 			success: (res) => {
 				AppDispatcher.dispatch({

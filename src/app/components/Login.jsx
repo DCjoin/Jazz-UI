@@ -762,7 +762,7 @@ class TrialDialog extends Component {
 			return false;
 		}
 
-		if( !/^[a-zA-Z0-9_-]+$/.test(Email) ) {
+		if( !/^[a-zA-Z0-9_.-]+$/.test(Email) ) {
 			return false;
 		}
 		if( Phone && !Regex.MobilePhoneRule.test(Phone) ) {
@@ -830,7 +830,7 @@ class TrialDialog extends Component {
 							defaultValue={Email}
 							didChanged={v => this._updateInfo('Email', v)}
 							errorStyle={TEXT_FIELD_ERROR_STYLE} 
-							isRequired regex={/^[a-zA-Z0-9_-]+$/} errorMessage={I18N.Login.WrongEmail}
+							isRequired regex={/^[a-zA-Z0-9_.-]+$/} errorMessage={I18N.Login.WrongEmail}
 							title={'邮箱（必填）'} 
 							hintText={'请输入邮箱'} 
 							style={{width: 230}}/>

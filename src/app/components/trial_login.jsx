@@ -17,7 +17,7 @@ export default class TrialLogin extends Component {
 		this.state = {
 			error: false
 		}
-		LoginAction.trialLogin(props.router.location.query, moment().add(2, 'minutes').toDate());
+		LoginAction.trialLogin(props.router.location.query, moment().add(1, 'minutes').toDate());
 		LoginStore.addChangeListener(this._onChange);
 	}
 	componentWillUnmount() {

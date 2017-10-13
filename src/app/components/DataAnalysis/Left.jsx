@@ -118,9 +118,9 @@ export default class Left extends Component {
     return (
       <div className='jazz-new-folder-leftpanel-container'>
         <div className='jazz-new-folder-leftpanel-header'>
-          <FlatButton 
-          	disabled={disabledButton} 
-          	onClick={this._onNewFolder} 
+          <FlatButton
+          	disabled={disabledButton}
+          	onClick={this._onNewFolder}
           	style={buttonStyle}
           	icon={<FontIcon className='icon-add' style={{fontSize: 16}}/>}
           	label={I18N.Folder.FolderName}
@@ -131,9 +131,9 @@ export default class Left extends Component {
 				    	strokeWidth: 1
 				    }}/>
 				  </svg>
-          <FlatButton 
-          	disabled={disabledButton} 
-          	onClick={this._onNewWidget} 
+          <FlatButton
+          	disabled={disabledButton}
+          	onClick={this._onNewWidget}
           	style={buttonStyle}
           	icon={<FontIcon className='icon-add' style={{fontSize: 16}}/>}
           	label={I18N.Folder.DataAnalysisWidget}
