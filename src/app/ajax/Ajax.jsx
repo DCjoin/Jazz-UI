@@ -56,6 +56,8 @@ const API_WHITE_LIST = [
   '/AccessControl/ValidateUser',
   '/Common/ReqPwdReset',
   '/Common/resetpwd',
+  '/user/trial',
+  '/user/triallogin',
 ];
 
 function checkUserId(url, userId) {
