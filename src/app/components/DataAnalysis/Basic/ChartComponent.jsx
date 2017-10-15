@@ -241,9 +241,8 @@ export default class ChartComponent extends Component {
             } else if (chartType === 'heatmap') {
       let properties = {
         ref: 'chart',
-        energyData: analysisPanel.state.energyData,
-        energyRawData: analysisPanel.state.energyRawData,
-        chartStrategy: this
+        energyData: analysisPanel.state.energyRawData,
+        AnalysisPanel: analysisPanel
       };
       energyPart = <div style={{
           flex: 1,

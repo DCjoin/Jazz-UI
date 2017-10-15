@@ -962,7 +962,7 @@ class AnalysisPanel extends Component {
   }
 
   canShareDataWith(curChartType, nextChartType) {
-    if ((curChartType === 'line' || curChartType === 'column' || curChartType === 'stack') && (nextChartType === 'line' || nextChartType === 'column' || nextChartType === 'stack')) {
+    if ((curChartType === 'line' || curChartType === 'column' || curChartType === 'stack' || curChartType === 'heatmap') && (nextChartType === 'line' || nextChartType === 'column' || nextChartType === 'stack' || nextChartType === 'heatmap')) {
       return true;
     } else {
       return false;
