@@ -40,7 +40,7 @@ export default class TrialLogin extends Component {
 			return null;
 		}
 		return (
-			<div>链接失效</div>
+			<div style={{textAlign: 'center', marginTop: '40%'}}>链接失效</div>
 		);
 	}
 }
