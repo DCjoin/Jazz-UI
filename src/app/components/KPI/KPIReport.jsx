@@ -37,11 +37,11 @@ let getTextByHoverSaving = function(isDosage, isThisYear) {
 
 function getTextByFilter(isHover, isDosage, isIndex, isThisYear) {
 	let {
-		IndexValue, 
-		SavingValue, 
-		ActualSum, 
-		PredictSum, 
-		ActualSaving, 
+		IndexValue,
+		SavingValue,
+		ActualSum,
+		PredictSum,
+		ActualSaving,
 		PredictSaving,
 		ByYearUntilNowValue,
 		ByYearValue,
@@ -155,7 +155,7 @@ function getTextByFilter(isHover, isDosage, isIndex, isThisYear) {
 	} else {
 		// 用量指标
 		if( isDosage ) {
-			
+
 			// 定额
 			if( isIndex ) {
 
@@ -347,7 +347,7 @@ export default class KPIReport extends Component {
 		<div className={classnames('summary-item', {overproof: overproof})}>
 			<div className='summary-title'>{
 				label
-				/*isIndex ? 
+				/*isIndex ?
 					(currentYearDone ? I18N.Kpi.ActualSum : I18N.Kpi.PredictSum) :
 					(currentYearDone ? I18N.Kpi.ActualSaving : I18N.Kpi.PredictSaving)*/}</div>
 			{isIndex ?/*定额预测值*/
@@ -459,9 +459,9 @@ export default class KPIReport extends Component {
 				</div>
 				<div className='jazz-kpi-report-header'>
 					<div className='jazz-kpi-report-header-name'>{data.get('name')}</div>
-					<Toggle style={{width: 'auto'}} label={'移动端可见'} defaultToggled={data.get('MobileViewState')} onToggle={(e, val) => {
+					{isGroup && <Toggle style={{width: 'auto'}} label={'移动端可见'} defaultToggled={data.get('MobileViewState')} onToggle={(e, val) => {
 						SingleKPIAction.toggleMobileVisable(data.get('id'), idx, +val);
-					}}/>
+					}}/>}
 				</div>
 				<div className='jazz-kpi-report'>
 					<div className='jazz-kpi-report-chart'>
