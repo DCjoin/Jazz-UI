@@ -835,7 +835,7 @@ class TrialDialog extends Component {
 							isRequired regex={/^[a-zA-Z0-9_.-]+$/} errorMessage={I18N.Login.WrongEmail}
 							title={'邮箱（必填）'}
 							hintText={'请输入邮箱'}
-							style={{width: 230}}/>
+							style={{width: 240}}/>
 						<span style={{display: 'inline-block', width: 200, textAlign: 'right'}}>@schneider-electric.com</span>
 					</div>
 					<div className='jazz-trial-info-field'>
