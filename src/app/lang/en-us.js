@@ -377,6 +377,7 @@ I18N.Common.Button.Clear = 'Clear';
 I18N.Common.Button.ClearAll = 'Clear all';
 I18N.Common.Button.Send = 'Send';
 I18N.Common.Button.GoOn = 'Continue';
+I18N.Common.Button.Apply = '申请';
 I18N.Common.Button.Confirmed = 'OK';
 I18N.Common.Button.More = 'More';
 I18N.Common.Button.Setting = '配置';
