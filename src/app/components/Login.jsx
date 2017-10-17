@@ -801,12 +801,12 @@ class TrialDialog extends Component {
               Email: this.state.Email + '@schneider-electric.com'
             }});
 	        },
-	        label: I18N.Common.Button.GoOn
+	        label: I18N.Common.Button.Apply,
 	      },
 	      cancelProps = {
 	        key: 'cancel_email',
 	        onClick: this.props.onCancel,
-	        label: I18N.Common.Button.Cancel,
+	        label: I18N.Common.Button.Cancel2,
 	        style: {
 	        	marginLeft: 20
 	        }

@@ -17,7 +17,7 @@ export default class TrialLogin extends Component {
 		this.state = {
 			error: false
 		}
-		LoginAction.trialLogin(props.router.location.query, moment().add(2, 'hours').toDate());
+		LoginAction.trialLogin(props.router.location.query, moment().add(1, 'hours').toDate());
 		LoginStore.addChangeListener(this._onChange);
 	}
 	componentWillUnmount() {
@@ -40,7 +40,7 @@ export default class TrialLogin extends Component {
 			return null;
 		}
 		return (
-			<div style={{textAlign: 'center', marginTop: '40%'}}>链接失效</div>
+			<div style={{textAlign: 'center', marginTop: '40%'}}>链接已过期</div>
 		);
 	}
 }
