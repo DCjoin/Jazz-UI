@@ -40,7 +40,7 @@ export default class TrialLogin extends Component {
 			return null;
 		}
 		return (
-			<div style={{textAlign: 'center', marginTop: '40%'}}>链接已过期</div>
+			<div style={{textAlign: 'center', marginTop: 300}}>链接已过期</div>
 		);
 	}
 }
