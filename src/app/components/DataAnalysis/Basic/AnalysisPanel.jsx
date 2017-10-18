@@ -69,7 +69,7 @@ import PermissionCode from 'constants/PermissionCode.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 function isFullBasicAnalysis() {
-  return privilegeUtil.isFull(PermissionCode.BASIC_DATA_ANALYSE.READONLY, CurrentUserStore.getCurrentPrivilege());
+  return privilegeUtil.isFull(PermissionCode.BASIC_DATA_ANALYSE, CurrentUserStore.getCurrentPrivilege());
 }
 
 
@@ -984,7 +984,8 @@ class AnalysisPanel extends Component {
     // })
   }
   this.setState({
-    relativeDate:value
+    relativeDate:value,
+    energyData:null,
   },()=>{
     if(refresh){this._onSearchDataButtonClick()}
   })
@@ -1000,7 +1001,8 @@ class AnalysisPanel extends Component {
         })
       }else{
     this.setState({
-      relativeDate: 'Customerize'
+      relativeDate: 'Customerize',
+      energyData:null,
     },()=>{
       this._onSearchDataButtonClick()
     });
