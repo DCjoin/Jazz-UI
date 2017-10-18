@@ -1410,6 +1410,7 @@ class AnalysisPanel extends Component {
       Stack: 'stack',
       Pie: 'pie',
       DataTable: 'rawdata',
+      HeatMap:'heatmap',
       original: 'rawdata'
     };
 
