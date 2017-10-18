@@ -27,7 +27,7 @@ function SeniorDataAnalyseIsFull() {
 }
 
 function isFullBasicAnalysis() {
-  return privilegeUtil.isFull(PermissionCode.BASIC_DATA_ANALYSE.READONLY, CurrentUserStore.getCurrentPrivilege());
+  return privilegeUtil.isFull(PermissionCode.BASIC_DATA_ANALYSE, CurrentUserStore.getCurrentPrivilege());
 }
 
 export default class AuxiliaryFunction extends Component {
@@ -94,7 +94,7 @@ export default class AuxiliaryFunction extends Component {
     if(!this.props.hasTagData){
       return true
     }
-    if (chartType === "pie" || chartType === "rawdata"){
+    if (chartType === "pie" || chartType === "rawdata" || chartType==='heatmap'){
       return true
     }
     else {
@@ -136,7 +136,7 @@ export default class AuxiliaryFunction extends Component {
     if(!SeniorDataAnalyseIsFull()) return null;
     var chartType=this.props.selectedChartType;
 
-    var disabled=chartType === "pie" || chartType === "rawdata" || this.props.analysisPanel.state.step===0;
+    var disabled=chartType === "pie" || chartType === "rawdata" || chartType === "heatmap" || this.props.analysisPanel.state.step===0;
 
     return <WeatherButton taglist={this.props.weatherTag} disabled={disabled} step={this.props.analysisPanel.state.step}/>
   } 
@@ -163,7 +163,7 @@ export default class AuxiliaryFunction extends Component {
     if(!this.props.hasTagData){
       return true
     }
-    if (chartType === "rawdata"){
+    if (chartType === "rawdata" || chartType === "heatmap"){
       return true
     }
     return TagStore.getBaselineBtnDisabled()
