@@ -28,7 +28,7 @@ module.exports = {
 					data: res.body
 				});
 			}
-		});		
+		});
 	},
 	login: function(params) {
 		Ajax.post('/AccessControl/ValidateUser', {
@@ -122,8 +122,7 @@ module.exports = {
 	},
 
 	trialSubmit(info) {
-		// setTimeout(() =>{
-		Ajax.post('', {
+		Ajax.post('/user/trial', {
 			params: info,
 			success: function() {
 				AppDispatcher.dispatch({
@@ -132,8 +131,27 @@ module.exports = {
 			},
 			error: function(err, res) {
 			}
-		});		
-		// }, 1000);
-	}
+		});
+	},
+	trialLogin: function(params, expiresDate) {
+		Ajax.get('/user/triallogin', {
+			params: {...params},
+      commonErrorHandling: false,
+			success: (res) => {
+				AppDispatcher.dispatch({
+					type: Action.LOGIN_SUCCESS,
+					expiresDate: expiresDate,
+					data: res,
+				});
+			},
+			error: (err, res) => {
+				AppDispatcher.dispatch({
+					type: Action.LOGIN_ERROR,
+					data: res.body
+				});
+			},
+			commonErrorHandling: false,
+		});
+	},
 
 };

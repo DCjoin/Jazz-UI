@@ -51,9 +51,37 @@ function _trackPageview(apiPath) {
   }
 }
 
+const API_WHITE_LIST = [
+  '/common/setlanguage',
+  '/AccessControl/ValidateUser',
+  '/Common/ReqPwdReset',
+  '/Common/resetpwd',
+  '/user/trial',
+  '/user/triallogin',
+];
+
+function checkUserId(url, userId) {
+  if( userId ) {
+    return true;
+  }
+  for( let i = 0; i < API_WHITE_LIST.length; i++ ) {
+    if( new RegExp(API_WHITE_LIST[i]).test(url) ) {
+      return true;
+    }
+  }
+  return false;
+}
+
 var _ajax = function(url, options) {
 
   _trackPageview(url);
+  
+  if( !checkUserId(url, Util.getCookie('UserId')) ) {
+    setTimeout( () => {
+      AjaxAction.handleGlobalError(401)
+    }, 0 );
+    return false;
+  }
 
 	options = options || {};
   options.avoidDuplicate && options.tag && _abort(options.tag);

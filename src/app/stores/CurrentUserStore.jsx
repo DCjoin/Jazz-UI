@@ -153,15 +153,17 @@ var CurrentUserStore = assign({}, PrototypeStore, {
                     name: 'analysis',
                     getPath: RoutePath.dataAnalysis,
                     title: I18N.MainMenu.DataAnalysis
-                  },
-                  {
-                    name: 'inputData',
-                    getPath: RoutePath.inputData,
-                    title: I18N.MainMenu.InputData
-                  }
+                  },                  
                 ]
               }]
             }
+      if ( this.permit(PermissionCode.BASIC_DATA_ANALYSE.READONLY) ) {
+        _dataAnalysisMenu.children.push({
+          name: 'inputData',
+          getPath: RoutePath.inputData,
+          title: I18N.MainMenu.InputData
+        });
+      }
     }
     else {
       _dataAnalysisMenu={
@@ -206,10 +208,10 @@ var CurrentUserStore = assign({}, PrototypeStore, {
       );
     }
 
-// if ( this.permit(PermissionCode.SENIOR_DATA_ANALYSE.FULL) ||
-//           this.permit(PermissionCode.PUSH_SOLUTION.READONLY)  ||
-//           this.permit(PermissionCode.PUSH_SOLUTION.FULL) )
-    if ( this.permit(PermissionCode.PUSH_SOLUTION.READONLY)  ||
+if ( this.permit(PermissionCode.SOLUTION_FULL.FULL) ||
+          this.permit(PermissionCode.PUSH_SOLUTION.READONLY)  ||
+    //       this.permit(PermissionCode.PUSH_SOLUTION.FULL) )
+    // if ( this.permit(PermissionCode.PUSH_SOLUTION.READONLY)  ||
           this.permit(PermissionCode.PUSH_SOLUTION.FULL) ) {
       menuItems.push(
         {

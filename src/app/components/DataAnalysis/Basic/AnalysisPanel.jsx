@@ -65,6 +65,14 @@ const DIALOG_TYPE = {
 var ntLocation=null;
 
 
+import PermissionCode from 'constants/PermissionCode.jsx';
+import privilegeUtil from 'util/privilegeUtil.jsx';
+import CurrentUserStore from 'stores/CurrentUserStore.jsx';
+function isFullBasicAnalysis() {
+  return privilegeUtil.isFull(PermissionCode.BASIC_DATA_ANALYSE.READONLY, CurrentUserStore.getCurrentPrivilege());
+}
+
+
 class AnalysisPanel extends Component {
 
   static contextTypes = {
@@ -421,7 +429,7 @@ class AnalysisPanel extends Component {
     if( doned ) {
       doned();
     }
-    if(this.state.willLeave || WidgetStore.isUncheck()) {
+    if(!isFullBasicAnalysis() || this.state.willLeave || WidgetStore.isUncheck()) {
       sureLevalCallback();
       return;
     }
@@ -861,7 +869,7 @@ class AnalysisPanel extends Component {
 
     return(
       <div>
-        <IconButton iconClassName="icon-more"  style={styles.iconBtn} iconStyle={{fontSize:'14px'}} onTouchTap={handleTouchTap}/>
+        <IconButton disabled={!isFullBasicAnalysis()} iconClassName="icon-more"  style={styles.iconBtn} iconStyle={{fontSize:'14px'}} onTouchTap={handleTouchTap}/>
         <Popover
           open={this.state.operationMenuOpen}
           anchorEl={this.state.anchorEl}
@@ -913,7 +921,7 @@ class AnalysisPanel extends Component {
             />
           </div>
           {this.state.isViewName &&
-          <IconButton iconClassName='icon-edit' iconStyle={{fontSize:'20px'}} onClick={() => {
+          <IconButton disabled={!isFullBasicAnalysis()} iconClassName='icon-edit' iconStyle={{fontSize:'20px'}} onClick={() => {
             this.setState({
               isViewName: false
             });
@@ -921,7 +929,7 @@ class AnalysisPanel extends Component {
           <div className="description">{this.props.sourceUserName && `(${I18N.format(I18N.Folder.Detail.SubTitile,this.props.sourceUserName)})`}</div>
         </div>
         <div className="operation">
-          <NewFlatButton label={I18N.Common.Button.Save} disabled={!this.state.energyData} labelStyle={styles.label} secondary={true}
+          <NewFlatButton label={I18N.Common.Button.Save} disabled={!this.state.energyData || !isFullBasicAnalysis()} labelStyle={styles.label} secondary={true}
             icon={<FontIcon className="icon-save" style={styles.label}/>} style={styles.button}
             onClick={()=>{this._handleSave()}}/>
           {this.props.isBuilding && <GenerateSolutionButton preAction={{

@@ -26,6 +26,9 @@ function SeniorDataAnalyseIsFull() {
 	return privilegeWithSeniorDataAnalyse(privilegeUtil.isFull.bind(privilegeUtil));
 }
 
+function isFullBasicAnalysis() {
+  return privilegeUtil.isFull(PermissionCode.BASIC_DATA_ANALYSE.READONLY, CurrentUserStore.getCurrentPrivilege());
+}
 
 export default class AuxiliaryFunction extends Component {
 
@@ -149,7 +152,7 @@ export default class AuxiliaryFunction extends Component {
        <MenuItem primaryText={I18N.EM.Tool.DataStatistics} value='sum' disabled={disabled}/>
        {SeniorDataAnalyseIsFull() && <MenuItem primaryText={I18N.EM.Tool.IntervalStatistics} value='interval' disabled={disabled}/>}
          {calendarEl}
-      <MenuItem primaryText={I18N.EM.Tool.YaxisConfig} value='yaxis' disabled={disabled}/>
+      <MenuItem primaryText={I18N.EM.Tool.YaxisConfig} value='yaxis' disabled={disabled || !isFullBasicAnalysis()}/>
      </ButtonMenu>
       </div>
     )

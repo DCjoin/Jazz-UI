@@ -32,15 +32,15 @@ let LoginStore = assign({}, EventEmitter.prototype, {
     }
     return false;
   },
-  init: function(data, success) {
+  init: function(data, success, expiresDate) {
     if (success) {
       _lastError = null;
       CookieUtil.set('UserId', data.Id, {
-        expires: 365
+        expires: expiresDate || 365
       });
       if( data.Token ) {
         CookieUtil.set('AuthLoginToken', data.Token, {
-          expires: 365
+          expires: expiresDate || 365
         });
       }
       CookieUtil.set('SkipLogin', 'true');
@@ -145,7 +145,7 @@ let LoginStore = assign({}, EventEmitter.prototype, {
 LoginStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
     case LoginActionType.Action.LOGIN_SUCCESS:
-      LoginStore.init(action.data, true);
+      LoginStore.init(action.data, true, action.expiresDate);
       LoginStore.emitChange();
       break;
     case LoginActionType.Action.LOGIN_ERROR:

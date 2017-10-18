@@ -360,7 +360,7 @@ const SingleKPIAction = {
 
   toggleMobileVisable(kpiId, idx, val, isRank, rankType) {
     if( isRank ) {
-      Ajax.get(util.replacePathParams(Path.KPI.Rank,setMobileViewState, rankType, kpiId, val),
+      Ajax.get(util.replacePathParams(Path.KPI.Rank.setMobileViewState, rankType, kpiId, val),
         {
         success: function() {
           AppDispatcher.dispatch({

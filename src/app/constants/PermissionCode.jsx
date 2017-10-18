@@ -111,6 +111,7 @@ const PermissionCode = function() {
 
 	BASIC_DATA_ANALYSE: {
 		getLabel: () => I18N.Privilege.Role.BasicDataAnalyse,
+		READONLY: 1312,
 		FULL: 1313,
 	},
 
