@@ -248,7 +248,7 @@ export default class ChartComponent extends Component {
           flex: 1,
           display: 'flex',
           flexDirection: 'column',
-          marginBottom: '20px',
+          paddingBottom: '20px',
           overflow: 'hidden',
           borderRadius: '5px'
         }}>

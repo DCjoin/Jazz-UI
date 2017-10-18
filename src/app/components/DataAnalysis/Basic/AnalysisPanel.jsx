@@ -54,6 +54,7 @@ import Remark from './Remark.jsx';
 import WeatherStore from 'stores/DataAnalysis/weather_store.jsx';
 import WeatherAction from 'actions/DataAnalysis/weather_action.jsx';
 import IntervalStatisticAction from 'actions/DataAnalysis/interval_statistic_action.jsx';
+import {Step,DataUsageType} from 'constants/ChartConstants.jsx';
 
 const DIALOG_TYPE = {
   SWITCH_WIDGET: "switchwidget",
@@ -98,6 +99,8 @@ class AnalysisPanel extends Component {
     this._handleSave  = this._handleSave.bind(this);
     this._onChartTypeChanged  = this._onChartTypeChanged.bind(this);
     this._onWeatherTagChanged=this._onWeatherTagChanged.bind(this);
+    this.checkMultiTag=this.checkMultiTag.bind(this);
+    
   }
 
   state={
@@ -124,7 +127,8 @@ class AnalysisPanel extends Component {
       dimId:null,
       tagId:null,
       isViewName: true,
-      weatherTagList:WeatherStore.getTagList()
+      weatherTagList:WeatherStore.getTagList(),
+      muliTagTipShow:false
   }
 
   isMultiTime=false;
@@ -133,6 +137,11 @@ class AnalysisPanel extends Component {
     this.setState({
       isViewName: true
     });
+  }
+
+  //for heatmap
+  checkMultiTag(){
+    return AlarmTagStore.getSearchTagList() && AlarmTagStore.getSearchTagList().length>1
   }
 
   getInitTimeRanges(){
@@ -149,8 +158,8 @@ class AnalysisPanel extends Component {
     });
   }
 
-  energyDataLoad(timeRanges, step, tagOptions, relativeDate, weatherOption) {
-    EnergyAction.getEnergyTrendChartData(timeRanges, step, tagOptions, relativeDate, weatherOption, this.props.widgetDto.Id);
+  energyDataLoad(timeRanges, step, tagOptions, relativeDate, weatherOption,dataUsageType=1) {
+    EnergyAction.getEnergyTrendChartData(timeRanges, step, tagOptions, relativeDate, weatherOption, this.props.widgetDto.Id,dataUsageType);
   }
 
   pieEnergyDataLoad(timeRanges, step, tagOptions, relativeDate) {
@@ -167,6 +176,7 @@ class AnalysisPanel extends Component {
     case 'line':
     case 'column':
     case 'stack':
+    case 'heatmap':
       EnergyStore.initReaderStrategy('EnergyTrendReader');
       break;
     case 'pie':
@@ -290,6 +300,15 @@ class AnalysisPanel extends Component {
               MultiTimespanAction.clearMultiTimespan('both');
               let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
               this.getEnergyRawData(timeRanges, 0, nodeOptions, relativeDateValue);
+            }else if(chartType==='heatmap'){
+                this.setState({
+                    step: Step.Hour,//heatmap 小时步长
+                    isCalendarInited: false,
+                  },()=>{
+                    MultiTimespanAction.clearMultiTimespan('both');
+                    let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
+                    this.energyDataLoad(timeRanges, Step.Hourly, nodeOptions, relativeDateValue,null,DataUsageType.HeatMap);
+                  });
             }
           }
       }
@@ -315,7 +334,14 @@ class AnalysisPanel extends Component {
     this.setState({
       errorObj:null
     },()=>{
-      this._onSearchDataButtonClick();
+      if(this.state.selectedChartType==='heatmap' && this.checkMultiTag()){
+        this.setState({
+          multiTagTipShow:true
+        })
+      }else{
+        this._onSearchDataButtonClick();
+      }
+      
     })
 
   }
@@ -504,7 +530,7 @@ class AnalysisPanel extends Component {
   });
   return {
     stepBtnList: btns,
-    errorMessage: I18N.format(I18N.EM.StepError, msg1.join(','))
+    errorMessage: this.state.selectedChartType==='heatmap'?I18N.format(I18N.EM.StepErrorForHeatMap, msg1.join(',')):I18N.format(I18N.EM.StepError, msg1.join(','))
   };
   }
 
@@ -929,7 +955,12 @@ class AnalysisPanel extends Component {
   _onRelativeDateChange(e, selectedIndex, value,refresh=true) {
     let dateSelector = this.refs.subToolBar.refs.dateTimeSelector;
 
-    if (this.state.selectedChartType === 'rawdata' && value !== 'Customerize' && value !== 'Last7Day' && value !== 'Today' && value !== 'Yesterday' && value !== 'ThisWeek' && value !== 'LastWeek') {
+    if(this.state.selectedChartType==='heatmap' && this.checkMultiTag()){
+        this.setState({
+          multiTagTipShow:true
+        })
+      }else{
+              if (this.state.selectedChartType === 'rawdata' && value !== 'Customerize' && value !== 'Last7Day' && value !== 'Today' && value !== 'Yesterday' && value !== 'ThisWeek' && value !== 'LastWeek') {
       var timeregion = CommonFuns.GetDateRegion(value.toLowerCase());
       dateSelector.setDateField(timeregion.start, timeregion.end);
     FolderAction.setDisplayDialog('errornotice', null, I18N.EM.RawData.ErrorForEnergy);
@@ -949,20 +980,28 @@ class AnalysisPanel extends Component {
   },()=>{
     if(refresh){this._onSearchDataButtonClick()}
   })
+      }
+
 
   }
 
   _onDateSelectorChanged() {
+    if(this.state.selectedChartType==='heatmap' && this.checkMultiTag()){
+        this.setState({
+          multiTagTipShow:true
+        })
+      }else{
     this.setState({
       relativeDate: 'Customerize'
     },()=>{
       this._onSearchDataButtonClick()
     });
+      }
 
   }
 
   canShareDataWith(curChartType, nextChartType) {
-    if ((curChartType === 'line' || curChartType === 'column' || curChartType === 'stack' || curChartType === 'heatmap') && (nextChartType === 'line' || nextChartType === 'column' || nextChartType === 'stack' || nextChartType === 'heatmap')) {
+    if ((curChartType === 'line' || curChartType === 'column' || curChartType === 'stack') && (nextChartType === 'line' || nextChartType === 'column' || nextChartType === 'stack')) {
       return true;
     } else {
       return false;
@@ -1025,6 +1064,10 @@ class AnalysisPanel extends Component {
     this._onSearchBtnItemTouchTap(value)
   }
 
+  _heatMapValid(){
+    return this.isMultiTime || AlarmTagStore.getSearchTagList().length>1
+  }
+
   getChartTypeIconMenu(disabled) {
   let iconStyle = {
       fontSize: '16px'
@@ -1052,7 +1095,7 @@ class AnalysisPanel extends Component {
     <MenuItem primaryText={I18N.EM.CharType.Stack} value="stack" leftIcon={stackIcon}/>
     <MenuItem primaryText={I18N.EM.CharType.Pie} value="pie" leftIcon={pieIcon}/>
     <MenuItem primaryText={I18N.EM.CharType.GridTable} value="rawdata" leftIcon={rawdataIcon}/>
-    <MenuItem primaryText={I18N.EM.CharType.HeatMap} value="heatmap" leftIcon={heatmapIcon}/>
+    <MenuItem primaryText={I18N.EM.CharType.HeatMap} value="heatmap" disabled={this._heatMapValid()} leftIcon={heatmapIcon}/>
   </DropDownMenu>
   )
   }
@@ -1274,6 +1317,20 @@ class AnalysisPanel extends Component {
       </NewDialog>
     )
   }
+
+  _renderMultiTagTip(){
+    return(
+          <NewDialog
+          open={true}
+          modal={false}
+          isOutsideClose={false}
+          onRequestClose={()=>{this.setState({multiTagTipShow:false})}}>
+          {I18N.Setting.DataAnalysis.NotSupportMultiTagsForHeatMap}
+        </NewDialog>
+    )
+
+  }
+
   getInitParam(analysisPanel) {
     let date = new Date();
     date.setHours(0, 0, 0);
@@ -1541,7 +1598,7 @@ class AnalysisPanel extends Component {
       }
     }
     if (this.state.errorObj) {
-      errorDialog = <ErrorStepDialog {...this.state.errorObj} onErrorDialogAction={this._onErrorDialogAction}></ErrorStepDialog>;
+      errorDialog = <ErrorStepDialog {...this.state.errorObj} chartType={this.state.selectedChartType} onErrorDialogAction={this._onErrorDialogAction}></ErrorStepDialog>;
       }
     return(
       <div className="jazz-analysis-panel">
@@ -1565,6 +1622,7 @@ class AnalysisPanel extends Component {
         {this._renderDialog()}
         {this.state.showLeaveDialog && this._renderLeaveDialog()}
         {this.state.showSaveDialog && this._renderSaveDialog()}
+        {this.state.multiTagTipShow && this._renderMultiTagTip()}
       </div>
     )
   }

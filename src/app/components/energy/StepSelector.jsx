@@ -120,8 +120,12 @@ let StepSelector = React.createClass({
         } else {
           obj.selected = false;
         }
-
-        obj.disabled=this.props.disabled;
+        if(this.props.chartType==='heatmap'){
+          obj.disabled=stepItem.step!==1;
+        }else{
+          obj.disabled=this.props.disabled;
+        }
+        
         stepElementList.push(<StepItem {...obj} onStepChange={me._onStepChange}></StepItem>);
       }
     }
