@@ -74,6 +74,9 @@ export default class HeatMap extends Component {
         tickInterval:1,
       },
        yAxis: { 
+        title:{
+          text:null
+        },
         labels: {
             formatter:function(){              
               if(endDate - startDate > 31*24*60*60*1000){
