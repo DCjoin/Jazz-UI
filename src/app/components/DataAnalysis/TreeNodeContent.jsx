@@ -100,7 +100,7 @@ import PermissionCode from 'constants/PermissionCode.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 function isFullBasicAnalysis() {
-  return privilegeUtil.isFull(PermissionCode.BASIC_DATA_ANALYSE.READONLY, CurrentUserStore.getCurrentPrivilege());
+  return privilegeUtil.isFull(PermissionCode.BASIC_DATA_ANALYSE, CurrentUserStore.getCurrentPrivilege());
 }
 var TreeNodeContent = React.createClass({
 

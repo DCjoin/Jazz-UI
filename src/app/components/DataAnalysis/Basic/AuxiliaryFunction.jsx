@@ -27,7 +27,7 @@ function SeniorDataAnalyseIsFull() {
 }
 
 function isFullBasicAnalysis() {
-  return privilegeUtil.isFull(PermissionCode.BASIC_DATA_ANALYSE.READONLY, CurrentUserStore.getCurrentPrivilege());
+  return privilegeUtil.isFull(PermissionCode.BASIC_DATA_ANALYSE, CurrentUserStore.getCurrentPrivilege());
 }
 
 export default class AuxiliaryFunction extends Component {
