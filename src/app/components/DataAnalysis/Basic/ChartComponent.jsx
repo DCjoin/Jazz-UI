@@ -9,6 +9,7 @@ import {dateAdd} from 'util/Util.jsx';
 import MultipleTimespanStore from 'stores/Energy/MultipleTimespanStore.jsx';
 import EnergyAction from 'actions/EnergyAction.jsx';
 import GridComponent from '../../energy/GridComponent.jsx';
+import HeatMap from './heat_map.jsx';
 
 var analysisPanel=null;
 export default class ChartComponent extends Component {
@@ -237,7 +238,27 @@ export default class ChartComponent extends Component {
 
 
               </div>;
-            } else {
+            } else if (chartType === 'heatmap') {
+      let properties = {
+        ref: 'chart',
+        energyData: analysisPanel.state.energyRawData,
+        AnalysisPanel: analysisPanel
+      };
+      energyPart = <div style={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          paddingBottom: '20px',
+          overflow: 'hidden',
+          borderRadius: '5px'
+        }}>
+
+                  <HeatMap {...properties}></HeatMap>
+
+
+              </div>;
+            }
+            else {
               let chartCmpObj = {
                 ref: 'chart',
                 bizType: 'Energy',

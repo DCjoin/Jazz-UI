@@ -35,7 +35,7 @@ import WeatherAction from 'actions/DataAnalysis/weather_action.jsx';
 
 
 function isFullBasicAnalysis() {
-	return PrivilegeUtil.isFull(PermissionCode.BASIC_DATA_ANALYSE.READONLY, CurrentUserStore.getCurrentPrivilege());
+	return PrivilegeUtil.isFull(PermissionCode.BASIC_DATA_ANALYSE, CurrentUserStore.getCurrentPrivilege());
 }
 
 function isWidget(node) {

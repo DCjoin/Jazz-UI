@@ -16,7 +16,7 @@ export default class ChartSubToolbar extends Component {
     if(!this.props.hasTagData){
       return false
     }
-    if (chartType === "line" || chartType === "column" || chartType === "stack"){
+    if (chartType === "line" || chartType === "column" || chartType === "stack" || chartType==='heatmap'){
       return true
     }
     else {
@@ -50,7 +50,7 @@ export default class ChartSubToolbar extends Component {
 
        <DateTimeSelector ref='dateTimeSelector' endLeft='-100px' _onDateSelectorChanged={this.props.onDateSelectorChanged} showTime={true}/>
 
-        {this.props.timeRanges && <StepSelector disabled={!this.getConfigBtnStatus()} stepValue={this.props.step} onStepChange={this.props.onStepChange} timeRanges={this.props.timeRanges}/>}
+        {this.props.timeRanges && <StepSelector disabled={!this.getConfigBtnStatus()} chartType={this.props.selectedChartType} stepValue={this.props.step} onStepChange={this.props.onStepChange} timeRanges={this.props.timeRanges}/>}
        </div>
         </div>
     )

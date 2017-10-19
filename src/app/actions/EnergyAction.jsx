@@ -63,14 +63,14 @@ let EnergyAction = {
       }
     });
   },
-  getEnergyTrendChartData(date, step, tagOptions, relativeDate, weatherOption, widgetId) {
+  getEnergyTrendChartData(date, step, tagOptions, relativeDate, weatherOption, widgetId,dataUsageType) {
     var timeRange = date;
 
     var tagIds = getTagIdsFromTagOptions(tagOptions);
     var submitParams = {
       tagIds: tagIds,
       viewOption: {
-        DataUsageType: 1,
+        DataUsageType: dataUsageType,
         IncludeNavigatorData: true,
         Step: step,
         TimeRanges: timeRange

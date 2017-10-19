@@ -37,6 +37,14 @@ let ErrorStepDialog = React.createClass({
     let stepBtnList = this.props.stepBtnList;
     let _buttonActions = [];
     let me = this;
+    if(this.props.chartType==='heatmap'){
+      _buttonActions.push(
+        <FlatButton
+      label={I18N.Common.Button.Confirm}
+      primary={true}
+      onClick={me._onAction.bind(me, 'cancel')} />
+      )
+    }else{
     stepBtnList.forEach(stepObj => {
       _buttonActions.push(<FlatButton secondary={true} onClick={me._onAction.bind(me, stepObj.code)}
       label = {I18N.EM['Use' + stepObj.text]} />
@@ -48,6 +56,8 @@ let ErrorStepDialog = React.createClass({
       primary={true}
       onClick={me._onAction.bind(me, 'cancel')} />
     );
+    }
+
 
     var dialog = <Dialog contentStyle={{
       width: '400px'
