@@ -568,7 +568,7 @@ var MainAppBar = React.createClass({
     return (<NewDialog actions={actions} open={DIALOG_TYPE.MODIIFY_INFO === this.state.dialogType} title={I18N.Platform.User.EditPersonalInfo} modal={true} >
       <ul className={classnames("pop-userprofile-edit", 'jazz-userprofile-edit')}>
           <li>
-              <ViewableTextField didChanged={this._bindMergeTemp("RealName")} maxLen={200} ref="name" isViewStatus={false} title={I18N.Platform.User.ShowName} defaultValue={user.RealName} />
+              <ViewableTextField style={{marginTop: 20}} didChanged={this._bindMergeTemp("RealName")} maxLen={200} ref="name" isViewStatus={false} title={I18N.Platform.User.ShowName} defaultValue={user.RealName} />
           </li>
           <li style={{
         paddingTop: 5
@@ -579,7 +579,7 @@ var MainAppBar = React.createClass({
       }} {...titleProps} />
           </li>
           {isSuperAdmin ? null : <li>
-                        <ViewableTextField
+                        <ViewableTextField style={{marginTop: 20}}
         regexFn={() => {
           return this.state.customError && I18N.Message.M12111;
         }}
@@ -587,7 +587,7 @@ var MainAppBar = React.createClass({
                     </li>}
 
           <li>
-              <ViewableTextField didChanged={this._bindMergeTemp("Email")} maxLen={254} ref="email" errorMessage={I18N.Platform.User.EmailError} regex={Regex.Email} isViewStatus={false} title={I18N.Platform.User.Email} defaultValue={user.Email} />
+              <ViewableTextField style={{marginTop: 20}} didChanged={this._bindMergeTemp("Email")} maxLen={254} ref="email" errorMessage={I18N.Platform.User.EmailError} regex={Regex.Email} isViewStatus={false} title={I18N.Platform.User.Email} defaultValue={user.Email} />
           </li>
       </ul>
   </NewDialog>);
@@ -699,7 +699,7 @@ var MainAppBar = React.createClass({
         paddingRight:'3px'
       };
     var logo = (!!this.props.logoUrl)
-      ? <BackgroundImage style={{height: 40, width: 120}} 
+      ? <BackgroundImage style={{height: 40, width: 120}}
           url={this.props.logoUrl}
           onClick={this._showCustomerList}/>
       : null;
