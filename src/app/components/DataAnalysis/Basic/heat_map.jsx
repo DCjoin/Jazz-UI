@@ -147,7 +147,7 @@ export default class HeatMap extends Component {
   render(){
   var {startDate,endDate}=this.props;
       return(
-          <Highcharts ref="highstock" options={this.getConfigObj(startDate,endDate)} afterChartCreated={this.props.afterChartCreated?this.props.afterChartCreated:()=>{}}></Highcharts>
+          <Highcharts ref="highstock" className="heatmap" options={this.getConfigObj(startDate,endDate)} afterChartCreated={this.props.afterChartCreated?this.props.afterChartCreated:()=>{}}></Highcharts>
       )
   }
 
