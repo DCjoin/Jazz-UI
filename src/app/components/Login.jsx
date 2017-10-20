@@ -17,6 +17,9 @@ import ViewableTextField from 'controls/ViewableTextField.jsx';
 import CurrentUserAction from 'actions/CurrentUserAction.jsx';
 import LoginAction from 'actions/LoginActionCreator.jsx';
 import LoginStore from 'stores/LoginStore.jsx';
+
+const CAN_TRIAL_SP_NAME = ['dev', 'sp1', 'www'];
+
 var w = window;
 var d = document;
 
@@ -477,9 +480,9 @@ export default class NewLogin extends Component {
 				<header id='login-header'>
 					<img style={{height: 33, width: 266, marginTop: 20, marginLeft: 30}} src={require('../less/images/logo.png')} />
 					<div id='login-header-actions'>
-						<a href="javascript:void(0)" style={{marginRight: 50, color: '#fff'}} onClick={() => {
+						{CAN_TRIAL_SP_NAME.indexOf(document.location.host.split('.')[0]) > -1 && <a href="javascript:void(0)" style={{marginRight: 50, color: '#fff'}} onClick={() => {
 							this.setState((state, props) => {return {showTrialDialog: true}});
-						}}>{'申请试用'}</a>
+						}}>{'申请试用'}</a>}
 						<a className='jazz-mobile-qr-link' href="javascript:void(0)">
 							{I18N.Login.APP}
 							<div className='jazz-mobile-qr'>
