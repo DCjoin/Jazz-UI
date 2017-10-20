@@ -1036,7 +1036,12 @@ class AnalysisPanel extends Component {
           // energyData: null
         });
       } else { //if(nextChartType === 'pie'){
-      ChartStatusAction.clearStatus();
+      if(nextChartType==='heatmap'){
+        ChartStatusAction.modifyChartType(nextChartType);
+      }else{
+        ChartStatusAction.clearStatus();
+      }
+      
       this.setState({
         selectedChartType: nextChartType,
         energyData: null

@@ -87,8 +87,12 @@ export default class HeatMap extends Component {
             }
         },
         tickInterval:endDate - startDate >= 365*24*60*60*1000?2*31*24*60*60*1000:null,
+        startOnTick: false,
+        minPadding: 0,
+        maxPadding: 0,
+        endOnTick: false,
         min:formatYaxisDate(moment(startDate)),
-        max:formatYaxisDate(moment(endDate)),
+        max:moment(endDate).hours()===0?formatYaxisDate(moment(endDate).add(-1,'m')):formatYaxisDate(moment(endDate)),
       }, 
       colorAxis: {
         className:'heatmap-color-axis',

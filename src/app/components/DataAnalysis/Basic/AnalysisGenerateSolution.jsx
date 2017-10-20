@@ -126,7 +126,7 @@ export default class AnalysisGenerateSolution extends Component {
     let nodeId = getId(node),
 		{tagDatas, widgetStatuss, widgetSeriesArrays, contentSyntaxs} = this.state;
     if(!tagDatas[nodeId]) return null
-    if(getChartTypeStr(widgetSeriesArrays[nodeId])==='heatmap'){
+    if(getChartTypeStr(widgetSeriesArrays[nodeId].getIn([0]))==='heatmap'){
       var  startDate = CommonFuns.DataConverter.JsonToDateTime(tagDatas[nodeId].getIn(['TargetEnergyData',0,'Target','TimeSpan','StartTime']), true),
            endDate = CommonFuns.DataConverter.JsonToDateTime(tagDatas[nodeId].getIn(['TargetEnergyData',0,'Target','TimeSpan','EndTime']), true);
 
