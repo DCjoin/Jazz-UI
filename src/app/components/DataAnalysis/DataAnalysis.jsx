@@ -347,10 +347,11 @@ export default class DataAnalysis extends Component {
 		});
 	}
 
-	_onOpenGenerateSolution(data) {
+	_onOpenGenerateSolution(analysis,data) {
 		this.setState({
 			generateSolutionDialogObj: {...{
-				open: true
+				open: true,
+				analysis:analysis,
 			}, ...data}
 		});
 	}
@@ -431,9 +432,10 @@ export default class DataAnalysis extends Component {
 				break;
 		}
 		if(generateSolutionDialogObj && generateSolutionDialogObj.open) {
-			let {open, preAction, nodes} = generateSolutionDialogObj;
+			let {open, preAction, nodes,analysis} = generateSolutionDialogObj;
 			if(open) {
 				dialog = (<AnalysisGenerateSolution
+				analysis={analysis}
 					nodes={nodes}
 					preAction={preAction}
 					onRequestClose={() => {

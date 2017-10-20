@@ -118,6 +118,7 @@ function getStrategyByChartType(chartType) {
     case 'line':
     case 'column':
     case 'stack':
+    case 'heatmap':
       return 'EnergyTrendReader';
       break;
     case 'pie':
