@@ -141,18 +141,17 @@ export default class HeatMap extends Component {
   }
 
   render(){
-    var dateSelector=this.props.AnalysisPanel.refs.subToolBar.refs.dateTimeSelector;
-              var dateRange = dateSelector.getDateTime(),
-                  startDate = dateRange.start,
-                  endDate = dateRange.end;
+  var {startDate,endDate}=this.props;
       return(
-          <Highcharts ref="highstock" options={this.getConfigObj(startDate,endDate)}></Highcharts>
+          <Highcharts ref="highstock" options={this.getConfigObj(startDate,endDate)} afterChartCreated={this.props.afterChartCreated?this.props.afterChartCreated:()=>{}}></Highcharts>
       )
   }
 
 }
 
 HeatMap.propTypes = {
-  AnalysisPanel:React.PropTypes.object,
+  // AnalysisPanel:React.PropTypes.object,
+  startDate:React.PropTypes.number,
+  endDate:React.PropTypes.number,
 	energyData:React.PropTypes.object,
 };

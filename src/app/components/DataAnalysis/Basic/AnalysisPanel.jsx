@@ -945,9 +945,10 @@ class AnalysisPanel extends Component {
               addListener: FolderStore.addSelectedNodeListener.bind(FolderStore),
               removeListener: FolderStore.removeSelectedNodeListener.bind(FolderStore),
             }}
-            onOpen={this.props.onOpenGenerateSolution}
+            onOpen={(data)=>{this.props.onOpenGenerateSolution(this,data)}}
             nodes={[this.props.selectedNode]}
-            disabled={!this.state.energyData || this.state.selectedChartType === 'rawdata'}/>}
+            disabled={!this.state.energyData || this.state.selectedChartType === 'rawdata'}
+           />}
           {this._renderMoreOperation()}
       </div>
       </div>

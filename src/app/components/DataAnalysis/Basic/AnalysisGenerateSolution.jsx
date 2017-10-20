@@ -2,9 +2,10 @@ import React, { Component, PropTypes } from 'react';
 import {GenerateSolution, getTagsByChartData} from './GenerateSolution.jsx';
 import ChartBasicComponent from './ChartBasicComponent.jsx';
 import {flowRight, curryRight} from 'lodash-es';
-
+import CommonFuns from 'util/Util.jsx';
 import FolderAction from 'actions/FolderAction.jsx';
 import FolderStore from 'stores/FolderStore.jsx';
+import HeatMap from './heat_map.jsx';
 
 function getFromImmu(key) {
 	return function(immuObj) {
@@ -21,7 +22,7 @@ function getTagsDataByNode(props) {
 
 function getChartTypeStr(data) {
 	let chartType = 'line';
-	switch (data.get('ChartType')) {
+	switch (parseInt(data.get('ChartType'))) {
 		case 1:
 			chartType = 'line';
 			break;
@@ -36,6 +37,9 @@ function getChartTypeStr(data) {
 			break;
 		case 5:
 			chartType = 'rawdata';
+			break;
+    case 7:
+			chartType = 'heatmap';
 			break;
 	}
 	// switch (chartType) {
@@ -118,9 +122,28 @@ export default class AnalysisGenerateSolution extends Component {
     });
   }
   _renderChart(node,afterChartCreated){
+    let me=this;
     let nodeId = getId(node),
 		{tagDatas, widgetStatuss, widgetSeriesArrays, contentSyntaxs} = this.state;
     if(!tagDatas[nodeId]) return null
+    if(getChartTypeStr(widgetSeriesArrays[nodeId])==='heatmap'){
+      var  startDate = CommonFuns.DataConverter.JsonToDateTime(tagDatas[nodeId].getIn(['TargetEnergyData',0,'Target','TimeSpan','StartTime']), true),
+           endDate = CommonFuns.DataConverter.JsonToDateTime(tagDatas[nodeId].getIn(['TargetEnergyData',0,'Target','TimeSpan','EndTime']), true);
+
+
+
+      let properties = {
+        ref: 'chart',
+        energyData: me.props.analysis?me.props.analysis.state.energyRawData:tagDatas[nodeId].toJS(),
+        startDate,endDate,
+        afterChartCreated:function() {
+          return afterChartCreated.apply(this, [getTagsByChartData(tagDatas[nodeId])].concat(arguments));
+        }
+      };
+      return(
+        <HeatMap {...properties}></HeatMap>
+      )
+    }else{
     return(
       <ChartBasicComponent
         afterChartCreated={function() {
@@ -135,6 +158,8 @@ export default class AnalysisGenerateSolution extends Component {
         contentSyntax={contentSyntaxs[nodeId]}
         chartType={getChartTypeStr(node)}/>
     )
+    }
+
   }
   render(){
     return(
