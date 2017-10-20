@@ -125,6 +125,9 @@ var FromEndTime = React.createClass({
       style: {
         width: '100px'
       },
+      labelStyle:{
+        paddingRight:0
+      },
       didChanged: me._onTimeChange.bind(null, 'startTime')
     };
     var endTimeProps = {
@@ -136,6 +139,9 @@ var FromEndTime = React.createClass({
       textField: 'text',
       style: {
         width: '100px'
+      },
+      labelStyle:{
+        paddingRight:0
       },
       didChanged: me._onTimeChange.bind(null, 'endTime')
     };

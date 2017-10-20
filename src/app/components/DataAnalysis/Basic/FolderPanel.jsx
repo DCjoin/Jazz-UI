@@ -96,7 +96,7 @@ export default class FolderPanel extends Component {
 				onItemTouchTap: this._onMenuSelect(node),
 		    };
 			action = (<div>
-				{this.props.isBuilding && <GenerateSolutionButton onOpen={this.props.onOpenGenerateSolution} nodes={flat(node)} disabled={flat(node).length===0 || !isFullBasicAnalysis()}/>}
+				{this.props.isBuilding && <GenerateSolutionButton onOpen={(data)=>{this.props.onOpenGenerateSolution(null,data)}} nodes={flat(node)} disabled={flat(node).length===0 || !isFullBasicAnalysis()}/>}
 				{this._renderMenu(node, iconMenuProps)}
 			</div>)
 		}

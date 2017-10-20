@@ -37,6 +37,7 @@ const PRIVILEGE_ADMIN = [
   PermissionCode.CUSTOM_LABELING.FULL,
   // PermissionCode.BASELINE_CONFIG.FULL,
   PermissionCode.INDEX_AND_REPORT.FULL,
+  PermissionCode.BASIC_DATA_ANALYSE.FULL,
   PermissionCode.SENIOR_DATA_ANALYSE.FULL,
   PermissionCode.BUILDING_LIST.FULL,
   PermissionCode.PUSH_SOLUTION.FULL,

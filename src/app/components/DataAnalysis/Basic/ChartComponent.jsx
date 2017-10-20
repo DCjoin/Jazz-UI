@@ -239,10 +239,14 @@ export default class ChartComponent extends Component {
 
               </div>;
             } else if (chartType === 'heatmap') {
+                  var dateSelector=analysisPanel.refs.subToolBar.refs.dateTimeSelector;
+              var dateRange = dateSelector.getDateTime(),
+                  startDate = dateRange.start,
+                  endDate = dateRange.end;
       let properties = {
         ref: 'chart',
         energyData: analysisPanel.state.energyRawData,
-        AnalysisPanel: analysisPanel
+        startDate,endDate
       };
       energyPart = <div style={{
           flex: 1,

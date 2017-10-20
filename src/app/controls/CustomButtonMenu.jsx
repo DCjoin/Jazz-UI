@@ -66,7 +66,7 @@ export default class CustomButtonMenu extends Component {
       marginRight: '10px',
       marginLeft: '-5px'
     }}
-    hoverColor='yellow'/>
+    />
                     </RaisedButton>;
     return (
       <div className='jazz-custom-dropdown-menu' style={{

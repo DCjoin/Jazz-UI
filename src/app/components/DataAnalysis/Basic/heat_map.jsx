@@ -87,8 +87,12 @@ export default class HeatMap extends Component {
             }
         },
         tickInterval:endDate - startDate >= 365*24*60*60*1000?2*31*24*60*60*1000:null,
+        startOnTick: false,
+        minPadding: 0,
+        maxPadding: 0,
+        endOnTick: false,
         min:formatYaxisDate(moment(startDate)),
-        max:formatYaxisDate(moment(endDate)),
+        max:moment(endDate).hours()===0?formatYaxisDate(moment(endDate).add(-1,'m')):formatYaxisDate(moment(endDate)),
       }, 
       colorAxis: {
         className:'heatmap-color-axis',
@@ -141,18 +145,17 @@ export default class HeatMap extends Component {
   }
 
   render(){
-    var dateSelector=this.props.AnalysisPanel.refs.subToolBar.refs.dateTimeSelector;
-              var dateRange = dateSelector.getDateTime(),
-                  startDate = dateRange.start,
-                  endDate = dateRange.end;
+  var {startDate,endDate}=this.props;
       return(
-          <Highcharts ref="highstock" options={this.getConfigObj(startDate,endDate)}></Highcharts>
+          <Highcharts ref="highstock" className="heatmap" options={this.getConfigObj(startDate,endDate)} afterChartCreated={this.props.afterChartCreated?this.props.afterChartCreated:()=>{}}></Highcharts>
       )
   }
 
 }
 
 HeatMap.propTypes = {
-  AnalysisPanel:React.PropTypes.object,
+  // AnalysisPanel:React.PropTypes.object,
+  startDate:React.PropTypes.number,
+  endDate:React.PropTypes.number,
 	energyData:React.PropTypes.object,
 };
