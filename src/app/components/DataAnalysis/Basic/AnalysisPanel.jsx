@@ -108,7 +108,7 @@ class AnalysisPanel extends Component {
     this._onChartTypeChanged  = this._onChartTypeChanged.bind(this);
     this._onWeatherTagChanged=this._onWeatherTagChanged.bind(this);
     this.checkMultiTag=this.checkMultiTag.bind(this);
-    
+
   }
 
   state={
@@ -349,7 +349,7 @@ class AnalysisPanel extends Component {
       }else{
         this._onSearchDataButtonClick();
       }
-      
+
     })
 
   }
@@ -587,7 +587,7 @@ class AnalysisPanel extends Component {
   }
 
   getCurrentWidgetDto(){
-    
+
     // if( !EnergyStore.getParamsObj() ) {
     //   return ;
     // }
@@ -1041,7 +1041,7 @@ class AnalysisPanel extends Component {
       }else{
         ChartStatusAction.clearStatus();
       }
-      
+
       this.setState({
         selectedChartType: nextChartType,
         energyData: null
@@ -1467,7 +1467,7 @@ class AnalysisPanel extends Component {
     //   Immutable.fromJS(this.getCurrentWidgetDto()),
     //   DataAnalysisStore.getInitialWidgetDto()
     // ));
-    if(this.props.isNew && AlarmTagStore.getSearchTagList().length===0){
+    if(!isFullBasicAnalysis() || this.props.isNew && AlarmTagStore.getSearchTagList().length===0){
       return true
     }
     if(Immutable.is(
@@ -1543,7 +1543,7 @@ class AnalysisPanel extends Component {
     AlarmTagStore.addChangeListener(this._onTagChanged);
     FolderStore.addCheckWidgetUpdateChangeListener(this._onCheckWidgetUpdate);
     WeatherStore.addChangeListener(this._onWeatherTagChanged);
-    
+
     if(!this.props.isNew){
       this._initChartPanelByWidgetDto();
     }
@@ -1583,7 +1583,7 @@ class AnalysisPanel extends Component {
     AlarmTagStore.removeChangeListener(this._onTagChanged);
     FolderStore.removeCheckWidgetUpdateChangeListener(this._onCheckWidgetUpdate);
     WeatherStore.removeChangeListener(this._onWeatherTagChanged);
-    
+
     this.resetCalendarType();
     // TagAction.clearAlarmSearchTagList();
     TagAction.setCurrentHierarchyId(null);
