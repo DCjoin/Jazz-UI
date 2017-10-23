@@ -134,6 +134,7 @@ export default class AnalysisGenerateSolution extends Component {
 
       let properties = {
         ref: 'chart',
+        isFromSolution:true,
         energyData: me.props.analysis?me.props.analysis.state.energyRawData:tagDatas[nodeId].toJS(),
         startDate,endDate,
         afterChartCreated:function() {

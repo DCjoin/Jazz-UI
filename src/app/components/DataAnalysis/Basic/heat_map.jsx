@@ -57,7 +57,7 @@ export default class HeatMap extends Component {
       },
       legend:{
         verticalAlign:'top',
-        symbolWidth: 1000,
+        symbolWidth: that.props.isFromSolution?650:1000,
         itemMarginTop:-15,
         title:{
           text:tagName
@@ -165,4 +165,5 @@ HeatMap.propTypes = {
   startDate:React.PropTypes.number,
   endDate:React.PropTypes.number,
 	energyData:React.PropTypes.object,
+  isFromSolution:React.PropTypes.bool
 };
