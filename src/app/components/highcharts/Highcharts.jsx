@@ -65,7 +65,7 @@ let Highstock = React.createClass({
 
         that._paper = new Highcharts.Chart(options);
 
-        this.props.afterChartCreated(that._paper);
+        if(this.props.afterChartCreated){this.props.afterChartCreated(that._paper);}
     },
 
     getPaper() {

@@ -43,6 +43,8 @@ export default class HeatMap extends Component {
                             .filter(data=>(moment.utc(data.get('UtcTime')).local().valueOf()>=startDate && 
                                            moment.utc(data.get('UtcTime')).local().valueOf()<=endDate &&
                                            data.get('DataValue')!==null));
+   var yMin=formatYaxisDate(moment(startDate)),
+      yMax=moment(endDate).hours()===0?formatYaxisDate(moment(endDate).add(-1,'m')):formatYaxisDate(moment(endDate));
     return{
       title: null,
       credits: {
@@ -55,7 +57,7 @@ export default class HeatMap extends Component {
       },
       legend:{
         verticalAlign:'top',
-        symbolWidth: 1000,
+        symbolWidth: that.props.isFromSolution?650:1000,
         itemMarginTop:-15,
         title:{
           text:tagName
@@ -78,21 +80,25 @@ export default class HeatMap extends Component {
           text:null
         },
         labels: {
-            formatter:function(){              
-              if(endDate - startDate > 31*24*60*60*1000){
+            formatter:function(){ 
+              console.log(moment(this.value).valueOf());        
+              if(endDate - startDate >= 365*24*60*60*1000){
                 return moment(this.value).format(I18N.DateTimeFormat.IntervalFormat.OnlyMonth)
-              }else{
-                return moment(this.value).format(I18N.DateTimeFormat.IntervalFormat.MonthDate)
+              }else if(moment(endDate).year()===moment(startDate).year()){
+                return moment(this.value).format('MM/DD')
+              }else {
+                return moment(this.value).format('YYYY/MM/DD')
               }
             }
         },
-        tickInterval:endDate - startDate >= 365*24*60*60*1000?2*31*24*60*60*1000:null,
+        tickInterval:endDate - startDate >= 365*24*60*60*1000?2*31*24*60*60*1000:undefined,
+        // minorTickInterval:'auto',
         startOnTick: false,
         minPadding: 0,
         maxPadding: 0,
         endOnTick: false,
-        min:formatYaxisDate(moment(startDate)),
-        max:moment(endDate).hours()===0?formatYaxisDate(moment(endDate).add(-1,'m')):formatYaxisDate(moment(endDate)),
+        min:yMin,
+        max:yMax,
       }, 
       colorAxis: {
         className:'heatmap-color-axis',
@@ -136,7 +142,7 @@ export default class HeatMap extends Component {
       series:[
         {
           borderWidth: 0,
-          rowsize: 24 * 36e5,
+          rowsize:yMin===yMax?0:24 * 36e5,
           data:convetData(that.props.energyData),
           // nullColor: '#ffffff',
         }
@@ -146,6 +152,7 @@ export default class HeatMap extends Component {
 
   render(){
   var {startDate,endDate}=this.props;
+
       return(
           <Highcharts ref="highstock" className="heatmap" options={this.getConfigObj(startDate,endDate)} afterChartCreated={this.props.afterChartCreated?this.props.afterChartCreated:()=>{}}></Highcharts>
       )
@@ -158,4 +165,5 @@ HeatMap.propTypes = {
   startDate:React.PropTypes.number,
   endDate:React.PropTypes.number,
 	energyData:React.PropTypes.object,
+  isFromSolution:React.PropTypes.bool
 };
