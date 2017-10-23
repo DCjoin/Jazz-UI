@@ -67,7 +67,7 @@ export default class WeatherButton extends Component {
     var building=findBuilding(this._getHierarchyId(this.context));
     if(building){
       return(
-      <div className="jazz-AuxiliaryCompareBtn-container">
+      <div className="jazz-AuxiliaryCompareBtn-container"  style={{marginTop:0}}>
         <ButtonMenu ref={'button_menu'} label={I18N.EM.Tool.Weather.WeatherData}  style={{
           marginLeft: '10px'
         }} backgroundColor="#f3f5f7" disabled={this.props.disabled}>

@@ -145,7 +145,7 @@ export default class AuxiliaryFunction extends Component {
     var disabled=!this.getConfigBtnStatus();
     let calendarEl = this.getCalenderBgBtnEl();
     return(
-      <div className="jazz-AuxiliaryCompareBtn-container">
+      <div className="jazz-AuxiliaryCompareBtn-container" style={{marginTop:0}}>
         <ButtonMenu ref={'button_menu'} label={I18N.EM.Tool.MoreAnalysis}  style={{
           marginLeft: '10px'
         }} backgroundColor="#f3f5f7" onItemTouchTap={this._onConfigBtnItemTouchTap} disabled={this.getMoreBtnDisableStatus()}>
