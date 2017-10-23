@@ -154,7 +154,7 @@ var CurrentUserStore = assign({}, PrototypeStore, {
                     name: 'analysis',
                     getPath: RoutePath.dataAnalysis,
                     title: I18N.MainMenu.DataAnalysis
-                  },                  
+                  },
                 ]
               }]
             }
@@ -188,7 +188,7 @@ var CurrentUserStore = assign({}, PrototypeStore, {
 
     if (this.permit(PermissionCode.INDEX_AND_REPORT.READONLY) || this.permit(PermissionCode.INDEX_AND_REPORT.FULL)) {
       menuItems.push(
-        {          
+        {
           name: 'actuality',
           title: I18N.MainMenu.KPI,
           children: [{
@@ -222,7 +222,7 @@ if ( this.permit(PermissionCode.SOLUTION_FULL.FULL) ||
         }
       );
     }
-    
+
     if ( this.permit(PermissionCode.Save_Effect.FULL) ||
          this.permit(PermissionCode.Save_Effect.READONLY)
     ) {
@@ -248,7 +248,7 @@ if ( this.permit(PermissionCode.SOLUTION_FULL.FULL) ||
     }
 
 
-    if ( this.permit(PermissionCode.BASIC_DATA_ANALYSE.FULL) || this.permit(PermissionCode.SENIOR_DATA_ANALYSE.FULL) ) {
+    if ( this.permit(PermissionCode.BASIC_DATA_ANALYSE.FULL) || this.permit(PermissionCode.BASIC_DATA_ANALYSE.READONLY) || this.permit(PermissionCode.SENIOR_DATA_ANALYSE.FULL) ) {
       menuItems.push(
         this.getDataAnalysisMenu()
       );
