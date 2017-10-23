@@ -22,6 +22,11 @@ function noValue(value) {
 	return isUndefined(value) || isNull(value);
 }
 
+const CusIndicatorClass = {
+	Dosage: 1,
+	Ratio: 2,
+};
+
 const DEFAULT_OPTIONS = {
     credits: {
         enabled: false
@@ -120,11 +125,12 @@ function isScale(UnitType) {
 	return UnitType === KPIType.UnitType.MonthRatio || UnitType === KPIType.UnitType.MonthScale;
 }
 
-function getUnitLabel({UnitType, UomId}) {
+function getUnitLabel(data) {
+	let {UnitType, UomId,IndicatorClass,RatioUomId}=data;
 	if( isScale(UnitType) ) {
 		return '%';
 	}
-	return UOMStore.getUomById(UomId) + util.getPerByUnitType(UnitType);
+	return (IndicatorClass===CusIndicatorClass.Ratio?UOMStore.getUomById(UomId)+'/'+UOMStore.getUomById(RatioUomId):UOMStore.getUomById(UomId)) + util.getPerByUnitType(UnitType);
 }
 
 function getValueLabel(value, data) {
