@@ -261,8 +261,8 @@ export default class IntervalDialog extends Component {
       <div style={{width:'100%'}}>
         {this._renderTimes()}
         {this.state.gatherInfo!==null && this._renderTable()}
-        {this.state.gatherInfo===null && <div className="flex-center" style={{flexDirection:'column'}}>
-          			<FontIcon className="icon-raw-data" style={{fontSize:'60px'}} color="#32ad3d"/>
+        {this.state.gatherInfo===null && <div className="flex-center" style={{flexDirection:'column',marginTop:'20px'}}>
+          			<FontIcon className="icon-raw-data" style={{fontSize:'40px'}} color="#32ad3d"/>
          				<div className="nolist-font">{I18N.Setting.DataAnalysis.AddTimeSpanTip}</div>
        				</div>}
       </div>

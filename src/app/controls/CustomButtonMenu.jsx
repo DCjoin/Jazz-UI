@@ -16,7 +16,7 @@ export default class CustomButtonMenu extends Component {
     disabled:React.PropTypes.string,
   };
   static defaultProps = {
-    height: 40,
+    height: 36,
     //backgroundColor: '#fff',
     color: '#fff'
   };
@@ -57,8 +57,9 @@ export default class CustomButtonMenu extends Component {
     });
     var menuButton = <RaisedButton labelPosition="before" style={{
       maxWidth: '140px',
-      height: '32px',
+      height: '36px',
       marginBottom: '5px',
+      lineHeight:'34px',
       backgroundColor:this.props.backgroundColor
     }} label={this.props.label} onClick={this.handleTouchTap} disabled={this.props.disabled}>
                       <FontIcon className="icon-arrow-unfold" style={{
