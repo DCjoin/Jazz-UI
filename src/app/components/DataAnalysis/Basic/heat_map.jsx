@@ -84,8 +84,10 @@ export default class HeatMap extends Component {
               console.log(moment(this.value).valueOf());        
               if(endDate - startDate >= 365*24*60*60*1000){
                 return moment(this.value).format(I18N.DateTimeFormat.IntervalFormat.OnlyMonth)
-              }else{
-                return moment(this.value).format(I18N.DateTimeFormat.IntervalFormat.MonthDate)
+              }else if(moment(endDate).year()===moment(startDate).year()){
+                return moment(this.value).format('MM/DD')
+              }else {
+                return moment(this.value).format('YYYY/MM/DD')
               }
             }
         },
