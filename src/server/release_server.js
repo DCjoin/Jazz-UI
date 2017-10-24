@@ -1,60 +1,37 @@
-//const Hapi = require("hapi");
-const express = require('express');
-const cookieParser = require('cookie-parser');
-const fs = require("fs");
-const path=require("path");
-const useragent = require('useragent');
+var Hapi = require("hapi");
+var fs = require("fs");
+var path=require("path");
+var useragent = require('useragent');
 
-const SUPPORT_LANGUAGES = {
+var SUPPORT_LANGUAGES = {
   'zh-cn': true,
   'en-us': true,
 };
-const SUPPORT_BROWSERS = [
+var SUPPORT_BROWSERS = [
   {type: "IE", version: 11},
   {type: "Chrome", version: 50},
 ];
 
-const PORT = 80;
+var server = new Hapi.Server();
 
-// var server = new Hapi.Server();
-const app = express();
-app.listen(PORT, () => {
-  console.log('http server running on:%d' + PORT);
+server.connection({
+  port: 80
 });
-app.use(cookieParser());
-app.use((req, res, next) => {
-  console.log(req.protocol);
-  console.log(req.hostname);
-  console.log(req.url);
-  console.log("%j", req.headers);
-  let forwardProto = req.get("x-forwarded-proto");
-  let proto = forwardProto || req.protocol;
-  if (/^http$/.test(proto)) {
-    // console.log("enter");
-    return res.redirect(301, "https://" + req.headers.host + req.url);
-  }
-  else {
-    console.log('next');
-    return next();
-  }
+
+server.register(
+  [
+    {register: require('inert')},
+  ]
+  ,function () {
+    server.start(function() {
+        console.log('Server started at: ' + server.info.uri);
+    });
 });
-app.use("/assets", express.static(__dirname + "/assets"));
-// server.connection({
-//   port: 80
-// });
 
-// server.register(
-//   [
-//     {register: require('inert')},
-//   ]
-//   ,function () {
-//     server.start(function() {
-//         console.log('Server started at: ' + server.info.uri);
-//     });
-// });
-
-function returnUpdateBrowserHtml(req, res){
-  return res.sendFile(path.resolve(__dirname, "./UpdateBrowserTip.html"));
+function returnUpdateBrowserHtml(request,reply){
+  var html = fs.readFileSync(path.resolve(__dirname, "./UpdateBrowserTip.html"), "utf-8");
+  var res = reply(html).type("text/html");
+  return res;
 }
 
 
@@ -68,12 +45,12 @@ var APP_DOWNLOAD_QQ = process.env.APP_DOWNLOAD_QQ;
 var APP_DOWNLOAD_WDJ = process.env.APP_DOWNLOAD_WDJ;
 var APP_DOWNLOAD_BAIDU = process.env.APP_DOWNLOAD_BAIDU;
 
-function getLang(req) {
-  var lang = req.params.lang;
+function getLang(request) {
+  var lang = request.params.lang;
   if( !lang || !SUPPORT_LANGUAGES[lang] ) {
-    if( req.query.langNum === '0' ) {
+    if( request.query.langNum === '0' ) {
       lang = 'zh-cn';
-    } else if( req.query.langNum === '1' ) {
+    } else if( request.query.langNum === '1' ) {
       lang = 'en-us';
     } else {
       lang= 'zh-cn';
@@ -90,18 +67,19 @@ function verifyBrowser(user_agent) {
     if( currentBrowser.family === detectOption.type ) {
       supportCurrentBrowser = currentBrowser.major * 1 >= detectOption.version;
     }
-  }
+  } 
   return supportCurrentBrowser;
 }
 
-function returnIndexHtml(req,res){
-  if( !req.cookies.skip_detect && !verifyBrowser( req.get('user-agent') ) ) {
-    return returnUpdateBrowserHtml(req, res);
+function returnIndexHtml(request,reply){
+
+  if( !request.state.skip_detect && !verifyBrowser( request.headers['user-agent'] ) ) {
+    return returnUpdateBrowserHtml(request, reply);
   }
 
   var html = fs.readFileSync(path.resolve(__dirname, "./index.html"), "utf-8");
 
-  html = html.replace('__LANG_JS__', JAZZ_STATIC_CDN + '/' + getLang(req) + '.js');
+  html = html.replace('__LANG_JS__', JAZZ_STATIC_CDN + '/' + getLang(request) + '.js');
 
   html = html.replace(/__JAZZ_STATIC_CDN__/g, JAZZ_STATIC_CDN)
             .replace(/__JAZZ_WEBAPI_HOST__/g, JAZZ_WEBAPI_HOST);
@@ -109,10 +87,11 @@ function returnIndexHtml(req,res){
   if(JAZZ_UI_UMENG_CNZZ_SDK_URL) {
     html = html.replace('__JAZZ_UI_UMENG_CNZZ_SDK_URL__', JAZZ_UI_UMENG_CNZZ_SDK_URL);
   }
-  return res.status(200).type('.html').end(html);
+  var res = reply(html).type("text/html");
+  return res;
 }
 
-function returnDownloadHtml(req, res){
+function returnDownloadHtml(request,reply){
   var html = fs.readFileSync(path.resolve(__dirname, "./DownloadApp.html"), "utf-8")
                 .replace(/__JAZZ_STATIC_CDN__/g, JAZZ_STATIC_CDN)
                 .replace('${APP_VERSION}', APP_VERSION)
@@ -121,17 +100,37 @@ function returnDownloadHtml(req, res){
                 .replace('${APP_DOWNLOAD_QQ}', APP_DOWNLOAD_QQ)
                 .replace('${APP_DOWNLOAD_WDJ}', APP_DOWNLOAD_WDJ)
                 .replace('${APP_DOWNLOAD_BAIDU}', APP_DOWNLOAD_BAIDU);
-  return res.status(200).type('.html').end(html);
+  var res = reply(html).type("text/html");
+  return res;
 }
 
-// server.register({
-//   register: require('hapi-require-https'),
-//   options: {}
-// })
+server.register({
+  register: require('hapi-require-https'),
+  options: {}
+})
 
-app.get('/download-app', returnDownloadHtml);
-app.get('/:lang/*', returnIndexHtml);
-
-app.get('/', (req, res) => {
-    return res.redirect(301, '/zh-cn/');
+server.route({
+  method: 'GET',
+  path: '/DownloadApp.html',
+  handler: returnDownloadHtml,
 });
+server.route({
+  method: 'GET',
+  path: '/download-app',
+  handler: returnDownloadHtml,
+});
+server.route({
+  method: 'GET',
+  path: '/{lang}/{path*}',
+  handler: returnIndexHtml,
+});
+
+server.route({
+  method: 'GET',
+  path: '/',
+  handler: (req, res) => {
+    return res.redirect('/zh-cn/');
+  },
+});
+
+module.exports = server;
