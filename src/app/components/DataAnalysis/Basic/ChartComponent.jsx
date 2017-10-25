@@ -10,6 +10,7 @@ import MultipleTimespanStore from 'stores/Energy/MultipleTimespanStore.jsx';
 import EnergyAction from 'actions/EnergyAction.jsx';
 import GridComponent from '../../energy/GridComponent.jsx';
 import HeatMap from './heat_map.jsx';
+import ScatterPlot from './scatter_plot.jsx';
 
 var analysisPanel=null;
 export default class ChartComponent extends Component {
@@ -261,6 +262,12 @@ export default class ChartComponent extends Component {
 
 
               </div>;
+            }else if(chartType === 'scatter'){
+              let properties = {
+                  ref: 'chart',
+                  energyData: analysisPanel.state.energyRawData,
+                  };
+                  energyPart = <ScatterPlot {...properties}></ScatterPlot>;
             }
             else {
               let chartCmpObj = {

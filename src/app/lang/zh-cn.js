@@ -594,6 +594,7 @@ I18N.EM.CharType.Pie = '饼状图';
 I18N.EM.CharType.RawData = '原始数据';
 I18N.EM.CharType.GridTable = '数据表';
 I18N.EM.CharType.HeatMap = '热压图';
+I18N.EM.CharType.Scatter = '散点图';
 
 I18N.EM.RawData = {};
 I18N.EM.RawData.ErrorForEnergy = '原始数据仅支持查看7天以内的数据';
@@ -2322,6 +2323,12 @@ I18N.Setting.DataAnalysis.Weather = {};
 I18N.Setting.DataAnalysis.Weather.To = '前往';
 I18N.Setting.DataAnalysis.Weather.Location = '地理位置';
 I18N.Setting.DataAnalysis.Weather.Config = '进行配置';
+I18N.Setting.DataAnalysis.Scatter = {};
+I18N.Setting.DataAnalysis.Scatter.XAxis = 'X轴';
+I18N.Setting.DataAnalysis.Scatter.YAxis = 'Y轴';
+I18N.Setting.DataAnalysis.Scatter.PlzSelectTag = '请选择数据点';
+I18N.Setting.DataAnalysis.Scatter.NoTagTip = '请选择右侧坐标轴数据点';
+I18N.Setting.DataAnalysis.Scatter.AxisCanNotSame = '坐标轴不可选择同一个数据点';
 
 I18N.Setting.ECM = {};
 I18N.Setting.ECM.EstimatedAnnualCostSavings = '预计年节约成本';

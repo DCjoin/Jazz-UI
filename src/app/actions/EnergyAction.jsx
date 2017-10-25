@@ -663,6 +663,12 @@ let EnergyAction = {
       startTime: startTime,
       endTime: endTime
     });
+  },
+  setChartType(chartType) {
+    AppDispatcher.dispatch({
+      type: Action.SET_CHART_TYPE,
+      chartType
+    });
   }
 };
 module.exports = EnergyAction;
