@@ -110,8 +110,6 @@ class AnalysisPanel extends Component {
     this._onWeatherTagChanged=this._onWeatherTagChanged.bind(this);
     this.checkMultiTag=this.checkMultiTag.bind(this);
     this._onScatterAxisChanged=this._onScatterAxisChanged.bind(this);
-    
-    
   }
 
   state={
@@ -362,7 +360,7 @@ _onScatterAxisChanged(){
       }else if(this.state.selectedChartType!=='scatter'){
         this._onSearchDataButtonClick();
       }
-      
+
     })
 
   }
@@ -600,7 +598,7 @@ _onScatterAxisChanged(){
   }
 
   getCurrentWidgetDto(){
-    
+
     // if( !EnergyStore.getParamsObj() ) {
     //   return ;
     // }
@@ -1505,7 +1503,7 @@ _onScatterAxisChanged(){
     //   Immutable.fromJS(this.getCurrentWidgetDto()),
     //   DataAnalysisStore.getInitialWidgetDto()
     // ));
-    if(this.props.isNew && AlarmTagStore.getSearchTagList().length===0){
+    if(!isFullBasicAnalysis() || this.props.isNew && AlarmTagStore.getSearchTagList().length===0){
       return true
     }
     if(Immutable.is(
@@ -1584,7 +1582,7 @@ _onScatterAxisChanged(){
     FolderStore.addCheckWidgetUpdateChangeListener(this._onCheckWidgetUpdate);
     WeatherStore.addChangeListener(this._onWeatherTagChanged);
     ScatterPlotStore.addChangeListener(this._onScatterAxisChanged);
-    
+
     if(!this.props.isNew){
       this._initChartPanelByWidgetDto();
     }
@@ -1625,7 +1623,7 @@ _onScatterAxisChanged(){
     FolderStore.removeCheckWidgetUpdateChangeListener(this._onCheckWidgetUpdate);
     WeatherStore.removeChangeListener(this._onWeatherTagChanged);
     ScatterPlotStore.removeChangeListener(this._onScatterAxisChanged);
-    
+
     this.resetCalendarType();
     // TagAction.clearAlarmSearchTagList();
     TagAction.setCurrentHierarchyId(null);

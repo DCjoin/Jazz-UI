@@ -158,8 +158,8 @@ var CurrentUserStore = assign({}, PrototypeStore, {
                 ]
               }]
             }
-      if ( this.permit(PermissionCode.BASIC_DATA_ANALYSE.READONLY) ) {
-        _dataAnalysisMenu.children.push({
+      if ( this.permit(PermissionCode.BASIC_DATA_ANALYSE.FULL) ) {
+        _dataAnalysisMenu.children[0].list.push({
           name: 'inputData',
           getPath: RoutePath.inputData,
           title: I18N.MainMenu.InputData
