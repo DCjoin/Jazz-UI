@@ -11,6 +11,10 @@ import util from 'util/Util.jsx';
 import CustomForm from 'util/CustomForm.jsx';
 import RoutePath from 'util/RoutePath.jsx';
 
+import PermissionCode from 'constants/PermissionCode.jsx';
+import privilegeUtil from 'util/privilegeUtil.jsx';
+import CurrentUserStore from 'stores/CurrentUserStore.jsx';
+
 import LinkButton from 'controls/LinkButton.jsx';
 
 import Highcharts from '../../highcharts/Highcharts.jsx';
@@ -143,9 +147,9 @@ function getValueLabel(value, data) {
 // workground code
 class Chart extends Component {
 	shouldComponentUpdate(nextProps) {
-		if( 
-			this.props.byYear !== nextProps.byYear || 
-			this.props.monthIndex !== nextProps.monthIndex || 
+		if(
+			this.props.byYear !== nextProps.byYear ||
+			this.props.monthIndex !== nextProps.monthIndex ||
 			this.props.rankIndex !== nextProps.rankIndex
 		) {
 			return true;
@@ -363,9 +367,9 @@ export default class RankChart extends Component {
         	<div className='kpi-rank-chart'>
         		<div className='kpi-rank-chart-title'>
 					<div className='kpi-rank-chart-title-name'>{RankName}</div>
-					<Toggle style={{width: 'auto'}} label={'移动端可见'} disabled={!MobileViewState && disabledToggle} toggled={MobileViewState} onToggle={(e, val) => {
+					{privilegeUtil.isFull(PermissionCode.INDEX_AND_REPORT, CurrentUserStore.getCurrentPrivilege()) && <Toggle style={{width: 'auto'}} label={'移动端可见'} disabled={!MobileViewState && disabledToggle} toggled={MobileViewState} onToggle={(e, val) => {
 						SingleKPIAction.toggleMobileVisable(GroupKpiId, idx, +val, true, RankType);
-					}}/>
+					}}/>}
         		</div>
         		<div className='kpi-rank-chart-action'>
         			<div style={{display: 'flex'}}>
@@ -373,7 +377,7 @@ export default class RankChart extends Component {
 		        			<button onClick={switchByYear(true)} className={classnames({selected: byYear})}>{'年度排名'}</button>
 		        			<button onClick={switchByYear(false)} className={classnames({selected: !byYear})}>{'月度排名'}</button>
 		        		</div>}
-		        		{!byYear && 
+		        		{!byYear &&
 		        		<div style={{marginBottom: hasRankByYear && 10}}>
 			        		<SwitchBar
 			        			className='switch-month'
