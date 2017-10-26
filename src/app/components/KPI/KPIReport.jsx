@@ -459,7 +459,7 @@ export default class KPIReport extends Component {
 				</div>
 				<div className='jazz-kpi-report-header'>
 					<div className='jazz-kpi-report-header-name'>{data.get('name')}</div>
-					{isGroup && <Toggle style={{width: 'auto'}} label={'移动端可见'} defaultToggled={data.get('MobileViewState')} onToggle={(e, val) => {
+					{isGroup && privilegeUtil.isFull(PermissionCode.INDEX_AND_REPORT, CurrentUserStore.getCurrentPrivilege()) && <Toggle style={{width: 'auto'}} label={'移动端可见'} defaultToggled={data.get('MobileViewState')} onToggle={(e, val) => {
 						SingleKPIAction.toggleMobileVisable(data.get('id'), idx, +val);
 					}}/>}
 				</div>
