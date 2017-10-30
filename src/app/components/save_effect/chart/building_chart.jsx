@@ -241,7 +241,7 @@ function getSeries(data, isStack, isWater, currentYear) {
 		});
 	}
 	return series.concat(data.EnergySystemSavings.map( sys => {
-		let base = null;
+		let base = 0;
 		return {
 			name: getSystemNameById(sys.EnergySystem),
 			data: sys.EnergySavingValues.map( (item, i) => {
