@@ -53,10 +53,6 @@ export default class WeatherButton extends Component {
 		return context.hierarchyId;
 	}
   _weatherTagdisabled(tag){
-
-    var chartType=EnergyStore.getChartType();
-    if(chartType==='scatter' && AlarmTagStore.getSearchTagList().length===2 && this.state.selectedTag.findIndex((selected)=>selected.get("tagId")===tag.tagId)>-1) return true
-
     if(this.props.step===null) return false;
 
     return this.props.step<2 && (tag.weatherType===3 || tag.weatherType===4)

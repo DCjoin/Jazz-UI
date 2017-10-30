@@ -161,10 +161,15 @@ let EnergyStore = assign({}, PrototypeStore, {
       window.testObj = window.testObj || {};
       window.testObj._energyRawData = _energyRawData;
       //add this for test team end
-
+      if(_chartType==='scatterplot'){
+        _energyData=Immutable.fromJS(data);
+        return true
+      }else{
       ChartStatusStore.onEnergyDataLoaded(data, _submitParams);
       _energyData = Immutable.fromJS(this.readerStrategy.convertFn(data, obj, this));
       return true
+      }
+  
     }
     else {
       return false

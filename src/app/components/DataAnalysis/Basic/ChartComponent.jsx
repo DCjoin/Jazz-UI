@@ -262,10 +262,11 @@ export default class ChartComponent extends Component {
 
 
               </div>;
-            }else if(chartType === 'scatter'){
+            }else if(chartType === 'scatterplot'){
               let properties = {
                   ref: 'chart',
                   energyData: analysisPanel.state.energyRawData,
+                  getYaxisConfig:this.getYaxisConfig,
                   };
                   energyPart = <ScatterPlot {...properties}></ScatterPlot>;
             }

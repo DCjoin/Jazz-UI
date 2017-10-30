@@ -356,7 +356,9 @@ export class GenerateSolution extends Component {
 			          marginLeft: '9px'
 			        }}>
 							{this.props.renderChartCmp(node,(tags) => {
-								this._afterChartCreated(nodeId, tags);
+
+       this._afterChartCreated(nodeId, tags);
+								
 							})}
 					</div>
 				</div>);

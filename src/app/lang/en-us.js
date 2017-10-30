@@ -511,6 +511,7 @@ I18N.EM.Tool.DataSum = 'Data Sum';
 I18N.EM.Tool.DataStatistics = 'Data Statistics';
 I18N.EM.Tool.IntervalStatistics = '分时统计';
 I18N.EM.Tool.YaxisConfig = 'Y-Axis Options';
+I18N.EM.Tool.AxisConfig = '坐标轴设置';
 I18N.EM.Tool.MoreAnalysis = 'More Analysis';
 
 I18N.EM.KpiModeEM = 'Energy';
@@ -574,6 +575,7 @@ I18N.EM.EnergyAnalyse.SumData = 'Data sum';
 I18N.EM.YAxisSetting = 'Y-Axis setting';
 I18N.EM.YAxisSettingTags = 'Tags';
 I18N.EM.YAxisTitle = 'Y-Axis';
+I18N.EM.XAxisTitle = 'X坐标轴';
 I18N.EM.YAxisMinMaxValidation = 'Max value must larger than Min value';
 
 I18N.EM.CannotShowCalendarByStep = 'The current interval does not support display of {0} background color.';
@@ -2329,6 +2331,8 @@ I18N.Setting.DataAnalysis.Scatter.YAxis = 'Y轴';
 I18N.Setting.DataAnalysis.Scatter.PlzSelectTag = '请选择数据点';
 I18N.Setting.DataAnalysis.Scatter.NoTagTip = '请选择右侧坐标轴数据点';
 I18N.Setting.DataAnalysis.Scatter.AxisCanNotSame = '坐标轴不可选择同一个数据点';
+I18N.Setting.DataAnalysis.Scatter.HasEmptyAxis = '所选数据点在当前时间范围内无数据，请换个时间段试试';
+I18N.Setting.DataAnalysis.Scatter.Formula = '公式';
 
 I18N.Setting.ECM = {};
 I18N.Setting.ECM.EstimatedAnnualCostSavings = 'Estimated Annual Cost Savings';

@@ -9,6 +9,8 @@ import Commodity from '../constants/actionType/Commodity.jsx';
 import Folder from '../constants/actionType/Folder.jsx';
 import CommodityStore from '../stores/CommodityStore.jsx';
 import Weather from 'constants/actionType/DataAnalysis.jsx';
+import TagStore from './TagStore.jsx';
+import Immutable from 'immutable';
 
 let searchTagList = [];
 let interData = null;
@@ -85,6 +87,8 @@ var AlarmTagStore = assign({}, PrototypeStore, {
       uomId: tagNode.UomId,
       commodityId: tagNode.CommodityId,
       commodityName: tagNode.Comment,
+      DimensionName: TagStore.getCurrentDimInfo().dimName,
+      DimensionId: TagStore.getCurrentDimInfo().dimId
     };
 
     if (selected) {
@@ -113,6 +117,8 @@ var AlarmTagStore = assign({}, PrototypeStore, {
         uomId: tagNode.UomId,
         commodityId: tagNode.CommodityId,
         commodityName: tagNode.Comment,
+        DimensionName: TagStore.getCurrentDimInfo().dimName,
+        DimensionId: TagStore.getCurrentDimInfo().dimId
       };
       if (selected) {
         that.addSearchTagList(tagData);
@@ -168,7 +174,9 @@ var AlarmTagStore = assign({}, PrototypeStore, {
             hierId: item.HierId,
             hierName: item.NodeName,
             tagId: item.TargetId,
-            tagName: item.TargetName
+            tagName: item.TargetName,
+            DimensionId:item.DimensionId,
+            DimensionName:item.DimensionName
           });
         });
         return tagOptions;
@@ -178,6 +186,9 @@ var AlarmTagStore = assign({}, PrototypeStore, {
         that.addSearchTagList(item);
       });
     }
+  },
+  getTagNameById(id){
+    return Immutable.fromJS(searchTagList).find(item=>(item.get("tagId")===id)).get("tagName")
   },
   addInterDataListener: function(callback) {
     this.on(INTER_DATA_CHANGED_EVENT, callback);

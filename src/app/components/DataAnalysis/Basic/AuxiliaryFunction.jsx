@@ -12,6 +12,7 @@ import YaxisSelector from './YaxisSelector.jsx';
 import StatisticsDialog from './StatisticsDialog.jsx';
 import WeatherButton from'./weather_button.jsx';
 import IntervalDialog from './IntervalDialog.jsx';
+import AxisSelector from './AxisSelector.jsx';
 
 import PermissionCode from 'constants/PermissionCode.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
@@ -42,6 +43,7 @@ export default class AuxiliaryFunction extends Component {
     showYaxisDialog:false,
     showSumDialog:false,
     showIntervalDialog:false,
+    showAxisDialog:false,
   }
 
   _onConfigBtnItemTouchTap(e,menuParam, value){
@@ -69,6 +71,11 @@ export default class AuxiliaryFunction extends Component {
     case 'yaxis':
         this.setState({
           showYaxisDialog: true
+        });
+        break;
+    case 'axis':
+        this.setState({
+          showAxisDialog: true
         });
         break;
 
@@ -144,6 +151,7 @@ export default class AuxiliaryFunction extends Component {
   getAuxiliaryCompareBtn(){
     var disabled=!this.getConfigBtnStatus();
     let calendarEl = this.getCalenderBgBtnEl();
+    var chartType=this.props.selectedChartType;
     return(
       <div className="jazz-AuxiliaryCompareBtn-container" style={{marginTop:0}}>
         <ButtonMenu ref={'button_menu'} label={I18N.EM.Tool.MoreAnalysis}  style={{
@@ -152,7 +160,8 @@ export default class AuxiliaryFunction extends Component {
        <MenuItem primaryText={I18N.EM.Tool.DataStatistics} value='sum' disabled={disabled}/>
        {SeniorDataAnalyseIsFull() && <MenuItem primaryText={I18N.EM.Tool.IntervalStatistics} value='interval' disabled={disabled}/>}
          {calendarEl}
-      <MenuItem primaryText={I18N.EM.Tool.YaxisConfig} value='yaxis' disabled={disabled || !isFullBasicAnalysis()}/>
+      {chartType!=='scatterplot' && <MenuItem primaryText={I18N.EM.Tool.YaxisConfig} value='yaxis' disabled={disabled || !isFullBasicAnalysis()}/>}
+      {chartType==='scatterplot' && <MenuItem primaryText={I18N.EM.Tool.AxisConfig} value='axis' disabled={!this.props.hasTagData || !isFullBasicAnalysis()}/>}
      </ButtonMenu>
       </div>
     )
@@ -166,6 +175,9 @@ export default class AuxiliaryFunction extends Component {
     if (chartType === "rawdata" || chartType === "heatmap"){
       return true
     }
+    if(chartType === "scatterplot"){
+      return false
+    }
     return TagStore.getBaselineBtnDisabled()
   }
 
@@ -178,6 +190,19 @@ export default class AuxiliaryFunction extends Component {
       onYaxisDialogDismiss={()=>{
         this.setState({
           showYaxisDialog:false
+        })
+      }}/>)
+  }
+
+    _renderAxisDialog(){
+    return (<AxisSelector
+      showDialog={this.state.showAxisDialog}
+      initYaxisDialog={this.props.initYaxisDialog}
+      onYaxisSelectorDialogSubmit={this.props.onYaxisSelectorDialogSubmit}
+      yaxisConfig={this.props.yaxisConfig}
+      onYaxisDialogDismiss={()=>{
+        this.setState({
+          showAxisDialog:false
         })
       }}/>)
   }
@@ -222,7 +247,7 @@ export default class AuxiliaryFunction extends Component {
     }
     return(<IntervalDialog {...props}/>)
   }
-
+  
   render(){
     var styles={
       label:this.getHistoryBtnStatus()?{
@@ -246,6 +271,7 @@ export default class AuxiliaryFunction extends Component {
         {this.state.showYaxisDialog && this._renderYaxisConfigDialog()}
         {this.state.showSumDialog && this._renderStatisticsDialog()}
         {this.state.showIntervalDialog && this._renderIntervalDialog()}
+        {this.state.showAxisDialog && this._renderAxisDialog()}
         </div>
     )
   }

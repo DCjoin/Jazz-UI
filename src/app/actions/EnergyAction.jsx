@@ -3,6 +3,7 @@ import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import CommonFuns from '../util/Util.jsx';
 import { Action } from '../constants/actionType/Energy.jsx';
 import Ajax from '../ajax/Ajax.jsx';
+import Path from 'constants/Path.jsx';
 
 let {DataConverter, isNumber} = CommonFuns;
 
@@ -101,6 +102,53 @@ let EnergyAction = {
           energyData: energyData,
           submitParams: submitParams,
           widgetId,
+        });
+      },
+      error: function(err, res) {
+        AppDispatcher.dispatch({
+          type: Action.GET_ENERGY_DATA_ERROR,
+          errorText: res.text,
+          submitParams: submitParams,
+          widgetId,
+        });
+      }
+    });
+  },
+    getScatterPlotData(XAxisTagId,YAxisTagId,date, step, tagOptions,relativeDate,widgetId){
+      var timeRange = date;
+
+    var tagIds = getTagIdsFromTagOptions(tagOptions);
+    var submitParams = {
+      tagIds: tagIds,
+      viewOption: {
+        IncludeNavigatorData: true,
+        Step: step,
+        TimeRanges: timeRange
+      }
+    };
+    AppDispatcher.dispatch({
+      type: Action.GET_ENERGY_DATA_LOADING,
+      submitParams: submitParams,
+      tagOptions: tagOptions,
+      relativeDate: relativeDate,
+      widgetId
+    });
+
+     Ajax.post(Path.DataAnalysis.getScatterPlotData, {
+      avoidDuplicate:true,
+      tag:[XAxisTagId,YAxisTagId],
+      params: {
+        XAxisTagId,
+        YAxisTagId,
+        TimeRanges:timeRange,
+        Step:step
+      },
+      commonErrorHandling: false,
+      success: function(energyData) {
+        AppDispatcher.dispatch({
+          type: Action.GET_ENERGY_DATA_SUCCESS,
+          energyData,
+          submitParams
         });
       },
       error: function(err, res) {

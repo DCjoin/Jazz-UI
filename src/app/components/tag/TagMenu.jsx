@@ -6,8 +6,6 @@ import classnames from 'classnames';
 import TagItem from './TagItem.jsx';
 import TagStore from '../../stores/TagStore.jsx';
 import TagAction from '../../actions/TagAction.jsx';
-import EnergyStore from 'stores/Energy/EnergyStore.jsx';
-import AlarmTagStore from 'stores/AlarmTagStore.jsx';
 
 
 var TagMenu = React.createClass({
@@ -39,10 +37,6 @@ var TagMenu = React.createClass({
       checked: TagStore.getCheckAllCheckedStatus(),
       toolTipShow: false,
     };
-  },
-  _checkDisabledByChartType(tagStatus){
-    var chartType=EnergyStore.getChartType();
-    if(chartType==='scatter' && AlarmTagStore.getSearchTagList().length===2 && tagStatus) return true
   },
 
   componentWillReceiveProps: function() {
@@ -89,8 +83,7 @@ var TagMenu = React.createClass({
       title={nodeData.Name}
       label={nodeData.AlarmStatus}
       status={tagStatus}
-      tagTotaldisable={that.state.tagTotal}
-      disable={that._checkDisabledByChartType(tagStatus)}
+      disable={that.state.tagTotal}
       widgetType={that.props.widgetType}/>)
 
       nodemenuItems.push(menuItem);

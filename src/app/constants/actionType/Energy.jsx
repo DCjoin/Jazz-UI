@@ -31,6 +31,7 @@ module.exports = {
     SET_RATIO_TIME_RANGE: null,
     SET_CHART_TYPE:null,
     GET_SCATTER_PLOT_DATA:null,
-    SET_SCATTER_AXIS_DATA:null
+    SET_SCATTER_AXIS_DATA:null,
+    CLEAR_AXIS_DATA:null
   })
 };
