@@ -123,7 +123,9 @@ let ChartStatusStore = assign({}, PrototypeStore, {
       pie: 8,
       rawdata: 16,
       original: 16,
-      heatmap:7
+      heatmap:7,
+      scatterplot:8,
+      bubble:9
     };
     return map[chartType];
   },

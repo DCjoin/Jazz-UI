@@ -115,56 +115,56 @@ let defaultConfig = {
         }
       },
       redraw: function() {
-        var offset = yAxisOffset;
-        for (var i = 0, len = this.yAxis.length; i < len && i < 2; ++i) {
-          var y = this.yAxis[i];
-          var title = y.yTitle;
-          var left,
-            top = y.top - 6 - 10;
-          if (!y.options.opposite) {
-            left = this.options.chart.spacingLeft || 12;
-          } else {
-            left = y.left + this.plotWidth + 5 + (offset * (i - 1));
-          }
-          if (title) {
-            title.attr({
-              x: left,
-              y: top
-            });
-          } else {
-            if (y.options.yname) {
-              var name = y.options.yname;
-              var yTitle = this.renderer.text(name, left, top).add();
-              y.yTitle = yTitle;
-            }
-          }
-          if (y.yTitle) {
-            var show = false;
-            for (var j = 0; j < y.series.length; ++j) {
-              var s = y.series[j];
-              if (s.visible) {
-                show = true;
-                break;
-              }
-            }
+        // var offset = yAxisOffset;
+        // for (var i = 0, len = this.yAxis.length; i < len && i < 2; ++i) {
+        //   var y = this.yAxis[i];
+        //   var title = y.yTitle;
+        //   var left,
+        //     top = y.top - 6 - 10;
+        //   if (!y.options.opposite) {
+        //     left = this.options.chart.spacingLeft || 12;
+        //   } else {
+        //     left = y.left + this.plotWidth + 5 + (offset * (i - 1));
+        //   }
+        //   if (title) {
+        //     title.attr({
+        //       x: left,
+        //       y: top
+        //     });
+        //   } else {
+        //     if (y.options.yname) {
+        //       var name = y.options.yname;
+        //       var yTitle = this.renderer.text(name, left, top).add();
+        //       y.yTitle = yTitle;
+        //     }
+        //   }
+        //   if (y.yTitle) {
+        //     var show = false;
+        //     for (var j = 0; j < y.series.length; ++j) {
+        //       var s = y.series[j];
+        //       if (s.visible) {
+        //         show = true;
+        //         break;
+        //       }
+        //     }
 
-            if (!show) {
-              y.yTitle.attr({
-                display: 'none'
-              });
-              y.yTitle.attr({
-                visibility: 'hidden'
-              });
-            } else {
-              y.yTitle.attr({
-                display: 'block'
-              });
-              y.yTitle.attr({
-                visibility: 'visible'
-              });
-            }
-          }
-        }
+        //     if (!show) {
+        //       y.yTitle.attr({
+        //         display: 'none'
+        //       });
+        //       y.yTitle.attr({
+        //         visibility: 'hidden'
+        //       });
+        //     } else {
+        //       y.yTitle.attr({
+        //         display: 'block'
+        //       });
+        //       y.yTitle.attr({
+        //         visibility: 'visible'
+        //       });
+        //     }
+        //   }
+        // }
       }
     }
   },
@@ -353,7 +353,7 @@ let ChartComponentBox = React.createClass({
     switch (bizType) {
       case 'Energy':
         if (energyType === 'Energy') {
-          if (chartType === 'line' || chartType === 'column' || chartType === 'stack' || chartType==='heatmap') {
+          if (chartType === 'line' || chartType === 'column' || chartType === 'stack' || chartType==='heatmap' || chartType === 'scatterplot') {
             chartCmpStrategy = ChartCmpStrategyFactor.getStrategyByChartType('EnergyTrendComponent');
           } else if (chartType === 'pie') {
             chartCmpStrategy = ChartCmpStrategyFactor.getStrategyByChartType('EnergyPieComponent');

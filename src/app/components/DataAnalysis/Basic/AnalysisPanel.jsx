@@ -55,6 +55,8 @@ import WeatherStore from 'stores/DataAnalysis/weather_store.jsx';
 import WeatherAction from 'actions/DataAnalysis/weather_action.jsx';
 import IntervalStatisticAction from 'actions/DataAnalysis/interval_statistic_action.jsx';
 import {Step,DataUsageType} from 'constants/ChartConstants.jsx';
+import ScatterPlotStore from 'stores/DataAnalysis/scatter_plot_store.jsx';
+import ScatterPlotAction from 'actions/DataAnalysis/scatter_plot_action.jsx';
 
 const DIALOG_TYPE = {
   SWITCH_WIDGET: "switchwidget",
@@ -108,7 +110,7 @@ class AnalysisPanel extends Component {
     this._onChartTypeChanged  = this._onChartTypeChanged.bind(this);
     this._onWeatherTagChanged=this._onWeatherTagChanged.bind(this);
     this.checkMultiTag=this.checkMultiTag.bind(this);
-
+    this._onScatterAxisChanged=this._onScatterAxisChanged.bind(this);
   }
 
   state={
@@ -178,6 +180,10 @@ class AnalysisPanel extends Component {
     EnergyAction.getEnergyRawData(timeRanges, step, tagOptions, relativeDate, pageNum, pageSize);
   }
 
+  scatterDataLoad(timeRanges, step, tagOptions,relativeDate) {
+    EnergyAction.getScatterPlotData(ScatterPlotStore.getXaxis(),ScatterPlotStore.getYaxis(),timeRanges, step, tagOptions, relativeDate,this.props.widgetDto.Id);
+  }
+
   initEnergyStoreByBizChartType() {
   let chartType = this.state.selectedChartType;
   switch (chartType) {
@@ -185,6 +191,7 @@ class AnalysisPanel extends Component {
     case 'column':
     case 'stack':
     case 'heatmap':
+    case 'scatterplot':
       EnergyStore.initReaderStrategy('EnergyTrendReader');
       break;
     case 'pie':
@@ -198,17 +205,25 @@ class AnalysisPanel extends Component {
   setFitStepAndGetData(startDate, endDate, tagOptions, relativeDate) {
   let timeRanges,
     weather;
-  if (tagOptions.length > 1) {
-    MultiTimespanAction.clearMultiTimespan('both');
-    timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
-  } else {
-    timeRanges = MultipleTimespanStore.getSubmitTimespans();
-    if (timeRanges === null) {
-      timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
+    if(this.state.selectedChartType==='scatterplot'){
+        timeRanges = MultipleTimespanStore.getSubmitTimespans();
+        if (timeRanges === null) {
+        timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
+     }
+    }else{
+     if (tagOptions.length > 1) {
+         MultiTimespanAction.clearMultiTimespan('both');
+         timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
+         } else {
+            timeRanges = MultipleTimespanStore.getSubmitTimespans();
+           if (timeRanges === null) {
+             timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
+          }
     }
-  }
+      }
 
-  let step = this.state.step,
+
+    let step = this.state.step,
     limitInterval = CommonFuns.getLimitInterval(timeRanges),
     stepList = limitInterval.stepList;
   if (stepList.indexOf(step) === -1) {
@@ -217,8 +232,26 @@ class AnalysisPanel extends Component {
   this.setState({
     isCalendarInited: false,
   });
-  this.energyDataLoad(timeRanges, step, tagOptions, relativeDate, weather);
+  if(this.state.selectedChartType==='scatterplot'){
+    this.scatterDataLoad(timeRanges, step, tagOptions,relativeDate);
+  }else{
+    this.energyDataLoad(timeRanges, step, tagOptions, relativeDate, weather);
   }
+
+}
+
+_onScatterAxisChanged(){
+  var xAxis=ScatterPlotStore.getXaxis(),
+      yAxis=ScatterPlotStore.getYaxis();
+  if(xAxis!==yAxis && yAxis!==0 && xAxis!==0){
+    this.setState({
+      energyData:null
+    },()=>{
+      this._onSearchDataButtonClick();
+    })
+    
+  }
+}
 
   _onSearchDataButtonClick(invokeFromMultiTime=false){
     //invokeFromMultiTime 来判断是不是点击多时间段的绘制按钮进行查看。
@@ -317,6 +350,12 @@ class AnalysisPanel extends Component {
                     let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
                     this.energyDataLoad(timeRanges, Step.Hourly, nodeOptions, relativeDateValue,null,DataUsageType.HeatMap);
                   });
+            }else if(chartType==='scatterplot'){
+                var xAxis=ScatterPlotStore.getXaxis(),
+                    yAxis=ScatterPlotStore.getYaxis();
+              if(this.state.energyData!=='initial' && xAxis!==yAxis && yAxis!==0 && xAxis!==0){
+                this.setFitStepAndGetData(startDate, endDate, nodeOptions, relativeDateValue);
+              }
             }
           }
       }
@@ -346,7 +385,7 @@ class AnalysisPanel extends Component {
         this.setState({
           multiTagTipShow:true
         })
-      }else{
+      }else if(this.state.selectedChartType!=='scatterplot'){
         this._onSearchDataButtonClick();
       }
 
@@ -602,6 +641,12 @@ class AnalysisPanel extends Component {
       step = paramsObj.step,
       widgetTimeRanges;
 
+    //for scatter
+    if(this.state.selectedChartType==='scatterplot'){
+      tagIds=[ScatterPlotStore.getXaxis(),ScatterPlotStore.getYaxis()]
+      nodeNameAssociation=CommonFuns.getNodeNameAssociationByIds(tagOptions,tagIds)
+    }
+
     //submitParams part
     let submitParams = {
         options: nodeNameAssociation,
@@ -718,7 +763,11 @@ class AnalysisPanel extends Component {
     isCalendarInited: false,
   });
 
-  this.energyDataLoad(timeRanges, step, tagOptions, false);
+   if(this.state.selectedChartType==='scatterplot'){
+      this.scatterDataLoad(timeRanges, step, tagOptions,this.state.relativeDate);
+   }else{
+     this.energyDataLoad(timeRanges, step, tagOptions, false);
+   }
   }
 
   exportChart() {
@@ -902,6 +951,17 @@ class AnalysisPanel extends Component {
         verticalAlign:'baseline'
       }
     }
+    var checkScatterDisable=()=>{
+      var xAxis=ScatterPlotStore.getXaxis(),
+          yAxis=ScatterPlotStore.getYaxis();
+          // this.state.energyData==='initial' || 
+      return (this.state.selectedChartType==='scatterplot' &&
+              (this.state.energyData==='initial' ||
+                xAxis===0 ||
+                yAxis===0 ||
+                yAxis===xAxis
+              ))
+    }
     return(
       <div className="head">
         <div style={{display:'flex',alignItems:'center'}}>
@@ -929,7 +989,7 @@ class AnalysisPanel extends Component {
           <div className="description">{this.props.sourceUserName && `(${I18N.format(I18N.Folder.Detail.SubTitile,this.props.sourceUserName)})`}</div>
         </div>
         <div className="operation">
-          <NewFlatButton label={I18N.Common.Button.Save} disabled={!this.state.energyData || !isFullBasicAnalysis()} labelStyle={styles.label} secondary={true}
+          <NewFlatButton label={I18N.Common.Button.Save} disabled={!this.state.energyData || !isFullBasicAnalysis() || checkScatterDisable()} labelStyle={styles.label} secondary={true}
             icon={<FontIcon className="icon-save" style={styles.label}/>} style={styles.button}
             onClick={()=>{this._handleSave()}}/>
           {this.props.isBuilding && <GenerateSolutionButton preAction={{
@@ -947,7 +1007,7 @@ class AnalysisPanel extends Component {
             }}
             onOpen={(data)=>{this.props.onOpenGenerateSolution(this,data)}}
             nodes={[this.props.selectedNode]}
-            disabled={!this.state.energyData || this.state.selectedChartType === 'rawdata'}
+            disabled={!this.state.energyData || this.state.selectedChartType === 'rawdata' || checkScatterDisable()}
            />}
           {this._renderMoreOperation()}
       </div>
@@ -968,7 +1028,8 @@ class AnalysisPanel extends Component {
         this.setState({
           multiTagTipShow:true
         })
-      }else{
+      }else
+      {
               if (this.state.selectedChartType === 'rawdata' && value !== 'Customerize' && value !== 'Last7Day' && value !== 'Today' && value !== 'Yesterday' && value !== 'ThisWeek' && value !== 'LastWeek') {
       var timeregion = CommonFuns.GetDateRegion(value.toLowerCase());
       dateSelector.setDateField(timeregion.start, timeregion.end);
@@ -986,7 +1047,7 @@ class AnalysisPanel extends Component {
   }
   this.setState({
     relativeDate:value,
-    energyData:null,
+    energyData:this.state.energyData==='initial'?'initial':null,
   },()=>{
     if(refresh){this._onSearchDataButtonClick()}
   })
@@ -1003,7 +1064,7 @@ class AnalysisPanel extends Component {
       }else{
     this.setState({
       relativeDate: 'Customerize',
-      energyData:null,
+      energyData:(this.state.energyData==='initial'?'initial':null)
     },()=>{
       this._onSearchDataButtonClick()
     });
@@ -1035,16 +1096,17 @@ class AnalysisPanel extends Component {
           selectedChartType: nextChartType,
           // energyData: null
         });
+        EnergyAction.setChartType(nextChartType)
       } else { //if(nextChartType === 'pie'){
-      if(nextChartType==='heatmap'){
+      if(nextChartType==='heatmap' || nextChartType==='scatterplot'){
         ChartStatusAction.modifyChartType(nextChartType);
       }else{
         ChartStatusAction.clearStatus();
       }
-
+      EnergyAction.setChartType(nextChartType);
       this.setState({
         selectedChartType: nextChartType,
-        energyData: null
+        energyData: nextChartType==='scatterplot'?'initial':null
       }, ()=> {
         this._onSearchDataButtonClick();
       });
@@ -1077,12 +1139,17 @@ class AnalysisPanel extends Component {
   }
 
   _onChartTypeChanged(e, selectedIndex, value){
+    ScatterPlotAction.clearAxis();
     this._onSearchBtnItemTouchTap(value)
   }
 
   _heatMapValid(){
     return this.isMultiTime || AlarmTagStore.getSearchTagList().length>1
   }
+
+  // _scatterValid(){
+  //   return this.isMultiTime || AlarmTagStore.getSearchTagList().length<2
+  // }
 
   getChartTypeIconMenu(disabled) {
   let iconStyle = {
@@ -1100,7 +1167,8 @@ class AnalysisPanel extends Component {
         stackIcon=<FontIcon className="icon-stack" iconStyle ={iconStyle} style = {style} />,
         pieIcon=<FontIcon className="icon-pie" iconStyle ={iconStyle} style = {style} />,
         rawdataIcon=<FontIcon className="icon-raw-data" iconStyle ={iconStyle} style = {style} />,
-        heatmapIcon=<FontIcon className="icon-heat-map" iconStyle ={iconStyle} style = {style} />;
+        heatmapIcon=<FontIcon className="icon-heat-map" iconStyle ={iconStyle} style = {style} />,
+        scatterIcon=<FontIcon className="icon-heat-map" iconStyle ={iconStyle} style = {style} />;
 
   let chartType = this.state.selectedChartType || 'line';
   return(
@@ -1112,6 +1180,7 @@ class AnalysisPanel extends Component {
     <MenuItem primaryText={I18N.EM.CharType.Pie} value="pie" leftIcon={pieIcon}/>
     <MenuItem primaryText={I18N.EM.CharType.GridTable} value="rawdata" leftIcon={rawdataIcon}/>
     <MenuItem primaryText={I18N.EM.CharType.HeatMap} value="heatmap" disabled={this._heatMapValid()} leftIcon={heatmapIcon}/>
+    <MenuItem primaryText={I18N.EM.CharType.Scatter} value="scatterplot" leftIcon={scatterIcon}/>
   </DropDownMenu>
   )
   }
@@ -1175,7 +1244,7 @@ class AnalysisPanel extends Component {
          </div>
         )
       }
-      else if(!!this.state.energyData){
+      else if(!!this.state.energyData || this.state.energyData==='initial'){
         return(
           <div style={{display:'flex',flex:1,flexDirection:'column'}}>
             <ChartComponent ref="ChartComponent" AnalysisPanel={this}/>
@@ -1417,6 +1486,7 @@ class AnalysisPanel extends Component {
       Pie: 'pie',
       DataTable: 'rawdata',
       HeatMap:'heatmap',
+      ScatterPlot:'scatterplot',
       original: 'rawdata'
     };
 
@@ -1443,9 +1513,10 @@ class AnalysisPanel extends Component {
 
     let yaxisConfig = null;
     if (WidgetStatusArray) {
-      yaxisConfig = CommonFuns.getYaxisConfig(WidgetStatusArray);
+      yaxisConfig = CommonFuns.getYaxisConfig(WidgetStatusArray,typeMap[chartType]);
     }
     //init selected tags is done in the other part
+    EnergyAction.setChartType(typeMap[chartType])
     this.setState({
       remarkText: remarkText,
       remarkDisplay: remarkDisplay,
@@ -1530,6 +1601,8 @@ class AnalysisPanel extends Component {
 
       }
       this.isInitial=true;
+    }else{
+      EnergyAction.setChartType('line');
     }
   }
 
@@ -1543,6 +1616,7 @@ class AnalysisPanel extends Component {
     AlarmTagStore.addChangeListener(this._onTagChanged);
     FolderStore.addCheckWidgetUpdateChangeListener(this._onCheckWidgetUpdate);
     WeatherStore.addChangeListener(this._onWeatherTagChanged);
+    ScatterPlotStore.addChangeListener(this._onScatterAxisChanged);
 
     if(!this.props.isNew){
       this._initChartPanelByWidgetDto();
@@ -1583,6 +1657,7 @@ class AnalysisPanel extends Component {
     AlarmTagStore.removeChangeListener(this._onTagChanged);
     FolderStore.removeCheckWidgetUpdateChangeListener(this._onCheckWidgetUpdate);
     WeatherStore.removeChangeListener(this._onWeatherTagChanged);
+    ScatterPlotStore.removeChangeListener(this._onScatterAxisChanged);
 
     this.resetCalendarType();
     // TagAction.clearAlarmSearchTagList();
@@ -1591,6 +1666,7 @@ class AnalysisPanel extends Component {
     MultipleTimespanStore.clearMultiTimespan('both');
     WeatherAction.clearSelectedTag();
     IntervalStatisticAction.clearAll();
+    ScatterPlotAction.clearAxis();
   }
 
   render(){

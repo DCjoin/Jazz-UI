@@ -28,6 +28,10 @@ module.exports = {
     CONVERT_TEMP_TO_STABLE: null,
     SET_ENERGY_TIME_RANGE: null,
     SET_COST_TIME_RANGE: null,
-    SET_RATIO_TIME_RANGE: null
+    SET_RATIO_TIME_RANGE: null,
+    SET_CHART_TYPE:null,
+    GET_SCATTER_PLOT_DATA:null,
+    SET_SCATTER_AXIS_DATA:null,
+    CLEAR_AXIS_DATA:null
   })
 };

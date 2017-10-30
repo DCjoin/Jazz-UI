@@ -23,7 +23,8 @@ let _isLoading = false,
   _errorCode = null,
   _errorMessage = null,
   _errorCodes = [],
-  _errorParams = [];
+  _errorParams = [],
+  _chartType='line';
 
 const ENERGY_DATA_LOADING_EVENT = 'energydataloadingevent',
   ENERGY_DATA_LOADED_EVENT = 'energydataloadedevent',
@@ -34,6 +35,12 @@ const ENERGY_DATA_LOADING_EVENT = 'energydataloadingevent',
 let EnergyStore = assign({}, PrototypeStore, {
   initReaderStrategy(bizChartType) {
     this.readerStrategy = ChartReaderStrategyFactor.getStrategyByBizChartType(bizChartType);
+  },
+  setChartType(type){
+    _chartType=type;
+  },
+  getChartType(){
+    return _chartType
   },
   getLoadingStatus() {
     return _isLoading;
@@ -94,6 +101,7 @@ let EnergyStore = assign({}, PrototypeStore, {
     _errorMessage = null;
     _errorCodes = [];
     _errorParams = [];
+    _chartType='line';
   },
   _initErrorText(errorText) {
     let error = JSON.parse(errorText).error;
@@ -153,10 +161,15 @@ let EnergyStore = assign({}, PrototypeStore, {
       window.testObj = window.testObj || {};
       window.testObj._energyRawData = _energyRawData;
       //add this for test team end
-
+      if(_chartType==='scatterplot'){
+        _energyData=Immutable.fromJS(data);
+        return true
+      }else{
       ChartStatusStore.onEnergyDataLoaded(data, _submitParams);
       _energyData = Immutable.fromJS(this.readerStrategy.convertFn(data, obj, this));
       return true
+      }
+  
     }
     else {
       return false
@@ -291,6 +304,9 @@ EnergyStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case Action.SET_ENERGY_TIME_RANGE:
       EnergyStore._onChangeTimeRange(action.startTime, action.endTime);
+      break;
+    case Action.SET_CHART_TYPE:
+      EnergyStore.setChartType(action.chartType);
       break;
   }
 });
