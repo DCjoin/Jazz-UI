@@ -1,4 +1,5 @@
 export default {
+	spinitsso: (p, cburl)=> `/${p.lang}/spinitsso-redirect?callbackURL=${cburl}`,
 	base: p => `/${p.lang}`,
 	resetPSW: p => `/${p.lang}/u=${p.user}&t=${p.token}&a=resetpwd&lang=${p.lang}`,
 	contactus: p => `/${p.lang}/contactus`,

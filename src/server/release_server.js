@@ -5,6 +5,11 @@ const fs = require("fs");
 const path=require("path");
 const useragent = require('useragent');
 
+var request = require("request");
+var path = require("path");
+const { URL } = require('url');
+const SYSID = 0;// 0云能效 1千里眼 2灯塔 8万丈云
+
 const SUPPORT_LANGUAGES = {
   'zh-cn': true,
   'en-us': true,
@@ -18,6 +23,14 @@ const PORT = 80;
 
 // var server = new Hapi.Server();
 const app = express();
+
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+
+const saml = require('samlify');
+const ServiceProvider = saml.ServiceProvider;
+const IdentityProvider = saml.IdentityProvider;
+
 app.listen(PORT, () => {
   console.log('http server running on:%d' + PORT);
 });
@@ -67,6 +80,8 @@ var APP_DOWNLOAD_LOCAL = process.env.APP_DOWNLOAD_LOCAL;
 var APP_DOWNLOAD_QQ = process.env.APP_DOWNLOAD_QQ;
 var APP_DOWNLOAD_WDJ = process.env.APP_DOWNLOAD_WDJ;
 var APP_DOWNLOAD_BAIDU = process.env.APP_DOWNLOAD_BAIDU;
+var JAZZ_WEBAPI_HOST = process.env.JAZZ_WEBAPI_HOST;
+var SSO_ACS_URL = process.env.SSO_ACS_URL;
 
 function getLang(req) {
   var lang = req.params.lang;
@@ -130,6 +145,60 @@ function returnDownloadHtml(req, res){
 // })
 
 app.get('/download-app', returnDownloadHtml);
+
+// Release the metadata publicly
+app.get('/sso/metadata', (req, res) => res.header('Content-Type','text/xml').send(sp.getMetadata()));
+
+// Access URL for implementing SP-init SSO
+app.get('/:lang/spinitsso-redirect',(req, res) => {
+  // Configure your endpoint for IdP-initiated / SP-initiated SSO
+  const sp = ServiceProvider({
+    privateKey: fs.readFileSync(__dirname + '/sp.pem'),
+    privateKeyPass: 'password',
+    requestSignatureAlgorithm: 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256',
+    metadata: fs.readFileSync(__dirname + '/metadata_sp.xml', "utf-8").replace('${SSO_ACS_URL}', SSO_ACS_URL)
+  });
+
+  const idp = IdentityProvider({
+    metadata: fs.readFileSync(__dirname + '/onelogin_metadata.xml')
+  });
+
+  const url = sp.createLoginRequest(idp, 'redirect');  
+  const redirectURL = new URL(url.context);  
+  redirectURL.pathname = req.params.lang + redirectURL.pathname;
+  let spDomain = req.hostname.split(".")[0] ? req.hostname.split(".")[0] : "";
+  return res.redirect(redirectURL.href + "&callbackURL=" + encodeURIComponent(req.query.callbackURL) + "&sysId=" + SYSID + "&spDomain=" + encodeURIComponent(spDomain));
+});
+
+// This is the assertion service url where SAML Response is sent to
+app.post('/sso/acs', (req, res) => {
+  console.log("get assertion and return to Jazz backend!");
+  // get assertion and return to Jazz backend
+  var options = {
+    url: JAZZ_WEBAPI_HOST + '/AccessControl/ValidateUser', 
+    formData: req.body
+  };
+  request.post(options, function optionalCallback(err, httpResponse, body) {
+    if(err) {
+      return console.error('upload failed:', err);
+    } else {
+      let _body = JSON.parse(body);
+      if(_body && _body.error.Code === '0') {
+        console.log(_body.Result.Id);
+        console.log(_body.Result.Token);
+        res.cookie('UserId', _body.Result.Id)
+          .cookie("AuthLoginToken", _body.Result.Token)
+          .cookie('SkipLogin', 'true')
+          .redirect(301, '/zh-cn/');
+      } else {
+        console.log("fail!"); 
+        res.redirect(301, '/zh-cn/login');
+      }
+    }    
+  });
+});
+
+
 app.get('/:lang/*', returnIndexHtml);
 
 app.get('/', (req, res) => {

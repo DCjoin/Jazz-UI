@@ -299,10 +299,11 @@ let UserAction = {
       }
     });
   },
-  resetPassword: function(userId) {
+  resetPassword: function(userId, callbackURL) {
     Ajax.post('/User/SendInitPassword', {
       params: {
-        userid: userId
+        userid: userId,
+        callBackUrl: callbackURL
       },
       success: function(data) {
         AppDispatcher.dispatch({
