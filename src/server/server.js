@@ -46,7 +46,7 @@ app.get('/:lang/spinitsso-redirect',(req, res) => {
   });
 
   const idp = IdentityProvider({
-    metadata: fs.readFileSync(__dirname + '/onelogin_metadata.xml', "utf-8").replace('${SSO_SERVER_URL}', "https://localhost:8081" + "/Saml/SignOnService")
+    metadata: fs.readFileSync(__dirname + '/onelogin_metadata.xml', "utf-8").split('${SSO_SERVER_URL}').join("https://localhost:8081/Saml/SignOnService")
   });
 
   const url = sp.createLoginRequest(idp, 'redirect');  
