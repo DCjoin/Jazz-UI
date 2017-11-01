@@ -48,10 +48,29 @@ module.exports = {
 			}
 		});
 	},
-	logout: function(params) {
-		AppDispatcher.dispatch({
-			type: Action.LOGOUT
+	logout: function(onSuccess) {
+		Ajax.post('/AccessControl/LoginOut', {
+			success: function(res) {
+				AppDispatcher.dispatch({
+					type: Action.LOGOUT,
+					data: res
+				});
+				if(onSuccess) {
+					onSuccess();
+				}
+			},
+			commonErrorHandling: false,
+			error: function(err, res) {
+				AppDispatcher.dispatch({
+					type: Action.LOGIN_ERROR,
+					data: res.body
+				});
+			}
 		});
+
+		// AppDispatcher.dispatch({
+		// 	type: Action.LOGOUT
+		// });
 	},
 
 	reqPwdReset:function(username, email){

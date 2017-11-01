@@ -161,7 +161,9 @@ var MainAppBar = React.createClass({
     // this._onClose();
   },
   _logout: function() {
-    LoginActionCreator.logout();
+    LoginActionCreator.logout(()=>{
+      location.href = RoutePath.logout(this.props.params, location.href);
+    });
     this.context.router.push(RoutePath.login(this.context.router.params));
     // var _redirectFunc = this.context.router.replaceWith;
     // _redirectFunc('login', {
