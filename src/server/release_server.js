@@ -81,7 +81,8 @@ var APP_DOWNLOAD_QQ = process.env.APP_DOWNLOAD_QQ;
 var APP_DOWNLOAD_WDJ = process.env.APP_DOWNLOAD_WDJ;
 var APP_DOWNLOAD_BAIDU = process.env.APP_DOWNLOAD_BAIDU;
 var JAZZ_WEBAPI_HOST = process.env.JAZZ_WEBAPI_HOST;
-var SSO_ACS_URL = process.env.SSO_ACS_URL;
+var JAZZ_WEB_HOST = process.env.JAZZ_WEB_HOST;
+var SSO_SERVER_URL = process.env.SSO_SERVER_URL;
 
 function getLang(req) {
   var lang = req.params.lang;
@@ -156,11 +157,11 @@ app.get('/:lang/spinitsso-redirect',(req, res) => {
     privateKey: fs.readFileSync(__dirname + '/sp.pem'),
     privateKeyPass: 'password',
     requestSignatureAlgorithm: 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256',
-    metadata: fs.readFileSync(__dirname + '/metadata_sp.xml', "utf-8").replace('${SSO_ACS_URL}', SSO_ACS_URL)
+    metadata: fs.readFileSync(__dirname + '/metadata_sp.xml', "utf-8").replace('${SSO_ACS_URL}', JAZZ_WEB_HOST)
   });
 
   const idp = IdentityProvider({
-    metadata: fs.readFileSync(__dirname + '/onelogin_metadata.xml')
+    metadata: fs.readFileSync(__dirname + '/onelogin_metadata.xml').replace('${SSO_SERVER_URL}', SSO_SERVER_URL + "/Saml/SignOnService")
   });
 
   const url = sp.createLoginRequest(idp, 'redirect');  
@@ -198,6 +199,9 @@ app.post('/sso/acs', (req, res) => {
   });
 });
 
+app.get('/:lang/logout',(req, res) => {
+  return res.redirect("https://localhost:8081/" + req.params.lang + "&callbackURL=" + encodeURIComponent(req.query.returnURL));
+});
 
 app.get('/:lang/*', returnIndexHtml);
 

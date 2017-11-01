@@ -46,7 +46,7 @@ app.get('/:lang/spinitsso-redirect',(req, res) => {
   });
 
   const idp = IdentityProvider({
-    metadata: fs.readFileSync(__dirname + '/onelogin_metadata.xml')
+    metadata: fs.readFileSync(__dirname + '/onelogin_metadata.xml', "utf-8").replace('${SSO_SERVER_URL}', "https://localhost:8081" + "/Saml/SignOnService")
   });
 
   const url = sp.createLoginRequest(idp, 'redirect');  
@@ -83,6 +83,10 @@ app.post('/sso/acs', (req, res) => {
       }
     }    
   });
+});
+
+app.get('/:lang/logout',(req, res) => {
+  return res.redirect("https://localhost:8081/" + req.params.lang + "&callbackURL=" + encodeURIComponent(req.query.returnURL));
 });
 
 
