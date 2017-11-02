@@ -14,9 +14,9 @@ import CommonFuns from 'util/Util.jsx';
 import moment from 'moment';
 import classNames from 'classnames';
 
-var getXaxisUom=(data)=>CommonFuns.getUomById(data.Tags[0].UomId).Code
+var getXaxisUom=(data,id)=>CommonFuns.getUomById(data.Tags[0].Id===id?data.Tags[0].UomId:data.Tags[1].UomId).Code
 
-var getYaxisUom=(data)=>CommonFuns.getUomById(data.Tags[1].UomId).Code
+var getYaxisUom=(data,id)=>CommonFuns.getUomById(data.Tags[1].Id===id?data.Tags[1].UomId:data.Tags[0].UomId).Code
 
 var getSeries=(datas)=>datas.map(data=>{
   var j2d=CommonFuns.DataConverter.JsonToDateTime;
@@ -199,8 +199,8 @@ export default class ScatterPlot extends Component {
   }
 
   getConfigObj(){
-    var xAxisUom=getXaxisUom(this.props.energyData[0]),
-        yAxisUom=getYaxisUom(this.props.energyData[0]);
+    var xAxisUom=getXaxisUom(this.props.energyData[0],this.state.xAxis),
+        yAxisUom=getYaxisUom(this.props.energyData[0],this.state.yAxis);
     var that=this;
     return{
       colors:colorArr,
