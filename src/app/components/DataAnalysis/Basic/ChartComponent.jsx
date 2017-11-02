@@ -267,6 +267,7 @@ export default class ChartComponent extends Component {
                   ref: 'chart',
                   energyData: analysisPanel.state.energyRawData,
                   getYaxisConfig:this.getYaxisConfig,
+                  step:analysisPanel.state.step
                   };
                   energyPart = <ScatterPlot {...properties}></ScatterPlot>;
             }

@@ -316,7 +316,7 @@ export default class ScatterPlot extends Component {
             Coordinates.forEach(Coordinate=>{
               if(Coordinate.XCoordinate===x && Coordinate.YCoordinate===y){
                 content+= `<div>
-                            <div style="font-size:14px;color:#626469">${moment(j2d(Coordinate.Time)).format("YYYY-MM-DD HH-mm")}</div>
+                            <div style="font-size:14px;color:#626469">${CommonFuns.formatDateByStep(j2d(Coordinate.Time,true),null,null,that.props.step)}</div>
                             <div style="font-size:12px;color:${colorArr[index]}">(${x+xAxisUom}, ${y+yAxisUom})</div>
                           </div>`
               }
@@ -442,5 +442,6 @@ export default class ScatterPlot extends Component {
 
 ScatterPlot.propTypes = {
   energyData:React.PropTypes.object,
-  getYaxisConfig:React.PropTypes.func
+  getYaxisConfig:React.PropTypes.func,
+  step:React.PropTypes.number,
 };
