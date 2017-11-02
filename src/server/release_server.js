@@ -174,7 +174,7 @@ app.post('/sso/acs', (req, res) => {
   console.log("get assertion and return to Jazz backend!");
   // get assertion and return to Jazz backend
   var options = {
-    url: JAZZ_WEBAPI_HOST + '/AccessControl/ValidateUser', 
+    url: JAZZ_WEBAPI_HOST + '/API/AccessControl/ValidateUser', 
     formData: req.body
   };
   request.post(options, function optionalCallback(err, httpResponse, body) {
