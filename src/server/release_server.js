@@ -6,7 +6,6 @@ const path=require("path");
 const useragent = require('useragent');
 
 var request = require("request");
-var path = require("path");
 const { URL } = require('url');
 const SYSID = 0;// 0云能效 1千里眼 2灯塔 8万丈云
 
@@ -80,7 +79,6 @@ var APP_DOWNLOAD_LOCAL = process.env.APP_DOWNLOAD_LOCAL;
 var APP_DOWNLOAD_QQ = process.env.APP_DOWNLOAD_QQ;
 var APP_DOWNLOAD_WDJ = process.env.APP_DOWNLOAD_WDJ;
 var APP_DOWNLOAD_BAIDU = process.env.APP_DOWNLOAD_BAIDU;
-var JAZZ_WEBAPI_HOST = process.env.JAZZ_WEBAPI_HOST;
 var JAZZ_WEB_HOST = process.env.JAZZ_WEB_HOST;
 var GUARD_UI_HOST = process.env.GUARD_UI_HOST;
 
@@ -181,7 +179,7 @@ app.post('/sso/acs', (req, res) => {
   };
   request.post(options, function optionalCallback(err, httpResponse, body) {
     if(err) {
-      return console.error('upload failed:', err);
+      console.log('err:', err);
     } else {
       let _body = JSON.parse(body);
       if(_body && _body.error.Code === '0') {
