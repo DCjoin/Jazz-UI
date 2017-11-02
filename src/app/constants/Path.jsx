@@ -92,7 +92,7 @@ module.exports = {
     getDiagnoseAssociateTag: '/diagnose/getassociatetag',
     updateDiagnose:'/diagnose/update',
     generatesolution:'/diagnose/generatesolution/{diagnoseId}',
-    isconfigcalendar:'/diagnose/isconfigcalendar/{hierarchyId}',
+    isconfigcalendar:'/diagnose/isconfigcalendar/{dueDate}/{hierarchyId}',
     getConsultant: '/user/getconsultant/{hierarchyId}',
   },
 

@@ -2643,6 +2643,9 @@ I18N.SaveEffect.Create.CalcSaveByMonth='Predicted energy saving by month';
 I18N.SaveEffect.Create.BenchmarkBattleCalc='Comparitive table between actual value and benchmark';
 I18N.SaveEffect.Create.StepTip = 'Step size does not match, please reselect data points.';
 I18N.SaveEffect.NoDateTip = 'No Data';
+I18N.SaveEffect.Create.CaculateTime = '能耗计算时间';
+I18N.SaveEffect.Create.WorkCaculateTime = '工作日计算时间';
+I18N.SaveEffect.Create.HolidayCaculateTime = '休息日日计算时间';
 
 I18N.SaveEffect.Chart = {};
 I18N.SaveEffect.Chart.PredictSaving = 'Predicted Energy Saving';

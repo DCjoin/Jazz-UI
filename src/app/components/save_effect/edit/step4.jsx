@@ -29,7 +29,7 @@ export default class Step4 extends Component {
 						</div>
 						<div className='step4-item'>
 							<header className='step4-item-title'>{I18N.EM.Report.Step}</header>
-							<div className='step4-item-value'>{find(getStepDataItems(), item => item.id === CalculationStep).label}</div>
+							<div className='step4-item-value'>{I18N.EM.Month}</div>
 						</div>
 			      <div className='step4-item'>
 							<header className='step4-item-title' style={{marginBottom:'0'}}>{I18N.SaveEffect.Create.CalcSaveByMonth + `（${unit}）`}</header>
