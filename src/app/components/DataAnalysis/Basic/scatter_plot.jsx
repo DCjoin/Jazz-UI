@@ -22,8 +22,11 @@ var getSeries=(datas)=>datas.map(data=>{
   var j2d=CommonFuns.DataConverter.JsonToDateTime;
   var {TimeRange,Coordinates}=data;
   var {StartTime,EndTime}=TimeRange;
+  var name=moment(j2d(EndTime)).hours()===0?
+  `${moment(j2d(StartTime)).format("YYYY-MM-DD HH-mm")}<br/>${moment(j2d(EndTime)).add(-1,'days').format("YYYY-MM-DD 24-mm")}`
+  :`${moment(j2d(StartTime)).format("YYYY-MM-DD HH-mm")}<br/>${moment(j2d(EndTime)).format("YYYY-MM-DD HH-mm")}`
   return{
-    name:`${moment(j2d(StartTime)).format("YYYY-MM-DD HH-mm")}<br/>${moment(j2d(EndTime)).format("YYYY-MM-DD HH-mm")}`,
+    name:name,
     marker:{
         	symbol:'circle'
         },
@@ -127,8 +130,8 @@ class DropDownMenu extends Component{
              <div className={classNames({
                                             'person-item': true,
                                             'selected':item.tagId===value
-                                          })}>
-                                                <div className="name" onClick={()=>{handleMenuItemClick(item)}}
+                                          })} onClick={()=>{handleMenuItemClick(item)}}>
+                                                <div className="name" 
                                                   style={{
                                                     whiteSpace: 'nowrap',
                                                     textOverflow: 'ellipsis',
