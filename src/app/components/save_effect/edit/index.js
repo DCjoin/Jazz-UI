@@ -11,6 +11,7 @@ import Step2 from './step2.jsx';
 import Step3 from './step3.jsx';
 import Step4 from './step4.jsx';
 import {Model} from 'constants/actionType/Effect.jsx';
+import {find} from 'lodash-es';
 
 import IconButton from 'material-ui/IconButton';
 import CircularProgress from 'material-ui/CircularProgress';
