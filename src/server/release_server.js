@@ -152,8 +152,8 @@ app.get('/sso/metadata', (req, res) => res.header('Content-Type','text/xml').sen
 app.get('/:lang/spinitsso-redirect', (req, res) => {
   // Configure your endpoint for IdP-initiated / SP-initiated SSO
   const sp = ServiceProvider({
-    privateKey: fs.readFileSync(__dirname + '/sp.pem'),//TODO
-    privateKeyPass: 'password',//TODO
+    privateKey: fs.readFileSync(__dirname + '/SE-SP.pem'),
+    privateKeyPass: 'sesp!@#',
     requestSignatureAlgorithm: 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256',
     metadata: fs.readFileSync(__dirname + '/metadata_sp.xml', "utf-8").replace('${SSO_ACS_URL}', JAZZ_WEB_HOST + "/sso/acs")
   });

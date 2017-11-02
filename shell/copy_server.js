@@ -15,4 +15,4 @@ var copy = function( src, dst ){
 copy('./src/server/release_server.js', './build/release_server.js');
 copy('./src/server/metadata_sp.xml', './build/metadata_sp.xml');
 copy('./src/server/onelogin_metadata.xml', './build/onelogin_metadata.xml');
-copy('./src/server/sp.pem', './build/sp.pem');
+copy('./src/server/SE-SP.pem', './build/SE-SP.pem');
