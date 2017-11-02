@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 
 import ActionVisibility from 'material-ui/svg-icons/action/visibility';
 import CircularProgress from 'material-ui/CircularProgress';
 import find from 'lodash-es/find';
+import _ from 'lodash-es';
 import moment from 'moment';
 
 import TimeGranularity from 'constants/TimeGranularity.jsx';
-import {Model} from 'constants/actionType/Effect.jsx';
+import {Model,CalendarItemType} from 'constants/actionType/Effect.jsx';
 
 import Util, {dateAdd} from 'util/Util.jsx';
 
@@ -16,31 +17,47 @@ import NewFlatButton from 'controls/NewFlatButton.jsx';
 
 import {ChartDateFilter} from 'components/Diagnose/CreateDiagnose.jsx';
 import ChartBasicComponent from 'components/DataAnalysis/Basic/ChartBasicComponent.jsx';
+import FontIcon from 'material-ui/FontIcon';
+import util from 'util/Util.jsx';
+import RoutePath from 'util/RoutePath.jsx';
+import TimePeriodComp from './time_period_comp.jsx';
+import Immutable from 'immutable';
+
+const CALENDAR_TYPE_WORKTIME = 2;
+const CALENDAR_TYPE_NO_WORKTIME = 3;
+const PLOT_BACKGROUND_COLOR = '#ecfaf8';
 
 let getModelDataItems = () => [
 	{ id: Model.Easy, label: I18N.SaveEffect.Model.Easy },
 	{ id: Model.Contrast, label: I18N.SaveEffect.Model.Contrast },
 	{ id: Model.Manual, label: I18N.SaveEffect.Model.Manual },
-	// { id: Model.Increment, label: I18N.SaveEffect.Model.Increment },
+	{ id: Model.Increment, label: I18N.SaveEffect.Model.Increment },
 	// { id: Model.Relation, label: I18N.SaveEffect.Model.Relation },
-	// { id: Model.Efficiency, label: I18N.SaveEffect.Model.Efficiency },
+	{ id: Model.Efficiency, label: I18N.SaveEffect.Model.Efficiency },
 	// { id: Model.Simulation, label: I18N.SaveEffect.Model.Simulation },
 ];
 
 let getStepDataItems = () => [
-	{ id: TimeGranularity.Minite, label: I18N.EM.Raw },
+	// { id: TimeGranularity.Minite, label: I18N.EM.Raw },
 	{ id: TimeGranularity.Hourly, label: I18N.EM.Hour },
 	{ id: TimeGranularity.Daily, label: I18N.EM.Day },
-	{ id: TimeGranularity.Monthly, label: I18N.EM.Month },
+	// { id: TimeGranularity.Monthly, label: I18N.EM.Month },
 ];
 
 let timeoutID = null;
 
 export default class Step2 extends Component {
+	static contextTypes = {
+		hierarchyId: PropTypes.string,
+		currentRoute:React.PropTypes.object,
+	};
 	constructor(props) {
 		super(props);
 		this._afterChartCreated = this._afterChartCreated.bind(this);
 		this.OnNavigatorChanged = this.OnNavigatorChanged.bind(this);
+	}
+	state={
+		showRefresh:false
 	}
   _afterChartCreated(chartObj) {
     if (chartObj.options.scrollbar && chartObj.options.scrollbar.enabled) {
@@ -116,6 +133,186 @@ export default class Step2 extends Component {
 				// this.props.updateChartByNavgatorData();
 		}
 	}
+
+	_getHierarchyId(context) {
+		return context.hierarchyId;
+	}
+
+	_renderAllDayTimes(){
+		var {TimePeriods,onTimePeriodsChanged}=this.props;
+		var items=[];
+		TimePeriods.forEach(time=>{
+			if(time.TimePeriodType===CalendarItemType.AllDayCalcTime){
+				items.push(time)
+			}
+		})
+
+		return(
+				<div className='calendar-content'>
+					<TimePeriodComp
+						workRuningTimes={items}
+						title={I18N.SaveEffect.Create.CaculateTime}
+						type={CalendarItemType.AllDayCalcTime}
+						onAddWorkTime={() => {
+							TimePeriods.push({
+								TimePeriodType: CalendarItemType.AllDayCalcTime,
+								FromTime: 8,
+								ToTime: 20,
+								ConfigStep:2
+							});
+							onTimePeriodsChanged(Immutable.fromJS(TimePeriods));
+						}}
+						onDeleteWorkTime={(data) => {
+							let idx=_.findIndex(TimePeriods,item=>item===data);
+							TimePeriods.splice(idx, 1);
+							onTimePeriodsChanged(Immutable.fromJS(TimePeriods));
+						}}
+						onChangeWorkTime={(data, type, val) => {
+							let idx=_.findIndex(TimePeriods,item=>item===data);
+							TimePeriods[idx][type] = val/60;
+							onTimePeriodsChanged(Immutable.fromJS(TimePeriods));
+						}}/>
+				</div>
+		)
+	}
+
+	_renderWorkAndHolidayTimes(){
+		var {TimePeriods,onTimePeriodsChanged}=this.props;
+		var workItems=[],holidayItems=[];
+		TimePeriods.forEach(time=>{
+			if(time.TimePeriodType===CalendarItemType.WorkDayCalcTime){
+				workItems.push(time)
+			}else if(time.TimePeriodType===CalendarItemType.RestDayCalcTime){
+				holidayItems.push(time)
+			}
+			
+		})
+
+		return(
+			<div className='calendar-content'>
+			
+					<TimePeriodComp
+						workRuningTimes={workItems}
+						title={I18N.SaveEffect.Create.WorkCaculateTime}
+						type={CalendarItemType.WorkDayCalcTime}
+						onAddWorkTime={() => {
+							TimePeriods.push({
+								TimePeriodType: CalendarItemType.WorkDayCalcTime,
+								FromTime: 8,
+								ToTime: 20,
+								ConfigStep:2
+							});
+							onTimePeriodsChanged(Immutable.fromJS(TimePeriods));
+						}}
+						onDeleteWorkTime={(data) => {
+							let idx=_.findIndex(TimePeriods,item=>item===data);
+							TimePeriods.splice(idx, 1);
+							onTimePeriodsChanged(Immutable.fromJS(TimePeriods));
+						}}
+						onChangeWorkTime={(data, type, val) => {
+							let idx=_.findIndex(TimePeriods,item=>item===data);
+							TimePeriods[idx][type] = val/60;
+							onTimePeriodsChanged(Immutable.fromJS(TimePeriods));
+						}}/>
+								<TimePeriodComp
+						workRuningTimes={holidayItems}
+						title={I18N.SaveEffect.Create.HolidayCaculateTime}
+						type={CalendarItemType.RestDayCalcTime}
+						onAddWorkTime={() => {
+							TimePeriods.push({
+								TimePeriodType: CalendarItemType.RestDayCalcTime,
+								FromTime: 10,
+								ToTime: 14,
+								ConfigStep:2
+							});
+							onTimePeriodsChanged(Immutable.fromJS(TimePeriods));
+						}}
+						onDeleteWorkTime={(data) => {
+							let idx=_.findIndex(TimePeriods,item=>item===data);
+							TimePeriods.splice(idx, 1);
+							onTimePeriodsChanged(Immutable.fromJS(TimePeriods));
+						}}
+						onChangeWorkTime={(data, type, val) => {
+							let idx=_.findIndex(TimePeriods,item=>item===data);
+							TimePeriods[idx][type] = val/60;
+							onTimePeriodsChanged(Immutable.fromJS(TimePeriods));
+						}}/>
+				</div>
+		)
+
+	}
+
+	_renderConfigCalendar(){
+		return(
+			this.state.showRefresh?
+				<div>
+					<div style={{fontSize: '12px',color:'#9fa0a4',marginTop:'23px'}}>{I18N.SaveEffect.Create.CaculateTime}</div>
+					<div className="no_weather_config">
+								<div onClick={()=>{
+									this.setState({
+										showRefresh:false,
+									},()=>{
+										this.props.checkCalendar();
+									})}}>{I18N.Common.Button.Refresh}</div>
+									<FontIcon className="icon-sync" color="#32ad3c" style={{fontSize:'14px',lineHeight:'14px',marginLeft:'8px'}}/>
+							</div>	
+				</div>
+						
+				:<div>
+					<div style={{fontSize: '12px',color:'#9fa0a4',marginTop:'23px'}}>{I18N.SaveEffect.Create.CaculateTime}</div>
+						<div className="calendar_no_config">
+							<span>{I18N.Setting.DataAnalysis.Weather.To}</span>
+         				 <div onClick={()=>{
+                            this.setState({
+                              showRefresh:true
+                            },()=>{
+                              util.openTab(RoutePath.customerSetting.hierNode(this.context.currentRoute.params)+'/'+this._getHierarchyId(this.context)+'?init_hierarchy_id='+this.context.hierarchyId)
+                            })
+            }}>{I18N.Setting.Calendar.TabName}</div>
+          <span>{I18N.Setting.DataAnalysis.Weather.Config}</span>
+
+				
+			</div>
+				</div>
+	
+
+		)
+		}
+
+	_renderTimePeriods(){
+		let {BenchmarkModel,CalculationStep,needCalendar,hasCalendar } = this.props;
+		if(BenchmarkModel !== Model.Easy && BenchmarkModel !== Model.Increment && BenchmarkModel !== Model.Efficiency) return null
+
+		if(hasCalendar==='loading'){
+			return(
+				 <div className="calendar_no_config" style={{marginTop:'50px'}}>
+            <CircularProgress  mode="indeterminate" size={40} />
+         </div>
+			)
+		}
+
+		if(CalculationStep===TimeGranularity.Daily){
+			if(needCalendar && !hasCalendar){
+			return this._renderConfigCalendar()
+			}
+			return null
+		}
+
+		if(CalculationStep===TimeGranularity.Hourly){
+			if(needCalendar){
+				if(hasCalendar){
+					return this._renderWorkAndHolidayTimes()
+				}else{
+					return this._renderConfigCalendar()
+				}
+			}else{
+				return this._renderAllDayTimes()
+			}
+		}
+
+
+	}
+
 	render() {
 		let { data, disabledPreview, BenchmarkModel, BenchmarkStartDate, BenchmarkEndDate, CalculationStep, onChangeModelType, onChangeStep, onChangeBenchmarkStartDate, onChangeBenchmarkEndDate, onGetChartData, IncludeEnergyEffectData  } = this.props,
 		chartProps;
@@ -156,6 +353,24 @@ export default class Step2 extends Component {
 					});
 					newConfig.stacking = null;
 					newConfig.legendSwitchList = ['line', 'column'];
+
+					//add calendar background-color
+					var {Calendars}=data.toJS();
+					  if( CalculationStep === TimeGranularity.Hourly && Calendars && Calendars.length > 0 ) {
+								let {CalendarType, CalendarTimeRanges} = Calendars[0];
+								if( CalendarTimeRanges && CalendarTimeRanges.length > 0 ) {
+									
+									newConfig.xAxis.plotBands = CalendarTimeRanges.map(({StartTime, EndTime}) => {
+										return {
+											color: PLOT_BACKGROUND_COLOR,
+											from: moment.utc(StartTime).valueOf(),
+											to: moment.utc(EndTime).valueOf()        
+										}
+									});
+
+								}
+							}
+
 					return newConfig;
 				},
 				afterChartCreated: this._afterChartCreated
@@ -193,9 +408,8 @@ export default class Step2 extends Component {
 						<div>
 							<ViewableDropDownMenu
 								defaultValue={CalculationStep}
-								isViewStatus={BenchmarkModel === Model.Manual}
+								isViewStatus={BenchmarkModel === Model.Manual || BenchmarkModel === Model.Contrast}
 								title={I18N.SaveEffect.Create.ConfigCalcStep}
-								isViewStatus={true}
 								valueField='id'
 								textField='label'
 								dataItems={getStepDataItems()}
@@ -211,6 +425,7 @@ export default class Step2 extends Component {
 							</div>
 							<div className='tip-message'>{I18N.SaveEffect.Create.BenchmarkDateTip}</div>
 						</div>}
+						{this._renderTimePeriods()}
 					</div>
 				</div>
 				<div className='create-block step2-content'>

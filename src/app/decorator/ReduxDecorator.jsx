@@ -39,7 +39,7 @@ function ReduxDecorator(Base) {
 
 			this._onChange = this._onChange.bind(this);
 
-			this.state = {...this.state, ...Base.calculateState(undefined, props, context,undefined)};
+			this.state = {...this.state, ...Base.calculateState(this.state, props, context,undefined)};
 			addListeners(Base.getStores()).map(actionWithListener(this._onChange));
 		};
 

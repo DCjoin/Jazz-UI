@@ -3,10 +3,12 @@ import React, { Component } from 'react';
 import ActionVisibility from 'material-ui/svg-icons/action/visibility';
 import CircularProgress from 'material-ui/CircularProgress';
 import find from 'lodash-es/find';
+import _ from 'lodash-es';
 import moment from 'moment';
+import Immutable from 'immutable';
 
 import TimeGranularity from 'constants/TimeGranularity.jsx';
-import {Model} from 'constants/actionType/Effect.jsx';
+import {Model,CalendarItemType} from 'constants/actionType/Effect.jsx';
 
 import Util from 'util/Util.jsx';
 
@@ -18,6 +20,9 @@ import NewFlatButton from 'controls/NewFlatButton.jsx';
 import {ChartDateFilter} from 'components/Diagnose/CreateDiagnose.jsx';
 import ChartBasicComponent from 'components/DataAnalysis/Basic/ChartBasicComponent.jsx';
 import {getDateObjByRange} from './';
+import TimePeriodComp from './time_period_comp.jsx';
+
+const PLOT_BACKGROUND_COLOR = '#ecfaf8';
 
 let getModelDataItems = () => [
 	{ id: Model.Easy, label: I18N.SaveEffect.Model.Easy },
@@ -69,6 +74,75 @@ export default class Step3 extends Component {
 		super(props);
 
 	}
+
+_renderAllDayTimes(){
+		var {TimePeriods,onTimePeriodsChanged}=this.props;
+		var items=[];
+		TimePeriods.forEach(time=>{
+			if(time.TimePeriodType===CalendarItemType.AllDayCalcTime && time.ConfigStep===3){
+				items.push(time)
+			}
+		})
+
+		return(
+				<div className='calendar-content'>
+					<TimePeriodComp
+						workRuningTimes={items}
+						title={I18N.SaveEffect.Create.CaculateTime}
+						type={CalendarItemType.AllDayCalcTime}
+						operationDisabled={true}
+						onChangeWorkTime={(data, type, val) => {
+							let idx=_.findIndex(TimePeriods,item=>item===data);
+							TimePeriods[idx][type] = val/60;
+							onTimePeriodsChanged(Immutable.fromJS(TimePeriods));
+						}}/>
+				</div>
+		)
+	}
+
+	_renderWorkAndHolidayTimes(){
+		var {TimePeriods,onTimePeriodsChanged}=this.props;
+		var workItems=[],holidayItems=[];
+		TimePeriods.forEach(time=>{
+			if(time.TimePeriodType===CalendarItemType.WorkDayCalcTime && time.ConfigStep===3){
+				workItems.push(time)
+			}else if(time.TimePeriodType===CalendarItemType.RestDayCalcTime && time.ConfigStep===3){
+				holidayItems.push(time)
+			}
+			
+		})
+
+		return(
+			<div className='calendar-content'>
+					<TimePeriodComp
+						workRuningTimes={workItems}
+						title={I18N.SaveEffect.Create.WorkCaculateTime}
+						type={CalendarItemType.WorkDayCalcTime}
+						operationDisabled={true}
+						onChangeWorkTime={(data, type, val) => {
+							let idx=_.findIndex(TimePeriods,item=>item===data);
+							TimePeriods[idx][type] = val/60;
+							onTimePeriodsChanged(Immutable.fromJS(TimePeriods));
+						}}/>
+								<TimePeriodComp
+						workRuningTimes={holidayItems}
+						title={I18N.SaveEffect.Create.HolidayCaculateTime}
+						type={CalendarItemType.RestDayCalcTime}
+						operationDisabled={true}
+						onChangeWorkTime={(data, type, val) => {
+							let idx=_.findIndex(TimePeriods,item=>item===data);
+							TimePeriods[idx][type] = val/60;
+							onTimePeriodsChanged(Immutable.fromJS(TimePeriods));
+						}}/>
+				</div>
+		)
+
+	}
+	_renderConfigCalendar(){
+		let {needCalendar}=this.props;
+		return needCalendar?this._renderWorkAndHolidayTimes():this._renderAllDayTimes()
+	}
+
 	render() {
 		let { data,
 			disabledPreview,
@@ -117,6 +191,23 @@ export default class Step3 extends Component {
 					});
 					newConfig.stacking = null;
 					newConfig.legendSwitchList = ['line', 'column'];
+
+					//add calendar background-color
+					var {Calendars}=data.toJS();
+					  if( CalculationStep === TimeGranularity.Hourly && Calendars && Calendars.length > 0 ) {
+								let { CalendarTimeRanges} = Calendars[0];
+								if( CalendarTimeRanges && CalendarTimeRanges.length > 0 ) {
+									
+									newConfig.xAxis.plotBands = CalendarTimeRanges.map(({StartTime, EndTime}) => {
+										return {
+											color: PLOT_BACKGROUND_COLOR,
+											from: moment.utc(StartTime).valueOf(),
+											to: moment.utc(EndTime).valueOf()        
+										}
+									});
+
+								}
+							}
 					return newConfig;
 				}
 				// postNewConfig: curry(postNewConfig)(data, isEdit, isTypeC, hiddenAssociateLabel),
@@ -150,8 +241,11 @@ export default class Step3 extends Component {
 							</div>
 							<ViewableTextField errorMessage={I18N.SaveEffect.FormatVaildTip} regex={/^(\+?)\d{1,9}([.]\d{1,3})?$/} style={{width: 170}} title={I18N.SaveEffect.Create.EnergyUnitPrice + `(RMB/${unit})`} hintText={I18N.SaveEffect.Create.EnterEnergyUnitPrice} defaultValue={EnergyUnitPrice} didChanged={onChangeEnergyUnitPrice}/>
 							{ Model.Manual === BenchmarkModel && <ManualValue unit={unit} key={EnergyStartDate + EnergyEndDate} BenchmarkDatas={BenchmarkDatas} onChangeValue={onChangeBenchmarkDatas}/>}
-							{Model.Manual !== BenchmarkModel && 
+							{Model.Manual !== BenchmarkModel && CalculationStep===TimeGranularity.Daily &&
 							<ViewableTextField errorMessage={I18N.SaveEffect.FormatVaildTip} regex={/^(\+?)\d{1,9}([.]\d{1,3})?$/} style={{width: 170}} title={I18N.SaveEffect.Create.CorrectionFactor} hintText={I18N.SaveEffect.Create.EnterCorrectionFactor} defaultValue={CorrectionFactor} didChanged={onChangeCorrectionFactor}/>
+							}
+							{Model.Manual !== BenchmarkModel && Model.Contrast !== BenchmarkModel && CalculationStep===TimeGranularity.Hourly &&
+								this._renderConfigCalendar()
 							}
 						</div>
 					</div>

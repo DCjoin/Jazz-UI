@@ -29,7 +29,9 @@ module.exports = {
     INIT_STORE:null,
     GET_CLASSIFICATION_DATA:null,
     IGNORE_SUCCESS:null,
-    CLEAN_DETAIL_ALL_DATA:null
+    CLEAN_DETAIL_ALL_DATA:null,
+    GET_CONFIG_CALENDAR_FOR_SAVEEFFECT:null,
+    GET_CONFIG_CALENDAR_LOADING:null
   }),
   calcState:{
     NotStarted:10,
@@ -46,6 +48,11 @@ module.exports = {
   	Efficiency: 6,
   	Simulation: 7,
   },
+  CalendarItemType:{
+    WorkDayCalcTime:0,
+    RestDayCalcTime:1,
+    AllDayCalcTime:8
+  }
 
 };
 

@@ -123,6 +123,7 @@
 				width: 260px;
 				margin-right: 0px;
 				border-radius: 2px;
+				overflow-y: auto;
 				&-header {
 					height: 50px;
 					line-height: 50px;
@@ -134,6 +135,24 @@
 				}
 				&-content {
 					padding: 15px;
+
+					  & .icon-add {
+							width: 16px;
+							height: 16px;
+							border-radius: 2px;
+							border: solid 1px #32ad3d;
+							color: #32ad3d;
+							display: inline-block;
+							font-size: 10px;
+							line-height: 16px;
+							text-align: center;
+							margin-left: 4px;
+
+							&.disabled {
+								border-color: #aae5b8;
+								color: #aae5b8;
+							}
+						}
 
 					& .date-picker-inline {
 						display: inline-block;
@@ -151,6 +170,39 @@
 						font-size: 12px;
 						text-align: left;
 						color: @red;
+					}
+
+					& .calendar{
+						&-run-time{
+							padding-bottom: 15px;
+							color: #202622;
+							margin-top: 20px;
+						}
+							&-content{
+								flex: 1;
+    						overflow-x: hidden;
+    						overflow-y: auto;
+							}
+	
+						  &_no_config{
+								display: flex;
+								font-size: 14px;
+								flex-flow: row wrap;
+								width: 100%;
+								align-items: center;
+								justify-content: center;
+								margin-top:23px;
+								 >div{
+									color:@medium-green;
+									text-decoration:underline;
+									&:hover{
+										color: @life-green;
+										cursor: pointer;
+									}
+								}
+
+
+							}
 					}
 				}
 			}
