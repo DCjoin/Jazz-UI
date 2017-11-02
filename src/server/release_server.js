@@ -82,7 +82,7 @@ var APP_DOWNLOAD_WDJ = process.env.APP_DOWNLOAD_WDJ;
 var APP_DOWNLOAD_BAIDU = process.env.APP_DOWNLOAD_BAIDU;
 var JAZZ_WEBAPI_HOST = process.env.JAZZ_WEBAPI_HOST;
 var JAZZ_WEB_HOST = process.env.JAZZ_WEB_HOST;
-var SSO_SERVER_URL = process.env.SSO_SERVER_URL;
+var GUARD_UI_HOST = process.env.GUARD_UI_HOST;
 
 function getLang(req) {
   var lang = req.params.lang;
@@ -151,17 +151,17 @@ app.get('/download-app', returnDownloadHtml);
 app.get('/sso/metadata', (req, res) => res.header('Content-Type','text/xml').send(sp.getMetadata()));
 
 // Access URL for implementing SP-init SSO
-app.get('/:lang/spinitsso-redirect',(req, res) => {
+app.get('/:lang/spinitsso-redirect', (req, res) => {
   // Configure your endpoint for IdP-initiated / SP-initiated SSO
   const sp = ServiceProvider({
-    privateKey: fs.readFileSync(__dirname + '/sp.pem'),
-    privateKeyPass: 'password',
+    privateKey: fs.readFileSync(__dirname + '/sp.pem'),//TODO
+    privateKeyPass: 'password',//TODO
     requestSignatureAlgorithm: 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256',
-    metadata: fs.readFileSync(__dirname + '/metadata_sp.xml', "utf-8").replace('${SSO_ACS_URL}', JAZZ_WEB_HOST)
+    metadata: fs.readFileSync(__dirname + '/metadata_sp.xml', "utf-8").replace('${SSO_ACS_URL}', JAZZ_WEB_HOST + "/sso/acs")
   });
 
   const idp = IdentityProvider({
-    metadata: fs.readFileSync(__dirname + '/onelogin_metadata.xml', "utf-8").split('${SSO_SERVER_URL}').join(SSO_SERVER_URL + "/Saml/SignOnService")
+    metadata: fs.readFileSync(__dirname + '/onelogin_metadata.xml', "utf-8").split('${GUARD_UI_HOST}').join(GUARD_UI_HOST + "/Saml/SignOnService")
   });
 
   const url = sp.createLoginRequest(idp, 'redirect');  
@@ -200,7 +200,7 @@ app.post('/sso/acs', (req, res) => {
 });
 
 app.get('/:lang/logout',(req, res) => {
-  return res.redirect("https://localhost:8081/" + req.params.lang + "&callbackURL=" + encodeURIComponent(req.query.returnURL));
+  return res.redirect(GUARD_UI_HOST + req.params.lang + "&callbackURL=" + encodeURIComponent(req.query.returnURL));
 });
 
 app.get('/:lang/*', returnIndexHtml);
