@@ -10,7 +10,7 @@ import Step1 from './step1.jsx';
 import Step2 from './step2.jsx';
 import Step3 from './step3.jsx';
 import Step4 from './step4.jsx';
-import {Model} from 'constants/actionType/Effect.jsx';
+import {Model,CalendarItemType} from 'constants/actionType/Effect.jsx';
 import {find} from 'lodash-es';
 
 import IconButton from 'material-ui/IconButton';
@@ -198,6 +198,34 @@ function needCalendar(hierarchyId){
 export default class Edit extends Component {
 
   	static calculateState = (state, props, ctx,isRefresh) => {
+
+				var filterObj=state.filterObj;
+		if(state.hasCalendar==='loading'){
+			if(state.filterObj.get("CalculationStep")===TimeGranularity.Hourly){
+				// if(needCalendar(ctx.hierarchyId)){
+				if(needCalendar(ctx.hierarchyId)){
+					filterObj=filterObj.set("TimePeriods",Immutable.fromJS([{
+						FromTime:8,
+						ToTime:20,
+						TimePeriodType:CalendarItemType.WorkDayCalcTime,
+						ConfigStep:2
+					},{
+						FromTime:10,
+						ToTime:14,
+						TimePeriodType:CalendarItemType.RestDayCalcTime,
+						ConfigStep:2
+					}]))
+				}else{
+					filterObj=filterObj.set("TimePeriods",Immutable.fromJS([{
+						FromTime:8,
+						ToTime:20,
+						TimePeriodType:CalendarItemType.AllDayCalcTime,
+						ConfigStep:2
+					}]))
+				}
+			}
+		}
+
 		return {
 			tags: CreateStore.getTagsByPlan() && CreateStore.getTagsByPlan().map(tag => Immutable.fromJS({
 				TagId: tag.get('TagId'),
@@ -213,7 +241,7 @@ export default class Edit extends Component {
 			supervisorList:MeasuresStore.getSupervisor(),
 			hasCalendar:SecondStepStore.getConfigCalendar(),
       // filterObj:CreateStore.getEffectItem()
-      filterObj:(!state || isRefresh)?CreateStore.getEffectItem():state.filterObj
+      filterObj:(!state || isRefresh)?CreateStore.getEffectItem():filterObj
 		}
 	};
 	static getStores = () => [CreateStore, MeasuresStore,SecondStepStore];
@@ -645,6 +673,11 @@ export default class Edit extends Component {
             configStep:autoEditNextStep?3:null,
             chartData3:null,
            },()=>{
+					if(filterObj.get('TimePeriods').size!==0){						
+						var newPeriods=filterObj.get('TimePeriods').map(period=>period.set("ConfigStep",3));
+						filterObj=filterObj.set("TimePeriods",filterObj.get('TimePeriods').concat(newPeriods));
+					}
+
              if(autoEditNextStep){
                updateItem(filterObj.set('ConfigStep',3).toJS(),this.state.chartData2,null);
              }else{

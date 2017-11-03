@@ -867,7 +867,7 @@ _onScatterAxisChanged(){
     };
 
     //let selectedWidget = FolderStore.getSelectedNode();
-    let buttonDisabled = !this.state.energyData;
+    let buttonDisabled = (!this.state.energyData ) || this.state.energyData==='initial';
 
     var   handleTouchTap = (event) => {
     // This prevents ghost click.
