@@ -274,7 +274,7 @@ export default class ScatterPlot extends Component {
         layout: 'vertical',
         verticalAlign: 'top',
         title:{
-          text:that.props.isFromSolution?`${xAxisName}<br/>${yAxisName}`:null
+          text:that.props.isFromSolution?`${I18N.Setting.DataAnalysis.Scatter.XAxis+'：'+xAxisName}<br/>${I18N.Setting.DataAnalysis.Scatter.YAxis+'：'+yAxisName}`:null
         },
         y: 140,
         x: -100,
