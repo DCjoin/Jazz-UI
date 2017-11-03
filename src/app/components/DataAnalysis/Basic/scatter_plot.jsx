@@ -186,7 +186,7 @@ export default class ScatterPlot extends Component {
     this.props.energyData.forEach((data,index)=>{
       content+=`<div style="font-size:14px;display:flex;color:${colorArr[index]}">
                     R2=${data.R2}
-                    <div style="margin-left:20px">y=${data.B}x+${data.A}</div>
+                    <div style="margin-left:20px">y=${data.B}x${data.A<0?'':'+'}${data.A}</div>
                    </div>`
     })
 
