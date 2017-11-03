@@ -392,9 +392,9 @@ export default class Step2 extends Component {
 		}
 		return (
 			<div className='step2-wrapper'>
-				<div className='create-block step2-side'>
+				<div className='create-block step2-side' style={{display:'flex',flexDirection:'column'}}>
 					<header className='step2-side-header'>{I18N.SaveEffect.Create.ConfigModel}</header>
-					<div className='step2-side-content'>
+					<div className='step2-side-content' style={{overflowY:'auto'}}>
 						<div>
 							<ViewableDropDownMenu
 								defaultValue={BenchmarkModel}
