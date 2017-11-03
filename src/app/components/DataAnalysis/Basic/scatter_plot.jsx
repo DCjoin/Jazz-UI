@@ -317,7 +317,7 @@ export default class ScatterPlot extends Component {
         title:{
           text:that.props.isFromSolution?`${I18N.Setting.DataAnalysis.Scatter.XAxis+'：'+xAxisName}<br/>${I18N.Setting.DataAnalysis.Scatter.YAxis+'：'+yAxisName}`:null
         },
-        y: 140,
+        y: that.props.isFromSolution?10:140,
         x: -100,
         itemStyle: {
           cursor: 'default',
