@@ -43,7 +43,7 @@ export default class ScatterPlotView extends Component {
       )
     }else{
       return(
-        <ScatterPlot energyData={this.state.energyData} afterChartCreated={this.props.afterChartCreated}/>
+        <ScatterPlot energyData={this.state.energyData} afterChartCreated={this.props.afterChartCreated} isFromSolution={true}/>
       )
     }  
   }

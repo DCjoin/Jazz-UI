@@ -43,6 +43,47 @@ var hasEmptyAxis=(datas)=>datas.map(data=>data.Coordinates.length===0).indexOf(t
 var colorArr=['#42b4e6', '#e47f00', '#1a79a9', '#71cbf4', '#b10043',
     '#9fa0a4', '#87d200', '#626469', '#ffd100', '#df3870'];
 
+let dataLabelFormatter = function(format) {
+  var f = window.Highcharts.numberFormat;
+  var v = Number(this.value);
+  var sign = this.value < 0 ? -1 : 1;
+
+  v = Math.abs(v);
+  if (v === 0) {
+    if (format === false) {
+      return this.value;
+    } else {
+      return v;
+    }
+  }
+  if (v < Math.pow(10, 3)) {
+    if (format === false) {
+      return v * sign;
+    } else {
+      return f(v * sign, 2);
+    }
+  } else if (v < Math.pow(10, 6)) {
+    if (format === false) {
+      var len = parseInt(v / 1000).toString().length;
+      var v1 = v.toString();
+      var retV = v1.substring(0, len) + ',' + v1.substring(len);
+      if (sign < 0)
+        retV = '-' + retV;
+      return retV;
+    } else {
+      return f(v * sign, 0);
+    }
+  } else if (v < Math.pow(10, 8)) {
+    v = f(parseInt(v / Math.pow(10, 3)) * sign, 0) + 'k';
+  } else if (v < Math.pow(10, 11)) {
+    v = f(parseInt(v / Math.pow(10, 6)) * sign, 0) + 'M';
+  } else if (v < Math.pow(10, 14)) {
+    v = f(parseInt(v / Math.pow(10, 9)) * sign, 0) + 'G';
+  } else if (v < Math.pow(10, 17)) {
+    v = f(parseInt(v / Math.pow(10, 12)) * sign, 0) + 'T';
+  }
+  return v;
+};
 
 class DropDownMenu extends Component{
 
@@ -186,10 +227,10 @@ export default class ScatterPlot extends Component {
     this.props.energyData.forEach((data,index)=>{
       content+=`<div style="font-size:14px;display:flex;color:${colorArr[index]}">
                     R2=${data.R2}
-                    <div style="margin-left:20px">y=${data.B}x+${data.A}</div>
+                    <div style="margin-left:20px">y=${data.B}x${data.A<0?'':'+'}${data.A}</div>
                    </div>`
     })
-
+  
     return(
       `<div style="display:flex;flex-direction:row">
                  <div style="font-size:14px;color:#626469">${I18N.Setting.DataAnalysis.Scatter.Formula+': '}</div>
@@ -200,14 +241,16 @@ export default class ScatterPlot extends Component {
 
   getConfigObj(){
     var xAxisUom=getXaxisUom(this.props.energyData[0],this.state.xAxis),
-        yAxisUom=getYaxisUom(this.props.energyData[0],this.state.yAxis);
+        yAxisUom=getYaxisUom(this.props.energyData[0],this.state.yAxis),
+        xAxisName=Immutable.fromJS(AlarmTagStore.getSearchTagList()).find(tag=>tag.get('tagId')===this.state.xAxis).get("tagName"),
+        yAxisName=Immutable.fromJS(AlarmTagStore.getSearchTagList()).find(tag=>tag.get('tagId')===this.state.yAxis).get("tagName");
     var that=this;
     return{
       colors:colorArr,
       chart: {
         type: 'scatter',
         zoomType: 'xy',
-        spacingBottom:20*this.props.energyData.length,
+        spacingBottom:that.props.isFromSolution?0:20*this.props.energyData.length,
         events:{
           redraw: function (e) {
             var xAxis=e.target.xAxis[0],
@@ -271,7 +314,10 @@ export default class ScatterPlot extends Component {
         enabled: true,
         layout: 'vertical',
         verticalAlign: 'top',
-        y: 140,
+        title:{
+          text:that.props.isFromSolution?`${I18N.Setting.DataAnalysis.Scatter.XAxis+'：'+xAxisName}<br/>${I18N.Setting.DataAnalysis.Scatter.YAxis+'：'+yAxisName}`:null
+        },
+        y: that.props.isFromSolution?10:140,
         x: -100,
         itemStyle: {
           cursor: 'default',
@@ -285,6 +331,7 @@ export default class ScatterPlot extends Component {
         borderWidth: 0,
         margin: 10,
         align: 'right',
+        width:that.props.isFromSolution?90:130,
         itemMarginTop: 6,
         itemMarginBottom: 6
         },
@@ -320,7 +367,11 @@ export default class ScatterPlot extends Component {
               if(Coordinate.XCoordinate===x && Coordinate.YCoordinate===y){
                 content+= `<div>
                             <div style="font-size:14px;color:#626469">${CommonFuns.formatDateByStep(j2d(Coordinate.Time,true),null,null,that.props.step)}</div>
-                            <div style="font-size:12px;color:${colorArr[index]}">(${x+xAxisUom}, ${y+yAxisUom})</div>
+                            <div style="font-size:12px;color:${colorArr[index]}">(${dataLabelFormatter.call({
+                  value: x
+                }, false)+xAxisUom}, ${dataLabelFormatter.call({
+                  value: y
+                }, false)+yAxisUom})</div>
                           </div>`
               }
             })
@@ -447,4 +498,5 @@ ScatterPlot.propTypes = {
   energyData:React.PropTypes.object,
   getYaxisConfig:React.PropTypes.func,
   step:React.PropTypes.number,
+  isFromSolution:React.PropTypes.bool
 };

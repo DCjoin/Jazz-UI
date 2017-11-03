@@ -163,6 +163,7 @@ export class GenerateSolution extends Component {
 			nodes: props.nodes,
 			allTags: {},
 			svgStrings: {},
+			otherString:{},
 			ProblemName: null,
 			ProblemMark: 0,
 			ProblemDesc: null,
@@ -182,15 +183,24 @@ export class GenerateSolution extends Component {
 	}
 	_afterChartCreated(nodeId, tags) {
 		let svgString,
+				otherString,
 		parent = ReactDOM.findDOMNode(this).querySelector('#chart_basic_component_' + nodeId);
 		if(parent && parent.querySelector('svg')) {
 			svgString = new XMLSerializer().serializeToString(parent.querySelector('svg'));
+		}
+		if(parent && parent.getElementsByClassName("highcharts-title")){
+			otherString=parent.getElementsByClassName("highcharts-title")[0].innerHTML
 		}
 		if( svgString ) {
 			this.setState({
 				svgStrings: {...this.state.svgStrings, ...{
 					[nodeId]: svgString
 				}},
+				otherString:{
+					...this.state.otherString, ...{
+					[nodeId]: otherString
+				}
+				},
 				allTags: {...this.state.allTags, ...{
 					[nodeId]: tags
 				}}
@@ -327,13 +337,20 @@ export class GenerateSolution extends Component {
 	}
 
 	_renderChart() {
-		let {idx, nodes, svgStrings} = this.state,
+		let {idx, nodes, svgStrings,otherString} = this.state,
 		currentNode = nodes[idx];
 		if( currentNode ) {
 			let svgString = svgStrings[getId(currentNode)];
+			let content=[];
 			if(svgStrings[getId(currentNode)]) {
-				return (<div style={{height: SVG_HEIGHT, width: SVG_WIDTH}} dangerouslySetInnerHTML={{__html: svgString}} />);
+				content.push(<div style={{height: SVG_HEIGHT, width: SVG_WIDTH}} dangerouslySetInnerHTML={{__html: svgString}} />);
 			}
+			if(otherString[getId(currentNode)]){
+				content.push(<div dangerouslySetInnerHTML={{__html: otherString[getId(currentNode)]}} />);
+			}
+			return(<div>
+				{content}
+			</div>)
 		}
 		return (<div style={{height: SVG_HEIGHT, width: SVG_WIDTH}} className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>);
 	}
