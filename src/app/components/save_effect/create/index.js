@@ -251,7 +251,7 @@ function needCalendar(hierarchyId){
 export default class Create extends Component {
 	static calculateState = (state, props, ctx) => {
 		var filterObj=state.filterObj;
-		if(state.hasCalendar==='loading'){
+		if(state.hasCalendar==='loading' && filterObj.get("TimePeriods").size===0){
 			if(state.filterObj.get("CalculationStep")===TimeGranularity.Hourly){
 				// if(needCalendar(ctx.hierarchyId)){
 				if(needCalendar(ctx.hierarchyId)){
