@@ -200,7 +200,7 @@ export default class Edit extends Component {
   	static calculateState = (state, props, ctx,isRefresh) => {
 
 				var filterObj=state.filterObj;
-		if(state.hasCalendar==='loading'){
+		if(state.hasCalendar==='loading'  && filterObj.get("TimePeriods").size===0){
 			if(state.filterObj.get("CalculationStep")===TimeGranularity.Hourly){
 				// if(needCalendar(ctx.hierarchyId)){
 				if(needCalendar(ctx.hierarchyId)){

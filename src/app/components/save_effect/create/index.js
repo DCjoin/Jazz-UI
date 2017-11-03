@@ -251,7 +251,7 @@ function needCalendar(hierarchyId){
 export default class Create extends Component {
 	static calculateState = (state, props, ctx) => {
 		var filterObj=state.filterObj;
-		if(state.hasCalendar==='loading'){
+		if(state.hasCalendar==='loading' && filterObj.get("TimePeriods").size===0){
 			if(state.filterObj.get("CalculationStep")===TimeGranularity.Hourly){
 				// if(needCalendar(ctx.hierarchyId)){
 				if(needCalendar(ctx.hierarchyId)){
@@ -515,6 +515,29 @@ export default class Create extends Component {
 							}
 						}
 
+							if(step===TimeGranularity.Hourly){
+								// if(needCalendar(ctx.hierarchyId)){
+								if(needCalendar(this.context.hierarchyId)){
+									filterObj=filterObj.set("TimePeriods",Immutable.fromJS([{
+										FromTime:8,
+										ToTime:20,
+										TimePeriodType:CalendarItemType.WorkDayCalcTime,
+										ConfigStep:2
+									},{
+										FromTime:10,
+										ToTime:14,
+										TimePeriodType:CalendarItemType.RestDayCalcTime,
+										ConfigStep:2
+									}]))
+								}else{
+									filterObj=filterObj.set("TimePeriods",Immutable.fromJS([{
+										FromTime:8,
+										ToTime:20,
+										TimePeriodType:CalendarItemType.AllDayCalcTime,
+										ConfigStep:2
+									}]))
+								}
+							}
 						this._setFilterObj(filterObj.set('CalculationStep', step));
 						this._setTagStepTip( step );
 						{/*getPreviewChart2(filterObj.set("CorrectionFactor",1).set("HierarchyId",this.context.hierarchyId).toJS());*/}
