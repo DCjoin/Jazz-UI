@@ -200,14 +200,16 @@ export default class ScatterPlot extends Component {
 
   getConfigObj(){
     var xAxisUom=getXaxisUom(this.props.energyData[0],this.state.xAxis),
-        yAxisUom=getYaxisUom(this.props.energyData[0],this.state.yAxis);
+        yAxisUom=getYaxisUom(this.props.energyData[0],this.state.yAxis),
+        xAxisName=Immutable.fromJS(AlarmTagStore.getSearchTagList()).find(tag=>tag.get('tagId')===this.state.xAxis).get("tagName"),
+        yAxisName=Immutable.fromJS(AlarmTagStore.getSearchTagList()).find(tag=>tag.get('tagId')===this.state.yAxis).get("tagName");
     var that=this;
     return{
       colors:colorArr,
       chart: {
         type: 'scatter',
         zoomType: 'xy',
-        spacingBottom:20*this.props.energyData.length,
+        spacingBottom:that.props.isFromSolution?0:20*this.props.energyData.length,
         events:{
           redraw: function (e) {
             var xAxis=e.target.xAxis[0],
@@ -271,6 +273,9 @@ export default class ScatterPlot extends Component {
         enabled: true,
         layout: 'vertical',
         verticalAlign: 'top',
+        title:{
+          text:that.props.isFromSolution?`${xAxisName}<br/>${yAxisName}`:null
+        },
         y: 140,
         x: -100,
         itemStyle: {
@@ -285,6 +290,7 @@ export default class ScatterPlot extends Component {
         borderWidth: 0,
         margin: 10,
         align: 'right',
+        width:that.props.isFromSolution?90:130,
         itemMarginTop: 6,
         itemMarginBottom: 6
         },
@@ -447,4 +453,5 @@ ScatterPlot.propTypes = {
   energyData:React.PropTypes.object,
   getYaxisConfig:React.PropTypes.func,
   step:React.PropTypes.number,
+  isFromSolution:React.PropTypes.bool
 };

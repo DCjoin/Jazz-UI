@@ -129,6 +129,7 @@ export default class AnalysisGenerateSolution extends Component {
       }}
     });
   }
+
   _renderChart(node,afterChartCreated){
     let me=this;
     let nodeId = getId(node),
