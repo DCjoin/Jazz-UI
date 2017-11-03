@@ -1201,7 +1201,7 @@ _onScatterAxisChanged(){
     var props={
       auxiliary:{
         selectedChartType:this.state.selectedChartType,
-        hasTagData:!(AlarmTagStore.getSearchTagList().length===0),
+        hasTagData:!(AlarmTagStore.getSearchTagList().length===0 || this.state.energyData==='initial'),
         timeRanges:this.state.timeRanges,
         yaxisConfig:this.state.yaxisConfig,
         initYaxisDialog:this._initYaxisDialog,
@@ -1676,7 +1676,7 @@ _onScatterAxisChanged(){
         ref:'subToolBar',
         selectedChartType:this.state.selectedChartType,
         onSearchBtnItemTouchTap:this._onSearchBtnItemTouchTap,
-        hasTagData:!(AlarmTagStore.getSearchTagList().length===0),
+        hasTagData:!(AlarmTagStore.getSearchTagList().length===0) || (this.state.energyData==='initial'),
         timeRanges:this.state.timeRanges,
         step:this.state.step,
         onStepChange:this._handleEnergyStepChange,

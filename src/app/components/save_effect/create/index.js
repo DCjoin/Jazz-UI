@@ -12,6 +12,7 @@ import {
 import SvgIcon from 'material-ui/SvgIcon';
 import IconButton from 'material-ui/IconButton';
 import CircularProgress from 'material-ui/CircularProgress';
+import {find} from 'lodash-es';
 
 import ReduxDecorator from 'decorator/ReduxDecorator.jsx';
 

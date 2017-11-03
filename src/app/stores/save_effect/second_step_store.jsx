@@ -2,7 +2,7 @@
 'use strict';
 
 import AppDispatcher from '../../dispatcher/AppDispatcher.jsx';
-import { Action,Status,Msg} from '../../constants/actionType/Measures.jsx';
+import { Action } from 'constants/actionType/Effect.jsx';
 import PrototypeStore from '../PrototypeStore.jsx';
 import assign from 'object-assign';
 

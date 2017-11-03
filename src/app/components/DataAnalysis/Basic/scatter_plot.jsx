@@ -14,16 +14,19 @@ import CommonFuns from 'util/Util.jsx';
 import moment from 'moment';
 import classNames from 'classnames';
 
-var getXaxisUom=(data)=>CommonFuns.getUomById(data.Tags[0].UomId).Code
+var getXaxisUom=(data,id)=>CommonFuns.getUomById(data.Tags[0].Id===id?data.Tags[0].UomId:data.Tags[1].UomId).Code
 
-var getYaxisUom=(data)=>CommonFuns.getUomById(data.Tags[1].UomId).Code
+var getYaxisUom=(data,id)=>CommonFuns.getUomById(data.Tags[1].Id===id?data.Tags[1].UomId:data.Tags[0].UomId).Code
 
 var getSeries=(datas)=>datas.map(data=>{
   var j2d=CommonFuns.DataConverter.JsonToDateTime;
   var {TimeRange,Coordinates}=data;
   var {StartTime,EndTime}=TimeRange;
+  var name=moment(j2d(EndTime)).hours()===0?
+  `${moment(j2d(StartTime)).format("YYYY-MM-DD HH-mm")}<br/>${moment(j2d(EndTime)).add(-1,'days').format("YYYY-MM-DD 24-mm")}`
+  :`${moment(j2d(StartTime)).format("YYYY-MM-DD HH-mm")}<br/>${moment(j2d(EndTime)).format("YYYY-MM-DD HH-mm")}`
   return{
-    name:`${moment(j2d(StartTime)).format("YYYY-MM-DD HH-mm")}<br/>${moment(j2d(EndTime)).format("YYYY-MM-DD HH-mm")}`,
+    name:name,
     marker:{
         	symbol:'circle'
         },
@@ -127,8 +130,8 @@ class DropDownMenu extends Component{
              <div className={classNames({
                                             'person-item': true,
                                             'selected':item.tagId===value
-                                          })}>
-                                                <div className="name" onClick={()=>{handleMenuItemClick(item)}}
+                                          })} onClick={()=>{handleMenuItemClick(item)}}>
+                                                <div className="name" 
                                                   style={{
                                                     whiteSpace: 'nowrap',
                                                     textOverflow: 'ellipsis',
@@ -196,8 +199,8 @@ export default class ScatterPlot extends Component {
   }
 
   getConfigObj(){
-    var xAxisUom=getXaxisUom(this.props.energyData[0]),
-        yAxisUom=getYaxisUom(this.props.energyData[0]);
+    var xAxisUom=getXaxisUom(this.props.energyData[0],this.state.xAxis),
+        yAxisUom=getYaxisUom(this.props.energyData[0],this.state.yAxis);
     var that=this;
     return{
       colors:colorArr,
@@ -316,7 +319,7 @@ export default class ScatterPlot extends Component {
             Coordinates.forEach(Coordinate=>{
               if(Coordinate.XCoordinate===x && Coordinate.YCoordinate===y){
                 content+= `<div>
-                            <div style="font-size:14px;color:#626469">${moment(j2d(Coordinate.Time)).format("YYYY-MM-DD HH-mm")}</div>
+                            <div style="font-size:14px;color:#626469">${CommonFuns.formatDateByStep(j2d(Coordinate.Time,true),null,null,that.props.step)}</div>
                             <div style="font-size:12px;color:${colorArr[index]}">(${x+xAxisUom}, ${y+yAxisUom})</div>
                           </div>`
               }
@@ -442,5 +445,6 @@ export default class ScatterPlot extends Component {
 
 ScatterPlot.propTypes = {
   energyData:React.PropTypes.object,
-  getYaxisConfig:React.PropTypes.func
+  getYaxisConfig:React.PropTypes.func,
+  step:React.PropTypes.number,
 };
