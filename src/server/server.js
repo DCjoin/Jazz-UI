@@ -1,6 +1,6 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
-var request = require("request");
+// var request = require("request");
 var fs = require("fs");
 var path = require("path");
 const { URL } = require('url');
@@ -9,6 +9,7 @@ var util = require('./util.js');
 // Api Mock need
 var http = require('http');
 var useragent = require('useragent');
+var acsObj = {};
 
 var publicPath = 'http://localhost:3000/build/';
 
@@ -59,34 +60,58 @@ app.get('/:lang/spinitsso-redirect',(req, res) => {
 // This is the assertion service url where SAML Response is sent to
 app.post('/sso/acs', (req, res) => {
   console.log("get assertion and return to Jazz backend!");
+  // console.log(req.body);
+  var id = Math.ceil(Math.random()*100000);
+  acsObj[id] = req.body.SAMLResponse;
+  res.cookie('AssertId', id)
+    .redirect(301, '/zh-cn/saml');  
+
   // get assertion and return to Jazz backend
-  var options = {
-    url: 'http://web-api-test.energymost.com/API/AccessControl/ValidateUser', 
-    formData: req.body, 
-    proxy: 'http://10.198.157.120:9400'// noNeed4prod
-  };
-  request.post(options, function optionalCallback(err, httpResponse, body) {
-    if(err) {
-      return console.error('upload failed:', err);
-    } else {
-      let _body = JSON.parse(body);
-      if(_body && _body.error.Code === '0') {
-        console.log(_body.Result.Id);
-        console.log(_body.Result.Token);
-        res.cookie('UserId', _body.Result.Id)
-          .cookie("AuthLoginToken", _body.Result.Token)
-          .cookie('SkipLogin', 'true')
-          .redirect(301, '/zh-cn/');
-      } else {
-        console.log("fail!"); 
-        res.redirect(301, '/zh-cn/login');
-      }
-    }    
-  });
+  // var options = {
+  //   url: 'http://web-api-test.energymost.com/API/AccessControl/ValidateUser', 
+  //   formData: req.body, 
+  //   proxy: 'http://10.198.157.120:9400'// noNeed4prod
+  // };
+  // request.post(options, function optionalCallback(err, httpResponse, body) {
+  //   if(err) {
+  //     return console.error('upload failed:', err);
+  //   } else {
+  //     console.log(body)
+  //     let _body = JSON.parse(body);
+  //     if(_body && _body.error.Code === '0') {
+  //       // console.log(_body.Result.Id);
+  //       // console.log(_body.Result.Token);
+  //       console.log(httpResponse.headers['set-cookie'][0]);
+  //       res
+  //         .set({
+  //           'Set-Cookie': httpResponse.headers['set-cookie'][0],
+  //           'withCredentials': 'true'
+  //         })
+  //         // .cookie('ASPXAUTH', httpResponse.headers['set-cookie'][0])
+  //         .cookie('UserId', _body.Result.Id)
+  //         .cookie("AuthLoginToken", _body.Result.Token)
+  //         .cookie('SkipLogin', 'true')
+  //         .redirect(301, '/zh-cn/');
+  //     } else {
+  //       console.log("fail!"); 
+  //       res.redirect(301, '/zh-cn/login');
+  //     }
+  //   }    
+  // });
+});
+
+app.get("/saml/acs", (req, res) => {
+  let result = acsObj[req.query.id];
+  if(result) {
+    res.send({result: {SAMLResponse: result}});
+    delete acsObj[req.query.id];
+  } else {
+    res.send({result: {SAMLResponse: null}});
+  }
 });
 
 app.get('/:lang/logout',(req, res) => {
-  return res.redirect("https://localhost:8081/" + req.params.lang + "&callbackURL=" + encodeURIComponent(req.query.returnURL));
+  return res.redirect("http://localhost:8081/" + req.params.lang + "/logout?returnURL=" + encodeURIComponent(req.query.returnURL));
 });
 
 

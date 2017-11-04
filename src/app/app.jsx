@@ -14,6 +14,7 @@ import assign from 'object-assign';
 import BlankPage from './components/BlankPage.jsx';
 import JazzApp from './components/JazzApp.jsx';
 import Login from './components/Login.jsx';
+import Saml from './components/Saml.jsx';
 import TrialLogin from './components/trial_login.jsx';
 import MainApp from './components/MainApp.jsx';
 import resetPSWApp from './components/resetPSWApp.jsx';
@@ -131,6 +132,9 @@ ReactDom.render(<Router history={browserHistory} routes={{
       component: MainApp,
     },
     childRoutes: [{
+      path: 'saml',
+      component: Saml
+    }, {
       path: 'login',
       component: Login
     }, {
