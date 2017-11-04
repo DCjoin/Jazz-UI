@@ -161,10 +161,9 @@ var MainAppBar = React.createClass({
     // this._onClose();
   },
   _logout: function() {
-    LoginActionCreator.logout(()=>{
-      location.href = RoutePath.logout(this.props.params, location.href);
-    });
-    this.context.router.push(RoutePath.login(this.context.router.params));
+    LoginActionCreator.logout();
+    location.href = RoutePath.logout(this.context.router.params, encodeURIComponent(location.origin));
+    // this.context.router.push(RoutePath.login(this.context.router.params));    
     // var _redirectFunc = this.context.router.replaceWith;
     // _redirectFunc('login', {
     //   lang: ((window.currentLanguage === 0) ? 'zh-cn' : 'en-us')

@@ -4,8 +4,9 @@ const cookieParser = require('cookie-parser');
 const fs = require("fs");
 const path=require("path");
 const useragent = require('useragent');
+var acsObj = {};
 
-var request = require("request");
+// var request = require("request");
 const { URL } = require('url');
 const SYSID = 0;// 0云能效 1千里眼 2灯塔 8万丈云
 
@@ -172,33 +173,23 @@ app.get('/:lang/spinitsso-redirect', (req, res) => {
 // This is the assertion service url where SAML Response is sent to
 app.post('/sso/acs', (req, res) => {
   console.log("get assertion and return to Jazz backend!");
-  // get assertion and return to Jazz backend
-  var options = {
-    url: JAZZ_WEBAPI_HOST + '/API/AccessControl/ValidateUser', 
-    formData: req.body
-  };
-  request.post(options, function optionalCallback(err, httpResponse, body) {
-    if(err) {
-      console.log('err:', err);
-    } else {
-      let _body = JSON.parse(body);
-      if(_body && _body.error.Code === '0') {
-        console.log(_body.Result.Id);
-        console.log(_body.Result.Token);
-        res.cookie('UserId', _body.Result.Id)
-          .cookie("AuthLoginToken", _body.Result.Token)
-          .cookie('SkipLogin', 'true')
-          .redirect(301, '/zh-cn/');
-      } else {
-        console.log("fail!"); 
-        res.redirect(301, '/zh-cn/login');
-      }
-    }    
-  });
+  var id = Math.ceil(Math.random()*100000);
+  acsObj[id] = req.body.SAMLResponse;
+  res.cookie('AssertId', id).redirect(301, '/zh-cn/saml');  
+});
+
+app.get("/saml/acs", (req, res) => {
+  let result = acsObj[req.query.id];
+  if(result) {
+    res.send({result: {SAMLResponse: result}});
+    delete acsObj[req.query.id];
+  } else {
+    res.send({result: {SAMLResponse: null}});
+  }
 });
 
 app.get('/:lang/logout',(req, res) => {
-  return res.redirect(GUARD_UI_HOST + req.params.lang + "&callbackURL=" + encodeURIComponent(req.query.returnURL));
+  return res.redirect(GUARD_UI_HOST + req.params.lang + "/logout?returnURL=" + encodeURIComponent(req.query.returnURL));
 });
 
 app.get('/:lang/*', returnIndexHtml);
