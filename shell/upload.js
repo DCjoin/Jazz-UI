@@ -7,6 +7,7 @@ var region = process.env["OSS_REGION"];
 var accessKeyId = process.env["ALI_SDK_STS_ID"];
 var accessKeySecret = process.env["ALI_SDK_STS_SECRET"];
 var bucket = process.env["OSS_BUCKET"];
+var env = process.env["OSS_ENV"];
 
 if(!region || !accessKeyId || !accessKeySecret || !bucket){
   console.error("ERROR:environment not set");
@@ -47,7 +48,9 @@ co(function* () {
       if(file.endsWith('.css') || file.endsWith('.js')) {
         replaceCSS(filePath);
       }
-      let result = yield client.put(`jazz/${file}`, filePath);
+      // let result = yield client.put(`jazz/${file}`, filePath);
+      let version = fs.readFileSync("../version.txt", "utf-8");
+      let result = yield client.put(`${env}/jazz-ui/webui/${version}/${file}`, filePath);
       console.log(result);
     }
 
