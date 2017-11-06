@@ -249,7 +249,7 @@ export default class ScatterPlot extends Component {
       colors:colorArr,
       chart: {
         type: 'scatter',
-        zoomType: 'xy',
+        // zoomType: 'xy',
         spacingBottom:that.props.isFromSolution?0:20*this.props.energyData.length,
         events:{
           redraw: function (e) {

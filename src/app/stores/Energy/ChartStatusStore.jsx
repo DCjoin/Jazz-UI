@@ -84,6 +84,12 @@ let ChartStatusStore = assign({}, PrototypeStore, {
       _isInitedByWidget = true;
     }
   },
+  onScatterPlotDataLoaded(){
+    if (!_isInitedByWidget) {
+      // this.initStatus();
+      _isInitedByWidget = true;
+    }
+  },
   getSeriesStatus() {
     return _seriesStatus;
   },
@@ -134,7 +140,8 @@ let ChartStatusStore = assign({}, PrototypeStore, {
       1: 'line',
       2: 'column',
       4: 'stack',
-      8: 'pie'
+      // 8: 'pie'
+      8: 'scatterplot'
     };
     return chartTypeMap[num];
   },
@@ -143,7 +150,8 @@ let ChartStatusStore = assign({}, PrototypeStore, {
       1: 'line',
       2: 'column',
       4: 'stack',
-      8: 'pie'
+      // 8: 'pie',
+      8: 'scatterplot'
     };
     let me = this;
     let series = newConfig.series;
