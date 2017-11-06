@@ -463,7 +463,7 @@ export default class Create extends Component {
 					BenchmarkModel={BenchmarkModel}
 					CalculationStep={CalculationStep}
 					BenchmarkStartDate={UTC2Local(BenchmarkStartDate)}
-					BenchmarkEndDate={UTC2Local(CalculationStep===TimeGranularity.Hourly?moment(BenchmarkEndDate).add(-1,'days'):BenchmarkEndDate)}
+					BenchmarkEndDate={UTC2Local(moment(BenchmarkEndDate).add(-1,'days'))}
 					IncludeEnergyEffectData={IncludeEnergyEffectData}
 					disabledPreview={!this._checkCanNext()}
 					hasCalendar={this.state.hasCalendar}
@@ -501,7 +501,7 @@ export default class Create extends Component {
 						getPreviewChart2(filterObj.set("CorrectionFactor",1).set("HierarchyId",this.context.hierarchyId).toJS());
 					}}
 					onChangeStep={(step) => {
-						if(step===TimeGranularity.Hourly){
+						{/*if(step===TimeGranularity.Hourly){
 							filterObj=filterObj.set("BenchmarkEndDate",moment(filterObj.get("BenchmarkEndDate")).add(1,'days').format("YYYY-MM-DD HH:mm:ss"));
 							if(filterObj.get("EnergyEndDate")){
 								filterObj=filterObj.set("EnergyEndDate",moment(filterObj.get("EnergyEndDate")).add(1,'days').format("YYYY-MM-DD HH:mm:ss"));
@@ -513,7 +513,7 @@ export default class Create extends Component {
 							if(filterObj.get("EnergyEndDate")){
 								filterObj=filterObj.set("EnergyEndDate",moment(filterObj.get("EnergyEndDate")).add(-1,'days').format("YYYY-MM-DD HH:mm:ss"));
 							}
-						}
+						}*/}
 
 							if(step===TimeGranularity.Hourly){
 								// if(needCalendar(ctx.hierarchyId)){
@@ -555,9 +555,9 @@ export default class Create extends Component {
 							endTime = moment(startTime).add(_getTimeRangeStep(CalculationStep), 'days');
 						}
 
-						if(CalculationStep===TimeGranularity.Hourly){
+						{/*if(CalculationStep===TimeGranularity.Hourly){*/}
 							endTime=moment(endTime).add(1, 'days');
-						}
+						{/*}*/}
 
 						if(endTime.format('YYYY-MM-DD HH:mm:ss') !== BenchmarkEndDate) {
 							filterObj = filterObj.set('BenchmarkEndDate', endTime.format('YYYY-MM-DD HH:mm:ss'))
@@ -575,9 +575,9 @@ export default class Create extends Component {
 					}}
 					onChangeBenchmarkEndDate={(val) => {
 
-						if(CalculationStep===TimeGranularity.Hourly){
+						{/*if(CalculationStep===TimeGranularity.Hourly){*/}
 							val=moment(val).add(1, 'days');
-						}
+						{/*}*/}
 
 						val = date2UTC(val);
 						
@@ -634,7 +634,7 @@ export default class Create extends Component {
 					CalculationStep={CalculationStep}
 					EnergyUnitPrice={EnergyUnitPrice}
 					EnergyStartDate={UTC2Local(EnergyStartDate)}
-					EnergyEndDate={UTC2Local(CalculationStep===TimeGranularity.Hourly?moment(EnergyEndDate).add(-1,'days'):EnergyEndDate)}
+					EnergyEndDate={UTC2Local(moment(EnergyEndDate).add(-1,'days'))}
 					BenchmarkDatas={BenchmarkDatas}
 					CorrectionFactor={CorrectionFactor}
 					disabledPreview={!this._checkCanNext()}
