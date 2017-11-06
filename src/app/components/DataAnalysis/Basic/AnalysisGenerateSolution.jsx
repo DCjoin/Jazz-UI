@@ -8,6 +8,7 @@ import FolderStore from 'stores/FolderStore.jsx';
 import HeatMap from './heat_map.jsx';
 import ScatterPlotView from './scatter_plot_generate_sulution.jsx';
 import MultipleTimespanStore from 'stores/Energy/MultipleTimespanStore.jsx';
+import ScatterPlotAction from 'actions/DataAnalysis/scatter_plot_action.jsx';
 
 function getFromImmu(key) {
 	return function(immuObj) {
@@ -103,6 +104,7 @@ export default class AnalysisGenerateSolution extends Component {
     if(this.props.preAction && typeof this.props.preAction.removeListener === 'function') {
       this.props.preAction.removeListener(this._getTagsDataByNode);
     }
+    ScatterPlotAction.clearAxis();
   }
   _getTagsDataByNode() {
     getTagsDataByNode(this.props);

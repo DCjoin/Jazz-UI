@@ -473,6 +473,11 @@ export default class ScatterPlot extends Component {
 
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+		if(nextProps.energyData===this.props.energyData) return false
+		return true
+	}
+
   componentWillUnmount() {
     ScatterPlotStore.removeChangeListener(this._onChanged);
   }
