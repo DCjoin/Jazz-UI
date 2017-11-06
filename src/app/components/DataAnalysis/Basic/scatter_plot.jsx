@@ -466,9 +466,9 @@ export default class ScatterPlot extends Component {
     if(!this.props.isFromSolution){
           if(Immutable.fromJS(AlarmTagStore.getSearchTagList()).findIndex(tag=>tag.get('tagId')===xAxis)===-1){xAxis=0}
     if(Immutable.fromJS(AlarmTagStore.getSearchTagList()).findIndex(tag=>tag.get('tagId')===yAxis)===-1){yAxis=0}
-    if(xAxis!==this.state.xAxis || yAxis!==this.state.yAxis){
-      ScatterPlotAction.setAxisData(xAxis,yAxis)
-    }
+      if(xAxis!==this.state.xAxis || yAxis!==this.state.yAxis){
+        ScatterPlotAction.setAxisData(xAxis,yAxis)
+      }
     }
 
   }
