@@ -4,7 +4,7 @@ import EditStep4 from '../create/step4.jsx';
 import StepComponent from './stepComponent.jsx';
 import FlatButton from "controls/NewFlatButton.jsx";
 import TimeGranularity from 'constants/TimeGranularity.jsx';
-
+import moment from 'moment';
 import ViewableTextField from 'controls/ViewableTextField.jsx';
 
 let getStepDataItems = () => [
@@ -25,7 +25,7 @@ export default class Step4 extends Component {
 					<div className='step4-block-content'>
 						<div className='step4-item'>
 							<header className='step4-item-title'>{I18N.EM.Report.TimeRange}</header>
-							<div className='step4-item-value'>{EnergyStartDate + ' ' + I18N.EM.To2 + ' '+ EnergyEndDate}</div>
+							<div className='step4-item-value'>{EnergyStartDate + ' ' + I18N.EM.To2 + ' '+ moment(EnergyEndDate).add(-1,'days').format("YYYY-MM-DD")}</div>
 						</div>
 						<div className='step4-item'>
 							<header className='step4-item-title'>{I18N.EM.Report.Step}</header>
