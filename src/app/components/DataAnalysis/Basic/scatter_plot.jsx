@@ -30,6 +30,7 @@ var getSeries=(datas)=>datas.map(data=>{
     marker:{
         	symbol:'circle'
         },
+    turboThreshold:10*10000,
     data:Coordinates.map(Coordinate=>({
       x:Coordinate.XCoordinate,
       y:Coordinate.YCoordinate,
