@@ -162,6 +162,7 @@ let EnergyStore = assign({}, PrototypeStore, {
       window.testObj._energyRawData = _energyRawData;
       //add this for test team end
       if(_chartType==='scatterplot'){
+        ChartStatusStore.onScatterPlotDataLoaded(data, _submitParams);
         _energyData=Immutable.fromJS(data);
         return true
       }else{

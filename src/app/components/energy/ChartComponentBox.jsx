@@ -580,6 +580,7 @@ let ChartComponentBox = React.createClass({
       this.props.postNewConfig(newConfig);
     }
 
+    console.log(newConfig);
     return newConfig;
 
   },
