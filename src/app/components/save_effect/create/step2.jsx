@@ -142,7 +142,7 @@ export default class Step2 extends Component {
 		var {TimePeriods,onTimePeriodsChanged}=this.props;
 		var items=[];
 		TimePeriods.forEach(time=>{
-			if(time.TimePeriodType===CalendarItemType.AllDayCalcTime){
+			if(time.TimePeriodType===CalendarItemType.AllDayCalcTime && time.ConfigStep===2){
 				items.push(time)
 			}
 		})
@@ -180,9 +180,9 @@ export default class Step2 extends Component {
 		var {TimePeriods,onTimePeriodsChanged}=this.props;
 		var workItems=[],holidayItems=[];
 		TimePeriods.forEach(time=>{
-			if(time.TimePeriodType===CalendarItemType.WorkDayCalcTime){
+			if(time.TimePeriodType===CalendarItemType.WorkDayCalcTime && time.ConfigStep===2){
 				workItems.push(time)
-			}else if(time.TimePeriodType===CalendarItemType.RestDayCalcTime){
+			}else if(time.TimePeriodType===CalendarItemType.RestDayCalcTime && time.ConfigStep===2){
 				holidayItems.push(time)
 			}
 			

@@ -284,7 +284,7 @@ export default class Edit extends Component {
 				break;
 			case 2:
 				getPreviewChart2(this._getFilterObj().set('ConfigStep', 2).set("CorrectionFactor",1).toJS());
-				this._checkCalendar(state.filterObj.get("BenchmarkStartDate"));
+				// this._checkCalendar(state.filterObj.get("BenchmarkStartDate"));
 				break;
     	case 3:
 				getPreviewChart3(this._getFilterObj().set('ConfigStep', 3).toJS());
