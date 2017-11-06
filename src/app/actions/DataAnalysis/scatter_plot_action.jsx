@@ -21,6 +21,7 @@ const ScatterPlotAction = {
         AppDispatcher.dispatch({
           type: Action.GET_SCATTER_PLOT_DATA,
           energyData,
+          XAxisTagId,YAxisTagId
         });
       },
       error: function(err, res) {

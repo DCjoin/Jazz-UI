@@ -242,8 +242,8 @@ export default class ScatterPlot extends Component {
   getConfigObj(){
     var xAxisUom=getXaxisUom(this.props.energyData[0],this.state.xAxis),
         yAxisUom=getYaxisUom(this.props.energyData[0],this.state.yAxis),
-        xAxisName=Immutable.fromJS(AlarmTagStore.getSearchTagList()).find(tag=>tag.get('tagId')===this.state.xAxis).get("tagName"),
-        yAxisName=Immutable.fromJS(AlarmTagStore.getSearchTagList()).find(tag=>tag.get('tagId')===this.state.yAxis).get("tagName");
+        xAxisName=Immutable.fromJS(this.props.energyData[0].Tags).find(tag=>tag.get('Id')===this.state.xAxis).get("Name"),
+        yAxisName=Immutable.fromJS(this.props.energyData[0].Tags).find(tag=>tag.get('Id')===this.state.yAxis).get("Name");
     var that=this;
     return{
       colors:colorArr,
@@ -418,7 +418,7 @@ export default class ScatterPlot extends Component {
     }
     // console.log(this.getConfigObj().stringify());
     return(
-        <Highcharts ref="highstock" className="heatmap" options={this.getConfigObj()} afterChartCreated={this.props.afterChartCreated?this.props.afterChartCreated:()=>{}}></Highcharts>
+        <Highcharts ref="highstock" className="heatmap" options={this.getConfigObj()} afterChartCreated={this.props.afterChartCreated?()=>{this.props.afterChartCreated()}:()=>{}}></Highcharts>
     
     )
   }
@@ -463,11 +463,14 @@ export default class ScatterPlot extends Component {
   
   componentWillReceiveProps(){
     var {xAxis,yAxis}=this.state;
-    if(Immutable.fromJS(AlarmTagStore.getSearchTagList()).findIndex(tag=>tag.get('tagId')===xAxis)===-1){xAxis=0}
+    if(!this.props.isFromSolution){
+          if(Immutable.fromJS(AlarmTagStore.getSearchTagList()).findIndex(tag=>tag.get('tagId')===xAxis)===-1){xAxis=0}
     if(Immutable.fromJS(AlarmTagStore.getSearchTagList()).findIndex(tag=>tag.get('tagId')===yAxis)===-1){yAxis=0}
     if(xAxis!==this.state.xAxis || yAxis!==this.state.yAxis){
       ScatterPlotAction.setAxisData(xAxis,yAxis)
     }
+    }
+
   }
 
   componentWillUnmount() {
@@ -487,7 +490,7 @@ export default class ScatterPlot extends Component {
                       backgroundColor:'#ffffff'
                     }}>
       {this._renderContent()}       
-      {this._renderAxisSelect()}
+      {!this.props.isFromSolution && this._renderAxisSelect()}
       
     </div>
       )

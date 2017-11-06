@@ -120,13 +120,20 @@ export default class EffectDetail extends Component {
   }
 
   _onChanged(){
-    this.setState({
-      detailInfo:ListStore.getDetail(),
-			chartData:ListStore.getDetailChart(),
-			isBest:ListStore.getDetail().get("BestSolution")!==null,
-			characteristics:ListStore.getDetail().get("BestSolution")===null?'':ListStore.getDetail().getIn(["BestSolution","Characteristics"]),
-			recommendReason:ListStore.getDetail().get("BestSolution")===null?null:ListStore.getDetail().getIn(["BestSolution","RecommendReason"]),
-    })
+		if(ListStore.getDetail()){
+			    this.setState({
+						detailInfo:ListStore.getDetail(),
+						chartData:ListStore.getDetailChart(),
+						isBest:ListStore.getDetail().get("BestSolution")!==null,
+						characteristics:ListStore.getDetail().get("BestSolution")===null?'':ListStore.getDetail().getIn(["BestSolution","Characteristics"]),
+						recommendReason:ListStore.getDetail().get("BestSolution")===null?null:ListStore.getDetail().getIn(["BestSolution","RecommendReason"]),
+					})
+		}else{
+			    this.setState({
+						chartData:ListStore.getDetailChart(),
+					})
+		}
+
   }
 
 	_onEnergySystemDialogShow(){
