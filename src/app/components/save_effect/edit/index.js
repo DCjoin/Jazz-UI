@@ -284,7 +284,7 @@ export default class Edit extends Component {
 				break;
 			case 2:
 				getPreviewChart2(this._getFilterObj().set('ConfigStep', 2).set("CorrectionFactor",1).toJS());
-				this._checkCalendar(state.filterObj.get("BenchmarkStartDate"));
+				// this._checkCalendar(state.filterObj.get("BenchmarkStartDate"));
 				break;
     	case 3:
 				getPreviewChart3(this._getFilterObj().set('ConfigStep', 3).toJS());
@@ -576,6 +576,31 @@ export default class Edit extends Component {
 								filterObj=filterObj.set("EnergyEndDate",moment(filterObj.get("EnergyEndDate")).add(-1,'days').format("YYYY-MM-DD HH:mm:ss"));
 							}
 						}*/}
+
+							if(step===TimeGranularity.Hourly){
+								if(needCalendar(this.context.hierarchyId)){
+									filterObj=filterObj.set("TimePeriods",Immutable.fromJS([{
+										FromTime:8,
+										ToTime:20,
+										TimePeriodType:CalendarItemType.WorkDayCalcTime,
+										ConfigStep:2
+									},{
+										FromTime:10,
+										ToTime:14,
+										TimePeriodType:CalendarItemType.RestDayCalcTime,
+										ConfigStep:2
+									}]))
+								}else{
+									filterObj=filterObj.set("TimePeriods",Immutable.fromJS([{
+										FromTime:8,
+										ToTime:20,
+										TimePeriodType:CalendarItemType.AllDayCalcTime,
+										ConfigStep:2
+									}]))
+								}
+							}else if(step===TimeGranularity.Daily){
+								filterObj=filterObj.set("TimePeriods",Immutable.fromJS([]))
+							}
 
 						this._setFilterObj(filterObj.set('CalculationStep', step));
 						this._setTagStepTip( step );
