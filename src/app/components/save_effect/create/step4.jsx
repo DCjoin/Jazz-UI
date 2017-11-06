@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import find from 'lodash-es/find';
+import moment from 'moment';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 
 import TimeGranularity from 'constants/TimeGranularity.jsx';
@@ -28,7 +29,7 @@ export default class Step4 extends Component {
 					<div className='step4-block-content'>
 						<div className='step4-item'>
 							<header className='step4-item-title'>{I18N.EM.Report.TimeRange}</header>
-							<div className='step4-item-value'>{EnergyStartDate + ' ' + I18N.EM.To2 + ' '+ EnergyEndDate}</div>
+							<div className='step4-item-value'>{EnergyStartDate + ' ' + I18N.EM.To2 + ' '+ moment(EnergyEndDate).add(-1,'days').format("YYYY-MM-DD")}</div>
 						</div>
 						<div className='step4-item'>
 							<header className='step4-item-title'>{I18N.EM.Report.Step}</header>
