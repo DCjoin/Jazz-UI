@@ -226,7 +226,7 @@ export default class ScatterPlot extends Component {
     var content='';
     this.props.energyData.forEach((data,index)=>{
       content+=`<div style="font-size:14px;display:flex;color:${colorArr[index]}">
-                    R2=${data.R2}
+                    R<sup>2</sup>=${data.R2}
                     <div style="margin-left:20px">y=${data.B}x${data.A<0?'':'+'}${data.A}</div>
                    </div>`
     })
@@ -474,7 +474,7 @@ export default class ScatterPlot extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-		if(nextProps.energyData===this.props.energyData) return false
+		if(nextProps.energyData===this.props.energyData && nextState.xAxis===this.state.xAxis && nextState.yAxis===this.state.yAxis) return false
 		return true
 	}
 
