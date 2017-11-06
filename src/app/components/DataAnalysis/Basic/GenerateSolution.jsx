@@ -188,7 +188,7 @@ export class GenerateSolution extends Component {
 		if(parent && parent.querySelector('svg')) {
 			svgString = new XMLSerializer().serializeToString(parent.querySelector('svg'));
 		}
-		if(parent && parent.getElementsByClassName("highcharts-title")){
+		if(parent && parent.getElementsByClassName("highcharts-title").length!==0){
 			otherString=parent.getElementsByClassName("highcharts-title")[0].innerHTML
 		}
 		if( svgString ) {
