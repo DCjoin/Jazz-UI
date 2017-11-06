@@ -28,6 +28,7 @@
     - APP_DOWNLOAD_BAIDU=${JAZZ_UI_APP_DOWNLOAD_BAIDU}
     - GUARD_UI_HOST=${GUARD_UI_HOST}
     - JAZZ_WEB_HOST=${JAZZ_WEB_HOST}
+    - OSS_ENV=${OSS_ENV}
   memswap_limit: 0
   labels:
     aliyun.scale: '${JAZZ_UI_SCALE}'
