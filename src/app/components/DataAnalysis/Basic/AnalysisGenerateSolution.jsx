@@ -171,8 +171,15 @@ export default class AnalysisGenerateSolution extends Component {
                            timeRanges={timeRanges}
                            step={step}
                            afterChartCreated={function(){
+                             console.log(nodeId);
+                             console.log('outer');
+                             console.log(new Date());
+
                              let args = arguments;
                              setTimeout(() => {
+                               console.log(nodeId);
+                               console.log('in');
+                             console.log(new Date());
          return afterChartCreated.apply(this, [getTagsByChartData(tagDatas[nodeId])].concat(args));
       }, 1000);
            

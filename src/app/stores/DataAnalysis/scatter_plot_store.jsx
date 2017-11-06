@@ -21,8 +21,10 @@ const ScatterPlotStore = assign({}, PrototypeStore, {
   getYaxis(){
     return _yAxis
   },
-  setEnergyDataForSolution(energyData){
-    _energyData=energyData
+  setEnergyDataForSolution(energyData,xAxis,yAxis){
+    _energyData=energyData;
+    _xAxis=xAxis;
+    _yAxis=yAxis
   },
   getEnergyDataForSolution(energyData){
     return _energyData;
@@ -48,7 +50,7 @@ ScatterPlotStore.dispatchToken = AppDispatcher.register(function(action) {
           ScatterPlotStore.emitChange()
       break;
     case Action.GET_SCATTER_PLOT_DATA:
-          ScatterPlotStore.setEnergyDataForSolution(action.energyData);
+          ScatterPlotStore.setEnergyDataForSolution(action.energyData,action.XAxisTagId,action.YAxisTagId);
           ScatterPlotStore.emitChange()
     break;
     case FolderAction.GET_WIDGETDTOS_SUCCESS:
