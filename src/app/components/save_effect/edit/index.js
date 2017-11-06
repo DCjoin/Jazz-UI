@@ -707,7 +707,7 @@ export default class Edit extends Component {
 					CalculationStep={CalculationStep}
 					EnergyUnitPrice={EnergyUnitPrice}
 					EnergyStartDate={UTC2Local(EnergyStartDate)}
-					EnergyEndDate={UTC2Local(moment(EnergyEndDate).add(-1,'days'))}
+					EnergyEndDate={EnergyEndDate?UTC2Local(moment(EnergyEndDate).add(-1,'days')):EnergyEndDate}
 					BenchmarkDatas={BenchmarkDatas}
 					CorrectionFactor={CorrectionFactor}
 					disabledPreview={!this._checkCanNext(3)}
@@ -745,6 +745,7 @@ export default class Edit extends Component {
 						this._setFilterObj(filterObj);
 					}}
 					onChangeEnergyEndDate={(val) => {
+						val=moment(val).add(1, 'days');
 						val = date2UTC(val);
 						filterObj = filterObj.set('EnergyEndDate', val);
 						let endTime = moment(val),

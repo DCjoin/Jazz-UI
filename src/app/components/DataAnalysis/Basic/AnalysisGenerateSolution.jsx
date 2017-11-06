@@ -146,7 +146,10 @@ export default class AnalysisGenerateSolution extends Component {
         energyData: me.props.analysis?me.props.analysis.state.energyRawData:tagDatas[nodeId].toJS(),
         startDate,endDate,
         afterChartCreated:function() {
-          return afterChartCreated.apply(this, [getTagsByChartData(tagDatas[nodeId])].concat(arguments));
+          let args = arguments;
+                             setTimeout(() => {
+         return afterChartCreated.apply(this, [getTagsByChartData(tagDatas[nodeId])].concat(args));
+      }, 1000);
         }
       };
       return(
@@ -180,7 +183,10 @@ export default class AnalysisGenerateSolution extends Component {
     return(
       <ChartBasicComponent
         afterChartCreated={function() {
-          return afterChartCreated.apply(this, [getTagsByChartData(tagDatas[nodeId])].concat(arguments));
+          let args = arguments;
+                             setTimeout(() => {
+         return afterChartCreated.apply(this, [getTagsByChartData(tagDatas[nodeId])].concat(args));
+      }, 1000);
         }}
         ref='ChartBasicComponent'
         key={nodeId}
