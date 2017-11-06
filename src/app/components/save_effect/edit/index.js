@@ -577,6 +577,31 @@ export default class Edit extends Component {
 							}
 						}*/}
 
+							if(step===TimeGranularity.Hourly){
+								if(needCalendar(this.context.hierarchyId)){
+									filterObj=filterObj.set("TimePeriods",Immutable.fromJS([{
+										FromTime:8,
+										ToTime:20,
+										TimePeriodType:CalendarItemType.WorkDayCalcTime,
+										ConfigStep:2
+									},{
+										FromTime:10,
+										ToTime:14,
+										TimePeriodType:CalendarItemType.RestDayCalcTime,
+										ConfigStep:2
+									}]))
+								}else{
+									filterObj=filterObj.set("TimePeriods",Immutable.fromJS([{
+										FromTime:8,
+										ToTime:20,
+										TimePeriodType:CalendarItemType.AllDayCalcTime,
+										ConfigStep:2
+									}]))
+								}
+							}else if(step===TimeGranularity.Daily){
+								filterObj=filterObj.set("TimePeriods",Immutable.fromJS([]))
+							}
+
 						this._setFilterObj(filterObj.set('CalculationStep', step));
 						this._setTagStepTip( step );
 						{/*getPreviewChart2(filterObj.set('ConfigStep', 2).set("CorrectionFactor",1).toJS());*/}
