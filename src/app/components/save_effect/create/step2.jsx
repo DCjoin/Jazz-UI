@@ -37,11 +37,11 @@ let getModelDataItems = () => [
 	// { id: Model.Simulation, label: I18N.SaveEffect.Model.Simulation },
 ];
 
-let getStepDataItems = () => [
+let getStepDataItems = (isMannual=false) => [
 	// { id: TimeGranularity.Minite, label: I18N.EM.Raw },
 	{ id: TimeGranularity.Hourly, label: I18N.EM.Hour },
 	{ id: TimeGranularity.Daily, label: I18N.EM.Day },
-	// { id: TimeGranularity.Monthly, label: I18N.EM.Month },
+	isMannual?{ id: TimeGranularity.Monthly, label: I18N.EM.Month }:{},
 ];
 
 let timeoutID = null;
@@ -412,7 +412,7 @@ export default class Step2 extends Component {
 								title={I18N.SaveEffect.Create.ConfigCalcStep}
 								valueField='id'
 								textField='label'
-								dataItems={getStepDataItems()}
+								dataItems={getStepDataItems(BenchmarkModel === Model.Manual)}
 								didChanged={onChangeStep}
 								style={{width: 90}}/>
 						</div>
@@ -446,7 +446,7 @@ export default class Step2 extends Component {
 								<div style={{display: 'inline-block', padding: '0 16px'}}>{I18N.EM.To2}</div>
 								<ViewableDatePicker onChange={onChangeBenchmarkEndDate} datePickerClassName='diagnose-date-picker' width={100} value={BenchmarkEndDate}/>
 							</div>
-							<span>{I18N.EM.Report.Step + ': ' + find(getStepDataItems(), item => item.id === CalculationStep).label}</span>
+							<span>{I18N.EM.Report.Step + ': ' + find(getStepDataItems(BenchmarkModel === Model.Manual), item => item.id === CalculationStep).label}</span>
 						</header>
 						{data ?
 						<ChartBasicComponent {...chartProps}/> :

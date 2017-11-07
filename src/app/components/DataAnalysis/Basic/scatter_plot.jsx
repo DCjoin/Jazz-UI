@@ -223,21 +223,34 @@ export default class ScatterPlot extends Component {
     })
   }
 
-  _renderTitle(){
+  _renderTitle(isFromSolution){
+    if(isFromSolution){
+      var content='';
+      this.props.energyData.forEach((data,index)=>{
+        if(index===0){
+          content+=`${I18N.Setting.DataAnalysis.Scatter.Formula+': '}R2=${data.R2}  y=${data.B}x${data.A<0?'':'+'}${data.A}`
+        }else{
+          content+=`<br/>R2=${data.R2}  y=${data.B}x${data.A<0?'':'+'}${data.A}`
+        }
+      })
+      return content
+    }else{
     var content='';
-    this.props.energyData.forEach((data,index)=>{
-      content+=`<div style="font-size:14px;display:flex;color:${colorArr[index]}">
-                    R<sup>2</sup>=${data.R2}
-                    <div style="margin-left:20px">y=${data.B}x${data.A<0?'':'+'}${data.A}</div>
-                   </div>`
-    })
-  
+      this.props.energyData.forEach((data,index)=>{
+        content+=`<div style="font-size:14px;display:flex;color:${colorArr[index]}">
+                      R<sup>2</sup>=${data.R2}
+                      <div style="margin-left:20px">y=${data.B}x${data.A<0?'':'+'}${data.A}</div>
+                    </div>`
+      })
+    
     return(
       `<div style="display:flex;flex-direction:row">
                  <div style="font-size:14px;color:#626469">${I18N.Setting.DataAnalysis.Scatter.Formula+': '}</div>
                  <div style="margin-left:10px">${content}</div>
                 </div>`
     )
+    }
+
   }
 
   getConfigObj(){
@@ -251,7 +264,7 @@ export default class ScatterPlot extends Component {
       chart: {
         type: 'scatter',
         // zoomType: 'xy',
-        spacingBottom:that.props.isFromSolution?0:20*this.props.energyData.length,
+        spacingBottom:20*this.props.energyData.length,
         events:{
           redraw: function (e) {
             var xAxis=e.target.xAxis[0],
@@ -268,12 +281,16 @@ export default class ScatterPlot extends Component {
         }
       },
       title: {
-          useHTML:true,
+          useHTML:that.props.isFromSolution?false:true,
           align:'left',
           verticalAlign:'bottom',    
           x:40,
           y:5,      
-          text:that._renderTitle()
+          text:that._renderTitle(that.props.isFromSolution),
+          style: that.props.isFromSolution?{
+            color: '#626469',
+            fontSize: '14px'
+        }:{}
       },
       credits: {
             enabled: false
