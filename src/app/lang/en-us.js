@@ -2645,7 +2645,7 @@ I18N.SaveEffect.Create.StepTip = 'Step size does not match, please reselect data
 I18N.SaveEffect.NoDateTip = 'No Data';
 I18N.SaveEffect.Create.CaculateTime = '能耗计算时间';
 I18N.SaveEffect.Create.WorkCaculateTime = '工作日计算时间';
-I18N.SaveEffect.Create.HolidayCaculateTime = '休息日日计算时间';
+I18N.SaveEffect.Create.HolidayCaculateTime = '休息日计算时间';
 
 I18N.SaveEffect.Chart = {};
 I18N.SaveEffect.Chart.PredictSaving = 'Predicted Energy Saving';
