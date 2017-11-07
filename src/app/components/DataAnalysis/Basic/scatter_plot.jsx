@@ -117,9 +117,6 @@ class DropDownMenu extends Component{
         fontSize: '10px',
         color: '#626469',
         paddingLeft:'5px',
-        marginRight:'5px',
-        position:"absolute",
-        right:0
       }
     };
 
@@ -150,7 +147,10 @@ class DropDownMenu extends Component{
                         : Immutable.fromJS(menuitems).find(item=>item.get("tagId")===value).get("tagName");
     return(
       <div>
-        <FlatButton label={label} labelPosition="before" labelStyle={styles.label} style={styles.btnStyle} icon={<FontIcon className="icon-arrow-down" color="767A7A" style={styles.icon}/>} onClick={handleTouchTap}/>
+          <div className="scatterplot-dropdownmenu" onClick={handleTouchTap}>
+            <div className="scatterplot-dropdownmenu-label" title={label}>{label}</div>
+            <FontIcon className="icon-arrow-down" color="767A7A" style={styles.icon}/>
+          </div>
           <Popover
             open={this.state.operationMenuOpen}
             anchorEl={this.state.anchorEl}
