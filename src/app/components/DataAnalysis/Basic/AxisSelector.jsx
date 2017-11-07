@@ -73,59 +73,7 @@ let AxisSelector = React.createClass({
       onDialogSubmit={me._onDialogSubmit} ref='yaxisDialog' onYaxisDialogDismiss={me.onYaxisDialogDismiss}></YaxisDialog>;
   },
   redraw: function() {
-    var chart = _currentChartObj,
-      xaxis = chart.xAxis[0],
-      yaxis = chart.yAxis[0],
-
-      xmin=_storedConfig[0].val[1]==='' || _storedConfig[0].val[1]===null?undefined:parseFloat(_storedConfig[0].val[1]),
-      xmax=_storedConfig[0].val[0]==='' || _storedConfig[0].val[0]===null?undefined:parseFloat(_storedConfig[0].val[0]),
-      ymin= _storedConfig[1].val[1]==='' || _storedConfig[1].val[1]===null?undefined:parseFloat(_storedConfig[1].val[1]),
-      ymax=_storedConfig[1].val[0]==='' || _storedConfig[1].val[0]===null?undefined:parseFloat(_storedConfig[1].val[0]);
-
-
-      xaxis.setExtremes(xmin,xmax);
-
-     yaxis.setExtremes(ymin,ymax);
-
-    // for (var i = 0, len = yaxis.length; i < len; i++) {
-    //   //don't check navigator
-    //   if (yaxis[i].series && yaxis[i].series.length == 1 && yaxis[i].series[0].name == 'Navigator') continue;
-
-    //   var up = false;
-    //   for (let j = 0; j < _storedConfig.length; j++) {
-    //     if (yaxis[i].options.yname == _storedConfig[j].uom) { //navigator's yaxis donot have yTitle
-    //       yaxis[i].update({
-    //         max: _storedConfig[j].val[0]==='' || _storedConfig[j].val[0]===null?null:_storedConfig[j].val[0],
-    //         min: _storedConfig[j].val[1]==='' || _storedConfig[j].val[1]===null?null:_storedConfig[j].val[1]
-    //       }, false);
-    //       up = true;
-    //     }
-    //   }
-    //   if (up === false) {
-    //     //auto yaxis, should check series data
-    //     var hasNeg = false;
-    //     for (let j = 0; j < yaxis[i].series.length; ++j) {
-    //       var series = yaxis[i].series[j];
-    //       hasNeg = false;
-    //       for (var k = 0; k < series.yData.length; ++k) {
-    //         var y = series.yData[k];
-    //         if (y !== null && y < 0) {
-    //           hasNeg = true;
-    //           break;
-    //         }
-    //       }
-    //       if (hasNeg === true) {
-    //         break;
-    //       }
-    //     }
-
-    //     yaxis[i].update({
-    //       max: undefined,
-    //       min: hasNeg === true ? undefined : 0
-    //     }, false);
-    //   }
-
-    // }
+    var chart = _currentChartObj;
     chart.redraw();
   }
 
