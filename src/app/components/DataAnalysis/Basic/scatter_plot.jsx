@@ -267,15 +267,6 @@ export default class ScatterPlot extends Component {
         spacingBottom:20*this.props.energyData.length,
         events:{
           redraw: function (e) {
-            var xAxis=e.target.xAxis[0],
-                yAxis=e.target.yAxis[0];
-                
-                that.xmin=xAxis.min===''?null:xAxis.min;
-                that.xmax=xAxis.max===''?null:xAxis.max;
-
-                that.ymin=yAxis.min===''?null:yAxis.min;
-                that.ymax=yAxis.max===''?null:yAxis.max;
-
             that.forceUpdate();
           }
         }
@@ -479,14 +470,24 @@ export default class ScatterPlot extends Component {
     ScatterPlotStore.addChangeListener(this._onChanged);
   }
   
-  componentWillReceiveProps(){
+  componentWillReceiveProps(nextProps){
     var {xAxis,yAxis}=this.state;
     if(!this.props.isFromSolution){
-          if(Immutable.fromJS(AlarmTagStore.getSearchTagList()).findIndex(tag=>tag.get('tagId')===xAxis)===-1){xAxis=0}
-    if(Immutable.fromJS(AlarmTagStore.getSearchTagList()).findIndex(tag=>tag.get('tagId')===yAxis)===-1){yAxis=0}
-      if(xAxis!==this.state.xAxis || yAxis!==this.state.yAxis){
-        ScatterPlotAction.setAxisData(xAxis,yAxis)
-      }
+
+        if(Immutable.fromJS(AlarmTagStore.getSearchTagList()).findIndex(tag=>tag.get('tagId')===xAxis)===-1){xAxis=0}
+        if(Immutable.fromJS(AlarmTagStore.getSearchTagList()).findIndex(tag=>tag.get('tagId')===yAxis)===-1){yAxis=0}
+
+        if(xAxis!==this.state.xAxis || yAxis!==this.state.yAxis){
+          ScatterPlotAction.setAxisData(xAxis,yAxis)
+        }
+
+        if(nextProps.getYaxisConfig && nextProps.getYaxisConfig() && nextProps.getYaxisConfig().length!==0){
+          var xAxis=nextProps.getYaxisConfig()[0],yAxis=nextProps.getYaxisConfig()[1];
+          this.xmax=xAxis.val[0]===''?null:xAxis.val[0];
+          this.xmin=xAxis.val[1]===''?null:xAxis.val[1];
+          this.ymax=yAxis.val[0]===''?null:yAxis.val[0];
+          this.ymin=yAxis.val[1]===''?null:yAxis.val[1];
+        }
     }
 
   }
