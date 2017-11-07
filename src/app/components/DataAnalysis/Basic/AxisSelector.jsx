@@ -17,7 +17,8 @@ var _currentChartObj = null,
 let AxisSelector = React.createClass({
   getInitialState() {
     return {
-      yaxisConfig:[]
+      yaxisConfig:[],
+      storedConfig:[]
     };
   },
   _onYaxisClick() {
@@ -182,7 +183,7 @@ var YaxisDialog = React.createClass({
       // }
 
       let defaultValues = null;
-      let storedConfigItem = this.props.storedConfig[index];
+      let storedConfigItem = this.props.storedConfig?this.props.storedConfig[index]:null;
       if (storedConfigItem) {
         defaultValues = storedConfigItem.val;
       }
