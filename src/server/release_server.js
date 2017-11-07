@@ -173,7 +173,7 @@ app.get('/:lang/spinitsso-redirect', (req, res) => {
 // This is the assertion service url where SAML Response is sent to
 app.post('/sso/acs', (req, res) => {
   console.log("get assertion and return to Jazz backend!");
-  var id = Math.ceil(Math.random()*100000);
+  var id = Math.ceil(Math.random()*100000) + "" + Date.now();
   acsObj[id] = req.body.SAMLResponse;
   res.cookie('AssertId', id).redirect(301, '/zh-cn/saml');  
 });

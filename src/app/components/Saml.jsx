@@ -50,11 +50,13 @@ export default class Saml extends Component {
       
       fetch(url,{
         method: 'post',
-        credentials: 'same-origin',
+        mode: "cors",
+        credentials: "include",// credentials: 'same-origin',
         body: formData,
       }).then(function (res) {
         return res.json();
-      }).then(function (data) {     
+      }).then(function (data) {
+        console.log(data.Result);     
         if(data.Result && data.Result.Id && data.Result.Token) {
           CookieUtil.set('UserId', data.Result.Id, {
             expires: 365
