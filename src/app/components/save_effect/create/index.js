@@ -953,7 +953,7 @@ export function getDateObjByRange(startDate, endDate) {
 	increment = 0,
 	incrementDate;
 	startDate = UTC2Local(startDate);
-	endDate = UTC2Local(endDate);
+	endDate = UTC2Local(moment(endDate).add(-1,'days'));
 	while( ( incrementDate = moment(moment(startDate).add(increment++, 'months').format('YYYY-MM-01')) ) <= moment(endDate)) {
 		let Label = incrementDate.format('MM' + I18N.Map.Date.Month);
 		if( existYears.indexOf( incrementDate.get('year') ) === -1 ) {

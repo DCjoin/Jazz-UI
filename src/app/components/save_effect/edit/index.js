@@ -146,7 +146,7 @@ export function getDateObjByRange(startDate, endDate) {
 	increment = 0,
 	incrementDate;
 	startDate = UTC2Local(startDate);
-	endDate = UTC2Local(endDate);
+	endDate = UTC2Local(moment(endDate).add(-1,'days'));
 	while( ( incrementDate = moment(moment(startDate).add(increment++, 'months').format('YYYY-MM-01')) ) <= moment(endDate)) {
 		let Label = incrementDate.format('MM' + I18N.Map.Date.Month);
 		if( existYears.indexOf( incrementDate.get('year') ) === -1 ) {
@@ -698,9 +698,12 @@ export default class Edit extends Component {
             configStep:autoEditNextStep?3:null,
             chartData3:null,
            },()=>{
-					if(filterObj.get('TimePeriods').size!==0){						
-						var newPeriods=filterObj.get('TimePeriods').map(period=>period.set("ConfigStep",3));
-						filterObj=filterObj.set("TimePeriods",filterObj.get('TimePeriods').concat(newPeriods));
+						 var times=filterObj.get('TimePeriods').filter(item=>item.get("ConfigStep")===2);
+						 var preTimes=CreateStore.getEffectItem().get('TimePeriods').filter(item=>item.get("ConfigStep")===2);
+
+					if(times.size!==0 && !Immutable.is(times,preTimes)){						
+						var newPeriods=times.map(period=>period.set("ConfigStep",3));
+						filterObj=filterObj.set("TimePeriods",times.concat(newPeriods));
 					}
 
              if(autoEditNextStep){
