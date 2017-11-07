@@ -239,10 +239,10 @@ _renderAllDayTimes(){
 								<div style={{display: 'inline-block', padding: '0 16px'}}>{I18N.EM.To2}</div>
 								<ViewableDatePicker  hintText={I18N.Setting.Calendar.EndTime} onChange={onChangeEnergyEndDate} datePickerClassName='date-picker-inline' width={83} value={EnergyEndDate}/>
 							</div>
-							<ViewableTextField errorMessage={I18N.SaveEffect.FormatVaildTip} regex={/^(\+?)\d{1,9}([.]\d{1,3})?$/} style={{width: 170}} title={I18N.SaveEffect.Create.EnergyUnitPrice + `(RMB/${unit})`} hintText={I18N.SaveEffect.Create.EnterEnergyUnitPrice} defaultValue={EnergyUnitPrice} didChanged={onChangeEnergyUnitPrice}/>
+							<ViewableTextField errorMessage={I18N.SaveEffect.FormatVaildTip} regex={/^(\+?)\d{1,9}([.]\d{1,3})?$/} style={{width: 170,marginTop:'10px'}} title={I18N.SaveEffect.Create.EnergyUnitPrice + `(RMB/${unit})`} hintText={I18N.SaveEffect.Create.EnterEnergyUnitPrice} defaultValue={EnergyUnitPrice} didChanged={onChangeEnergyUnitPrice}/>
 							{ Model.Manual === BenchmarkModel && <ManualValue unit={unit} key={EnergyStartDate + EnergyEndDate} BenchmarkDatas={BenchmarkDatas} onChangeValue={onChangeBenchmarkDatas}/>}
 							{Model.Manual !== BenchmarkModel && CalculationStep===TimeGranularity.Daily &&
-							<ViewableTextField errorMessage={I18N.SaveEffect.FormatVaildTip} regex={/^(\+?)\d{1,9}([.]\d{1,3})?$/} style={{width: 170}} title={I18N.SaveEffect.Create.CorrectionFactor} hintText={I18N.SaveEffect.Create.EnterCorrectionFactor} defaultValue={CorrectionFactor} didChanged={onChangeCorrectionFactor}/>
+							<ViewableTextField errorMessage={I18N.SaveEffect.FormatVaildTip} regex={/^(\+?)\d{1,9}([.]\d{1,3})?$/} style={{width: 170,marginTop:'10px'}} title={I18N.SaveEffect.Create.CorrectionFactor} hintText={I18N.SaveEffect.Create.EnterCorrectionFactor} defaultValue={CorrectionFactor} didChanged={onChangeCorrectionFactor}/>
 							}
 							{Model.Manual !== BenchmarkModel && Model.Contrast !== BenchmarkModel && CalculationStep===TimeGranularity.Hourly &&
 								this._renderConfigCalendar()

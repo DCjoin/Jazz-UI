@@ -2638,7 +2638,7 @@ I18N.SaveEffect.Create.BenchmarkBattleCalc='实际值与基准值对比图';
 I18N.SaveEffect.Create.StepTip = '所选数据点步长与计算步长不匹配，请重新选择数据点。';
 I18N.SaveEffect.Create.CaculateTime = '能耗计算时间';
 I18N.SaveEffect.Create.WorkCaculateTime = '工作日计算时间';
-I18N.SaveEffect.Create.HolidayCaculateTime = '休息日日计算时间';
+I18N.SaveEffect.Create.HolidayCaculateTime = '休息日计算时间';
 
 I18N.SaveEffect.Chart = {};
 I18N.SaveEffect.Chart.PredictSaving = '预计节能量';
