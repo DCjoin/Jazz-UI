@@ -49,7 +49,7 @@ function getSeries(data) {
 }
 
 export default function SavingChart(props) {
-	if( !props.data ) {
+	if( !props.data || !props.data.ActualSavingValues) {
 		return (<div className='flex-center' style={{height: 305}}><CircularProgress mode="indeterminate" size={80} /></div>);
 	}
 	console.log(props.data.ActualSavingValues[0].Value);
