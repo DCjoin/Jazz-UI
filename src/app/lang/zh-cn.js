@@ -597,6 +597,7 @@ I18N.EM.CharType.RawData = '原始数据';
 I18N.EM.CharType.GridTable = '数据表';
 I18N.EM.CharType.HeatMap = '热压图';
 I18N.EM.CharType.Scatter = '散点图';
+I18N.EM.CharType.Bubble = '气泡图';
 
 I18N.EM.RawData = {};
 I18N.EM.RawData.ErrorForEnergy = '原始数据仅支持查看7天以内的数据';
@@ -2333,6 +2334,8 @@ I18N.Setting.DataAnalysis.Scatter.NoTagTip = '请选择右侧坐标轴数据点'
 I18N.Setting.DataAnalysis.Scatter.AxisCanNotSame = '坐标轴不可选择同一个数据点';
 I18N.Setting.DataAnalysis.Scatter.HasEmptyAxis = '所选数据点在当前时间范围内无数据，请换个时间段试试';
 I18N.Setting.DataAnalysis.Scatter.Formula = '公式';
+I18N.Setting.DataAnalysis.Bubble = {};
+I18N.Setting.DataAnalysis.Bubble.Area = '面积';
 
 I18N.Setting.ECM = {};
 I18N.Setting.ECM.EstimatedAnnualCostSavings = '预计年节约成本';

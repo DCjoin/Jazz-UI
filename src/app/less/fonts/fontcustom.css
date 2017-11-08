@@ -4,12 +4,12 @@
 
 @font-face {
   font-family: "fontcustom";
-  src: url("./fontcustom_66f2e25c6cfe1c50d293e78a3d7f7583.eot");
-  src: url("./fontcustom_66f2e25c6cfe1c50d293e78a3d7f7583.eot?#iefix") format("embedded-opentype"),
-       url("./fontcustom_66f2e25c6cfe1c50d293e78a3d7f7583.woff2") format("woff2"),
-       url("./fontcustom_66f2e25c6cfe1c50d293e78a3d7f7583.woff") format("woff"),
-       url("./fontcustom_66f2e25c6cfe1c50d293e78a3d7f7583.ttf") format("truetype"),
-       url("./fontcustom_66f2e25c6cfe1c50d293e78a3d7f7583.svg#fontcustom") format("svg");
+  src: url("./fontcustom_9206548c737cda78bd4671fbdde5b38e.eot");
+  src: url("./fontcustom_9206548c737cda78bd4671fbdde5b38e.eot?#iefix") format("embedded-opentype"),
+       url("./fontcustom_9206548c737cda78bd4671fbdde5b38e.woff2") format("woff2"),
+       url("./fontcustom_9206548c737cda78bd4671fbdde5b38e.woff") format("woff"),
+       url("./fontcustom_9206548c737cda78bd4671fbdde5b38e.ttf") format("truetype"),
+       url("./fontcustom_9206548c737cda78bd4671fbdde5b38e.svg#fontcustom") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -17,7 +17,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: "fontcustom";
-    src: url("./fontcustom_66f2e25c6cfe1c50d293e78a3d7f7583.svg#fontcustom") format("svg");
+    src: url("./fontcustom_9206548c737cda78bd4671fbdde5b38e.svg#fontcustom") format("svg");
   }
 }
 
@@ -52,6 +52,7 @@
 .icon-binding:before,
 .icon-boiler:before,
 .icon-box:before,
+.icon-bubble-chart:before,
 .icon-building:before,
 .icon-calendar:before,
 .icon-calendar1:before,
@@ -81,6 +82,9 @@
 .icon-current:before,
 .icon-currentindex:before,
 .icon-customer:before,
+.icon-data-cabinet:before,
+.icon-data-cabinet-box:before,
+.icon-data-room:before,
 .icon-delete:before,
 .icon-device:before,
 .icon-device-box:before,
@@ -102,6 +106,9 @@
 .icon-energy-saving-rate:before,
 .icon-energy_saving:before,
 .icon-energymost:before,
+.icon-equipment:before,
+.icon-equipment-box:before,
+.icon-error-message:before,
 .icon-export:before,
 .icon-eye:before,
 .icon-factory:before,
@@ -158,6 +165,8 @@
 .icon-mainline:before,
 .icon-map:before,
 .icon-marker:before,
+.icon-massive-email:before,
+.icon-massive-phone:before,
 .icon-medal:before,
 .icon-menu:before,
 .icon-model:before,
@@ -176,6 +185,7 @@
 .icon-oxygen:before,
 .icon-panel:before,
 .icon-panel-box:before,
+.icon-password:before,
 .icon-pay-back-period:before,
 .icon-pentacle-solid:before,
 .icon-phone:before,
@@ -191,6 +201,7 @@
 .icon-power1:before,
 .icon-product-line:before,
 .icon-project:before,
+.icon-prompt:before,
 .icon-qrcode:before,
 .icon-quickview:before,
 .icon-rank-down:before,
@@ -213,6 +224,7 @@
 .icon-savingstatus:before,
 .icon-scan:before,
 .icon-scan-more:before,
+.icon-scatter-plot:before,
 .icon-schneider-cn:before,
 .icon-schneider-en:before,
 .icon-search:before,
@@ -245,10 +257,12 @@
 .icon-tickets-processing:before,
 .icon-time-ration:before,
 .icon-to-ecm:before,
+.icon-to-scan:before,
 .icon-unhappy:before,
 .icon-unit-index:before,
 .icon-uploading:before,
 .icon-user:before,
+.icon-user-name:before,
 .icon-user-name-login:before,
 .icon-voltage:before,
 .icon-volume-push:before,
@@ -307,6 +321,7 @@
 .icon-binding:before { content: "\f198"; }
 .icon-boiler:before { content: "\f1a4"; }
 .icon-box:before { content: "\f1a8"; }
+.icon-bubble-chart:before { content: "\f204"; }
 .icon-building:before { content: "\f10a"; }
 .icon-calendar:before { content: "\f149"; }
 .icon-calendar1:before { content: "\f197"; }
@@ -336,6 +351,9 @@
 .icon-current:before { content: "\f135"; }
 .icon-currentindex:before { content: "\f1f0"; }
 .icon-customer:before { content: "\f111"; }
+.icon-data-cabinet:before { content: "\f1f8"; }
+.icon-data-cabinet-box:before { content: "\f1fb"; }
+.icon-data-room:before { content: "\f1f9"; }
 .icon-delete:before { content: "\f112"; }
 .icon-device:before { content: "\f113"; }
 .icon-device-box:before { content: "\f114"; }
@@ -357,6 +375,9 @@
 .icon-energy-saving-rate:before { content: "\f1df"; }
 .icon-energy_saving:before { content: "\f19a"; }
 .icon-energymost:before { content: "\f1e0"; }
+.icon-equipment:before { content: "\f1fa"; }
+.icon-equipment-box:before { content: "\f1fc"; }
+.icon-error-message:before { content: "\f1fe"; }
 .icon-export:before { content: "\f117"; }
 .icon-eye:before { content: "\f1bd"; }
 .icon-factory:before { content: "\f1aa"; }
@@ -413,6 +434,8 @@
 .icon-mainline:before { content: "\f120"; }
 .icon-map:before { content: "\f121"; }
 .icon-marker:before { content: "\f18f"; }
+.icon-massive-email:before { content: "\f1ff"; }
+.icon-massive-phone:before { content: "\f200"; }
 .icon-medal:before { content: "\f1d6"; }
 .icon-menu:before { content: "\f123"; }
 .icon-model:before { content: "\f124"; }
@@ -431,6 +454,7 @@
 .icon-oxygen:before { content: "\f174"; }
 .icon-panel:before { content: "\f126"; }
 .icon-panel-box:before { content: "\f127"; }
+.icon-password:before { content: "\f201"; }
 .icon-pay-back-period:before { content: "\f1ce"; }
 .icon-pentacle-solid:before { content: "\f1cf"; }
 .icon-phone:before { content: "\f1bb"; }
@@ -446,6 +470,7 @@
 .icon-power1:before { content: "\f1ea"; }
 .icon-product-line:before { content: "\f1af"; }
 .icon-project:before { content: "\f1b0"; }
+.icon-prompt:before { content: "\f1fd"; }
 .icon-qrcode:before { content: "\f12a"; }
 .icon-quickview:before { content: "\f13c"; }
 .icon-rank-down:before { content: "\f190"; }
@@ -468,6 +493,7 @@
 .icon-savingstatus:before { content: "\f1f4"; }
 .icon-scan:before { content: "\f13d"; }
 .icon-scan-more:before { content: "\f19e"; }
+.icon-scatter-plot:before { content: "\f205"; }
 .icon-schneider-cn:before { content: "\f145"; }
 .icon-schneider-en:before { content: "\f146"; }
 .icon-search:before { content: "\f12c"; }
@@ -500,10 +526,12 @@
 .icon-tickets-processing:before { content: "\f171"; }
 .icon-time-ration:before { content: "\f15f"; }
 .icon-to-ecm:before { content: "\f196"; }
+.icon-to-scan:before { content: "\f202"; }
 .icon-unhappy:before { content: "\f1d2"; }
 .icon-unit-index:before { content: "\f160"; }
 .icon-uploading:before { content: "\f179"; }
 .icon-user:before { content: "\f132"; }
+.icon-user-name:before { content: "\f203"; }
 .icon-user-name-login:before { content: "\f1b4"; }
 .icon-voltage:before { content: "\f14f"; }
 .icon-volume-push:before { content: "\f1cb"; }

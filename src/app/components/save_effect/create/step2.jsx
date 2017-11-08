@@ -37,11 +37,15 @@ let getModelDataItems = () => [
 	// { id: Model.Simulation, label: I18N.SaveEffect.Model.Simulation },
 ];
 
-let getStepDataItems = (isMannual=false) => [
+let getStepDataItems = (isMannual=false) => isMannual?[
+	{ id: TimeGranularity.Hourly, label: I18N.EM.Hour },
+	{ id: TimeGranularity.Daily, label: I18N.EM.Day },
+	{ id: TimeGranularity.Monthly, label: I18N.EM.Month },
+]:[
 	// { id: TimeGranularity.Minite, label: I18N.EM.Raw },
 	{ id: TimeGranularity.Hourly, label: I18N.EM.Hour },
 	{ id: TimeGranularity.Daily, label: I18N.EM.Day },
-	isMannual?{ id: TimeGranularity.Monthly, label: I18N.EM.Month }:{},
+	// { id: TimeGranularity.Monthly, label: I18N.EM.Month },
 ];
 
 let timeoutID = null;

@@ -84,7 +84,7 @@ let ChartStatusStore = assign({}, PrototypeStore, {
       _isInitedByWidget = true;
     }
   },
-  onScatterPlotDataLoaded(){
+  onOtherDataLoaded(){
     if (!_isInitedByWidget) {
       // this.initStatus();
       _isInitedByWidget = true;
@@ -141,7 +141,8 @@ let ChartStatusStore = assign({}, PrototypeStore, {
       2: 'column',
       4: 'stack',
       // 8: 'pie'
-      8: 'scatterplot'
+      8: 'scatterplot',
+      9: 'bubble',
     };
     return chartTypeMap[num];
   },
@@ -151,7 +152,8 @@ let ChartStatusStore = assign({}, PrototypeStore, {
       2: 'column',
       4: 'stack',
       // 8: 'pie',
-      8: 'scatterplot'
+      8: 'scatterplot',
+      9: 'bubble',
     };
     let me = this;
     let series = newConfig.series;

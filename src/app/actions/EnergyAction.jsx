@@ -161,6 +161,54 @@ let EnergyAction = {
       }
     });
   },
+  getBubbleData(XAxisTagId,YAxisTagId,AreaTagId,date, step, tagOptions,relativeDate,widgetId){
+      var timeRange = date;
+
+    var tagIds = getTagIdsFromTagOptions(tagOptions);
+    var submitParams = {
+      tagIds: tagIds,
+      viewOption: {
+        IncludeNavigatorData: true,
+        Step: step,
+        TimeRanges: timeRange
+      }
+    };
+    AppDispatcher.dispatch({
+      type: Action.GET_ENERGY_DATA_LOADING,
+      submitParams: submitParams,
+      tagOptions: tagOptions,
+      relativeDate: relativeDate,
+      widgetId
+    });
+
+     Ajax.post(Path.DataAnalysis.getBubbleData, {
+      avoidDuplicate:true,
+      tag:[XAxisTagId,YAxisTagId,AreaTagId],
+      params: {
+        XAxisTagId,
+        YAxisTagId,
+        AreaTagId,
+        TimeRanges:timeRange,
+        Step:step
+      },
+      commonErrorHandling: false,
+      success: function(energyData) {
+        AppDispatcher.dispatch({
+          type: Action.GET_ENERGY_DATA_SUCCESS,
+          energyData,
+          submitParams
+        });
+      },
+      error: function(err, res) {
+        AppDispatcher.dispatch({
+          type: Action.GET_ENERGY_DATA_ERROR,
+          errorText: res.text,
+          submitParams: submitParams,
+          widgetId,
+        });
+      }
+    });
+  },
   getPieCostData(date, step, selectedList, relativeDate) {
     var timeRange = date;
     var commodityList = selectedList.commodityList;

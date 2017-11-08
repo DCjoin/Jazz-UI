@@ -57,6 +57,8 @@ import IntervalStatisticAction from 'actions/DataAnalysis/interval_statistic_act
 import {Step,DataUsageType} from 'constants/ChartConstants.jsx';
 import ScatterPlotStore from 'stores/DataAnalysis/scatter_plot_store.jsx';
 import ScatterPlotAction from 'actions/DataAnalysis/scatter_plot_action.jsx';
+import BubbleStore from 'stores/DataAnalysis/bubble_store.jsx';
+import BubbleAction from 'actions/DataAnalysis/bubble_action.jsx';
 
 const DIALOG_TYPE = {
   SWITCH_WIDGET: "switchwidget",
@@ -111,6 +113,8 @@ class AnalysisPanel extends Component {
     this._onWeatherTagChanged=this._onWeatherTagChanged.bind(this);
     this.checkMultiTag=this.checkMultiTag.bind(this);
     this._onScatterAxisChanged=this._onScatterAxisChanged.bind(this);
+    this._onBubbleAxisChanged=this._onBubbleAxisChanged.bind(this);
+    
   }
 
   state={
@@ -184,6 +188,10 @@ class AnalysisPanel extends Component {
     EnergyAction.getScatterPlotData(ScatterPlotStore.getXaxis(),ScatterPlotStore.getYaxis(),timeRanges, step, tagOptions, relativeDate,this.props.widgetDto.Id);
   }
 
+  bubbleDataLoad(timeRanges, step, tagOptions,relativeDate) {
+    EnergyAction.getBubbleData(BubbleStore.getXaxis(),BubbleStore.getYaxis(),BubbleStore.getArea(),timeRanges, step, tagOptions, relativeDate,this.props.widgetDto.Id);
+  }
+
   initEnergyStoreByBizChartType() {
   let chartType = this.state.selectedChartType;
   switch (chartType) {
@@ -192,6 +200,7 @@ class AnalysisPanel extends Component {
     case 'stack':
     case 'heatmap':
     case 'scatterplot':
+    case 'bubble':
       EnergyStore.initReaderStrategy('EnergyTrendReader');
       break;
     case 'pie':
@@ -205,7 +214,7 @@ class AnalysisPanel extends Component {
   setFitStepAndGetData(startDate, endDate, tagOptions, relativeDate) {
   let timeRanges,
     weather;
-    if(this.state.selectedChartType==='scatterplot'){
+    if(this.state.selectedChartType==='scatterplot' || this.state.selectedChartType==='bubble'){
         timeRanges = MultipleTimespanStore.getSubmitTimespans();
         if (timeRanges === null) {
         timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
@@ -234,6 +243,8 @@ class AnalysisPanel extends Component {
   });
   if(this.state.selectedChartType==='scatterplot'){
     this.scatterDataLoad(timeRanges, step, tagOptions,relativeDate);
+  }else if(this.state.selectedChartType==='bubble'){
+    this.bubbleDataLoad(timeRanges, step, tagOptions,relativeDate);
   }else{
     this.energyDataLoad(timeRanges, step, tagOptions, relativeDate, weather);
   }
@@ -244,6 +255,19 @@ _onScatterAxisChanged(){
   var xAxis=ScatterPlotStore.getXaxis(),
       yAxis=ScatterPlotStore.getYaxis();
   if(xAxis!==yAxis && yAxis!==0 && xAxis!==0){
+    this.setState({
+      energyData:null
+    },()=>{
+      this._onSearchDataButtonClick();
+    })
+    
+  }
+}
+_onBubbleAxisChanged(){
+    var xAxis=BubbleStore.getXaxis(),
+      yAxis=BubbleStore.getYaxis(),
+      area=BubbleStore.getArea();
+  if(xAxis!==yAxis && xAxis!==area && yAxis!==area && area!==0 && yAxis!==0 && xAxis!==0){
     this.setState({
       energyData:null
     },()=>{
@@ -356,6 +380,13 @@ _onScatterAxisChanged(){
               if(this.state.energyData!=='initial' && xAxis!==yAxis && yAxis!==0 && xAxis!==0){
                 this.setFitStepAndGetData(startDate, endDate, nodeOptions, relativeDateValue);
               }
+            }else if(chartType==='bubble'){
+                var xAxis=BubbleStore.getXaxis(),
+                    yAxis=BubbleStore.getYaxis(),
+                    area=BubbleStore.getArea();
+              if(this.state.energyData!=='initial' && xAxis!==yAxis && xAxis!==area && area!==yAxis && yAxis!==0 && xAxis!==0 && area!==0){
+                this.setFitStepAndGetData(startDate, endDate, nodeOptions, relativeDateValue);
+              }
             }
           }
       }
@@ -385,7 +416,7 @@ _onScatterAxisChanged(){
         this.setState({
           multiTagTipShow:true
         })
-      }else if(this.state.selectedChartType!=='scatterplot'){
+      }else if(this.state.selectedChartType!=='scatterplot' || this.state.selectedChartType!=='bubble'){
         this._onSearchDataButtonClick();
       }
 
@@ -647,6 +678,12 @@ _onScatterAxisChanged(){
       nodeNameAssociation=CommonFuns.getNodeNameAssociationByIds(tagOptions,tagIds)
     }
 
+        //for bubble
+    if(this.state.selectedChartType==='bubble'){
+      tagIds=[BubbleStore.getXaxis(),BubbleStore.getYaxis(),BubbleStore.getArea()]
+      nodeNameAssociation=CommonFuns.getNodeNameAssociationByIds(tagOptions,tagIds)
+    }
+
     //submitParams part
     let submitParams = {
         options: nodeNameAssociation,
@@ -765,6 +802,8 @@ _onScatterAxisChanged(){
 
    if(this.state.selectedChartType==='scatterplot'){
       this.scatterDataLoad(timeRanges, step, tagOptions,this.state.relativeDate);
+   }else if(this.state.selectedChartType==='bubble'){
+      this.bubbleDataLoad(timeRanges, step, tagOptions,this.state.relativeDate);
    }else{
      this.energyDataLoad(timeRanges, step, tagOptions, false);
    }
@@ -962,6 +1001,23 @@ _onScatterAxisChanged(){
                 yAxis===xAxis
               ))
     }
+
+    var checkBubbleDisable=()=>{
+      var xAxis=BubbleStore.getXaxis(),
+          yAxis=BubbleStore.getYaxis(),
+          area=BubbleStore.getArea();
+          // this.state.energyData==='initial' || 
+      return (this.state.selectedChartType==='bubble' &&
+              (this.state.energyData==='initial' ||
+                xAxis===0 ||
+                yAxis===0 ||
+                area===0 ||
+                yAxis===xAxis ||
+                yAxis===area ||
+                area===xAxis
+              ))
+    }
+
     return(
       <div className="head">
         <div style={{display:'flex',alignItems:'center'}}>
@@ -989,7 +1045,7 @@ _onScatterAxisChanged(){
           <div className="description">{this.props.sourceUserName && `(${I18N.format(I18N.Folder.Detail.SubTitile,this.props.sourceUserName)})`}</div>
         </div>
         <div className="operation">
-          <NewFlatButton label={I18N.Common.Button.Save} disabled={!this.state.energyData || !isFullBasicAnalysis() || checkScatterDisable()} labelStyle={styles.label} secondary={true}
+          <NewFlatButton label={I18N.Common.Button.Save} disabled={!this.state.energyData || !isFullBasicAnalysis() || checkScatterDisable() || checkBubbleDisable()} labelStyle={styles.label} secondary={true}
             icon={<FontIcon className="icon-save" style={styles.label}/>} style={styles.button}
             onClick={()=>{this._handleSave()}}/>
           {this.props.isBuilding && <GenerateSolutionButton preAction={{
@@ -1007,7 +1063,7 @@ _onScatterAxisChanged(){
             }}
             onOpen={(data)=>{this.props.onOpenGenerateSolution(this,data)}}
             nodes={[this.props.selectedNode]}
-            disabled={!this.state.energyData || this.state.selectedChartType === 'rawdata' || checkScatterDisable()}
+            disabled={!this.state.energyData || this.state.selectedChartType === 'rawdata' || checkScatterDisable() || checkBubbleDisable()}
            />}
           {this._renderMoreOperation()}
       </div>
@@ -1098,7 +1154,7 @@ _onScatterAxisChanged(){
         });
         EnergyAction.setChartType(nextChartType)
       } else { //if(nextChartType === 'pie'){
-      if(nextChartType==='heatmap' || nextChartType==='scatterplot'){
+      if(nextChartType==='heatmap' || nextChartType==='scatterplot' || nextChartType==='bubble'){
         ChartStatusAction.modifyChartType(nextChartType);
       }else{
         ChartStatusAction.clearStatus();
@@ -1106,7 +1162,7 @@ _onScatterAxisChanged(){
       EnergyAction.setChartType(nextChartType);
       this.setState({
         selectedChartType: nextChartType,
-        energyData: nextChartType==='scatterplot'?'initial':null
+        energyData: nextChartType==='scatterplot' || nextChartType==='bubble'?'initial':null
       }, ()=> {
         this._onSearchDataButtonClick();
       });
@@ -1140,6 +1196,7 @@ _onScatterAxisChanged(){
 
   _onChartTypeChanged(e, selectedIndex, value){
     ScatterPlotAction.clearAxis();
+    BubbleAction.clearAxis();
     this._onSearchBtnItemTouchTap(value)
   }
 
@@ -1168,7 +1225,8 @@ _onScatterAxisChanged(){
         pieIcon=<FontIcon className="icon-pie" iconStyle ={iconStyle} style = {style} />,
         rawdataIcon=<FontIcon className="icon-raw-data" iconStyle ={iconStyle} style = {style} />,
         heatmapIcon=<FontIcon className="icon-heat-map" iconStyle ={iconStyle} style = {style} />,
-        scatterIcon=<FontIcon className="icon-heat-map" iconStyle ={iconStyle} style = {style} />;
+        scatterIcon=<FontIcon className="icon-scatter-plot" iconStyle ={iconStyle} style = {style} />,
+        bubbleIcon=<FontIcon className="icon-bubble-chart" iconStyle ={iconStyle} style = {style} />;
 
   let chartType = this.state.selectedChartType || 'line';
   return(
@@ -1180,7 +1238,8 @@ _onScatterAxisChanged(){
     <MenuItem primaryText={I18N.EM.CharType.Pie} value="pie" leftIcon={pieIcon}/>
     <MenuItem primaryText={I18N.EM.CharType.GridTable} value="rawdata" leftIcon={rawdataIcon}/>
     <MenuItem primaryText={I18N.EM.CharType.HeatMap} value="heatmap" disabled={this._heatMapValid()} leftIcon={heatmapIcon}/>
-    <MenuItem primaryText={I18N.EM.CharType.Scatter} value="scatterplot" leftIcon={scatterIcon}/>
+    <MenuItem primaryText={I18N.EM.CharType.Bubble} value="bubble" leftIcon={bubbleIcon}/>
+    <MenuItem primaryText={I18N.EM.CharType.Scatter} value="scatterplot" leftIcon={scatterIcon}/>    
   </DropDownMenu>
   )
   }
@@ -1487,6 +1546,7 @@ _onScatterAxisChanged(){
       DataTable: 'rawdata',
       HeatMap:'heatmap',
       ScatterPlot:'scatterplot',
+      Bubble:'bubble',
       original: 'rawdata'
     };
 
@@ -1617,6 +1677,8 @@ _onScatterAxisChanged(){
     FolderStore.addCheckWidgetUpdateChangeListener(this._onCheckWidgetUpdate);
     WeatherStore.addChangeListener(this._onWeatherTagChanged);
     ScatterPlotStore.addChangeListener(this._onScatterAxisChanged);
+    BubbleStore.addChangeListener(this._onBubbleAxisChanged);
+    
 
     if(!this.props.isNew){
       this._initChartPanelByWidgetDto();
@@ -1658,6 +1720,7 @@ _onScatterAxisChanged(){
     FolderStore.removeCheckWidgetUpdateChangeListener(this._onCheckWidgetUpdate);
     WeatherStore.removeChangeListener(this._onWeatherTagChanged);
     ScatterPlotStore.removeChangeListener(this._onScatterAxisChanged);
+    BubbleStore.removeChangeListener(this._onBubbleAxisChanged);
 
     this.resetCalendarType();
     // TagAction.clearAlarmSearchTagList();
@@ -1667,6 +1730,7 @@ _onScatterAxisChanged(){
     WeatherAction.clearSelectedTag();
     IntervalStatisticAction.clearAll();
     ScatterPlotAction.clearAxis();
+    BubbleAction.clearAxis();
   }
 
   render(){

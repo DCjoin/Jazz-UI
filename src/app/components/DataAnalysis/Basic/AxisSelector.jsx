@@ -8,6 +8,7 @@ import MenuItem from 'material-ui/MenuItem';
 import CommonFuns from 'util/Util.jsx';
 import _ from 'lodash-es';
 import ScatterPlotStore from 'stores/DataAnalysis/scatter_plot_store.jsx';
+import BubbleStore from 'stores/DataAnalysis/bubble_store.jsx';
 import AlarmTagStore from 'stores/AlarmTagStore.jsx';
 
 let {isNumeric} = CommonFuns;
@@ -47,13 +48,25 @@ let AxisSelector = React.createClass({
     this._onYaxisClick();
   },
   getConfig4Dialog(chartObj) {
-    var config = [{
-      uom:chartObj.xAxis[0].options.xname,
-      tagName:AlarmTagStore.getTagNameById(ScatterPlotStore.getXaxis())
-    },{
-      uom:chartObj.yAxis[0].options.yname,
-      tagName:AlarmTagStore.getTagNameById(ScatterPlotStore.getYaxis())
-    }];
+    var config ;
+    if(chartObj.options.chart.type==='scatter'){
+      config=[{
+          uom:chartObj.xAxis[0].options.xname,
+          tagName:AlarmTagStore.getTagNameById(ScatterPlotStore.getXaxis())
+        },{
+          uom:chartObj.yAxis[0].options.yname,
+          tagName:AlarmTagStore.getTagNameById(ScatterPlotStore.getYaxis())
+        }];
+    }else{
+      config=[{
+          uom:chartObj.xAxis[0].options.xname,
+          tagName:AlarmTagStore.getTagNameById(BubbleStore.getXaxis())
+        },{
+          uom:chartObj.yAxis[0].options.yname,
+          tagName:AlarmTagStore.getTagNameById(BubbleStore.getYaxis())
+        }];
+    }
+
 
     return config;
   },

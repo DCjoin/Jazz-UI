@@ -7,8 +7,10 @@ import FolderAction from 'actions/FolderAction.jsx';
 import FolderStore from 'stores/FolderStore.jsx';
 import HeatMap from './heat_map.jsx';
 import ScatterPlotView from './scatter_plot_generate_sulution.jsx';
+import BubbleView from './bubble_generate_solution.jsx';
 import MultipleTimespanStore from 'stores/Energy/MultipleTimespanStore.jsx';
 import ScatterPlotAction from 'actions/DataAnalysis/scatter_plot_action.jsx';
+import BubbleAction from 'actions/DataAnalysis/bubble_action.jsx';
 
 function getFromImmu(key) {
 	return function(immuObj) {
@@ -105,6 +107,7 @@ export default class AnalysisGenerateSolution extends Component {
       this.props.preAction.removeListener(this._getTagsDataByNode);
     }
     ScatterPlotAction.clearAxis();
+    BubbleAction.clearAxis();
   }
   _getTagsDataByNode() {
     getTagsDataByNode(this.props);
@@ -182,6 +185,32 @@ export default class AnalysisGenerateSolution extends Component {
                                console.log(nodeId);
                                console.log('in');
                              console.log(new Date());
+         return afterChartCreated.apply(this, [getTagsByChartData(tagDatas[nodeId])].concat(args));
+      }, 1000);
+           
+        }}/> 
+        )
+      }
+    }else if(currentChartType==='bubble'){
+        var syntaxObj = JSON.parse(contentSyntaxs[nodeId]);
+        var xAxisTagId, yAxisTagId,areaTagId,step, timeRanges;
+        if( syntaxObj && syntaxObj.viewOption && syntaxObj.viewOption.TimeRanges ) {
+        let TimeRanges = syntaxObj.viewOption.TimeRanges;
+        MultipleTimespanStore.initDataByWidgetTimeRanges(TimeRanges);
+        timeRanges = MultipleTimespanStore.getSubmitTimespans();
+        xAxisTagId=syntaxObj.tagIds[0];
+        yAxisTagId=syntaxObj.tagIds[1];
+        areaTagId=syntaxObj.tagIds[2];
+        step=syntaxObj.viewOption.Step;
+        return (
+          <BubbleView xAxisTagId={xAxisTagId}
+                           yAxisTagId={yAxisTagId}
+                           areaTagId={areaTagId}
+                           timeRanges={timeRanges}
+                           step={step}
+                           afterChartCreated={function(){
+                             let args = arguments;
+                             setTimeout(() => {                              
          return afterChartCreated.apply(this, [getTagsByChartData(tagDatas[nodeId])].concat(args));
       }, 1000);
            
