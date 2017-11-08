@@ -4,14 +4,15 @@ import Highcharts from '../../highcharts/Highcharts.jsx';
 import Popover from 'material-ui/Popover';
 import FontIcon from 'material-ui/FontIcon';
 import AlarmTagStore from 'stores/AlarmTagStore.jsx';
-import ScatterPlotAction from 'actions/DataAnalysis/scatter_plot_action.jsx';
-import ScatterPlotStore from 'stores/DataAnalysis/scatter_plot_store.jsx';
+import BubbleAction from 'actions/DataAnalysis/bubble_action.jsx';
+import BubbleStore from 'stores/DataAnalysis/bubble_store.jsx';
 import Immutable from 'immutable';
 import CommonFuns from 'util/Util.jsx';
 import moment from 'moment';
 import classNames from 'classnames';
 
-var getXaxisUom=(data,id)=>CommonFuns.getUomById(data.Tags[0].Id===id?data.Tags[0].UomId:data.Tags[1].UomId).Code
+var getUom=(data,id)=>CommonFuns.getUomById(Immutable.fromJS(data.Tags).find(item=>item.get("Id")===id)
+                                                                        .get("UomId")).Code
 
 var getYaxisUom=(data,id)=>CommonFuns.getUomById(data.Tags[1].Id===id?data.Tags[1].UomId:data.Tags[0].UomId).Code
 
@@ -24,13 +25,14 @@ var getSeries=(datas)=>datas.map(data=>{
   :`${moment(j2d(StartTime)).format("YYYY-MM-DD HH-mm")}<br/>${moment(j2d(EndTime)).format("YYYY-MM-DD HH-mm")}`
   return{
     name:name,
-    marker:{
-        	symbol:'circle'
-        },
+    // marker:{
+    //     	symbol:'circle'
+    //     },
     turboThreshold:10*10000,
     data:Coordinates.map(Coordinate=>({
       x:Coordinate.XCoordinate,
       y:Coordinate.YCoordinate,
+      z:Coordinate.AreaValue
       // name:moment(j2d(Coordinate.Time)).format("YYYY-MM-DD HH-mm")
     }))
   }
@@ -196,7 +198,7 @@ DropDownMenu.propTypes={
 }
 
 
-export default class ScatterPlot extends Component {
+export default class Bubble extends Component {
 
    constructor(props) {
     super(props);
@@ -204,8 +206,9 @@ export default class ScatterPlot extends Component {
   }
 
   state={
-    xAxis:ScatterPlotStore.getXaxis(),
-    yAxis:ScatterPlotStore.getYaxis(),
+    xAxis:BubbleStore.getXaxis(),
+    yAxis:BubbleStore.getYaxis(),
+    area:BubbleStore.getArea(),
   }
 
   xmin;
@@ -215,71 +218,31 @@ export default class ScatterPlot extends Component {
 
   _onChanged(){
     this.setState({
-      xAxis:ScatterPlotStore.getXaxis(),
-      yAxis:ScatterPlotStore.getYaxis(), 
+      xAxis:BubbleStore.getXaxis(),
+      yAxis:BubbleStore.getYaxis(), 
+      area:BubbleStore.getArea(),
     })
   }
 
-  _renderTitle(isFromSolution){
-    if(isFromSolution){
-      var content='';
-      this.props.energyData.forEach((data,index)=>{
-        if(index===0){
-          content+=`${I18N.Setting.DataAnalysis.Scatter.Formula+': '}R2=${data.R2}  y=${data.B}x${data.A<0?'':'+'}${data.A}`
-        }else{
-          content+=`<br/>R2=${data.R2}  y=${data.B}x${data.A<0?'':'+'}${data.A}`
-        }
-      })
-      return content
-    }else{
-    var content='';
-      this.props.energyData.forEach((data,index)=>{
-        content+=`<div style="font-size:14px;display:flex;color:${colorArr[index]}">
-                      R<sup>2</sup>=${data.R2}
-                      <div style="margin-left:20px">y=${data.B}x${data.A<0?'':'+'}${data.A}</div>
-                    </div>`
-      })
-    
-    return(
-      `<div style="display:flex;flex-direction:row">
-                 <div style="font-size:14px;color:#626469">${I18N.Setting.DataAnalysis.Scatter.Formula+': '}</div>
-                 <div style="margin-left:10px">${content}</div>
-                </div>`
-    )
-    }
-
-  }
-
   getConfigObj(){
-    var xAxisUom=getXaxisUom(this.props.energyData[0],this.state.xAxis),
-        yAxisUom=getYaxisUom(this.props.energyData[0],this.state.yAxis),
+    var xAxisUom=getUom(this.props.energyData[0],this.state.xAxis),
+        yAxisUom=getUom(this.props.energyData[0],this.state.yAxis),
+        areaUom=getUom(this.props.energyData[0],this.state.area),
         xAxisName=Immutable.fromJS(this.props.energyData[0].Tags).find(tag=>tag.get('Id')===this.state.xAxis).get("Name"),
-        yAxisName=Immutable.fromJS(this.props.energyData[0].Tags).find(tag=>tag.get('Id')===this.state.yAxis).get("Name");
+        yAxisName=Immutable.fromJS(this.props.energyData[0].Tags).find(tag=>tag.get('Id')===this.state.yAxis).get("Name"),
+        areaName=Immutable.fromJS(this.props.energyData[0].Tags).find(tag=>tag.get('Id')===this.state.area).get("Name");
     var that=this;
     return{
       colors:colorArr,
       chart: {
-        type: 'scatter',
-        // zoomType: 'xy',
-        spacingBottom:20*this.props.energyData.length,
+        type: 'bubble',
         events:{
           redraw: function (e) {
             that.forceUpdate();
           }
         }
       },
-      title: {
-          useHTML:that.props.isFromSolution?false:true,
-          align:'left',
-          verticalAlign:'bottom',    
-          x:40,
-          y:5,      
-          text:that._renderTitle(that.props.isFromSolution),
-          style: that.props.isFromSolution?{
-            color: '#626469',
-            fontSize: '14px'
-        }:{}
-      },
+      title: null,
       credits: {
             enabled: false
         }, 
@@ -321,7 +284,7 @@ export default class ScatterPlot extends Component {
         layout: 'vertical',
         verticalAlign: 'top',
         title:{
-          text:that.props.isFromSolution?`${I18N.Setting.DataAnalysis.Scatter.XAxis+'：'+xAxisName}<br/>${I18N.Setting.DataAnalysis.Scatter.YAxis+'：'+yAxisName}`:null
+          text:that.props.isFromSolution?`${I18N.Setting.DataAnalysis.Scatter.XAxis+'：'+xAxisName}<br/>${I18N.Setting.DataAnalysis.Scatter.YAxis+'：'+yAxisName}<br/>${I18N.Setting.DataAnalysis.Bubble.Area+'：'+areaName}`:null
         },
         y: that.props.isFromSolution?10:140,
         x: -100,
@@ -364,20 +327,22 @@ export default class ScatterPlot extends Component {
       tooltip:{
         useHTML: true,
         formatter:function(){
-          var x=this.point.x,y=this.point.y;
+          var x=this.point.x,y=this.point.y,z=this.point.z;
           var content='';
           var j2d=CommonFuns.DataConverter.JsonToDateTime;
           that.props.energyData.forEach((data,index)=>{
             var {Coordinates}=data;
             Coordinates.forEach(Coordinate=>{
-              if(Coordinate.XCoordinate===x && Coordinate.YCoordinate===y){
+              if(Coordinate.XCoordinate===x && Coordinate.YCoordinate===y && Coordinate.AreaValue===z){
                 content+= `<div>
                             <div style="font-size:14px;color:#626469">${CommonFuns.formatDateByStep(j2d(Coordinate.Time,true),null,null,that.props.step)}</div>
                             <div style="font-size:12px;color:${colorArr[index]}">(${dataLabelFormatter.call({
                   value: x
                 }, false)+xAxisUom}, ${dataLabelFormatter.call({
                   value: y
-                }, false)+yAxisUom})</div>
+                }, false)+yAxisUom},${dataLabelFormatter.call({
+                  value: z
+                }, false)+areaUom})</div>
                           </div>`
               }
             })
@@ -393,12 +358,12 @@ export default class ScatterPlot extends Component {
       }
   }
 
-  setAxisData(xAxis,yAxis){
-    ScatterPlotAction.setAxisData(xAxis,yAxis);
+  setAxisData(xAxis,yAxis,area){
+    BubbleAction.setAxisData(xAxis,yAxis,area);
   }
 
   _renderContent(){
-    if(this.props.energyData==='initial' || this.state.xAxis===0 || this.state.yAxis===0){
+    if(this.props.energyData==='initial' || this.state.xAxis===0 || this.state.yAxis===0 || this.state.area===0){
       return(
               <div className="flex-center" style={{flexDirection:"column",backgroundColor: "#ffffff",borderBottomRightRadius: "5px",borderBottomLeftRadius: "5px",border: "solid 1px #e6e6e6",borderTop:"none"}}>
                 <FontIcon className="icon-chart1" color="#32ad3d" style={{fontSize:'50px'}}/>
@@ -406,7 +371,7 @@ export default class ScatterPlot extends Component {
               </div>
       )
     }
-    if(this.state.xAxis=== this.state.yAxis){
+    if(this.state.xAxis=== this.state.yAxis || this.state.xAxis=== this.state.area || this.state.area=== this.state.yAxis){
       return(
               <div className="flex-center" style={{flexDirection:"column",backgroundColor: "#ffffff",borderBottomRightRadius: "5px",borderBottomLeftRadius: "5px",border: "solid 1px #e6e6e6",borderTop:"none"}}>
                 <FontIcon className="icon-chart1" color="#32ad3d" style={{fontSize:'50px'}}/>
@@ -434,19 +399,27 @@ export default class ScatterPlot extends Component {
     return(
       <div style={{position:'absolute',right:'20px',top:'50px',backgroundColor:'#ffffff'}}>
         <div style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
-          <div style={{fontSize:'12px',color:'#626469'}}>
+          <div style={{fontSize:'12px',color:'#626469',width:'40px'}}>
           {I18N.Setting.DataAnalysis.Scatter.XAxis+'：'}
           </div>  
           <DropDownMenu value={this.state.xAxis}
-                        onItemClick={(value)=>{this.setAxisData(value,this.state.yAxis)}}
+                        onItemClick={(value)=>{this.setAxisData(value,this.state.yAxis,this.state.area)}}
                         menuitems={menus}/>
         </div>
         <div style={{display:'flex',marginTop:'10px',flexDirection:'row',alignItems:'center'}}>
-          <div style={{fontSize:'12px',color:'#626469'}}>
+          <div style={{fontSize:'12px',color:'#626469',width:'40px'}}>
           {I18N.Setting.DataAnalysis.Scatter.YAxis+'：'}
           </div>      
           <DropDownMenu value={this.state.yAxis}
-                        onItemClick={(value)=>{this.setAxisData(this.state.xAxis,value)}}
+                        onItemClick={(value)=>{this.setAxisData(this.state.xAxis,value,this.state.area)}}
+                        menuitems={menus}/>     
+        </div>
+        <div style={{display:'flex',marginTop:'10px',flexDirection:'row',alignItems:'center'}}>
+          <div style={{fontSize:'12px',color:'#626469',width:'40px'}}>
+          {I18N.Setting.DataAnalysis.Bubble.Area+'：'}
+          </div>      
+          <DropDownMenu value={this.state.area}
+                        onItemClick={(value)=>{this.setAxisData(this.state.xAxis,this.state.yAxis,value)}}
                         menuitems={menus}/>     
         </div>
       </div>
@@ -464,18 +437,18 @@ export default class ScatterPlot extends Component {
   }
 
   componentDidMount(){
-    ScatterPlotStore.addChangeListener(this._onChanged);
+    BubbleStore.addChangeListener(this._onChanged);
   }
   
   componentWillReceiveProps(nextProps){
-    var {xAxis,yAxis}=this.state;
+    var {xAxis,yAxis,area}=this.state;
     if(!this.props.isFromSolution){
 
         if(Immutable.fromJS(AlarmTagStore.getSearchTagList()).findIndex(tag=>tag.get('tagId')===xAxis)===-1){xAxis=0}
         if(Immutable.fromJS(AlarmTagStore.getSearchTagList()).findIndex(tag=>tag.get('tagId')===yAxis)===-1){yAxis=0}
 
-        if(xAxis!==this.state.xAxis || yAxis!==this.state.yAxis){
-          ScatterPlotAction.setAxisData(xAxis,yAxis)
+        if(xAxis!==this.state.xAxis || yAxis!==this.state.yAxis || area!==this.state.area){
+          BubbleAction.setAxisData(xAxis,yAxis,area)
         }
 
         if(nextProps.getYaxisConfig && nextProps.getYaxisConfig() && nextProps.getYaxisConfig().length!==0){
@@ -490,12 +463,12 @@ export default class ScatterPlot extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-		if(nextProps.energyData===this.props.energyData && nextState.xAxis===this.state.xAxis && nextState.yAxis===this.state.yAxis) return false
+		if(nextProps.energyData===this.props.energyData && nextState.xAxis===this.state.xAxis && nextState.yAxis===this.state.yAxis && nextState.area===this.state.ares) return false
 		return true
 	}
 
   componentWillUnmount() {
-    ScatterPlotStore.removeChangeListener(this._onChanged);
+    BubbleStore.removeChangeListener(this._onChanged);
   }
 
 
@@ -518,7 +491,7 @@ export default class ScatterPlot extends Component {
   }
 }
 
-ScatterPlot.propTypes = {
+Bubble.propTypes = {
   energyData:React.PropTypes.object,
   getYaxisConfig:React.PropTypes.func,
   step:React.PropTypes.number,

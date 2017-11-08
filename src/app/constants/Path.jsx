@@ -60,7 +60,8 @@ module.exports = {
     getLatestRawData:'/energy/Tag/{tagId}/LatestRawData',
     getCityWeatherTag:'/Dashboard/cityWeatherTag/{cityId}',
     getWidgetsplitgatherinfo:'/widget/widgetsplitgatherinfo',
-    getScatterPlotData:'/energy/scatterPlotData'
+    getScatterPlotData:'/energy/scatterPlotData',
+    getBubbleData:'/energy/bubbleData'
   },
   ECM:{
     getEnergysolution:'/energysolution/{hierarchyId}/{status}/{smallSize}/{size}',

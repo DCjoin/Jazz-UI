@@ -32,6 +32,9 @@ module.exports = {
     SET_CHART_TYPE:null,
     GET_SCATTER_PLOT_DATA:null,
     SET_SCATTER_AXIS_DATA:null,
-    CLEAR_AXIS_DATA:null
+    CLEAR_AXIS_DATA:null,
+    GET_BUBBLE_DATA:null,
+    SET_BUBBLE_AXIS_DATA:null,
+    CLEAR_BUBBLE_AXIS_DATA:null
   })
 };

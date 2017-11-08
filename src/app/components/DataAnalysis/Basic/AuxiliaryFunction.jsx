@@ -160,8 +160,8 @@ export default class AuxiliaryFunction extends Component {
        <MenuItem primaryText={I18N.EM.Tool.DataStatistics} value='sum' disabled={disabled}/>
        {SeniorDataAnalyseIsFull() && <MenuItem primaryText={I18N.EM.Tool.IntervalStatistics} value='interval' disabled={disabled}/>}
          {calendarEl}
-      {chartType!=='scatterplot' && <MenuItem primaryText={I18N.EM.Tool.YaxisConfig} value='yaxis' disabled={disabled || !isFullBasicAnalysis()}/>}
-      {chartType==='scatterplot' && <MenuItem primaryText={I18N.EM.Tool.AxisConfig} value='axis' disabled={!this.props.hasTagData || !isFullBasicAnalysis()}/>}
+      {chartType!=='scatterplot' && chartType!=='bubble' &&<MenuItem primaryText={I18N.EM.Tool.YaxisConfig} value='yaxis' disabled={disabled || !isFullBasicAnalysis()}/>}
+      {(chartType==='scatterplot' || chartType==='bubble') && <MenuItem primaryText={I18N.EM.Tool.AxisConfig} value='axis' disabled={!this.props.hasTagData || !isFullBasicAnalysis()}/>}
      </ButtonMenu>
       </div>
     )
@@ -175,7 +175,7 @@ export default class AuxiliaryFunction extends Component {
     if (chartType === "rawdata" || chartType === "heatmap"){
       return true
     }
-    if(chartType === "scatterplot"){
+    if(chartType === "scatterplot" || chartType === "bubble"){
       return false
     }
     return TagStore.getBaselineBtnDisabled()
