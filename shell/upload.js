@@ -30,10 +30,11 @@ var client = new OSS({
 });
 
 var JAZZ_STATIC_CDN = process.env["JAZZ_STATIC_CDN"];
+let version = fs.readFileSync("./build/version.txt", "utf-8");
 
 function replaceCSS(filePath) {
   var content = fs.readFileSync(filePath, "utf8");
-  content = content.replace(/__JAZZ_STATIC_CDN__/g, JAZZ_STATIC_CDN);
+  content = content.replace(/__JAZZ_STATIC_CDN__/g, JAZZ_STATIC_CDN + "/" + version);
   content = content.replace(/__POLKA_WEB_HOST__/g, process.env["POLKA_WEB_HOST"]);
 
   fs.writeFileSync(filePath, content, {encoding: "utf8"});
@@ -49,7 +50,7 @@ co(function* () {
         replaceCSS(filePath);
       }
       // let result = yield client.put(`jazz/${file}`, filePath);
-      let version = fs.readFileSync("../version.txt", "utf-8");
+      let version = fs.readFileSync("./build/version.txt", "utf-8");
       let result = yield client.put(`${env}/jazz-ui/webui/${version}/${file}`, filePath);
       console.log(result);
     }
