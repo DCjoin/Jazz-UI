@@ -83,6 +83,9 @@ var APP_DOWNLOAD_BAIDU = process.env.APP_DOWNLOAD_BAIDU;
 var JAZZ_WEB_HOST = process.env.JAZZ_WEB_HOST;
 var GUARD_UI_HOST = process.env.GUARD_UI_HOST;
 
+let version = fs.readFileSync("../../version.txt", "utf-8");
+console.log(version);
+
 function getLang(req) {
   var lang = req.params.lang;
   if( !lang || !SUPPORT_LANGUAGES[lang] ) {
@@ -116,9 +119,9 @@ function returnIndexHtml(req,res){
 
   var html = fs.readFileSync(path.resolve(__dirname, "./index.html"), "utf-8");
 
-  html = html.replace('__LANG_JS__', JAZZ_STATIC_CDN + '/' + getLang(req) + '.js');
+  html = html.replace('__LANG_JS__', JAZZ_STATIC_CDN + '/' + version + '/' + getLang(req) + '.js');
 
-  html = html.replace(/__JAZZ_STATIC_CDN__/g, JAZZ_STATIC_CDN)
+  html = html.replace(/__JAZZ_STATIC_CDN__/g, JAZZ_STATIC_CDN + '/' + version)
             .replace(/__JAZZ_WEBAPI_HOST__/g, JAZZ_WEBAPI_HOST);
 
   if(JAZZ_UI_UMENG_CNZZ_SDK_URL) {
@@ -129,7 +132,7 @@ function returnIndexHtml(req,res){
 
 function returnDownloadHtml(req, res){
   var html = fs.readFileSync(path.resolve(__dirname, "./DownloadApp.html"), "utf-8")
-                .replace(/__JAZZ_STATIC_CDN__/g, JAZZ_STATIC_CDN)
+                .replace(/__JAZZ_STATIC_CDN__/g, JAZZ_STATIC_CDN + '/' + version)
                 .replace('${APP_VERSION}', APP_VERSION)
                 .replace('${APP_SIZE}', APP_SIZE)
                 .replace('${APP_DOWNLOAD_LOCAL}', APP_DOWNLOAD_LOCAL)
