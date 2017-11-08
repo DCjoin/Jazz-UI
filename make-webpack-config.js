@@ -33,11 +33,9 @@ module.exports = function(options) {
   var externals = [];
   var extensions = ["", ".jsx", "html"];
 
-  let version = fs.readFileSync(path.resolve(__dirname, "./version.txt"), "utf-8");
-
   var publicPath = options.devServer ?
     "http://localhost:3000/build/" :
-    "__JAZZ_STATIC_CDN__/" + '/' + version;//"/assets/";
+    "__JAZZ_STATIC_CDN__/";//"/assets/";
   var output = {
     path: path.join(__dirname, "build", "assets"),
     publicPath: publicPath,
