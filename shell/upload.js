@@ -49,7 +49,7 @@ co(function* () {
         replaceCSS(filePath);
       }
       // let result = yield client.put(`jazz/${file}`, filePath);
-      let version = fs.readFileSync("../version.txt", "utf-8");
+      let version = fs.readFileSync("./build/version.txt", "utf-8");
       let result = yield client.put(`${env}/jazz-ui/webui/${version}/${file}`, filePath);
       console.log(result);
     }

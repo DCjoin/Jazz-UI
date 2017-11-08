@@ -83,7 +83,7 @@ var APP_DOWNLOAD_BAIDU = process.env.APP_DOWNLOAD_BAIDU;
 var JAZZ_WEB_HOST = process.env.JAZZ_WEB_HOST;
 var GUARD_UI_HOST = process.env.GUARD_UI_HOST;
 
-let version = fs.readFileSync("../../version.txt", "utf-8");
+let version = fs.readFileSync("./version.txt", "utf-8");
 console.log(version);
 
 function getLang(req) {
