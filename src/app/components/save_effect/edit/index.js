@@ -517,7 +517,7 @@ export default class Edit extends Component {
 
   _renderStep2(){
     let { filterObj,chartData2,configStep } = this.state;
-        let {BenchmarkStartDate, BenchmarkEndDate, CalculationStep, BenchmarkModel, IncludeEnergyEffectData,EnergyStartDate,EnergyEndDate,TimePeriods} 
+        let {BenchmarkStartDate, BenchmarkEndDate, CalculationStep, BenchmarkModel, IncludeEnergyEffectData,EnergyStartDate,EnergyEndDate,TimePeriods,AuxiliaryTagId,AuxiliaryTagName} 
 				   = (configStep===2 || configStep===null)?filterObj.toJS():CreateStore.getEffectItem().toJS();
 				return (<Step2
 					TagId={filterObj.get('TagId')}
@@ -531,7 +531,14 @@ export default class Edit extends Component {
 					hasCalendar={this.state.hasCalendar}
 					needCalendar={needCalendar(this.context.hierarchyId)}
 					checkCalendar={this._checkCalendar}
+					AuxiliaryTagId={AuxiliaryTagId}
+					AuxiliaryTagName={AuxiliaryTagName}
 					TimePeriods={TimePeriods}
+					onAuxiliaryTagChanged={(id,name)=>{
+						filterObj=filterObj.set("AuxiliaryTagId",id);
+						filterObj=filterObj.set("AuxiliaryTagName",name);
+						this._setFilterObj(filterObj);
+					}}
 					onTimePeriodsChanged={(periods)=>{
 						filterObj=filterObj.set("TimePeriods",periods);
 						this._setFilterObj(filterObj);

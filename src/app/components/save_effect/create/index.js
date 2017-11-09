@@ -217,6 +217,8 @@ function getInitFilterObj(props) {
 		ContrastStep: TimeGranularity.Daily,
 		ConfigStep: props.ConfigStep,
 		IncludeEnergyEffectData: false,
+		AuxiliaryTagId:null,
+		AuxiliaryTagName:null,
 		TimePeriods:[]
 	}, ...props.filterObj, ...{		
 		BenchmarkDatas: (!props.filterObj.BenchmarkDatas || props.filterObj.BenchmarkDatas.length === 0 && props.filterObj.EnergyStartDate && props.filterObj.EnergyStartDate) ? 
@@ -377,6 +379,7 @@ export default class Create extends Component {
 				return this.state.filterObj.get('TagId');
 				break;
 			case 2:
+			if(this.state.filterObj.get('BenchmarkModel')===Model.Increment && this.state.filterObj.get('AuxiliaryTagId')!==null) return true
 				return this.state.chartData2 && this._checkStepByTag(this.state.filterObj.get('CalculationStep')) && 
 							(!needCalendar(this.context.hierarchyId) ||
 							(needCalendar(this.context.hierarchyId) && this.state.hasCalendar===true));
@@ -452,7 +455,7 @@ export default class Create extends Component {
 			}
 			case 2:
 			{
-				let {BenchmarkStartDate, BenchmarkEndDate, CalculationStep, BenchmarkModel, IncludeEnergyEffectData,TimePeriods} = filterObj.toJS();
+				let {BenchmarkStartDate, BenchmarkEndDate, CalculationStep, BenchmarkModel, IncludeEnergyEffectData,TimePeriods,AuxiliaryTagId,AuxiliaryTagName} = filterObj.toJS();
 
 		
 				// hasCalendar={this.state.hasCalendar}
@@ -469,7 +472,14 @@ export default class Create extends Component {
 					hasCalendar={this.state.hasCalendar}
 				  needCalendar={needCalendar(this.context.hierarchyId)}
 					checkCalendar={this._checkCalendar}
+					AuxiliaryTagId={AuxiliaryTagId}
+					AuxiliaryTagName={AuxiliaryTagName}
 					TimePeriods={TimePeriods}
+					onAuxiliaryTagChanged={(id,name)=>{
+						filterObj=filterObj.set("AuxiliaryTagId",id);
+						filterObj=filterObj.set("AuxiliaryTagName",name);
+						this._setFilterObj(filterObj);
+					}}
 					onTimePeriodsChanged={(periods)=>{
 						filterObj=filterObj.set("TimePeriods",periods);
 						this._setFilterObj(filterObj);
@@ -494,6 +504,8 @@ export default class Create extends Component {
 							.set('CorrectionFactor',1)
 							.set('EnergyStartDate', null)
 							.set('EnergyEndDate', null)
+							.set('AuxiliaryTagId', null)
+							.set('AuxiliaryTagName', null)
 						this._setFilterObj(filterObj);
 						this.setState({
 							chartData3: null

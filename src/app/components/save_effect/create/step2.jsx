@@ -22,6 +22,8 @@ import util from 'util/Util.jsx';
 import RoutePath from 'util/RoutePath.jsx';
 import TimePeriodComp from './time_period_comp.jsx';
 import Immutable from 'immutable';
+import TagSelect from'../../KPI/Single/TagSelect.jsx';
+import HierarchyStore from 'stores/HierarchyStore.jsx';
 
 const CALENDAR_TYPE_WORKTIME = 2;
 const CALENDAR_TYPE_NO_WORKTIME = 3;
@@ -37,7 +39,7 @@ let getModelDataItems = () => [
 	// { id: Model.Simulation, label: I18N.SaveEffect.Model.Simulation },
 ];
 
-let getStepDataItems = (isMannual=false) => isMannual?[
+let getStepDataItems = (hasMonthly=false) => hasMonthly?[
 	{ id: TimeGranularity.Hourly, label: I18N.EM.Hour },
 	{ id: TimeGranularity.Daily, label: I18N.EM.Day },
 	{ id: TimeGranularity.Monthly, label: I18N.EM.Month },
@@ -61,7 +63,8 @@ export default class Step2 extends Component {
 		this.OnNavigatorChanged = this.OnNavigatorChanged.bind(this);
 	}
 	state={
-		showRefresh:false
+		showRefresh:false,
+		showTagSelectDialog:false
 	}
   _afterChartCreated(chartObj) {
     if (chartObj.options.scrollbar && chartObj.options.scrollbar.enabled) {
@@ -140,6 +143,10 @@ export default class Step2 extends Component {
 
 	_getHierarchyId(context) {
 		return context.hierarchyId;
+	}
+
+	_getHierarchyName(context){
+  	return find(HierarchyStore.getBuildingList(), building => building.Id === context.hierarchyId * 1 ).Name;
 	}
 
 	_renderAllDayTimes(){
@@ -285,6 +292,7 @@ export default class Step2 extends Component {
 
 	_renderTimePeriods(){
 		let {BenchmarkModel,CalculationStep,needCalendar,hasCalendar } = this.props;
+		if(CalculationStep===TimeGranularity.Monthly) return null;
 		if(BenchmarkModel !== Model.Easy && BenchmarkModel !== Model.Increment && BenchmarkModel !== Model.Efficiency) return null
 
 		if(hasCalendar==='loading'){
@@ -317,6 +325,68 @@ export default class Step2 extends Component {
 
 	}
 
+	_renderAuxiliaryTag(){
+		let {AuxiliaryTagId,AuxiliaryTagName}=this.props;
+		var content;
+
+		if(AuxiliaryTagId!==null){
+			content=<div className="row">
+				<div className="tag_name">{AuxiliaryTagName}</div>
+				<div className="edit_btn" onClick={()=>{this.setState({showTagSelectDialog:true})}}>{I18N.Common.Button.Edit}</div>
+			</div>
+		}else{
+			    var styles={
+							button:{
+								height:'30px',
+								lineHeight:'30px',
+							},
+							label:{
+								fontSize:'14px',
+								lineHeight:'14px',
+								verticalAlign:'baseline',
+								border:'none'
+							}
+						};
+					
+					content=<NewFlatButton label={I18N.Setting.Tag.Tag} labelStyle={styles.label} secondary={true}
+                     icon={<FontIcon className="icon-add" style={styles.label}/>} style={styles.button}
+                     onClick={()=>{
+                       this.setState({
+                         showTagSelectDialog:true
+                       })
+                     }}/>
+		}
+
+		return(
+			<div className="auxiliary_tag">
+				<header className='title' style={{marginBottom:'14px'}}>{I18N.SaveEffect.Create.BenchmarkDate}</header>
+				{content}
+			</div>
+		)
+	}
+
+	_renderTagSelect(){
+		let {onAuxiliaryTagChanged}=this.props;
+		let tagSelectProps={
+    	key:'tagselect',
+      title:I18N.EM.Report.SelectTag,
+    	hierarchyId:this._getHierarchyId(this.context),
+    	hierarchyName:this._getHierarchyName(this.context),
+    	onSave:(tag)=>{
+				this.setState({
+					showTagSelectDialog:false
+				},()=>{
+					onAuxiliaryTagChanged(tag.get("Id"),tag.get("Name"))
+				})
+			},
+    	onCancel:()=>{this.setState({showTagSelectDialog:false})}
+    };
+	
+		return(
+			<TagSelect {...tagSelectProps}/>
+		)
+	}
+
 	render() {
 		let { data, disabledPreview, BenchmarkModel, BenchmarkStartDate, BenchmarkEndDate, CalculationStep, onChangeModelType, onChangeStep, onChangeBenchmarkStartDate, onChangeBenchmarkEndDate, onGetChartData, IncludeEnergyEffectData  } = this.props,
 		chartProps;
@@ -345,10 +415,13 @@ export default class Step2 extends Component {
 					let newConfig = Util.merge(true, chartCmpObj);
 					newConfig.series = newConfig.series.map((serie, i) => {
 						if( IncludeEnergyEffectData ) {
-							if( i !== 0 ) {
-								serie.type = 'column';
-							} else {
-								serie.name = I18N.EM.Ratio.BaseValue;
+							switch (i) {
+								case 0:
+									serie.name = I18N.EM.Ratio.BaseValue;
+									break;
+								case 1:
+									serie.type = 'column';
+									break;
 							}
 						} else {
 							serie.type = 'column';
@@ -416,7 +489,7 @@ export default class Step2 extends Component {
 								title={I18N.SaveEffect.Create.ConfigCalcStep}
 								valueField='id'
 								textField='label'
-								dataItems={getStepDataItems(BenchmarkModel === Model.Manual)}
+								dataItems={getStepDataItems(BenchmarkModel === Model.Manual || BenchmarkModel === Model.Increment)}
 								didChanged={onChangeStep}
 								style={{width: 90}}/>
 						</div>
@@ -429,7 +502,9 @@ export default class Step2 extends Component {
 							</div>
 							<div className='tip-message'>{I18N.SaveEffect.Create.BenchmarkDateTip}</div>
 						</div>}
+						{(BenchmarkModel === Model.Increment || BenchmarkModel === Model.Efficiency) && this._renderAuxiliaryTag()}
 						{this._renderTimePeriods()}
+						{this.state.showTagSelectDialog && this._renderTagSelect()}
 					</div>
 				</div>
 				<div className='create-block step2-content'>
@@ -450,7 +525,7 @@ export default class Step2 extends Component {
 								<div style={{display: 'inline-block', padding: '0 16px'}}>{I18N.EM.To2}</div>
 								<ViewableDatePicker onChange={onChangeBenchmarkEndDate} datePickerClassName='diagnose-date-picker' width={100} value={BenchmarkEndDate}/>
 							</div>
-							<span>{I18N.EM.Report.Step + ': ' + find(getStepDataItems(BenchmarkModel === Model.Manual), item => item.id === CalculationStep).label}</span>
+							<span>{I18N.EM.Report.Step + ': ' + find(getStepDataItems(BenchmarkModel === Model.Manual || BenchmarkModel === Model.Increment), item => item.id === CalculationStep).label}</span>
 						</header>
 						{data ?
 						<ChartBasicComponent {...chartProps}/> :

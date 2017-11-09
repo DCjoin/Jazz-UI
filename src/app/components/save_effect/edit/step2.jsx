@@ -77,7 +77,7 @@ export default class Step2 extends Component {
   }
 
   _renderViewStauts(){
-    let { BenchmarkModel, BenchmarkStartDate, BenchmarkEndDate, CalculationStep,needCalendar,TimePeriods} = this.props;
+    let { BenchmarkModel, BenchmarkStartDate, BenchmarkEndDate, CalculationStep,needCalendar,TimePeriods,AuxiliaryTagName} = this.props;
     return(
       <div className="jazz-save-effect-edit-step2-view">
         <header className="jazz-save-effect-edit-step2-view-title">{I18N.SaveEffect.Model.Title}</header>
@@ -86,6 +86,8 @@ export default class Step2 extends Component {
         <div className="jazz-save-effect-edit-step2-view-text">{CreateStore.getCalculationStepByStep(CalculationStep)}</div>
         {BenchmarkModel!==Model.Manual && <header className="jazz-save-effect-edit-step2-view-title">{I18N.SaveEffect.BaselinePeriod}</header>}
         {BenchmarkModel!==Model.Manual && <div className="jazz-save-effect-edit-step2-view-text">{`${formatDate(BenchmarkStartDate)} ${I18N.EM.To2} ${formatDate(BenchmarkEndDate)}`}</div>}
+        {BenchmarkModel===Model.Increment && <header className="jazz-save-effect-edit-step2-view-title">{I18N.SaveEffect.Create.AuxiliaryTag}</header>}
+        {BenchmarkModel===Model.Increment && <div className="jazz-save-effect-edit-step2-view-text">{AuxiliaryTagName}</div>}
         {BenchmarkModel!==Model.Manual && BenchmarkModel!==Model.Contrast && TimePeriods.length!==0 &&
           (needCalendar?this._renderWorkAndHolidayTimes()
                         :this._renderAllDayTimes())
