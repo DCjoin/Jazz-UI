@@ -6,6 +6,7 @@ import util from 'util/Util.jsx';
 import moment from 'moment';
 import ViewableTextField from 'controls/ViewableTextField.jsx';
 import {Model,CalendarItemType} from 'constants/actionType/Effect.jsx';
+import TimeGranularity from 'constants/TimeGranularity.jsx';
 
 function formatDate(date){
   return moment(util.DataConverter.JsonToDateTime(date)).format("YYYY-MM-DD")
@@ -78,7 +79,7 @@ export default class Step3 extends Component {
   }
 
   _renderViewStauts(){
-    let { BenchmarkModel,EnergyStartDate, EnergyEndDate, EnergyUnitPrice,BenchmarkDatas,unit,CorrectionFactor,TimePeriods,needCalendar} = this.props;
+    let { BenchmarkModel,EnergyStartDate,CalculationStep, EnergyEndDate, EnergyUnitPrice,BenchmarkDatas,unit,CorrectionFactor,TimePeriods,needCalendar} = this.props;
     return(
       <div className="jazz-save-effect-edit-step2-view">
         <header className="jazz-save-effect-edit-step2-view-title">{I18N.SaveEffect.EnergyCalculatePeriod}</header>
@@ -97,8 +98,8 @@ export default class Step3 extends Component {
 					style={{width: 95}}
 				/>)}
 			</div>}
-       {BenchmarkModel!==Model.Manual && <header className="jazz-save-effect-edit-step2-view-title">{I18N.SaveEffect.Create.CorrectionFactor}</header>}
-       {BenchmarkModel!==Model.Manual && <div className="jazz-save-effect-edit-step2-view-text">{CorrectionFactor}</div>}
+       {(Model.Easy === BenchmarkModel || Model.Contrast === BenchmarkModel) && CalculationStep===TimeGranularity.Daily && <header className="jazz-save-effect-edit-step2-view-title">{I18N.SaveEffect.Create.CorrectionFactor}</header>}
+       {(Model.Easy === BenchmarkModel || Model.Contrast === BenchmarkModel) && CalculationStep===TimeGranularity.Daily && <div className="jazz-save-effect-edit-step2-view-text">{CorrectionFactor}</div>}
        {BenchmarkModel!==Model.Manual && BenchmarkModel!==Model.Contrast && TimePeriods.length!==0 &&
           (needCalendar?this._renderWorkAndHolidayTimes()
                         :this._renderAllDayTimes())

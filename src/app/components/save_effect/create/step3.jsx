@@ -182,11 +182,14 @@ _renderAllDayTimes(){
 				postNewConfig: (chartCmpObj) => {
 					let newConfig = Util.merge(true, chartCmpObj);
 					newConfig.series = newConfig.series.map((serie, i) => {
-						if( i !== 0 ) {
-							serie.type = 'column';
-						} else {
-							serie.name = I18N.EM.Ratio.BaseValue;
-						}
+						switch (i) {
+								case 0:
+									serie.name = I18N.EM.Ratio.BaseValue;
+									break;
+								case 1:
+									serie.type = 'column';
+									break;
+							}
 						return serie;
 					});
 					newConfig.stacking = null;
@@ -241,7 +244,7 @@ _renderAllDayTimes(){
 							</div>
 							<ViewableTextField errorMessage={I18N.SaveEffect.FormatVaildTip} regex={/^(\+?)\d{1,9}([.]\d{1,3})?$/} style={{width: 170,marginTop:'10px'}} title={I18N.SaveEffect.Create.EnergyUnitPrice + `(RMB/${unit})`} hintText={I18N.SaveEffect.Create.EnterEnergyUnitPrice} defaultValue={EnergyUnitPrice} didChanged={onChangeEnergyUnitPrice}/>
 							{ Model.Manual === BenchmarkModel && <ManualValue unit={unit} key={EnergyStartDate + EnergyEndDate} BenchmarkDatas={BenchmarkDatas} onChangeValue={onChangeBenchmarkDatas}/>}
-							{Model.Manual !== BenchmarkModel && CalculationStep===TimeGranularity.Daily &&
+							{(Model.Easy === BenchmarkModel || Model.Contrast === BenchmarkModel) && CalculationStep===TimeGranularity.Daily &&
 							<ViewableTextField errorMessage={I18N.SaveEffect.FormatVaildTip} regex={/^(\+?)\d{1,9}([.]\d{1,3})?$/} style={{width: 170,marginTop:'10px'}} title={I18N.SaveEffect.Create.CorrectionFactor} hintText={I18N.SaveEffect.Create.EnterCorrectionFactor} defaultValue={CorrectionFactor} didChanged={onChangeCorrectionFactor}/>
 							}
 							{Model.Manual !== BenchmarkModel && Model.Contrast !== BenchmarkModel && CalculationStep===TimeGranularity.Hourly &&

@@ -34,8 +34,9 @@ function AdditiveComp({
 	let disabled = data && data.length >= limit;
 	return (
 		<div className={className}>
-			<hgroup className='' style={{color: '#202622', fontSize: '14px',}}>
-			{title} {!operationDisabled && <AddIcon
+			<hgroup className='' style={{color: '#202622', fontSize: '14px',display:'flex'}}>
+				<div style={{color:'#9fa0a4',fontSize:'12px'}}>{title}</div>
+			 {!operationDisabled && <AddIcon
 						disabled={disabled}
 						onClick={onAdd}/>}
 			</hgroup>
