@@ -8,6 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
+        <!-- <script src='http://localhost:3000/assets/zh-cn.js'></script> -->
         <div style='display: none;'>
         </div>
         <div id="emopapp" style='height:100%'>
@@ -18,7 +19,6 @@
             window.APIPath = '__JAZZ_WEBAPI_HOST__';
             document.rawWrite = document.write;
             document.write = function(content) {
-                //test
                 if(content.indexOf('<script ') === 0) {
                     var el = document.createElement("div");
                     document.getElementById('JAZZ_UI_UMENG_CNZZ_SDK').appendChild(el);
