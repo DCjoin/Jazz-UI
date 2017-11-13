@@ -41,6 +41,7 @@ app.use((req, res, next) => {
   console.log(req.url);
   console.log("%j", req.headers);
   let forwardProto = req.get("x-forwarded-proto");
+  console.log(forwardProto);
   let proto = forwardProto || req.protocol;
   if (/^http$/.test(proto)) {
     // console.log("enter");
