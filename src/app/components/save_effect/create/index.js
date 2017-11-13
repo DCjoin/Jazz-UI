@@ -379,13 +379,14 @@ export default class Create extends Component {
 				return this.state.filterObj.get('TagId');
 				break;
 			case 2:
-			if(this.state.filterObj.get('BenchmarkModel')===Model.Increment && this.state.filterObj.get('AuxiliaryTagId')!==null) return true
-				return this.state.chartData2 && this._checkStepByTag(this.state.filterObj.get('CalculationStep')) && 
+			var {BenchmarkModel,AuxiliaryTagId,CalculationStep}=this.state.filterObj.toJS();
+			if(BenchmarkModel===Model.Increment || BenchmarkModel===Model.Efficiency) return AuxiliaryTagId!==null
+				return this.state.chartData2 && this._checkStepByTag(CalculationStep) && 
 							(!needCalendar(this.context.hierarchyId) ||
 							(needCalendar(this.context.hierarchyId) && this.state.hasCalendar===true));
 				break;
 			case 3:
-				let {EnergyStartDate, EnergyEndDate, EnergyUnitPrice, BenchmarkDatas, BenchmarkModel,CorrectionFactor} = this.state.filterObj.toJS();
+				var {EnergyStartDate, EnergyEndDate, EnergyUnitPrice, BenchmarkDatas, BenchmarkModel,CorrectionFactor,CalculationStep} = this.state.filterObj.toJS();
 				if( !EnergyStartDate || !EnergyEndDate || !EnergyUnitPrice ||  !/^(\+?)\d{1,9}([.]\d{1,3})?$/.test(EnergyUnitPrice) ) {
 					return false;
 				}
@@ -393,7 +394,8 @@ export default class Create extends Component {
 					return BenchmarkDatas.reduce((result, current) => {
 						return result && !!current.Value && /^(\-?)\d{1,9}([.]\d{1,3})?$/.test(current.Value);
 					}, true);
-				}else{
+				}
+				if((Model.Easy === BenchmarkModel || Model.Contrast === BenchmarkModel) && CalculationStep===TimeGranularity.Daily){
 					if(!CorrectionFactor || !/^(\+?)\d{1,9}([.]\d{1,3})?$/.test(CorrectionFactor)) return false
 				}
 				return true;
@@ -678,8 +680,13 @@ export default class Create extends Component {
 								filterObj = filterObj.set('EnergyEndDate', endTime.format('YYYY-MM-DD HH:mm:ss'))
 							}
 
-							filterObj = filterObj.set('BenchmarkDatas', getDateObjByRange(val, EnergyEndDate));
-							filterObj = filterObj.set('PredictionDatas', getDateObjByRange(val, EnergyEndDate));
+							filterObj = filterObj.set('BenchmarkDatas', getDateObjByRange(val, endTime));
+							filterObj = filterObj.set('PredictionDatas', getDateObjByRange(val, endTime));
+						}else{
+							let end_time=moment(startTime).add(1, 'days').format('YYYY-MM-DD HH:mm:ss');
+							filterObj = filterObj.set('EnergyEndDate', end_time);
+							filterObj = filterObj.set('BenchmarkDatas', getDateObjByRange(val, end_time));
+							filterObj = filterObj.set('PredictionDatas', getDateObjByRange(val, end_time));
 						}
 						this._setFilterObj(filterObj);
 					}}
