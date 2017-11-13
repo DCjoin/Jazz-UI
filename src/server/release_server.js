@@ -35,22 +35,22 @@ app.listen(PORT, () => {
   console.log('http server running on:%d' + PORT);
 });
 app.use(cookieParser());
-// app.use((req, res, next) => {
-//   console.log(req.protocol);
-//   console.log(req.hostname);
-//   console.log(req.url);
-//   console.log("%j", req.headers);
-//   let forwardProto = req.get("x-forwarded-proto");
-//   let proto = forwardProto || req.protocol;
-//   if (/^http$/.test(proto)) {
-//     // console.log("enter");
-//     return res.redirect(301, "https://" + req.headers.host + req.url);
-//   }
-//   else {
-//     console.log('next');
-//     return next();
-//   }
-// });
+app.use((req, res, next) => {
+  console.log(req.protocol);
+  console.log(req.hostname);
+  console.log(req.url);
+  console.log("%j", req.headers);
+  let forwardProto = req.get("x-forwarded-proto");
+  let proto = forwardProto || req.protocol;
+  if (/^http$/.test(proto)) {
+    // console.log("enter");
+    return res.redirect(301, "https://" + req.headers.host + req.url);
+  }
+  else {
+    console.log('next');
+    return next();
+  }
+});
 app.use("/assets", express.static(__dirname + "/assets"));
 // server.connection({
 //   port: 80
