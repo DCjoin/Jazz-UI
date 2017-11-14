@@ -557,7 +557,7 @@ export default class Edit extends Component {
 
 						}
 						filterObj = filterObj
-							// .set('IncludeEnergyEffectData', null)
+							.set('IncludeEnergyEffectData', false)
 							.set('PredictionDatas', null)
 							.set('EnergyUnitPrice', '')
 							.set('CorrectionFactor',1)
@@ -605,7 +605,7 @@ export default class Edit extends Component {
 										ConfigStep:2
 									}]))
 								}
-							}else if(step===TimeGranularity.Daily){
+							}else {
 								filterObj=filterObj.set("TimePeriods",Immutable.fromJS([]))
 							}
 

@@ -497,7 +497,6 @@ export default class Create extends Component {
 							this._setTagStepTip( TimeGranularity.Daily );
 							filterObj = filterObj.set('CalculationStep', TimeGranularity.Daily);
 							filterObj = filterObj.set('ContrastStep', TimeGranularity.Daily);
-
 						}
 						filterObj = filterObj
 							 .set('IncludeEnergyEffectData', false)
@@ -551,6 +550,8 @@ export default class Create extends Component {
 										ConfigStep:2
 									}]))
 								}
+							}else{
+								filterObj=filterObj.set("TimePeriods",Immutable.fromJS([]));
 							}
 						this._setFilterObj(filterObj.set('CalculationStep', step));
 						this._setTagStepTip( step );
