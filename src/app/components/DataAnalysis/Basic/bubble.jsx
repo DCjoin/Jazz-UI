@@ -29,7 +29,8 @@ var getSeries=(datas)=>datas.map(data=>{
     //     	symbol:'circle'
     //     },
     turboThreshold:10*10000,
-    minSize:20,
+    minSize:"12%",
+    maxSize:"30%",
     data:Coordinates.map(Coordinate=>({
       x:Coordinate.XCoordinate,
       y:Coordinate.YCoordinate,
