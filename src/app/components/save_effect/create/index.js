@@ -500,7 +500,7 @@ export default class Create extends Component {
 
 						}
 						filterObj = filterObj
-							// .set('IncludeEnergyEffectData', null)
+							 .set('IncludeEnergyEffectData', false)
 							.set('PredictionDatas', null)
 							.set('EnergyUnitPrice', '')
 							.set('CorrectionFactor',1)
