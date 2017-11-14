@@ -12,7 +12,10 @@ export default class DashBoard extends Component {
     customerId = this.props.router.params.customerId,
     userId = CurrentUserStore.getCurrentUser().Id;
     return (
-      <iframe src={`${protocol}//${sp}.de.energymost.com/panel?userId=${userId}&customerId=${customerId}&isFull=${isFull}`} frameborder="0" height={'100%'} style={{border: 0}}></iframe>
+      <iframe src={`__POLKA_WEB_HOST__/panel?userId=${userId}&customerId=${customerId}&isFull=${isFull}`} frameborder="0" height={'100%'} style={{border: 0}}></iframe>
     );
+    // return (
+    //   <iframe src={`${protocol}//${sp}.de.energymost.com/panel?userId=${userId}&customerId=${customerId}&isFull=${isFull}`} frameborder="0" height={'100%'} style={{border: 0}}></iframe>
+    // );
   }
 }
