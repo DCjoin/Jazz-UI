@@ -570,7 +570,7 @@ export default class Create extends Component {
 						}
 
 						{/*if(CalculationStep===TimeGranularity.Hourly){*/}
-							endTime=moment(endTime).add(1, 'days');
+							{/*endTime=moment(endTime).add(1, 'days');*/}
 						{/*}*/}
 
 						if(endTime.format('YYYY-MM-DD HH:mm:ss') !== BenchmarkEndDate) {
