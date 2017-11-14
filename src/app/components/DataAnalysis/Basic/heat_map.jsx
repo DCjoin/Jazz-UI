@@ -80,8 +80,7 @@ export default class HeatMap extends Component {
           text:null
         },
         labels: {
-            formatter:function(){ 
-              console.log(moment(this.value).valueOf());        
+            formatter:function(){        
               if(endDate - startDate >= 365*24*60*60*1000){
                 return moment(this.value).format(I18N.DateTimeFormat.IntervalFormat.OnlyMonth)
               }else if(moment(endDate).year()===moment(startDate).year()){
@@ -149,6 +148,12 @@ export default class HeatMap extends Component {
       ]
     }
   }
+
+  shouldComponentUpdate(nextProps, nextState) {
+		if(nextProps.startDate.valueOf()===this.props.startDate.valueOf() && nextProps.endDate.valueOf()===this.props.endDate.valueOf() && nextProps.isFromSolution===this.props.isFromSolution 
+        && nextProps.energyData===this.props.energyData) return false
+		return true
+	}
 
   render(){
   var {startDate,endDate}=this.props;

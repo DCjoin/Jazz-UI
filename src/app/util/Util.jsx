@@ -1,15 +1,21 @@
 'use strict';
 import Momment from 'moment';
-import _every from 'lodash-es/every';
-import _forEach from 'lodash-es/forEach';
-import _isArray from 'lodash-es/isArray';
-import _isPlainObject from 'lodash-es/isPlainObject';
-var _ = {
-  every: _every,
-  forEach: _forEach,
-  isArray: _isArray,
-  isPlainObject: _isPlainObject
-};
+import _ from 'lodash-es';
+import Immutable from 'immutable';
+// import _every from 'lodash-es/every';
+// import _forEach from 'lodash-es/forEach';
+// import _isArray from 'lodash-es/isArray';
+// import _isPlainObject from 'lodash-es/isPlainObject';
+// import _takeWhile from 'lodash-es/takeWhile';
+// import _indexOf from 'lodash-es/indexOf';
+// var _ = {
+//   every: _every,
+//   forEach: _forEach,
+//   isArray: _isArray,
+//   isPlainObject: _isPlainObject,
+//   takeWhile:_takeWhile,
+//   indexOf:_indexOf
+// };
 import GlobalErrorMessageAction from '../actions/GlobalErrorMessageAction.jsx';
 
 import HierarchyStore from '../stores/HierarchyStore.jsx';
@@ -1472,7 +1478,7 @@ let CommonFuns = {
     }
     return str;
   },
-  getYaxisConfig(statusArray) {
+  getYaxisConfig(statusArray,chartType) {
     //loop for yaxisConfig
     var yaxisConfig = [];
     for (var i = 0, len = statusArray.length; i < len; i++) {
@@ -1484,7 +1490,7 @@ let CommonFuns = {
         var idx = minmax.indexOf('-');
         var min = minmax.substring(0, idx);
         var max = minmax.substring(idx + 1);
-        yaxis.val = [Number(min), Number(max)];
+        yaxis.val = chartType==='scatterplot'?[min===''?'':Number(min), max===''?'':Number(max)]:[Number(min),Number(max)];
         ++i;
         yaxisConfig.push(yaxis);
       }
@@ -1563,6 +1569,51 @@ let CommonFuns = {
           DimensionId: null
         });
       }
+      }else{
+        nodeNameAssociation.push({
+          Id: tag.tagId,
+          Name: tag.tagName,
+          HierId: null,
+          NodeName: null,
+          AssociationOption: 0,
+          DimensionName: null,
+          DimensionId: null
+        });
+      }
+
+
+    }
+    return nodeNameAssociation;
+  },
+    getNodeNameAssociationByIds(tagOptions, ids) {
+    let nodeNameAssociation = [],
+      tag,
+      hieNameArr,
+      hieName = '';
+    if( !tagOptions ) {
+      return nodeNameAssociation;
+    }
+    
+    tagOptions=Immutable.fromJS(tagOptions).filter(item=>Immutable.fromJS(ids).includes(item.get("tagId"))).toJS();
+    // tagOptions=_.takeWhile(tagOptions,(n)=>(_.indexOf(ids,n.tagId)>-1));
+    for (let i = 0, len = tagOptions.length; i < len; i++) {
+      tag = tagOptions[i];
+      if(tag.hierId){
+      if (tag.hierName) {
+        hieNameArr = tag.hierName.split('\\');
+        hieName = hieNameArr[hieNameArr.length - 1];
+      }
+ 
+        nodeNameAssociation.push({
+          Id: tag.tagId,
+          Name: tag.tagName,
+          HierId: tag.hierId,
+          NodeName: hieName,
+          AssociationOption: 1,
+          DimensionName: tag.DimensionName,
+          DimensionId: tag.DimensionId
+        });
+
       }else{
         nodeNameAssociation.push({
           Id: tag.tagId,

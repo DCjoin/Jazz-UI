@@ -512,6 +512,7 @@ I18N.EM.Tool.DataSum = '数据求和';
 I18N.EM.Tool.DataStatistics = '数据统计';
 I18N.EM.Tool.IntervalStatistics = '分时统计';
 I18N.EM.Tool.YaxisConfig = 'Y轴设置';
+I18N.EM.Tool.AxisConfig = '坐标轴设置';
 I18N.EM.Tool.MoreAnalysis = '更多分析';
 
 I18N.EM.KpiModeEM = '能耗';
@@ -575,6 +576,7 @@ I18N.EM.EnergyAnalyse.SumData = '数据求和';
 I18N.EM.YAxisSetting = 'Y坐标轴设置';
 I18N.EM.YAxisSettingTags = '相关数据点';
 I18N.EM.YAxisTitle = 'Y坐标轴';
+I18N.EM.XAxisTitle = 'X坐标轴';
 I18N.EM.YAxisMinMaxValidation = '最大值应大于最小值';
 
 I18N.EM.CannotShowCalendarByStep = '当前步长不支持显示{0}背景色';
@@ -594,6 +596,8 @@ I18N.EM.CharType.Pie = '饼状图';
 I18N.EM.CharType.RawData = '原始数据';
 I18N.EM.CharType.GridTable = '数据表';
 I18N.EM.CharType.HeatMap = '热压图';
+I18N.EM.CharType.Scatter = '散点图';
+I18N.EM.CharType.Bubble = '气泡图';
 
 I18N.EM.RawData = {};
 I18N.EM.RawData.ErrorForEnergy = '原始数据仅支持查看7天以内的数据';
@@ -2322,6 +2326,16 @@ I18N.Setting.DataAnalysis.Weather = {};
 I18N.Setting.DataAnalysis.Weather.To = '前往';
 I18N.Setting.DataAnalysis.Weather.Location = '地理位置';
 I18N.Setting.DataAnalysis.Weather.Config = '进行配置';
+I18N.Setting.DataAnalysis.Scatter = {};
+I18N.Setting.DataAnalysis.Scatter.XAxis = 'X轴';
+I18N.Setting.DataAnalysis.Scatter.YAxis = 'Y轴';
+I18N.Setting.DataAnalysis.Scatter.PlzSelectTag = '请选择数据点';
+I18N.Setting.DataAnalysis.Scatter.NoTagTip = '请选择右侧坐标轴数据点';
+I18N.Setting.DataAnalysis.Scatter.AxisCanNotSame = '坐标轴不可选择同一个数据点';
+I18N.Setting.DataAnalysis.Scatter.HasEmptyAxis = '所选数据点在当前时间范围内无数据，请换个时间段试试';
+I18N.Setting.DataAnalysis.Scatter.Formula = '公式';
+I18N.Setting.DataAnalysis.Bubble = {};
+I18N.Setting.DataAnalysis.Bubble.Area = '面积';
 
 I18N.Setting.ECM = {};
 I18N.Setting.ECM.EstimatedAnnualCostSavings = '预计年节约成本';
@@ -2625,6 +2639,10 @@ I18N.SaveEffect.Create.SavePreviewChart='节能量展示图';
 I18N.SaveEffect.Create.CalcSaveByMonth='逐月预计节能量';
 I18N.SaveEffect.Create.BenchmarkBattleCalc='实际值与基准值对比图';
 I18N.SaveEffect.Create.StepTip = '所选数据点步长与计算步长不匹配，请重新选择数据点。';
+I18N.SaveEffect.Create.CaculateTime = '能耗计算时间';
+I18N.SaveEffect.Create.WorkCaculateTime = '工作日计算时间';
+I18N.SaveEffect.Create.HolidayCaculateTime = '休息日计算时间';
+I18N.SaveEffect.Create.AuxiliaryTag = '辅助计算数据点';
 
 I18N.SaveEffect.Chart = {};
 I18N.SaveEffect.Chart.PredictSaving = '预计节能量';

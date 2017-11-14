@@ -10,6 +10,8 @@ import MultipleTimespanStore from 'stores/Energy/MultipleTimespanStore.jsx';
 import EnergyAction from 'actions/EnergyAction.jsx';
 import GridComponent from '../../energy/GridComponent.jsx';
 import HeatMap from './heat_map.jsx';
+import ScatterPlot from './scatter_plot.jsx';
+import Bubble from './bubble.jsx';
 
 var analysisPanel=null;
 export default class ChartComponent extends Component {
@@ -261,8 +263,25 @@ export default class ChartComponent extends Component {
 
 
               </div>;
+            }else if(chartType === 'scatterplot'){
+              let properties = {
+                  ref: 'chart',
+                  energyData: analysisPanel.state.energyRawData,
+                  getYaxisConfig:this.getYaxisConfig,
+                  step:analysisPanel.state.step
+                  };
+                  energyPart = <ScatterPlot {...properties}></ScatterPlot>;
             }
-            else {
+            else if(chartType === 'bubble'){
+              let properties = {
+                  ref: 'chart',
+                  energyData: analysisPanel.state.energyRawData,
+                  getYaxisConfig:this.getYaxisConfig,
+                  step:analysisPanel.state.step
+                  };
+                  energyPart = <Bubble {...properties}></Bubble>;
+            }
+            else{
               let chartCmpObj = {
                 ref: 'chart',
                 bizType: 'Energy',

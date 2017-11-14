@@ -84,6 +84,12 @@ let ChartStatusStore = assign({}, PrototypeStore, {
       _isInitedByWidget = true;
     }
   },
+  onOtherDataLoaded(){
+    if (!_isInitedByWidget) {
+      // this.initStatus();
+      _isInitedByWidget = true;
+    }
+  },
   getSeriesStatus() {
     return _seriesStatus;
   },
@@ -123,7 +129,9 @@ let ChartStatusStore = assign({}, PrototypeStore, {
       pie: 8,
       rawdata: 16,
       original: 16,
-      heatmap:7
+      heatmap:7,
+      scatterplot:8,
+      bubble:9
     };
     return map[chartType];
   },
@@ -132,7 +140,9 @@ let ChartStatusStore = assign({}, PrototypeStore, {
       1: 'line',
       2: 'column',
       4: 'stack',
-      8: 'pie'
+      // 8: 'pie'
+      8: 'scatterplot',
+      9: 'bubble',
     };
     return chartTypeMap[num];
   },
@@ -141,7 +151,9 @@ let ChartStatusStore = assign({}, PrototypeStore, {
       1: 'line',
       2: 'column',
       4: 'stack',
-      8: 'pie'
+      // 8: 'pie',
+      8: 'scatterplot',
+      9: 'bubble',
     };
     let me = this;
     let series = newConfig.series;

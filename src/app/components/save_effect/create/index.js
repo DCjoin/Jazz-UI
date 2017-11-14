@@ -12,11 +12,12 @@ import {
 import SvgIcon from 'material-ui/SvgIcon';
 import IconButton from 'material-ui/IconButton';
 import CircularProgress from 'material-ui/CircularProgress';
+import {find} from 'lodash-es';
 
 import ReduxDecorator from 'decorator/ReduxDecorator.jsx';
 
 import TimeGranularity from 'constants/TimeGranularity.jsx';
-import {Model} from 'constants/actionType/Effect.jsx';
+import {Model,CalendarItemType} from 'constants/actionType/Effect.jsx';
 
 import NewDialog from 'controls/NewDialog.jsx';
 import NewFlatButton from 'controls/NewFlatButton.jsx';
@@ -55,6 +56,9 @@ import MeasuresAction from 'actions/ECM/MeasuresAction.jsx';
 import CreateStore from 'stores/save_effect/create_store';
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
 import UOMStore from 'stores/UOMStore.jsx';
+import HierarchyStore from 'stores/HierarchyStore.jsx';
+import SecondStepAction from 'actions/save_effect/second_step_action.jsx';
+import SecondStepStore from 'stores/save_effect/second_step_store.jsx';
 
 const ASC_STEP = [
 	TimeGranularity.None,
@@ -72,6 +76,15 @@ const ASC_STEP = [
 	TimeGranularity.Monthly,
 	TimeGranularity.Yearly,
 ];
+
+const Industry={
+	"DataCenter":2,
+	"CommunicationRoom":15,
+	"BaseStation":16,
+	"RailTransport":18,
+	"Airport":19,
+	"Manufacture":20
+}
 
 function checkSupportStep(currentStep, targetStep) {
 	return ASC_STEP.indexOf(targetStep) >= ASC_STEP.indexOf(currentStep);
@@ -201,9 +214,12 @@ function getInitFilterObj(props) {
 		EnergyEndDate: null,
 		EnergyUnitPrice: '',
 		CorrectionFactor:1,
-		ContrastStep: TimeGranularity.Monthly,
+		ContrastStep: TimeGranularity.Daily,
 		ConfigStep: props.ConfigStep,
 		IncludeEnergyEffectData: false,
+		AuxiliaryTagId:null,
+		AuxiliaryTagName:null,
+		TimePeriods:[]
 	}, ...props.filterObj, ...{		
 		BenchmarkDatas: (!props.filterObj.BenchmarkDatas || props.filterObj.BenchmarkDatas.length === 0 && props.filterObj.EnergyStartDate && props.filterObj.EnergyStartDate) ? 
 							getDateObjByRange(props.filterObj.EnergyStartDate, props.filterObj.EnergyStartDate) :
@@ -224,9 +240,44 @@ function resetFilterObjAfter2(filterObj) {
 			;
 }
 
+function findBuilding(hierarchyId){
+  return find(HierarchyStore.getBuildingList(), building => building.Id === hierarchyId * 1 );
+}
+
+function needCalendar(hierarchyId){
+	let notNeedIndustry=[Industry.DataCenter,Industry.CommunicationRoom,Industry.BaseStation,Industry.RailTransport,Industry.Airport,Industry.Manufacture];
+	return notNeedIndustry.indexOf(findBuilding(hierarchyId).IndustryId)===-1
+}
+
 @ReduxDecorator
 export default class Create extends Component {
 	static calculateState = (state, props, ctx) => {
+		var filterObj=state.filterObj;
+		if(state.hasCalendar==='loading' && filterObj.get("TimePeriods").size===0){
+			if(state.filterObj.get("CalculationStep")===TimeGranularity.Hourly){
+				// if(needCalendar(ctx.hierarchyId)){
+				if(needCalendar(ctx.hierarchyId)){
+					filterObj=filterObj.set("TimePeriods",Immutable.fromJS([{
+						FromTime:8,
+						ToTime:20,
+						TimePeriodType:CalendarItemType.WorkDayCalcTime,
+						ConfigStep:state.filterObj.get("ConfigStep")
+					},{
+						FromTime:10,
+						ToTime:14,
+						TimePeriodType:CalendarItemType.RestDayCalcTime,
+						ConfigStep:state.filterObj.get("ConfigStep")
+					}]))
+				}else{
+					filterObj=filterObj.set("TimePeriods",Immutable.fromJS([{
+						FromTime:8,
+						ToTime:20,
+						TimePeriodType:CalendarItemType.AllDayCalcTime,
+						ConfigStep:state.filterObj.get("ConfigStep")
+					}]))
+				}
+			}
+		}
 		return {
 			tags: CreateStore.getTagsByPlan() && CreateStore.getTagsByPlan().map(tag => Immutable.fromJS({
 				TagId: tag.get('TagId'),
@@ -236,13 +287,16 @@ export default class Create extends Component {
 				Status: tag.get('Status'),
 				Step: tag.get('Step'),
 			})),
+			filterObj:filterObj,
 			chartData2: CreateStore.getChartData2(),
 			chartData3: CreateStore.getChartData3(),
 			energySolution: CreateStore.getEnergySolution(),
 			supervisorList:MeasuresStore.getSupervisor(),
+			// hasCalendar:false
+			hasCalendar:SecondStepStore.getConfigCalendar()
 		}
 	};
-	static getStores = () => [CreateStore, MeasuresStore];
+	static getStores = () => [CreateStore, MeasuresStore,SecondStepStore];
 	static contextTypes = {
 		hierarchyId: PropTypes.string,
 		router: PropTypes.object,
@@ -257,10 +311,13 @@ export default class Create extends Component {
 			measureShow: false,
 			closeDlgShow: false,
 			showStepTip: false,
+			hasCalendar:true
 		}
 
 		this._onSaveAndClose = this._onSaveAndClose.bind(this);
 		this._getInitData = this._getInitData.bind(this);
+		this._checkCalendar = this._checkCalendar.bind(this);
+		
 	}
 	_setFilterObj(filterObj) {
 		this.setState((state, props) => {
@@ -281,13 +338,23 @@ export default class Create extends Component {
 		saveItem(this.context.router.params.customerId, this.context.hierarchyId, this._getFilterObj().set('ConfigStep', 5).toJS(), this.props.onSubmitDone);
 		this._onClose(true);
 	}
+	_checkCalendar(date=this.state.filterObj.get("BenchmarkStartDate")){
+		if(needCalendar(this.context.hierarchyId)){
+					this.setState({
+						hasCalendar:'loading'
+					},()=>{
+						SecondStepAction.getConfigcalendar(this.context.hierarchyId*1,date);
+					})
+				}
+	}
 	_getInitData(step, props = this.props, state = this.state) {
 		switch( step ) {
 			case 1:
 				getTagsByPlan(state.filterObj.get('EnergyProblemId'));
 				break;
 			case 2:
-				getPreviewChart2(this._getFilterObj().set('ConfigStep', 2).set("CorrectionFactor",1).toJS());
+				getPreviewChart2(this._getFilterObj().set('ConfigStep', 2).set("CorrectionFactor",1).set("HierarchyId",this.context.hierarchyId).toJS());
+				this._checkCalendar(state.filterObj.get("BenchmarkStartDate"));
 				break;
 		}
 	}
@@ -312,10 +379,14 @@ export default class Create extends Component {
 				return this.state.filterObj.get('TagId');
 				break;
 			case 2:
-				return this.state.chartData2 && this._checkStepByTag(this.state.filterObj.get('CalculationStep'));
+			var {BenchmarkModel,AuxiliaryTagId,CalculationStep}=this.state.filterObj.toJS();
+			if(BenchmarkModel===Model.Increment || BenchmarkModel===Model.Efficiency) return AuxiliaryTagId!==null
+				return this.state.chartData2 && this._checkStepByTag(CalculationStep) && 
+							(!needCalendar(this.context.hierarchyId) ||
+							(needCalendar(this.context.hierarchyId) && this.state.hasCalendar===true));
 				break;
 			case 3:
-				let {EnergyStartDate, EnergyEndDate, EnergyUnitPrice, BenchmarkDatas, BenchmarkModel,CorrectionFactor} = this.state.filterObj.toJS();
+				var {EnergyStartDate, EnergyEndDate, EnergyUnitPrice, BenchmarkDatas, BenchmarkModel,CorrectionFactor,CalculationStep} = this.state.filterObj.toJS();
 				if( !EnergyStartDate || !EnergyEndDate || !EnergyUnitPrice ||  !/^(\+?)\d{1,9}([.]\d{1,3})?$/.test(EnergyUnitPrice) ) {
 					return false;
 				}
@@ -323,7 +394,8 @@ export default class Create extends Component {
 					return BenchmarkDatas.reduce((result, current) => {
 						return result && !!current.Value && /^(\-?)\d{1,9}([.]\d{1,3})?$/.test(current.Value);
 					}, true);
-				}else{
+				}
+				if((Model.Easy === BenchmarkModel || Model.Contrast === BenchmarkModel) && CalculationStep===TimeGranularity.Daily){
 					if(!CorrectionFactor || !/^(\+?)\d{1,9}([.]\d{1,3})?$/.test(CorrectionFactor)) return false
 				}
 				return true;
@@ -385,16 +457,35 @@ export default class Create extends Component {
 			}
 			case 2:
 			{
-				let {BenchmarkStartDate, BenchmarkEndDate, CalculationStep, BenchmarkModel, IncludeEnergyEffectData} = filterObj.toJS();
+				let {BenchmarkStartDate, BenchmarkEndDate, CalculationStep, BenchmarkModel, IncludeEnergyEffectData,TimePeriods,AuxiliaryTagId,AuxiliaryTagName} = filterObj.toJS();
+
+		
+				// hasCalendar={this.state.hasCalendar}
+				// 	needCalendar={needCalendar(this.context.hierarchyId)}
 				return (<Step2
 					TagId={filterObj.get('TagId')}
 					data={chartData2}
 					BenchmarkModel={BenchmarkModel}
 					CalculationStep={CalculationStep}
 					BenchmarkStartDate={UTC2Local(BenchmarkStartDate)}
-					BenchmarkEndDate={UTC2Local(BenchmarkEndDate)}
+					BenchmarkEndDate={UTC2Local(moment(BenchmarkEndDate).add(-1,'days'))}
 					IncludeEnergyEffectData={IncludeEnergyEffectData}
 					disabledPreview={!this._checkCanNext()}
+					hasCalendar={this.state.hasCalendar}
+				  needCalendar={needCalendar(this.context.hierarchyId)}
+					checkCalendar={this._checkCalendar}
+					AuxiliaryTagId={AuxiliaryTagId}
+					AuxiliaryTagName={AuxiliaryTagName}
+					TimePeriods={TimePeriods}
+					onAuxiliaryTagChanged={(id,name)=>{
+						filterObj=filterObj.set("AuxiliaryTagId",id);
+						filterObj=filterObj.set("AuxiliaryTagName",name);
+						this._setFilterObj(filterObj);
+					}}
+					onTimePeriodsChanged={(periods)=>{
+						filterObj=filterObj.set("TimePeriods",periods);
+						this._setFilterObj(filterObj);
+					}}
 					onChangeModelType={(type) => {
 						filterObj = filterObj.set('BenchmarkModel', type);
 						if(type === Model.Manual) {
@@ -415,16 +506,56 @@ export default class Create extends Component {
 							.set('CorrectionFactor',1)
 							.set('EnergyStartDate', null)
 							.set('EnergyEndDate', null)
+							.set('AuxiliaryTagId', null)
+							.set('AuxiliaryTagName', null)
 						this._setFilterObj(filterObj);
 						this.setState({
 							chartData3: null
 						});
-						getPreviewChart2(filterObj.set("CorrectionFactor",1).toJS());
+						getPreviewChart2(filterObj.set("CorrectionFactor",1).set("HierarchyId",this.context.hierarchyId).toJS());
 					}}
 					onChangeStep={(step) => {
+						{/*if(step===TimeGranularity.Hourly){
+							filterObj=filterObj.set("BenchmarkEndDate",moment(filterObj.get("BenchmarkEndDate")).add(1,'days').format("YYYY-MM-DD HH:mm:ss"));
+							if(filterObj.get("EnergyEndDate")){
+								filterObj=filterObj.set("EnergyEndDate",moment(filterObj.get("EnergyEndDate")).add(1,'days').format("YYYY-MM-DD HH:mm:ss"));
+							}
+						}
+
+						if(CalculationStep===TimeGranularity.Hourly){
+							filterObj=filterObj.set("BenchmarkEndDate",moment(filterObj.get("BenchmarkEndDate")).add(-1,'days').format("YYYY-MM-DD HH:mm:ss"));
+							if(filterObj.get("EnergyEndDate")){
+								filterObj=filterObj.set("EnergyEndDate",moment(filterObj.get("EnergyEndDate")).add(-1,'days').format("YYYY-MM-DD HH:mm:ss"));
+							}
+						}*/}
+
+							if(step===TimeGranularity.Hourly){
+								// if(needCalendar(ctx.hierarchyId)){
+								if(needCalendar(this.context.hierarchyId)){
+									filterObj=filterObj.set("TimePeriods",Immutable.fromJS([{
+										FromTime:8,
+										ToTime:20,
+										TimePeriodType:CalendarItemType.WorkDayCalcTime,
+										ConfigStep:2
+									},{
+										FromTime:10,
+										ToTime:14,
+										TimePeriodType:CalendarItemType.RestDayCalcTime,
+										ConfigStep:2
+									}]))
+								}else{
+									filterObj=filterObj.set("TimePeriods",Immutable.fromJS([{
+										FromTime:8,
+										ToTime:20,
+										TimePeriodType:CalendarItemType.AllDayCalcTime,
+										ConfigStep:2
+									}]))
+								}
+							}
 						this._setFilterObj(filterObj.set('CalculationStep', step));
 						this._setTagStepTip( step );
-						getPreviewChart2(filterObj.set("CorrectionFactor",1).toJS());
+						{/*getPreviewChart2(filterObj.set("CorrectionFactor",1).set("HierarchyId",this.context.hierarchyId).toJS());*/}
+						this._checkCalendar()
 					}}
 					onChangeBenchmarkStartDate={(val, callback) => {
 						val = date2UTC(val);
@@ -437,6 +568,11 @@ export default class Create extends Component {
 						} else if( moment(startTime).add(_getTimeRangeStep(CalculationStep), 'days') < endTime ) {
 							endTime = moment(startTime).add(_getTimeRangeStep(CalculationStep), 'days');
 						}
+
+						{/*if(CalculationStep===TimeGranularity.Hourly){*/}
+							endTime=moment(endTime).add(1, 'days');
+						{/*}*/}
+
 						if(endTime.format('YYYY-MM-DD HH:mm:ss') !== BenchmarkEndDate) {
 							filterObj = filterObj.set('BenchmarkEndDate', endTime.format('YYYY-MM-DD HH:mm:ss'))
 						}
@@ -448,10 +584,19 @@ export default class Create extends Component {
 						this.setState({
 							chartData3: null
 						});
-						getPreviewChart2(filterObj.set("CorrectionFactor",1).toJS());
+						getPreviewChart2(filterObj.set("CorrectionFactor",1).set("HierarchyId",this.context.hierarchyId).toJS());
+						this._checkCalendar(val)
 					}}
 					onChangeBenchmarkEndDate={(val) => {
+
+						{/*if(CalculationStep===TimeGranularity.Hourly){*/}
+							val=moment(val).add(1, 'days');
+						{/*}*/}
+
 						val = date2UTC(val);
+						
+
+
 						filterObj = filterObj.set('BenchmarkEndDate', val);
 						let endTime = moment(val),
 						startTime = moment(BenchmarkStartDate);
@@ -462,18 +607,19 @@ export default class Create extends Component {
 							startTime = moment(endTime).subtract(_getTimeRangeStep(CalculationStep), 'days');
 						}
 						if(startTime.format('YYYY-MM-DD HH:mm:ss') !== BenchmarkStartDate) {
-							filterObj = filterObj.set('BenchmarkStartDate', startTime.format('YYYY-MM-DD HH:mm:ss'))
+							filterObj = filterObj.set('BenchmarkStartDate', startTime.format('YYYY-MM-DD HH:mm:ss'));
+							this._checkCalendar(startTime)
 						}
 						this._setFilterObj(filterObj);
 						this.setState({
 							chartData3: null
 						});
-						getPreviewChart2(filterObj.set("CorrectionFactor",1).toJS());
+						getPreviewChart2(filterObj.set("CorrectionFactor",1).set("HierarchyId",this.context.hierarchyId).toJS());
 					}}
 					onGetChartData={() => {
 						let newFilterObj = filterObj.set('IncludeEnergyEffectData', true);
 						this._setFilterObj(newFilterObj);
-						getPreviewChart2(newFilterObj.set("CorrectionFactor",1).toJS());
+						getPreviewChart2(newFilterObj.set("CorrectionFactor",1).set("HierarchyId",this.context.hierarchyId).toJS());
 					}}
 					updateChartByNavgatorData={(filterObj) => {
 						let {chartData2} = this.state;
@@ -494,7 +640,7 @@ export default class Create extends Component {
 			}
 			case 3:
 			{
-				let {UomId, BenchmarkModel, CalculationStep, EnergyStartDate, EnergyEndDate, EnergyUnitPrice, BenchmarkDatas,CorrectionFactor} = filterObj.toJS();
+				let {UomId, BenchmarkModel, CalculationStep, EnergyStartDate, EnergyEndDate, EnergyUnitPrice, BenchmarkDatas,CorrectionFactor,TimePeriods} = filterObj.toJS();
 				return (<Step3
 					unit={UomId ? UOMStore.getUomById(UomId) : getUomByChartData(chartData2)}
 					data={chartData3}
@@ -502,10 +648,16 @@ export default class Create extends Component {
 					CalculationStep={CalculationStep}
 					EnergyUnitPrice={EnergyUnitPrice}
 					EnergyStartDate={UTC2Local(EnergyStartDate)}
-					EnergyEndDate={UTC2Local(EnergyEndDate)}
+					EnergyEndDate={EnergyEndDate?UTC2Local(moment(EnergyEndDate).add(-1,'days')):UTC2Local(EnergyStartDate)}
 					BenchmarkDatas={BenchmarkDatas}
 					CorrectionFactor={CorrectionFactor}
 					disabledPreview={!this._checkCanNext()}
+					needCalendar={needCalendar(this.context.hierarchyId)}
+					TimePeriods={TimePeriods}
+					onTimePeriodsChanged={(periods)=>{
+						filterObj=filterObj.set("TimePeriods",periods);
+						this._setFilterObj(filterObj);
+					}}
 					onChangeEnergyUnitPrice={(val) => {
 						this._setFilterObj(filterObj.set('EnergyUnitPrice', val));
 					}}
@@ -528,12 +680,18 @@ export default class Create extends Component {
 								filterObj = filterObj.set('EnergyEndDate', endTime.format('YYYY-MM-DD HH:mm:ss'))
 							}
 
-							filterObj = filterObj.set('BenchmarkDatas', getDateObjByRange(val, EnergyEndDate));
-							filterObj = filterObj.set('PredictionDatas', getDateObjByRange(val, EnergyEndDate));
+							filterObj = filterObj.set('BenchmarkDatas', getDateObjByRange(val, endTime));
+							filterObj = filterObj.set('PredictionDatas', getDateObjByRange(val, endTime));
+						}else{
+							let end_time=moment(startTime).add(1, 'days').format('YYYY-MM-DD HH:mm:ss');
+							filterObj = filterObj.set('EnergyEndDate', end_time);
+							filterObj = filterObj.set('BenchmarkDatas', getDateObjByRange(val, end_time));
+							filterObj = filterObj.set('PredictionDatas', getDateObjByRange(val, end_time));
 						}
 						this._setFilterObj(filterObj);
 					}}
 					onChangeEnergyEndDate={(val) => {
+						val=moment(val).add(1, 'days');
 						val = date2UTC(val);
 						filterObj = filterObj.set('EnergyEndDate', val);
 						let endTime = moment(val),
@@ -557,7 +715,7 @@ export default class Create extends Component {
 						this._setFilterObj(filterObj.setIn(['BenchmarkDatas', idx, 'Value'], val));
 					}}
 					onGetChartData={() => {
-						getPreviewChart3(filterObj.toJS());
+						getPreviewChart3(filterObj.set("HierarchyId",this.context.hierarchyId).toJS());
 					}}
 				/>);
 				break;
@@ -605,14 +763,33 @@ export default class Create extends Component {
 						this._goStepAndInit(1);
 					}
 				}} secondary label={I18N.Paging.Button.PreStep} style={{float: 'left'}}/>);
-				buttons.push(<NewFlatButton onClick={() => {this._goStep(3)}} primary disabled={!this._checkCanNext()} label={I18N.Paging.Button.NextStep} style={{float: 'right'}}/>);
+				buttons.push(<NewFlatButton onClick={() => {
+					var filterObj=this.state.filterObj;
+					if(filterObj.get('TimePeriods').size!==0){						
+						var newPeriods=filterObj.get('TimePeriods').map(period=>period.set("ConfigStep",3));
+						filterObj=filterObj.set("TimePeriods",filterObj.get('TimePeriods').concat(newPeriods));
+					}
+					this.setState({
+						filterObj:filterObj.set("ConfigStep",3)
+					})
+				}} primary disabled={!this._checkCanNext()} label={I18N.Paging.Button.NextStep} style={{float: 'right'}}/>);
 				break;
 			case 3:
 				buttons.push(<NewFlatButton onClick={() => {
-					this._goStep(2);
-					if(!this.state.chartData2) {
-						this._goStepAndInit(2);
+					var filterObj=this.state.filterObj;
+					if(filterObj.get('TimePeriods').size!==0){
+						var newPeriods=filterObj.get('TimePeriods').filter(period=>period.get("ConfigStep")===2);
+						filterObj=filterObj.set('TimePeriods',newPeriods)
 					}
+				
+					this.setState({
+						filterObj:filterObj.set('ConfigStep',2)
+					},()=>{
+									if(!this.state.chartData2) {
+												this._getInitData(2);
+									}
+					})
+				
 				}} secondary label={I18N.Paging.Button.PreStep} style={{float: 'left'}}/>);
 				buttons.push(<NewFlatButton onClick={() => {this._goStep(4)}} primary disabled={!this._checkCanNext()} label={I18N.Paging.Button.NextStep} style={{float: 'right'}}/>);
 				break;
@@ -795,7 +972,7 @@ export function getDateObjByRange(startDate, endDate) {
 	increment = 0,
 	incrementDate;
 	startDate = UTC2Local(startDate);
-	endDate = UTC2Local(endDate);
+	endDate = UTC2Local(moment(endDate).add(-1,'days'));
 	while( ( incrementDate = moment(moment(startDate).add(increment++, 'months').format('YYYY-MM-01')) ) <= moment(endDate)) {
 		let Label = incrementDate.format('MM' + I18N.Map.Date.Month);
 		if( existYears.indexOf( incrementDate.get('year') ) === -1 ) {

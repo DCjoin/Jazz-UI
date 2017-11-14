@@ -95,8 +95,8 @@ function verifyBrowser(user_agent) {
 }
 
 function returnIndexHtml(request,reply){
-
-  if( !verifyBrowser( request.headers['user-agent'] ) ) {
+  console.log(request);
+  if( !request.state.skip_detect && !verifyBrowser( request.headers['user-agent'] ) ) {
     return returnUpdateBrowserHtml(request, reply);
   }
 

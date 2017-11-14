@@ -265,8 +265,9 @@ const DiagnoseAction = {
       }
     } );
   },
-  getConfigcalendar(hierarchyId){
-    Ajax.get(util.replacePathParams(Path.Diagnose.isconfigcalendar, hierarchyId), {
+  getConfigcalendar(hierarchyId,date=new Date()){
+    var dueDate=util.DataConverter.DatetimeToJson(date);
+    Ajax.get(util.replacePathParams(Path.Diagnose.isconfigcalendar, dueDate,hierarchyId), {
       success: (res) => {
         AppDispatcher.dispatch({
           type: Action.GET_CONFIG_CALENDAR,

@@ -6,6 +6,11 @@ import CommonFuns from 'util/Util.jsx';
 import FolderAction from 'actions/FolderAction.jsx';
 import FolderStore from 'stores/FolderStore.jsx';
 import HeatMap from './heat_map.jsx';
+import ScatterPlotView from './scatter_plot_generate_sulution.jsx';
+import BubbleView from './bubble_generate_solution.jsx';
+import MultipleTimespanStore from 'stores/Energy/MultipleTimespanStore.jsx';
+import ScatterPlotAction from 'actions/DataAnalysis/scatter_plot_action.jsx';
+import BubbleAction from 'actions/DataAnalysis/bubble_action.jsx';
 
 function getFromImmu(key) {
 	return function(immuObj) {
@@ -40,6 +45,12 @@ function getChartTypeStr(data) {
 			break;
     case 7:
 			chartType = 'heatmap';
+			break;
+    case 8:
+			chartType = 'scatterplot';
+			break;
+    case 9:
+			chartType = 'bubble';
 			break;
 	}
 	// switch (chartType) {
@@ -95,6 +106,8 @@ export default class AnalysisGenerateSolution extends Component {
     if(this.props.preAction && typeof this.props.preAction.removeListener === 'function') {
       this.props.preAction.removeListener(this._getTagsDataByNode);
     }
+    ScatterPlotAction.clearAxis();
+    BubbleAction.clearAxis();
   }
   _getTagsDataByNode() {
     getTagsDataByNode(this.props);
@@ -121,16 +134,16 @@ export default class AnalysisGenerateSolution extends Component {
       }}
     });
   }
+
   _renderChart(node,afterChartCreated){
     let me=this;
     let nodeId = getId(node),
 		{tagDatas, widgetStatuss, widgetSeriesArrays, contentSyntaxs} = this.state;
     if(!tagDatas[nodeId]) return null
-    if(getChartTypeStr(widgetSeriesArrays[nodeId].getIn([0]))==='heatmap'){
+    var currentChartType=getChartTypeStr(widgetSeriesArrays[nodeId].getIn([0]));
+    if(currentChartType==='heatmap'){
       var  startDate = CommonFuns.DataConverter.JsonToDateTime(tagDatas[nodeId].getIn(['TargetEnergyData',0,'Target','TimeSpan','StartTime']), true),
            endDate = CommonFuns.DataConverter.JsonToDateTime(tagDatas[nodeId].getIn(['TargetEnergyData',0,'Target','TimeSpan','EndTime']), true);
-
-
 
       let properties = {
         ref: 'chart',
@@ -138,17 +151,80 @@ export default class AnalysisGenerateSolution extends Component {
         energyData: me.props.analysis?me.props.analysis.state.energyRawData:tagDatas[nodeId].toJS(),
         startDate,endDate,
         afterChartCreated:function() {
-          return afterChartCreated.apply(this, [getTagsByChartData(tagDatas[nodeId])].concat(arguments));
+          let args = arguments;
+                             setTimeout(() => {
+         return afterChartCreated.apply(this, [getTagsByChartData(tagDatas[nodeId])].concat(args));
+      }, 1000);
         }
       };
       return(
         <HeatMap {...properties}></HeatMap>
       )
+    }else if(currentChartType==='scatterplot'){
+        var syntaxObj = JSON.parse(contentSyntaxs[nodeId]);
+        var xAxisTagId, yAxisTagId,step, timeRanges;
+        if( syntaxObj && syntaxObj.viewOption && syntaxObj.viewOption.TimeRanges ) {
+        let TimeRanges = syntaxObj.viewOption.TimeRanges;
+        MultipleTimespanStore.initDataByWidgetTimeRanges(TimeRanges);
+        timeRanges = MultipleTimespanStore.getSubmitTimespans();
+        xAxisTagId=syntaxObj.tagIds[0];
+        yAxisTagId=syntaxObj.tagIds[1];
+        step=syntaxObj.viewOption.Step;
+        return (
+          <ScatterPlotView xAxisTagId={xAxisTagId}
+                           yAxisTagId={yAxisTagId}
+                           timeRanges={timeRanges}
+                           step={step}
+                           afterChartCreated={function(){
+                             console.log(nodeId);
+                             console.log('outer');
+                             console.log(new Date());
+
+                             let args = arguments;
+                             setTimeout(() => {
+                               console.log(nodeId);
+                               console.log('in');
+                             console.log(new Date());
+         return afterChartCreated.apply(this, [getTagsByChartData(tagDatas[nodeId])].concat(args));
+      }, 1000);
+           
+        }}/> 
+        )
+      }
+    }else if(currentChartType==='bubble'){
+        var syntaxObj = JSON.parse(contentSyntaxs[nodeId]);
+        var xAxisTagId, yAxisTagId,areaTagId,step, timeRanges;
+        if( syntaxObj && syntaxObj.viewOption && syntaxObj.viewOption.TimeRanges ) {
+        let TimeRanges = syntaxObj.viewOption.TimeRanges;
+        MultipleTimespanStore.initDataByWidgetTimeRanges(TimeRanges);
+        timeRanges = MultipleTimespanStore.getSubmitTimespans();
+        xAxisTagId=syntaxObj.tagIds[0];
+        yAxisTagId=syntaxObj.tagIds[1];
+        areaTagId=syntaxObj.tagIds[2];
+        step=syntaxObj.viewOption.Step;
+        return (
+          <BubbleView xAxisTagId={xAxisTagId}
+                           yAxisTagId={yAxisTagId}
+                           areaTagId={areaTagId}
+                           timeRanges={timeRanges}
+                           step={step}
+                           afterChartCreated={function(){
+                             let args = arguments;
+                             setTimeout(() => {                              
+         return afterChartCreated.apply(this, [getTagsByChartData(tagDatas[nodeId])].concat(args));
+      }, 1000);
+           
+        }}/> 
+        )
+      }
     }else{
     return(
       <ChartBasicComponent
         afterChartCreated={function() {
-          return afterChartCreated.apply(this, [getTagsByChartData(tagDatas[nodeId])].concat(arguments));
+          let args = arguments;
+                             setTimeout(() => {
+         return afterChartCreated.apply(this, [getTagsByChartData(tagDatas[nodeId])].concat(args));
+      }, 1000);
         }}
         ref='ChartBasicComponent'
         key={nodeId}

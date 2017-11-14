@@ -59,7 +59,9 @@ module.exports = {
     getProwidgetgatherinfo:'/widget/prowidgetgatherinfo',
     getLatestRawData:'/energy/Tag/{tagId}/LatestRawData',
     getCityWeatherTag:'/Dashboard/cityWeatherTag/{cityId}',
-    getWidgetsplitgatherinfo:'/widget/widgetsplitgatherinfo'
+    getWidgetsplitgatherinfo:'/widget/widgetsplitgatherinfo',
+    getScatterPlotData:'/energy/scatterPlotData',
+    getBubbleData:'/energy/bubbleData'
   },
   ECM:{
     getEnergysolution:'/energysolution/{hierarchyId}/{status}/{smallSize}/{size}',
@@ -91,7 +93,7 @@ module.exports = {
     getDiagnoseAssociateTag: '/diagnose/getassociatetag',
     updateDiagnose:'/diagnose/update',
     generatesolution:'/diagnose/generatesolution/{diagnoseId}',
-    isconfigcalendar:'/diagnose/isconfigcalendar/{hierarchyId}',
+    isconfigcalendar:'/diagnose/isconfigcalendar/{dueDate}/{hierarchyId}',
     getConsultant: '/user/getconsultant/{hierarchyId}',
   },
 

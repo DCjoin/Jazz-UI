@@ -10,6 +10,8 @@ import {find} from 'lodash-es';
 import HierarchyAction from 'actions/HierarchyAction.jsx';
 import { CircularProgress} from 'material-ui';
 import FontIcon from 'material-ui/FontIcon';
+import EnergyStore from 'stores/Energy/EnergyStore.jsx';
+import AlarmTagStore from 'stores/AlarmTagStore.jsx';
 
 function findBuilding(hierarchyId,buildinglist=HierarchyStore.getBuildingList()){
   return find(buildinglist, building => building.Id === hierarchyId * 1 );
@@ -52,6 +54,7 @@ export default class WeatherButton extends Component {
 	}
   _weatherTagdisabled(tag){
     if(this.props.step===null) return false;
+
     return this.props.step<2 && (tag.weatherType===3 || tag.weatherType===4)
   }
 

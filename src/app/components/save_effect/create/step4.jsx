@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import find from 'lodash-es/find';
+import moment from 'moment';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 
 import TimeGranularity from 'constants/TimeGranularity.jsx';
@@ -17,7 +18,7 @@ export default class Step4 extends Component {
 	render() {
 		let {unit, EnergyStartDate, EnergyEndDate, CalculationStep, PredictionDatas, BenchmarkStartDate, BenchmarkEndDate, ContrastStep, onChangePredictionDatas, onChangeContrastStep} = this.props;
 		let radios = [];
-		if( CalculationStep === TimeGranularity.Daily ) {
+		if( CalculationStep === TimeGranularity.Daily || CalculationStep === TimeGranularity.Hourly) {
 			radios.push(<RadioButton label={I18N.EM.Day} value={TimeGranularity.Daily}/>);
 		}
 		radios.push(<RadioButton label={I18N.EM.Month} value={TimeGranularity.Monthly} style={{marginTop:'12px'}}/>);
@@ -28,11 +29,11 @@ export default class Step4 extends Component {
 					<div className='step4-block-content'>
 						<div className='step4-item'>
 							<header className='step4-item-title'>{I18N.EM.Report.TimeRange}</header>
-							<div className='step4-item-value'>{EnergyStartDate + ' ' + I18N.EM.To2 + ' '+ EnergyEndDate}</div>
+							<div className='step4-item-value'>{EnergyStartDate + ' ' + I18N.EM.To2 + ' '+ moment(EnergyEndDate).add(-1,'days').format("YYYY-MM-DD")}</div>
 						</div>
 						<div className='step4-item'>
 							<header className='step4-item-title'>{I18N.EM.Report.Step}</header>
-							<div className='step4-item-value'>{find(getStepDataItems(), item => item.id === CalculationStep).label}</div>
+							<div className='step4-item-value'>{I18N.EM.Month}</div>
 						</div>
 						<div className='step4-item'>
 							<header className='step4-item-title' style={{marginBottom:'0'}}>{I18N.SaveEffect.Create.CalcSaveByMonth + `（${unit}）`}</header>

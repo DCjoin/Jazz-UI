@@ -16,7 +16,7 @@ export default class ChartSubToolbar extends Component {
     if(!this.props.hasTagData){
       return false
     }
-    if (chartType === "line" || chartType === "column" || chartType === "stack" || chartType==='heatmap'){
+    if (chartType === "line" || chartType === "column" || chartType === "stack" || chartType==='heatmap' || chartType==='scatterplot' || chartType==='bubble'){
       return true
     }
     else {
