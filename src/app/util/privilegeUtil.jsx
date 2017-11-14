@@ -5,7 +5,7 @@ import PermissionCode, {
 	BASIC_SMART_DIACRISIS, SENIOR_SMART_DIACRISIS, BASIC_SMART_DIACRISIS_LIST, SENIOR_SMART_DIACRISIS_LIST,
 	/*BASELINE_CONFIG, ENERGY_EXPORT, ENERGY_ALARM, DATA_REPORT_MANAGEMENT,*/
 	TAG_MANAGEMENT, HIERARCHY_MANAGEMENT, CUSTOM_LABELING, PLATFORM_MANAGEMENT,
-	Save_Effect,  C_LEVEL_APP,
+	Save_Effect,  C_LEVEL_APP, DASH_BOARD,
 } from 'constants/PermissionCode.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 
@@ -21,8 +21,8 @@ const PrivilegeUtil = {
 			SOLUTION_FULL,
 			BASIC_DATA_ANALYSE,
 			SENIOR_DATA_ANALYSE,
-			BASIC_SMART_DIACRISIS, 
-			SENIOR_SMART_DIACRISIS, 
+			BASIC_SMART_DIACRISIS,
+			SENIOR_SMART_DIACRISIS,
 			BASIC_SMART_DIACRISIS_LIST,
 			SENIOR_SMART_DIACRISIS_LIST,
 			// MAP_VIEW,
@@ -36,7 +36,8 @@ const PrivilegeUtil = {
 			CUSTOM_LABELING,
 			PLATFORM_MANAGEMENT,
 			Save_Effect,
-			C_LEVEL_APP,
+      C_LEVEL_APP,
+			DASH_BOARD,
 		].filter( privilege => spPrivilege.indexOf(privilege.READONLY) !== -1 || spPrivilege.indexOf(privilege.FULL) !== -1 );
 	},
 

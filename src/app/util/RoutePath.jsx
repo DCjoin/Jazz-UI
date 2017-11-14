@@ -21,7 +21,8 @@ export default {
 	smartDiagnose:p=>`/${p.lang}/${p.customerId}/smartDiagnose`,
 	setting: p => `/${p.lang}/${p.customerId}/setting`,
 	alarm: p => `/${p.lang}/${p.customerId}/alarm`,
-	map: p => `/${p.lang}/${p.customerId}/map`,
+  map: p => `/${p.lang}/${p.customerId}/map`,
+  dash_board: p => `/${p.lang}/${p.customerId}/dash_board`,
 	report:{
 		actualityKpi: p => `/${p.lang}/${p.customerId}/actuality/kpi`,
 		actualityReport: p => `/${p.lang}/${p.customerId}/actuality/report`,
