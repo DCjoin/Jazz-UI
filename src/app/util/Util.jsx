@@ -1,19 +1,21 @@
 'use strict';
 import Momment from 'moment';
-import _every from 'lodash-es/every';
-import _forEach from 'lodash-es/forEach';
-import _isArray from 'lodash-es/isArray';
-import _isPlainObject from 'lodash-es/isPlainObject';
-import _takeWhile from 'lodash-es/takeWhile';
-import _indexOf from 'lodash-es/indexOf';
-var _ = {
-  every: _every,
-  forEach: _forEach,
-  isArray: _isArray,
-  isPlainObject: _isPlainObject,
-  takeWhile:_takeWhile,
-  indexOf:_indexOf
-};
+import _ from 'lodash-es';
+import Immutable from 'immutable';
+// import _every from 'lodash-es/every';
+// import _forEach from 'lodash-es/forEach';
+// import _isArray from 'lodash-es/isArray';
+// import _isPlainObject from 'lodash-es/isPlainObject';
+// import _takeWhile from 'lodash-es/takeWhile';
+// import _indexOf from 'lodash-es/indexOf';
+// var _ = {
+//   every: _every,
+//   forEach: _forEach,
+//   isArray: _isArray,
+//   isPlainObject: _isPlainObject,
+//   takeWhile:_takeWhile,
+//   indexOf:_indexOf
+// };
 import GlobalErrorMessageAction from '../actions/GlobalErrorMessageAction.jsx';
 
 import HierarchyStore from '../stores/HierarchyStore.jsx';
@@ -1592,7 +1594,8 @@ let CommonFuns = {
       return nodeNameAssociation;
     }
     
-    tagOptions=_.takeWhile(tagOptions,(n)=>(_.indexOf(ids,n.tagId)>-1));
+    tagOptions=Immutable.fromJS(tagOptions).filter(item=>Immutable.fromJS(ids).includes(item.get("tagId"))).toJS();
+    // tagOptions=_.takeWhile(tagOptions,(n)=>(_.indexOf(ids,n.tagId)>-1));
     for (let i = 0, len = tagOptions.length; i < len; i++) {
       tag = tagOptions[i];
       if(tag.hierId){

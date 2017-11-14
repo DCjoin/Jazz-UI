@@ -1237,9 +1237,9 @@ _onBubbleAxisChanged(){
     <MenuItem primaryText={I18N.EM.CharType.Stack} value="stack" leftIcon={stackIcon}/>
     <MenuItem primaryText={I18N.EM.CharType.Pie} value="pie" leftIcon={pieIcon}/>
     <MenuItem primaryText={I18N.EM.CharType.GridTable} value="rawdata" leftIcon={rawdataIcon}/>
-    <MenuItem primaryText={I18N.EM.CharType.HeatMap} value="heatmap" disabled={this._heatMapValid()} leftIcon={heatmapIcon}/>
+    <MenuItem primaryText={I18N.EM.CharType.Scatter} value="scatterplot" leftIcon={scatterIcon}/>  
     <MenuItem primaryText={I18N.EM.CharType.Bubble} value="bubble" leftIcon={bubbleIcon}/>
-    <MenuItem primaryText={I18N.EM.CharType.Scatter} value="scatterplot" leftIcon={scatterIcon}/>    
+    <MenuItem primaryText={I18N.EM.CharType.HeatMap} value="heatmap" disabled={this._heatMapValid()} leftIcon={heatmapIcon}/>
   </DropDownMenu>
   )
   }
