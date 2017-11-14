@@ -29,6 +29,7 @@ var getSeries=(datas)=>datas.map(data=>{
     //     	symbol:'circle'
     //     },
     turboThreshold:10*10000,
+    minSize:20,
     data:Coordinates.map(Coordinate=>({
       x:Coordinate.XCoordinate,
       y:Coordinate.YCoordinate,
@@ -387,7 +388,7 @@ export default class Bubble extends Component {
               </div>
       )  
     }
-    // console.log(this.getConfigObj().stringify());
+    console.log(JSON.stringify(this.getConfigObj()));
     return(
         <Highcharts ref="highstock" className="heatmap" options={this.getConfigObj()} afterChartCreated={this.props.afterChartCreated?()=>{this.props.afterChartCreated()}:()=>{}}></Highcharts>
     
