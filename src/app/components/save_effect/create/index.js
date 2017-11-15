@@ -497,10 +497,9 @@ export default class Create extends Component {
 							this._setTagStepTip( TimeGranularity.Daily );
 							filterObj = filterObj.set('CalculationStep', TimeGranularity.Daily);
 							filterObj = filterObj.set('ContrastStep', TimeGranularity.Daily);
-
 						}
 						filterObj = filterObj
-							// .set('IncludeEnergyEffectData', null)
+							 .set('IncludeEnergyEffectData', false)
 							.set('PredictionDatas', null)
 							.set('EnergyUnitPrice', '')
 							.set('CorrectionFactor',1)
@@ -551,6 +550,8 @@ export default class Create extends Component {
 										ConfigStep:2
 									}]))
 								}
+							}else{
+								filterObj=filterObj.set("TimePeriods",Immutable.fromJS([]));
 							}
 						this._setFilterObj(filterObj.set('CalculationStep', step));
 						this._setTagStepTip( step );
@@ -570,7 +571,7 @@ export default class Create extends Component {
 						}
 
 						{/*if(CalculationStep===TimeGranularity.Hourly){*/}
-							endTime=moment(endTime).add(1, 'days');
+							{/*endTime=moment(endTime).add(1, 'days');*/}
 						{/*}*/}
 
 						if(endTime.format('YYYY-MM-DD HH:mm:ss') !== BenchmarkEndDate) {
