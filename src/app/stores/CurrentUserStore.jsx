@@ -48,6 +48,7 @@ const PRIVILEGE_ADMIN = [
   PermissionCode.SENIOR_SMART_DIACRISIS_LIST.FULL,
   PermissionCode.Save_Effect.FULL,
   PermissionCode.C_LEVEL_APP.FULL,
+  PermissionCode.DASH_BOARD.FULL,
 ].map( code => '' + code );
 
 var CurrentUserStore = assign({}, PrototypeStore, {
@@ -370,6 +371,13 @@ if ( this.permit(PermissionCode.SOLUTION_FULL.FULL) ||
         title: I18N.MainMenu.CustomerSetting,
         children: customerChildren
       });
+    }
+
+    if( this.permit(PermissionCode.DASH_BOARD.FULL) || this.permit(PermissionCode.DASH_BOARD.READONLY) ) {
+      menuItems.push({
+        getPath: RoutePath.dash_board,
+        title: 'DashBoard',
+      })
     }
 
     if(menuItems.length===0){

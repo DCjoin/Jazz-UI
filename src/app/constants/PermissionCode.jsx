@@ -216,9 +216,15 @@ const PermissionCode = function() {
 		READONLY: 1328,
 	},
 
-	C_LEVEL_APP: {
-		getLabel: () => I18N.Privilege.Role.CLevelAPP,
-		FULL: 1331,
+  C_LEVEL_APP: {
+    getLabel: () => I18N.Privilege.Role.CLevelAPP,
+    FULL: 1331,
+  },
+
+	DASH_BOARD: {
+		getLabel: () => I18N.Privilege.Role.DashBoard,
+    FULL: 1333,
+		READONLY: 1332,
 	}
 
 };
