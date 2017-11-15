@@ -507,6 +507,7 @@ export default class Create extends Component {
 							.set('EnergyEndDate', null)
 							.set('AuxiliaryTagId', null)
 							.set('AuxiliaryTagName', null)
+							.set('TimePeriods',Immutable.fromJS([]))
 						this._setFilterObj(filterObj);
 						this.setState({
 							chartData3: null
