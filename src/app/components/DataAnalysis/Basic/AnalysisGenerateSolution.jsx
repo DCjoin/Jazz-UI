@@ -176,15 +176,8 @@ export default class AnalysisGenerateSolution extends Component {
                            timeRanges={timeRanges}
                            step={step}
                            afterChartCreated={function(){
-                             console.log(nodeId);
-                             console.log('outer');
-                             console.log(new Date());
-
                              let args = arguments;
-                             setTimeout(() => {
-                               console.log(nodeId);
-                               console.log('in');
-                             console.log(new Date());
+                             setTimeout(() => {                               
          return afterChartCreated.apply(this, [getTagsByChartData(tagDatas[nodeId])].concat(args));
       }, 1000);
            
@@ -203,16 +196,18 @@ export default class AnalysisGenerateSolution extends Component {
         areaTagId=syntaxObj.tagIds[2];
         step=syntaxObj.viewOption.Step;
         return (
-          <BubbleView xAxisTagId={xAxisTagId}
+          <BubbleView ref={xAxisTagId+'_'+yAxisTagId+"_"+areaTagId}
+                           xAxisTagId={xAxisTagId}
                            yAxisTagId={yAxisTagId}
                            areaTagId={areaTagId}
                            timeRanges={timeRanges}
                            step={step}
                            afterChartCreated={function(){
                              let args = arguments;
-                             setTimeout(() => {                              
-         return afterChartCreated.apply(this, [getTagsByChartData(tagDatas[nodeId])].concat(args));
-      }, 1000);
+                              return afterChartCreated.apply(this, [getTagsByChartData(tagDatas[nodeId])].concat(args));
+                             {/*setTimeout(() => {                              
+        
+      }, 500);*/}
            
         }}/> 
         )

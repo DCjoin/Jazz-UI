@@ -43,7 +43,7 @@ export default class BubbleView extends Component {
       )
     }else{
       return(
-        <Bubble energyData={this.state.energyData} afterChartCreated={this.props.afterChartCreated} isFromSolution={true}/>
+        <Bubble ref={this.props.xAxisTagId+'_'+this.props.yAxisTagId+"_"+this.props.areaTagId} energyData={this.state.energyData} afterChartCreated={this.props.afterChartCreated} isFromSolution={true}/>
       )
     }  
   }
