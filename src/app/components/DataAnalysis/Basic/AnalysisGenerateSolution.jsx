@@ -106,8 +106,8 @@ export default class AnalysisGenerateSolution extends Component {
     if(this.props.preAction && typeof this.props.preAction.removeListener === 'function') {
       this.props.preAction.removeListener(this._getTagsDataByNode);
     }
-    ScatterPlotAction.clearAxis();
-    BubbleAction.clearAxis();
+    // ScatterPlotAction.clearAxis();
+    // BubbleAction.clearAxis();
   }
   _getTagsDataByNode() {
     getTagsDataByNode(this.props);

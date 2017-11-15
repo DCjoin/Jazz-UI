@@ -359,7 +359,7 @@ export default class Step2 extends Component {
 
 		return(
 			<div className="auxiliary_tag">
-				<header className='title' style={{marginBottom:'14px'}}>{I18N.SaveEffect.Create.BenchmarkDate}</header>
+				<header className='title' style={{marginBottom:'14px'}}>{I18N.SaveEffect.Create.AuxiliaryTag}</header>
 				{content}
 			</div>
 		)
