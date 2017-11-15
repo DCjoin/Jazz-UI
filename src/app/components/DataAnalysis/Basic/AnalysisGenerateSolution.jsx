@@ -204,10 +204,11 @@ export default class AnalysisGenerateSolution extends Component {
                            step={step}
                            afterChartCreated={function(){
                              let args = arguments;
-                              return afterChartCreated.apply(this, [getTagsByChartData(tagDatas[nodeId])].concat(args));
-                             {/*setTimeout(() => {                              
-        
-      }, 500);*/}
+                                                   
+       setTimeout(() => {                               
+         return afterChartCreated.apply(this, [getTagsByChartData(tagDatas[nodeId])].concat(args));
+      }, 1000);
+
            
         }}/> 
         )

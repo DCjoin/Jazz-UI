@@ -311,26 +311,6 @@ export default class Bubble extends Component {
         itemMarginTop: 6,
         itemMarginBottom: 6
         },
-        plotOptions: {
-            scatter: {
-                marker: {
-                    radius: 5,
-                    states: {
-                        hover: {
-                            enabled: true,
-                            lineColor: 'rgb(100,100,100)'
-                        }
-                    }
-                },
-                states: {
-                    hover: {
-                        marker: {
-                            enabled: false
-                        }
-                    }
-                },
-            }
-      },
       tooltip:{
         useHTML: true,
         formatter:function(){

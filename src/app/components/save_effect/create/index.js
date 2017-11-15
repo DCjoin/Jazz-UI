@@ -208,8 +208,8 @@ function getInitFilterObj(props) {
 		TagId: null,
 		CalculationStep: TimeGranularity.Daily,
 		BenchmarkModel: Model.Easy,
-		BenchmarkStartDate: date2UTC(moment(UTC2Local(props.filterObj.ExecutedTime)).subtract(31, 'days')),
-		BenchmarkEndDate: date2UTC(UTC2Local(props.filterObj.ExecutedTime)),
+		BenchmarkStartDate: date2UTC(moment(UTC2Local(props.filterObj.ExecutedTime)).subtract(30, 'days')),
+		BenchmarkEndDate: date2UTC(moment(UTC2Local(props.filterObj.ExecutedTime)).add(1,'days')),
 		EnergyStartDate: null,
 		EnergyEndDate: null,
 		EnergyUnitPrice: '',
@@ -507,6 +507,7 @@ export default class Create extends Component {
 							.set('EnergyEndDate', null)
 							.set('AuxiliaryTagId', null)
 							.set('AuxiliaryTagName', null)
+							.set('TimePeriods',Immutable.fromJS([]))
 						this._setFilterObj(filterObj);
 						this.setState({
 							chartData3: null
@@ -552,6 +553,16 @@ export default class Create extends Component {
 								}
 							}else{
 								filterObj=filterObj.set("TimePeriods",Immutable.fromJS([]));
+							}
+
+							if(step===TimeGranularity.Monthly){
+										filterObj=filterObj.set("BenchmarkStartDate",date2UTC(moment(UTC2Local(this.props.filterObj.ExecutedTime)).add(1,'days').subtract(12, 'months')));
+										filterObj=filterObj.set("BenchmarkEndDate",date2UTC(moment(UTC2Local(this.props.filterObj.ExecutedTime)).add(1,'days')));
+							}
+
+							if(filterObj.get("CalculationStep")===TimeGranularity.Monthly){
+										filterObj=filterObj.set("BenchmarkStartDate",date2UTC(moment(UTC2Local(this.props.filterObj.ExecutedTime)).subtract(30, 'days')));
+										filterObj=filterObj.set("BenchmarkEndDate",date2UTC(moment(UTC2Local(this.props.filterObj.ExecutedTime)).add(1,'days')));
 							}
 						this._setFilterObj(filterObj.set('CalculationStep', step));
 						this._setTagStepTip( step );

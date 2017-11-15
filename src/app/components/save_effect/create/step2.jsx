@@ -428,6 +428,9 @@ export default class Step2 extends Component {
 						}
 						return serie;
 					});
+					if(!IncludeEnergyEffectData){
+						newConfig.series=[newConfig.series.pop()]
+					}
 					newConfig.stacking = null;
 					newConfig.legendSwitchList = ['line', 'column'];
 

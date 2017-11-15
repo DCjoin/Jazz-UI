@@ -335,7 +335,11 @@ export default class Edit extends Component {
 				return this.state.filterObj.get('TagId');
 				break;
 			case 2:
-				return this.state.chartData2 && this._checkStepByTag(this.state.filterObj.get('CalculationStep'));
+				var {BenchmarkModel,AuxiliaryTagId,CalculationStep}=this.state.filterObj.toJS();
+			if(BenchmarkModel===Model.Increment || BenchmarkModel===Model.Efficiency) return AuxiliaryTagId!==null
+				return this.state.chartData2 && this._checkStepByTag(CalculationStep) && 
+							(!needCalendar(this.context.hierarchyId) ||
+							(needCalendar(this.context.hierarchyId) && this.state.hasCalendar===true));
 				break;
 			case 3:
 				let {EnergyStartDate, EnergyEndDate, EnergyUnitPrice, BenchmarkDatas, BenchmarkModel,CorrectionFactor} = this.state.filterObj.toJS();
@@ -563,6 +567,9 @@ export default class Edit extends Component {
 							.set('CorrectionFactor',1)
 							.set('EnergyStartDate', null)
 							.set('EnergyEndDate', null)
+							.set('AuxiliaryTagId', null)
+							.set('AuxiliaryTagName', null)
+							.set('TimePeriods',Immutable.fromJS([]))
 						this._setFilterObj(filterObj);
 						this.setState({
 							chartData3: null
