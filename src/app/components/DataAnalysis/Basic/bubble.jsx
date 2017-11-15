@@ -21,14 +21,16 @@ var getSeries=(datas)=>datas.map(data=>{
   var {TimeRange,Coordinates}=data;
   var {StartTime,EndTime}=TimeRange;
   var name=moment(j2d(EndTime)).hours()===0?
-  `${moment(j2d(StartTime)).format("YYYY-MM-DD HH-mm")}<br/>${moment(j2d(EndTime)).add(-1,'days').format("YYYY-MM-DD 24-mm")}`
-  :`${moment(j2d(StartTime)).format("YYYY-MM-DD HH-mm")}<br/>${moment(j2d(EndTime)).format("YYYY-MM-DD HH-mm")}`
+  `${moment(j2d(StartTime)).format("YYYY-MM-DD HH:mm")}<br/>${moment(j2d(EndTime)).add(-1,'days').format("YYYY-MM-DD 24:mm")}`
+  :`${moment(j2d(StartTime)).format("YYYY-MM-DD HH:mm")}<br/>${moment(j2d(EndTime)).format("YYYY-MM-DD HH:mm")}`
   return{
     name:name,
     // marker:{
     //     	symbol:'circle'
     //     },
     turboThreshold:10*10000,
+    minSize:"12%",
+    maxSize:"30%",
     data:Coordinates.map(Coordinate=>({
       x:Coordinate.XCoordinate,
       y:Coordinate.YCoordinate,
@@ -387,7 +389,7 @@ export default class Bubble extends Component {
               </div>
       )  
     }
-    // console.log(this.getConfigObj().stringify());
+    console.log(JSON.stringify(this.getConfigObj()));
     return(
         <Highcharts ref="highstock" className="heatmap" options={this.getConfigObj()} afterChartCreated={this.props.afterChartCreated?()=>{this.props.afterChartCreated()}:()=>{}}></Highcharts>
     
