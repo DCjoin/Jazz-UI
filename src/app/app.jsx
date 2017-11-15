@@ -37,6 +37,7 @@ import KPIRanking from './components/KPI/Group/Ranking.jsx';
 import KPITemplate from './components/KPI/Report/Template.jsx';
 import Alarm from './components/alarm/Alarm.jsx';
 import Setting from './components/setting/Setting.jsx';
+import DashBoard from './components/dash_board.jsx';
 //for Test
 // import Report from './components/Test.jsx';
 import DataAnalysis from './components/DataAnalysis';
@@ -144,7 +145,7 @@ ReactDom.render(<Router history={browserHistory} routes={{
       component: resetPSWApp
     }, {
       path: 'u=:user&t=:token&a=demologin&lang=:lang2',
-      component: demoLoginApp 
+      component: demoLoginApp
     }, {
       path: 'u=:user&t=:token&a=initpwd&lang=:lang2',
       component: initChangePSWApp
@@ -271,6 +272,9 @@ ReactDom.render(<Router history={browserHistory} routes={{
       }, {
         path: 'KPICycle',
         component: KPICycle
+      }, {
+        path: 'dash_board',
+        component: DashBoard,
       }, ]
     }, {
       path: 'service/:cusnum',
