@@ -222,7 +222,7 @@ const PermissionCode = function() {
   },
 
 	DASH_BOARD: {
-		getLabel: () => I18N.Privilege.Role.DashBoard,
+		getLabel: () => "Dashboard",
     FULL: 1333,
 		READONLY: 1332,
 	}
