@@ -60,12 +60,15 @@ let Highstock = React.createClass({
         let that = this,
             _tempOptions = that.state.options,
             options = assign({}, _tempOptions, {
-                chart: assign({}, _tempOptions.chart, {renderTo: ReactDOM.findDOMNode(this.refs.jazz_energy_view)})
+                chart: assign({}, _tempOptions.chart, {
+                    renderTo: ReactDOM.findDOMNode(this.refs.jazz_energy_view),
+                   })
             });
 
-        that._paper = new Highcharts.Chart(options);
+        that._paper = new Highcharts.Chart(options,()=>{
+            if(that.props.afterChartCreated){that.props.afterChartCreated(that._paper)}
+        });
 
-        if(this.props.afterChartCreated){this.props.afterChartCreated(that._paper);}
     },
 
     getPaper() {
