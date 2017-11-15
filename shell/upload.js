@@ -32,9 +32,8 @@ var JAZZ_STATIC_CDN = process.env["JAZZ_STATIC_CDN"];
 
 function replaceCSS(filePath) {
   var content = fs.readFileSync(filePath, "utf8");
-  console.log(filePath);
   content = content.replace(/__JAZZ_STATIC_CDN__/g, JAZZ_STATIC_CDN);
-  content = content.replace(/__POLKA_WEB_HOST__/g, POLKA_WEB_HOST);
+  content = content.replace(/__POLKA_WEB_HOST__/g, process.env["POLKA_WEB_HOST"]);
 
   fs.writeFileSync(filePath, content, {encoding: "utf8"});
 }
