@@ -110,6 +110,7 @@ var ViewableDropDownMenu = React.createClass({
         onChange: this._handleChange,
         // style:{position:'absolute'},
         className: 'pop-viewableDropDownMenu-ddm',
+        labelStyle:{paddingRight:'5px'},
         //selectedIndex: idx,
         style: assign({
           width: 430,
