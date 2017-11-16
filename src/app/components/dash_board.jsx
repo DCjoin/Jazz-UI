@@ -4,11 +4,11 @@ import PermissionCode from 'constants/PermissionCode.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 
-export default class DashBoard extends Component {
+export default class Dashboard extends Component {
   render() {
     let protocol = document.location.protocol,
     sp = document.location.hostname.split('.')[0],
-    isFull = privilegeUtil.isFull( PermissionCode.DASH_BOARD.FULL, CurrentUserStore.getCurrentPrivilege() ),
+    isFull = privilegeUtil.isFull( PermissionCode.DASH_BOARD, CurrentUserStore.getCurrentPrivilege() ),
     customerId = this.props.router.params.customerId,
     userId = CurrentUserStore.getCurrentUser().Id;
     return (

@@ -376,7 +376,7 @@ if ( this.permit(PermissionCode.SOLUTION_FULL.FULL) ||
     if( this.permit(PermissionCode.DASH_BOARD.FULL) || this.permit(PermissionCode.DASH_BOARD.READONLY) ) {
       menuItems.push({
         getPath: RoutePath.dash_board,
-        title: 'DashBoard',
+        title: 'Dashboard',
       })
     }
 
