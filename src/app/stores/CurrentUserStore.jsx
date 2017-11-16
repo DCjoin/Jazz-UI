@@ -473,7 +473,7 @@ CurrentUserStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case LoginActionType.Action.LOGOUT:
       _currentUser = null;
-      _currentPrivilege = null;
+      // _currentPrivilege = null;
       _error = null;
       break;
     //已读未读修改
