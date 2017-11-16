@@ -2650,6 +2650,7 @@ I18N.SaveEffect.Create.CaculateTime = 'Energy Consumption Calculation Time';
 I18N.SaveEffect.Create.WorkCaculateTime = 'Workday Calculation Time';
 I18N.SaveEffect.Create.HolidayCaculateTime = 'Rest Day Calculation Time';
 I18N.SaveEffect.Create.AuxiliaryTag = 'Auxiliary Tag';
+I18N.SaveEffect.Create.CaculateTime = '计算时间';
 
 I18N.SaveEffect.Chart = {};
 I18N.SaveEffect.Chart.PredictSaving = 'Predicted Energy Saving';
