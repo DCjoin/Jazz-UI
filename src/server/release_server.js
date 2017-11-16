@@ -67,10 +67,12 @@ function verifyBrowser(user_agent) {
     if( currentBrowser.family === detectOption.type ) {
       supportCurrentBrowser = currentBrowser.major * 1 >= detectOption.version;
     }
-  } 
+  }
   return supportCurrentBrowser;
 }
 
+let version = fs.readFileSync("./build/version.txt", "utf-8");
+let cdn = JAZZ_STATIC_CDN + "/" + version;
 function returnIndexHtml(request,reply){
 
   if( !request.state.skip_detect && !verifyBrowser( request.headers['user-agent'] ) ) {
@@ -79,9 +81,9 @@ function returnIndexHtml(request,reply){
 
   var html = fs.readFileSync(path.resolve(__dirname, "./index.html"), "utf-8");
 
-  html = html.replace('__LANG_JS__', JAZZ_STATIC_CDN + '/' + getLang(request) + '.js');
+  html = html.replace('__LANG_JS__', cdn + '/' + getLang(request) + '.js');
 
-  html = html.replace(/__JAZZ_STATIC_CDN__/g, JAZZ_STATIC_CDN)
+  html = html.replace(/__JAZZ_STATIC_CDN__/g, cdn)
             .replace(/__JAZZ_WEBAPI_HOST__/g, JAZZ_WEBAPI_HOST);
 
   if(JAZZ_UI_UMENG_CNZZ_SDK_URL) {
@@ -93,7 +95,7 @@ function returnIndexHtml(request,reply){
 
 function returnDownloadHtml(request,reply){
   var html = fs.readFileSync(path.resolve(__dirname, "./DownloadApp.html"), "utf-8")
-                .replace(/__JAZZ_STATIC_CDN__/g, JAZZ_STATIC_CDN)
+                .replace(/__JAZZ_STATIC_CDN__/g, cdn)
                 .replace('${APP_VERSION}', APP_VERSION)
                 .replace('${APP_SIZE}', APP_SIZE)
                 .replace('${APP_DOWNLOAD_LOCAL}', APP_DOWNLOAD_LOCAL)
