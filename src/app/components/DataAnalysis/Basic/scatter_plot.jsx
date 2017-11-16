@@ -20,8 +20,8 @@ var getSeries=(datas)=>datas.map(data=>{
   var {TimeRange,Coordinates}=data;
   var {StartTime,EndTime}=TimeRange;
   var name=moment(j2d(EndTime)).hours()===0?
-  `${moment(j2d(StartTime)).format("YYYY-MM-DD HH-mm")}<br/>${moment(j2d(EndTime)).add(-1,'days').format("YYYY-MM-DD 24-mm")}`
-  :`${moment(j2d(StartTime)).format("YYYY-MM-DD HH-mm")}<br/>${moment(j2d(EndTime)).format("YYYY-MM-DD HH-mm")}`
+  `${moment(j2d(StartTime)).format("YYYY-MM-DD HH:mm")}<br/>${moment(j2d(EndTime)).add(-1,'days').format("YYYY-MM-DD 24:mm")}`
+  :`${moment(j2d(StartTime)).format("YYYY-MM-DD HH:mm")}<br/>${moment(j2d(EndTime)).format("YYYY-MM-DD HH:mm")}`
   return{
     name:name,
     marker:{
@@ -36,7 +36,7 @@ var getSeries=(datas)=>datas.map(data=>{
   }
 })
 
-var hasEmptyAxis=(datas)=>datas.map(data=>data.Coordinates.length===0).indexOf(true)>-1;
+var hasEmptyAxis=(datas)=>datas.map(data=>data.Coordinates.length===0).indexOf(false)===-1;
 
 var colorArr=['#42b4e6', '#e47f00', '#1a79a9', '#71cbf4', '#b10043',
     '#9fa0a4', '#87d200', '#626469', '#ffd100', '#df3870'];
