@@ -43,7 +43,7 @@ var getSeries=(datas)=>datas.map(data=>{
   }
 })
 
-var hasEmptyAxis=(datas)=>datas.map(data=>data.Coordinates.length===0).indexOf(true)>-1;
+var hasEmptyAxis=(datas)=>datas.map(data=>data.Coordinates.length===0).indexOf(false)===-1;
 
 var colorArr=['#42b4e6', '#e47f00', '#1a79a9', '#71cbf4', '#b10043',
     '#9fa0a4', '#87d200', '#626469', '#ffd100', '#df3870'];
@@ -237,7 +237,6 @@ export default class Bubble extends Component {
         yAxisName=Immutable.fromJS(this.props.energyData[0].Tags).find(tag=>tag.get('Id')===this.state.yAxis).get("Name"),
         areaName=Immutable.fromJS(this.props.energyData[0].Tags).find(tag=>tag.get('Id')===this.state.area).get("Name");
 
-    console.log(xAxisName+"---"+yAxisName+"----"+areaName);
     var that=this;
     return{
       colors:colorArr,
