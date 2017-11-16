@@ -11,8 +11,11 @@ import CommonFuns from 'util/Util.jsx';
 import moment from 'moment';
 import classNames from 'classnames';
 
-var getUom=(data,id)=>CommonFuns.getUomById(Immutable.fromJS(data.Tags).find(item=>item.get("Id")===id)
-                                                                        .get("UomId")).Code
+var getUom=(data,id)=>{
+  let uom=Immutable.fromJS(data.Tags).find(item=>item.get("Id")===id);
+  return uom?CommonFuns.getUomById(uom.get("UomId")).Code:null;
+  // return CommonFuns.getUomById(uom.get("UomId")).Code;
+}
 
 var getYaxisUom=(data,id)=>CommonFuns.getUomById(data.Tags[1].Id===id?data.Tags[1].UomId:data.Tags[0].UomId).Code
 
@@ -233,6 +236,8 @@ export default class Bubble extends Component {
         xAxisName=Immutable.fromJS(this.props.energyData[0].Tags).find(tag=>tag.get('Id')===this.state.xAxis).get("Name"),
         yAxisName=Immutable.fromJS(this.props.energyData[0].Tags).find(tag=>tag.get('Id')===this.state.yAxis).get("Name"),
         areaName=Immutable.fromJS(this.props.energyData[0].Tags).find(tag=>tag.get('Id')===this.state.area).get("Name");
+
+    console.log(xAxisName+"---"+yAxisName+"----"+areaName);
     var that=this;
     return{
       colors:colorArr,
@@ -389,7 +394,7 @@ export default class Bubble extends Component {
               </div>
       )  
     }
-    console.log(JSON.stringify(this.getConfigObj()));
+    // console.log(JSON.stringify(this.getConfigObj()));
     return(
         <Highcharts ref="highstock" className="heatmap" options={this.getConfigObj()} afterChartCreated={this.props.afterChartCreated?()=>{this.props.afterChartCreated()}:()=>{}}></Highcharts>
     
@@ -448,6 +453,7 @@ export default class Bubble extends Component {
 
         if(Immutable.fromJS(AlarmTagStore.getSearchTagList()).findIndex(tag=>tag.get('tagId')===xAxis)===-1){xAxis=0}
         if(Immutable.fromJS(AlarmTagStore.getSearchTagList()).findIndex(tag=>tag.get('tagId')===yAxis)===-1){yAxis=0}
+        if(Immutable.fromJS(AlarmTagStore.getSearchTagList()).findIndex(tag=>tag.get('tagId')===area)===-1){area=0}
 
         if(xAxis!==this.state.xAxis || yAxis!==this.state.yAxis || area!==this.state.area){
           BubbleAction.setAxisData(xAxis,yAxis,area)
@@ -460,13 +466,21 @@ export default class Bubble extends Component {
           this.ymax=yAxis.val[0]===''?null:yAxis.val[0];
           this.ymin=yAxis.val[1]===''?null:yAxis.val[1];
         }
+    }else{
+      if(this.props.energyData!==nextProps.energyData){
+        this.setState({
+          xAxis:0,
+          yAxis:0,
+          area:0
+        })
+      }
     }
 
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-		if(nextProps.energyData===this.props.energyData && nextState.xAxis===this.state.xAxis && nextState.yAxis===this.state.yAxis && nextState.area===this.state.ares) return false
-		return true
+		if(nextProps.energyData===this.props.energyData && nextState.xAxis===this.state.xAxis && nextState.yAxis===this.state.yAxis && nextState.area===this.state.area) return false
+    return true
 	}
 
   componentWillUnmount() {
