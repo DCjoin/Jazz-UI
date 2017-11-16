@@ -575,7 +575,7 @@ export default class Create extends Component {
 						let startTime = moment(val),
 						endTime = moment(BenchmarkEndDate);
 
-						if( endTime < moment(startTime) ) {
+						if( endTime <= moment(startTime) ) {
 							endTime = moment(startTime).add(1, 'days');
 						} else if( moment(startTime).add(_getTimeRangeStep(CalculationStep), 'days') < endTime ) {
 							endTime = moment(startTime).add(_getTimeRangeStep(CalculationStep), 'days');
@@ -613,7 +613,7 @@ export default class Create extends Component {
 						let endTime = moment(val),
 						startTime = moment(BenchmarkStartDate);
 
-						if( startTime > moment(endTime) ) {
+						if( startTime >= moment(endTime) ) {
 							startTime = moment(endTime).subtract(1, 'days');
 						} else if( moment(endTime).subtract(_getTimeRangeStep(CalculationStep), 'days') > startTime ) {
 							startTime = moment(endTime).subtract(_getTimeRangeStep(CalculationStep), 'days');
@@ -683,7 +683,7 @@ export default class Create extends Component {
 						endTime = moment(EnergyEndDate);
 
 						if( EnergyEndDate ) {
-							if( endTime < moment(startTime) ) {
+							if( endTime <= moment(startTime) ) {
 								endTime = moment(startTime).add(1, 'days');
 							} /*else if( moment(startTime).add(_getTimeRangeStep(CalculationStep), 'days') < endTime ) {
 								endTime = moment(startTime).add(_getTimeRangeStep(CalculationStep), 'days');
@@ -710,7 +710,7 @@ export default class Create extends Component {
 						startTime = moment(EnergyStartDate);
 
 						if( EnergyStartDate ) {
-							if( startTime > moment(endTime) ) {
+							if( startTime >= moment(endTime) ) {
 								startTime = moment(endTime).subtract(1, 'days');
 							} /*else if( moment(endTime).subtract(_getTimeRangeStep(CalculationStep), 'days') > startTime ) {
 								startTime = moment(endTime).subtract(_getTimeRangeStep(CalculationStep), 'days');
@@ -986,9 +986,9 @@ export function getDateObjByRange(startDate, endDate) {
 	startDate = UTC2Local(startDate);
 	endDate = UTC2Local(moment(endDate).add(-1,'days'));
 	while( ( incrementDate = moment(moment(startDate).add(increment++, 'months').format('YYYY-MM-01')) ) <= moment(endDate)) {
-		let Label = incrementDate.format('MM' + I18N.Map.Date.Month);
+		let Label = incrementDate.format(I18N.DateTimeFormat.IntervalFormat.OnlyMonth);
 		if( existYears.indexOf( incrementDate.get('year') ) === -1 ) {
-			Label = incrementDate.format('YYYY' + I18N.Map.Date.Year + 'MM' + I18N.Map.Date.Month);
+			Label = incrementDate.format(I18N.DateTimeFormat.IntervalFormat.Month);
 			existYears.push( incrementDate.get('year') );
 		}
 		result.push({

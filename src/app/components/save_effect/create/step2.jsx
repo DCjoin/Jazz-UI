@@ -439,7 +439,16 @@ export default class Step2 extends Component {
 					  if( CalculationStep === TimeGranularity.Hourly && Calendars && Calendars.length > 0 ) {
 								let {CalendarType, CalendarTimeRanges} = Calendars[0];
 								if( CalendarTimeRanges && CalendarTimeRanges.length > 0 ) {
-									
+									newConfig.series.unshift({
+											lockLegend: true,
+											enableDelete: false,
+											name: I18N.SaveEffect.Create.CaculateTime,
+											color: PLOT_BACKGROUND_COLOR, 
+											lineWidth: 12,
+											marker: {
+													symbol: 'null',
+											}
+									});
 									newConfig.xAxis.plotBands = CalendarTimeRanges.map(({StartTime, EndTime}) => {
 										return {
 											color: PLOT_BACKGROUND_COLOR,

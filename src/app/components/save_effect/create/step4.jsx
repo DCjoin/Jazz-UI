@@ -42,7 +42,6 @@ export default class Step4 extends Component {
 								<ViewableTextField
 									errorStyle={{
 										position: 'absolute',
-										bottom: -5,
 										fontSize: '11px',
 									}}
 									errorMessage={I18N.Setting.Diagnose.FormatVaildTip}
