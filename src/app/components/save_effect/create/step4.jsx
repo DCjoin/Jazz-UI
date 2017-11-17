@@ -43,6 +43,7 @@ export default class Step4 extends Component {
 									errorStyle={{
 										position: 'absolute',
 										fontSize: '11px',
+										bottom:'inherit'
 									}}
 									errorMessage={I18N.Setting.Diagnose.FormatVaildTip}
 									regex={/^(\-?)\d{1,9}([.]\d{1,3})?$/}

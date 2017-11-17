@@ -84,7 +84,7 @@ export default class TimePeriodComp extends Component {
               }
               onChangeWorkTime(data, 'FromTime', val);
             }}/>
-          {I18N.Setting.DataAnalysis.To}
+          <div style={{margin:'0px 16px 17px'}}>{I18N.Setting.DataAnalysis.To}</div>
           <ViewableDropDownMenu
             autoWidth={false}
             iconStyle={{display: 'none'}}
