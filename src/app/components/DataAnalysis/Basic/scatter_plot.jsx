@@ -323,11 +323,11 @@ export default class ScatterPlot extends Component {
         title:{
           text:that.props.isFromSolution?`${I18N.Setting.DataAnalysis.Scatter.XAxis+'：'+xAxisName}<br/>${I18N.Setting.DataAnalysis.Scatter.YAxis+'：'+yAxisName}`:null
         },
-        y: that.props.isFromSolution?10:140,
-        x: -100,
+        y: that.props.isFromSolution?10:110,
+        x: -30,
         itemStyle: {
           cursor: 'default',
-          color: '#3b3b3b',
+          color: '#626469',
           "fontWeight": "normal"
         },
         itemHoverStyle: {
@@ -335,9 +335,9 @@ export default class ScatterPlot extends Component {
           color: '#000'
         },
         borderWidth: 0,
-        margin: 10,
+        margin: 30,
         align: 'right',
-        width:that.props.isFromSolution?90:130,
+        width:that.props.isFromSolution?90:187,
         itemMarginTop: 6,
         itemMarginBottom: 6
         },
@@ -432,7 +432,7 @@ export default class ScatterPlot extends Component {
   _renderAxisSelect(){
     var menus=AlarmTagStore.getSearchTagList();
     return(
-      <div style={{position:'absolute',right:'20px',top:'50px',backgroundColor:'#ffffff'}}>
+      <div style={{position:'absolute',right:'30px',top:'50px',backgroundColor:'#ffffff'}}>
         <div style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
           <div style={{fontSize:'12px',color:'#626469'}}>
           {I18N.Setting.DataAnalysis.Scatter.XAxis+'：'}
