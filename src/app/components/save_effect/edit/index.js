@@ -712,12 +712,12 @@ export default class Edit extends Component {
             configStep:autoEditNextStep?3:null,
             chartData3:null,
            },()=>{
-						 var times=filterObj.get('TimePeriods').filter(item=>item.get("ConfigStep")===2);
-						 var preTimes=CreateStore.getEffectItem().get('TimePeriods').filter(item=>item.get("ConfigStep")===2);
+						 var times=filterObj.get('TimePeriods');
+						 var preTimes=CreateStore.getEffectItem();
 
 					if(times.size!==0 && !Immutable.is(times,preTimes)){						
-						var newPeriods=times.map(period=>period.set("ConfigStep",3));
-						filterObj=filterObj.set("TimePeriods",times.concat(newPeriods));
+						var newPeriods=times.filter(item=>item.get("ConfigStep")===2).map(period=>period.set("ConfigStep",3));
+						filterObj=filterObj.set("TimePeriods",times.filter(item=>item.get("ConfigStep")===2).concat(newPeriods));
 					}
 
              if(autoEditNextStep){
