@@ -331,7 +331,7 @@ export default class Step2 extends Component {
 
 		if(AuxiliaryTagId!==null){
 			content=<div className="row">
-				<div className="tag_name">{AuxiliaryTagName}</div>
+				<div className="tag_name" title={AuxiliaryTagName}>{AuxiliaryTagName}</div>
 				<div className="edit_btn" onClick={()=>{this.setState({showTagSelectDialog:true})}}>{I18N.Common.Button.Edit}</div>
 			</div>
 		}else{
