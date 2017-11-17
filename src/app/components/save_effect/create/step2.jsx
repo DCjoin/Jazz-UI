@@ -331,14 +331,14 @@ export default class Step2 extends Component {
 
 		if(AuxiliaryTagId!==null){
 			content=<div className="row">
-				<div className="tag_name">{AuxiliaryTagName}</div>
+				<div className="tag_name" title={AuxiliaryTagName}>{AuxiliaryTagName}</div>
 				<div className="edit_btn" onClick={()=>{this.setState({showTagSelectDialog:true})}}>{I18N.Common.Button.Edit}</div>
 			</div>
 		}else{
 			    var styles={
 							button:{
 								height:'30px',
-								lineHeight:'30px',
+								lineHeight:'28px',
 							},
 							label:{
 								fontSize:'14px',
@@ -503,7 +503,7 @@ export default class Step2 extends Component {
 								textField='label'
 								dataItems={getStepDataItems(BenchmarkModel === Model.Manual || BenchmarkModel === Model.Increment)}
 								didChanged={onChangeStep}
-								style={{width: 90}}/>
+								style={{width: 170}}/>
 						</div>
 						{BenchmarkModel !== Model.Manual && <div className='pop-viewableTextField' style={{marginTop:'20px'}}>
 							<header className='pop-viewable-title'>{I18N.SaveEffect.Create.BenchmarkDate}</header>
