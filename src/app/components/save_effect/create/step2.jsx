@@ -338,7 +338,7 @@ export default class Step2 extends Component {
 			    var styles={
 							button:{
 								height:'30px',
-								lineHeight:'30px',
+								lineHeight:'28px',
 							},
 							label:{
 								fontSize:'14px',
