@@ -503,7 +503,7 @@ export default class Step2 extends Component {
 								textField='label'
 								dataItems={getStepDataItems(BenchmarkModel === Model.Manual || BenchmarkModel === Model.Increment)}
 								didChanged={onChangeStep}
-								style={{width: 90}}/>
+								style={{width: 170}}/>
 						</div>
 						{BenchmarkModel !== Model.Manual && <div className='pop-viewableTextField' style={{marginTop:'20px'}}>
 							<header className='pop-viewable-title'>{I18N.SaveEffect.Create.BenchmarkDate}</header>
