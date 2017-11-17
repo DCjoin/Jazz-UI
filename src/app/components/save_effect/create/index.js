@@ -775,7 +775,7 @@ export default class Create extends Component {
 					if(!this.state.tags) {
 						this._goStepAndInit(1);
 					}
-				}} secondary label={I18N.Paging.Button.PreStep} style={{float: 'left'}}/>);
+				}} secondary label={I18N.Paging.Button.PreStep} style={{float: 'left',lineHeight:'34px'}}/>);
 				buttons.push(<NewFlatButton onClick={() => {
 					var filterObj=this.state.filterObj;
 					if(filterObj.get('TimePeriods').size!==0){						
@@ -803,11 +803,11 @@ export default class Create extends Component {
 									}
 					})
 				
-				}} secondary label={I18N.Paging.Button.PreStep} style={{float: 'left'}}/>);
+				}} secondary label={I18N.Paging.Button.PreStep} style={{float: 'left',lineHeight:'34px'}}/>);
 				buttons.push(<NewFlatButton onClick={() => {this._goStep(4)}} primary disabled={!this._checkCanNext()} label={I18N.Paging.Button.NextStep} style={{float: 'right'}}/>);
 				break;
 			case 4:
-				buttons.push(<NewFlatButton onClick={() => {this._goStep(3)}} secondary label={I18N.Paging.Button.PreStep} style={{float: 'left'}}/>);
+				buttons.push(<NewFlatButton onClick={() => {this._goStep(3)}} secondary label={I18N.Paging.Button.PreStep} style={{float: 'left',lineHeight:'34px'}}/>);
 				buttons.push(<NewFlatButton onClick={() => {this._goSaveAndClose(4)}} primary disabled={!this._checkCanNext()} label={I18N.SaveEffect.Create.Done} style={{float: 'right'}}/>);
 				break;
 		}
