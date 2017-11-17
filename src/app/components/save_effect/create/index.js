@@ -556,7 +556,7 @@ export default class Create extends Component {
 							}
 
 							if(step===TimeGranularity.Monthly){
-										alert("Monthly");
+									
 										filterObj=filterObj.set("BenchmarkStartDate",date2UTC(moment(UTC2Local(this.props.filterObj.ExecutedTime)).add(1,'days').subtract(12, 'months')));
 										filterObj=filterObj.set("BenchmarkEndDate",date2UTC(moment(UTC2Local(this.props.filterObj.ExecutedTime)).add(1,'days')));
 							}

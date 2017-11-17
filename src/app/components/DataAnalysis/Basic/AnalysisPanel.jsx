@@ -798,15 +798,17 @@ _onBubbleAxisChanged(){
   this.setState({
     step: step,
     isCalendarInited: false,
+  },()=>{
+    this._onSearchDataButtonClick();
   });
 
-   if(this.state.selectedChartType==='scatterplot'){
-      this.scatterDataLoad(timeRanges, step, tagOptions,this.state.relativeDate);
-   }else if(this.state.selectedChartType==='bubble'){
-      this.bubbleDataLoad(timeRanges, step, tagOptions,this.state.relativeDate);
-   }else{
-     this.energyDataLoad(timeRanges, step, tagOptions, false);
-   }
+  //  if(this.state.selectedChartType==='scatterplot'){
+  //     this.scatterDataLoad(timeRanges, step, tagOptions,this.state.relativeDate);
+  //  }else if(this.state.selectedChartType==='bubble'){
+  //     this.bubbleDataLoad(timeRanges, step, tagOptions,this.state.relativeDate);
+  //  }else{
+  //    this.energyDataLoad(timeRanges, step, tagOptions, false);
+  //  }
   }
 
   exportChart() {
