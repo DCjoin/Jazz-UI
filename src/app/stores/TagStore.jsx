@@ -52,12 +52,12 @@ var TagStore = assign({}, PrototypeStore, {
     //total的加减 emit total change 判断 total>30  和 第一次小于30的情况 都调用emit
 
     _totalTagStatus.forEach(function(tagNode) {
-      if (tagNode.hierId == _hierId) {
+      if (tagNode.hierId == _hierId && _hierId!==null) {
         hasHierId = true;
         if (selected) {
-          tagNode.tagStatus = tagNode.tagStatus.push(node.Id);
+          tagNode.tagStatus = tagNode.tagStatus.push(node.Id?node.Id:node.tagId);
         } else {
-          let index = tagNode.tagStatus.indexOf(node.Id);
+          let index = tagNode.tagStatus.indexOf(node.Id?node.Id:node.tagId);
           tagNode.tagStatus = tagNode.tagStatus.delete(index);
         }
 
@@ -66,7 +66,7 @@ var TagStore = assign({}, PrototypeStore, {
     if (!hasHierId) {
       _totalTagStatus.push({
         hierId: _hierId,
-        tagStatus: Immutable.List.of(node.Id),
+        tagStatus: Immutable.List.of(node.Id?node.Id:node.tagId),
       });
     }
 
@@ -84,7 +84,7 @@ var TagStore = assign({}, PrototypeStore, {
 
     this.checkAllStatus();
     this.checkBaselineBtnDisabled();
-    this.checkWeatherBtnDisabled();
+    // this.checkWeatherBtnDisabled();
   },
   setTagStatusById: function(hierId, tagId) {
     _tagTotal++;

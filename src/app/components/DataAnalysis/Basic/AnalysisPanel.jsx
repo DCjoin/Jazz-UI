@@ -1663,8 +1663,10 @@ _onBubbleAxisChanged(){
 
       }
       this.isInitial=true;
+     
     }else{
       EnergyAction.setChartType('line');
+      TagAction.setCurrentHierarchyId(this.props.hierarchyId);
     }
   }
 
