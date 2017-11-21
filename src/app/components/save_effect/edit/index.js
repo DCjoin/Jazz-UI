@@ -337,7 +337,7 @@ export default class Edit extends Component {
 				break;
 			case 2:
 				var {BenchmarkModel,AuxiliaryTagId,CalculationStep}=this.state.filterObj.toJS();
-			if(BenchmarkModel===Model.Increment || BenchmarkModel===Model.Efficiency) return AuxiliaryTagId!==null && this._checkStepByTag(CalculationStep)
+			if(BenchmarkModel===Model.Increment || BenchmarkModel===Model.Efficiency || BenchmarkModel===Model.Relation || BenchmarkModel===Model.Simulation) return AuxiliaryTagId!==null && this._checkStepByTag(CalculationStep)
 				return this.state.chartData2 && this._checkStepByTag(CalculationStep) && 
 							(!needCalendar(this.context.hierarchyId) ||
 							(needCalendar(this.context.hierarchyId) && this.state.hasCalendar===true));

@@ -342,7 +342,7 @@ export default class Step2 extends Component {
 	}
 
 	_renderAuxiliaryTag(){
-		let {AuxiliaryTagId,AuxiliaryTagName}=this.props;
+		let {AuxiliaryTagId,AuxiliaryTagName,BenchmarkModel}=this.props;
 		var content;
 
 		if(AuxiliaryTagId!==null){
@@ -375,7 +375,7 @@ export default class Step2 extends Component {
 
 		return(
 			<div className="auxiliary_tag">
-				<header className='title' style={{marginBottom:'14px'}}>{I18N.SaveEffect.Create.AuxiliaryTag}</header>
+				<header className='title' style={{marginBottom:'14px'}}>{BenchmarkModel===Model.Relation?I18N.Setting.Organization.AssociateTag:I18N.SaveEffect.Create.AuxiliaryTag}</header>
 				{content}
 			</div>
 		)
@@ -562,7 +562,7 @@ export default class Step2 extends Component {
 							</div>
 							<div className='tip-message'>{I18N.SaveEffect.Create.BenchmarkDateTip}</div>
 						</div>}
-						{(BenchmarkModel === Model.Increment || BenchmarkModel === Model.Efficiency) && this._renderAuxiliaryTag()}
+						{(BenchmarkModel === Model.Increment || BenchmarkModel === Model.Efficiency || BenchmarkModel === Model.Simulation || BenchmarkModel === Model.Relation) && this._renderAuxiliaryTag()}
 						{this._renderTimePeriods()}
 						{this.state.showTagSelectDialog && this._renderTagSelect()}
 					</div>
