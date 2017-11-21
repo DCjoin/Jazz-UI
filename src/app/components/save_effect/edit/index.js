@@ -312,11 +312,12 @@ export default class Edit extends Component {
 		cleanEdit();
 	}
 
- 	_checkStepByTag(calcStep) {
-		let propsStep = this.state.filterObj.get("Step");
-		return propsStep ?
-			checkSupportStep(propsStep, calcStep) :
-			checkStepByTag(this.state.filterObj.get('TagId'), calcStep);
+	_checkStepByTag(calcStep) {
+		let propsStep = this.props.filterObj.Step;
+		let {Step,AuxiliaryTagStep}=this.state.filterObj.toJS()
+		return AuxiliaryTagStep ?
+			checkSupportStep(Step, calcStep) && checkSupportStep(AuxiliaryTagStep, calcStep) :
+			checkSupportStep(Step, calcStep);
 	}
 
   	_setTagStepTip(calcStep) {
@@ -336,7 +337,7 @@ export default class Edit extends Component {
 				break;
 			case 2:
 				var {BenchmarkModel,AuxiliaryTagId,CalculationStep}=this.state.filterObj.toJS();
-			if(BenchmarkModel===Model.Increment || BenchmarkModel===Model.Efficiency) return AuxiliaryTagId!==null
+			if(BenchmarkModel===Model.Increment || BenchmarkModel===Model.Efficiency) return AuxiliaryTagId!==null && this._checkStepByTag(CalculationStep)
 				return this.state.chartData2 && this._checkStepByTag(CalculationStep) && 
 							(!needCalendar(this.context.hierarchyId) ||
 							(needCalendar(this.context.hierarchyId) && this.state.hasCalendar===true));
@@ -538,10 +539,15 @@ export default class Edit extends Component {
 					AuxiliaryTagId={AuxiliaryTagId}
 					AuxiliaryTagName={AuxiliaryTagName}
 					TimePeriods={TimePeriods}
-					onAuxiliaryTagChanged={(id,name)=>{
-						filterObj=filterObj.set("AuxiliaryTagId",id);
-						filterObj=filterObj.set("AuxiliaryTagName",name);
-						this._setFilterObj(filterObj);
+					onAuxiliaryTagChanged={(id,name,step)=>{
+						filterObj=filterObj.set("AuxiliaryTagId",id)
+															 .set("AuxiliaryTagName",name)
+															 .set("AuxiliaryTagStep",step);
+						this.setState({
+							filterObj:filterObj
+						},()=>{
+							this._setTagStepTip( CalculationStep);
+						})
 					}}
 					onTimePeriodsChanged={(periods)=>{
 						filterObj=filterObj.set("TimePeriods",periods);
@@ -570,6 +576,7 @@ export default class Edit extends Component {
 							.set('AuxiliaryTagId', null)
 							.set('AuxiliaryTagName', null)
 							.set('TimePeriods',Immutable.fromJS([]))
+							.set('AuxiliaryTagStep',null)
 						this._setFilterObj(filterObj);
 						this.setState({
 							chartData3: null

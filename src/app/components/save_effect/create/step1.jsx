@@ -27,7 +27,7 @@ function TagItem({tag, selectedId, onClick, onDelete, idx}) {
 				labelStyle={{color: '#434343'}}
 				label={tag.get('Name')}
 				onClick={() => {
-					onClick(tag.get('TagId'),tag.get('Name'));
+					onClick(tag.get('TagId'),tag.get('Name'),tag.get("Step"));
 				}}
 			/>
 			{(tag.get('isNew') || ( !tag.get('Configed') && tag.get('Status') === 2 ) ) &&

@@ -219,7 +219,9 @@ function getInitFilterObj(props) {
 		IncludeEnergyEffectData: false,
 		AuxiliaryTagId:null,
 		AuxiliaryTagName:null,
-		TimePeriods:[]
+		TimePeriods:[],
+		Step:null,
+		AuxiliaryTagStep:null,
 	}, ...props.filterObj, ...{		
 		BenchmarkDatas: (!props.filterObj.BenchmarkDatas || props.filterObj.BenchmarkDatas.length === 0 && props.filterObj.EnergyStartDate && props.filterObj.EnergyStartDate) ? 
 							getDateObjByRange(props.filterObj.EnergyStartDate, props.filterObj.EnergyStartDate) :
@@ -369,9 +371,10 @@ export default class Create extends Component {
 	}
 	_checkStepByTag(calcStep) {
 		let propsStep = this.props.filterObj.Step;
-		return propsStep ?
-			checkSupportStep(propsStep, calcStep) :
-			checkStepByTag(this.state.filterObj.get('TagId'), calcStep);
+		let {Step,AuxiliaryTagStep}=this.state.filterObj.toJS()
+		return AuxiliaryTagStep ?
+			checkSupportStep(Step, calcStep) && checkSupportStep(AuxiliaryTagStep, calcStep) :
+			checkSupportStep(Step, calcStep);
 	}
 	_checkCanNext() {
 		switch( this.state.filterObj.get('ConfigStep') ) {
@@ -380,7 +383,7 @@ export default class Create extends Component {
 				break;
 			case 2:
 			var {BenchmarkModel,AuxiliaryTagId,CalculationStep}=this.state.filterObj.toJS();
-			if(BenchmarkModel===Model.Increment || BenchmarkModel===Model.Efficiency) return AuxiliaryTagId!==null
+			if(BenchmarkModel===Model.Increment || BenchmarkModel===Model.Efficiency) return AuxiliaryTagId!==null && this._checkStepByTag(CalculationStep)
 				return this.state.chartData2 && this._checkStepByTag(CalculationStep) && 
 							(!needCalendar(this.context.hierarchyId) ||
 							(needCalendar(this.context.hierarchyId) && this.state.hasCalendar===true));
@@ -424,11 +427,12 @@ export default class Create extends Component {
 				return (<Step1
 					tags={tags}
 					selectedId={filterObj.get('TagId')}
-					onClickItem={(TagId) => {
+					onClickItem={(TagId,tagName,step) => {
 						this._setFilterObj(
 							getInitFilterObj(this.props)
 								.set('EnergySystem', this.state.filterObj.get('EnergySystem'))
 								.set('TagId', TagId)
+								.set("Step",step)
 						);
 						this.setState((state, props) => {
 							return {
@@ -477,10 +481,16 @@ export default class Create extends Component {
 					AuxiliaryTagId={AuxiliaryTagId}
 					AuxiliaryTagName={AuxiliaryTagName}
 					TimePeriods={TimePeriods}
-					onAuxiliaryTagChanged={(id,name)=>{
-						filterObj=filterObj.set("AuxiliaryTagId",id);
-						filterObj=filterObj.set("AuxiliaryTagName",name);
-						this._setFilterObj(filterObj);
+					onAuxiliaryTagChanged={(id,name,step)=>{
+						
+						filterObj=filterObj.set("AuxiliaryTagId",id)
+															 .set("AuxiliaryTagName",name)
+															 .set("AuxiliaryTagStep",step);
+						this.setState({
+							filterObj:filterObj
+						},()=>{
+							this._setTagStepTip( CalculationStep);
+						})
 					}}
 					onTimePeriodsChanged={(periods)=>{
 						filterObj=filterObj.set("TimePeriods",periods);
@@ -508,6 +518,7 @@ export default class Create extends Component {
 							.set('AuxiliaryTagId', null)
 							.set('AuxiliaryTagName', null)
 							.set('TimePeriods',Immutable.fromJS([]))
+							.set('AuxiliaryTagStep',null)
 						this._setFilterObj(filterObj);
 						this.setState({
 							chartData3: null
