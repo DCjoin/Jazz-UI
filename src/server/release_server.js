@@ -1,9 +1,22 @@
-var Hapi = require("hapi");
-var fs = require("fs");
-var path=require("path");
-var useragent = require('useragent');
+// var Hapi = require("hapi");
+// var fs = require("fs");
+// var path=require("path");
+// var useragent = require('useragent');
 
-var SUPPORT_LANGUAGES = {
+// var SUPPORT_LANGUAGES = {
+//const Hapi = require("hapi");
+const express = require('express');
+const cookieParser = require('cookie-parser');
+const fs = require("fs");
+const path=require("path");
+const useragent = require('useragent');
+var acsObj = {};
+
+// var request = require("request");
+const { URL } = require('url');
+const SYSID = 0;// 0云能效 1千里眼 2灯塔 8万丈云
+
+const SUPPORT_LANGUAGES = {
   'zh-cn': true,
   'en-us': true,
 };
@@ -14,18 +27,51 @@ var SUPPORT_BROWSERS = [
 
 var server = new Hapi.Server();
 
-server.connection({
-  port: 80
-});
 
-server.register(
-  [
-    {register: require('inert')},
-  ]
-  ,function () {
-    server.start(function() {
-        console.log('Server started at: ' + server.info.uri);
-    });
+// server.connection({
+//   port: 80
+// });
+
+// server.register(
+//   [
+//     {register: require('inert')},
+//   ]
+//   ,function () {
+//     server.start(function() {
+//         console.log('Server started at: ' + server.info.uri);
+//     });
+
+// var server = new Hapi.Server();
+const app = express();
+
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+
+const saml = require('samlify');
+const ServiceProvider = saml.ServiceProvider;
+const IdentityProvider = saml.IdentityProvider;
+
+app.listen(PORT, () => {
+  console.log('http server running on:%d' + PORT);
+});
+app.use(cookieParser());
+app.use((req, res, next) => {
+  console.log(req.protocol);
+  console.log(req.hostname);
+  console.log(req.url);
+  console.log("%j", req.headers);
+  let forwardProto = req.get("x-forwarded-proto");
+  console.log(forwardProto);
+  let proto = forwardProto || req.protocol;
+  if (/^http$/.test(proto)) {
+    // console.log("enter");
+    return res.redirect(301, "https://" + req.headers.host + req.url);
+  }
+  else {
+    console.log('next');
+    return next();
+  }
+
 });
 
 function returnUpdateBrowserHtml(request,reply){
@@ -44,6 +90,11 @@ var APP_DOWNLOAD_LOCAL = process.env.APP_DOWNLOAD_LOCAL;
 var APP_DOWNLOAD_QQ = process.env.APP_DOWNLOAD_QQ;
 var APP_DOWNLOAD_WDJ = process.env.APP_DOWNLOAD_WDJ;
 var APP_DOWNLOAD_BAIDU = process.env.APP_DOWNLOAD_BAIDU;
+var JAZZ_WEB_HOST = process.env.JAZZ_WEB_HOST;
+var GUARD_UI_HOST = process.env.GUARD_UI_HOST;
+
+let version = fs.readFileSync(path.resolve(__dirname, "./version.txt"), "utf-8");
+console.log("version:" + version);
 
 function getLang(request) {
   var lang = request.params.lang;
@@ -81,9 +132,12 @@ function returnIndexHtml(request,reply){
 
   var html = fs.readFileSync(path.resolve(__dirname, "./index.html"), "utf-8");
 
-  html = html.replace('__LANG_JS__', cdn + '/' + getLang(request) + '.js');
+  // html = html.replace('__LANG_JS__', cdn + '/' + getLang(request) + '.js');
 
-  html = html.replace(/__JAZZ_STATIC_CDN__/g, cdn)
+  // html = html.replace(/__JAZZ_STATIC_CDN__/g, cdn)
+  html = html.replace('__LANG_JS__', JAZZ_STATIC_CDN + '/' + version + '/' + getLang(req) + '.js');
+
+  html = html.replace(/__JAZZ_STATIC_CDN__/g, JAZZ_STATIC_CDN + '/' + version)
             .replace(/__JAZZ_WEBAPI_HOST__/g, JAZZ_WEBAPI_HOST);
 
   if(JAZZ_UI_UMENG_CNZZ_SDK_URL) {
@@ -95,7 +149,8 @@ function returnIndexHtml(request,reply){
 
 function returnDownloadHtml(request,reply){
   var html = fs.readFileSync(path.resolve(__dirname, "./DownloadApp.html"), "utf-8")
-                .replace(/__JAZZ_STATIC_CDN__/g, cdn)
+                // .replace(/__JAZZ_STATIC_CDN__/g, cdn)
+                .replace(/__JAZZ_STATIC_CDN__/g, JAZZ_STATIC_CDN + '/' + version)
                 .replace('${APP_VERSION}', APP_VERSION)
                 .replace('${APP_SIZE}', APP_SIZE)
                 .replace('${APP_DOWNLOAD_LOCAL}', APP_DOWNLOAD_LOCAL)
@@ -111,21 +166,72 @@ server.register({
   options: {}
 })
 
-server.route({
-  method: 'GET',
-  path: '/DownloadApp.html',
-  handler: returnDownloadHtml,
+
+// server.route({
+//   method: 'GET',
+//   path: '/DownloadApp.html',
+//   handler: returnDownloadHtml,
+// });
+// server.route({
+//   method: 'GET',
+//   path: '/download-app',
+//   handler: returnDownloadHtml,
+// });
+// server.route({
+//   method: 'GET',
+//   path: '/{lang}/{path*}',
+//   handler: returnIndexHtml,
+// });
+
+app.get('/download-app', returnDownloadHtml);
+
+// Release the metadata publicly
+app.get('/sso/metadata', (req, res) => res.header('Content-Type','text/xml').send(sp.getMetadata()));
+
+// Access URL for implementing SP-init SSO
+app.get('/:lang/spinitsso-redirect', (req, res) => {
+  // Configure your endpoint for IdP-initiated / SP-initiated SSO
+  const sp = ServiceProvider({
+    privateKey: fs.readFileSync(__dirname + '/SE-SP.pem'),
+    privateKeyPass: 'sesp!@#',
+    requestSignatureAlgorithm: 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256',
+    metadata: fs.readFileSync(__dirname + '/metadata_sp.xml', "utf-8").replace('${SSO_ACS_URL}', JAZZ_WEB_HOST + "/sso/acs")
+  });
+
+  const idp = IdentityProvider({
+    metadata: fs.readFileSync(__dirname + '/onelogin_metadata.xml', "utf-8").split('${GUARD_UI_HOST}').join(GUARD_UI_HOST + "Saml/SignOnService")
+  });
+
+  const url = sp.createLoginRequest(idp, 'redirect');  
+  const redirectURL = new URL(url.context);  
+  redirectURL.pathname = req.params.lang + redirectURL.pathname;
+  let spDomain = req.hostname.split(".")[0] ? req.hostname.split(".")[0] : "";
+  return res.redirect(redirectURL.href + "&callbackURL=" + encodeURIComponent(req.query.callbackURL) + "&sysId=" + SYSID + "&spDomain=" + encodeURIComponent(spDomain));
 });
-server.route({
-  method: 'GET',
-  path: '/download-app',
-  handler: returnDownloadHtml,
+
+// This is the assertion service url where SAML Response is sent to
+app.post('/sso/acs', (req, res) => {
+  console.log("get assertion and return to Jazz backend!");
+  var id = Math.ceil(Math.random()*100000) + "" + Date.now();
+  acsObj[id] = req.body.SAMLResponse;
+  res.cookie('AssertId', id).redirect(301, '/zh-cn/saml');  
 });
-server.route({
-  method: 'GET',
-  path: '/{lang}/{path*}',
-  handler: returnIndexHtml,
+
+app.get("/saml/acs", (req, res) => {
+  let result = acsObj[req.query.id];
+  if(result) {
+    res.send({result: {SAMLResponse: result}});
+    delete acsObj[req.query.id];
+  } else {
+    res.send({result: {SAMLResponse: null}});
+  }
 });
+
+app.get('/:lang/logout',(req, res) => {
+  return res.redirect(GUARD_UI_HOST + req.params.lang + "/logout?returnURL=" + encodeURIComponent(req.query.returnURL));
+});
+
+app.get('/:lang/*', returnIndexHtml);
 
 server.route({
   method: 'GET',

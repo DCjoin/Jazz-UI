@@ -16,7 +16,7 @@ env:
   global:
   - PROJECT="Jazz-UI"
   - ROLE="WebUI"
-  - PACKAGE_VERSION="v5.2.0.${TRAVIS_BUILD_NUMBER}"
+  - PACKAGE_VERSION="v5.3.0.${TRAVIS_BUILD_NUMBER}"
   - DOCKER_NS="se-rem-test"
 
 before_script:
@@ -38,6 +38,7 @@ before_deploy:
 #  - echo -n "${PACKAGE_VERSION}" > version.txt
 #  - zip -r --exclude=*node_modules* /tmp/${ARTIFACT_NAME} ./
   - 'curl -o upload.sh -H "Authorization: token ${GITHUB_TOKEN}" ${GITHUB_UPLOAD_SCRIPT}'
+  - cat upload.sh
   - chmod a+x ./upload.sh
   
   - IMAGEID=$(docker images $TAG -q)

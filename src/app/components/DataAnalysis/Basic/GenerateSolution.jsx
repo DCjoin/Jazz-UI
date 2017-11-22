@@ -150,7 +150,8 @@ export class GenerateSolution extends Component {
 	static propTypes = {
 		nodes: PropTypes.arrayOf(PropTypes.object),
 		onRequestClose: PropTypes.func,
-		renderChartCmp: PropTypes.func
+		renderChartCmp: PropTypes.func,
+		onSubmit:PropTypes.func,
 	};
 	static contextTypes = {
 		hierarchyId: PropTypes.string
@@ -469,7 +470,12 @@ export class GenerateSolution extends Component {
 			label={I18N.Setting.DataAnalysis.SchemeSubmit}
 			onClick={() => {
 				let {data} = this._getAPIDataFormat();
-				FolderAction.createEnergySolution(data);
+				if(this.props.onSubmit){
+						this.props.onSubmit(data)
+				}else{
+					FolderAction.createEnergySolution(data);
+				}
+				
 
 				this.props.onRequestClose(true); //true:closed by submit false:closed by cancel
 			}}/>);

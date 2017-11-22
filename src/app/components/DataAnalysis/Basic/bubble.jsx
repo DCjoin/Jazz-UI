@@ -43,7 +43,7 @@ var getSeries=(datas)=>datas.map(data=>{
   }
 })
 
-var hasEmptyAxis=(datas)=>datas.map(data=>data.Coordinates.length===0).indexOf(true)>-1;
+var hasEmptyAxis=(datas)=>datas.map(data=>data.Coordinates.length===0).indexOf(false)===-1;
 
 var colorArr=['#42b4e6', '#e47f00', '#1a79a9', '#71cbf4', '#b10043',
     '#9fa0a4', '#87d200', '#626469', '#ffd100', '#df3870'];
@@ -237,7 +237,6 @@ export default class Bubble extends Component {
         yAxisName=Immutable.fromJS(this.props.energyData[0].Tags).find(tag=>tag.get('Id')===this.state.yAxis).get("Name"),
         areaName=Immutable.fromJS(this.props.energyData[0].Tags).find(tag=>tag.get('Id')===this.state.area).get("Name");
 
-    console.log(xAxisName+"---"+yAxisName+"----"+areaName);
     var that=this;
     return{
       colors:colorArr,
@@ -293,11 +292,11 @@ export default class Bubble extends Component {
         title:{
           text:that.props.isFromSolution?`${I18N.Setting.DataAnalysis.Scatter.XAxis+'：'+xAxisName}<br/>${I18N.Setting.DataAnalysis.Scatter.YAxis+'：'+yAxisName}<br/>${I18N.Setting.DataAnalysis.Bubble.Area+'：'+areaName}`:null
         },
-        y: that.props.isFromSolution?10:140,
-        x: -100,
+        y: that.props.isFromSolution?10:150,
+        x: -30,
         itemStyle: {
           cursor: 'default',
-          color: '#3b3b3b',
+          color: '#626469',
           "fontWeight": "normal"
         },
         itemHoverStyle: {
@@ -305,9 +304,9 @@ export default class Bubble extends Component {
           color: '#000'
         },
         borderWidth: 0,
-        margin: 10,
+        margin: 30,
         align: 'right',
-        width:that.props.isFromSolution?90:130,
+        width:that.props.isFromSolution?90:187,
         itemMarginTop: 6,
         itemMarginBottom: 6
         },
@@ -384,7 +383,7 @@ export default class Bubble extends Component {
   _renderAxisSelect(){
     var menus=AlarmTagStore.getSearchTagList();
     return(
-      <div style={{position:'absolute',right:'20px',top:'50px',backgroundColor:'#ffffff'}}>
+      <div style={{position:'absolute',right:'30px',top:'50px',backgroundColor:'#ffffff'}}>
         <div style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
           <div style={{fontSize:'12px',color:'#626469',width:'40px'}}>
           {I18N.Setting.DataAnalysis.Scatter.XAxis+'：'}

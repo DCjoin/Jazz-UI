@@ -125,6 +125,9 @@ let LoginStore = assign({}, EventEmitter.prototype, {
     CookieUtil.set('SkipLogin', null, {
       expires: -1
     });
+    CookieUtil.set('AssertId', null, {
+      expires: -1
+    });
   },
   getLastError: function(argument) {
     return _lastError;

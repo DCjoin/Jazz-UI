@@ -27,7 +27,7 @@ function TagItem({tag, selectedId, onClick, onDelete, idx}) {
 				labelStyle={{color: '#434343'}}
 				label={tag.get('Name')}
 				onClick={() => {
-					onClick(tag.get('TagId'),tag.get('Name'));
+					onClick(tag.get('TagId'),tag.get('Name'),tag.get("Step"));
 				}}
 			/>
 			{(tag.get('isNew') || ( !tag.get('Configed') && tag.get('Status') === 2 ) ) &&
@@ -70,6 +70,7 @@ export default class Step1 extends Component {
 			</div>);
 		}
 		let { tags, selectedId, onClickItem, onDeleteItem, onAddItem } = this.props;
+		tags=tags.filter(tag=>tag.get("Status")!==3);
 		return (
 			<div className='create-block step1-wrapper'>
 				<header className='step1-header'>

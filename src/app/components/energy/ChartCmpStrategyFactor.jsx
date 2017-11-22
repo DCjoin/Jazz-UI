@@ -1007,7 +1007,7 @@ let ChartCmpStrategyFactor = {
         } else if (item.dType == 12 || item.dType == 13 || item.dType == 14 || item.dType == 15) {
           enableDelete = false;
         }
-        console.log(item);
+        // console.log(item);
         var s = {
           name: n,
           originalName: item.name,

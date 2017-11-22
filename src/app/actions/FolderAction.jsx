@@ -4,6 +4,9 @@ import { Action } from '../constants/actionType/Folder.jsx';
 import GlobalErrorMessageAction from '../actions/GlobalErrorMessageAction.jsx';
 import Ajax from '../ajax/Ajax.jsx';
 import Immutable from 'immutable';
+import Path from 'constants/Path.jsx';
+import util from 'util/Util.jsx';
+
 let FolderAction = {
   getFolderTreeByHierarchyId(hierarchyId, isNew = false) {
     Ajax.post('/Dashboard/GetWdigetFolderTreeByHierarchyId', {
@@ -370,6 +373,16 @@ let FolderAction = {
   },
   createEnergySolution(params) {
     Ajax.post('/energysolution/create', {
+      params,
+      success: function(data) {
+        AppDispatcher.dispatch({
+          type: Action.CREATE_ENERGY_SOLUTION_SUCCESS
+        });
+      },
+    })
+  },
+  createDiagnoseSolution(params,diagnoseId){
+    Ajax.post(util.replacePathParams(Path.Diagnose.energySolution, diagnoseId), {
       params,
       success: function(data) {
         AppDispatcher.dispatch({

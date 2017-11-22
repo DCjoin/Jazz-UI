@@ -170,7 +170,7 @@ const SelectCustomer = React.createClass({
           <div>请退出后联系您的管理员</div>
           <button onClick={() => {
             LoginActionCreator.logout();
-            window.location.reload();
+            location.href = RoutePath.logout(this.context.router.params, encodeURIComponent(location.origin));
           }}>退出</button>
         </div>
       );

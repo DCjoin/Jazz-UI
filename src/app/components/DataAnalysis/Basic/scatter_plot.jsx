@@ -20,8 +20,8 @@ var getSeries=(datas)=>datas.map(data=>{
   var {TimeRange,Coordinates}=data;
   var {StartTime,EndTime}=TimeRange;
   var name=moment(j2d(EndTime)).hours()===0?
-  `${moment(j2d(StartTime)).format("YYYY-MM-DD HH-mm")}<br/>${moment(j2d(EndTime)).add(-1,'days').format("YYYY-MM-DD 24-mm")}`
-  :`${moment(j2d(StartTime)).format("YYYY-MM-DD HH-mm")}<br/>${moment(j2d(EndTime)).format("YYYY-MM-DD HH-mm")}`
+  `${moment(j2d(StartTime)).format("YYYY-MM-DD HH:mm")}<br/>${moment(j2d(EndTime)).add(-1,'days').format("YYYY-MM-DD 24:mm")}`
+  :`${moment(j2d(StartTime)).format("YYYY-MM-DD HH:mm")}<br/>${moment(j2d(EndTime)).format("YYYY-MM-DD HH:mm")}`
   return{
     name:name,
     marker:{
@@ -36,7 +36,7 @@ var getSeries=(datas)=>datas.map(data=>{
   }
 })
 
-var hasEmptyAxis=(datas)=>datas.map(data=>data.Coordinates.length===0).indexOf(true)>-1;
+var hasEmptyAxis=(datas)=>datas.map(data=>data.Coordinates.length===0).indexOf(false)===-1;
 
 var colorArr=['#42b4e6', '#e47f00', '#1a79a9', '#71cbf4', '#b10043',
     '#9fa0a4', '#87d200', '#626469', '#ffd100', '#df3870'];
@@ -323,11 +323,11 @@ export default class ScatterPlot extends Component {
         title:{
           text:that.props.isFromSolution?`${I18N.Setting.DataAnalysis.Scatter.XAxis+'：'+xAxisName}<br/>${I18N.Setting.DataAnalysis.Scatter.YAxis+'：'+yAxisName}`:null
         },
-        y: that.props.isFromSolution?10:140,
-        x: -100,
+        y: that.props.isFromSolution?10:110,
+        x: -30,
         itemStyle: {
           cursor: 'default',
-          color: '#3b3b3b',
+          color: '#626469',
           "fontWeight": "normal"
         },
         itemHoverStyle: {
@@ -335,9 +335,9 @@ export default class ScatterPlot extends Component {
           color: '#000'
         },
         borderWidth: 0,
-        margin: 10,
+        margin: 30,
         align: 'right',
-        width:that.props.isFromSolution?90:130,
+        width:that.props.isFromSolution?90:187,
         itemMarginTop: 6,
         itemMarginBottom: 6
         },
@@ -432,7 +432,7 @@ export default class ScatterPlot extends Component {
   _renderAxisSelect(){
     var menus=AlarmTagStore.getSearchTagList();
     return(
-      <div style={{position:'absolute',right:'20px',top:'50px',backgroundColor:'#ffffff'}}>
+      <div style={{position:'absolute',right:'30px',top:'50px',backgroundColor:'#ffffff'}}>
         <div style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
           <div style={{fontSize:'12px',color:'#626469'}}>
           {I18N.Setting.DataAnalysis.Scatter.XAxis+'：'}

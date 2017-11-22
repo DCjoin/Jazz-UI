@@ -219,7 +219,9 @@ function getInitFilterObj(props) {
 		IncludeEnergyEffectData: false,
 		AuxiliaryTagId:null,
 		AuxiliaryTagName:null,
-		TimePeriods:[]
+		TimePeriods:[],
+		Step:null,
+		AuxiliaryTagStep:null,
 	}, ...props.filterObj, ...{		
 		BenchmarkDatas: (!props.filterObj.BenchmarkDatas || props.filterObj.BenchmarkDatas.length === 0 && props.filterObj.EnergyStartDate && props.filterObj.EnergyStartDate) ? 
 							getDateObjByRange(props.filterObj.EnergyStartDate, props.filterObj.EnergyStartDate) :
@@ -249,11 +251,15 @@ function needCalendar(hierarchyId){
 	return notNeedIndustry.indexOf(findBuilding(hierarchyId).IndustryId)===-1
 }
 
+function hasTimePeridsModel(model){
+	return model===Model.Easy || model===Model.Increment || model===Model.Efficiency
+ }
+
 @ReduxDecorator
 export default class Create extends Component {
 	static calculateState = (state, props, ctx) => {
 		var filterObj=state.filterObj;
-		if(state.hasCalendar==='loading' && filterObj.get("TimePeriods").size===0){
+		if(state.hasCalendar==='loading' && filterObj.get("TimePeriods").size===0 && hasTimePeridsModel(filterObj.get("BenchmarkModel"))){
 			if(state.filterObj.get("CalculationStep")===TimeGranularity.Hourly){
 				// if(needCalendar(ctx.hierarchyId)){
 				if(needCalendar(ctx.hierarchyId)){
@@ -369,9 +375,10 @@ export default class Create extends Component {
 	}
 	_checkStepByTag(calcStep) {
 		let propsStep = this.props.filterObj.Step;
-		return propsStep ?
-			checkSupportStep(propsStep, calcStep) :
-			checkStepByTag(this.state.filterObj.get('TagId'), calcStep);
+		let {Step,AuxiliaryTagStep}=this.state.filterObj.toJS()
+		return AuxiliaryTagStep ?
+			checkSupportStep(Step, calcStep) && checkSupportStep(AuxiliaryTagStep, calcStep) :
+			checkSupportStep(Step, calcStep);
 	}
 	_checkCanNext() {
 		switch( this.state.filterObj.get('ConfigStep') ) {
@@ -380,7 +387,7 @@ export default class Create extends Component {
 				break;
 			case 2:
 			var {BenchmarkModel,AuxiliaryTagId,CalculationStep}=this.state.filterObj.toJS();
-			if(BenchmarkModel===Model.Increment || BenchmarkModel===Model.Efficiency) return AuxiliaryTagId!==null
+			if(BenchmarkModel===Model.Increment || BenchmarkModel===Model.Efficiency || BenchmarkModel===Model.Relation || BenchmarkModel===Model.Simulation) return AuxiliaryTagId!==null && this._checkStepByTag(CalculationStep)
 				return this.state.chartData2 && this._checkStepByTag(CalculationStep) && 
 							(!needCalendar(this.context.hierarchyId) ||
 							(needCalendar(this.context.hierarchyId) && this.state.hasCalendar===true));
@@ -424,11 +431,12 @@ export default class Create extends Component {
 				return (<Step1
 					tags={tags}
 					selectedId={filterObj.get('TagId')}
-					onClickItem={(TagId) => {
+					onClickItem={(TagId,tagName,step) => {
 						this._setFilterObj(
 							getInitFilterObj(this.props)
 								.set('EnergySystem', this.state.filterObj.get('EnergySystem'))
 								.set('TagId', TagId)
+								.set("Step",step)
 						);
 						this.setState((state, props) => {
 							return {
@@ -477,10 +485,16 @@ export default class Create extends Component {
 					AuxiliaryTagId={AuxiliaryTagId}
 					AuxiliaryTagName={AuxiliaryTagName}
 					TimePeriods={TimePeriods}
-					onAuxiliaryTagChanged={(id,name)=>{
-						filterObj=filterObj.set("AuxiliaryTagId",id);
-						filterObj=filterObj.set("AuxiliaryTagName",name);
-						this._setFilterObj(filterObj);
+					onAuxiliaryTagChanged={(id,name,step)=>{
+						
+						filterObj=filterObj.set("AuxiliaryTagId",id)
+															 .set("AuxiliaryTagName",name)
+															 .set("AuxiliaryTagStep",step);
+						this.setState({
+							filterObj:filterObj
+						},()=>{
+							this._setTagStepTip( CalculationStep);
+						})
 					}}
 					onTimePeriodsChanged={(periods)=>{
 						filterObj=filterObj.set("TimePeriods",periods);
@@ -508,6 +522,17 @@ export default class Create extends Component {
 							.set('AuxiliaryTagId', null)
 							.set('AuxiliaryTagName', null)
 							.set('TimePeriods',Immutable.fromJS([]))
+							.set('AuxiliaryTagStep',null)
+
+						if(type === Model.Relation){
+							let tag=tags.filter(tag=>tag.get("Status")===3);
+							if(tag.size>0){
+								filterObj = filterObj.set('AuxiliaryTagId', tag.getIn([0,'TagId']))
+																		 .set('AuxiliaryTagName', tag.getIn([0,'Name']))
+																		 .set('AuxiliaryTagStep',tag.getIn([0,'Step']))
+							}								
+						}
+
 						this._setFilterObj(filterObj);
 						this.setState({
 							chartData3: null
@@ -529,7 +554,7 @@ export default class Create extends Component {
 							}
 						}*/}
 
-							if(step===TimeGranularity.Hourly){
+							if(step===TimeGranularity.Hourly  && hasTimePeridsModel(BenchmarkModel)){
 								// if(needCalendar(ctx.hierarchyId)){
 								if(needCalendar(this.context.hierarchyId)){
 									filterObj=filterObj.set("TimePeriods",Immutable.fromJS([{
@@ -556,6 +581,7 @@ export default class Create extends Component {
 							}
 
 							if(step===TimeGranularity.Monthly){
+									
 										filterObj=filterObj.set("BenchmarkStartDate",date2UTC(moment(UTC2Local(this.props.filterObj.ExecutedTime)).add(1,'days').subtract(12, 'months')));
 										filterObj=filterObj.set("BenchmarkEndDate",date2UTC(moment(UTC2Local(this.props.filterObj.ExecutedTime)).add(1,'days')));
 							}
@@ -774,7 +800,7 @@ export default class Create extends Component {
 					if(!this.state.tags) {
 						this._goStepAndInit(1);
 					}
-				}} secondary label={I18N.Paging.Button.PreStep} style={{float: 'left'}}/>);
+				}} secondary label={I18N.Paging.Button.PreStep} style={{float: 'left',lineHeight:'34px'}}/>);
 				buttons.push(<NewFlatButton onClick={() => {
 					var filterObj=this.state.filterObj;
 					if(filterObj.get('TimePeriods').size!==0){						
@@ -802,11 +828,11 @@ export default class Create extends Component {
 									}
 					})
 				
-				}} secondary label={I18N.Paging.Button.PreStep} style={{float: 'left'}}/>);
+				}} secondary label={I18N.Paging.Button.PreStep} style={{float: 'left',lineHeight:'34px'}}/>);
 				buttons.push(<NewFlatButton onClick={() => {this._goStep(4)}} primary disabled={!this._checkCanNext()} label={I18N.Paging.Button.NextStep} style={{float: 'right'}}/>);
 				break;
 			case 4:
-				buttons.push(<NewFlatButton onClick={() => {this._goStep(3)}} secondary label={I18N.Paging.Button.PreStep} style={{float: 'left'}}/>);
+				buttons.push(<NewFlatButton onClick={() => {this._goStep(3)}} secondary label={I18N.Paging.Button.PreStep} style={{float: 'left',lineHeight:'34px'}}/>);
 				buttons.push(<NewFlatButton onClick={() => {this._goSaveAndClose(4)}} primary disabled={!this._checkCanNext()} label={I18N.SaveEffect.Create.Done} style={{float: 'right'}}/>);
 				break;
 		}
