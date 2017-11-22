@@ -241,4 +241,4 @@ app.get('/', (req, res) => {
     return res.redirect(301, '/zh-cn/');
 });
 
-module.exports = server;
+// module.exports = server;
