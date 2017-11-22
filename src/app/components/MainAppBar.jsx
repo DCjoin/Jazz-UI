@@ -162,7 +162,8 @@ var MainAppBar = React.createClass({
   },
   _logout: function() {
     LoginActionCreator.logout();
-    this.context.router.push(RoutePath.login(this.context.router.params));
+    location.href = RoutePath.logout(this.context.router.params, encodeURIComponent(location.origin));
+    // this.context.router.push(RoutePath.login(this.context.router.params));    
     // var _redirectFunc = this.context.router.replaceWith;
     // _redirectFunc('login', {
     //   lang: ((window.currentLanguage === 0) ? 'zh-cn' : 'en-us')

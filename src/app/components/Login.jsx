@@ -321,6 +321,9 @@ function Container(props) {
 }
 
 export default class NewLogin extends Component {
+	static contextTypes = {
+    router: React.PropTypes.func
+  }
 	constructor(props) {
 		super(props);
 		this.state = this._getInitState();
@@ -391,9 +394,10 @@ export default class NewLogin extends Component {
 		if( LoginStore.hasAuthLoginToken() ) {
 			LoginAction.authLogin( LoginStore.getCurrentUserId(), LoginStore.getAuthLoginToken() );
 		} else {
-			this.setState({
-				showLoginDialog: true
-			});
+			location.href = RoutePath.spinitsso(this.props.params, location.href);
+			// this.setState({
+			// 	showLoginDialog: true
+			// });
 		}
 	}
 	_onLogin() {
