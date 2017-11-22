@@ -58,6 +58,7 @@ const API_WHITE_LIST = [
   '/Common/resetpwd',
   '/user/trial',
   '/user/triallogin',
+  '/sso/acs',
 ];
 
 function checkUserId(url, userId) {
@@ -98,8 +99,8 @@ var _ajax = function(url, options) {
 			Util.log('err.response: ');
 			Util.log(err && err.response);
 		},
-		dataType = options.dataType || "application/json";
-
+    dataType = options.dataType || "application/json";
+  
 	var req =_generatorRequest(Config.ServeAddress + Config.APIBasePath + url, type, params)
     .send(params)
     .withCredentials()
@@ -175,6 +176,47 @@ var _abort = function (tag, startMatch) {
   }
 };
 
+
+var _ssoAjax = function(url, options) {
+  _trackPageview(url);
+  options = options || {};
+  options.avoidDuplicate && options.tag && _abort(options.tag);
+  var type = "get",
+    params = options.params,
+    success = options.success,
+    error = options.error,
+    dataType = "application/json";
+
+  var req = _generatorRequest(url, type, params)
+    .send(params)
+    .withCredentials()
+    .set('Accept', dataType)
+    .set('httpWebRequest.MediaType', dataType)
+    .set('Content-Type', dataType)
+    .end(function(err, res) {
+      // if( options.noParseRes ) {
+      //   return success.call(options, res);
+      // }
+      if (res.ok) {
+        success.call(options, Util.getResResult(res.body));
+      } else {
+        if (res.body) {
+          if (res.status === 401) {
+            AjaxAction.handleGlobalError(401);
+          } else {
+            Util.ErrorHandler(options, res.body.error.Code);
+          }
+        } else if (res.text) {
+          let errorObj = JSON.parse(res.text);
+          Util.ErrorHandler(options, errorObj.error.Code);
+        }
+        error.call(options, err, res);
+      }
+    });
+
+  return true;
+};
+
 module.exports = {
 
 	get: function(url, options) {
@@ -185,9 +227,14 @@ module.exports = {
 	post: function(url, options) {
 		options.type = 'post';
 		_ajax(url, options);
-	},
+  },
+  
   abort: function (tag, startMatch) {
-  _abort(tag, startMatch);
-}
+    _abort(tag, startMatch);
+  },
+
+  sso: function(url, options) {
+		_ssoAjax(url, options);
+	},
 
 };

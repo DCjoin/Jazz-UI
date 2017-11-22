@@ -95,6 +95,7 @@ module.exports = {
     generatesolution:'/diagnose/generatesolution/{diagnoseId}',
     isconfigcalendar:'/diagnose/isconfigcalendar/{dueDate}/{hierarchyId}',
     getConsultant: '/user/getconsultant/{hierarchyId}',
+    energySolution:'/diagnose/{diagnoseId}/energysolution/create'
   },
 
   SaveEffect: {

@@ -34,21 +34,37 @@ let getModelDataItems = () => [
 	{ id: Model.Contrast, label: I18N.SaveEffect.Model.Contrast },
 	{ id: Model.Manual, label: I18N.SaveEffect.Model.Manual },
 	{ id: Model.Increment, label: I18N.SaveEffect.Model.Increment },
-	// { id: Model.Relation, label: I18N.SaveEffect.Model.Relation },
+	{ id: Model.Relation, label: I18N.SaveEffect.Model.Relation },
 	{ id: Model.Efficiency, label: I18N.SaveEffect.Model.Efficiency },
-	// { id: Model.Simulation, label: I18N.SaveEffect.Model.Simulation },
+	{ id: Model.Simulation, label: I18N.SaveEffect.Model.Simulation },
 ];
 
-let getStepDataItems = (hasMonthly=false) => hasMonthly?[
-	{ id: TimeGranularity.Hourly, label: I18N.EM.Hour },
-	{ id: TimeGranularity.Daily, label: I18N.EM.Day },
-	{ id: TimeGranularity.Monthly, label: I18N.EM.Month },
-]:[
-	// { id: TimeGranularity.Minite, label: I18N.EM.Raw },
-	{ id: TimeGranularity.Hourly, label: I18N.EM.Hour },
-	{ id: TimeGranularity.Daily, label: I18N.EM.Day },
-	// { id: TimeGranularity.Monthly, label: I18N.EM.Month },
-];
+let getStepDataItems = (model) =>{
+	switch (model) {
+		case Model.Contrast:
+		case Model.Manual:	
+				return [{ id: TimeGranularity.Daily, label: I18N.EM.Day },
+								{ id: TimeGranularity.Monthly, label: I18N.EM.Month }]
+			break;
+		case Model.Easy:
+		case Model.Efficiency:	
+				return [{ id: TimeGranularity.Hourly, label: I18N.EM.Hour },
+								{ id: TimeGranularity.Daily, label: I18N.EM.Day }]
+			break;	
+		case Model.Increment:
+		case Model.Simulation:	
+				return [{ id: TimeGranularity.Hourly, label: I18N.EM.Hour },
+								{ id: TimeGranularity.Daily, label: I18N.EM.Day },
+								{ id: TimeGranularity.Monthly, label: I18N.EM.Month }]
+			break;
+		case Model.Relation:	
+				return [{ id: TimeGranularity.Minite, label: I18N.EM.Raw },
+								{ id: TimeGranularity.Hourly, label: I18N.EM.Hour },
+								{ id: TimeGranularity.Daily, label: I18N.EM.Day },
+								{ id: TimeGranularity.Monthly, label: I18N.EM.Month }]
+			break;					
+	}
+}
 
 let timeoutID = null;
 
@@ -326,7 +342,7 @@ export default class Step2 extends Component {
 	}
 
 	_renderAuxiliaryTag(){
-		let {AuxiliaryTagId,AuxiliaryTagName}=this.props;
+		let {AuxiliaryTagId,AuxiliaryTagName,BenchmarkModel}=this.props;
 		var content;
 
 		if(AuxiliaryTagId!==null){
@@ -359,7 +375,7 @@ export default class Step2 extends Component {
 
 		return(
 			<div className="auxiliary_tag">
-				<header className='title' style={{marginBottom:'14px'}}>{I18N.SaveEffect.Create.AuxiliaryTag}</header>
+				<header className='title' style={{marginBottom:'14px'}}>{BenchmarkModel===Model.Relation?I18N.Setting.Organization.AssociateTag:I18N.SaveEffect.Create.AuxiliaryTag}</header>
 				{content}
 			</div>
 		)
@@ -376,7 +392,7 @@ export default class Step2 extends Component {
 				this.setState({
 					showTagSelectDialog:false
 				},()=>{
-					onAuxiliaryTagChanged(tag.get("Id"),tag.get("Name"))
+					onAuxiliaryTagChanged(tag.get("Id"),tag.get("Name"),tag.get("CalculationStep"))
 				})
 			},
     	onCancel:()=>{this.setState({showTagSelectDialog:false})}
@@ -387,9 +403,28 @@ export default class Step2 extends Component {
 		)
 	}
 
+	_renderFormula(){
+		var labelingLevels=this.props.data.get("LabelingLevels"); 
+
+		if(labelingLevels===null) return null;
+
+		var R2=labelingLevels.find(item=>item.get("Name")==='R2').get("Value"),
+				B=labelingLevels.find(item=>item.get("Name")==='B').get("Value"),
+				A=labelingLevels.find(item=>item.get("Name")==='A').get("Value");
+
+		return `<div style="display:flex;flex-direction:row;align-items: center">
+		 					<div style="font-size:14px;color:#626469">${I18N.Setting.DataAnalysis.Scatter.Formula+': '}</div>
+							<div style="margin-left:10px;color:#6cacdd"> R<sup>2</sup>=${R2}</div>
+							<div style="margin-left:20px;color:#6cacdd"> y=${B}x${A<0?'':'+'}${A}</div>
+						</div>`
+
+	}
+
 	render() {
 		let { data, disabledPreview, BenchmarkModel, BenchmarkStartDate, BenchmarkEndDate, CalculationStep, onChangeModelType, onChangeStep, onChangeBenchmarkStartDate, onChangeBenchmarkEndDate, onGetChartData, IncludeEnergyEffectData  } = this.props,
 		chartProps;
+
+		var that=this;
 
 		if( data ) {
 		  data = data.setIn(
@@ -459,10 +494,21 @@ export default class Step2 extends Component {
 
 								}
 							}
-
+				
+					if(BenchmarkModel===Model.Simulation){
+						newConfig.navigator.margin=60;
+						newConfig.title={
+							useHTML:true,
+          		align:'left',
+          		verticalAlign:'bottom',    
+          		x:40,
+         		  y:-80,      
+          		text:that._renderFormula(),
+						}
+					}
 					return newConfig;
 				},
-				afterChartCreated: this._afterChartCreated
+				afterChartCreated: this._afterChartCreated,
 			};
 		  let target = data.getIn(['TargetEnergyData', 0, 'Target'])
 		  if( target && target.get('TimeSpan') && target.get('TimeSpan').size > 0 ) {
@@ -501,7 +547,7 @@ export default class Step2 extends Component {
 								title={I18N.SaveEffect.Create.ConfigCalcStep}
 								valueField='id'
 								textField='label'
-								dataItems={getStepDataItems(BenchmarkModel === Model.Manual || BenchmarkModel === Model.Increment)}
+								dataItems={getStepDataItems(BenchmarkModel)}
 								didChanged={onChangeStep}
 								style={{width: 170}}/>
 						</div>
@@ -514,7 +560,7 @@ export default class Step2 extends Component {
 							</div>
 							<div className='tip-message'>{I18N.SaveEffect.Create.BenchmarkDateTip}</div>
 						</div>}
-						{(BenchmarkModel === Model.Increment || BenchmarkModel === Model.Efficiency) && this._renderAuxiliaryTag()}
+						{(BenchmarkModel === Model.Increment || BenchmarkModel === Model.Efficiency || BenchmarkModel === Model.Simulation || BenchmarkModel === Model.Relation) && this._renderAuxiliaryTag()}
 						{this._renderTimePeriods()}
 						{this.state.showTagSelectDialog && this._renderTagSelect()}
 					</div>
@@ -537,11 +583,10 @@ export default class Step2 extends Component {
 								<div style={{display: 'inline-block', padding: '0 16px'}}>{I18N.EM.To2}</div>
 								<ViewableDatePicker onChange={onChangeBenchmarkEndDate} datePickerClassName='diagnose-date-picker' width={100} value={BenchmarkEndDate}/>
 							</div>
-							<span>{I18N.EM.Report.Step + ': ' + find(getStepDataItems(BenchmarkModel === Model.Manual || BenchmarkModel === Model.Increment), item => item.id === CalculationStep).label}</span>
+							<span>{I18N.EM.Report.Step + ': ' + find(getStepDataItems(BenchmarkModel), item => item.id === CalculationStep).label}</span>
 						</header>
-						{data ?
-						<ChartBasicComponent {...chartProps}/> :
-						<div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>}
+						{data ?	<ChartBasicComponent {...chartProps}/> 
+						:<div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>}
 					</div>
 				</div>
 			</div>

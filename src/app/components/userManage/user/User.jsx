@@ -259,7 +259,8 @@ var User = React.createClass({
         infoTab: that.state.infoTab,
         setEditStatus: that._setEditStatus,
         _handleResetPassword: function() {
-          UserAction.resetPassword(selectedId);
+          let callbackURL = location.href;// encodeURIComponent?
+          UserAction.resetPassword(selectedId, callbackURL);
         },
         handleSaveUser: that._handleSaveUser,
         _handleDeleteUser: that._handleDeleteUser,

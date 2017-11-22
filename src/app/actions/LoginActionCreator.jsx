@@ -48,7 +48,7 @@ module.exports = {
 			}
 		});
 	},
-	logout: function(params) {
+	logout: function(onSuccess) {
 		AppDispatcher.dispatch({
 			type: Action.LOGOUT
 		});

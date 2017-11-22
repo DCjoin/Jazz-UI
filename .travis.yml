@@ -38,6 +38,7 @@ before_deploy:
 #  - echo -n "${PACKAGE_VERSION}" > version.txt
 #  - zip -r --exclude=*node_modules* /tmp/${ARTIFACT_NAME} ./
   - 'curl -o upload.sh -H "Authorization: token ${GITHUB_TOKEN}" ${GITHUB_UPLOAD_SCRIPT}'
+  - cat upload.sh
   - chmod a+x ./upload.sh
   
   - IMAGEID=$(docker images $TAG -q)

@@ -12,8 +12,9 @@ import DateTimeSelector from 'controls/DateTimeSelector.jsx';
 import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
 import DiagnoseStore from 'stores/DiagnoseStore.jsx';
 import DiagnoseChart from './DiagnoseChart.jsx';
-import {DiagnoseStatus} from 'constants/actionType/Diagnose.jsx';
+import {DiagnoseStatus,DIAGNOSE_MODEL} from 'constants/actionType/Diagnose.jsx';
 import {GenerateSolutionButton,GenerateSolution, getTagsByChartData} from '../DataAnalysis/Basic/GenerateSolution.jsx';
+import FolderAction from 'actions/FolderAction.jsx';
 
 import TimeGranularity from 'constants/TimeGranularity.jsx';
 
@@ -51,6 +52,10 @@ function privilegeWithSmartDiagnoseList( privilegeCheck ) {
 
 function isListFull() {
 	return privilegeWithSmartDiagnoseList(PrivilegeUtil.isFull.bind(PrivilegeUtil));
+}
+
+function isTypeC(DiagnoseModel) {
+	return DiagnoseModel === DIAGNOSE_MODEL.C;
 }
 
 export default class DiagnoseProblem extends Component {
@@ -380,6 +385,10 @@ export default class DiagnoseProblem extends Component {
 																	 </div>}
 					{this.state.solutionShow && <GenerateSolution
 						nodes={[this.props.selectedNode]}
+						onSubmit={isTypeC(this.props.selectedNode.get("DiagnoseModel"))?
+											(data)=>{
+												data.EnergyProblem.TagIds.pop();
+												FolderAction.createDiagnoseSolution(data,this.props.selectedNode.get("Id"))}:null}
 						onRequestClose={(bySubmit) => {
 							this.setState({solutionShow: false});
 							if(bySubmit){
