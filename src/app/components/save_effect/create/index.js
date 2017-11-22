@@ -251,11 +251,15 @@ function needCalendar(hierarchyId){
 	return notNeedIndustry.indexOf(findBuilding(hierarchyId).IndustryId)===-1
 }
 
+function hasTimePeridsModel(model){
+	return model===Model.Easy || model===Model.Increment || model===Model.Efficiency
+ }
+
 @ReduxDecorator
 export default class Create extends Component {
 	static calculateState = (state, props, ctx) => {
 		var filterObj=state.filterObj;
-		if(state.hasCalendar==='loading' && filterObj.get("TimePeriods").size===0){
+		if(state.hasCalendar==='loading' && filterObj.get("TimePeriods").size===0 && hasTimePeridsModel(filterObj.get("BenchmarkModel"))){
 			if(state.filterObj.get("CalculationStep")===TimeGranularity.Hourly){
 				// if(needCalendar(ctx.hierarchyId)){
 				if(needCalendar(ctx.hierarchyId)){
@@ -519,6 +523,16 @@ export default class Create extends Component {
 							.set('AuxiliaryTagName', null)
 							.set('TimePeriods',Immutable.fromJS([]))
 							.set('AuxiliaryTagStep',null)
+
+						if(type === Model.Relation){
+							let tag=tags.filter(tag=>tag.get("Status")===3);
+							if(tag.size>0){
+								filterObj = filterObj.set('AuxiliaryTagId', tag.getIn([0,'TagId']))
+																		 .set('AuxiliaryTagName', tag.getIn([0,'Name']))
+																		 .set('AuxiliaryTagStep',tag.getIn([0,'Step']))
+							}								
+						}
+
 						this._setFilterObj(filterObj);
 						this.setState({
 							chartData3: null
@@ -540,7 +554,7 @@ export default class Create extends Component {
 							}
 						}*/}
 
-							if(step===TimeGranularity.Hourly){
+							if(step===TimeGranularity.Hourly  && hasTimePeridsModel(BenchmarkModel)){
 								// if(needCalendar(ctx.hierarchyId)){
 								if(needCalendar(this.context.hierarchyId)){
 									filterObj=filterObj.set("TimePeriods",Immutable.fromJS([{

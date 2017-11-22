@@ -70,6 +70,7 @@ export default class Step1 extends Component {
 			</div>);
 		}
 		let { tags, selectedId, onClickItem, onDeleteItem, onAddItem } = this.props;
+		tags=tags.filter(tag=>tag.get("Status")!==3);
 		return (
 			<div className='create-block step1-wrapper'>
 				<header className='step1-header'>

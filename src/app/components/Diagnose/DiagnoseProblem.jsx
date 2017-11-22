@@ -385,7 +385,10 @@ export default class DiagnoseProblem extends Component {
 																	 </div>}
 					{this.state.solutionShow && <GenerateSolution
 						nodes={[this.props.selectedNode]}
-						onSubmit={isTypeC(this.props.selectedNode.get("DiagnoseModel"))?(data)=>{FolderAction.createDiagnoseSolution(data,this.props.selectedNode.get("Id"))}:null}
+						onSubmit={isTypeC(this.props.selectedNode.get("DiagnoseModel"))?
+											(data)=>{
+												data.EnergyProblem.TagIds.pop();
+												FolderAction.createDiagnoseSolution(data,this.props.selectedNode.get("Id"))}:null}
 						onRequestClose={(bySubmit) => {
 							this.setState({solutionShow: false});
 							if(bySubmit){

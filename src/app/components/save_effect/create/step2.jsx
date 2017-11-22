@@ -404,15 +404,13 @@ export default class Step2 extends Component {
 	}
 
 	_renderFormula(){
-		// var labelingLevels=this.props.data.get("LabelingLevels"); 
+		var labelingLevels=this.props.data.get("LabelingLevels"); 
 
-		// var R2=labelingLevels.find(item=>item.get("Name")==='R2').get("Value"),
-		// 		B=labelingLevels.find(item=>item.get("Name")==='B').get("Value"),
-		// 		A=labelingLevels.find(item=>item.get("Name")==='A').get("Value");
+		if(labelingLevels===null) return null;
 
-		var R2=1,
-				B=2,
-				A=3;
+		var R2=labelingLevels.find(item=>item.get("Name")==='R2').get("Value"),
+				B=labelingLevels.find(item=>item.get("Name")==='B').get("Value"),
+				A=labelingLevels.find(item=>item.get("Name")==='A').get("Value");
 
 		return `<div style="display:flex;flex-direction:row;align-items: center">
 		 					<div style="font-size:14px;color:#626469">${I18N.Setting.DataAnalysis.Scatter.Formula+': '}</div>

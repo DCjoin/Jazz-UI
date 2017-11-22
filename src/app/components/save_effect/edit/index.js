@@ -521,7 +521,7 @@ export default class Edit extends Component {
   }
 
   _renderStep2(){
-    let { filterObj,chartData2,configStep } = this.state;
+    let { filterObj,chartData2,configStep,tags } = this.state;
         let {BenchmarkStartDate, BenchmarkEndDate, CalculationStep, BenchmarkModel, IncludeEnergyEffectData,EnergyStartDate,EnergyEndDate,TimePeriods,AuxiliaryTagId,AuxiliaryTagName} 
 				   = (configStep===2 || configStep===null)?filterObj.toJS():CreateStore.getEffectItem().toJS();
 				return (<Step2
@@ -577,6 +577,16 @@ export default class Edit extends Component {
 							.set('AuxiliaryTagName', null)
 							.set('TimePeriods',Immutable.fromJS([]))
 							.set('AuxiliaryTagStep',null)
+
+						if(type === Model.Relation){
+							let tag=tags.filter(tag=>tag.get("Status")===3);
+							if(tag.size>0){
+								filterObj = filterObj.set('AuxiliaryTagId', tag.getIn([0,'TagId']))
+																		 .set('AuxiliaryTagName', tag.getIn([0,'Name']))
+																		 .set('AuxiliaryTagStep',tag.getIn([0,'Step']))
+							}								
+						}
+
 						this._setFilterObj(filterObj);
 						this.setState({
 							chartData3: null
