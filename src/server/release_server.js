@@ -42,6 +42,7 @@ var SUPPORT_BROWSERS = [
 //     });
 
 // var server = new Hapi.Server();
+const PORT = 80;
 const app = express();
 
 var bodyParser = require('body-parser');
@@ -73,6 +74,10 @@ app.use((req, res, next) => {
   }
 
 });
+app.use("/assets", express.static(__dirname + "/assets"));
+// server.connection({
+//   port: 80
+// });
 
 function returnUpdateBrowserHtml(request,reply){
   var html = fs.readFileSync(path.resolve(__dirname, "./UpdateBrowserTip.html"), "utf-8");
@@ -157,8 +162,7 @@ function returnDownloadHtml(request,reply){
                 .replace('${APP_DOWNLOAD_QQ}', APP_DOWNLOAD_QQ)
                 .replace('${APP_DOWNLOAD_WDJ}', APP_DOWNLOAD_WDJ)
                 .replace('${APP_DOWNLOAD_BAIDU}', APP_DOWNLOAD_BAIDU);
-  var res = reply(html).type("text/html");
-  return res;
+  return res.status(200).type('.html').end(html);
 }
 
 // server.register({
@@ -233,12 +237,8 @@ app.get('/:lang/logout',(req, res) => {
 
 app.get('/:lang/*', returnIndexHtml);
 
-server.route({
-  method: 'GET',
-  path: '/',
-  handler: (req, res) => {
-    return res.redirect('/zh-cn/');
-  },
+app.get('/', (req, res) => {
+    return res.redirect(301, '/zh-cn/');
 });
 
 module.exports = server;
