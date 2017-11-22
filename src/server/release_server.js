@@ -25,7 +25,7 @@ var SUPPORT_BROWSERS = [
   {type: "Chrome", version: 50},
 ];
 
-var server = new Hapi.Server();
+// var server = new Hapi.Server();
 
 
 // server.connection({
@@ -161,10 +161,10 @@ function returnDownloadHtml(request,reply){
   return res;
 }
 
-server.register({
-  register: require('hapi-require-https'),
-  options: {}
-})
+// server.register({
+//   register: require('hapi-require-https'),
+//   options: {}
+// })
 
 
 // server.route({
