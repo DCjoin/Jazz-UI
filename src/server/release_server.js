@@ -42,6 +42,7 @@ var SUPPORT_BROWSERS = [
 //     });
 
 // var server = new Hapi.Server();
+const PORT = 80;
 const app = express();
 
 var bodyParser = require('body-parser');
