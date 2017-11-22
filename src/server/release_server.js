@@ -127,12 +127,9 @@ function verifyBrowser(user_agent) {
   return supportCurrentBrowser;
 }
 
-// let version = fs.readFileSync("./build/version.txt", "utf-8");
-let cdn = JAZZ_STATIC_CDN + "/" + version;
-function returnIndexHtml(request,reply){
-
-  if( !request.state.skip_detect && !verifyBrowser( request.headers['user-agent'] ) ) {
-    return returnUpdateBrowserHtml(request, reply);
+function returnIndexHtml(req,res){
+  if( !req.cookies.skip_detect && !verifyBrowser( req.get('user-agent') ) ) {
+    return returnUpdateBrowserHtml(req, res);
   }
 
   var html = fs.readFileSync(path.resolve(__dirname, "./index.html"), "utf-8");
