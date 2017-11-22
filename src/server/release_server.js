@@ -122,7 +122,7 @@ function verifyBrowser(user_agent) {
   return supportCurrentBrowser;
 }
 
-let version = fs.readFileSync("./build/version.txt", "utf-8");
+// let version = fs.readFileSync("./build/version.txt", "utf-8");
 let cdn = JAZZ_STATIC_CDN + "/" + version;
 function returnIndexHtml(request,reply){
 
