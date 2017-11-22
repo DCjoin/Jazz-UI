@@ -38,7 +38,7 @@ import KPIRanking from './components/KPI/Group/Ranking.jsx';
 import KPITemplate from './components/KPI/Report/Template.jsx';
 import Alarm from './components/alarm/Alarm.jsx';
 import Setting from './components/setting/Setting.jsx';
-import DashBoard from './components/dash_board.jsx';
+import Dashboard from './components/dash_board.jsx';
 //for Test
 // import Report from './components/Test.jsx';
 import DataAnalysis from './components/DataAnalysis';
@@ -278,7 +278,7 @@ ReactDom.render(<Router history={browserHistory} routes={{
         component: KPICycle
       }, {
         path: 'dash_board',
-        component: DashBoard,
+        component: Dashboard,
       }, ]
     }, {
       path: 'service/:cusnum',
