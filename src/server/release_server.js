@@ -1,9 +1,3 @@
-// var Hapi = require("hapi");
-// var fs = require("fs");
-// var path=require("path");
-// var useragent = require('useragent');
-
-// var SUPPORT_LANGUAGES = {
 //const Hapi = require("hapi");
 const express = require('express');
 const cookieParser = require('cookie-parser');
@@ -20,29 +14,14 @@ const SUPPORT_LANGUAGES = {
   'zh-cn': true,
   'en-us': true,
 };
-var SUPPORT_BROWSERS = [
+const SUPPORT_BROWSERS = [
   {type: "IE", version: 11},
   {type: "Chrome", version: 50},
 ];
 
-// var server = new Hapi.Server();
-
-
-// server.connection({
-//   port: 80
-// });
-
-// server.register(
-//   [
-//     {register: require('inert')},
-//   ]
-//   ,function () {
-//     server.start(function() {
-//         console.log('Server started at: ' + server.info.uri);
-//     });
-
-// var server = new Hapi.Server();
 const PORT = 80;
+
+// var server = new Hapi.Server();
 const app = express();
 
 var bodyParser = require('body-parser');
@@ -72,17 +51,24 @@ app.use((req, res, next) => {
     console.log('next');
     return next();
   }
-
 });
 app.use("/assets", express.static(__dirname + "/assets"));
 // server.connection({
 //   port: 80
 // });
 
-function returnUpdateBrowserHtml(request,reply){
-  var html = fs.readFileSync(path.resolve(__dirname, "./UpdateBrowserTip.html"), "utf-8");
-  var res = reply(html).type("text/html");
-  return res;
+// server.register(
+//   [
+//     {register: require('inert')},
+//   ]
+//   ,function () {
+//     server.start(function() {
+//         console.log('Server started at: ' + server.info.uri);
+//     });
+// });
+
+function returnUpdateBrowserHtml(req, res){
+  return res.sendFile(path.resolve(__dirname, "./UpdateBrowserTip.html"));
 }
 
 
@@ -101,12 +87,12 @@ var GUARD_UI_HOST = process.env.GUARD_UI_HOST;
 let version = fs.readFileSync(path.resolve(__dirname, "./version.txt"), "utf-8");
 console.log("version:" + version);
 
-function getLang(request) {
-  var lang = request.params.lang;
+function getLang(req) {
+  var lang = req.params.lang;
   if( !lang || !SUPPORT_LANGUAGES[lang] ) {
-    if( request.query.langNum === '0' ) {
+    if( req.query.langNum === '0' ) {
       lang = 'zh-cn';
-    } else if( request.query.langNum === '1' ) {
+    } else if( req.query.langNum === '1' ) {
       lang = 'en-us';
     } else {
       lang= 'zh-cn';
@@ -134,9 +120,6 @@ function returnIndexHtml(req,res){
 
   var html = fs.readFileSync(path.resolve(__dirname, "./index.html"), "utf-8");
 
-  // html = html.replace('__LANG_JS__', cdn + '/' + getLang(request) + '.js');
-
-  // html = html.replace(/__JAZZ_STATIC_CDN__/g, cdn)
   html = html.replace('__LANG_JS__', JAZZ_STATIC_CDN + '/' + version + '/' + getLang(req) + '.js');
 
   html = html.replace(/__JAZZ_STATIC_CDN__/g, JAZZ_STATIC_CDN + '/' + version)
@@ -145,13 +128,11 @@ function returnIndexHtml(req,res){
   if(JAZZ_UI_UMENG_CNZZ_SDK_URL) {
     html = html.replace('__JAZZ_UI_UMENG_CNZZ_SDK_URL__', JAZZ_UI_UMENG_CNZZ_SDK_URL);
   }
-  var res = reply(html).type("text/html");
-  return res;
+  return res.status(200).type('.html').end(html);
 }
 
-function returnDownloadHtml(request,reply){
+function returnDownloadHtml(req, res){
   var html = fs.readFileSync(path.resolve(__dirname, "./DownloadApp.html"), "utf-8")
-                // .replace(/__JAZZ_STATIC_CDN__/g, cdn)
                 .replace(/__JAZZ_STATIC_CDN__/g, JAZZ_STATIC_CDN + '/' + version)
                 .replace('${APP_VERSION}', APP_VERSION)
                 .replace('${APP_SIZE}', APP_SIZE)
@@ -166,23 +147,6 @@ function returnDownloadHtml(request,reply){
 //   register: require('hapi-require-https'),
 //   options: {}
 // })
-
-
-// server.route({
-//   method: 'GET',
-//   path: '/DownloadApp.html',
-//   handler: returnDownloadHtml,
-// });
-// server.route({
-//   method: 'GET',
-//   path: '/download-app',
-//   handler: returnDownloadHtml,
-// });
-// server.route({
-//   method: 'GET',
-//   path: '/{lang}/{path*}',
-//   handler: returnIndexHtml,
-// });
 
 app.get('/download-app', returnDownloadHtml);
 
@@ -237,5 +201,3 @@ app.get('/:lang/*', returnIndexHtml);
 app.get('/', (req, res) => {
     return res.redirect(301, '/zh-cn/');
 });
-
-// module.exports = server;
