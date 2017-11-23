@@ -313,7 +313,7 @@ export default class Edit extends Component {
 	}
 
 	_checkStepByTag(calcStep) {
-		let propsStep = this.props.filterObj.Step;
+		// let propsStep = this.props.filterObj.Step;
 		let {Step,AuxiliaryTagStep}=this.state.filterObj.toJS()
 		return AuxiliaryTagStep ?
 			checkSupportStep(Step, calcStep) && checkSupportStep(AuxiliaryTagStep, calcStep) :
