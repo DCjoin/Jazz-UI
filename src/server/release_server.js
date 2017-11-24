@@ -170,7 +170,9 @@ app.get('/:lang/spinitsso-redirect', (req, res) => {
   const url = sp.createLoginRequest(idp, 'redirect');  
   const redirectURL = new URL(url.context);  
   redirectURL.pathname = req.params.lang + redirectURL.pathname;
-  let spDomain = req.hostname.split(".")[0] ? req.hostname.split(".")[0] : "";
+  // let spDomain = req.hostname.split(".")[0] ? req.hostname.split(".")[0] : "";
+  //因为sso的dev环境存在问题，暂时都指向sp1环境
+  let spDomain = 'sp1';
   return res.redirect(redirectURL.href + "&callbackURL=" + encodeURIComponent(req.query.callbackURL) + "&sysId=" + SYSID + "&spDomain=" + encodeURIComponent(spDomain));
 });
 

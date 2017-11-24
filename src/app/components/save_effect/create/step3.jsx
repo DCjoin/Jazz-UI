@@ -197,14 +197,14 @@ _renderAllDayTimes(){
 
 					//add calendar background-color
 					var {Calendars}=data.toJS();
-					  if( CalculationStep === TimeGranularity.Hourly && Calendars && Calendars.length > 0 ) {
+					  if( Calendars && Calendars.length > 0 ) {
 								let { CalendarTimeRanges} = Calendars[0];
 								if( CalendarTimeRanges && CalendarTimeRanges.length > 0 ) {
 									
 									newConfig.series.unshift({
 											lockLegend: true,
 											enableDelete: false,
-											name: I18N.SaveEffect.Create.CaculateTime,
+											name: BenchmarkModel===Model.Relation?I18N.SaveEffect.Create.TriggerArea:I18N.SaveEffect.Create.CaculateTime,
 											color: PLOT_BACKGROUND_COLOR, 
 											lineWidth: 12,
 											marker: {

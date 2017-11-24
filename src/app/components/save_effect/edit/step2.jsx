@@ -5,7 +5,7 @@ import FlatButton from "controls/NewFlatButton.jsx";
 import CreateStore from 'stores/save_effect/create_store';
 import util from 'util/Util.jsx';
 import moment from 'moment';
-import {Model,CalendarItemType} from 'constants/actionType/Effect.jsx';
+import {Model,CalendarItemType,TriggerConditionType} from 'constants/actionType/Effect.jsx';
 
 function formatDate(date){
   return moment(util.DataConverter.JsonToDateTime(date)).format("YYYY-MM-DD")
@@ -76,6 +76,55 @@ export default class Step2 extends Component {
         )
   }
 
+  	_renderTriggers(){
+		let {Triggers,UomId,AuxiliaryTagUomId}=this.props;
+
+		let uom=util.getUomById(UomId)&& util.getUomById(UomId).Code?`(${util.getUomById(UomId).Code})`:'',
+				auxiliaryUom=util.getUomById(AuxiliaryTagUomId) && util.getUomById(AuxiliaryTagUomId).Code?`(${util.getUomById(AuxiliaryTagUomId).Code})`:'';
+
+		var styles={
+				group:{
+					display:'flex',
+					flexDirection:'row',
+					alignItems:'center',
+					height:'30px'
+				},
+				label:{
+					fontSize: '14px',
+					color:'#434343',
+					width:'45px'
+				},
+				icon:{
+					width:'16px',
+					height:'16px',
+					marginRight:'10px',
+					marginTop:'2px'
+				},
+				selectedBtn:{
+					borderRadius:'2px',zIndex:'2',border:'1px solid #32ad3c',backgroundColor:"#32ad3c",color:"#ffffff",width:'100px',height:'30px',lineHeight:'28px'
+				},
+				btn:{
+					width:'100px',height:'30px',lineHeight:'28px',borderRadius: '2px',border: 'solid 1px #9fa0a4',color:'#0f0f0f'
+				}
+			};
+
+		return(
+			<div>
+				<div style={{fontSize: '12px',color:'#9fa0a4',marginTop:'20px'}}>{I18N.SaveEffect.Create.AuxiliaryTrigger+auxiliaryUom}</div>
+				<div style={{fontSize:'14px',color:'#434343',marginTop:'8px'}}>
+          <span>{Triggers[0].ConditionType === TriggerConditionType.Greater?I18N.SaveEffect.Create.Greater:I18N.SaveEffect.Create.Less}</span>
+          <span style={{marginLeft:'15px'}}>{Triggers[0].Value}</span>
+        </div>
+
+        <div style={{fontSize: '12px',color:'#9fa0a4',marginTop:'23px'}}>{I18N.SaveEffect.Create.ActualTrigger+uom}</div>
+        <div style={{fontSize:'14px',color:'#434343',marginTop:'8px'}}>
+          <span>{I18N.SaveEffect.Create.Greater}</span>
+          <span style={{marginLeft:'15px'}}>{Triggers[1].Value}</span>
+        </div>				
+		 </div>
+		)
+	}
+
   _renderViewStauts(){
     let { BenchmarkModel, BenchmarkStartDate, BenchmarkEndDate, CalculationStep,needCalendar,TimePeriods,AuxiliaryTagName} = this.props;
     return(
@@ -93,6 +142,7 @@ export default class Step2 extends Component {
           (needCalendar?this._renderWorkAndHolidayTimes()
                         :this._renderAllDayTimes())
           } 
+        {BenchmarkModel === Model.Relation && this._renderTriggers()}
       </div>
     )
   }

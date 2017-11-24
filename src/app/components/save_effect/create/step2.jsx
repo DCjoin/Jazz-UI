@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-
+import Regex from 'constants/Regex.jsx';
 import ActionVisibility from 'material-ui/svg-icons/action/visibility';
 import CircularProgress from 'material-ui/CircularProgress';
 import find from 'lodash-es/find';
@@ -7,12 +7,13 @@ import _ from 'lodash-es';
 import moment from 'moment';
 
 import TimeGranularity from 'constants/TimeGranularity.jsx';
-import {Model,CalendarItemType} from 'constants/actionType/Effect.jsx';
+import {Model,CalendarItemType,TriggerType,TriggerConditionType} from 'constants/actionType/Effect.jsx';
 
 import Util, {dateAdd} from 'util/Util.jsx';
 
 import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
 import ViewableDatePicker from 'controls/ViewableDatePicker.jsx';
+import ViewableTextField from 'controls/ViewableTextField.jsx';
 import NewFlatButton from 'controls/NewFlatButton.jsx';
 
 import {ChartDateFilter} from 'components/Diagnose/CreateDiagnose.jsx';
@@ -24,6 +25,8 @@ import TimePeriodComp from './time_period_comp.jsx';
 import Immutable from 'immutable';
 import TagSelect from'../../KPI/Single/TagSelect.jsx';
 import HierarchyStore from 'stores/HierarchyStore.jsx';
+
+import {RadioButton} from 'material-ui/RadioButton';
 
 const CALENDAR_TYPE_WORKTIME = 2;
 const CALENDAR_TYPE_NO_WORKTIME = 3;
@@ -392,7 +395,7 @@ export default class Step2 extends Component {
 				this.setState({
 					showTagSelectDialog:false
 				},()=>{
-					onAuxiliaryTagChanged(tag.get("Id"),tag.get("Name"),tag.get("CalculationStep"))
+					onAuxiliaryTagChanged(tag.get("Id"),tag.get("Name"),tag.get("CalculationStep"),tag.get("UomId"))
 				})
 			},
     	onCancel:()=>{this.setState({showTagSelectDialog:false})}
@@ -418,6 +421,100 @@ export default class Step2 extends Component {
 							<div style="margin-left:20px;color:#6cacdd"> y=${B}x${A<0?'':'+'}${A}</div>
 						</div>`
 
+	}
+
+	_renderTriggers(){
+		let {Triggers,onTriggersChanged,UomId,AuxiliaryTagUomId}=this.props;
+		let uom=Util.getUomById(UomId)&& Util.getUomById(UomId).Code?`(${Util.getUomById(UomId).Code})`:'',
+				auxiliaryUom=Util.getUomById(AuxiliaryTagUomId) && Util.getUomById(AuxiliaryTagUomId).Code?`(${Util.getUomById(AuxiliaryTagUomId).Code})`:'';
+
+		var styles={
+				group:{
+					display:'flex',
+					flexDirection:'row',
+					alignItems:'center',
+					height:'30px'
+				},
+				label:{
+					fontSize: '14px',
+					color:'#434343',
+					width:'45px'
+				},
+				icon:{
+					width:'16px',
+					height:'16px',
+					marginRight:'10px',
+					marginTop:'2px'
+				},
+				selectedBtn:{
+					borderRadius:'2px',zIndex:'2',border:'1px solid #32ad3c',backgroundColor:"#32ad3c",color:"#ffffff",width:'100px',height:'30px',lineHeight:'28px'
+				},
+				btn:{
+					width:'100px',height:'30px',lineHeight:'28px',borderRadius: '2px',border: 'solid 1px #9fa0a4',color:'#0f0f0f'
+				}
+			};
+
+		return(
+			<div>
+				<div style={{fontSize: '12px',color:'#9fa0a4',marginTop:'23px'}}>{I18N.SaveEffect.Create.AuxiliaryTrigger+auxiliaryUom}</div>
+				<div style={styles.group}>
+					<RadioButton
+						checked={Triggers[0].ConditionType === TriggerConditionType.Greater}
+						value={TriggerConditionType.Greater}
+						label={I18N.SaveEffect.Create.Greater}
+						style={{width:'70px'}}
+						labelStyle={styles.label}
+						iconStyle={styles.icon}
+						onCheck={()=>{
+							Triggers[0].ConditionType=TriggerConditionType.Greater;
+							Triggers[0].Value=null;
+							onTriggersChanged(Triggers)
+							}}
+						/>
+						{Triggers[0].ConditionType === TriggerConditionType.Greater && 
+							<ViewableTextField errorMessage={I18N.SaveEffect.Create.TriggerVaildTip} regex={Regex.TagRule} style={{marginTop:'10px',width:150}} 
+																 hintText={I18N.SaveEffect.Create.AuxiliaryHint} defaultValue={Triggers[0].Value} didChanged={(value)=>{
+																		Triggers[0].Value=value;
+																		onTriggersChanged(Triggers)
+																 }}/>}
+
+				</div>
+				<div style={styles.group}>
+					<RadioButton
+						checked={Triggers[0].ConditionType === TriggerConditionType.Less}
+						value={TriggerConditionType.Less}
+						label={I18N.SaveEffect.Create.Less}
+						style={{width:'70px'}}
+						labelStyle={styles.label}
+						iconStyle={styles.icon}
+						onCheck={()=>{
+							Triggers[0].ConditionType=TriggerConditionType.Less;
+							Triggers[0].Value=null;
+							onTriggersChanged(Triggers)
+							}}
+						/>
+						{Triggers[0].ConditionType === TriggerConditionType.Less && 
+							<ViewableTextField errorMessage={I18N.SaveEffect.Create.TriggerVaildTip} regex={Regex.TagRule} style={{marginTop:'10px',width:150}} 
+																 hintText={I18N.SaveEffect.Create.AuxiliaryHint} defaultValue={Triggers[0].Value} didChanged={(value)=>{
+																		Triggers[0].Value=value;
+																		onTriggersChanged(Triggers)
+																 }}/>}
+
+				</div>
+
+				<div style={{fontSize: '12px',color:'#9fa0a4',marginTop:'23px'}}>{I18N.SaveEffect.Create.ActualTrigger+uom}</div>
+				<div style={styles.group}>
+							<div style={{fontSize:'14px',color:'#434343'}}>{I18N.SaveEffect.Create.Greater}</div>
+							<ViewableTextField errorMessage={I18N.SaveEffect.Create.TriggerVaildTip} regex={Regex.TagRule} style={{marginTop:'10px',marginLeft:'15px',width:150}} 
+																 hintText={I18N.SaveEffect.Create.ActualHint} defaultValue={Triggers[1].Value} didChanged={(value)=>{
+																		Triggers[1].Value=value;
+																		onTriggersChanged(Triggers)
+																 }}/>
+						</div>
+
+				
+							</div>
+		)
 	}
 
 	render() {
@@ -457,6 +554,11 @@ export default class Step2 extends Component {
 								case 1:
 									serie.type = 'column';
 									break;
+								case 2:
+									if(BenchmarkModel===Model.Relation){
+										serie.name += `<br/>(${I18N.Setting.Diagnose.Associate})`;
+									}
+									break;
 							}
 						} else {
 							serie.type = 'column';
@@ -471,13 +573,13 @@ export default class Step2 extends Component {
 
 					//add calendar background-color
 					var {Calendars}=data.toJS();
-					  if( CalculationStep === TimeGranularity.Hourly && Calendars && Calendars.length > 0 ) {
+					  if(  Calendars && Calendars.length > 0 ) {
 								let {CalendarType, CalendarTimeRanges} = Calendars[0];
 								if( CalendarTimeRanges && CalendarTimeRanges.length > 0 ) {
 									newConfig.series.unshift({
 											lockLegend: true,
 											enableDelete: false,
-											name: I18N.SaveEffect.Create.CaculateTime,
+											name: BenchmarkModel===Model.Relation?I18N.SaveEffect.Create.TriggerArea:I18N.SaveEffect.Create.CaculateTime,
 											color: PLOT_BACKGROUND_COLOR, 
 											lineWidth: 12,
 											marker: {
@@ -562,6 +664,7 @@ export default class Step2 extends Component {
 						</div>}
 						{(BenchmarkModel === Model.Increment || BenchmarkModel === Model.Efficiency || BenchmarkModel === Model.Simulation || BenchmarkModel === Model.Relation) && this._renderAuxiliaryTag()}
 						{this._renderTimePeriods()}
+						{BenchmarkModel === Model.Relation && this._renderTriggers()}
 						{this.state.showTagSelectDialog && this._renderTagSelect()}
 					</div>
 				</div>

@@ -7,7 +7,9 @@ export default class Step1 extends Component {
 
   state={
     selectedId:this.props.selectedId,
-    tagName:this.props.tagName
+    tagName:this.props.tagName,
+    step:this.props.step,
+    uomId:this.props.uomId,
   }
 
   _renderViewStauts(){
@@ -25,14 +27,15 @@ export default class Step1 extends Component {
         <FlatButton label={I18N.Common.Button.Cancel2} secondary={true} style={{float:'right',minWidth:'68px'}} onTouchTap={onCancel}/>,
         <FlatButton label={I18N.Platform.Password.Confirm} disabled={this.state.selectedId===null} primary={true} style={{float:'right',minWidth:'68px',marginRight:'20px'}} 
               onTouchTap={()=>{
-                            if(this.state.selectedId!==this.props.selectedId) onSave(this.state.selectedId,this.state.TagName)
+                            if(this.state.selectedId!==this.props.selectedId) onSave(this.state.selectedId,this.state.tagName,this.state.step,this.state.uomId)
                                 else{
                                   onCancel()
                                 }}}/>      
     ]
     return(
       <div className="jazz-save-effect-edit-step1-edit">
-        <EditStep1 {...other} selectedId={this.state.selectedId} onClickItem={(TagId,TagName)=>{this.setState({selectedId:TagId,TagName})}}
+        <EditStep1 {...other} selectedId={this.state.selectedId} onClickItem={(TagId,tagName,step,uomId)=>{
+                                                                              this.setState({selectedId:TagId,tagName,step,uomId})}}
           onDeleteItem={(idx, tagId) => {
             if(tagId===this.state.selectedId){
               this.setState({

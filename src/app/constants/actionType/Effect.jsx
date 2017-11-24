@@ -52,6 +52,19 @@ module.exports = {
     WorkDayCalcTime:0,
     RestDayCalcTime:1,
     AllDayCalcTime:8
+  },
+  /// 触发类型： 2：实际值触发类型， 3：关联值触发类型
+  TriggerType:{
+    Relation:3,
+    Actual:2
+  },
+  /// 触发条件类型(-1：大于，-2：大于等于，0：等于，1：小于，2：小于等于)
+  TriggerConditionType:{
+    Greater:-1,
+    GreaterEqual:-2,
+    Equal:0,
+    Less:1,
+    LessEqual:2
   }
 
 };
