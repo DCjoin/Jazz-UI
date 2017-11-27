@@ -2682,3 +2682,6 @@ I18N.SaveEffect.Table.SavingRate = 'Annual Energy (Water) Saving Rate';
 I18N.SaveEffect.ByYear = 'Annual Energy Saving Effect';
 I18N.SaveEffect.OrderByCommo = 'Display by media';
 I18N.SaveEffect.OrderByBuilding = 'Display by building';
+I18N.SaveEffect.Table.TotalSavingCost = '年度总节约成本';
+I18N.SaveEffect.Table.TotalSavingStandardCoal = '年度总节约标准煤';
+I18N.SaveEffect.Table.TotalSavingWater = '年度总节水量';

@@ -122,6 +122,8 @@ module.exports = {
     getBest:'/energyeffect/bestsolution/list/{customerId}',
     groupOverviewCommodityShow:'/energyeffect/group/Overview/CommodityShow/{customerId}/{year}',
     buildingOverviewCommodityShow:'/energyeffect/building/Overview/CommodityShow/{hierarchyId}/{year}',
+    groupOverviewTotal:'/energyeffect/group/Overview/total/{customerId}/{year}',
+    buildingOverviewTotal:'/energyeffect/building/Overview/total/{hierarchyId}/{year}',
     BuildingShow:'/energyeffect/group/Overview/BuildingShow/{customerId}/{year}',
     overviewMinYear: '/energyeffect/Overview/MinYear/{isBuilding}/{hierarchyId}',
   }

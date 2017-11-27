@@ -25,6 +25,8 @@ module.exports = {
     GET_BEST_SOLUTION:null,
     GET_GROUP_CHART:null,
     GET_BUILDING_CHART:null,
+    GET_GROUP_TOTAL:null,
+    GET_BUILDING_TOTAL:null,
     GET_MIN_YEAR:null,
     INIT_STORE:null,
     GET_CLASSIFICATION_DATA:null,
