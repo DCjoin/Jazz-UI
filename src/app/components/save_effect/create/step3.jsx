@@ -258,7 +258,7 @@ _renderAllDayTimes(){
 							{(Model.Easy === BenchmarkModel || Model.Contrast === BenchmarkModel) && CalculationStep===TimeGranularity.Daily &&
 							<ViewableTextField errorMessage={I18N.SaveEffect.FormatVaildTip} regex={/^(\+?)\d{1,9}([.]\d{1,3})?$/} style={{width: 170,marginTop:'10px'}} title={I18N.SaveEffect.Create.CorrectionFactor} hintText={I18N.SaveEffect.Create.EnterCorrectionFactor} defaultValue={CorrectionFactor} didChanged={onChangeCorrectionFactor}/>
 							}
-							{Model.Manual !== BenchmarkModel && Model.Contrast !== BenchmarkModel && CalculationStep===TimeGranularity.Hourly &&
+							{Model.Easy === BenchmarkModel && Model.Increment === BenchmarkModel && Model.Efficiency === BenchmarkModel && CalculationStep===TimeGranularity.Hourly &&
 								this._renderConfigCalendar()
 							}
 						</div>
