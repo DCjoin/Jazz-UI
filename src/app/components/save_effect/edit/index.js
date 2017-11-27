@@ -47,15 +47,15 @@ import SecondStepStore from 'stores/save_effect/second_step_store.jsx';
 
 const ASC_STEP = [
 	TimeGranularity.None,
-	TimeGranularity.Minite,
 	TimeGranularity.Min15,
 	TimeGranularity.Min30,
-	TimeGranularity.Hourly,
+	TimeGranularity.Minite,
 	TimeGranularity.Hour2,
 	TimeGranularity.Hour4,
 	TimeGranularity.Hour6,
 	TimeGranularity.Hour8,
 	TimeGranularity.Hour12,
+	TimeGranularity.Hourly,
 	TimeGranularity.Daily,
 	TimeGranularity.Weekly,
 	TimeGranularity.Monthly,
