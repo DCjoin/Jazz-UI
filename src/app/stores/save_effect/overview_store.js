@@ -8,6 +8,7 @@ import TimeGranularity from 'constants/TimeGranularity.jsx';
 
 let 
   _overviewData,
+  _overviewTotal,
   _minYear,
   _classificationData,
   OverviewStore;
@@ -16,6 +17,7 @@ function init() {
   _overviewData = undefined;
   _minYear = undefined;
   _classificationData = undefined;
+  _overviewTotal=undefined;
 }
 
 init();
@@ -27,6 +29,10 @@ export default OverviewStore = Object.assign({}, PrototypeStore, {
   getOverview: () => {
     return _overviewData;
   },
+  setOverviewTotal:data=>{
+    _overviewTotal=data;
+  },
+  getOverviewTotal:()=>_overviewTotal,
   setMinYear: data => {
     _minYear = data;
   },
@@ -45,6 +51,11 @@ OverviewStore.dispatchToken = AppDispatcher.register( action => {
     case Action.GET_BUILDING_CHART:
     case Action.GET_GROUP_CHART:
         OverviewStore.setOverview(action.data);
+        OverviewStore.emitChange();
+        break;
+    case Action.GET_GROUP_TOTAL:
+    case Action.GET_BUILDING_TOTAL:
+        OverviewStore.setOverviewTotal(action.data);
         OverviewStore.emitChange();
         break;
     case Action.GET_MIN_YEAR:

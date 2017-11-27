@@ -316,6 +316,24 @@ export function getChartDataByCustomer(hierarchyId, year) {
 	});
 }
 
+export function getTotalByCustomer(hierarchyId, year,afterAction) {
+    AppDispatcher.dispatch({
+    	type: Action.GET_GROUP_CHART,
+    	data: undefined,
+    });
+		Ajax.get( Util.replacePathParams(SaveEffect.groupOverviewTotal, hierarchyId, year), {
+			avoidDuplicate: true,
+			tag: 'get_total_data',
+			success: (data) => {
+      	AppDispatcher.dispatch({
+        	type: Action.GET_GROUP_TOTAL,
+        	data
+      });
+			if(afterAction) afterAction();
+		}
+	});
+}
+
 export function getBestSolution(customerId) {
 		Ajax.get( Util.replacePathParams(SaveEffect.getBest, customerId), {
 			success: (data) => {
@@ -340,6 +358,25 @@ export function getChartDataByBuilding(hierarchyId, year) {
         	type: Action.GET_BUILDING_CHART,
         	data
       });
+		}
+	});
+
+}
+
+export function getTotalByBuilding(hierarchyId, year,afterAction) {
+    AppDispatcher.dispatch({
+    	type: Action.GET_BUILDING_CHART,
+    	data: undefined,
+    });
+		Ajax.get( Util.replacePathParams(SaveEffect.buildingOverviewTotal, hierarchyId, year), {
+			avoidDuplicate: true,
+			tag: 'get_total_data',
+			success: (data) => {
+      	AppDispatcher.dispatch({
+        	type: Action.GET_BUILDING_TOTAL,
+        	data
+      });
+			if(afterAction) afterAction()
 		}
 	});
 

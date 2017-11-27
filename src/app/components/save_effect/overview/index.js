@@ -11,6 +11,8 @@ import {
   getChartMinYear,
   getBuildingShow,
   initStore,
+  getTotalByCustomer,
+  getTotalByBuilding
 } from 'actions/save_effect_action';
 
 import CurrentUserCustomerStore from 'stores/CurrentUserCustomerStore.jsx';
@@ -30,6 +32,13 @@ function getChartData(hierarchyId, year, isCustomer) {
   return getChartDataByBuilding(hierarchyId, year);
 }
 
+function getTotalData(hierarchyId, year, isCustomer,afterAction){
+    if( isCustomer ) {
+       return getTotalByCustomer(hierarchyId, year,afterAction);
+      }
+    return getTotalByBuilding(hierarchyId, year,afterAction);
+}
+
 @ReduxDecorator
 export default class SaveEffectOverview extends Component {
   static contextTypes = {
@@ -40,6 +49,7 @@ export default class SaveEffectOverview extends Component {
       chartData: OverviewStore.getOverview(),
       minYear: OverviewStore.getMinYear(),
       classData: OverviewStore.getClassificationData(),
+      totalData:OverviewStore.getOverviewTotal()
     }
   };
   static getStores = () => [OverviewStore];
@@ -104,9 +114,9 @@ export default class SaveEffectOverview extends Component {
       byYearProps.onRight = () => {
         let _year = year + 1;
         if( showCommodity ) {
-          getChartData(hierarchyId, _year, isCustomer);
+          getTotalData(hierarchyId, _year, isCustomer,getChartData(hierarchyId, _year, isCustomer));
         } else {
-          getBuildingShow(hierarchyId, _year);
+          getTotalData(hierarchyId, _year,getBuildingShow(hierarchyId, _year));
         }
         this.setState((state, props) => {
           return {
@@ -119,9 +129,9 @@ export default class SaveEffectOverview extends Component {
       byYearProps.onLeft = () => {
         let _year = year - 1;
         if( showCommodity ) {
-          getChartData(hierarchyId, _year, isCustomer);
+          getTotalData(hierarchyId, _year, isCustomer,getChartData(hierarchyId, _year, isCustomer));
         } else {
-          getBuildingShow(hierarchyId, _year);
+          getTotalData(hierarchyId, _year,getBuildingShow(hierarchyId, _year));
         }
         this.setState((state, props) => {
           return {
@@ -136,10 +146,10 @@ export default class SaveEffectOverview extends Component {
         {minYear ? 
         <div>
           <ActionComp triggerKey={hierarchyId} action={() => {
-            getChartData(hierarchyId, year, isCustomer);
+            getTotalData(hierarchyId, year, isCustomer,getChartData(hierarchyId, year, isCustomer));
           }}/>
           {chartData ? 
-          <EffectByYear {...byYearProps} data={this.state.chartData} classData={this.state.classData} /> :
+          <EffectByYear {...byYearProps} data={this.state.chartData} classData={this.state.classData} totalData={this.state.totalData}/> :
           <div className='flex-center' style={{height: 305}}><CircularProgress mode="indeterminate" size={80} /></div>
           }
         </div> :

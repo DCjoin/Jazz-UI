@@ -7,11 +7,18 @@ import SwitchBar from 'controls/SwitchBar.jsx';
 
 import EffectReport from './effect_report.jsx';
 import BuildingTable from './building_table.jsx';
+import EffectTotal from './effect_total.jsx';
 
 export default class EffectByYear extends Component {
 	render() {
-    let { data, classData, isCustomer, year, showCommodity, onLeft, onRight, switchTab } = this.props,
-    content = (<div className='flex-center' style={{height: 300}}><CircularProgress size={80}/></div>);
+    let { data, classData, isCustomer, year, showCommodity, onLeft, onRight, switchTab,totalData } = this.props,
+    total=null,
+    content = null;
+
+    if(totalData){
+      total=<EffectTotal data={totalData}/>;
+    }
+    
     
     if( showCommodity) {
       if( data && data.length > 0 ) {        
@@ -52,13 +59,17 @@ export default class EffectByYear extends Component {
             onLeft={onLeft}
             onRight={onRight}/>
         </header>
-				<div className='effect-card-content'>
+
+				{total!==null && content!==null?<div className='effect-card-content'>
+          {total}
           {isCustomer && <div className='effect-card-content-tabs'>
             <a href='javascript:void(0)' onClick={switchTab(0)} className={classnames('effect-card-content-tab', {'actived': showCommodity})}>{I18N.SaveEffect.OrderByCommo}</a>
             <a href='javascript:void(0)' onClick={switchTab(1)} className={classnames('effect-card-content-tab', {'actived': !showCommodity})}>{I18N.SaveEffect.OrderByBuilding}</a>
           </div>}
           {content}
-        </div>
+        </div>:<div className='effect-card-content'>
+                <div className='flex-center' style={{height: 300}}><CircularProgress size={80}/></div>
+                </div>}
 			</div>
 		);
 	}
