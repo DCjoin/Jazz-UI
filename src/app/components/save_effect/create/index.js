@@ -17,7 +17,7 @@ import {find} from 'lodash-es';
 import ReduxDecorator from 'decorator/ReduxDecorator.jsx';
 
 import TimeGranularity from 'constants/TimeGranularity.jsx';
-import {Model,CalendarItemType} from 'constants/actionType/Effect.jsx';
+import {Model,CalendarItemType,TriggerType,TriggerConditionType} from 'constants/actionType/Effect.jsx';
 
 import NewDialog from 'controls/NewDialog.jsx';
 import NewFlatButton from 'controls/NewFlatButton.jsx';
@@ -221,7 +221,10 @@ function getInitFilterObj(props) {
 		AuxiliaryTagName:null,
 		TimePeriods:[],
 		Step:null,
+		UomId:null,
 		AuxiliaryTagStep:null,
+		AuxiliaryTagUomId:null,
+		Triggers:[]
 	}, ...props.filterObj, ...{		
 		BenchmarkDatas: (!props.filterObj.BenchmarkDatas || props.filterObj.BenchmarkDatas.length === 0 && props.filterObj.EnergyStartDate && props.filterObj.EnergyStartDate) ? 
 							getDateObjByRange(props.filterObj.EnergyStartDate, props.filterObj.EnergyStartDate) :
@@ -386,8 +389,14 @@ export default class Create extends Component {
 				return this.state.filterObj.get('TagId');
 				break;
 			case 2:
-			var {BenchmarkModel,AuxiliaryTagId,CalculationStep}=this.state.filterObj.toJS();
-			if(BenchmarkModel===Model.Increment || BenchmarkModel===Model.Efficiency || BenchmarkModel===Model.Relation || BenchmarkModel===Model.Simulation) return AuxiliaryTagId!==null && this._checkStepByTag(CalculationStep)
+			var {BenchmarkModel,AuxiliaryTagId,CalculationStep,Triggers}=this.state.filterObj.toJS();
+			if(BenchmarkModel===Model.Increment || BenchmarkModel===Model.Efficiency  || BenchmarkModel===Model.Simulation) return AuxiliaryTagId!==null && this._checkStepByTag(CalculationStep)
+				
+			if(BenchmarkModel===Model.Relation){
+				return AuxiliaryTagId!==null && this._checkStepByTag(CalculationStep) && 
+								Triggers[0].Value!==null && Triggers[0].Value!==''  &&
+								Triggers[1].Value!==null && Triggers[1].Value!==''
+			}
 				return this.state.chartData2 && this._checkStepByTag(CalculationStep) && 
 							(!needCalendar(this.context.hierarchyId) ||
 							(needCalendar(this.context.hierarchyId) && this.state.hasCalendar===true));
@@ -431,12 +440,13 @@ export default class Create extends Component {
 				return (<Step1
 					tags={tags}
 					selectedId={filterObj.get('TagId')}
-					onClickItem={(TagId,tagName,step) => {
+					onClickItem={(TagId,tagName,step,uomId) => {
 						this._setFilterObj(
 							getInitFilterObj(this.props)
 								.set('EnergySystem', this.state.filterObj.get('EnergySystem'))
 								.set('TagId', TagId)
 								.set("Step",step)
+								.set("UomId",uomId)
 						);
 						this.setState((state, props) => {
 							return {
@@ -465,7 +475,8 @@ export default class Create extends Component {
 			}
 			case 2:
 			{
-				let {BenchmarkStartDate, BenchmarkEndDate, CalculationStep, BenchmarkModel, IncludeEnergyEffectData,TimePeriods,AuxiliaryTagId,AuxiliaryTagName} = filterObj.toJS();
+				let {BenchmarkStartDate, BenchmarkEndDate, CalculationStep, BenchmarkModel, IncludeEnergyEffectData,TimePeriods,
+						 AuxiliaryTagId,AuxiliaryTagName,Triggers,UomId,AuxiliaryTagUomId} = filterObj.toJS();
 
 		
 				// hasCalendar={this.state.hasCalendar}
@@ -485,11 +496,19 @@ export default class Create extends Component {
 					AuxiliaryTagId={AuxiliaryTagId}
 					AuxiliaryTagName={AuxiliaryTagName}
 					TimePeriods={TimePeriods}
-					onAuxiliaryTagChanged={(id,name,step)=>{
+					Triggers={Triggers}
+					UomId={UomId}
+					AuxiliaryTagUomId={AuxiliaryTagUomId}
+					onTriggersChanged={(value)=>{
+						filterObj=filterObj.set("Triggers",Immutable.fromJS(value));
+						this._setFilterObj(filterObj);
+					}}
+					onAuxiliaryTagChanged={(id,name,step,uomId)=>{
 						
 						filterObj=filterObj.set("AuxiliaryTagId",id)
 															 .set("AuxiliaryTagName",name)
-															 .set("AuxiliaryTagStep",step);
+															 .set("AuxiliaryTagStep",step)
+															 .set("AuxiliaryTagUomId",uomId);
 						this.setState({
 							filterObj:filterObj
 						},()=>{
@@ -523,6 +542,8 @@ export default class Create extends Component {
 							.set('AuxiliaryTagName', null)
 							.set('TimePeriods',Immutable.fromJS([]))
 							.set('AuxiliaryTagStep',null)
+							.set('AuxiliaryTagUomId',null)
+							.set('Triggers',Immutable.fromJS([]))
 
 						if(type === Model.Relation){
 							let tag=tags.filter(tag=>tag.get("Status")===3);
@@ -530,7 +551,18 @@ export default class Create extends Component {
 								filterObj = filterObj.set('AuxiliaryTagId', tag.getIn([0,'TagId']))
 																		 .set('AuxiliaryTagName', tag.getIn([0,'Name']))
 																		 .set('AuxiliaryTagStep',tag.getIn([0,'Step']))
-							}								
+																		 .set('AuxiliaryTagUomId',tag.getIn([0,'UomId']))
+							}			
+							filterObj=filterObj.set('Triggers',Immutable.fromJS([{
+								Type:TriggerType.Relation,
+								ConditionType:TriggerConditionType.Greater,
+								Value:null
+							},{
+								Type:TriggerType.Actual,
+								ConditionType:TriggerConditionType.Greater,
+								Value:null
+							}]))
+
 						}
 
 						this._setFilterObj(filterObj);

@@ -10,7 +10,7 @@ import Step1 from './step1.jsx';
 import Step2 from './step2.jsx';
 import Step3 from './step3.jsx';
 import Step4 from './step4.jsx';
-import {Model,CalendarItemType} from 'constants/actionType/Effect.jsx';
+import {Model,CalendarItemType,TriggerType,TriggerConditionType} from 'constants/actionType/Effect.jsx';
 import {find} from 'lodash-es';
 
 import IconButton from 'material-ui/IconButton';
@@ -175,6 +175,14 @@ function getInitFilterObj(state) {
 		ContrastStep: TimeGranularity.Monthly,
 		ConfigStep: state.ConfigStep,
 		IncludeEnergyEffectData: false,
+		AuxiliaryTagId:null,
+		AuxiliaryTagName:null,
+		TimePeriods:[],
+		Step:null,
+		UomId:null,
+		AuxiliaryTagStep:null,
+		AuxiliaryTagUomId:null,
+		Triggers:[]
 	},...state.filterObj.toJS(),...{		
 		BenchmarkDatas: (!state.filterObj.get("BenchmarkDatas") || state.filterObj.get("BenchmarkDatas").size === 0 && state.filterObj.get("EnergyStartDate") && state.filterObj.get("EnergyStartDate")) ? 
 							getDateObjByRange(state.filterObj.get("EnergyStartDate"), state.filterObj.get("EnergyStartDate")) :
@@ -336,8 +344,15 @@ export default class Edit extends Component {
 				return this.state.filterObj.get('TagId');
 				break;
 			case 2:
-				var {BenchmarkModel,AuxiliaryTagId,CalculationStep}=this.state.filterObj.toJS();
-			if(BenchmarkModel===Model.Increment || BenchmarkModel===Model.Efficiency || BenchmarkModel===Model.Relation || BenchmarkModel===Model.Simulation) return AuxiliaryTagId!==null && this._checkStepByTag(CalculationStep)
+				var {BenchmarkModel,AuxiliaryTagId,CalculationStep,Triggers}=this.state.filterObj.toJS();
+			if(BenchmarkModel===Model.Increment || BenchmarkModel===Model.Efficiency || BenchmarkModel===Model.Simulation) return AuxiliaryTagId!==null && this._checkStepByTag(CalculationStep)
+				
+			if(BenchmarkModel===Model.Relation){
+				return AuxiliaryTagId!==null && this._checkStepByTag(CalculationStep) && 
+								Triggers[0].Value!==null && Triggers[0].Value!==''  &&
+								Triggers[1].Value!==null && Triggers[1].Value!==''
+			}
+
 				return this.state.chartData2 && this._checkStepByTag(CalculationStep) && 
 							(!needCalendar(this.context.hierarchyId) ||
 							(needCalendar(this.context.hierarchyId) && this.state.hasCalendar===true));
@@ -465,6 +480,8 @@ export default class Edit extends Component {
           tagName={filterObj.get('TagName')}
 					tags={tags}
 					selectedId={filterObj.get('TagId')}
+					step={filterObj.get('Step')}
+					uomId={filterObj.get('UomId')}
 					onDeleteItem={(idx, tagId) => {
 						deleteEnergyEffectTag(filterObj.get('EnergyProblemId'), tagId);
 						updateTags(this.state.tags.delete(idx));
@@ -490,7 +507,7 @@ export default class Edit extends Component {
             })
           }}
          onSave={
-           (TagId,TagName) => {
+           (TagId,TagName,Step,UomId) => {
 						this.setState((state, props) => {
 							return {
 								chartData2: null,
@@ -501,6 +518,8 @@ export default class Edit extends Component {
 							var filterObj= getInitFilterObj(this.state)
 								          .set('TagId', TagId)
                           .set('TagName',TagName)
+													.set('Step', Step)
+                          .set('UomId',UomId)
                           .set('ConfigStep',2)
 													.set('EnergyStartDate', null)
 													.set('EnergyEndDate', null)
@@ -522,7 +541,8 @@ export default class Edit extends Component {
 
   _renderStep2(){
     let { filterObj,chartData2,configStep,tags } = this.state;
-        let {BenchmarkStartDate, BenchmarkEndDate, CalculationStep, BenchmarkModel, IncludeEnergyEffectData,EnergyStartDate,EnergyEndDate,TimePeriods,AuxiliaryTagId,AuxiliaryTagName} 
+        let {BenchmarkStartDate, BenchmarkEndDate, CalculationStep, BenchmarkModel, IncludeEnergyEffectData,EnergyStartDate,EnergyEndDate,TimePeriods
+					,AuxiliaryTagId,AuxiliaryTagName,Triggers,UomId,AuxiliaryTagUomId} 
 				   = (configStep===2 || configStep===null)?filterObj.toJS():CreateStore.getEffectItem().toJS();
 				return (<Step2
 					TagId={filterObj.get('TagId')}
@@ -539,10 +559,18 @@ export default class Edit extends Component {
 					AuxiliaryTagId={AuxiliaryTagId}
 					AuxiliaryTagName={AuxiliaryTagName}
 					TimePeriods={TimePeriods}
-					onAuxiliaryTagChanged={(id,name,step)=>{
+					Triggers={Triggers}
+					UomId={UomId}
+					AuxiliaryTagUomId={AuxiliaryTagUomId}
+					onTriggersChanged={(value)=>{
+						filterObj=filterObj.set("Triggers",Immutable.fromJS(value));
+						this._setFilterObj(filterObj);
+					}}
+					onAuxiliaryTagChanged={(id,name,step,uomId)=>{
 						filterObj=filterObj.set("AuxiliaryTagId",id)
 															 .set("AuxiliaryTagName",name)
-															 .set("AuxiliaryTagStep",step);
+															 .set("AuxiliaryTagStep",step)
+															 .set("AuxiliaryTagUomId",uomId);
 						this.setState({
 							filterObj:filterObj
 						},()=>{
@@ -577,6 +605,8 @@ export default class Edit extends Component {
 							.set('AuxiliaryTagName', null)
 							.set('TimePeriods',Immutable.fromJS([]))
 							.set('AuxiliaryTagStep',null)
+							.set('AuxiliaryTagUomId',null)
+							.set('Triggers',Immutable.fromJS([]))
 
 						if(type === Model.Relation){
 							let tag=tags.filter(tag=>tag.get("Status")===3);
@@ -584,7 +614,17 @@ export default class Edit extends Component {
 								filterObj = filterObj.set('AuxiliaryTagId', tag.getIn([0,'TagId']))
 																		 .set('AuxiliaryTagName', tag.getIn([0,'Name']))
 																		 .set('AuxiliaryTagStep',tag.getIn([0,'Step']))
-							}								
+																		 .set('AuxiliaryTagUomId',tag.getIn([0,'UomId']))
+							}	
+							filterObj=filterObj.set('Triggers',Immutable.fromJS([{
+								Type:TriggerType.Relation,
+								ConditionType:TriggerConditionType.Greater,
+								Value:null
+							},{
+								Type:TriggerType.Actual,
+								ConditionType:TriggerConditionType.Greater,
+								Value:null
+							}]))							
 						}
 
 						this._setFilterObj(filterObj);
