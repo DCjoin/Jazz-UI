@@ -246,6 +246,7 @@ export default class Edit extends Component {
 				isNew: tag.get('isNew'),
 				Status: tag.get('Status'),
 				Step: tag.get('Step'),
+				UomId: tag.get('UomId'),
 			})),
 			chartData2: CreateStore.getChartData2(),
 			chartData3: CreateStore.getChartData3(),
@@ -693,7 +694,7 @@ export default class Edit extends Component {
 						this._setFilterObj(filterObj.set('CalculationStep', step));
 						this._setTagStepTip( step );
 						{/*getPreviewChart2(filterObj.set('ConfigStep', 2).set("CorrectionFactor",1).toJS());*/}
-						this._checkCalendar()
+						 if(hasTimePeridsModel(BenchmarkModel)){this._checkCalendar()}
 					}}
 					onChangeBenchmarkStartDate={(val, callback) => {
 						val = date2UTC(val);
@@ -723,7 +724,7 @@ export default class Edit extends Component {
 							chartData3: null
 						});
 						getPreviewChart2(filterObj.set("CorrectionFactor",1).set('ConfigStep',2).toJS());
-						this._checkCalendar(val)
+						if(hasTimePeridsModel(BenchmarkModel)){this._checkCalendar(val)}
 					}}
 					onChangeBenchmarkEndDate={(val) => {
 
@@ -742,7 +743,7 @@ export default class Edit extends Component {
 							startTime = moment(endTime).subtract(_getTimeRangeStep(CalculationStep), 'days');
 						}
 						if(startTime.format('YYYY-MM-DD HH:mm:ss') !== BenchmarkStartDate) {
-							this._checkCalendar(startTime);
+							if(hasTimePeridsModel(BenchmarkModel)){this._checkCalendar(startTime)}
 							filterObj = filterObj.set('BenchmarkStartDate', startTime.format('YYYY-MM-DD HH:mm:ss'))
 						}
 						this._setFilterObj(filterObj);
