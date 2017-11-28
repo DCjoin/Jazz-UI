@@ -37,7 +37,7 @@ export default class EffectReport extends Component {
                 </header>
                 <div className='report-sum-content'>
                   <span className='report-sum-value'>{formatDate(data.TotalSavingWater)}</span>
-                  <span className='report-sum-unit'>{'m²'}</span>
+                  <span className='report-sum-unit'>{'m³'}</span>
                 </div>
           </div>
       </div>
