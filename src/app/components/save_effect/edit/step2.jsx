@@ -156,7 +156,7 @@ export default class Step2 extends Component {
     ]
     return(
       <div className="jazz-save-effect-edit-step2-edit">
-        <EditStep2 {...other}/>
+        <EditStep2 {...other} isFromEdit={true}/>
         <div className="jazz-save-effect-edit-step2-edit-actions">
           {actions}
         </div>

@@ -517,6 +517,11 @@ export default class Step2 extends Component {
 		)
 	}
 
+	  componentDidMount(){
+      if(this.props.isFromEdit) {
+				this.props.onGetChartData();
+			}
+    }
 	render() {
 		let { data, disabledPreview, BenchmarkModel, BenchmarkStartDate, BenchmarkEndDate, CalculationStep, onChangeModelType, onChangeStep, onChangeBenchmarkStartDate, onChangeBenchmarkEndDate, onGetChartData, IncludeEnergyEffectData  } = this.props,
 		chartProps;
