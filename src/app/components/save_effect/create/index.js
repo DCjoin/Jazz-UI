@@ -295,6 +295,7 @@ export default class Create extends Component {
 				isNew: tag.get('isNew'),
 				Status: tag.get('Status'),
 				Step: tag.get('Step'),
+				UomId: tag.get('UomId'),
 			})),
 			filterObj:filterObj,
 			chartData2: CreateStore.getChartData2(),
