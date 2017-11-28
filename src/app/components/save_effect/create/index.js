@@ -364,7 +364,7 @@ export default class Create extends Component {
 				break;
 			case 2:
 				getPreviewChart2(this._getFilterObj().set('ConfigStep', 2).set("CorrectionFactor",1).set("HierarchyId",this.context.hierarchyId).toJS());
-				this._checkCalendar(state.filterObj.get("BenchmarkStartDate"));
+				if(hasTimePeridsModel(state.filterObj.get('BenchmarkModel'))){this._checkCalendar(state.filterObj.get("BenchmarkStartDate"));}
 				break;
 		}
 	}
@@ -627,7 +627,7 @@ export default class Create extends Component {
 						this._setFilterObj(filterObj.set('CalculationStep', step));
 						this._setTagStepTip( step );
 						{/*getPreviewChart2(filterObj.set("CorrectionFactor",1).set("HierarchyId",this.context.hierarchyId).toJS());*/}
-						this._checkCalendar()
+						if(hasTimePeridsModel(BenchmarkModel)){this._checkCalendar()}
 					}}
 					onChangeBenchmarkStartDate={(val, callback) => {
 						val = date2UTC(val);
@@ -657,7 +657,7 @@ export default class Create extends Component {
 							chartData3: null
 						});
 						getPreviewChart2(filterObj.set("CorrectionFactor",1).set("HierarchyId",this.context.hierarchyId).toJS());
-						this._checkCalendar(val)
+						if(hasTimePeridsModel(BenchmarkModel)){this._checkCalendar(val)}
 					}}
 					onChangeBenchmarkEndDate={(val) => {
 
@@ -680,7 +680,7 @@ export default class Create extends Component {
 						}
 						if(startTime.format('YYYY-MM-DD HH:mm:ss') !== BenchmarkStartDate) {
 							filterObj = filterObj.set('BenchmarkStartDate', startTime.format('YYYY-MM-DD HH:mm:ss'));
-							this._checkCalendar(startTime)
+							if(hasTimePeridsModel(BenchmarkModel)){this._checkCalendar(startTime)}
 						}
 						this._setFilterObj(filterObj);
 						this.setState({

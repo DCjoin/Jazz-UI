@@ -18,7 +18,7 @@ export default class Step4 extends Component {
 	render() {
 		let {unit, EnergyStartDate, EnergyEndDate, CalculationStep, PredictionDatas, BenchmarkStartDate, BenchmarkEndDate, ContrastStep, onChangePredictionDatas, onChangeContrastStep} = this.props;
 		let radios = [];
-		if( CalculationStep === TimeGranularity.Daily || CalculationStep === TimeGranularity.Hourly) {
+		if( CalculationStep !== TimeGranularity.Monthly) {
 			radios.push(<RadioButton label={I18N.EM.Day} value={TimeGranularity.Daily}/>);
 		}
 		radios.push(<RadioButton label={I18N.EM.Month} value={TimeGranularity.Monthly} style={{marginTop:'12px'}}/>);
