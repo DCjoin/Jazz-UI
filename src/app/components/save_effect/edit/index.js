@@ -677,6 +677,19 @@ export default class Edit extends Component {
 								filterObj=filterObj.set("TimePeriods",Immutable.fromJS([]))
 							}
 
+								if(step===TimeGranularity.Monthly){
+									
+										filterObj=filterObj.set("BenchmarkStartDate",date2UTC(moment(UTC2Local(this.props.filterObj.ExecutedTime)).add(1,'days').subtract(12, 'months')));
+										filterObj=filterObj.set("BenchmarkEndDate",date2UTC(moment(UTC2Local(this.props.filterObj.ExecutedTime)).add(1,'days')));
+										filterObj = filterObj.set('ContrastStep',TimeGranularity.Monthly);
+							}
+
+							if(filterObj.get("CalculationStep")===TimeGranularity.Monthly){
+										filterObj=filterObj.set("BenchmarkStartDate",date2UTC(moment(UTC2Local(this.props.filterObj.ExecutedTime)).subtract(30, 'days')));
+										filterObj=filterObj.set("BenchmarkEndDate",date2UTC(moment(UTC2Local(this.props.filterObj.ExecutedTime)).add(1,'days')));
+							}
+							
+
 						this._setFilterObj(filterObj.set('CalculationStep', step));
 						this._setTagStepTip( step );
 						{/*getPreviewChart2(filterObj.set('ConfigStep', 2).set("CorrectionFactor",1).toJS());*/}
