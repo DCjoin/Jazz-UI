@@ -202,13 +202,17 @@ function needCalendar(hierarchyId){
 	return notNeedIndustry.indexOf(findBuilding(hierarchyId).IndustryId)===-1
 }
 
+function hasTimePeridsModel(model){
+	return model===Model.Easy || model===Model.Increment || model===Model.Efficiency
+ }
+
 @ReduxDecorator
 export default class Edit extends Component {
 
   	static calculateState = (state, props, ctx,isRefresh) => {
 
 				var filterObj=state.filterObj;
-		if(state.hasCalendar==='loading'  && filterObj.get("TimePeriods").size===0){
+		if(state.hasCalendar==='loading'  && filterObj.get("TimePeriods").size===0 && hasTimePeridsModel(filterObj.get("BenchmarkModel"))){
 			if(state.filterObj.get("CalculationStep")===TimeGranularity.Hourly){
 				// if(needCalendar(ctx.hierarchyId)){
 				if(needCalendar(ctx.hierarchyId)){
@@ -647,8 +651,8 @@ export default class Edit extends Component {
 								filterObj=filterObj.set("EnergyEndDate",moment(filterObj.get("EnergyEndDate")).add(-1,'days').format("YYYY-MM-DD HH:mm:ss"));
 							}
 						}*/}
-
-							if(step===TimeGranularity.Hourly){
+						
+							if(step===TimeGranularity.Hourly && hasTimePeridsModel(BenchmarkModel)){
 								if(needCalendar(this.context.hierarchyId)){
 									filterObj=filterObj.set("TimePeriods",Immutable.fromJS([{
 										FromTime:8,
