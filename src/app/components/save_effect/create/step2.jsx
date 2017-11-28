@@ -671,13 +671,13 @@ export default class Step2 extends Component {
 				<div className='create-block step2-content'>
 					<header className='step2-content-header'>
 						{I18N.Setting.Diagnose.ChartPreview}
-						<NewFlatButton
+						{BenchmarkModel !== Model.Manual && <NewFlatButton
 							secondary
 							onClick={onGetChartData}
 							style={{height: 30, lineHeight: '28px'}}
 							label={I18N.Setting.Diagnose.PreviewButton}
 							disabled={disabledPreview}
-							icon={<ActionVisibility style={{height:16}}/>}/>
+							icon={<ActionVisibility style={{height:16}}/>}/>}
 					</header>
 					<div className='step2-content-content'>
 						<header style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: 70}}>
