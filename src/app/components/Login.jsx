@@ -487,6 +487,9 @@ export default class NewLogin extends Component {
 						{CAN_TRIAL_SP_NAME.indexOf(document.location.host.split('.')[0]) > -1 && <a href="javascript:void(0)" style={{marginRight: 50, color: '#fff'}} onClick={() => {
 							this.setState((state, props) => {return {showTrialDialog: true}});
 						}}>{'申请试用'}</a>}
+						{<a href="javascript:void(0)" style={{marginRight: 50, color: '#fff'}} onClick={() => {
+							this.setState((state, props) => {return {showTrialDialog: true}});
+						}}>{'申请试用'}</a>}
 						<a className='jazz-mobile-qr-link' href="javascript:void(0)">
 							{I18N.Login.APP}
 							<div className='jazz-mobile-qr'>
@@ -823,7 +826,10 @@ class TrialDialog extends Component {
 	        <FlatButton {...cancelProps} />
 	      ];
 		return (
-			<Dialog wrapperStyle={{width: 640}} open={this.props.open} actions={actions} title={'申请试用'} contentStyle={{overflowY: 'auto', height: 'calc(100% - 129px)', marginRight: 0}}>
+			<Dialog wrapperStyle={{width: 640}} open={this.props.open} actions={actions} 
+							title={'申请试用'} 
+							titleStyle={{height:50,lineHeight:'50px',margin:0,padding:'0 0 0 30px',fontSize:'16px',color:'#0f0f0f',fontWeight:'600',backgroundColor:'#f7f7f7'}}
+							contentStyle={{overflowY: 'auto', height: 'calc(100% - 129px)', margin: '0 0 0 30px',paddingTop:'24px'}}>
 				<div className='jazz-trial-info-block'>
 					<header className='jazz-trial-info-block-title'>{'申请人信息'}</header>
 					<div className='jazz-trial-info-field'>
@@ -832,7 +838,8 @@ class TrialDialog extends Component {
 							didChanged={v => this._updateInfo('Name', v)}
 							errorStyle={TEXT_FIELD_ERROR_STYLE}
 							title={'姓名'}
-							hintText={'请输入姓名'}/>
+							hintText={'请输入姓名'}
+							style={{width:'330px'}}/>
 					</div>
 					<div className='jazz-trial-info-field'>
 						<ViewableTextField
@@ -842,7 +849,7 @@ class TrialDialog extends Component {
 							isRequired regex={/^[a-zA-Z0-9_.-]+$/} errorMessage={I18N.Login.WrongEmail}
 							title={'邮箱（必填）'}
 							hintText={'请输入邮箱'}
-							style={{width: 240}}/>
+							style={{width: 142}}/>
 						<span style={{display: 'inline-block', width: 200, textAlign: 'right'}}>@schneider-electric.com</span>
 					</div>
 					<div className='jazz-trial-info-field'>
@@ -852,7 +859,8 @@ class TrialDialog extends Component {
 							errorStyle={TEXT_FIELD_ERROR_STYLE}
 							regex={Regex.MobilePhoneRule} errorMessage={I18N.Login.WrongTelephone}
 							title={'手机'}
-							hintText={'请输入手机'}/>
+							hintText={'请输入手机'}
+							style={{width:'330px'}}/>
 					</div>
 				</div>
 				<div className='jazz-trial-info-block'>
@@ -864,7 +872,8 @@ class TrialDialog extends Component {
 							didChanged={v => this._updateInfo('Company', v)}
 							errorStyle={TEXT_FIELD_ERROR_STYLE}
 							title={'公司名称（必填）'}
-							hintText={'请输入公司名称'}/>
+							hintText={'请输入公司名称'}
+							style={{width:'330px'}}/>
 					</div>
 					<div className='jazz-trial-info-field'>
 						<span className='custom-title'>{'所属行业（必填）'}</span>
@@ -902,7 +911,8 @@ class TrialDialog extends Component {
 							didChanged={v => this._updateInfo('ContactName', v)}
 							errorStyle={TEXT_FIELD_ERROR_STYLE}
 							title={'姓名'}
-							hintText={'请输入姓名'}/>
+							hintText={'请输入姓名'}
+							style={{width:'330px'}}/>
 					</div>
 					<div className='jazz-trial-info-field'>
 						<span className='custom-title'>{'职位'}</span>
@@ -921,7 +931,8 @@ class TrialDialog extends Component {
 							regex={Regex.Email} errorMessage={I18N.Login.WrongEmail}
 							errorStyle={TEXT_FIELD_ERROR_STYLE}
 							title={'邮箱'}
-							hintText={'请输入邮箱'}/>
+							hintText={'请输入邮箱'}
+							style={{width:'330px'}}/>
 					</div>
 					<div className='jazz-trial-info-field'>
 						<ViewableTextField
@@ -930,7 +941,8 @@ class TrialDialog extends Component {
 							regex={Regex.MobilePhoneRule} errorMessage={I18N.Login.WrongTelephone}
 							errorStyle={TEXT_FIELD_ERROR_STYLE}
 							title={'手机'}
-							hintText={'请输入手机'}/>
+							hintText={'请输入手机'}
+							style={{width:'330px'}}/>
 					</div>
 				</div>
 			</Dialog>
