@@ -106,7 +106,7 @@ CreateStore.dispatchToken = AppDispatcher.register(function(action) {
   switch(action.type) {
     case Action.UPDATE_TAGS:
         CreateStore.setTagsByPlan(action.tags);
-        CreateStore.emitChange(true);
+        CreateStore.emitChange();
         break;
     case Action.GET_PREVIEW_CHART2:
         CreateStore.setChartData2(action.data);
