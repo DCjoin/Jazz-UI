@@ -548,7 +548,7 @@ export default class Create extends Component {
 
 						if(type === Model.Relation){
 							let tag=tags.filter(tag=>tag.get("Status")===3);
-							if(tag.size>0){
+							if(tag && tag.size>0){
 								filterObj = filterObj.set('AuxiliaryTagId', tag.getIn([0,'TagId']))
 																		 .set('AuxiliaryTagName', tag.getIn([0,'Name']))
 																		 .set('AuxiliaryTagStep',tag.getIn([0,'Step']))

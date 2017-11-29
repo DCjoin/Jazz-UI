@@ -238,6 +238,16 @@ export default class Edit extends Component {
 			}
 		}
 
+		if(filterObj && filterObj.get("BenchmarkModel")===Model.Relation && filterObj.get("AuxiliaryTagId")===null && !Immutable.is(state.tags,CreateStore.getTagsByPlan())){
+			let auxiliaryTag=CreateStore.getTagsByPlan().filter(tag=>tag.get('Status')===3);
+			if(auxiliaryTag && auxiliaryTag.size>0){
+								filterObj = filterObj.set('AuxiliaryTagId', auxiliaryTag.getIn([0,'TagId']))
+																		 .set('AuxiliaryTagName', auxiliaryTag.getIn([0,'Name']))
+																		 .set('AuxiliaryTagStep',auxiliaryTag.getIn([0,'Step']))
+																		 .set('AuxiliaryTagUomId',auxiliaryTag.getIn([0,'UomId']))
+							}	
+		}
+
 		return {
 			tags: CreateStore.getTagsByPlan() && CreateStore.getTagsByPlan().map(tag => Immutable.fromJS({
 				TagId: tag.get('TagId'),
@@ -614,13 +624,6 @@ export default class Edit extends Component {
 							.set('Triggers',Immutable.fromJS([]))
 
 						if(type === Model.Relation){
-							let tag=tags.filter(tag=>tag.get("Status")===3);
-							if(tag.size>0){
-								filterObj = filterObj.set('AuxiliaryTagId', tag.getIn([0,'TagId']))
-																		 .set('AuxiliaryTagName', tag.getIn([0,'Name']))
-																		 .set('AuxiliaryTagStep',tag.getIn([0,'Step']))
-																		 .set('AuxiliaryTagUomId',tag.getIn([0,'UomId']))
-							}	
 							filterObj=filterObj.set('Triggers',Immutable.fromJS([{
 								Type:TriggerType.Relation,
 								ConditionType:TriggerConditionType.Greater,
@@ -629,30 +632,34 @@ export default class Edit extends Component {
 								Type:TriggerType.Actual,
 								ConditionType:TriggerConditionType.Greater,
 								Value:null
-							}]))							
+							}]))		
+							if(tags){
+								let tag=tags.filter(tag=>tag.get("Status")===3);
+								if(tag && tag.size>0){
+								 filterObj = filterObj.set('AuxiliaryTagId', tag.getIn([0,'TagId']))
+																		 .set('AuxiliaryTagName', tag.getIn([0,'Name']))
+																		 .set('AuxiliaryTagStep',tag.getIn([0,'Step']))
+																		 .set('AuxiliaryTagUomId',tag.getIn([0,'UomId']))
+								}	
+									this._setFilterObj(filterObj);
+									this.setState({
+										chartData3: null
+									});
+							}else{
+								this.setState({
+									chartData3: null,
+									filterObj:filterObj
+								},()=>{
+									this._getInitData(1);
+								})
+								
+							}					
 						}
 
-						this._setFilterObj(filterObj);
-						this.setState({
-							chartData3: null
-						});
+					
 						getPreviewChart2(filterObj.set('ConfigStep', 2).set("CorrectionFactor",1).toJS());
 					}}
-					onChangeStep={(step) => {
-						{/*if(step===TimeGranularity.Hourly){
-							filterObj=filterObj.set("BenchmarkEndDate",moment(filterObj.get("BenchmarkEndDate")).add(1,'days').format("YYYY-MM-DD HH:mm:ss"));
-							if(filterObj.get("EnergyEndDate")){
-								filterObj=filterObj.set("EnergyEndDate",moment(filterObj.get("EnergyEndDate")).add(1,'days').format("YYYY-MM-DD HH:mm:ss"));
-							}
-						}
-
-						if(CalculationStep===TimeGranularity.Hourly){
-							filterObj=filterObj.set("BenchmarkEndDate",moment(filterObj.get("BenchmarkEndDate")).add(-1,'days').format("YYYY-MM-DD HH:mm:ss"));
-							if(filterObj.get("EnergyEndDate")){
-								filterObj=filterObj.set("EnergyEndDate",moment(filterObj.get("EnergyEndDate")).add(-1,'days').format("YYYY-MM-DD HH:mm:ss"));
-							}
-						}*/}
-						
+					onChangeStep={(step) => {						
 							if(step===TimeGranularity.Hourly && hasTimePeridsModel(BenchmarkModel)){
 								if(needCalendar(this.context.hierarchyId)){
 									filterObj=filterObj.set("TimePeriods",Immutable.fromJS([{
