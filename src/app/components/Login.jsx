@@ -718,11 +718,20 @@ const INLINE_BLOCK_SWITCH_STYLE = {
 	style: {
 		width: 'auto',
 		display: 'inline-block',
-		marginRight: 20,
+		marginRight: 30,
 	},
 	labelStyle: {
 		wordBreak: 'keep-all',
+		fontSize: '16px',
+		color:'#9fa0a4'
 	},
+	iconStyle:{
+		width:'16px',
+		height:'16px',
+		marginRight:'10px',
+		marginTop:'2px',
+		color:'#9fa0a4'
+	}
 };
 const TEXT_FIELD_ERROR_STYLE = {
 	position: 'absolute',
@@ -809,21 +818,31 @@ class TrialDialog extends Component {
             }});
 	        },
 	        label: I18N.Common.Button.Apply,
+					style:{
+						float:'right'
+					}
 	      },
 	      cancelProps = {
 	        key: 'cancel_email',
 	        onClick: this.props.onCancel,
 	        label: I18N.Common.Button.Cancel2,
 	        style: {
-	        	marginLeft: 20
+						marginLeft: 20,
+						border:'1px solid #9fa0a4',
+						float:'right'
 	        }
 	      },
 	      actions = [
-	        <FlatButton primary {...submitProps} />,
-	        <FlatButton {...cancelProps} />
+					<FlatButton {...cancelProps} />,
+	        <FlatButton primary {...submitProps} />
+	        
 	      ];
 		return (
-			<Dialog wrapperStyle={{width: 640}} open={this.props.open} actions={actions} title={'申请试用'} contentStyle={{overflowY: 'auto', height: 'calc(100% - 129px)', marginRight: 0}}>
+			<Dialog wrapperStyle={{width: 640}} open={this.props.open} actions={actions} 
+							title={'申请试用'} 
+							titleStyle={{height:50,lineHeight:'50px',margin:0,padding:'0 0 0 30px',fontSize:'16px',color:'#0f0f0f',fontWeight:'600',backgroundColor:'#f7f7f7'}}
+							contentStyle={{overflowY: 'auto', height: 'calc(100% - 129px)', margin: '0 0 0 30px',paddingTop:'24px'}}
+							actionsContainerStyle={{margin:'30px'}}>
 				<div className='jazz-trial-info-block'>
 					<header className='jazz-trial-info-block-title'>{'申请人信息'}</header>
 					<div className='jazz-trial-info-field'>
@@ -832,7 +851,9 @@ class TrialDialog extends Component {
 							didChanged={v => this._updateInfo('Name', v)}
 							errorStyle={TEXT_FIELD_ERROR_STYLE}
 							title={'姓名'}
-							hintText={'请输入姓名'}/>
+							hintText={'请输入姓名'}
+							floatingLabelStyle={{fontSize:'16px',color:'#9fa0a4'}}
+							style={{width:'330px'}}/>
 					</div>
 					<div className='jazz-trial-info-field'>
 						<ViewableTextField
@@ -842,7 +863,8 @@ class TrialDialog extends Component {
 							isRequired regex={/^[a-zA-Z0-9_.-]+$/} errorMessage={I18N.Login.WrongEmail}
 							title={'邮箱（必填）'}
 							hintText={'请输入邮箱'}
-							style={{width: 240}}/>
+							floatingLabelStyle={{fontSize:'16px',color:'#9fa0a4'}}
+							style={{width: 142}}/>
 						<span style={{display: 'inline-block', width: 200, textAlign: 'right'}}>@schneider-electric.com</span>
 					</div>
 					<div className='jazz-trial-info-field'>
@@ -852,11 +874,13 @@ class TrialDialog extends Component {
 							errorStyle={TEXT_FIELD_ERROR_STYLE}
 							regex={Regex.MobilePhoneRule} errorMessage={I18N.Login.WrongTelephone}
 							title={'手机'}
-							hintText={'请输入手机'}/>
+							hintText={'请输入手机'}
+							floatingLabelStyle={{fontSize:'16px',color:'#9fa0a4'}}
+							style={{width:'330px'}}/>
 					</div>
 				</div>
 				<div className='jazz-trial-info-block'>
-					<header className='jazz-trial-info-block-title'>{'客户信息'}</header>
+					<header className='jazz-trial-info-block-title' style={{marginTop:'20px'}}>{'客户信息'}</header>
 					<div className='jazz-trial-info-field'>
 						<ViewableTextField
 							isRequired
@@ -864,14 +888,16 @@ class TrialDialog extends Component {
 							didChanged={v => this._updateInfo('Company', v)}
 							errorStyle={TEXT_FIELD_ERROR_STYLE}
 							title={'公司名称（必填）'}
-							hintText={'请输入公司名称'}/>
+							hintText={'请输入公司名称'}
+							floatingLabelStyle={{fontSize:'16px',color:'#9fa0a4'}}
+							style={{width:'330px'}}/>
 					</div>
 					<div className='jazz-trial-info-field'>
 						<span className='custom-title'>{'所属行业（必填）'}</span>
 						<RadioButtonGroup valueSelected={Industry} onChange={(e, v) => {
 							this._updateInfo('Industry', v)
 						}}>
-						  <RadioButton {...INLINE_BLOCK_SWITCH_STYLE} value={1} label={'轻工'} />
+						  <RadioButton {...INLINE_BLOCK_SWITCH_STYLE} style={{width: 'auto',display: 'inline-block',width:108}} value={1} label={'轻工'} />
 						  <RadioButton {...INLINE_BLOCK_SWITCH_STYLE} value={2} label={'建筑'} />
 						</RadioButtonGroup>
 					</div>
@@ -880,7 +906,7 @@ class TrialDialog extends Component {
 						<RadioButtonGroup valueSelected={CustomerType} onChange={(e, v) => {
 							this._updateInfo('CustomerType', v)
 						}}>
-						  <RadioButton {...INLINE_BLOCK_SWITCH_STYLE} value={1} label={'集团客户'} />
+						  <RadioButton {...INLINE_BLOCK_SWITCH_STYLE} style={{width: 'auto',display: 'inline-block',width:108}} value={1} label={'集团客户'} />
 						  <RadioButton {...INLINE_BLOCK_SWITCH_STYLE} value={2} label={'非集团客户'} />
 						</RadioButtonGroup>
 					</div>
@@ -895,14 +921,16 @@ class TrialDialog extends Component {
 					</div>
 				</div>
 				<div className='jazz-trial-info-block'>
-					<header className='jazz-trial-info-block-title'>{'客户联系人信息'}</header>
+					<header className='jazz-trial-info-block-title' style={{marginTop:'30px'}}>{'客户联系人信息'}</header>
 					<div className='jazz-trial-info-field'>
 						<ViewableTextField
 							defaultValue={ContactName}
 							didChanged={v => this._updateInfo('ContactName', v)}
 							errorStyle={TEXT_FIELD_ERROR_STYLE}
 							title={'姓名'}
-							hintText={'请输入姓名'}/>
+							hintText={'请输入姓名'}
+							floatingLabelStyle={{fontSize:'16px',color:'#9fa0a4'}}
+							style={{width:'330px'}}/>
 					</div>
 					<div className='jazz-trial-info-field'>
 						<span className='custom-title'>{'职位'}</span>
@@ -921,7 +949,9 @@ class TrialDialog extends Component {
 							regex={Regex.Email} errorMessage={I18N.Login.WrongEmail}
 							errorStyle={TEXT_FIELD_ERROR_STYLE}
 							title={'邮箱'}
-							hintText={'请输入邮箱'}/>
+							hintText={'请输入邮箱'}
+							floatingLabelStyle={{fontSize:'16px',color:'#9fa0a4'}}
+							style={{width:'330px'}}/>
 					</div>
 					<div className='jazz-trial-info-field'>
 						<ViewableTextField
@@ -930,7 +960,9 @@ class TrialDialog extends Component {
 							regex={Regex.MobilePhoneRule} errorMessage={I18N.Login.WrongTelephone}
 							errorStyle={TEXT_FIELD_ERROR_STYLE}
 							title={'手机'}
-							hintText={'请输入手机'}/>
+							hintText={'请输入手机'}
+							floatingLabelStyle={{fontSize:'16px',color:'#9fa0a4'}}
+							style={{width:'330px'}}/>
 					</div>
 				</div>
 			</Dialog>

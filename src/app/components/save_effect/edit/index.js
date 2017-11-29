@@ -654,6 +654,11 @@ export default class Edit extends Component {
 								})
 								
 							}					
+						}else{
+									this._setFilterObj(filterObj);
+									this.setState({
+										chartData3: null
+									});
 						}
 
 					
