@@ -487,6 +487,9 @@ export default class NewLogin extends Component {
 						{CAN_TRIAL_SP_NAME.indexOf(document.location.host.split('.')[0]) > -1 && <a href="javascript:void(0)" style={{marginRight: 50, color: '#fff'}} onClick={() => {
 							this.setState((state, props) => {return {showTrialDialog: true}});
 						}}>{'申请试用'}</a>}
+						<a href="javascript:void(0)" style={{marginRight: 50, color: '#fff'}} onClick={() => {
+							this.setState((state, props) => {return {showTrialDialog: true}});
+						}}>{'申请试用'}</a>
 						<a className='jazz-mobile-qr-link' href="javascript:void(0)">
 							{I18N.Login.APP}
 							<div className='jazz-mobile-qr'>
@@ -850,6 +853,7 @@ class TrialDialog extends Component {
 							defaultValue={Name}
 							didChanged={v => this._updateInfo('Name', v)}
 							errorStyle={TEXT_FIELD_ERROR_STYLE}
+							inputStyle={{fontSize:'16px',color:'#626469'}}
 							title={'姓名'}
 							hintText={'请输入姓名'}
 							floatingLabelStyle={{fontSize:'16px',color:'#9fa0a4'}}
@@ -860,18 +864,20 @@ class TrialDialog extends Component {
 							defaultValue={Email}
 							didChanged={v => this._updateInfo('Email', v)}
 							errorStyle={TEXT_FIELD_ERROR_STYLE}
-							isRequired regex={/^[a-zA-Z0-9_.-]+$/} errorMessage={I18N.Login.WrongEmail}
+							inputStyle={{fontSize:'16px',color:'#626469'}}
+							isRequired regex={/^[a-zA-Z0-9_.-]+$/} errorMessage={'支持数字、字母、下划线'}
 							title={'邮箱（必填）'}
 							hintText={'请输入邮箱'}
 							floatingLabelStyle={{fontSize:'16px',color:'#9fa0a4'}}
 							style={{width: 142}}/>
-						<span style={{display: 'inline-block', width: 200, textAlign: 'right'}}>@schneider-electric.com</span>
+						<span style={{display: 'inline-block', width: 200, textAlign: 'right',fontSize:'16px',color:'#626469'}}>@schneider-electric.com</span>
 					</div>
 					<div className='jazz-trial-info-field'>
 						<ViewableTextField
 							defaultValue={Phone}
 							didChanged={v => this._updateInfo('Phone', v)}
 							errorStyle={TEXT_FIELD_ERROR_STYLE}
+							inputStyle={{fontSize:'16px',color:'#626469'}}
 							regex={Regex.MobilePhoneRule} errorMessage={I18N.Login.WrongTelephone}
 							title={'手机'}
 							hintText={'请输入手机'}
@@ -887,6 +893,7 @@ class TrialDialog extends Component {
 							defaultValue={Company}
 							didChanged={v => this._updateInfo('Company', v)}
 							errorStyle={TEXT_FIELD_ERROR_STYLE}
+							inputStyle={{fontSize:'16px',color:'#626469'}}
 							title={'公司名称（必填）'}
 							hintText={'请输入公司名称'}
 							floatingLabelStyle={{fontSize:'16px',color:'#9fa0a4'}}
@@ -927,6 +934,7 @@ class TrialDialog extends Component {
 							defaultValue={ContactName}
 							didChanged={v => this._updateInfo('ContactName', v)}
 							errorStyle={TEXT_FIELD_ERROR_STYLE}
+							inputStyle={{fontSize:'16px',color:'#626469'}}
 							title={'姓名'}
 							hintText={'请输入姓名'}
 							floatingLabelStyle={{fontSize:'16px',color:'#9fa0a4'}}
@@ -948,6 +956,7 @@ class TrialDialog extends Component {
 							didChanged={v => this._updateInfo('ContactEmail', v)}
 							regex={Regex.Email} errorMessage={I18N.Login.WrongEmail}
 							errorStyle={TEXT_FIELD_ERROR_STYLE}
+							inputStyle={{fontSize:'16px',color:'#626469'}}
 							title={'邮箱'}
 							hintText={'请输入邮箱'}
 							floatingLabelStyle={{fontSize:'16px',color:'#9fa0a4'}}
@@ -959,6 +968,7 @@ class TrialDialog extends Component {
 							didChanged={v => this._updateInfo('ContactPhone', v)}
 							regex={Regex.MobilePhoneRule} errorMessage={I18N.Login.WrongTelephone}
 							errorStyle={TEXT_FIELD_ERROR_STYLE}
+							inputStyle={{fontSize:'16px',color:'#626469'}}
 							title={'手机'}
 							hintText={'请输入手机'}
 							floatingLabelStyle={{fontSize:'16px',color:'#9fa0a4'}}
