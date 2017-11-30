@@ -156,6 +156,15 @@ app.get('/sso/metadata', (req, res) => res.header('Content-Type','text/xml').sen
 // Access URL for implementing SP-init SSO
 app.get('/:lang/spinitsso-redirect', (req, res) => {
   // Configure your endpoint for IdP-initiated / SP-initiated SSO
+
+  console.log("*********wyh_test**********");
+  console.log("********"+req+"**********");
+  console.log("**********"+res+"**********");
+  console.log("**********"+__dirname+"**********");
+  console.log("**********"+GUARD_UI_HOST+"**********");
+   console.log("**********"+JAZZ_WEB_HOST+"**********");
+   console.log(fs.readFileSync(__dirname + '/onelogin_metadata.xml', "utf-8").split('${GUARD_UI_HOST}').join(GUARD_UI_HOST + "Saml/SignOnService"));
+
   const sp = ServiceProvider({
     privateKey: fs.readFileSync(__dirname + '/SE-SP.pem'),
     privateKeyPass: 'sesp!@#',
@@ -167,9 +176,14 @@ app.get('/:lang/spinitsso-redirect', (req, res) => {
     metadata: fs.readFileSync(__dirname + '/onelogin_metadata.xml', "utf-8").split('${GUARD_UI_HOST}').join(GUARD_UI_HOST + "Saml/SignOnService")
   });
 
+
   const url = sp.createLoginRequest(idp, 'redirect');  
-  const redirectURL = new URL(url.context);  
+  console.log("url");
+  const redirectURL = new URL(url.context); 
+  console.log("***********"+redirectURL.pathname+"***********"); 
   redirectURL.pathname = req.params.lang + redirectURL.pathname;
+   console.log("***********"+redirectURL.pathname+"***********");
+   console.log("********"+redirectURL+"**********")
   // let spDomain = req.hostname.split(".")[0] ? req.hostname.split(".")[0] : "";
   //因为sso的dev环境存在问题，暂时都指向sp1环境
   let spDomain = 'sp1';
