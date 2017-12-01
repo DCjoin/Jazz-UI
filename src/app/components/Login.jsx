@@ -487,6 +487,9 @@ export default class NewLogin extends Component {
 						{CAN_TRIAL_SP_NAME.indexOf(document.location.host.split('.')[0]) > -1 && <a href="javascript:void(0)" style={{marginRight: 50, color: '#fff'}} onClick={() => {
 							this.setState((state, props) => {return {showTrialDialog: true}});
 						}}>{'申请试用'}</a>}
+						<a href="javascript:void(0)" style={{marginRight: 50, color: '#fff'}} onClick={() => {
+							this.setState((state, props) => {return {showTrialDialog: true}});
+						}}>{'申请试用'}</a>
 						<a className='jazz-mobile-qr-link' href="javascript:void(0)">
 							{I18N.Login.APP}
 							<div className='jazz-mobile-qr'>
@@ -735,7 +738,7 @@ const INLINE_BLOCK_SWITCH_STYLE = {
 };
 const TEXT_FIELD_ERROR_STYLE = {
 	position: 'absolute',
-	bottom: -5,
+	bottom: -10,
 };
 
 class TrialDialog extends Component {
@@ -829,7 +832,8 @@ class TrialDialog extends Component {
 	        style: {
 						marginLeft: 20,
 						border:'1px solid #9fa0a4',
-						float:'right'
+						float:'right',
+						lineHeight:'35px'
 	        }
 	      },
 	      actions = [
@@ -854,6 +858,7 @@ class TrialDialog extends Component {
 							title={'姓名'}
 							hintText={'请输入姓名'}
 							floatingLabelStyle={{fontSize:'16px',color:'#9fa0a4'}}
+							floatingLabelFocusStyle={{fontSize:'12px'}}
 							style={{width:'330px'}}/>
 					</div>
 					<div className='jazz-trial-info-field'>
@@ -866,6 +871,7 @@ class TrialDialog extends Component {
 							title={'邮箱（必填）'}
 							hintText={'请输入邮箱'}
 							floatingLabelStyle={{fontSize:'16px',color:'#9fa0a4'}}
+							floatingLabelFocusStyle={{fontSize:'12px'}}
 							style={{width: 142}}/>
 						<span style={{display: 'inline-block', width: 200, textAlign: 'right',fontSize:'16px',color:'#626469'}}>@schneider-electric.com</span>
 					</div>
@@ -877,8 +883,9 @@ class TrialDialog extends Component {
 							inputStyle={{fontSize:'16px',color:'#626469'}}
 							regex={Regex.MobilePhoneRule} errorMessage={I18N.Login.WrongTelephone}
 							title={'手机'}
-							hintText={'请输入手机'}
+							hintText={'请输入11位的手机号'}
 							floatingLabelStyle={{fontSize:'16px',color:'#9fa0a4'}}
+							floatingLabelFocusStyle={{fontSize:'12px'}}
 							style={{width:'330px'}}/>
 					</div>
 				</div>
@@ -894,6 +901,7 @@ class TrialDialog extends Component {
 							title={'公司名称（必填）'}
 							hintText={'请输入公司名称'}
 							floatingLabelStyle={{fontSize:'16px',color:'#9fa0a4'}}
+							floatingLabelFocusStyle={{fontSize:'12px'}}
 							style={{width:'330px'}}/>
 					</div>
 					<div className='jazz-trial-info-field'>
@@ -935,6 +943,7 @@ class TrialDialog extends Component {
 							title={'姓名'}
 							hintText={'请输入姓名'}
 							floatingLabelStyle={{fontSize:'16px',color:'#9fa0a4'}}
+							floatingLabelFocusStyle={{fontSize:'12px'}}
 							style={{width:'330px'}}/>
 					</div>
 					<div className='jazz-trial-info-field'>
@@ -957,6 +966,7 @@ class TrialDialog extends Component {
 							title={'邮箱'}
 							hintText={'请输入邮箱'}
 							floatingLabelStyle={{fontSize:'16px',color:'#9fa0a4'}}
+							floatingLabelFocusStyle={{fontSize:'12px'}}
 							style={{width:'330px'}}/>
 					</div>
 					<div className='jazz-trial-info-field'>
@@ -967,8 +977,9 @@ class TrialDialog extends Component {
 							errorStyle={TEXT_FIELD_ERROR_STYLE}
 							inputStyle={{fontSize:'16px',color:'#626469'}}
 							title={'手机'}
-							hintText={'请输入手机'}
+							hintText={'请输入11位的手机号'}
 							floatingLabelStyle={{fontSize:'16px',color:'#9fa0a4'}}
+							floatingLabelFocusStyle={{fontSize:'12px'}}
 							style={{width:'330px'}}/>
 					</div>
 				</div>
