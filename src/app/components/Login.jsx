@@ -487,9 +487,6 @@ export default class NewLogin extends Component {
 						{CAN_TRIAL_SP_NAME.indexOf(document.location.host.split('.')[0]) > -1 && <a href="javascript:void(0)" style={{marginRight: 50, color: '#fff'}} onClick={() => {
 							this.setState((state, props) => {return {showTrialDialog: true}});
 						}}>{'申请试用'}</a>}
-						<a href="javascript:void(0)" style={{marginRight: 50, color: '#fff'}} onClick={() => {
-							this.setState((state, props) => {return {showTrialDialog: true}});
-						}}>{'申请试用'}</a>
 						<a className='jazz-mobile-qr-link' href="javascript:void(0)">
 							{I18N.Login.APP}
 							<div className='jazz-mobile-qr'>
