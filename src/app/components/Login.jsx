@@ -735,7 +735,7 @@ const INLINE_BLOCK_SWITCH_STYLE = {
 };
 const TEXT_FIELD_ERROR_STYLE = {
 	position: 'absolute',
-	bottom: -5,
+	bottom: -10,
 };
 
 class TrialDialog extends Component {
@@ -829,7 +829,8 @@ class TrialDialog extends Component {
 	        style: {
 						marginLeft: 20,
 						border:'1px solid #9fa0a4',
-						float:'right'
+						float:'right',
+						lineHeight:'35px'
 	        }
 	      },
 	      actions = [
@@ -850,9 +851,11 @@ class TrialDialog extends Component {
 							defaultValue={Name}
 							didChanged={v => this._updateInfo('Name', v)}
 							errorStyle={TEXT_FIELD_ERROR_STYLE}
+							inputStyle={{fontSize:'16px',color:'#626469'}}
 							title={'姓名'}
 							hintText={'请输入姓名'}
 							floatingLabelStyle={{fontSize:'16px',color:'#9fa0a4'}}
+							floatingLabelFocusStyle={{fontSize:'12px'}}
 							style={{width:'330px'}}/>
 					</div>
 					<div className='jazz-trial-info-field'>
@@ -860,22 +863,26 @@ class TrialDialog extends Component {
 							defaultValue={Email}
 							didChanged={v => this._updateInfo('Email', v)}
 							errorStyle={TEXT_FIELD_ERROR_STYLE}
-							isRequired regex={/^[a-zA-Z0-9_.-]+$/} errorMessage={I18N.Login.WrongEmail}
+							inputStyle={{fontSize:'16px',color:'#626469'}}
+							isRequired regex={/^[a-zA-Z0-9_.-]+$/} errorMessage={'支持数字、字母、下划线'}
 							title={'邮箱（必填）'}
 							hintText={'请输入邮箱'}
 							floatingLabelStyle={{fontSize:'16px',color:'#9fa0a4'}}
+							floatingLabelFocusStyle={{fontSize:'12px'}}
 							style={{width: 142}}/>
-						<span style={{display: 'inline-block', width: 200, textAlign: 'right'}}>@schneider-electric.com</span>
+						<span style={{display: 'inline-block', width: 200, textAlign: 'right',fontSize:'16px',color:'#626469'}}>@schneider-electric.com</span>
 					</div>
 					<div className='jazz-trial-info-field'>
 						<ViewableTextField
 							defaultValue={Phone}
 							didChanged={v => this._updateInfo('Phone', v)}
 							errorStyle={TEXT_FIELD_ERROR_STYLE}
+							inputStyle={{fontSize:'16px',color:'#626469'}}
 							regex={Regex.MobilePhoneRule} errorMessage={I18N.Login.WrongTelephone}
 							title={'手机'}
-							hintText={'请输入手机'}
+							hintText={'请输入11位的手机号'}
 							floatingLabelStyle={{fontSize:'16px',color:'#9fa0a4'}}
+							floatingLabelFocusStyle={{fontSize:'12px'}}
 							style={{width:'330px'}}/>
 					</div>
 				</div>
@@ -887,9 +894,11 @@ class TrialDialog extends Component {
 							defaultValue={Company}
 							didChanged={v => this._updateInfo('Company', v)}
 							errorStyle={TEXT_FIELD_ERROR_STYLE}
+							inputStyle={{fontSize:'16px',color:'#626469'}}
 							title={'公司名称（必填）'}
 							hintText={'请输入公司名称'}
 							floatingLabelStyle={{fontSize:'16px',color:'#9fa0a4'}}
+							floatingLabelFocusStyle={{fontSize:'12px'}}
 							style={{width:'330px'}}/>
 					</div>
 					<div className='jazz-trial-info-field'>
@@ -927,9 +936,11 @@ class TrialDialog extends Component {
 							defaultValue={ContactName}
 							didChanged={v => this._updateInfo('ContactName', v)}
 							errorStyle={TEXT_FIELD_ERROR_STYLE}
+							inputStyle={{fontSize:'16px',color:'#626469'}}
 							title={'姓名'}
 							hintText={'请输入姓名'}
 							floatingLabelStyle={{fontSize:'16px',color:'#9fa0a4'}}
+							floatingLabelFocusStyle={{fontSize:'12px'}}
 							style={{width:'330px'}}/>
 					</div>
 					<div className='jazz-trial-info-field'>
@@ -948,9 +959,11 @@ class TrialDialog extends Component {
 							didChanged={v => this._updateInfo('ContactEmail', v)}
 							regex={Regex.Email} errorMessage={I18N.Login.WrongEmail}
 							errorStyle={TEXT_FIELD_ERROR_STYLE}
+							inputStyle={{fontSize:'16px',color:'#626469'}}
 							title={'邮箱'}
 							hintText={'请输入邮箱'}
 							floatingLabelStyle={{fontSize:'16px',color:'#9fa0a4'}}
+							floatingLabelFocusStyle={{fontSize:'12px'}}
 							style={{width:'330px'}}/>
 					</div>
 					<div className='jazz-trial-info-field'>
@@ -959,9 +972,11 @@ class TrialDialog extends Component {
 							didChanged={v => this._updateInfo('ContactPhone', v)}
 							regex={Regex.MobilePhoneRule} errorMessage={I18N.Login.WrongTelephone}
 							errorStyle={TEXT_FIELD_ERROR_STYLE}
+							inputStyle={{fontSize:'16px',color:'#626469'}}
 							title={'手机'}
-							hintText={'请输入手机'}
+							hintText={'请输入11位的手机号'}
 							floatingLabelStyle={{fontSize:'16px',color:'#9fa0a4'}}
+							floatingLabelFocusStyle={{fontSize:'12px'}}
 							style={{width:'330px'}}/>
 					</div>
 				</div>
