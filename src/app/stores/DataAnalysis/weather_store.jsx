@@ -8,6 +8,7 @@ import PrototypeStore from '../PrototypeStore.jsx';
 import assign from 'object-assign';
 import {findIndex} from 'lodash-es';
 import Immutable from 'immutable';
+import Tag from 'constants/actionType/Tag.jsx';
 
 var _tagList=null,_selectedTag=Immutable.fromJS([]);
 const WeatherStore = assign({}, PrototypeStore, {
@@ -34,7 +35,12 @@ const WeatherStore = assign({}, PrototypeStore, {
       _selectedTag=_selectedTag.push(Immutable.fromJS(tag))
     }
   },
-  getSelectedTag(){
+  checkedTagByTou(list){
+    list.forEach(tag=>{
+      this.checkedTag(tag)
+    })
+  },
+    getSelectedTag(){
     return _selectedTag
   },
   doWidgetDtos: function(widgetDto) {
@@ -69,6 +75,7 @@ const WeatherStore = assign({}, PrototypeStore, {
 
 let FolderAction = Folder.Action;
 let AlarmTagAction = AlarmTag.Action;
+let TagAction = Tag.Action;
 WeatherStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
     case Action.GET_WEATHER_TAG:
@@ -92,6 +99,10 @@ WeatherStore.dispatchToken = AppDispatcher.register(function(action) {
        break;   
   case AlarmTagAction.REMOVE_SEARCH_TAGLIST_CHANGED:
       WeatherStore.checkedTag(action.tagNode);
+      WeatherStore.emitChange()
+      break; 
+  case TagAction.SET_TAGSTATUS_TAGLIST_TOU:
+      WeatherStore.checkedTagByTou(action.tagList);
       WeatherStore.emitChange()
       break; 
   } 

@@ -77,6 +77,11 @@ var AlarmTagStore = assign({}, PrototypeStore, {
     });
 
   },
+  removeSearchTagListByTou(list){
+    list.forEach(tag=>{
+      this.removeSearchTagList(tag)
+    })
+  },
   searchTagChange(tagNode, selected) {
 
     let tagData = {
@@ -237,6 +242,10 @@ AlarmTagStore.dispatchToken = AppDispatcher.register(function(action) {
 
     case AlarmTagAction.REMOVE_SEARCH_TAGLIST_CHANGED:
       AlarmTagStore.removeSearchTagList(action.tagNode);
+      AlarmTagStore.emitRemoveSearchTagList();
+      break;
+    case TagAction.SET_TAGSTATUS_TAGLIST_TOU:
+      AlarmTagStore.removeSearchTagListByTou(action.tagList);
       AlarmTagStore.emitRemoveSearchTagList();
       break;
     case AlarmTagAction.INTER_DATA_CHANGED:

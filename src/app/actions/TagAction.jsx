@@ -92,6 +92,13 @@ let TagAction = {
       add: add
     });
   },
+  removeTagStatusByTou(tagList, add) {
+    AppDispatcher.dispatch({
+      type: Action.SET_TAGSTATUS_TAGLIST_TOU,
+      tagList: tagList,
+      add: add
+    });
+  },
   setCurrentHierarchyId(hierId) {
     AppDispatcher.dispatch({
       type: Action.SET_HIERARCHYID,

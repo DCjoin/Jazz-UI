@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import FlatButton from 'controls/FlatButton.jsx';
 import FontIcon from 'material-ui/FontIcon';
 import MenuItem from 'material-ui/MenuItem';
+import Divider from 'material-ui/Divider';
 import ButtonMenu from 'controls/CustomButtonMenu.jsx';
 import DataAnalysisStore from 'stores/DataAnalysis/DataAnalysisStore.jsx';
 import CalendarManager from '../../energy/CalendarManager.jsx';
@@ -60,14 +61,18 @@ export default class AuxiliaryFunction extends Component {
         showIntervalDialog: true
       });
       break;
-    case 'background':{
-      subMenuValue = e.props.value;
-      if (subMenuValue === 'work' || subMenuValue === 'hc') {
-        this.props.handleCalendarChange(subMenuValue);
+    case 'work':
+        this.props.handleCalendarChange('work');
         this.refs.button_menu.handleRequestClose();
-      }
       break;
-      }
+    case 'hc':
+        this.props.handleCalendarChange('hc');
+        this.refs.button_menu.handleRequestClose();
+      break;
+    case 'tou':
+        this.props.handleTouChange();
+        this.refs.button_menu.handleRequestClose();
+      break;
     case 'yaxis':
         this.setState({
           showYaxisDialog: true
@@ -101,7 +106,7 @@ export default class AuxiliaryFunction extends Component {
     if(!this.props.hasTagData){
       return true
     }
-    if (chartType === "pie" || chartType === "rawdata" || chartType==='heatmap'){
+    if (chartType === "rawdata" || chartType==='heatmap'){
       return true
     }
     else {
@@ -109,7 +114,7 @@ export default class AuxiliaryFunction extends Component {
     }
   }
 
-  getCalenderBgBtnEl() {
+  getAnalysisEl() {
   let calendarSubItems = [{
     primaryText: I18N.EM.Tool.Calendar.NoneWorkTime,
     value: 'work'
@@ -150,18 +155,23 @@ export default class AuxiliaryFunction extends Component {
 
   getAuxiliaryCompareBtn(){
     var disabled=!this.getConfigBtnStatus();
-    let calendarEl = this.getCalenderBgBtnEl();
     var chartType=this.props.selectedChartType;
+    let isCalendarDisabled = !this.getConfigBtnStatus() || DataAnalysisStore.getCalendarDisabled();
+    let showType = CalendarManager.getShowType();
+    let checkIcon=<FontIcon className="icon-check-mark"/>
     return(
       <div className="jazz-AuxiliaryCompareBtn-container" style={{marginTop:0}}>
         <ButtonMenu ref={'button_menu'} label={I18N.EM.Tool.MoreAnalysis}  style={{
           marginLeft: '10px'
         }} backgroundColor="#f3f5f7" onItemTouchTap={this._onConfigBtnItemTouchTap} disabled={this.getMoreBtnDisableStatus()}>
-       <MenuItem primaryText={I18N.EM.Tool.DataStatistics} value='sum' disabled={disabled}/>
-       {SeniorDataAnalyseIsFull() && <MenuItem primaryText={I18N.EM.Tool.IntervalStatistics} value='interval' disabled={disabled}/>}
-         {calendarEl}
-      {chartType!=='scatterplot' && chartType!=='bubble' &&<MenuItem primaryText={I18N.EM.Tool.YaxisConfig} value='yaxis' disabled={disabled || !isFullBasicAnalysis()}/>}
+       <MenuItem primaryText={I18N.EM.Tool.DataStatistics} value='sum' disabled={disabled && chartType!=='pie'}/>
+       {SeniorDataAnalyseIsFull() && <MenuItem primaryText={I18N.EM.Tool.IntervalStatistics} value='interval' disabled={disabled && chartType!=='pie'}/>}
+      {chartType!=='scatterplot' && chartType!=='bubble' && chartType!=='pie' && <MenuItem primaryText={I18N.EM.Tool.YaxisConfig} value='yaxis' disabled={disabled || !isFullBasicAnalysis()}/>}
       {(chartType==='scatterplot' || chartType==='bubble') && <MenuItem primaryText={I18N.EM.Tool.AxisConfig} value='axis' disabled={!this.props.hasTagData || !isFullBasicAnalysis()}/>}
+      <Divider />
+      <MenuItem primaryText={I18N.EM.Tool.Calendar.NoneWorkTime} value='work' disabled={isCalendarDisabled} rightIcon={showType==='work' && checkIcon}/>
+      <MenuItem primaryText={I18N.EM.Tool.Calendar.HotColdSeason} value='hc' disabled={isCalendarDisabled} rightIcon={showType==='hc' && checkIcon}/>
+      <MenuItem primaryText={I18N.EM.Tool.TouTariff} value='tou' rightIcon={this.props.touType && checkIcon}/>
      </ButtonMenu>
       </div>
     )

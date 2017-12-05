@@ -185,6 +185,11 @@ var TagStore = assign({}, PrototypeStore, {
     this.checkBaselineBtnDisabled();
     this.checkWeatherBtnDisabled();
   },
+  removeTagStatusByTou:function(tags){
+    tags.forEach(tag=>{
+      this.removeTagStatusByTagId(tag.tagId)
+    })
+  },
   clearTagStatus: function() {
     _tagTotal = 0;
     _totalTagStatus = [];
@@ -577,6 +582,10 @@ TagStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case TagAction.SET_TAGSTATUS_TAGLIST:
       TagStore.setTagStatusByTagList(action.tagList, action.add);
+      TagStore.emitTagStatusChange();
+      break;
+    case TagAction.SET_TAGSTATUS_TAGLIST_TOU:
+      TagStore.removeTagStatusByTou(action.tagList);
       TagStore.emitTagStatusChange();
       break;
     case TagAction.SET_HIERARCHYID:
