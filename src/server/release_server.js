@@ -156,20 +156,11 @@ app.get('/sso/metadata', (req, res) => res.header('Content-Type','text/xml').sen
 // Access URL for implementing SP-init SSO
 app.get('/:lang/spinitsso-redirect', (req, res) => {
   // Configure your endpoint for IdP-initiated / SP-initiated SSO
-
-  console.log("*********wyh_test**********");
-  console.log("********"+req+"**********");
-  console.log("**********"+res+"**********");
-  console.log("**********"+__dirname+"**********");
-  console.log("**********"+GUARD_UI_HOST+"**********");
-   console.log("**********"+JAZZ_WEB_HOST+"**********");
-   console.log(fs.readFileSync(__dirname + '/onelogin_metadata.xml', "utf-8").split('${GUARD_UI_HOST}').join(GUARD_UI_HOST + "Saml/SignOnService"));
-
   const sp = ServiceProvider({
     privateKey: fs.readFileSync(__dirname + '/SE-SP.pem'),
     privateKeyPass: 'sesp!@#',
     requestSignatureAlgorithm: 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256',
-    metadata: fs.readFileSync(__dirname + '/metadata_sp.xml', "utf-8").replace('${SSO_ACS_URL}', JAZZ_WEB_HOST + "/sso/acs")
+    metadata: fs.readFileSync(__dirname + '/metadata_sp.xml', "utf-8").replace('${SSO_ACS_URL}', req.query.callbackURL + "/sso/acs")
   });
 
   const idp = IdentityProvider({
