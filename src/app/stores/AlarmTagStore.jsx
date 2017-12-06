@@ -246,7 +246,7 @@ AlarmTagStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case TagAction.SET_TAGSTATUS_TAGLIST_TOU:
       AlarmTagStore.removeSearchTagListByTou(action.tagList);
-      AlarmTagStore.emitRemoveSearchTagList();
+      AlarmTagStore.emitChange();
       break;
     case AlarmTagAction.INTER_DATA_CHANGED:
       AlarmTagStore.setInterData(action.tagNode);
