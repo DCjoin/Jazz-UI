@@ -248,13 +248,26 @@ export default class AnalysisGenerateSolution extends Component {
               }
 
             if(touType){
-              newConfig.legend.title={
-                text:newConfig.series[0].name
-              };
-              newConfig.series = newConfig.series.map((serie, i)=>{
-                serie.name=TOU_NAME[i]
-                return serie;
-              });              
+
+                  if(currentChartType==='pie'){
+                    newConfig.legend.title={
+                      text:newConfig.series[0].data[0].name
+                    };
+                    newConfig.series[0].data=newConfig.series[0].data.map((item,i)=>{
+                      item.name=TOU_NAME[i];
+                      return item;
+                    })
+                  }else{
+                   newConfig.legend.title={
+                    text:newConfig.series[0].name
+                    };
+                  newConfig.series = newConfig.series.map((serie, i)=>{
+                   serie.name=TOU_NAME[i]
+                    return serie;
+                   });   
+                  }
+
+                       
             }
             return newConfig;
 

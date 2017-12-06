@@ -741,6 +741,9 @@ _onBubbleAxisChanged(){
       }
 
       viewOption.DataUsageType=1; // Energy
+      if(this.state.touType){
+        viewOption.DataUsageType=DataUsageType[chartType]
+      }
 
       if (chartType === 'rawdata') {
         let dataOption = {
@@ -1151,6 +1154,7 @@ _onBubbleAxisChanged(){
   }
 
   canShareDataWith(curChartType, nextChartType) {
+    if(this.state.touType) return false;
     if ((curChartType === 'line' || curChartType === 'column' || curChartType === 'stack') && (nextChartType === 'line' || nextChartType === 'column' || nextChartType === 'stack')) {
       return true;
     } else {
@@ -1650,8 +1654,8 @@ _onBubbleAxisChanged(){
     isCalendarInited: false,
     });
 
-    this.energyDataLoad(timeRanges, step, nodeOptions, relativeDateValue, null,DataUsageType[this.state.selectedChartType],this.state.selectedChartType!=='pie');
-  // this.touDataLoad(timeRanges, step, nodeOptions, relativeDateValue, null,DataUsageType[this.state.selectedChartType],this.state.selectedChartType!=='pie');
+    // this.energyDataLoad(timeRanges, step, nodeOptions, relativeDateValue, null,DataUsageType[this.state.selectedChartType],this.state.selectedChartType!=='pie');
+  this.touDataLoad(timeRanges, step, nodeOptions, relativeDateValue, null,DataUsageType[this.state.selectedChartType],this.state.selectedChartType!=='pie');
   }
 
   routerWillLeave(nextLocation){

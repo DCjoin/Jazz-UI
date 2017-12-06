@@ -186,9 +186,6 @@ export default class ChartBasicComponent extends Component {
             calcType = "work";
             break;
           }
-        }else if(wss[i].WidgetStatusKey === "TouTariff"){
-          touType=wss[i].WidgetStatusValue==='true';
-          break;
         }
       }
       if(tagData.get('Calendars')) {

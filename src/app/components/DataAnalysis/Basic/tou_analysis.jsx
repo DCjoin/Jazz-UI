@@ -28,7 +28,7 @@ var checkSupportStep=(chartType,step)=>(
   || chartType==='pie'
 )
 
-var checkSupportTag=()=>AlarmTagStore.getSearchTagList() && AlarmTagStore.getSearchTagList().length===1
+var checkSupportTag=()=>AlarmTagStore.getSearchTagList() && AlarmTagStore.getSearchTagList().length<=1
 
 
 

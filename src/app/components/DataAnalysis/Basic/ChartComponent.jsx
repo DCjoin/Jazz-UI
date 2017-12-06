@@ -297,20 +297,35 @@ export default class ChartComponent extends Component {
                 getYaxisConfig:this.getYaxisConfig,
                 chartTooltipHasTotal: this.getChartTooltiphasTotal(analysisPanel.state.energyRawData),
                 postNewConfig:(chartCmpObj) => {
+
 				        let newConfig = CommonFuns.merge(true, chartCmpObj);
 
-
                 if(analysisPanel.state.touType){
-                   newConfig.legend.title={
+                  if(analysisPanel.state.selectedChartType==='pie'){
+                    newConfig.legend.title={
+                      text:newConfig.series[0].data[0].name
+                    };
+                    newConfig.series[0].data=newConfig.series[0].data.map((item,i)=>{
+                      item.name=TOU_NAME[i];
+                      item.enableDelete=false;
+                      item.lockLegend=true;
+                      item.enableHide=false;
+
+                      return item;
+                    })
+                  }else{
+                  newConfig.legend.title={
                    text:newConfig.series[0].name
-                };
+                   };
                 newConfig.series = newConfig.series.map((serie, i)=>{
                   serie.name=TOU_NAME[i];
                   serie.enableDelete=false;
                   serie.lockLegend=true;
                   serie.enableHide=false;
                 return serie;
-              });              
+                 });  
+                  }
+            
             }
             return newConfig;
 
