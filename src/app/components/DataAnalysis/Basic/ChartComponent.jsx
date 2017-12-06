@@ -12,6 +12,9 @@ import GridComponent from '../../energy/GridComponent.jsx';
 import HeatMap from './heat_map.jsx';
 import ScatterPlot from './scatter_plot.jsx';
 import Bubble from './bubble.jsx';
+import CommonFuns from 'util/Util.jsx';
+
+const TOU_NAME=[I18N.EM.Peak,I18N.EM.Plain,I18N.EM.Valley];
 
 var analysisPanel=null;
 export default class ChartComponent extends Component {
@@ -292,7 +295,26 @@ export default class ChartComponent extends Component {
                 onDeleteButtonClick: this._onDeleteButtonClick,
                 onDeleteAllButtonClick: this._onDeleteAllButtonClick,
                 getYaxisConfig:this.getYaxisConfig,
-                chartTooltipHasTotal: this.getChartTooltiphasTotal(analysisPanel.state.energyRawData)
+                chartTooltipHasTotal: this.getChartTooltiphasTotal(analysisPanel.state.energyRawData),
+                postNewConfig:(chartCmpObj) => {
+				        let newConfig = CommonFuns.merge(true, chartCmpObj);
+
+
+                if(analysisPanel.state.touType){
+                   newConfig.legend.title={
+                   text:newConfig.series[0].name
+                };
+                newConfig.series = newConfig.series.map((serie, i)=>{
+                  serie.name=TOU_NAME[i];
+                  serie.enableDelete=false;
+                  serie.lockLegend=true;
+                  serie.enableHide=false;
+                return serie;
+              });              
+            }
+            return newConfig;
+
+          }
               };
               energyPart = <div style={{
                   flex: 1,

@@ -391,7 +391,7 @@ _onBubbleAxisChanged(){
                   },()=>{
                     MultiTimespanAction.clearMultiTimespan('both');
                     let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
-                    this.energyDataLoad(timeRanges, Step.Hourly, nodeOptions, relativeDateValue,null,DataUsageType.HeatMap);
+                    this.energyDataLoad(timeRanges, Step.Hourly, nodeOptions, relativeDateValue,null,DataUsageType.heatMap);
                   });
             }else if(chartType==='scatterplot'){
                 var xAxis=ScatterPlotStore.getXaxis(),
@@ -1650,7 +1650,8 @@ _onBubbleAxisChanged(){
     isCalendarInited: false,
     });
 
-  this.touDataLoad(timeRanges, step, tagOptions, relativeDate, weather,DataUsageType[this.state.selectedChartType],this.state.selectedChartType!=='pie');
+    this.energyDataLoad(timeRanges, step, nodeOptions, relativeDateValue, null,DataUsageType[this.state.selectedChartType],this.state.selectedChartType!=='pie');
+  // this.touDataLoad(timeRanges, step, nodeOptions, relativeDateValue, null,DataUsageType[this.state.selectedChartType],this.state.selectedChartType!=='pie');
   }
 
   routerWillLeave(nextLocation){
@@ -1853,7 +1854,7 @@ _onBubbleAxisChanged(){
                                                         this.setState({
                                                           touAnalysisShow:false
                                                         },()=>{
-                                                          this.touDataLoad();   
+                                                          this._onTouAnalysis();   
                                                         })                                   
                                                                                                                                
                                                     }}

@@ -176,6 +176,7 @@ export default class ChartBasicComponent extends Component {
     let wss = widgetStatus && JSON.parse(widgetStatus);
     if( wss && wss.length > 0 ) {
       let calcType = "";
+      
       for (var i = 0, len = wss.length; i < len; i++) {
         if (wss[i].WidgetStatusKey === "calendar") {
           if (wss[i].WidgetStatusValue === "hc") {
@@ -185,6 +186,9 @@ export default class ChartBasicComponent extends Component {
             calcType = "work";
             break;
           }
+        }else if(wss[i].WidgetStatusKey === "TouTariff"){
+          touType=wss[i].WidgetStatusValue==='true';
+          break;
         }
       }
       if(tagData.get('Calendars')) {

@@ -1119,6 +1119,7 @@ I18N.Message.M02011 = 'Viewing raw data is not supported for virtual tag.';
 I18N.Message.M02013 = 'This tag has been deleted and cannot be loaded.';
 I18N.Message.M02020 = 'Chart export  failed. Please click "View Data" and try again.';
 I18N.Message.M02021 = 'EXCEL export  failed. Please click "View Data" and try again.';
+I18N.Message.M02028 = '该数据点不支持峰平谷分析！';
 I18N.Message.M02104 = 'Unable to convert the media units of non-energy use group   ';
 I18N.Message.M02105 = 'Sorry. An error occurred and the pie chart cannot be drawn.  ';
 I18N.Message.M02106 = 'Sorry. An error occurred and the pie chart cannot be drawn.  ';
