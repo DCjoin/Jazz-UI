@@ -124,10 +124,10 @@ let ChartStatusStore = assign({}, PrototypeStore, {
     let map = {
       line: 1,
       column: 2,
-      stack: 4,
-      stacking: 4,
-      pie: 8,
-      rawdata: 16,
+      stack: 3,
+      stacking: 3,
+      pie: 4,
+      rawdata: 5,
       original: 16,
       heatmap:7,
       scatterplot:8,
@@ -139,7 +139,7 @@ let ChartStatusStore = assign({}, PrototypeStore, {
     let chartTypeMap = {
       1: 'line',
       2: 'column',
-      4: 'stack',
+      3: 'stack',
       // 8: 'pie'
       8: 'scatterplot',
       9: 'bubble',
@@ -150,7 +150,7 @@ let ChartStatusStore = assign({}, PrototypeStore, {
     let chartTypeMap = {
       1: 'line',
       2: 'column',
-      4: 'stack',
+      3: 'stack',
       // 8: 'pie',
       8: 'scatterplot',
       9: 'bubble',
@@ -182,7 +182,7 @@ let ChartStatusStore = assign({}, PrototypeStore, {
     series.forEach((item, index) => {
       if (item.id && map[item.id]) {
         item.visible = map[item.id].IsDisplay;
-        if (map[item.id].ChartType === '4' || map[item.id].ChartType === 4) {
+        if (map[item.id].ChartType === '3' || map[item.id].ChartType === 3) {
           item.type = 'column';
           item.stacking = 'normal';
         } else {

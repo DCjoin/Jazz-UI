@@ -398,14 +398,22 @@
   }
 }
 
-// .jazz-generate-solution-dialog{
-//   // .pop-viewableTextField>div>div{
-//   //   height:50px !important;
-//   // }
-//   .pop-viewableTextField label{
-//     top:26px !important;
-//   }
-//   .pop-viewableTextField hr{
-//     bottom:5px !important;
-//   }
-// }
+.tou-dialog{
+  &-error{
+    font-size:16px;
+    color:#626469;
+    display:flex;
+    &-chart{
+      font-size:16px;
+      color:#32ad3d;
+      &:hover{
+        cursor:pointer
+      }
+    }
+    &-tagname{
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+}

@@ -18,12 +18,12 @@ module.exports = {
         'Hour12' : 12
   },
   DataUsageType:{
-        'Line' : 1,
-        'Column' : 2,
-        'Stack' : 3,
-        'Pie' : 4,
-        'DataTable' : 5,
-        'HeatMap' : 6
+        'line' : 1,
+        'column' : 2,
+        'stack' : 3,
+        'pie' : 4,
+        'dataTable' : 5,
+        'heatMap' : 6
 
   }
 

@@ -59,6 +59,7 @@ import ScatterPlotStore from 'stores/DataAnalysis/scatter_plot_store.jsx';
 import ScatterPlotAction from 'actions/DataAnalysis/scatter_plot_action.jsx';
 import BubbleStore from 'stores/DataAnalysis/bubble_store.jsx';
 import BubbleAction from 'actions/DataAnalysis/bubble_action.jsx';
+import TouAnalysis from './tou_analysis.jsx';
 
 const DIALOG_TYPE = {
   SWITCH_WIDGET: "switchwidget",
@@ -104,6 +105,7 @@ class AnalysisPanel extends Component {
     this._initYaxisDialog = this._initYaxisDialog.bind(this);
     this._onYaxisSelectorDialogSubmit = this._onYaxisSelectorDialogSubmit.bind(this);
     this._handleCalendarChange = this._handleCalendarChange.bind(this);
+    this._handleTouChange = this._handleTouChange.bind(this);    
     this.routerWillLeave  = this.routerWillLeave.bind(this);
     this.getCurrentWidgetDto  = this.getCurrentWidgetDto.bind(this);
     this.getRemarck  = this.getRemarck.bind(this);
@@ -142,7 +144,9 @@ class AnalysisPanel extends Component {
       tagId:null,
       isViewName: true,
       weatherTagList:WeatherStore.getTagList(),
-      muliTagTipShow:false
+      muliTagTipShow:false,
+      touType:false,
+      touAnalysisShow:false
   }
 
   isMultiTime=false;
@@ -190,6 +194,10 @@ class AnalysisPanel extends Component {
 
   bubbleDataLoad(timeRanges, step, tagOptions,relativeDate) {
     EnergyAction.getBubbleData(BubbleStore.getXaxis(),BubbleStore.getYaxis(),BubbleStore.getArea(),timeRanges, step, tagOptions, relativeDate,this.props.widgetDto.Id);
+  }
+
+  touDataLoad(timeRanges, step, tagOptions, relativeDate, weatherOption,dataUsageType) {
+    EnergyAction.getTouData(timeRanges, step, tagOptions, relativeDate, weatherOption, this.props.widgetDto.Id,dataUsageType);
   }
 
   initEnergyStoreByBizChartType() {
@@ -282,6 +290,17 @@ _onBubbleAxisChanged(){
     if(invokeFromMultiTime!==null){
       this.isMultiTime=invokeFromMultiTime;
     }
+
+    if(this.state.touType && !invokeFromMultiTime){
+      this.setState({
+        touAnalysisShow:true
+      })
+      return;
+    }else{
+      this.setState({
+        touType:false
+      })
+    }
     // console.log(invokeFromMultiTime);
     let dateSelector = this.refs.subToolBar.refs.dateTimeSelector;
     let dateRange = dateSelector.getDateTime(),
@@ -372,7 +391,7 @@ _onBubbleAxisChanged(){
                   },()=>{
                     MultiTimespanAction.clearMultiTimespan('both');
                     let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
-                    this.energyDataLoad(timeRanges, Step.Hourly, nodeOptions, relativeDateValue,null,DataUsageType.HeatMap);
+                    this.energyDataLoad(timeRanges, Step.Hourly, nodeOptions, relativeDateValue,null,DataUsageType.heatMap);
                   });
             }else if(chartType==='scatterplot'){
                 var xAxis=ScatterPlotStore.getXaxis(),
@@ -722,6 +741,9 @@ _onBubbleAxisChanged(){
       }
 
       viewOption.DataUsageType=1; // Energy
+      if(this.state.touType){
+        viewOption.DataUsageType=DataUsageType[chartType]
+      }
 
       if (chartType === 'rawdata') {
         let dataOption = {
@@ -772,7 +794,8 @@ _onBubbleAxisChanged(){
       let params = {
         submitParams: submitParams,
         config: config,
-        calendar: this.state.calendarType
+        calendar: this.state.calendarType,
+        TouTariff:this.state.touType+''
       };
       if (this.state.yaxisConfig !== null && this.state.yaxisConfig.length>0) {
         params.yaxisConfig = this.state.yaxisConfig;
@@ -1107,7 +1130,7 @@ _onBubbleAxisChanged(){
     relativeDate:value,
     energyData:this.state.energyData==='initial'?'initial':null,
   },()=>{
-    if(refresh){this._onSearchDataButtonClick()}
+    if(refresh){this._onSearchDataButtonClick(null)}
   })
       }
 
@@ -1124,13 +1147,14 @@ _onBubbleAxisChanged(){
       relativeDate: 'Customerize',
       energyData:(this.state.energyData==='initial'?'initial':null)
     },()=>{
-      this._onSearchDataButtonClick()
+      this._onSearchDataButtonClick(null)
     });
       }
 
   }
 
   canShareDataWith(curChartType, nextChartType) {
+    if(this.state.touType) return false;
     if ((curChartType === 'line' || curChartType === 'column' || curChartType === 'stack') && (nextChartType === 'line' || nextChartType === 'column' || nextChartType === 'stack')) {
       return true;
     } else {
@@ -1194,6 +1218,14 @@ _onBubbleAxisChanged(){
     this.setState({
       calendarType: CalendarManager.getShowType()
     });
+  }
+
+  _handleTouChange(){
+    this.setState({
+      touType:!this.state.touType
+    },()=>{
+      this._onSearchDataButtonClick(null)
+    })
   }
 
   _onChartTypeChanged(e, selectedIndex, value){
@@ -1268,8 +1300,10 @@ _onBubbleAxisChanged(){
         initYaxisDialog:this._initYaxisDialog,
         onYaxisSelectorDialogSubmit:this._onYaxisSelectorDialogSubmit,
         handleCalendarChange:this._handleCalendarChange,
+        handleTouChange:this._handleTouChange,
         analysisPanel:this,
-        weatherTag:this.state.weatherTagList
+        weatherTag:this.state.weatherTagList,
+        touType:this.state.touType
       }
     }
     return(
@@ -1495,7 +1529,7 @@ _onBubbleAxisChanged(){
   setCalendarTypeFromWidget(widgetDto) {
   if (widgetDto && widgetDto.WidgetStatus && widgetDto.WidgetStatus !== "") {
     let wss = JSON.parse(widgetDto.WidgetStatus);
-    let calcType = "";
+    let calcType = "",touType=false;
     for (var i = 0, len = wss.length; i < len; i++) {
       if (wss[i].WidgetStatusKey === "calendar") {
         if (wss[i].WidgetStatusValue === "hc") {
@@ -1505,12 +1539,16 @@ _onBubbleAxisChanged(){
           calcType = "work";
           break;
         }
+      }else if(wss[i].WidgetStatusKey === "TouTariff"){
+        touType=wss[i].WidgetStatusValue === "true"?true:false;
+        break;
       }
     }
 
     CalendarManager.calendarShowType = calcType;
     this.setState({
-      calendarType: calcType
+      calendarType: calcType,
+      touType
     });
   }
   }
@@ -1590,6 +1628,34 @@ _onBubbleAxisChanged(){
     });
     ChartStatusAction.setWidgetDto(widgetDto, 'Energy', 'Energy', this.state.selectedChartType);
     this.setCalendarTypeFromWidget(widgetDto);
+  }
+
+  _onTouAnalysis(){
+    this.initEnergyStoreByBizChartType();
+    let  nodeOptions = AlarmTagStore.getSearchTagList();
+    let relativeDateValue = this.state.relativeDate;
+    let dateSelector = this.refs.subToolBar.refs.dateTimeSelector;
+    let dateRange = dateSelector.getDateTime(),
+        startDate = dateRange.start,
+        endDate = dateRange.end;
+    let timeRanges = MultipleTimespanStore.getSubmitTimespans();
+        if (timeRanges === null) {
+             timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
+           }
+
+    let step = this.state.step,
+    limitInterval = CommonFuns.getLimitInterval(timeRanges),
+    stepList = limitInterval.stepList;
+    if (stepList.indexOf(step) === -1) {
+    step = limitInterval.display;
+    }
+
+    this.setState({
+    isCalendarInited: false,
+    });
+
+    // this.energyDataLoad(timeRanges, step, nodeOptions, relativeDateValue, null,DataUsageType[this.state.selectedChartType],this.state.selectedChartType!=='pie');
+  this.touDataLoad(timeRanges, step, nodeOptions, relativeDateValue, null,DataUsageType[this.state.selectedChartType],this.state.selectedChartType!=='pie');
   }
 
   routerWillLeave(nextLocation){
@@ -1784,6 +1850,19 @@ _onBubbleAxisChanged(){
         {this.state.showLeaveDialog && this._renderLeaveDialog()}
         {this.state.showSaveDialog && this._renderSaveDialog()}
         {this.state.multiTagTipShow && this._renderMultiTagTip()}
+        {this.state.touAnalysisShow && <TouAnalysis onClose={()=>{this.setState({touAnalysisShow:false})}}
+                                                    isMultiTime={this.isMultiTime}
+                                                    chartType={this.state.selectedChartType}
+                                                    step={this.state.step}
+                                                    onSuccess={()=>{
+                                                        this.setState({
+                                                          touAnalysisShow:false
+                                                        },()=>{
+                                                          this._onTouAnalysis();   
+                                                        })                                   
+                                                                                                                               
+                                                    }}
+                                                    onChangeChartType={this._onChartTypeChanged}/>}
       </div>
     )
   }

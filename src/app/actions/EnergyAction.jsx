@@ -209,6 +209,56 @@ let EnergyAction = {
       }
     });
   },
+  getTouData(date, step, tagOptions, relativeDate, weatherOption, widgetId,dataUsageType,IncludeNavigatorData) {
+    var timeRange = date;
+
+    var tagIds = getTagIdsFromTagOptions(tagOptions);
+    var submitParams = {
+      tagIds: tagIds,
+      viewOption: {
+        DataUsageType: dataUsageType,
+        IncludeNavigatorData,
+        Step: step,
+        TimeRanges: timeRange
+      }
+    };
+    if (weatherOption && weatherOption.IncludeTempValue)
+      submitParams.viewOption.IncludeTempValue = true;
+    if (weatherOption && weatherOption.IncludeHumidityValue)
+      submitParams.viewOption.IncludeHumidityValue = true;
+
+    AppDispatcher.dispatch({
+      type: Action.GET_ENERGY_DATA_LOADING,
+      submitParams: submitParams,
+      tagOptions: tagOptions,
+      relativeDate: relativeDate,
+      widgetId,
+    });
+    // console.log('/Energy/GetTagsData');
+
+    Ajax.post('/energy/touTariff', {
+      avoidDuplicate:true,
+      tag:submitParams.tagIds,
+      params: submitParams,
+      commonErrorHandling: false,
+      success: function(energyData) {
+        AppDispatcher.dispatch({
+          type: Action.GET_ENERGY_DATA_SUCCESS,
+          energyData: energyData,
+          submitParams: submitParams,
+          widgetId,
+        });
+      },
+      error: function(err, res) {
+        AppDispatcher.dispatch({
+          type: Action.GET_ENERGY_DATA_ERROR,
+          errorText: res.text,
+          submitParams: submitParams,
+          widgetId,
+        });
+      }
+    });
+  },
   getPieCostData(date, step, selectedList, relativeDate) {
     var timeRange = date;
     var commodityList = selectedList.commodityList;

@@ -20,6 +20,7 @@ function getFromImmu(key) {
 
 const getId = getFromImmu('Id');
 const getName = getFromImmu('Name');
+const TOU_NAME=[I18N.EM.Peak,I18N.EM.Plain,I18N.EM.Valley];
 
 function getTagsDataByNode(props) {
 	props.nodes.map(flowRight(FolderAction.getTagsDataByNodeId, getId));
@@ -229,7 +230,48 @@ export default class AnalysisGenerateSolution extends Component {
         widgetStatus={widgetStatuss[nodeId]}
         widgetSeriesArray={widgetSeriesArrays[nodeId]}
         contentSyntax={contentSyntaxs[nodeId]}
-        chartType={getChartTypeStr(node)}/>
+        chartType={getChartTypeStr(node)}
+        postNewConfig={(chartCmpObj) => {
+				      let newConfig = CommonFuns.merge(true, chartCmpObj);
+
+              let wss = widgetStatuss[nodeId] && JSON.parse(widgetStatuss[nodeId]);
+              let touType=false;
+
+              if( wss && wss.length > 0 ) {
+      
+               for (var i = 0, len = wss.length; i < len; i++) {
+                 if (wss[i].WidgetStatusKey === "TouTariff") {
+                    touType=wss[i].WidgetStatusValue==='true';
+                    break;
+                }
+               }
+              }
+
+            if(touType){
+
+                  if(currentChartType==='pie'){
+                    newConfig.legend.title={
+                      text:newConfig.series[0].data[0].name
+                    };
+                    newConfig.series[0].data=newConfig.series[0].data.map((item,i)=>{
+                      item.name=TOU_NAME[i];
+                      return item;
+                    })
+                  }else{
+                   newConfig.legend.title={
+                    text:newConfig.series[0].name
+                    };
+                  newConfig.series = newConfig.series.map((serie, i)=>{
+                   serie.name=TOU_NAME[i]
+                    return serie;
+                   });   
+                  }
+
+                       
+            }
+            return newConfig;
+
+          }} />
     )
     }
 
