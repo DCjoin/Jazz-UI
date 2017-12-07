@@ -141,7 +141,7 @@ export default class AnalysisGenerateSolution extends Component {
     let nodeId = getId(node),
 		{tagDatas, widgetStatuss, widgetSeriesArrays, contentSyntaxs} = this.state;
     if(!tagDatas[nodeId]) return null
-    var currentChartType=getChartTypeStr(node);
+    var currentChartType=getChartTypeStr(widgetSeriesArrays[nodeId].getIn([0]));
     if(currentChartType==='heatmap'){
       var  startDate = CommonFuns.DataConverter.JsonToDateTime(tagDatas[nodeId].getIn(['TargetEnergyData',0,'Target','TimeSpan','StartTime']), true),
            endDate = CommonFuns.DataConverter.JsonToDateTime(tagDatas[nodeId].getIn(['TargetEnergyData',0,'Target','TimeSpan','EndTime']), true);
@@ -230,7 +230,7 @@ export default class AnalysisGenerateSolution extends Component {
         widgetStatus={widgetStatuss[nodeId]}
         widgetSeriesArray={widgetSeriesArrays[nodeId]}
         contentSyntax={contentSyntaxs[nodeId]}
-        chartType={getChartTypeStr(node)}
+        chartType={currentChartType}
         postNewConfig={(chartCmpObj) => {
 				      let newConfig = CommonFuns.merge(true, chartCmpObj);
 
