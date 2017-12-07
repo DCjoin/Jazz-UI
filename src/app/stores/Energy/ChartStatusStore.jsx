@@ -49,9 +49,11 @@ let ChartStatusStore = assign({}, PrototypeStore, {
     }
   },
   modifyChartType(chartType) {
+    if (_seriesStatus && _seriesStatus.length > 0) {
     _seriesStatus.forEach((item, index) => {
       item.ChartType = this.getNumByChartType(chartType);
     });
+    }
   },
   modifySingleStatus(id, name, value) {
     if (_seriesStatus && _seriesStatus.length > 0) {
