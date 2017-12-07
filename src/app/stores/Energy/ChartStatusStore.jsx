@@ -128,7 +128,7 @@ let ChartStatusStore = assign({}, PrototypeStore, {
       stacking: 3,
       pie: 4,
       rawdata: 5,
-      original: 16,
+      original: 6,
       heatmap:7,
       scatterplot:8,
       bubble:9
@@ -140,7 +140,10 @@ let ChartStatusStore = assign({}, PrototypeStore, {
       1: 'line',
       2: 'column',
       3: 'stack',
-      // 8: 'pie'
+      4: 'pie',
+      5: 'rawdata',
+      6: 'original',
+      7: 'heatmap',
       8: 'scatterplot',
       9: 'bubble',
     };
@@ -151,7 +154,10 @@ let ChartStatusStore = assign({}, PrototypeStore, {
       1: 'line',
       2: 'column',
       3: 'stack',
-      // 8: 'pie',
+      4: 'pie',
+      5: 'rawdata',
+      6: 'original',
+      7: 'heatmap',
       8: 'scatterplot',
       9: 'bubble',
     };

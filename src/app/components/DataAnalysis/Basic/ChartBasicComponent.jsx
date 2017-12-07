@@ -59,9 +59,14 @@ function assignStatus(config, _seriesStatus) {
   let newConfig = {...config};
   let chartTypeMap = {
     1: 'line',
-    2: 'column',
-    4: 'stack',
-    8: 'pie'
+      2: 'column',
+      3: 'stack',
+      4: 'pie',
+      5: 'rawdata',
+      6: 'original',
+      7: 'heatmap',
+      8: 'scatterplot',
+      9: 'bubble',
   };
   let series = newConfig.series;
   if (series && series[0]) {
@@ -89,7 +94,7 @@ function assignStatus(config, _seriesStatus) {
   series.forEach((item, index) => {
     if (item.id && map[item.id]) {
       item.visible = map[item.id].IsDisplay;
-      if (map[item.id].ChartType === '4' || map[item.id].ChartType === 4) {
+      if (map[item.id].ChartType === '3' || map[item.id].ChartType === 3) {
         item.type = 'column';
         item.stacking = 'normal';
       } else {
