@@ -154,14 +154,18 @@ app.get('/download-app', returnDownloadHtml);
 app.get('/sso/metadata', (req, res) => res.header('Content-Type','text/xml').send(sp.getMetadata()));
 
 // Access URL for implementing SP-init SSO
-app.post('/:lang/spinitsso-redirect', (req, res) => {
+
+app.get('/:lang/spinitsso-redirect', (req, res) => {
+  let acsURL = new URL(req.query.callbackURL);
   // Configure your endpoint for IdP-initiated / SP-initiated SSO
 
   const sp = ServiceProvider({
     privateKey: fs.readFileSync(__dirname + '/SE-SP.pem'),
     privateKeyPass: 'sesp!@#',
     requestSignatureAlgorithm: 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256',
-    metadata: fs.readFileSync(__dirname + '/metadata_sp.xml', "utf-8").replace('${SSO_ACS_URL}', req.query.callbackURL + "/sso/acs")
+
+    metadata: fs.readFileSync(__dirname + '/metadata_sp.xml', "utf-8").replace('${SSO_ACS_URL}', acsURL.origin + "/sso/acs")
+
   });
 
 console.log('***********');
@@ -182,6 +186,7 @@ console.log(GUARD_UI_HOST);
   // let spDomain = 'sp1';
   console.log(spDomain);
   console.log(redirectURL.href);
+
   return res.redirect(redirectURL.href + "&callbackURL=" + encodeURIComponent(req.query.callbackURL) + "&sysId=" + SYSID + "&spDomain=" + encodeURIComponent(spDomain));
 });
 
