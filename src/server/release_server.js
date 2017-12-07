@@ -182,6 +182,7 @@ console.log(GUARD_UI_HOST);
   redirectURL.pathname = req.params.lang + redirectURL.pathname;
   console.log(redirectURL.pathname);
   let spDomain = req.hostname.split(".")[0] ? req.hostname.split(".")[0] : "";
+  spDomain=spDomain==='dev'?'sp1':spDomain;
   //因为sso的dev环境存在问题，暂时都指向sp1环境
   // let spDomain = 'sp1';
   console.log(spDomain);
