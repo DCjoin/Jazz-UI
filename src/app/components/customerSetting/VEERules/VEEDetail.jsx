@@ -274,8 +274,18 @@ var VEEDetail = React.createClass({
       that = this,
       editBtnProps, customButton;
     if (this.props.infoTab) {
+      var checkJump=()=>{
+        var value=rule.get('JumpingRate');
+        var value_num=parseFloat(value),
+                      value_str=value+'';
+                      if(value==='check') return true
+                      if(value_num+''!==value_str) return true
+                      if(value_num<=0 || (value_str.indexOf('.')>-1 && value_str.length-value_str.indexOf('.')>2)) return true
+                      return false
+      }
       if (!rule.get('Name') || rule.get('Name').length > 200
-        || (!rule.get('CheckNegative') && !rule.get('CheckNull') && !rule.get('CheckZero'))
+        || (!rule.get('CheckNegative') && !rule.get('CheckNull') && rule.get('JumpingRate')===null)
+        || (rule.get('JumpingRate')!==null && checkJump())
         || !rule.get('StartTime')) {
         disabledSaveButton = true
       }

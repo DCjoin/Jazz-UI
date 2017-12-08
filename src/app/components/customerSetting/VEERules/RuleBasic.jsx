@@ -15,7 +15,7 @@ import { Checkbox } from 'material-ui';
 import VEEStore from '../../../stores/customerSetting/VEEStore.jsx';
 import Regex from '../../../constants/Regex.jsx';
 import ReceiversList from './ReceiversList.jsx';
-
+import {isNumeric} from 'util/Util.jsx';
 
 var RuleBasic = React.createClass({
 
@@ -27,10 +27,19 @@ var RuleBasic = React.createClass({
   //mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
   _handleRuleDetailClick: function(values) {
     if (this.props.formStatus !== formStatus.VIEW) {
+      if(values[0]==='JumpingRate'){
+        let {JumpingRate}=this.props.rule.toJS();
+        this.props.merge({
+          path: values[0],
+          value: typeof values[1]==='boolean'?(values[1]?'check':null):values[1]
+      })
+      }else{
       this.props.merge({
         path: values[0],
         value: values[1]
       })
+      }
+
     }
 
   },
@@ -45,7 +54,7 @@ var RuleBasic = React.createClass({
     return m.format('YYYY/MM/DD');
   },
   _renderRuleDetail: function() {
-    var {CheckNull, CheckNegative, CheckZero, EnableEstimation, NotifyConsecutiveHours, CheckNotify} = this.props.rule.toJS();
+    var {CheckNull, CheckNegative, EnableEstimation, NotifyConsecutiveHours, CheckNotify,JumpingRate} = this.props.rule.toJS();
     var isView = this.props.formStatus === formStatus.VIEW,
       checkNullStyle = (isView && !CheckNull) ? {
         display: 'none'
@@ -53,9 +62,9 @@ var RuleBasic = React.createClass({
       checkNegativeStyle = (isView && !CheckNegative) ? {
         display: 'none'
       } : null,
-      checkZeroStyle = (isView && !CheckZero) ? {
+      checkZeroStyle = (isView && !JumpingRate) ? {
         display: 'none'
-      } : null,
+      } : {flexDirection: 'column',alignItems:'initial',height: 'auto',padding: '8px 0'},
       nullRuleStyle = (!isView && !CheckNull) ? {
         display: 'none'
       } : null,
@@ -109,10 +118,11 @@ var RuleBasic = React.createClass({
         path = 'CheckNegative';
       } else {
         style = checkZeroStyle;
-        defaultChecked = CheckZero || false;
-        title = I18N.Setting.VEEMonitorRule.ZeroValue;
-        path = 'CheckZero';
+        defaultChecked = JumpingRate==='check' || JumpingRate!==null;
+        title = I18N.Setting.VEEMonitorRule.JumpValue;
+        path = 'JumpingRate';
       }
+      console.log(JumpingRate);
       detail.push(
         <li className="pop-user-detail-customer-subcheck-block-item" style={style} key={i}>
         <div className="pop-user-detail-customer-subcheck-block-item-left" id={i} onClick={this._handleRuleDetailClick.bind(this, [path, !defaultChecked])}>
@@ -133,6 +143,34 @@ var RuleBasic = React.createClass({
             {title}
           </label>
         </div>
+        {path==='JumpingRate' && defaultChecked && 
+                <div style={{margin:'19px 0 0 42px'}}>
+                  <div style={{fontSize:'14px',color:'#767a7a'}}>{I18N.Setting.VEEMonitorRule.JumpValueTip}</div>
+                  <ViewableTextField title={I18N.Setting.VEEMonitorRule.JumpValueTitle}
+                                     defaultValue={(JumpingRate==='check' || JumpingRate===null)?undefined:JumpingRate}
+                                     isViewStatus={isView}
+                                     floatingLabelStyle={{fontSize:'16px',color:'#9fa0a4'}}
+							                       floatingLabelFocusStyle={{fontSize:'12px'}}
+                                     floatingLabelShrinkStyle={{fontSize:'12px'}}
+                                     errorStyle={{
+										                    position: 'absolute',
+										                    fontSize: '11px',
+									                    	bottom:'-10px'
+								                    	}}
+                                     inputStyle={{fontSize:'16px',color:'#626469'}}
+                                     regexFn={(value)=>{
+                                       var value_num=parseFloat(value),
+                                           value_str=value+'';
+                                       if(value==='check' || value===null) return ''
+                                       if(value_num+''!==value_str) return I18N.Setting.VEEMonitorRule.JumpValueErrorMsg
+                                       if(value_num<=0 || (value_str.indexOf('.')>-1 && value_str.length-value_str.indexOf('.')>2)) return I18N.Setting.VEEMonitorRule.JumpValueErrorMsg
+                                       return ''
+                                     }} 
+                                     style={{marginTop:'10px',width:366}} 
+                                     didChanged={(value)=>{
+                                      this._handleRuleDetailClick([path,value])
+																 }}/>
+                </div>}
       </li>
       );
     }
@@ -230,7 +268,6 @@ var RuleBasic = React.createClass({
 </ul>
 </div>
       )
-
   },
   _renderRuleSetting: function() {
     var {rule} = this.props,
