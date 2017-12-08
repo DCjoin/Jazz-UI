@@ -417,3 +417,35 @@
     }
   }
 }
+
+.statistics{
+  &-tabs{
+    margin-top:20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    &-tab{
+      width:124px;
+      height:30px;
+      min-height: 30px;
+      line-height: 32px;
+      border-radius: 2px;
+      border:1px solid @medium-gray;
+      font-size: 14px;
+      color:@medium-gray;
+      text-align: center;
+      &:hover{
+        cursor: pointer
+      }
+    }
+    .selected{
+      border:1px solid @medium-green;
+      background-color: @medium-green;
+      color:#ffffff;
+      z-index:2;
+    }
+    .right{
+      margin-left: -2px;
+    }
+  }
+}
