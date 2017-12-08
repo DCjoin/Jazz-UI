@@ -172,6 +172,7 @@ var VEERules = React.createClass({
     }
     // TariffAction.setCurrentSelectedId(null);
     var rule = Immutable.fromJS({
+      JumpingRate:null,
       Interval: 1440,
       Delay: 0
     });
