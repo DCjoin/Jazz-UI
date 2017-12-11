@@ -15,6 +15,7 @@ import FromEndDateGroup from './FromEndDateGroup.jsx';
 import { formStatus } from '../../constants/FormStatus.jsx';
 import NewDialog from '../../controls/NewDialog.jsx';
 import Immutable from 'immutable';
+import Checkbox from 'material-ui/Checkbox';
 
 var calendarType = 0;
 var WorkDay = React.createClass({
@@ -128,7 +129,8 @@ var WorkDay = React.createClass({
       Type: calendarType,
       Version: null,
       Id: null,
-      Items: []
+      Items: [],
+      WorkDays:[1,2,3,4,5]
     };
     this.setState({
       selectedIndex: null,
@@ -143,7 +145,8 @@ var WorkDay = React.createClass({
   _isValid() {
     var isTitleValid = this.refs.workdayTitleId.isValid();
     var isDateValid = this.refs.workdayGroup.isValid();
-    return isTitleValid && isDateValid;
+    var workdays=this.state.selectedData.get('WorkDays');
+    return isTitleValid && isDateValid && workdays.size!==0;
   },
   _addWorkdayData: function() {
     var selectedData = this.state.selectedData;
@@ -237,10 +240,60 @@ var WorkDay = React.createClass({
       </div>
       );
   },
+  _renderDefaultWorkDay(isView){
+    var workdays=this.state.selectedData.get('WorkDays');
+    var workArr=[{
+      Id:1,
+      Label:I18N.Common.Date.Monday
+    },{
+      Id:2,
+      Label:I18N.Common.Date.Tuesday
+    },{
+      Id:3,
+      Label:I18N.Common.Date.Wednesday
+    },{
+      Id:4,
+      Label:I18N.Common.Date.Thursday
+    },{
+      Id:5,
+      Label:I18N.Common.Date.Friday
+    },{
+      Id:6,
+      Label:I18N.Common.Date.Saturday
+    },{
+      Id:0,
+      Label:I18N.Common.Date.Sunday
+    }]
+    return(<div style={{paddingBottom:'10px'}}>
+      <div style={{fontSize:'14px',color:'#464949',marginTop:'25px',marginBottom:'15px'}}>{I18N.Setting.Calendar.AdditionalDay}</div>
+
+      <div style={{display:'flex'}}>{isView?
+        workArr.map(work=>(
+        workdays.includes(work.Id)?<div style={{marginRight:'35px',fontSize:'14px',color:'#767a7a'}}>{work.Label}</div>:null))
+        :workArr.map(work=><Checkbox label={work.Label} iconStyle={{width:'16px',height:'16px',marginTop:'2px'}} labelStyle={{fontSize:'14px',color:'#505559',width:'30px'}} style={{marginRight:'35px',width:'60px'}} 
+                            checked={workdays.includes(work.Id)}
+                            onCheck={(e,isInputChecked)=>{
+                              if(isInputChecked){
+                                workdays=workdays.push(work.Id)
+                              }else{
+                                workdays=workdays.delete(workdays.findIndex(item=>item===work.Id))
+                              }
+                              this.setState({
+                                selectedData:this.state.selectedData.set('WorkDays',workdays)
+                              },()=>{
+                                this.setState({
+                                  enableSave: this._isValid()
+                                })
+                              })
+                            }}/>)
+                    }
+                    </div>
+    </div>)
+  },
   _renderContent: function(isView) {
     var me = this;
     let selectedData = me.state.selectedData;
-    var workdayText = (<div className='jazz-calendar-text'>{I18N.Setting.Calendar.DefaultWorkDay}</div>);
+    // var workdayText = (<div className='jazz-calendar-text'>{I18N.Setting.Calendar.DefaultWorkDay}</div>);
     var addWorkdayDataButton = null;
     var addWorkdayData = null;
     if (!isView) {
@@ -255,7 +308,7 @@ var WorkDay = React.createClass({
     var workdayGroup = <FromEndDateGroup ref='workdayGroup' type={calendarType} items={selectedData.get('Items')} isViewStatus={isView} onDeleteDateData={me._deleteWorkdayData} onDateChange={me._onDateChange} onTypeChange={me._onTypeChange}></FromEndDateGroup>;
     return (
       <div className={"jazz-calendar-content"}>
-        {workdayText}
+        {this._renderDefaultWorkDay(isView)}
         {addWorkdayData}
         {workdayGroup}
       </div>

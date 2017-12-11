@@ -299,6 +299,13 @@ I18N.Common.Date.September = '09月';
 I18N.Common.Date.October = '10月';
 I18N.Common.Date.November = '11月';
 I18N.Common.Date.December = '12月';
+I18N.Common.Date.Monday = '周一';
+I18N.Common.Date.Tuesday = '周二';
+I18N.Common.Date.Wednesday = '周三';
+I18N.Common.Date.Thursday = '周四';
+I18N.Common.Date.Friday = '周五';
+I18N.Common.Date.Saturday = '周六';
+I18N.Common.Date.Sunday = '周日';
 
 I18N.Common.Label = {};
 I18N.Common.Label.TimeConflict = '时间段冲突，请重新选择';
