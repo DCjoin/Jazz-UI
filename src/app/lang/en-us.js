@@ -2257,6 +2257,7 @@ I18N.Setting.KPI.Report.ExistAndCanNotReplaced = 'Named "{0}" template existed, 
 I18N.Setting.KPI.Report.ExistAndNoReference = 'Named "{0}" template existed, Replace anyway?';
 I18N.Setting.KPI.Report.ExistAndHaveReference = 'Named "{0}" template existed, Replace anyway?？';
 I18N.Setting.KPI.Report.SheetErrorText = 'Template replaced, please choose new sheet';
+I18N.Setting.KPI.Report.TouData= '峰平谷数据';
 
 I18N.Setting.KPI.Config = {};
 I18N.Setting.KPI.Config.BaseConfig = 'Basic setting';

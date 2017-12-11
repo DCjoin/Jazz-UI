@@ -49,6 +49,10 @@ const ReportAction = {
             AssociationOption: option
           },
           Type:type===1?1:null,
+          //4:峰平谷数据：求和，电，千瓦时数据
+          CalculationType:type===4?1:null,
+          CommodityId: type===4?1:null,
+          UomId: type===4?1:null,
           CustomerId: parseInt(cusomterId),
           IncludeAssociationName: true
         },
