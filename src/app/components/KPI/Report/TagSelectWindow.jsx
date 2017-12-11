@@ -17,6 +17,10 @@ import DataAnalysisStore from 'stores/DataAnalysis/DataAnalysisStore.jsx';
 var filters = null;
 
 var customerId;
+
+var getTouHierarchys=()=>{
+
+}
 let TagSelectWindow = React.createClass({
   //mixins: [Navigation, State],
   contextTypes:{
@@ -447,7 +451,8 @@ _renderDimTreeNode(nodeData){
       <div className='jazz-report-taglist-container-left'>
         <div className="jazz-report-taglist-tagselect" >
           {this.state.selectedDimNode===null && <div className="header">
-            <ProjectSelect width='250' hierarchyId={this.state.selectedHierId} customerId={customerId} onProjectSelected={this._onProjectSelect}/>
+            <ProjectSelect width='250' hierarchyId={this.state.selectedHierId} customerId={customerId} onProjectSelected={this._onProjectSelect} 
+                           filterFunc={this.props.type===4?(customer)=>customer.HasTouTariff:null}/>
             {!this.state.searchShow && <IconButton iconClassName="icon-search" iconStyle={{fontSize:"15px",color:'#0f0f0f'}} className="jazz-analysis-tag-search-icon" onTouchTap={this._onSearchShow}/>}
             {this.state.searchShow && <div className="jazz-analysis-tag-search-cancel" onClick={this._onSearchShow} style={{marginRight:'10px'}}>{I18N.Common.Button.Cancel2}</div>}
           </div>}
@@ -495,10 +500,13 @@ _renderDimTreeNode(nodeData){
         isRightLoading: false
       });
     }
-    if(this.props.hierarchyId){
-    DimAction.loadall(this.props.hierarchyId);
-  }
-    ReportAction.getTagData(customerId,this.props.hierarchyId, 2, null,this.props.type);
+
+        if(this.props.hierarchyId){
+            DimAction.loadall(this.props.hierarchyId);
+        }
+   
+
+    ReportAction.getTagData(customerId,this.props.hierarchyId, 2, null,this.props.Type);
     ReportStore.addTagListChangeListener(this._onTagListChange);
     ReportStore.addSelectedTagListChangeListener(this._onSelectedTagListChange);
   },

@@ -17,6 +17,7 @@ import PermissionCode from 'constants/PermissionCode.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
 import FontIcon from 'material-ui/FontIcon';
+import classNames from 'classnames';
 // import {GatherInfo} from '../../../../../mockData/DataAnalysis.js';
 var isMultiTime;
 var display_timeRanges=[],display_tagOptions=[];
@@ -38,12 +39,13 @@ function getTime(time){
   }
 }
 
+var displayValue=(value,uom)=>(value===null?'——':value+' '+uom)
 
 class ItemComponent extends Component{
   render(){
     return(
       <div style={assign({width:'100%'},this.props.style)}>
-        <div style={{fontSize:'14px',fontWeight:'600',color:'#626469',marginBottom:'7px',marginTop:'25px',paddingLeft:'10px'}}>
+        <div style={{fontSize:'14px',fontWeight:'600',color:'#626469',marginBottom:'7px',marginTop:'26px',paddingLeft:'10px'}}>
           {this.props.title}
         </div>
         {this.props.children}
@@ -117,6 +119,71 @@ TableRow.propTypes={
   style:React.PropTypes.string,
 }
 
+
+class SumTableRow extends Component{
+  render(){
+    var defaultStyle={
+      height:'36px',
+      minHeight:'36px',
+      fontSize:'12px',
+      border:'1px solid #e6e6e6',
+      borderTop:'none',
+      display:'flex',
+      alignItems:'center',
+      color:'#626469'
+    };
+    var style=assign({},defaultStyle,this.props.style);
+
+    var {tagName,
+         avg,
+         max,
+         min,
+         total}=this.props;
+    return(
+      <div style={style}>
+         <div style={{paddingLeft:'12px',paddingRight:'20px',flex:'1',whiteSpace: 'nowrap',textOverflow: 'ellipsis',overflow: 'hidden'}} 
+              title={tagName}>{tagName}</div>
+        <div style={{paddingRight:'20px',width:'110px',minWidth:'110px'}}>{avg}</div>
+        <div style={{paddingRight:'20px',width:'110px',minWidth:'110px'}}>{max}</div>
+        <div style={{paddingRight:'20px',width:'110px',minWidth:'110px'}}>{min}</div>
+        <div style={{paddingRight:'12px',width:'110px',minWidth:'110px'}}>{total}</div>
+      </div>
+    )
+  }
+}
+
+SumTableRow.propTypes={
+  tagName:React.PropTypes.string,
+  avg:React.PropTypes.string,
+  max:React.PropTypes.string,
+  min:React.PropTypes.string,
+  total:React.PropTypes.string,
+}
+
+class SumTableHeader extends Component{
+
+  render(){
+    var defaultStyle={
+      height:'29px',minHeight:'29px',lineHeight:'29px',border:'1px solid #e6e6e6',display:'flex',fontSize:'10px',color:'#626469',
+      borderTopLeftRadius: '2px',borderTopRightRadius: '2px'
+    };
+    var style=assign({},defaultStyle,this.props.style);
+    return(
+      <div style={style}>
+        <div style={{paddingLeft:'12px',paddingRight:'20px',flex:'1'}}>{this.props.name}</div>
+        <div style={{paddingRight:'20px',width:'110px',minWidth:'110px'}}>{I18N.Common.CaculationType.Avg}</div>
+        <div style={{paddingRight:'20px',width:'110px',minWidth:'110px'}}>{I18N.Common.CaculationType.Max}</div>
+        <div style={{paddingRight:'20px',width:'110px',minWidth:'110px'}}>{I18N.Common.CaculationType.Min}</div>
+        <div style={{paddingRight:'12px',width:'110px',minWidth:'110px'}}>{I18N.SumWindow.Sum}</div>
+      </div>
+    )
+  }
+}
+
+SumTableHeader.propTypes={
+  name:React.PropTypes.string,
+}
+
 const Model={
   "Basic":0,
   "Senior":1
@@ -146,19 +213,19 @@ export default class StatisticsDialog extends Component {
     var SumGroup=this.state.gatherInfo.SumGroup;
     if(isMultiTime){
       header={
-        columnName:I18N.SumWindow.TimeSpan,
-        typeName:I18N.SumWindow.Sum,
-        hasTime:false
+        name:I18N.SumWindow.TimeSpan,
       };
       content=SumGroup[0].Items.map((item,index)=>{
-        var {UomName,TimeRange,ItemGatherValue}=item;
+        var {UomName,TimeRange,ItemGatherValue,AvgValue,MaxValue,MinValue,SumValue}=item;
         var {StartTime,EndTime}=TimeRange;
         var j2d = CommonFuns.DataConverter.JsonToDateTime;
         var start=new Date(j2d(StartTime)),end=new Date(j2d(EndTime));
         let props={
-          columnValue:DataAnalysisStore.getDisplayDate(start,false)+I18N.Setting.DataAnalysis.To+DataAnalysisStore.getDisplayDate(end,true),
-          typeValue:ItemGatherValue+''+UomName,
-          time:null,
+          tagName:DataAnalysisStore.getDisplayDate(start,false)+<br/>+DataAnalysisStore.getDisplayDate(end,true),
+          avg:displayValue(AvgValue,UomName+'/'+step_config[this.props.analysisPanel.state.step]),
+          max:displayValue(MaxValue,UomName+'/'+step_config[this.props.analysisPanel.state.step]),
+          min:displayValue(MinValue,UomName+'/'+step_config[this.props.analysisPanel.state.step]),
+          total:displayValue(SumValue,UomName),
         };
         if(index===SumGroup[0].Items.length-1){
           props.style={
@@ -166,14 +233,11 @@ export default class StatisticsDialog extends Component {
             borderBottomLeftRadius: '2px'
           }
         }
-        return <TableRow {...props}/>
+        return <SumTableRow {...props}/>
       })
     }else {
       header={
-        columnName:I18N.SumWindow.Data,
-        typeName:I18N.SumWindow.Sum,
-        hasTime:false,
-        style:{'marginBottom':'none'}
+        name:I18N.SumWindow.Data,
       };
       content=SumGroup.map((sum,sunIndex)=>{
         var {CommodityId,UomName,Items,GatherValue}=sum;
@@ -184,11 +248,13 @@ export default class StatisticsDialog extends Component {
           </div>
         );
         var group=Items.map((item,index)=>{
-          var {TagName,UomName,ItemGatherValue}=item;
+          var {TagName,UomName,ItemGatherValue,AvgValue,MaxValue,MinValue,SumValue}=item;
           var props={
-            columnValue:TagName,
-            typeValue:ItemGatherValue+' '+UomName,
-            time:null,
+            tagName:TagName,
+            avg:displayValue(AvgValue,UomName+'/'+step_config[this.props.analysisPanel.state.step]),
+            max:displayValue(MaxValue,UomName+'/'+step_config[this.props.analysisPanel.state.step]),
+            min:displayValue(MinValue,UomName+'/'+step_config[this.props.analysisPanel.state.step]),
+            total:displayValue(SumValue,UomName),
           }
           if(index===Items.length-1 && sunIndex===SumGroup.length-1 && !GatherValue){
             props.style={
@@ -196,14 +262,16 @@ export default class StatisticsDialog extends Component {
               borderBottomLeftRadius: '2px'
             }
           }
-          return <TableRow {...props}/>
+          return <SumTableRow {...props}/>
         })
         if(GatherValue){
           group.push(
-            <TableRow columnValue={I18N.SumWindow.Sum}
-                      typeValue={GatherValue+' '+UomName}
-                      time={null}
-                      style={
+            <SumTableRow tagName={I18N.SumWindow.Sum}
+              avg={''}
+              max={''}
+              min={''}
+              total={GatherValue+' '+UomName}
+              style={
                         sunIndex===SumGroup.length-1?{borderBottomRightRadius: '2px',
                         borderBottomLeftRadius: '2px'}:{}
                       }/>
@@ -220,7 +288,7 @@ export default class StatisticsDialog extends Component {
     }
     return(
       <ItemComponent title={I18N.Setting.DataAnalysis.Sum}>
-        <TableHeader {...header}/>
+        <SumTableHeader {...header}/>
         {content}
       </ItemComponent>
     )
@@ -685,6 +753,37 @@ export default class StatisticsDialog extends Component {
     }
   }
 
+  _renderTab(){
+    return(
+      <div className="statistics-tabs">
+        <div className={classNames({
+              "statistics-tabs-tab": true,
+              "selected":this.state.showModel===Model.Basic,
+            })} onClick={()=>{
+                               this.setState({
+                                   showModel:Model.Basic,
+                                   gatherInfo:null
+                                 },()=>{
+                                   this.getGatherInfo(Model.Basic)
+                                 })
+            }}>{I18N.Setting.DataAnalysis.ByTag}</div>
+        <div className={classNames({
+              "statistics-tabs-tab": true,
+              "right":true,
+              "selected":this.state.showModel===Model.Senior,
+            })} onClick={()=>{
+                                 this.setState({
+                                   showModel:Model.Senior,
+                                   gatherInfo:null
+                                  }
+                                 ,()=>{
+                                   this.getGatherInfo(Model.Senior)
+                                 })
+            }}>{I18N.Setting.DataAnalysis.ByCalendar}</div>
+      </div>
+    )
+  }
+
   componentWillMount(){
     isMultiTime=MultipleTimespanStore.getSubmitTimespans()!==null;
   }
@@ -736,20 +835,19 @@ export default class StatisticsDialog extends Component {
         paddingTop:'0',
         lineHeight:'52px',
         marginBottom:'0',
-        paddingLeft:'10px',
-        marginLeft:'72px',
-        marginRight:'72px',
+        marginLeft:'24px',
+        marginRight:'24px',
         alignItems:'center'
       },
       content:{
-        marginLeft:'72px',
+        marginLeft:'24px',
         marginRight:'0',
         display: 'block',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent:'center',
         overflowY:'auto',
-        paddingRight:'72px'
+        paddingRight:'24px'
       },
       closeIcon:{
         fontSize:'15px',
@@ -774,7 +872,8 @@ export default class StatisticsDialog extends Component {
     return(
       <Dialog title={title} titleStyle={style.title} style={{position:'relative'}} closeIconStyle={{fontSize:'15px',lingHeight:'15px',height:'15px',margin:'0',color:'#505559'}} open={true}  modal={false} onRequestClose={this.props.onCloseDialog} contentStyle={style.content}>
         
-        {this.state.gatherInfo!==null && this.state.showModel===Model.Senior && <IconButton iconClassName="icon-left-switch" 
+        {SeniorDataAnalyseIsFull() && this.state.gatherInfo!==null && <div>{this._renderTab()}</div>}
+        {false && this.state.gatherInfo!==null && this.state.showModel===Model.Senior && <IconButton iconClassName="icon-left-switch" 
                     iconStyle={{fontSize:'43px',height:'43px',width:'43px',color:'#9fa0a4'}} 
                     style={{position:'absolute',left:'14px',padding:'0',top:'50%'}}
                     onClick={()=>{
@@ -785,7 +884,7 @@ export default class StatisticsDialog extends Component {
                                    this.getGatherInfo(Model.Basic)
                                  })}}/>}
         {content}
-        {this.state.gatherInfo!==null && this.state.showModel===Model.Basic && SeniorDataAnalyseIsFull() && <IconButton iconClassName="icon-right-switch" 
+        {false && this.state.gatherInfo!==null && this.state.showModel===Model.Basic && SeniorDataAnalyseIsFull() && <IconButton iconClassName="icon-right-switch" 
                     iconStyle={{fontSize:'43px',height:'43px',width:'43px',color:'#9fa0a4'}}
                     style={{position:'absolute',right:'14px',padding:'0',top:'50%'}}
                     onClick={()=>{

@@ -11,31 +11,49 @@ function getCustomerPrivilageById(customerId) {
 }
 
 function getCustomerById(customerId) {
-  return find(CurrentUserCustomerStore.getAll(), customer => customer.Id === customerId * 1 );
+  return find(CurrentUserCustomerStore.getAll(), customer =>customer.Id === customerId * 1);
 }
 
-function singleProjectMenuItems() {
+function singleProjectMenuItems(filterFunc) {
   if( !HierarchyStore.getBuildingList() || HierarchyStore.getBuildingList().length === 0 ) {
     return [];
   }
-  return [{
+  if(filterFunc){
+    return(HierarchyStore.getBuildingList().find(build=>filterFunc(build)))
+  }else{
+      return [{
       Id: -2,
       disabled: true,
       Name: I18N.Setting.KPI.Building
     }].concat(HierarchyStore.getBuildingList());
+  }
+
 }
-function groupProjectMenuItems(customerId) {
+function groupProjectMenuItems(customerId,filterFunc) {
   if( !CurrentUserCustomerStore.getAll() || CurrentUserCustomerStore.getAll().length === 0 || (getCustomerPrivilageById( customerId ) && !getCustomerPrivilageById( customerId ).get('WholeCustomer')) ) {
     return [];
   }
-  return [{
+  if(filterFunc){
+    return []
+  }else{
+      return [{
       Id: -1,
       disabled: true,
       Name: I18N.Kpi.GroupProject
     }].concat(getCustomerById(customerId));
+  }
+
 }
 
 export default class ProjectSelect extends Component {
+
+  componentDidMount(){
+    let menus=groupProjectMenuItems(this.props.customerId,this.props.filterFunc).concat(singleProjectMenuItems(this.props.filterFunc));
+    if(menus.find(menu=>menu.Id===this.props.hierarchyId)){}
+    else{
+      this.props.onProjectSelected(menus[0].Id)
+    }
+  }
 
   render(){
     return(
@@ -59,7 +77,7 @@ export default class ProjectSelect extends Component {
             didChanged={this.props.onProjectSelected}
             textField={'Name'}
             valueField={'Id'}
-            dataItems={groupProjectMenuItems(this.props.customerId).concat(singleProjectMenuItems())}/>
+            dataItems={groupProjectMenuItems(this.props.customerId,this.props.filterFunc).concat(singleProjectMenuItems(this.props.filterFunc))}/>
     )
   }
 }

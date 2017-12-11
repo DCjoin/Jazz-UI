@@ -2257,6 +2257,7 @@ I18N.Setting.KPI.Report.ExistAndCanNotReplaced = '名称为“{0}”模板已存
 I18N.Setting.KPI.Report.ExistAndNoReference = '名称为“{0}”模板已存在，确定覆盖替换吗？';
 I18N.Setting.KPI.Report.ExistAndHaveReference = '名称为“{0}”模板已被引用，确定覆盖替换吗？';
 I18N.Setting.KPI.Report.SheetErrorText = '模板已被替换，请选择新的模板Sheet';
+I18N.Setting.KPI.Report.TouData= '峰平谷数据';
 
 I18N.Setting.KPI.Config = {};
 I18N.Setting.KPI.Config.BaseConfig = '基本设置';
@@ -2324,6 +2325,8 @@ I18N.Setting.DataAnalysis.Max = '最大值数据';
 I18N.Setting.DataAnalysis.Total = '合计';
 I18N.Setting.DataAnalysis.Statistics = '统计';
 I18N.Setting.DataAnalysis.NoCanlendarConfig = '此数据点没有配置工作日非工作日';
+I18N.Setting.DataAnalysis.ByTag = '按数据点统计';
+I18N.Setting.DataAnalysis.ByCalendar = '按日历统计';
 I18N.Setting.DataAnalysis.TimeSpan = '时间';
 I18N.Setting.DataAnalysis.AddTimeSpanTip = '添加时间段，点击“统计”按钮进行数据获取';
 I18N.Setting.DataAnalysis.NotSupportIntervalAnalysis = '该数据点不支持分时统计';

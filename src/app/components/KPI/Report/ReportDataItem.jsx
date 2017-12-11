@@ -53,7 +53,7 @@ let ReportDataItem = React.createClass({
     }];
     var start = this.getRealTime(this.props.data.get('DataStartTime'));
     var end = this.getRealTime(this.props.data.get('DataEndTime'));
-    stepItems = this._getDisabledStepItems(this.props.data.get('DateType'), Immutable.fromJS(stepItems), start, end);
+    stepItems = this._getDisabledStepItems(this.props.data.get('DateType'), Immutable.fromJS(stepItems), start, end,this.props.data.get('ReportType'));
     return {
       showTagSelectDialog: false,
       stepItems: stepItems,
@@ -239,7 +239,7 @@ let ReportDataItem = React.createClass({
     }
     return step;
   },
-  _getDisabledStepItems(dateType, stepItems, startTime, endTime) {
+  _getDisabledStepItems(dateType, stepItems, startTime, endTime,reportType) {
     var list;
     var timeregion;
     if ((dateType === 0) || (dateType === 9) || (dateType === 10)) {
@@ -264,7 +264,8 @@ let ReportDataItem = React.createClass({
     }
     var order = [0, 1, 2, 5, 3, 4];
     for (var i = 0; i < order.length; i++) {
-      if (list.indexOf(order[i]) === -1) {
+      //增加 峰平谷数据 筛选步长
+      if (list.indexOf(order[i]) === -1 || (reportType===4 && order[i]<2)) {
         stepItems = stepItems.setIn([i, 'disabled'], true);
       } else {
         stepItems = stepItems.setIn([i, 'disabled'], false);
@@ -297,7 +298,7 @@ let ReportDataItem = React.createClass({
           endTime=d2j(moment([year,month,CommonFuns.getDaysOfMonth(month),24,0,0,0])._d);
     }
 
-    var stepItems = this._getDisabledStepItems(dateType, this.state.stepItems, customizedStart, customizedEnd);
+    var stepItems = this._getDisabledStepItems(dateType, this.state.stepItems, customizedStart, customizedEnd,this.state.data.get('ReportType'));
     for (var i = 0; i < stepItems.size; i++) {
       if (stepItems.getIn([i, 'payload']) === this.state.data.get('ExportStep') && !stepItems.getIn([i, 'disabled'])) {
         stepValue = this.state.data.get('ExportStep');
@@ -333,6 +334,15 @@ let ReportDataItem = React.createClass({
       });
     }
     this._handleSelectValueChange('ReportType', value);
+    if(value===4){
+      var stepItems=this.state.stepItems.map(item=>(item.get('payload')<2?item.set('disabled',true):item));
+      this.setState({
+        stepItems:stepItems
+      },()=>{
+        this._handleSelectValueChange('ExportStep', 2);//天步长  
+      })
+          
+    }
   },
   _handleSelectValueChange(name, value) {
     this._updateReportData(name, value);
@@ -496,6 +506,9 @@ let ReportDataItem = React.createClass({
     }, {
       payload: 1,
       text: I18N.EM.Report.Original
+    },{
+      payload: 4,
+      text: I18N.Setting.KPI.Report.TouData
     }];
     var dateTypeItems = [
       {
@@ -559,7 +572,7 @@ let ReportDataItem = React.createClass({
     dataSourceButton =<FlatButton secondary={true} style={{border:'1px solid #abafae',width:'150px'}} label={this.state.data.get('TagsList').size===0 ? I18N.EM.Report.SelectTag : I18N.EM.Report.EditTag} onClick={this._showTagsDialog}/>,
     dateTimeSelector = <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={this._onDateSelectorChanged} showTime={false}/>,
     diplayCom = null;
-    if (this.state.data.get('ReportType') === 0) {
+    if (this.state.data.get('ReportType')!==1) {
       var stepProps = {
         ref: 'stepId',
         dataItems: this.state.stepItems.toJS(),

@@ -2257,6 +2257,7 @@ I18N.Setting.KPI.Report.ExistAndCanNotReplaced = 'Named "{0}" template existed, 
 I18N.Setting.KPI.Report.ExistAndNoReference = 'Named "{0}" template existed, Replace anyway?';
 I18N.Setting.KPI.Report.ExistAndHaveReference = 'Named "{0}" template existed, Replace anyway?？';
 I18N.Setting.KPI.Report.SheetErrorText = 'Template replaced, please choose new sheet';
+I18N.Setting.KPI.Report.TouData= '峰平谷数据';
 
 I18N.Setting.KPI.Config = {};
 I18N.Setting.KPI.Config.BaseConfig = 'Basic setting';
@@ -2324,6 +2325,8 @@ I18N.Setting.DataAnalysis.Max = 'Maximum data';
 I18N.Setting.DataAnalysis.Total = 'Total';
 I18N.Setting.DataAnalysis.Statistics = 'Statistics';
 I18N.Setting.DataAnalysis.NoCanlendarConfig = 'No work-nonwork configuration for this tag';
+I18N.Setting.DataAnalysis.ByTag = '按数据点统计';
+I18N.Setting.DataAnalysis.ByCalendar = '按日历统计';
 I18N.Setting.DataAnalysis.TimeSpan = 'Timespan';
 I18N.Setting.DataAnalysis.AddTimeSpanTip = 'Add timespan, click "Statistics" to get data';
 I18N.Setting.DataAnalysis.NotSupportIntervalAnalysis = 'This tag does not support time-sharing statistics';
