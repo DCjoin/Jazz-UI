@@ -19,7 +19,7 @@ var YearMonthItem = React.createClass({
     };
   },
   _onDateChange: function(value, items, type) {
-    var m = moment(this.props.date);
+    var m = moment.utc(this.props.date);
     var d2j = CommonFuns.DataConverter.DatetimeToJson;
     if (type === 'Year') {
       let year = parseInt(items[value - 1].text);
@@ -82,7 +82,7 @@ var YearMonthItem = React.createClass({
     return monthItems;
   },
   render: function() {
-    var m = moment(this.props.date),
+    var m = moment.utc(this.props.date),
       year = m.get('year') - 2005 || 0,
       month = m.get('month') + 1 || 0;
     var yearItems = this._getYearItems(),
