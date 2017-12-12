@@ -265,7 +265,7 @@ var WorkDay = React.createClass({
       Label:I18N.Common.Date.Sunday
     }]
     return(<div style={{paddingBottom:'10px'}}>
-      <div style={{fontSize:'14px',color:'#464949',marginTop:'25px',marginBottom:'15px'}}>{I18N.Setting.Calendar.AdditionalDay}</div>
+      <div style={{fontSize:'14px',color:'#464949',marginTop:'25px',marginBottom:'15px'}}>{I18N.Setting.Calendar.WorkDay}</div>
 
       <div style={{display:'flex'}}>{isView?
         workArr.map(work=>(
