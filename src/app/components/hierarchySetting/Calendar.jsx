@@ -52,7 +52,8 @@ let CalendarDetail = React.createClass({
         var workdayItems = Items.filter(item => (item.get('Type') === 0)),
           holidayItems = Items.filter(item => (item.get('Type') === 1));
         var workday = null,
-          holiday = null;
+          holiday = null,
+          worktext='';
         var workArr=[{
               Id:1,
               Label:I18N.Common.Date.Monday
@@ -75,8 +76,12 @@ let CalendarDetail = React.createClass({
               Id:0,
               Label:I18N.Common.Date.Sunday
             }];
-        // workArr.map(work=>(
-        // workdays.includes(work.Id)?<div style={{marginRight:'35px',fontSize:'14px',color:'#767a7a'}}>{work.Label}</div>
+        workArr.forEach(work=>{
+          if(workdays.includes(work.Id)){
+            worktext+=work.Label+'、'
+          }
+        })
+        if(worktext!=='') worktext.slice(worktext.length-1,1);
         if (workdayItems && workdayItems.size > 0) {
           var workdayRight = workdayItems.map((item, i) => {
             return <div className='jazz-hierarchy-calendar-detail-item'>{me._getDisplay(item, true)}</div>;
@@ -99,7 +104,11 @@ let CalendarDetail = React.createClass({
         display = (<div>
 
           <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.HolidayCalendar + name}</div>
-          <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.DefaultWorkDay}</div>
+          <div className='jazz-hierarchy-calendar-detail-item' style={{display:'flex'}}>
+            <div style={{minWidth:'60px',width:'60px'}}>{I18N.Setting.Calendar.WorkDay+'：'}</div>
+            <div className='jazz-hierarchy-calendar-detail-item'style={{marginBottom:'0'}}>{worktext}</div>
+            </div>
+          <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.AdditionalDay}</div>
           {workday}
           {holiday}
         </div>);
