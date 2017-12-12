@@ -270,7 +270,7 @@ var WorkDay = React.createClass({
       <div style={{display:'flex'}}>{isView?
         workArr.map(work=>(
         workdays.includes(work.Id)?<div style={{marginRight:'35px',fontSize:'14px',color:'#767a7a'}}>{work.Label}</div>:null))
-        :workArr.map(work=><Checkbox label={work.Label} iconStyle={{width:'16px',height:'16px',marginTop:'2px'}} labelStyle={{fontSize:'14px',color:'#505559',width:'30px'}} style={{marginRight:'35px',width:'60px'}} 
+        :workArr.map(work=><Checkbox label={work.Label} iconStyle={{marginRight:'12px'}} labelStyle={{fontSize:'14px',color:'#505559',width:'30px'}} style={{marginRight:'35px',width:'60px'}} 
                             checked={workdays.includes(work.Id)}
                             onCheck={(e,isInputChecked)=>{
                               if(isInputChecked){

@@ -590,12 +590,14 @@ var Cost = React.createClass({
           value="simpleItem"
           label={I18N.Setting.Cost.FixedPrice}
           style={styles.leftradioButton}
+          iconStyle={{marginRight:'12px'}}
           disabled={isView}
           />
                 <RadioButton
           value="complexItem"
           label={I18N.Setting.Cost.ComplexPrice}
           style={styles.rightradioButton}
+          iconStyle={{marginRight:'12px'}}
           disabled={isView}
           />
               </RadioButtonGroup>

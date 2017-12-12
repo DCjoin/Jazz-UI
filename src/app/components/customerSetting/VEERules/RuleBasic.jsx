@@ -134,6 +134,7 @@ var RuleBasic = React.createClass({
           width: "auto",
           display: "block"
         }}
+        iconStyle={{marginRight:'12px'}}
         />
           <label
         title={title}
@@ -188,6 +189,7 @@ var RuleBasic = React.createClass({
         width: "auto",
         display: "block"
       }}
+      iconStyle={{marginRight:'12px'}}
       />
         <label
       title={I18N.Setting.VEEMonitorRule.NullValue}
