@@ -687,9 +687,9 @@ I18N.EM.Report.DuplicatedName = 'File is existed. Please rename and upload it ag
 I18N.EM.Report.NeedUploadTemplate = 'Please upload new template.';
 I18N.EM.Report.StepError = 'Select tag does not support step {0}, please select step {1}.';
 I18N.EM.Report.StepError2 = 'Selected tag does not support step {0} and has no supported step in current time range. Please modify tag or time range.';
-I18N.EM.Report.ExportFormat = 'Report Export Format';
+I18N.EM.Report.ExportFormat = 'Report Export Format（选填）';
 I18N.EM.Report.ExportFormatContent = '导出内容';
-I18N.EM.Report.Content = '内容';
+I18N.EM.Report.Content = '费用';
 I18N.EM.Report.ExportTagName = 'Export Data Name';
 I18N.EM.Report.ExportTimeLabel = 'Export Time Label';
 I18N.EM.Report.ExportStepError = 'There is unsupported step, please check it.';
@@ -2355,6 +2355,8 @@ I18N.Setting.DataAnalysis.Scatter.Formula = 'Formula';
 I18N.Setting.DataAnalysis.Bubble = {};
 I18N.Setting.DataAnalysis.Bubble.Area = 'Area';
 I18N.Setting.DataAnalysis.Tou = {};
+//以下四组文案组成一句错误提示
+//例如：该步长不支持峰谷平分析，请换个步长或切换堆积图。饼状图试试！
 I18N.Setting.DataAnalysis.Tou.NotSupport = '该{0}不支持峰平谷分析';
 I18N.Setting.DataAnalysis.Tou.ChangeStep = '请换个步长或切换';
 I18N.Setting.DataAnalysis.Tou.ChangeChartType = '请切换';
