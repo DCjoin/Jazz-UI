@@ -1630,10 +1630,10 @@ _onBubbleAxisChanged(){
     this.setCalendarTypeFromWidget(widgetDto);
   }
 
-  _onTouAnalysis(){
+  _onTouAnalysis(relativeDateValue=this.state.relativeDate){
     this.initEnergyStoreByBizChartType();
     let  nodeOptions = AlarmTagStore.getSearchTagList();
-    let relativeDateValue = this.state.relativeDate;
+    // let relativeDateValue = this.state.relativeDate;
     let dateSelector = this.refs.subToolBar.refs.dateTimeSelector;
     let dateRange = dateSelector.getDateTime(),
         startDate = dateRange.start,

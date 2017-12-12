@@ -186,7 +186,12 @@ export default class ChartComponent extends Component {
           dateRange = dateSelector.getDateTime(),
           startDate = dateRange.start,
           endDate = dateRange.end;
-    analysisPanel.setFitStepAndGetData(startDate, endDate, tagOptions, 'Customerize')
+    if(analysisPanel.state.touType){
+      analysisPanel._onTouAnalysis('Customerize')
+    }else{
+      analysisPanel.setFitStepAndGetData(startDate, endDate, tagOptions, 'Customerize')
+    }
+    
   }
 
   getChartTooltiphasTotal(data) {
