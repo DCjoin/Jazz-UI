@@ -1,6 +1,6 @@
 'use strict';
 import React, { Component }  from "react";
-import {find} from 'lodash-es';
+import {find,filter} from 'lodash-es';
 import HierarchyStore from 'stores/HierarchyStore.jsx';
 import CurrentUserCustomerStore from 'stores/CurrentUserCustomerStore.jsx';
 import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
@@ -19,7 +19,7 @@ function singleProjectMenuItems(filterFunc) {
     return [];
   }
   if(filterFunc){
-    return(HierarchyStore.getBuildingList().find(build=>filterFunc(build)))
+    return(HierarchyStore.getBuildingList().filter(build=>filterFunc(build)))
   }else{
       return [{
       Id: -2,
