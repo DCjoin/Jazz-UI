@@ -174,7 +174,7 @@ class SumTableHeader extends Component{
         <div style={{paddingRight:'20px',width:'110px',minWidth:'110px'}}>{I18N.Common.CaculationType.Avg}</div>
         <div style={{paddingRight:'20px',width:'110px',minWidth:'110px'}}>{I18N.Common.CaculationType.Max}</div>
         <div style={{paddingRight:'20px',width:'110px',minWidth:'110px'}}>{I18N.Common.CaculationType.Min}</div>
-        <div style={{paddingRight:'12px',width:'110px',minWidth:'110px'}}>{I18N.SumWindow.Sum}</div>
+        <div style={{paddingRight:'12px',width:'110px',minWidth:'110px'}}>{this.props.needTotal && I18N.SumWindow.Sum}</div>
       </div>
     )
   }
@@ -182,6 +182,7 @@ class SumTableHeader extends Component{
 
 SumTableHeader.propTypes={
   name:React.PropTypes.string,
+  needTotal:React.PropTypes.bool,
 }
 
 const Model={
@@ -214,6 +215,7 @@ export default class StatisticsDialog extends Component {
     if(isMultiTime){
       header={
         name:I18N.SumWindow.TimeSpan,
+        needTotal:true
       };
       content=SumGroup[0].Items.map((item,index)=>{
         var {UomName,TimeRange,ItemGatherValue,AvgValue,MaxValue,MinValue,SumValue}=item;
@@ -238,6 +240,7 @@ export default class StatisticsDialog extends Component {
     }else {
       header={
         name:I18N.SumWindow.Data,
+        needTotal:true
       };
       content=SumGroup.map((sum,sunIndex)=>{
         var {CommodityId,UomName,Items,GatherValue}=sum;
@@ -397,20 +400,20 @@ export default class StatisticsDialog extends Component {
       var header={},content;
     var AvgGroup=this.state.gatherInfo.AvgGroup;
     if(isMultiTime){
-      header={
-        columnName:I18N.SumWindow.TimeSpan,
-        typeName:I18N.Common.CaculationType.Avg,
-        hasTime:false
+       header={
+        name:I18N.SumWindow.TimeSpan,
       };
       content=AvgGroup.map((item,index)=>{
-        var {UomName,TimeRange,ItemGatherValue}=item;
+        var {UomName,TimeRange,ItemGatherValue,AvgValue,MaxValue,MinValue}=item;
         var {StartTime,EndTime}=TimeRange;
         var j2d = CommonFuns.DataConverter.JsonToDateTime;
         var start=new Date(j2d(StartTime)),end=new Date(j2d(EndTime));
         let props={
-          columnValue:DataAnalysisStore.getDisplayDate(start,false)+I18N.Setting.DataAnalysis.To+DataAnalysisStore.getDisplayDate(end,true),
-          typeValue:ItemGatherValue+' '+UomName,
-          time:null,
+          tagName:DataAnalysisStore.getDisplayDate(start,false)+<br/>+DataAnalysisStore.getDisplayDate(end,true),
+          avg:displayValue(AvgValue,UomName+'/'+step_config[this.props.analysisPanel.state.step]),
+          max:displayValue(MaxValue,UomName+'/'+step_config[this.props.analysisPanel.state.step]),
+          min:displayValue(MinValue,UomName+'/'+step_config[this.props.analysisPanel.state.step]),
+          total:'',
         };
         if(index===AvgGroup.length-1){
           props.style={
@@ -418,34 +421,34 @@ export default class StatisticsDialog extends Component {
             borderBottomLeftRadius: '2px'
           }
         }
-        return <TableRow {...props}/>
+        return <SumTableRow {...props}/>
       })
     }
     else {
       header={
-        columnName:I18N.SumWindow.Data,
-        typeName:I18N.Common.CaculationType.Avg,
-        hasTime:false
+        name:I18N.SumWindow.Data,
       };
       content=AvgGroup.map((item,index)=>{
-        var {UomName,TagName,ItemGatherValue}=item;
-        let props={
-          columnValue:TagName,
-          typeValue:ItemGatherValue+' '+UomName,
-          time:null,
-        };
+        var {UomName,TagName,ItemGatherValue,AvgValue,MaxValue,MinValue}=item;
+        var props={
+            tagName:TagName,
+            avg:displayValue(AvgValue,UomName+'/'+step_config[this.props.analysisPanel.state.step]),
+            max:displayValue(MaxValue,UomName+'/'+step_config[this.props.analysisPanel.state.step]),
+            min:displayValue(MinValue,UomName+'/'+step_config[this.props.analysisPanel.state.step]),
+            total:'',
+          }
         if(index===AvgGroup.length-1){
           props.style={
             borderBottomRightRadius: '2px',
             borderBottomLeftRadius: '2px'
           }
         }
-        return <TableRow {...props}/>
+        return <SumTableRow {...props}/>
       })
     }
     return(
       <ItemComponent title={I18N.Setting.DataAnalysis.Avg} style={{marginTop:'30px'}}>
-        <TableHeader {...header}/>
+        <SumTableHeader {...header}/>
         {content}
       </ItemComponent>
     )
@@ -557,13 +560,13 @@ export default class StatisticsDialog extends Component {
         hasTime:true
       };
       content=MaxGroup.map((item,index)=>{
-        var {UomName,TimeRange,ItemGatherValue,ItemTime}=item;
+        var {UomName,TimeRange,ItemGatherValue,ItemTime,MaxValue}=item;
         var {StartTime,EndTime}=TimeRange;
         var j2d = CommonFuns.DataConverter.JsonToDateTime;
         var start=new Date(j2d(StartTime)),end=new Date(j2d(EndTime));
         let props={
           columnValue:DataAnalysisStore.getDisplayDate(start,false)+I18N.Setting.DataAnalysis.To+DataAnalysisStore.getDisplayDate(end,true),
-          typeValue:ItemGatherValue+' '+UomName,
+          typeValue:MaxValue+' '+UomName,
           time:DataAnalysisStore.getDisplayDate(new Date(j2d(ItemTime)),false),
         };
         if(index===MaxGroup.length-1){
@@ -582,11 +585,11 @@ export default class StatisticsDialog extends Component {
         hasTime:true
       };
       content=MaxGroup.map((item,index)=>{
-        var {UomName,TagName,ItemGatherValue,ItemTime}=item;
+        var {UomName,TagName,ItemGatherValue,ItemTime,MaxValue}=item;
         var j2d = CommonFuns.DataConverter.JsonToDateTime;
         let props={
           columnValue:TagName,
-          typeValue:ItemGatherValue+' '+UomName,
+          typeValue:MaxValue+' '+UomName,
           time:getTime(new Date(j2d(ItemTime))),
         };
         if(index===MaxGroup.length-1){
