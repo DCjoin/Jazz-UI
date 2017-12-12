@@ -162,7 +162,8 @@ var RuleBasic = React.createClass({
                                        var value_num=parseFloat(value),
                                            value_str=value+'';
                                        if(value==='check' || value===null) return ''
-                                       if(value_num+''!==value_str) return I18N.Setting.VEEMonitorRule.JumpValueErrorMsg
+                                       {/*if(value_num+''!==value_str) return I18N.Setting.VEEMonitorRule.JumpValueErrorMsg*/}
+                                       if(!isNumeric(value) || value_str[value_str.length-1]==='.') return I18N.Setting.VEEMonitorRule.JumpValueErrorMsg;
                                        if(value_num<=0 || (value_str.indexOf('.')>-1 && value_str.length-value_str.indexOf('.')>2)) return I18N.Setting.VEEMonitorRule.JumpValueErrorMsg
                                        return ''
                                      }} 
