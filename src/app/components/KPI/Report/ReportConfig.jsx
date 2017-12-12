@@ -340,7 +340,8 @@ export default class ReportConfig extends Component {
       ReportType: 0,
       StartCell: '',
       TagsList: [],
-      TargetSheet: sheetNames !== null ? sheetNames[0] : null
+      TargetSheet: sheetNames !== null ? sheetNames[0] : null,
+      ContentTypes:[]
     };
   }
 

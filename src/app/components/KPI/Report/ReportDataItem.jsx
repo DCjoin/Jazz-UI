@@ -77,6 +77,10 @@ let ReportDataItem = React.createClass({
       return false;
     }
 
+     if (this.state.data.get('ContentTypes').size === 0) {
+      return false;
+    }
+
     if(this._getSheetItems()
         .map(item => item.payload)
         .indexOf(this.state.data.get('TargetSheet')) === -1) {
@@ -384,6 +388,17 @@ let ReportDataItem = React.createClass({
     this.setState({
       showTagSelectDialog: true
     });
+  },
+  _handleContentCheck(isCheck,content){
+    var contentType=this.state.data.get('ContentTypes');
+    if(isCheck){
+      contentType=contentType.push(content)
+    }else{
+      contentType=contentType.delete(contentType.findIndex(item=>item===content))
+    }
+    this.setState({
+      data:this.state.data.set('ContentTypes',contentType)
+    })
   },
   _renderTagSelectDialog() {
     if (!this.state.showTagSelectDialog) {
@@ -707,6 +722,13 @@ let ReportDataItem = React.createClass({
         <div className='jazz-report-data-container'>
           <ViewableDropDownMenu  {...targetSheetProps} style={{width: 300}}/>
         </div>
+        {this.state.data.get('ReportType')===4 && <div className='jazz-report-data-container'>
+          <span>{I18N.EM.Report.ExportFormatContent}</span>
+          <div className='jazz-report-data-checkbox'>
+            <Checkbox disabled={false} checked={this.state.data.get('ContentTypes').includes(1)} label={I18N.Setting.KPI.Group.Ranking.History.Value} onCheck={(e,isCheck)=>{this._handleContentCheck(isCheck,1)}}/>
+            <Checkbox disabled={false} checked={this.state.data.get('ContentTypes').includes(2)} label={I18N.EM.Report.Content} onCheck={(e,isCheck)=>{this._handleContentCheck(isCheck,2)}}/>
+          </div>
+        </div>}
         <div className='jazz-report-data-container'>
           <span>{I18N.EM.Report.ExportFormat}</span>
           <div className='jazz-report-data-checkbox'>
