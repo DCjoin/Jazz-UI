@@ -811,7 +811,7 @@ export default class StatisticsDialog extends Component {
     }
     else {
       seriesStatusArray.forEach((series,index)=>{
-        if(series.IsDisplay){
+        if(series.IsDisplay && index<tagOptions.length){
           display_tagOptions.push(tagOptions[index]);
         }
       })
