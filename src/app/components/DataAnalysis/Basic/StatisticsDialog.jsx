@@ -135,6 +135,7 @@ class SumTableRow extends Component{
     var style=assign({},defaultStyle,this.props.style);
 
     var {tagName,
+         otherName,
          avg,
          max,
          min,
@@ -142,7 +143,7 @@ class SumTableRow extends Component{
     return(
       <div style={style}>
          <div style={{paddingLeft:'12px',paddingRight:'20px',flex:'1',whiteSpace: 'nowrap',textOverflow: 'ellipsis',overflow: 'hidden'}} 
-              title={tagName}>{tagName}</div>
+              title={tagName}><div>{tagName}</div><div>{otherName}</div></div>
         <div style={{paddingRight:'20px',width:'110px',minWidth:'110px'}}>{avg}</div>
         <div style={{paddingRight:'20px',width:'110px',minWidth:'110px'}}>{max}</div>
         <div style={{paddingRight:'20px',width:'110px',minWidth:'110px'}}>{min}</div>
@@ -154,6 +155,7 @@ class SumTableRow extends Component{
 
 SumTableRow.propTypes={
   tagName:React.PropTypes.string,
+  otherName:React.PropTypes.string,
   avg:React.PropTypes.string,
   max:React.PropTypes.string,
   min:React.PropTypes.string,
@@ -223,7 +225,8 @@ export default class StatisticsDialog extends Component {
         var j2d = CommonFuns.DataConverter.JsonToDateTime;
         var start=new Date(j2d(StartTime)),end=new Date(j2d(EndTime));
         let props={
-          tagName:DataAnalysisStore.getDisplayDate(start,false)+<br/>+DataAnalysisStore.getDisplayDate(end,true),
+          tagName:DataAnalysisStore.getDisplayDate(start,false),
+          otherName:DataAnalysisStore.getDisplayDate(end,true),
           avg:displayValue(AvgValue,UomName+'/'+step_config[this.props.analysisPanel.state.step]),
           max:displayValue(MaxValue,UomName+'/'+step_config[this.props.analysisPanel.state.step]),
           min:displayValue(MinValue,UomName+'/'+step_config[this.props.analysisPanel.state.step]),
@@ -409,7 +412,8 @@ export default class StatisticsDialog extends Component {
         var j2d = CommonFuns.DataConverter.JsonToDateTime;
         var start=new Date(j2d(StartTime)),end=new Date(j2d(EndTime));
         let props={
-          tagName:DataAnalysisStore.getDisplayDate(start,false)+<br/>+DataAnalysisStore.getDisplayDate(end,true),
+          tagName:DataAnalysisStore.getDisplayDate(start,false),
+          otherName:DataAnalysisStore.getDisplayDate(end,true),
           avg:displayValue(AvgValue,UomName+'/'+step_config[this.props.analysisPanel.state.step]),
           max:displayValue(MaxValue,UomName+'/'+step_config[this.props.analysisPanel.state.step]),
           min:displayValue(MinValue,UomName+'/'+step_config[this.props.analysisPanel.state.step]),
