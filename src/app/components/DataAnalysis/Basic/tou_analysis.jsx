@@ -106,8 +106,8 @@ export default class TouAnalysis extends Component {
 
   _renderTagErrorDialog(){
     let actions = [
-			<NewFlatButton style={{marginLeft: 24,float:'right'}} label={I18N.Common.Button.Cancel2} onClick={this.props.onClose}/>,
-			<NewFlatButton primary label={I18N.Common.Button.Confirm} disabled={this.state.tags.size!==1} onClick={this._onConfirm.bind(this)} style={{float:'right'}}/>	
+			<NewFlatButton style={{marginLeft: 24,float:'right',border:'1px solid #9fa0a4',width:'80px',minWidth:'80px'}} label={I18N.Common.Button.Cancel2} onClick={this.props.onClose}/>,
+			<NewFlatButton primary label={I18N.Common.Button.Confirm} disabled={this.state.tags.size!==1} onClick={this._onConfirm.bind(this)} style={{float:'right',width:'80px',minWidth:'80px',lineHeight:'34px'}}/>	
 		];
     return(
       <NewDialog
@@ -115,7 +115,7 @@ export default class TouAnalysis extends Component {
           modal={true}
           actions={actions}
           titleStyle={{marginBottom:'0',height:'16px',lineHeight:'16px'}}
-          contentStyle={{marginBottom:'40px'}}
+          actionsContainerStyle={{margin:'16px 24px 16px 0'}}
           >
           <div className="tou-dialog-error" style={{flexDirection:'column'}}>
             {I18N.Setting.DataAnalysis.Tou.NotSupportMulti}
