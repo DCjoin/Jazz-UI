@@ -143,17 +143,8 @@ export default class ChartComponent extends Component {
   }
   if(analysisPanel.state.touType){
       scroller.mouseUpHandler=()=>{
-        console.log('mouseUpHandler');
         tou_resize=true;
   };
-  scroller.mouseDownHandler=()=>{
-        console.log('mouseDownHandler')
-  
-  }
-    scroller.mouseMoveHandler=()=>{
-        console.log('mouseMoveHandler')
-  
-  }
   }
 
 
