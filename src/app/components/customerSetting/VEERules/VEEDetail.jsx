@@ -23,6 +23,7 @@ import VEEStore from 'stores/customerSetting/VEEStore.jsx';
 
 import RuleBasic from './RuleBasic.jsx';
 import MonitorTag from './MonitorTag.jsx';
+import {isNumeric} from 'util/Util.jsx';
 
 
 class ScanDialog extends Component {
@@ -279,7 +280,7 @@ var VEEDetail = React.createClass({
         var value_num=parseFloat(value),
                       value_str=value+'';
                       if(value==='check') return true
-                      if(value_num+''!==value_str) return true
+                      if(!isNumeric(value) || value_str[value_str.length-1]==='.') return true
                       if(value_num<=0 || (value_str.indexOf('.')>-1 && value_str.length-value_str.indexOf('.')>2)) return true
                       return false
       }

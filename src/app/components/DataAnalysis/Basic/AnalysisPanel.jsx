@@ -77,6 +77,10 @@ function isFullBasicAnalysis() {
   return privilegeUtil.isFull(PermissionCode.BASIC_DATA_ANALYSE, CurrentUserStore.getCurrentPrivilege());
 }
 
+function isTouSupportedChartType(type){
+  return type==='column' || type==='stack' || type==='pie'
+}
+
 
 class AnalysisPanel extends Component {
 
@@ -1188,7 +1192,8 @@ _onBubbleAxisChanged(){
       EnergyAction.setChartType(nextChartType);
       this.setState({
         selectedChartType: nextChartType,
-        energyData: nextChartType==='scatterplot' || nextChartType==='bubble'?'initial':null
+        energyData: nextChartType==='scatterplot' || nextChartType==='bubble'?'initial':null,
+        touType:(!isTouSupportedChartType(nextChartType))?false:this.state.touType
       }, ()=> {
         this._onSearchDataButtonClick();
       });
@@ -1232,6 +1237,8 @@ _onBubbleAxisChanged(){
     ScatterPlotAction.clearAxis();
     BubbleAction.clearAxis();
     this._onSearchBtnItemTouchTap(value)
+
+    
   }
 
   _heatMapValid(){
@@ -1630,10 +1637,10 @@ _onBubbleAxisChanged(){
     this.setCalendarTypeFromWidget(widgetDto);
   }
 
-  _onTouAnalysis(){
+  _onTouAnalysis(relativeDateValue=this.state.relativeDate){
     this.initEnergyStoreByBizChartType();
     let  nodeOptions = AlarmTagStore.getSearchTagList();
-    let relativeDateValue = this.state.relativeDate;
+    // let relativeDateValue = this.state.relativeDate;
     let dateSelector = this.refs.subToolBar.refs.dateTimeSelector;
     let dateRange = dateSelector.getDateTime(),
         startDate = dateRange.start,

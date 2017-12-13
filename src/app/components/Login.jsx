@@ -18,7 +18,7 @@ import CurrentUserAction from 'actions/CurrentUserAction.jsx';
 import LoginAction from 'actions/LoginActionCreator.jsx';
 import LoginStore from 'stores/LoginStore.jsx';
 
-const CAN_TRIAL_SP_NAME = ['dev', 'sp1', 'www'];
+const CAN_TRIAL_SP_NAME = ['dev', 'sp1', 'www','localhost:8080'];
 
 var w = window;
 var d = document;
@@ -718,7 +718,7 @@ const INLINE_BLOCK_SWITCH_STYLE = {
 	style: {
 		width: 'auto',
 		display: 'inline-block',
-		marginRight: 30,
+		marginRight: 40,
 	},
 	labelStyle: {
 		wordBreak: 'keep-all',
@@ -726,10 +726,7 @@ const INLINE_BLOCK_SWITCH_STYLE = {
 		color:'#9fa0a4'
 	},
 	iconStyle:{
-		width:'16px',
-		height:'16px',
-		marginRight:'10px',
-		marginTop:'2px',
+		marginRight:'12px',
 		color:'#9fa0a4'
 	}
 };
@@ -819,7 +816,9 @@ class TrialDialog extends Component {
 	        },
 	        label: I18N.Common.Button.Apply,
 					style:{
-						float:'right'
+						float:'right',
+						width:'80px',
+						minWidth:'80px'
 					}
 	      },
 	      cancelProps = {
@@ -827,10 +826,12 @@ class TrialDialog extends Component {
 	        onClick: this.props.onCancel,
 	        label: I18N.Common.Button.Cancel2,
 	        style: {
-						marginLeft: 20,
+						marginLeft: 16,
 						border:'1px solid #9fa0a4',
 						float:'right',
-						lineHeight:'35px'
+						lineHeight:'35px',
+						width:'80px',
+						minWidth:'80px'
 	        }
 	      },
 	      actions = [
@@ -841,9 +842,9 @@ class TrialDialog extends Component {
 		return (
 			<Dialog wrapperStyle={{width: 640}} open={this.props.open} actions={actions} 
 							title={'申请试用'} 
-							titleStyle={{height:50,lineHeight:'50px',margin:0,padding:'0 0 0 30px',fontSize:'16px',color:'#0f0f0f',fontWeight:'600',backgroundColor:'#f7f7f7'}}
-							contentStyle={{overflowY: 'auto', height: 'calc(100% - 129px)', margin: '0 0 0 30px',paddingTop:'24px'}}
-							actionsContainerStyle={{margin:'30px'}}>
+							titleStyle={{height:50,lineHeight:'50px',margin:0,padding:'0 0 0 24px',fontSize:'16px',color:'#0f0f0f',fontWeight:'600',backgroundColor:'#f7f7f7'}}
+							contentStyle={{overflowY: 'auto', height: 'calc(100% - 129px)', margin: '0 0 0 24px',paddingTop:'24px'}}
+							actionsContainerStyle={{margin:'16px'}}>
 				<div className='jazz-trial-info-block'>
 					<header className='jazz-trial-info-block-title'>{'申请人信息'}</header>
 					<div className='jazz-trial-info-field'>
@@ -906,7 +907,7 @@ class TrialDialog extends Component {
 						<RadioButtonGroup valueSelected={Industry} onChange={(e, v) => {
 							this._updateInfo('Industry', v)
 						}}>
-						  <RadioButton {...INLINE_BLOCK_SWITCH_STYLE} style={{width: 'auto',display: 'inline-block',width:108}} value={1} label={'轻工'} />
+						  <RadioButton {...INLINE_BLOCK_SWITCH_STYLE} value={1} label={'轻工'} />
 						  <RadioButton {...INLINE_BLOCK_SWITCH_STYLE} value={2} label={'建筑'} />
 						</RadioButtonGroup>
 					</div>
@@ -915,7 +916,7 @@ class TrialDialog extends Component {
 						<RadioButtonGroup valueSelected={CustomerType} onChange={(e, v) => {
 							this._updateInfo('CustomerType', v)
 						}}>
-						  <RadioButton {...INLINE_BLOCK_SWITCH_STYLE} style={{width: 'auto',display: 'inline-block',width:108}} value={1} label={'集团客户'} />
+						  <RadioButton {...INLINE_BLOCK_SWITCH_STYLE} value={1} label={'集团客户'} />
 						  <RadioButton {...INLINE_BLOCK_SWITCH_STYLE} value={2} label={'非集团客户'} />
 						</RadioButtonGroup>
 					</div>
