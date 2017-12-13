@@ -77,7 +77,7 @@ let ReportDataItem = React.createClass({
       return false;
     }
 
-     if (this.state.data.get('ContentTypes').size === 0) {
+     if (this.state.data.get('ReportType')===4 && this.state.data.get('ContentTypes').size === 0) {
       return false;
     }
 
