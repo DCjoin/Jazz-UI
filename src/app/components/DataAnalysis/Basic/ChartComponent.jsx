@@ -16,6 +16,7 @@ import CommonFuns from 'util/Util.jsx';
 
 const TOU_NAME=[I18N.EM.Peak,I18N.EM.Plain,I18N.EM.Valley];
 
+var tou_resize=false;
 var analysisPanel=null;
 export default class ChartComponent extends Component {
 
@@ -137,8 +138,15 @@ export default class ChartComponent extends Component {
     startTime.setMinutes(0, 0, 0);
     endTime = new Date(end);
     endTime.setMinutes(0, 0, 0);
-    type = 'move';
+    type = tou_resize?'resize':'move';
+    tou_resize=false;
   }
+  if(analysisPanel.state.touType){
+      scroller.mouseUpHandler=()=>{
+        tou_resize=true;
+  };
+  }
+
 
   if (startTime > endTime) {
     startTime = new Date(start);
@@ -173,7 +181,9 @@ export default class ChartComponent extends Component {
     analysisPanel.setState({
       relativeDate: 'Customerize'
     });
-
+  
+  console.log(type);
+  console.log(this.refs.chart.navCache);
   if (type === 'resize' || this.refs.chart.navCache === false) {
     this._onNavigatorChangeLoad();
   }

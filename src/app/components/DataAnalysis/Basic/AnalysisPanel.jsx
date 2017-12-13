@@ -296,10 +296,13 @@ _onBubbleAxisChanged(){
     }
 
     if(this.state.touType && !invokeFromMultiTime){
+      if(AlarmTagStore.getSearchTagList().length>0){
       this.setState({
         touAnalysisShow:true
       })
       return;
+      }
+
     }else{
       this.setState({
         touType:false
@@ -1660,10 +1663,19 @@ _onBubbleAxisChanged(){
 
     this.setState({
     isCalendarInited: false,
-    });
+  });
+  
+  if(step!==this.state.step){
+    this.setState({
+      step,
+      touAnalysisShow:true
+    })
+  }else{
+     this.touDataLoad(timeRanges, step, nodeOptions, relativeDateValue, null,DataUsageType[this.state.selectedChartType],this.state.selectedChartType!=='pie');
+  }
 
     // this.energyDataLoad(timeRanges, step, nodeOptions, relativeDateValue, null,DataUsageType[this.state.selectedChartType],this.state.selectedChartType!=='pie');
-  this.touDataLoad(timeRanges, step, nodeOptions, relativeDateValue, null,DataUsageType[this.state.selectedChartType],this.state.selectedChartType!=='pie');
+ 
   }
 
   routerWillLeave(nextLocation){

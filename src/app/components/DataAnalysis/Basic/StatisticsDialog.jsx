@@ -630,7 +630,7 @@ export default class StatisticsDialog extends Component {
       };
 
       content=MaxGroup.map((item,index)=>{
-        var {CommodityId,UomName,TimeRange,HodidayMaxValue,HolidayTimes,WorkdayMaxValue,WorkdayTimes,IsConfigCalendar}=item;
+        var {CommodityId,UomName,TimeRange,HolidayMaxValue,HolidayTimes,WorkdayMaxValue,WorkdayTimes,IsConfigCalendar}=item;
         var commodity=CommonFuns.getCommodityById(CommodityId).Comment;
         var {StartTime,EndTime}=TimeRange;
         var j2d = CommonFuns.DataConverter.JsonToDateTime;
@@ -648,7 +648,7 @@ export default class StatisticsDialog extends Component {
           group=WorkdayTimes.map(workday=>(
             <TableRow columnValue={getTime(new Date(j2d(workday)))+" ("+I18N.Setting.Calendar.WorkDay+')'} typeValue={WorkdayMaxValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:WorkdayMaxValue}/>
           )).concat(HolidayTimes.map(holiday=>(
-            <TableRow columnValue={getTime(new Date(j2d(holiday)))+" ("+I18N.Setting.Calendar.Holiday+')'} typeValue={HodidayMaxValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:HodidayMaxValue}/>
+            <TableRow columnValue={getTime(new Date(j2d(holiday)))+" ("+I18N.Setting.Calendar.Holiday+')'} typeValue={HolidayMaxValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:HolidayMaxValue}/>
           )))
         
         }
@@ -668,7 +668,7 @@ export default class StatisticsDialog extends Component {
       };
 
       content=MaxGroup.map((item,index)=>{
-        var {CommodityId,TagName,UomName,HodidayMaxValue,HolidayTimes,WorkdayMaxValue,WorkdayTimes,IsConfigCalendar}=item;
+        var {CommodityId,TagName,UomName,HolidayMaxValue,HolidayTimes,WorkdayMaxValue,WorkdayTimes,IsConfigCalendar}=item;
         var commodity=CommonFuns.getCommodityById(CommodityId).Comment;
          var j2d = CommonFuns.DataConverter.JsonToDateTime;
         var title=(
@@ -686,7 +686,7 @@ export default class StatisticsDialog extends Component {
           group=WorkdayTimes.map(workday=>(
             <TableRow columnValue={getTime(new Date(j2d(workday)))+" ("+I18N.Setting.Calendar.WorkDay+')'} typeValue={WorkdayMaxValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:WorkdayMaxValue}/>
           )).concat(HolidayTimes.map(holiday=>(
-            <TableRow columnValue={getTime(new Date(j2d(holiday)))+" ("+I18N.Setting.Calendar.Holiday+')'} typeValue={HodidayMaxValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:HodidayMaxValue}/>
+            <TableRow columnValue={getTime(new Date(j2d(holiday)))+" ("+I18N.Setting.Calendar.Holiday+')'} typeValue={HolidayMaxValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:HolidayMaxValue}/>
           )))
         
         }
@@ -811,7 +811,7 @@ export default class StatisticsDialog extends Component {
     }
     else {
       seriesStatusArray.forEach((series,index)=>{
-        if(series.IsDisplay){
+        if(series.IsDisplay && index<tagOptions.length){
           display_tagOptions.push(tagOptions[index]);
         }
       })
