@@ -296,10 +296,13 @@ _onBubbleAxisChanged(){
     }
 
     if(this.state.touType && !invokeFromMultiTime){
+      if(AlarmTagStore.getSearchTagList().length>0){
       this.setState({
         touAnalysisShow:true
       })
       return;
+      }
+
     }else{
       this.setState({
         touType:false
