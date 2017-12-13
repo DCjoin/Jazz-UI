@@ -843,7 +843,7 @@ class TrialDialog extends Component {
 			<Dialog wrapperStyle={{width: 640}} open={this.props.open} actions={actions} 
 							title={'申请试用'} 
 							titleStyle={{height:50,lineHeight:'50px',margin:0,padding:'0 0 0 24px',fontSize:'16px',color:'#0f0f0f',fontWeight:'600',backgroundColor:'#f7f7f7'}}
-							contentStyle={{overflowY: 'auto', height: 'calc(100% - 129px)', margin: '0 0 0 24px',paddingTop:'24px'}}
+							contentStyle={{overflowY: 'auto', height: 'calc(100% - 129px)', margin: '0',paddingTop:'24px',paddingLeft:'24px'}}
 							actionsContainerStyle={{margin:'16px'}}>
 				<div className='jazz-trial-info-block'>
 					<header className='jazz-trial-info-block-title'>{'申请人信息'}</header>

@@ -433,7 +433,8 @@ _onBubbleAxisChanged(){
   }
   _onTagChanged(){
     this.setState({
-      errorObj:null
+      errorObj:null,
+      touType:AlarmTagStore.getSearchTagList().length>1?false:this.state.touType
     },()=>{
       if(this.state.selectedChartType==='heatmap' && this.checkMultiTag()){
         this.setState({
