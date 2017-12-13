@@ -147,15 +147,15 @@ export default class TouAnalysis extends Component {
   render(){
     var {chartType,step,isMultiTime,onSuccess}=this.props;
     var content;
-    if(!checkSupportTag()){
+    if(isMultiTime){
+      content=this._renderMultiTimeDialog()
+    }else if(!checkSupportTag()){
       content=this._renderTagErrorDialog()
     }else if(!checkSupportChartType(chartType)){
       content=this._renderChartTypeErrorDialog()
     }else if(!checkSupportStep(chartType,step)){
       content=this._renderStepErrorDialog()
-    }else  if(isMultiTime){
-      content=this._renderMultiTimeDialog()
-    }else{
+    }else  {
       content=null;
       onSuccess();
     }
