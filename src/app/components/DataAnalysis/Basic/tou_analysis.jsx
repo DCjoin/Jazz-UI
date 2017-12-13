@@ -56,6 +56,8 @@ export default class TouAnalysis extends Component {
           modal={false}
           isOutsideClose={false}
           onRequestClose={this.props.onClose}
+          titleStyle={{marginBottom:'0',height:'16px',lineHeight:'16px'}}
+          actionsContainerStyle={{display:'none'}}
           contentStyle={{marginBottom:'40px'}}
           >
           <div className="tou-dialog-error">
@@ -77,6 +79,8 @@ export default class TouAnalysis extends Component {
           modal={false}
           isOutsideClose={false}
           onRequestClose={this.props.onClose}
+          titleStyle={{marginBottom:'0',height:'16px',lineHeight:'16px'}}
+          actionsContainerStyle={{display:'none'}}
           contentStyle={{marginBottom:'40px'}}
           >
           <div className="tou-dialog-error">
@@ -110,6 +114,7 @@ export default class TouAnalysis extends Component {
           open={true}
           modal={true}
           actions={actions}
+          titleStyle={{marginBottom:'0',height:'16px',lineHeight:'16px'}}
           contentStyle={{marginBottom:'40px'}}
           >
           <div className="tou-dialog-error" style={{flexDirection:'column'}}>
@@ -136,6 +141,8 @@ export default class TouAnalysis extends Component {
           modal={false}
           isOutsideClose={false}
           onRequestClose={this.props.onClose}
+          titleStyle={{marginBottom:'0',height:'16px',lineHeight:'16px'}}
+          actionsContainerStyle={{display:'none'}}
           contentStyle={{marginBottom:'40px'}}
           >
           <div className="tou-dialog-error">
