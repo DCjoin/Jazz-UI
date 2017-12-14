@@ -105,7 +105,7 @@ export default class TouAnalysis extends Component {
 
   _renderTagErrorDialog(){
     let actions = [
-			<NewFlatButton style={{marginLeft: 24,float:'right',border:'1px solid #9fa0a4',width:'80px',minWidth:'80px'}} label={I18N.Common.Button.Cancel2} onClick={this.props.onClose}/>,
+			<NewFlatButton style={{marginLeft: 16,float:'right',border:'1px solid #9fa0a4',width:'80px',minWidth:'80px',lineHeight:'34px'}} label={I18N.Common.Button.Cancel2} onClick={this.props.onClose}/>,
 			<NewFlatButton primary label={I18N.Common.Button.Confirm} disabled={this.state.tags.size!==1} onClick={this._onConfirm.bind(this)} style={{float:'right',width:'80px',minWidth:'80px',lineHeight:'34px'}}/>	
 		];
     return(
