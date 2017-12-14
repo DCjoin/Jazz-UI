@@ -114,35 +114,6 @@ export default class AuxiliaryFunction extends Component {
     }
   }
 
-  getAnalysisEl() {
-  let calendarSubItems = [{
-    primaryText: I18N.EM.Tool.Calendar.NoneWorkTime,
-    value: 'work'
-  },
-    {
-      primaryText: I18N.EM.Tool.Calendar.HotColdSeason,
-      value: 'hc'
-    }];
-  let calendarEl;
-  let isCalendarDisabled = !this.getConfigBtnStatus() || DataAnalysisStore.getCalendarDisabled();
-  if (isCalendarDisabled) {
-    calendarEl = <MenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' disabled={true}/>;
-  } else {
-    let showType = CalendarManager.getShowType();
-    if (!!showType) {
-      calendarSubItems.forEach(item => {
-        if (item.value === showType) {
-          item.checked = true;
-        }
-      });
-    }
-    calendarEl = <ExtendableMenuItem onTouchTap={(e) => {
-      this._onConfigBtnItemTouchTap(e, null, 'background')
-    }} primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' subItems={calendarSubItems}/>;
-  }
-  return calendarEl;
- }
-
   getWeatherBtn(){
 
     if(!SeniorDataAnalyseIsFull()) return null;
