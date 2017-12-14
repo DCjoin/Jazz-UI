@@ -265,7 +265,7 @@ export default class AuxiliaryFunction extends Component {
         fontSize:'14px'
       }:{
         fontSize:'14px',
-        color:'#626469'
+        color:'#767A7A'
       }
     };
     return(
