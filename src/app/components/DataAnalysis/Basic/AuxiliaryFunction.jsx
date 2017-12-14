@@ -158,7 +158,7 @@ export default class AuxiliaryFunction extends Component {
     var chartType=this.props.selectedChartType;
     let isCalendarDisabled = !this.getConfigBtnStatus() || DataAnalysisStore.getCalendarDisabled();
     let showType = CalendarManager.getShowType();
-    let checkIcon=<FontIcon className="icon-check-mark"/>
+    let checkIcon=<FontIcon className="icon-check-mark" style={{top:'0'}}/>
     return(
       <div className="jazz-AuxiliaryCompareBtn-container" style={{marginTop:0}}>
         <ButtonMenu ref={'button_menu'} label={I18N.EM.Tool.MoreAnalysis}  style={{
