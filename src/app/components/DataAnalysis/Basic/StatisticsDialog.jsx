@@ -293,7 +293,7 @@ export default class StatisticsDialog extends Component {
       })
     }
     return(
-      <ItemComponent title={I18N.Setting.DataAnalysis.Sum}>
+      <ItemComponent title={I18N.Setting.DataAnalysis.Sum} style={{marginTop:"-10px"}}>
         <SumTableHeader {...header}/>
         {content}
       </ItemComponent>
@@ -854,7 +854,8 @@ export default class StatisticsDialog extends Component {
         alignItems: 'center',
         justifyContent:'center',
         overflowY:'auto',
-        paddingRight:'24px'
+        paddingRight:'24px',
+        paddingBottom:'24px'
       },
       closeIcon:{
         fontSize:'15px',
@@ -877,7 +878,8 @@ export default class StatisticsDialog extends Component {
           content=this._renderContent()
         }
     return(
-      <Dialog title={title} titleStyle={style.title} style={{position:'relative'}} closeIconStyle={{fontSize:'15px',lingHeight:'15px',height:'15px',margin:'0',color:'#505559'}} open={true}  modal={false} onRequestClose={this.props.onCloseDialog} contentStyle={style.content}>
+      <Dialog title={title} titleStyle={style.title} style={{position:'relative'}} closeIconStyle={{fontSize:'15px',lingHeight:'15px',height:'15px',margin:'0',color:'#505559'}} open={true}  modal={false} onRequestClose={this.props.onCloseDialog} 
+      contentStyle={style.content} actionsContainerStyle={{display:'none'}}>
         
         {SeniorDataAnalyseIsFull() && this.state.gatherInfo!==null && <div>{this._renderTab()}</div>}
         {false && this.state.gatherInfo!==null && this.state.showModel===Model.Senior && <IconButton iconClassName="icon-left-switch" 
