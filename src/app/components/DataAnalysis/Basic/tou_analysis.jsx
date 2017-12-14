@@ -100,8 +100,7 @@ export default class TouAnalysis extends Component {
   _onConfirm(){
     var allTags=Immutable.fromJS(AlarmTagStore.getSearchTagList());
     allTags=allTags.delete(allTags.findIndex(tag=>tag.get('tagId')===this.state.tags.getIn([0,'tagId'])));
-    TagAction.removeTagStatusByTou(allTags.toJS());
-    this.props.onClose();
+    this.props.onTagConfirm(allTags.toJS());
   }
 
   _renderTagErrorDialog(){
