@@ -64,7 +64,7 @@ var RuleBasic = React.createClass({
       } : null,
       checkZeroStyle = (isView && !JumpingRate) ? {
         display: 'none'
-      } : {flexDirection: 'column',alignItems:'initial',height: 'auto',padding: '8px 0'},
+      } : {flexDirection: 'column',alignItems:'initial',height: 'auto',padding: '8px 0 18px 0'},
       nullRuleStyle = (!isView && !CheckNull) ? {
         display: 'none'
       } : null,
