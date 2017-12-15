@@ -72,6 +72,13 @@ function checkUserId(url, userId) {
   }
   return false;
 }
+function compare(array1, array2) 
+{
+  if(typeof array1 !=='array' || typeof array2 !=='array') return true;
+ return (array1.length === array2.length) && array1.every(function(element, index) {
+    return element === array2[index]; 
+})
+}
 
 var _ajax = function(url, options) {
 
@@ -160,7 +167,7 @@ var _abort = function (tag, startMatch) {
     });
   } else {
     reqList.forEach((item) => {
-      if (item.key === tag) {
+      if (item.key === tag || compare(item.key,tag)) {
         if (item.value && item.value.abort) {
           item.value.abort();
           remove(reqList, (reqObj) => {

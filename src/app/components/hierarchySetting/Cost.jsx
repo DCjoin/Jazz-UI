@@ -80,6 +80,7 @@ var Cost = React.createClass({
   },
   _onCheckDisabled: function() {
     var mData = this.state.cost.get('CostCommodities'),
+        touTariffs=this.state.cost.get('TouTariffs'),
       flag = false;
     if (mData !== null) {
       mData.forEach(data => {
@@ -91,7 +92,10 @@ var Cost = React.createClass({
               if (!price || price === '' || !Regex.FactorRule.test(price) || price.length > 16) {
                 flag = true;
               }
+            }else{
+              if(touTariffs.size===0){flag = true;}
             }
+
           })
         } else {
           let price = data.getIn(['Items', 0, 'SimpleItem', 'Price']);
@@ -510,7 +514,11 @@ var Cost = React.createClass({
         }
       };
       return (
-        <div style={{
+        that.state.cost.get('TouTariffs').size===0?<div>
+          <div style={{fontSize:'14px',color: '#9fa0a4',marginBottom: '6px',marginTop: '30px'}}>{I18N.Setting.Cost.UsageCost}</div>
+          <div style={{fontSize:'14px',color: '#626469'}}>{I18N.Setting.Cost.NoCost}</div>
+        </div>
+        :<div style={{
           display: 'flex',
           flexDirection: 'row',
           marginTop: '30px',

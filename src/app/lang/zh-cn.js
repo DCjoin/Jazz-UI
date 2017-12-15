@@ -2117,6 +2117,7 @@ I18N.Setting.Cost.RealPower = '有功电量';
 I18N.Setting.Cost.PaddingCost = '月补充成本';
 I18N.Setting.Cost.OtherCommodities = '其他成本属性';
 I18N.Setting.Cost.CostCommodity = '成本属性';
+I18N.Setting.Cost.NoCost = '尚未配置峰平谷电价，请前往“云能效”系统管理进行配置';
 
 I18N.Setting.KPI = {};
 I18N.Setting.KPI.Name = '指标';
