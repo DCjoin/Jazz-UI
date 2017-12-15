@@ -2116,6 +2116,7 @@ I18N.Setting.Cost.RealPower = 'Active energy';
 I18N.Setting.Cost.PaddingCost = 'Supplement';
 I18N.Setting.Cost.OtherCommodities = 'Other cost property';
 I18N.Setting.Cost.CostCommodity = 'Cost';
+I18N.Setting.Cost.NoCost = '尚未配置峰平谷电价，请前往“云能效”系统管理进行配置';
 
 I18N.Setting.KPI = {};
 I18N.Setting.KPI.Name = 'Index';
