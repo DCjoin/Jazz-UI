@@ -497,8 +497,10 @@ var Cost = React.createClass({
         selectedIndex: selectedId,
         textField: "text",
         dataItems: titleItems,
+        titleStyle:{fontSize:'14px'},
+        iconStyle:{width:'24px',height:'24px',padding:'12px 0 0 0'},
         style: {
-          width: '200px'
+          width: '300px'
         },
         didChanged: value => {
           that.merge({
@@ -511,13 +513,14 @@ var Cost = React.createClass({
         <div style={{
           display: 'flex',
           flexDirection: 'row',
-          marginTop: '30px'
+          marginTop: '30px',
+          alignItems:'flex-end'
         }}>
         <div className='jazz-building-cost-usagecost'><ViewableDropDownMenu  {...touTariffProps} /></div>
 
                 <div className='jazz-building-cost-detailShow' style={{
-          marginTop: '26px',
-          marginLeft: '0'
+          marginBottom: isView?'0px':'19px',
+          marginLeft: '20px'
         }} onClick={that._showTouDetailsideNav.bind(this, selectedId)}>{I18N.Setting.Cost.SearchTouDetail}</div>
               </div>
         )

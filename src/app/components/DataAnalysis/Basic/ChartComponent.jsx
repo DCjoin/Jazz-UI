@@ -77,6 +77,7 @@ export default class ChartComponent extends Component {
         if(multiTimespanList.length===1){
           timeRanges = [timeRanges[0]];
           MultiTimespanAction.clearMultiTimespan('both');
+          analysisPanel.isMultiTime=false;
         }
         else {
           timeRanges=MultipleTimespanStore.getSubmitTimespans();
@@ -86,8 +87,10 @@ export default class ChartComponent extends Component {
       var chartType = analysisPanel.state.selectedChartType;
       if (chartType === 'line' || chartType === 'column' || chartType === 'stack') {
         analysisPanel.energyDataLoad(timeRanges, step, tagOptions, false);
+       
       } else if (chartType === 'pie') {
         analysisPanel.pieEnergyDataLoad(timeRanges, 2, tagOptions, false);
+   
       }
     } else {
       let energyData = EnergyStore.getEnergyData();

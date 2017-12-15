@@ -40,13 +40,13 @@ before_deploy:
   - 'curl -o upload.sh -H "Authorization: token ${GITHUB_TOKEN}" ${GITHUB_UPLOAD_SCRIPT}'
   - cat upload.sh
   - chmod a+x ./upload.sh
-  
   - IMAGEID=$(docker images $TAG -q)
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" $DOCKER_REGISTRY
   - docker tag $IMAGEID $REMOTE_TAG
   - docker tag $IMAGEID $REMOTE_TAG_LATEST
   - docker image ls
   - ls -la
+  - JENKINS_CRUMB=CRUMB=$(curl -u "${JENKINS_USER}:${JENKINS_TOKEN}" "${JENKINS_HOST}/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,%22:%22,//crumb)")
   
 deploy:
 - provider: script
@@ -54,4 +54,9 @@ deploy:
   on:
     all_branches: true
   script:
-    - ./upload.sh ${ARTIFACT_NAME} ${PROJECT} ${TRAVIS_BRANCH} ${ROLE} ${PACKAGE_VERSION} ${OSS_BUCKET} ${OSS_KEY} ${OSS_SECRET} && docker push $REMOTE_TAG && docker push $REMOTE_TAG_LATEST && curl -X POST -u "${JENKINS_USER}:${JENKINS_TOKEN}" "${JENKINS_HOST}/job/${PROJECT}/buildWithParameters?environment=dev&version=latest&branch=${TRAVIS_BRANCH}"
+    > 
+      docker push $REMOTE_TAG && 
+      docker push $REMOTE_TAG_LATEST && 
+      ./upload.sh ${ARTIFACT_NAME} ${PROJECT} ${TRAVIS_BRANCH} ${ROLE} ${PACKAGE_VERSION} ${OSS_BUCKET} ${OSS_KEY} ${OSS_SECRET} && 
+      curl -X POST -u "${JENKINS_USER}:${JENKINS_TOKEN}" -H "$JENKINS_CRUMB" "${JENKINS_HOST}/job/${PROJECT}/buildWithParameters?environment=dev&version=latest&branch=${TRAVIS_BRANCH}" && 
+      echo

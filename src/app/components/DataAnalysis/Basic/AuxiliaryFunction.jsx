@@ -114,35 +114,6 @@ export default class AuxiliaryFunction extends Component {
     }
   }
 
-  getAnalysisEl() {
-  let calendarSubItems = [{
-    primaryText: I18N.EM.Tool.Calendar.NoneWorkTime,
-    value: 'work'
-  },
-    {
-      primaryText: I18N.EM.Tool.Calendar.HotColdSeason,
-      value: 'hc'
-    }];
-  let calendarEl;
-  let isCalendarDisabled = !this.getConfigBtnStatus() || DataAnalysisStore.getCalendarDisabled();
-  if (isCalendarDisabled) {
-    calendarEl = <MenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' disabled={true}/>;
-  } else {
-    let showType = CalendarManager.getShowType();
-    if (!!showType) {
-      calendarSubItems.forEach(item => {
-        if (item.value === showType) {
-          item.checked = true;
-        }
-      });
-    }
-    calendarEl = <ExtendableMenuItem onTouchTap={(e) => {
-      this._onConfigBtnItemTouchTap(e, null, 'background')
-    }} primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' subItems={calendarSubItems}/>;
-  }
-  return calendarEl;
- }
-
   getWeatherBtn(){
 
     if(!SeniorDataAnalyseIsFull()) return null;
@@ -158,7 +129,7 @@ export default class AuxiliaryFunction extends Component {
     var chartType=this.props.selectedChartType;
     let isCalendarDisabled = !this.getConfigBtnStatus() || DataAnalysisStore.getCalendarDisabled();
     let showType = CalendarManager.getShowType();
-    let checkIcon=<FontIcon className="icon-check-mark"/>
+    let checkIcon=<FontIcon className="icon-check-mark" style={{top:'0'}}/>
     return(
       <div className="jazz-AuxiliaryCompareBtn-container" style={{marginTop:0}}>
         <ButtonMenu ref={'button_menu'} label={I18N.EM.Tool.MoreAnalysis}  style={{
@@ -265,7 +236,7 @@ export default class AuxiliaryFunction extends Component {
         fontSize:'14px'
       }:{
         fontSize:'14px',
-        color:'#626469'
+        color:'#767A7A'
       }
     };
     return(

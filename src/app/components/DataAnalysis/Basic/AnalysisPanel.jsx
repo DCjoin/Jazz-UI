@@ -1162,7 +1162,7 @@ _onBubbleAxisChanged(){
   }
 
   canShareDataWith(curChartType, nextChartType) {
-    if(this.state.touType) return false;
+    if(this.state.touType || this.state.touAnalysisShow) return false;
     if ((curChartType === 'line' || curChartType === 'column' || curChartType === 'stack') && (nextChartType === 'line' || nextChartType === 'column' || nextChartType === 'stack')) {
       return true;
     } else {
@@ -1199,7 +1199,7 @@ _onBubbleAxisChanged(){
         energyData: nextChartType==='scatterplot' || nextChartType==='bubble'?'initial':null,
         touType:(!isTouSupportedChartType(nextChartType))?false:this.state.touType
       }, ()=> {
-        this._onSearchDataButtonClick();
+         if(!this.state.touAnalysisShow){this._onSearchDataButtonClick();}
       });
     }
   }
@@ -1230,19 +1230,24 @@ _onBubbleAxisChanged(){
   }
 
   _handleTouChange(){
-    this.setState({
+    if(this.state.touType){
+      this.setState({
       touType:!this.state.touType
     },()=>{
       this._onSearchDataButtonClick(null)
     })
+    }else{
+      this.setState({
+        touAnalysisShow:true
+      })
+    }
+
   }
 
   _onChartTypeChanged(e, selectedIndex, value){
     ScatterPlotAction.clearAxis();
     BubbleAction.clearAxis();
-    this._onSearchBtnItemTouchTap(value)
-
-    
+    this._onSearchBtnItemTouchTap(value)    
   }
 
   _heatMapValid(){
@@ -1871,12 +1876,21 @@ _onBubbleAxisChanged(){
         {this.state.showSaveDialog && this._renderSaveDialog()}
         {this.state.multiTagTipShow && this._renderMultiTagTip()}
         {this.state.touAnalysisShow && <TouAnalysis onClose={()=>{this.setState({touAnalysisShow:false})}}
+                                                    onTagConfirm={(tags)=>{
+                                                      this.setState({
+                                                        touAnalysisShow:false,
+                                                        touType:true
+                                                      },()=>{
+                                                        TagAction.removeTagStatusByTou(tags);
+                                                      })
+                                                    }}
                                                     isMultiTime={this.isMultiTime}
                                                     chartType={this.state.selectedChartType}
                                                     step={this.state.step}
                                                     onSuccess={()=>{
                                                         this.setState({
-                                                          touAnalysisShow:false
+                                                          touAnalysisShow:false,
+                                                          touType:true
                                                         },()=>{
                                                           this._onTouAnalysis();   
                                                         })                                   
