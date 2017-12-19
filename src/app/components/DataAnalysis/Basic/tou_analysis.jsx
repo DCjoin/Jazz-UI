@@ -159,8 +159,6 @@ export default class TouAnalysis extends Component {
       content=this._renderTagErrorDialog()
     }else if(!checkSupportChartType(chartType)){
       content=this._renderChartTypeErrorDialog()
-    }else if(!checkSupportStep(chartType,step)){
-      content=this._renderStepErrorDialog()
     }else  {
       content=null;
       onSuccess();
