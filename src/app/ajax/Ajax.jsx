@@ -72,18 +72,18 @@ function checkUserId(url, userId) {
   }
   return false;
 }
-function compare(array1, array2) 
+function compare(array1, array2)
 {
-  if(typeof array1 !=='array' || typeof array2 !=='array') return true;
+  if(typeof array1 !=='array' || typeof array2 !=='array') return false;
  return (array1.length === array2.length) && array1.every(function(element, index) {
-    return element === array2[index]; 
+    return element === array2[index];
 })
 }
 
 var _ajax = function(url, options) {
 
   _trackPageview(url);
-  
+
   if( !checkUserId(url, Util.getCookie('UserId')) ) {
     setTimeout( () => {
       AjaxAction.handleGlobalError(401)
@@ -107,7 +107,7 @@ var _ajax = function(url, options) {
 			Util.log(err && err.response);
 		},
     dataType = options.dataType || "application/json";
-  
+
 	var req =_generatorRequest(Config.ServeAddress + Config.APIBasePath + url, type, params)
     .send(params)
     .withCredentials()
@@ -235,7 +235,7 @@ module.exports = {
 		options.type = 'post';
 		_ajax(url, options);
   },
-  
+
   abort: function (tag, startMatch) {
     _abort(tag, startMatch);
   },

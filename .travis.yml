@@ -59,4 +59,4 @@ deploy:
       docker push $REMOTE_TAG_LATEST && 
       ./upload.sh ${ARTIFACT_NAME} ${PROJECT} ${TRAVIS_BRANCH} ${ROLE} ${PACKAGE_VERSION} ${OSS_BUCKET} ${OSS_KEY} ${OSS_SECRET} && 
       curl -X POST -u "${JENKINS_USER}:${JENKINS_TOKEN}" -H "$JENKINS_CRUMB" "${JENKINS_HOST}/job/${PROJECT}/buildWithParameters?environment=dev&version=latest&branch=${TRAVIS_BRANCH}" && 
-      echo
+      echo 
