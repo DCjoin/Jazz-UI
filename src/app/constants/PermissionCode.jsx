@@ -225,6 +225,12 @@ const PermissionCode = function() {
 		getLabel: () => "Dashboard",
     FULL: 1333,
 		READONLY: 1332,
+	},
+
+	BEST_SOLUTION: {
+		getLabel: () => I18N.Privilege.Role.BestSolution,
+    FULL: 1335,
+		READONLY: 1334,
 	}
 
 };

@@ -43,7 +43,8 @@ export default class Calendar extends React.Component {
         locale={this.props.locale}
   			currentDate={this.state.currentDate}
   			selectedDate={this.props.value}
-  			onChange={this._onDateChange} />
+  			onChange={this._onDateChange} 
+        shouldDisableDate={this.props.shouldDisableDate}/>
   		);
   	}else if (this.state.viewMode === "month"){
   		return (

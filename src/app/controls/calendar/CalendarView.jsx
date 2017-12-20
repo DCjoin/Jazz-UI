@@ -11,7 +11,7 @@ function weekday(year, month, dayOfMonth = 1){
 	return new Date(year, month, dayOfMonth).getDay();
 }
 
-const CalendarView = ({currentDate, selectedDate, onChange, locale, events})=>{
+const CalendarView = ({currentDate, selectedDate, onChange, locale, events,shouldDisableDate})=>{
 	var days = daysInMonth(currentDate.getFullYear(), currentDate.getMonth());
 	// map days to [{date: 1, hasEvent: true}, {date: 2, hasEvent: false}, ...]
 	days = _.range(days).map((day, idx) => {
@@ -50,6 +50,7 @@ const CalendarView = ({currentDate, selectedDate, onChange, locale, events})=>{
 			selected={selected}
 			isToday={isToday}
 			hasEvent={hasEvent}
+			disabled={shouldDisableDate?shouldDisableDate(date):false}
 			key={date.getFullYear() + "_" + date.getMonth() + "_" + dayOfMonth} />
 		);
 	}
@@ -66,7 +67,7 @@ const CalendarView = ({currentDate, selectedDate, onChange, locale, events})=>{
 			</div>);
 }
 
-const DateItem = ({date, selected, onChange, isToday, hasEvent}) => {
+const DateItem = ({date, selected, onChange, isToday, hasEvent,disabled}) => {
 	var dayOfMonth = date.getDate();
 	var month = date.getMonth();
 	var year = date.getFullYear();
@@ -78,10 +79,19 @@ const DateItem = ({date, selected, onChange, isToday, hasEvent}) => {
 		"date-item": true,
 		["weekday-"+firstDayOfWeek]: (firstDayOfWeek!==null),
 		selected,
-		"today": isToday
+		"today": isToday,
+		"disabled":disabled
 	});
 	return (
-		<div className={clazz} onClick={()=>{
+		disabled?
+		<div className={clazz}>
+			<div className="date-number" style={{color:'#bcbcbc'}}>{dayOfMonth}</div>
+			<div className={classnames({
+					"date-event": true,
+					"has-event": hasEvent
+				})}>.</div>
+		</div>
+		:<div className={clazz} onClick={()=>{
 			onChange(date)
 		}} >
 			<div className="date-number">{dayOfMonth}</div>

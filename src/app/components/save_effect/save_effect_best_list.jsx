@@ -7,6 +7,9 @@ import {openTab} from 'util/Util.jsx';
 import RoutePath from 'util/RoutePath.jsx';
 import { CircularProgress,Snackbar} from 'material-ui';
 import Detail from './list/save_effect_detail.jsx';
+import CurrentUserStore from 'stores/CurrentUserStore.jsx';
+import privilegeUtil from 'util/privilegeUtil.jsx';
+import PermissionCode from 'constants/PermissionCode.jsx';
 
 const characterType={
 			"HighCost":1,
@@ -14,6 +17,17 @@ const characterType={
 			"Easy":3,
 			"HighReturn":4
 }
+
+function privilegeWithBestSolution( privilegeCheck ) {
+  // return true
+	return privilegeCheck(PermissionCode.BEST_SOLUTION, CurrentUserStore.getCurrentPrivilege());
+}
+
+function BestIsFullOrIsView() {
+	// return false
+	return privilegeWithBestSolution(privilegeUtil.isFull.bind(privilegeUtil)) || privilegeWithBestSolution(privilegeUtil.isView.bind(privilegeUtil));
+}
+
 
 class Item extends Component {
 
@@ -106,8 +120,13 @@ export default class SaveEffectBestList extends Component {
   }
 
 	render() {
-		
-		if(this.state.best===null){
+		if(!BestIsFullOrIsView()){
+			return (
+        <div className="jazz-effect-best-list flex-center" style={{fontSize:'20px',color:'#626469'}}>
+         {I18N.SaveEffect.NoBestSulutionTip}
+       </div>
+      )
+		}else	if(this.state.best===null){
       return (
         <div className="jazz-effect-best-list flex-center">
          <CircularProgress  mode="indeterminate" size={80} />
