@@ -462,7 +462,7 @@ let Tag = React.createClass({
            offsetStartMinute}=this.refs.tagDetail.getOffset();
       if(offset!==null && offset!==''){
         selectedTag.Offset=selectedTag.NewOffset;
-        selectedTag.NewOffset=offset;
+        selectedTag.NewOffset+=parseFloat(offset);
         selectedTag.NewOffsetStartTime=CommonFuns.DataConverter.DatetimeToJson(moment(offsetStartTime).hours(offsetStartHour).minutes(offsetStartMinute));
       }
     }

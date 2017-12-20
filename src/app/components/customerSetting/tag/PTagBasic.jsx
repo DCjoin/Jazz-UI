@@ -151,7 +151,7 @@ var PTagBasic = React.createClass({
           </div>
           <div className="pop-customer-detail-content-left-item">
             <header style={TITLE_STYLE}>{I18N.Setting.Tag.OffsetTime}</header>
-            <div style={FONT_STYLE}>{moment(j2d(NewOffset)).format(I18N.DateTimeFormat.IntervalFormat.FullDateMinute)}</div>
+            <div style={FONT_STYLE}>{moment(j2d(NewOffsetStartTime)).format(I18N.DateTimeFormat.IntervalFormat.FullDateMinute)}</div>
           </div>
         </div>
       }
@@ -208,7 +208,7 @@ var PTagBasic = React.createClass({
 																 }}/>
             :<div style={{display:'flex',alignItems:'center'}}>
               <div style={FONT_STYLE}>{`${NewOffset} (${I18N.Setting.Tag.OffsetHistory}) + `}</div>
-              <ViewableTextField errorMessage={I18N.SaveEffect.Create.TriggerVaildTip} regex={Regex.TagRule} style={{marginTop:'10px',width:230}} 
+              <ViewableTextField errorMessage={I18N.SaveEffect.Create.TriggerVaildTip} regex={Regex.TagRule} style={{marginTop:'10px',marginLeft:'10px',width:230}} 
                                   labelStyle={{fontSize:'14px',color:'#464949'}}
                                   hintStyle={{fontSize:'14px',color:'#a6aaa9'}}
 																 hintText={I18N.Setting.Tag.OffsetCurrentHint} defaultValue={this.state.offset || ''} didChanged={(value)=>{
@@ -227,7 +227,8 @@ var PTagBasic = React.createClass({
             <div style={{display:'flex'}}>
               <div style={{marginTop:'5px'}}>
              <ViewableDatePicker  hintText={I18N.Setting.Tag.OffsetDate} onChange={(val)=>{this.setState({offsetStartTime:val})}} datePickerClassName='date-picker-inline' width={122} 
-              value={this.state.offsetStartTime || ''}/>
+              value={this.state.offsetStartTime || ''} 
+              shouldDisableDate={(date)=>(moment(date).isBefore(moment().add(-6,'M')))}/>
               </div>
               <ViewableDropDownMenu {...hourProps}/>
               <ViewableDropDownMenu {...minuteProps}/>

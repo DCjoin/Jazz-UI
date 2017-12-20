@@ -1951,6 +1951,7 @@ I18N.Privilege.Role.SolutionFull = 'All Solutions';
 I18N.Privilege.Role.BuildingList = 'Project List';
 I18N.Privilege.Role.SaveEffect = 'Energy Saving Effect';
 I18N.Privilege.Role.CLevelAPP = 'C-Level APP';
+I18N.Privilege.Role.BestSolution = '最佳方案';
 
 I18N.Remark = {};
 I18N.Remark.Label = 'Comment';
@@ -2639,6 +2640,7 @@ I18N.SaveEffect.HierarchyFrom='Source building:';
 I18N.SaveEffect.IgnoreSuccess='Solution become "Ignored"';
 I18N.SaveEffect.SolutionName='Name';
 I18N.SaveEffect.SolutionCharacter='Character';
+I18N.SaveEffect.NoBestSulutionTip='想获取最佳方案，请购买高级咨询服务';
 
 I18N.SaveEffect.Model = {};
 I18N.SaveEffect.Model.Title = 'Benchmark model';

@@ -130,12 +130,12 @@ class DatePicker extends React.Component {
             this.setState({popup:false});
           }}
         >
-          <Calendar onChange={this._onDateChange} value={dateObject}/>
+          <Calendar onChange={this._onDateChange} value={dateObject} shouldDisableDate={this.props.shouldDisableDate}/>
         </Popover>);
       } else {
         return (
             <div className="datepicker-popup"  >
-                <Calendar onChange={this._onDateChange} value={dateObject}/>
+                <Calendar onChange={this._onDateChange} value={dateObject} shouldDisableDate={this.props.shouldDisableDate}/>
             </div>
         );
       }

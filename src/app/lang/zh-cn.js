@@ -1952,6 +1952,7 @@ I18N.Privilege.Role.SolutionFull = '已推送+未推送方案';
 I18N.Privilege.Role.BuildingList = '项目列表';
 I18N.Privilege.Role.SaveEffect = '节能效果';
 I18N.Privilege.Role.CLevelAPP = 'C-Level APP';
+I18N.Privilege.Role.BestSolution = '最佳方案';
 
 I18N.Remark = {};
 I18N.Remark.Label = '备注';
@@ -2639,6 +2640,7 @@ I18N.SaveEffect.HierarchyFrom='来源建筑：';
 I18N.SaveEffect.IgnoreSuccess='方案已进入“已忽略方案”页面';
 I18N.SaveEffect.SolutionName='方案名称';
 I18N.SaveEffect.SolutionCharacter='方案特点';
+I18N.SaveEffect.NoBestSulutionTip='想获取最佳方案，请购买高级咨询服务';
 
 I18N.SaveEffect.Model = {};
 I18N.SaveEffect.Model.Title = '基准值模型';
