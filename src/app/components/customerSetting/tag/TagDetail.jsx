@@ -39,6 +39,9 @@ var TagDetail = React.createClass({
     return {
     };
   },
+  getOffset(){
+    return this.refs.pTagBasic.getOffset()
+  },
   _setLoading(){
     if(this.refs.pTagRawData){
       this.refs.pTagRawData._setLoading();

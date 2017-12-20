@@ -7,6 +7,9 @@ import ViewableTextField from '../../../controls/ViewableTextField.jsx';
 import ViewableDropDownMenu from '../../../controls/ViewableDropDownMenu.jsx';
 import ComAndUom from '../ComAndUom.jsx';
 import ViewableEnergyLabel from './ViewableEnergyLabel.jsx';
+import moment from 'moment';
+import CommonFuns from 'util/Util.jsx';
+import ViewableDatePicker from 'controls/ViewableDatePicker.jsx';
 
 var PTagBasic = React.createClass({
   propTypes: {
@@ -16,7 +19,19 @@ var PTagBasic = React.createClass({
   },
   getInitialState: function() {
     return {
+      offset:null,
+      offsetStartTime:null,
+      offsetStartHour:null,
+      offsetStartMinute:null,
     };
+  },
+  getOffset:function(){
+    return this.state;
+  },
+  getEnableSave:function(){
+    var {offset,offsetStartTime,offsetStartHour,offsetStartMinute}=this.state;
+    return offset===null && offsetStartTime===null && offsetStartHour===null && offsetStartMinute===null ||
+          offset!==null && offsetStartTime!==null && offsetStartHour!==null && offsetStartMinute!==null
   },
   _mergeTag: function(data) {
     if (this.props.mergeTag) {
@@ -75,6 +90,154 @@ var PTagBasic = React.createClass({
     }];
     return calculationTypeList;
   },
+  _getOffsetHourList:function(){
+     let list = [{
+        payload: -1,
+        text: I18N.Setting.Tag.OffsetHour,
+        disabled:true
+     }];
+     for(var i=0;i<=23;i++){
+       list.push({
+         payload: i,
+         text: i,
+       })
+     }
+    return list;
+  },
+   _getOffsetMinuteList:function(){
+     let list = [{
+        payload: -1,
+        text: I18N.Setting.Tag.OffsetMinute,
+        disabled:true
+     }, {
+      payload: 0,
+      text: 0
+    }, {
+      payload: 15,
+      text: 15
+    }, {
+      payload: 30,
+      text: 30
+    }, {
+      payload: 45,
+      text: 45
+    }];
+     
+    return list;
+  },
+  _renderOffset(){
+    var me=this;
+    var isView = this.props.isViewStatus;
+    let j2d = CommonFuns.DataConverter.JsonToDateTime;
+    let {NewOffset,NewOffsetStartTime}=this.props.selectedTag.toJS();
+
+    var TITLE_STYLE={
+      fontSize: '12px',
+      color:'#9fa0a4',
+      marginBottom:'6px'
+    },FONT_STYLE={
+      fontSize: '14px',
+      color:'#464949',
+    };
+
+    if(isView){
+      if(NewOffset===null){
+        return null
+      }else{
+        return <div>
+          <div className="pop-customer-detail-content-left-item" style={{paddingTop: '50px'}}>
+            <header style={TITLE_STYLE}>{I18N.Setting.Tag.OffsetView}</header>
+            <div style={FONT_STYLE}>{NewOffset}</div>
+          </div>
+          <div className="pop-customer-detail-content-left-item">
+            <header style={TITLE_STYLE}>{I18N.Setting.Tag.OffsetTime}</header>
+            <div style={FONT_STYLE}>{moment(j2d(NewOffset)).format(I18N.DateTimeFormat.IntervalFormat.FullDateMinute)}</div>
+          </div>
+        </div>
+      }
+    }else{
+      var hourProps={
+            ref: 'hour',
+            isViewStatus: false,
+            defaultValue: this.state.offsetStartHour=== null?-1:this.state.offsetStartHour,
+            dataItems: me._getOffsetHourList(),
+            labelStyle:{fontSize:'14px',paddingRight:'0px'},
+            style:{marginLeft:'21px',width:'122px'},
+            menuItemStyle:{paddingRight:'0px'},
+            didChanged: value => {
+              this.setState({
+                offsetStartHour:value
+              })
+              this._mergeTag({
+                value:'',
+                path: ""
+              })
+            }
+      }, minuteProps={
+            ref: 'minute',
+            isViewStatus: false,
+            defaultValue: this.state.offsetStartMinute=== null?-1:this.state.offsetStartMinute,
+            dataItems: me._getOffsetMinuteList(),
+            labelStyle:{fontSize:'14px',paddingRight:'0px'},
+            style:{marginLeft:'21px',width:'122px'},
+            didChanged: value => {
+              this.setState({
+                offsetStartMinute:value
+               })
+                 this._mergeTag({
+                value:'',
+                path: ""
+              })
+            }
+      };
+      return <div>
+          <div className="pop-customer-detail-content-left-item" style={{paddingTop: '50px'}}>
+            <header style={TITLE_STYLE}>{I18N.Setting.Tag.Offset}</header>
+            {NewOffset===null?
+            <ViewableTextField errorMessage={I18N.SaveEffect.Create.TriggerVaildTip} regex={Regex.TagRule} style={{marginTop:'10px',width:230}} 
+                                labelStyle={{fontSize:'14px',color:'#464949'}}
+                                hintStyle={{fontSize:'14px',color:'#a6aaa9'}}
+																 hintText={I18N.Setting.Tag.OffsetHint} defaultValue={this.state.offset || ''} didChanged={(value)=>{
+																		this.setState({
+                                      offset:value===''?null:value
+                                    })
+                                      this._mergeTag({
+                                      value:'',
+                                      path: ""
+                                    })
+																 }}/>
+            :<div style={{display:'flex',alignItems:'center'}}>
+              <div style={FONT_STYLE}>{`${NewOffset} (${I18N.Setting.Tag.OffsetHistory}) + `}</div>
+              <ViewableTextField errorMessage={I18N.SaveEffect.Create.TriggerVaildTip} regex={Regex.TagRule} style={{marginTop:'10px',width:230}} 
+                                  labelStyle={{fontSize:'14px',color:'#464949'}}
+                                  hintStyle={{fontSize:'14px',color:'#a6aaa9'}}
+																 hintText={I18N.Setting.Tag.OffsetCurrentHint} defaultValue={this.state.offset || ''} didChanged={(value)=>{
+																		this.setState({
+                                      offset:value
+                                    })
+                                      this._mergeTag({
+                                        value:'',
+                                        path: ""
+                                      })
+																 }}/>
+            </div>    }        
+          </div>
+          <div className="pop-customer-detail-content-left-item">
+            <header style={TITLE_STYLE}>{I18N.Setting.Tag.OffsetTime}</header>
+            <div style={{display:'flex'}}>
+              <div style={{marginTop:'5px'}}>
+             <ViewableDatePicker  hintText={I18N.Setting.Tag.OffsetDate} onChange={(val)=>{this.setState({offsetStartTime:val})}} datePickerClassName='date-picker-inline' width={122} 
+              value={this.state.offsetStartTime || ''}/>
+              </div>
+              <ViewableDropDownMenu {...hourProps}/>
+              <ViewableDropDownMenu {...minuteProps}/>
+            </div>
+ 
+          </div>
+        </div>
+    }
+
+  },
   componentWillMount: function() {},
   componentDidMount: function() {},
   componentWillReceiveProps: function(nextProps) {},
@@ -83,7 +246,7 @@ var PTagBasic = React.createClass({
     var me = this;
     var isView = this.props.isViewStatus;
     var selectedTag = this.props.selectedTag,
-      {CollectionMethod,Code, MeterCode, ChannelId, CalculationStep, CalculationType, Slope, Offset, IsAccumulated, Comment,EnergyLabelId } = selectedTag.toJS();
+      {CollectionMethod,Code, MeterCode, ChannelId, CalculationStep, CalculationType, Slope,  IsAccumulated, Comment,EnergyLabelId } = selectedTag.toJS();
     var   collectTypeProps = {
             ref: 'collect',
             isViewStatus: isView,
@@ -187,24 +350,6 @@ var PTagBasic = React.createClass({
           });
         }
       },
-      offsetProps = {
-        ref: 'offset',
-        isViewStatus: isView,
-        title: I18N.Setting.Tag.Offset,
-        defaultValue: Offset || '',
-        isRequired: false,
-        regex: Regex.TagRule,
-        errorMessage: I18N.Setting.Tag.ErrorContent,
-        didChanged: value => {
-          if (value === '') {
-            value = null;
-          }
-          me.props.mergeTag({
-            value,
-            path: "Offset"
-          });
-        }
-      },
       checkProps = {
         label: I18N.Setting.Tag.AccumulatedValueCal,
         checked: IsAccumulated,
@@ -246,9 +391,6 @@ var PTagBasic = React.createClass({
     var slope = !Slope && isView ? null : (<div className="pop-customer-detail-content-left-item">
         <ViewableTextField {...slopeProps}/>
       </div>);
-    var offset = !Offset && isView ? null : (<div className="pop-customer-detail-content-left-item">
-        <ViewableTextField {...offsetProps}/>
-      </div>);
     var isAccumulated = !IsAccumulated && isView ? null : (<div className="pop-customer-detail-content-left-item">
       <Checkbox {...checkProps}/>
     </div>);
@@ -281,7 +423,7 @@ var PTagBasic = React.createClass({
             <ViewableEnergyLabel {...energyLabelIdProps}/>
           </div>
           {slope}
-          {offset}
+          {this._renderOffset()}
           {isAccumulated}
           {comment}
         </div>

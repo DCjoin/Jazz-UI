@@ -12,6 +12,8 @@ import GlobalErrorMessageAction from 'actions/GlobalErrorMessageAction.jsx';
 import downloadFile from 'actions/download_file.js';
 import Immutable from 'immutable';
 import RawDataList from './RawDataList.jsx';
+import CommonFuns from 'util/Util.jsx';
+import moment from 'moment';
 
 var timeoutID = null;
 var customerId=null;
@@ -63,8 +65,8 @@ let Tag = React.createClass({
       if (pTagBasic.refs.slope) {
         slopeIsValid = pTagBasic.refs.slope.isValid();
       }
-      if (pTagBasic.refs.offset) {
-        offsetIsValid = pTagBasic.refs.offset.isValid();
+      if (!pTagBasic.getEnableSave()) {
+        offsetIsValid = pTagBasic.getEnableSave();
       }
       if (pTagBasic.refs.comment) {
         commentIsValid = pTagBasic.refs.comment.isValid();
@@ -403,7 +405,7 @@ let Tag = React.createClass({
   },
   _mergeTag: function(data) {
     var selectedTag = this.state.selectedTag;
-    selectedTag = selectedTag.set(data.path, data.value);
+    if(data.path!==''){selectedTag = selectedTag.set(data.path, data.value);}
     if (data.path === 'Formula') {
       selectedTag = selectedTag.set('TagModifyMode', 1);
     }
@@ -452,6 +454,19 @@ let Tag = React.createClass({
       isLoading: true
     });
     var selectedTag = this.state.selectedTag.toJS();
+
+    if(this.state.showBasic && this.props.tagType === 1){
+      var {offset,
+           offsetStartTime,
+           offsetStartHour,
+           offsetStartMinute}=this.refs.tagDetail.getOffset();
+      if(offset!==null && offset!==''){
+        selectedTag.Offset=selectedTag.NewOffset;
+        selectedTag.NewOffset=offset;
+        selectedTag.NewOffsetStartTime=CommonFuns.DataConverter.DatetimeToJson(moment(offsetStartTime).hours(offsetStartHour).minutes(offsetStartMinute));
+      }
+    }
+
     if (selectedTag.Id === 0) {
       TagAction.createTag(selectedTag);
     } else {
