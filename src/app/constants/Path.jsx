@@ -60,6 +60,7 @@ module.exports = {
     getLatestRawData:'/energy/Tag/{tagId}/LatestRawData',
     getCityWeatherTag:'/Dashboard/cityWeatherTag/{cityId}',
     getWidgetsplitgatherinfo:'/widget/widgetsplitgatherinfo',
+    getTouTariffSplitGatherInfo:'/widget/TouTariffSplitGatherInfo',
     getScatterPlotData:'/energy/scatterPlotData',
     getBubbleData:'/energy/bubbleData'
   },

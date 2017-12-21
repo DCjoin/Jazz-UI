@@ -2366,6 +2366,8 @@ I18N.Setting.DataAnalysis.Bubble.Area = 'Area';
 I18N.Setting.DataAnalysis.Tou = {};
 //以下四组文案组成一句错误提示
 //例如：该步长不支持峰谷平分析，请换个步长或切换堆积图。饼状图试试！
+I18N.Setting.DataAnalysis.Tou.Title = '峰平谷';
+I18N.Setting.DataAnalysis.Tou.TouTimeSpan = '峰平谷时段';
 I18N.Setting.DataAnalysis.Tou.NotSupport = 'This {0} does not support peak-valley analysis, ';
 I18N.Setting.DataAnalysis.Tou.ChangeStep = 'please change step size or switch';
 I18N.Setting.DataAnalysis.Tou.ChangeChartType = 'Please change chart type';

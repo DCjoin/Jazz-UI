@@ -45,6 +45,21 @@ function isFull() {
 	return privilegeWithSaveEffect(privilegeUtil.isFull.bind(privilegeUtil));
 }
 
+function privilegeWithBestSolution( privilegeCheck ) {
+  // return true
+	return privilegeCheck(PermissionCode.BEST_SOLUTION, CurrentUserStore.getCurrentPrivilege());
+}
+
+function BestIsFull() {
+	// return false
+	return privilegeWithBestSolution(privilegeUtil.isFull.bind(privilegeUtil));
+}
+
+function BestIsView() {
+	// return false
+	return privilegeWithBestSolution(privilegeUtil.isView.bind(privilegeUtil));
+}
+
 function validValue(value) {
 	return value!==null?util.getLabelData(value*1):'-';
 }
@@ -245,7 +260,7 @@ export default class EffectDetail extends Component {
 						<div className="jazz-effect-detail-header-title">{this.props.effect.get('EnergySolutionName')}</div>
 					</span>
 					<span>
-						{!this.state.isBest && isFull() && <FlatButton label={I18N.SaveEffect.SetBest} onTouchTap={this._onBestShow.bind(this)}
+						{!this.state.isBest && isFull() &&  (BestIsFull() || BestIsView()) && <FlatButton label={I18N.SaveEffect.SetBest} onTouchTap={this._onBestShow.bind(this)}
 													style={style.btn} labelStyle={style.lable} secondary={true}/>}
 					</span>
 				</div>
@@ -407,7 +422,7 @@ export default class EffectDetail extends Component {
 																				<FlatButton icon={ignoreIcon} label={I18N.SaveEffect.IgnoreSolution} style={style.ignoreBtn} labelStyle={style.ignoreLabel} onClick={this._onIgnoreBestShow.bind(this)}/>
 																		</div>					
 																		:<FlatButton icon={ignoreIcon} label={I18N.SaveEffect.SolutionIgnored} style={style.ignoredBtn} labelStyle={style.ignoredLabel} disabled={true}/>
-							:isFull() && <div className="jazz-effect-detail-best-operation">
+							:isFull() && BestIsFull() && <div className="jazz-effect-detail-best-operation">
 									<FlatButton label={I18N.Common.Button.Edit} style={style.btn} labelStyle={style.label} onClick={this._onBestShow.bind(this)}/>
 									<FlatButton label={I18N.Common.Button.Repeal} style={style.btn} labelStyle={style.label} onClick={()=>{
 										this.setState({
@@ -820,7 +835,7 @@ export default class EffectDetail extends Component {
 				<div className="jazz-effect-detail">
 					{this._renderTitle()}
 					{this._renderSubTitle()}
-					{tags.size!==0 && this.state.isBest && this._renderBest()}
+					{tags.size!==0 && this.state.isBest &&  (BestIsFull()  || BestIsView()) && this._renderBest()}
 					{this._renderContent()}
 					{tags.size!==0 && <div className="jazz-effect-detail-create-user">{`${I18N.SaveEffect.CreateUser}${this.state.detailInfo.get("SolutionCreateUser")}`}</div>}
 					{this.state.deleteConfirmShow && this._renderDeleteDialog()}
