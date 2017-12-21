@@ -16,10 +16,26 @@ import FromEndTime from 'controls/FromEndTime.jsx';
 import { status } from 'constants/actionType/DataAnalysis.jsx';
 import NewFlatButton from 'controls/NewFlatButton.jsx';
 import Immutable from 'immutable';
+import classNames from 'classnames';
+import PermissionCode from 'constants/PermissionCode.jsx';
+import CurrentUserStore from 'stores/CurrentUserStore.jsx';
+import privilegeUtil from 'util/privilegeUtil.jsx';
+
 
 var isMultiTime;
 
 var type=['',I18N.EM.KpiModeEM,I18N.Common.CaculationType.Avg,I18N.Common.CaculationType.Max];
+
+var tou=[I18N.EM.Peak,I18N.EM.Plain,I18N.EM.Valley];
+
+function privilegeWithSeniorDataAnalyse( privilegeCheck ) {
+  // return false
+return privilegeCheck(PermissionCode.SENIOR_DATA_ANALYSE, CurrentUserStore.getCurrentPrivilege());
+}
+//能源经理
+function SeniorDataAnalyseIsFull() {
+	return privilegeWithSeniorDataAnalyse(privilegeUtil.isFull.bind(privilegeUtil));
+}
 
 class ItemComponent extends Component{
   render(){
@@ -49,7 +65,7 @@ class TableHeader extends Component{
     var style=assign({},defaultStyle,this.props.style);
     return(
       <div style={style}>
-        <div style={{paddingLeft:'10px',width:'181px'}}>{I18N.Setting.DataAnalysis.TimeSpan}</div>
+        <div style={{paddingLeft:'10px',width:'181px'}}>{this.props.column1Name}</div>
         <div style={{width:'220px'}}>{this.props.column2Name}</div>
         <div>
           {this.props.column3Name}
@@ -60,6 +76,7 @@ class TableHeader extends Component{
 }
 
 TableHeader.propTypes={
+  column1Name:React.PropTypes.string,
   column2Name:React.PropTypes.string,
   column3Name:React.PropTypes.string,
   style:React.PropTypes.object,
@@ -120,14 +137,35 @@ export default class IntervalDialog extends Component {
 
   state={
     gatherInfo:'loading',
-    splits:IntervalStatisticStore.getSplits()
+    splits:IntervalStatisticStore.getSplits(),
+    hasTab:true,
+    tabNo:1,
   }
 
   _onChange(){
+    if(this.state.hasTab && this.state.tabNo===1 && IntervalStatisticStore.getGatherInfo() && IntervalStatisticStore.getGatherInfo().size===0){
+      this.setState({
+      hasTab:false,
+      tabNo:2
+    },()=>{
+     if(this.state.splits && this.state.splits.size>0){
+        this._getGatherInfo()     
+    }else{
+      this.setState({
+        gatherInfo:null,
+      },()=>{
+         IntervalStatisticAction.clearAll();  
+        IntervalStatisticAction.modifySplit(-1, status.ADD,{StartMoment:-1,EndMoment:-1});
+      })
+    }
+    })
+    }else{
     this.setState({
       gatherInfo:IntervalStatisticStore.getGatherInfo(),
       splits:IntervalStatisticStore.getSplits()
     })
+    }
+
   }
 
   getTitle(){
@@ -145,12 +183,22 @@ export default class IntervalDialog extends Component {
   _getGatherInfo(){
     let tagOptions = EnergyStore.getTagOpions();
     let tagIds = CommonFuns.getTagIdsFromTagOptions(tagOptions);
+    if(this.state.tabNo===1){
+    IntervalStatisticAction.getTouTariffSplitGatherInfo({
+      TagIds:tagIds,
+      WidgetId:this.props.widgetId,
+      TimeRanges:this.props.timeRanges,
+      Splits:[]
+    })
+    }else{
     IntervalStatisticAction.getSplitGatherInfo({
       TagIds:tagIds,
       WidgetId:this.props.widgetId,
       TimeRanges:this.props.timeRanges,
       Splits:this.state.splits.toJS()
     })
+    }
+
   }
 
   getTimeData(data) {
@@ -232,7 +280,8 @@ export default class IntervalDialog extends Component {
         var title=!isMultiTime?TagName:DataAnalysisStore.getDisplayDate(start,false)+I18N.Setting.DataAnalysis.To+DataAnalysisStore.getDisplayDate(end,true);
         
         var head={
-          column2Name:type[CalculationType]+UomName==='null'?'':`(${UomName})`,
+          column1Name:this.state.tabNo===1?I18N.Setting.DataAnalysis.Tou.TouTimeSpan:I18N.Setting.DataAnalysis.TimeSpan,
+          column2Name:type[CalculationType]+(UomName==='null'?'':`(${UomName})`),
           column3Name:CalculationType===1?`${I18N.Common.Commodity.Cost}(RMB)`:null,
         }
 
@@ -244,7 +293,7 @@ export default class IntervalDialog extends Component {
                   <FontIcon className="icon-glyph" style={{fontSize:'14px',height:'14px',width:'14px',marginRight:'10px'}} color="#505559"/>
                   {I18N.Setting.DataAnalysis.NotSupportIntervalAnalysis}</div>
               :Items.map((item,index)=>(
-                <TableRow time={formatSplit(item.TimeSplit)}
+                <TableRow time={this.state.tabNo===1?tou[index]:formatSplit(item.TimeSplit)}
                           column2Value={item.EnergyValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:item.EnergyValue}
                           column3Value={ErrorCode===103?'－':(CalculationType===1?(item.CostValue===null?I18N.Setting.KPI.Group.Ranking.History.NoValue:item.CostValue):null)}
                           style={index===Items.length-1?{borderBottomRightRadius: '2px',borderBottomLeftRadius: '2px'}:{}}/>
@@ -256,7 +305,7 @@ export default class IntervalDialog extends Component {
     )
   }
 
-  _renderContent(){
+  _renderBasicContent(){
     return(
       <div style={{width:'100%'}}>
         {this._renderTimes()}
@@ -269,21 +318,86 @@ export default class IntervalDialog extends Component {
     )
   }
 
+  _renderSeniorContent(){
+    return(
+      <div style={{width:'100%',marginTop:'-14px'}}>
+        {this.state.gatherInfo!==null && this._renderTable()}
+        </div>
+    )
+  }
+
+  _renderContent(){
+    return this.state.tabNo===1?this._renderSeniorContent():this._renderBasicContent()
+  }
+
+    _renderTab(){
+    return(
+      <div className="statistics-tabs">
+        <div className={classNames({
+              "statistics-tabs-tab": true,
+              "selected":this.state.tabNo===1,
+            })} style={{width:'82px'}} onClick={()=>{                               
+                                  IntervalStatisticAction.refreshSplit()                             
+                               this.setState({
+                                   tabNo:1,
+                                   gatherInfo:'loading'
+                                 },()=>{
+                                   this._getGatherInfo();
+                                   
+                                 })
+            }}>{I18N.Setting.DataAnalysis.Tou.Title}</div>
+        <div className={classNames({
+              "statistics-tabs-tab": true,
+              "right":true,
+              "selected":this.state.tabNo===2,
+            })} style={{width:'82px'}} onClick={()=>{
+                                 this.setState({
+                                   tabNo:2,
+                                   gatherInfo:this.state.splits && this.state.splits.size>0?'loading':null
+                                }
+                                 ,()=>{                                  
+                                   if(this.state.splits && this.state.splits.size>0 && this._valid()){
+                                    this._getGatherInfo()
+                                   }else{   
+                                      IntervalStatisticAction.clearAll();                                  
+                                     IntervalStatisticAction.modifySplit(-1, status.ADD,{StartMoment:-1,EndMoment:-1});
+                                   }
+                                   
+                                 })
+            }}>{I18N.Common.DateRange.Customerize}</div>
+      </div>
+    )
+  }
+
+
   componentWillMount(){
     isMultiTime=MultipleTimespanStore.getSubmitTimespans()!==null;
   }
   
   componentDidMount(){
     IntervalStatisticStore.addChangeListener(this._onChange);
-    if(this.state.splits && this.state.splits.size>0){
+
+    if(SeniorDataAnalyseIsFull()){
       this._getGatherInfo()
+    }else{
+     if(this.state.splits && this.state.splits.size>0){
+       this.setState({
+         tabNo:2,
+         hasTab:false
+       },()=>{
+        this._getGatherInfo()
+       })      
     }else{
       this.setState({
         gatherInfo:null,
+        tabNo:2,
+        hasTab:false
       },()=>{
         IntervalStatisticAction.modifySplit(-1, status.ADD,{StartMoment:-1,EndMoment:-1});
       })
     }
+    }
+
   }
 
   componentWillUnmount(){
@@ -295,6 +409,7 @@ export default class IntervalDialog extends Component {
   render(){
     var title=this.getTitle();
     var content;
+    var tab=null;
     var style={
       title:{
         fontSize:'16px',
@@ -336,12 +451,13 @@ export default class IntervalDialog extends Component {
           )
         }
         else {
-          content=this._renderContent()
+          content=this._renderContent();
+          tab=this.state.hasTab && this._renderTab();
         }
     return(
       <Dialog title={title} titleStyle={style.title} hasClose
         isOutsideClose={false} style={{position:'relative'}} closeIconStyle={{fontSize:'15px',lingHeight:'15px',height:'15px',margin:'0',color:'#505559'}} open={true} onRequestClose={this.props.onCloseDialog} contentStyle={style.content}>
-
+        {tab}
         {content}
 
       </Dialog>

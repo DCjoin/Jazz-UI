@@ -18,6 +18,19 @@ const IntervalStatisticAction = {
       }
     })
   },
+  getTouTariffSplitGatherInfo(params){
+    Ajax.post(Path.DataAnalysis.getTouTariffSplitGatherInfo, {
+      params,
+      success: function(infos) {
+        AppDispatcher.dispatch({
+          type: Action.GET_SPLIT_GATHER_INFO,
+          infos
+        });
+      },
+      error: function(err, res) {
+      }
+    })
+  },
   modifySplit(index,status,split){
     AppDispatcher.dispatch({
       type: Action.MODIFY_SPLIT,

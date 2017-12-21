@@ -136,7 +136,7 @@ export default class AuxiliaryFunction extends Component {
           marginLeft: '10px'
         }} backgroundColor="#f3f5f7" onItemTouchTap={this._onConfigBtnItemTouchTap} disabled={this.getMoreBtnDisableStatus()}>
        <MenuItem primaryText={I18N.EM.Tool.DataStatistics} value='sum' disabled={disabled && chartType!=='pie'}/>
-       {SeniorDataAnalyseIsFull() && <MenuItem primaryText={I18N.EM.Tool.IntervalStatistics} value='interval' disabled={disabled && chartType!=='pie'}/>}
+       <MenuItem primaryText={I18N.EM.Tool.IntervalStatistics} value='interval' disabled={disabled && chartType!=='pie'}/>
       {chartType!=='scatterplot' && chartType!=='bubble' && chartType!=='pie' && <MenuItem primaryText={I18N.EM.Tool.YaxisConfig} value='yaxis' disabled={disabled || !isFullBasicAnalysis()}/>}
       {(chartType==='scatterplot' || chartType==='bubble') && <MenuItem primaryText={I18N.EM.Tool.AxisConfig} value='axis' disabled={!this.props.hasTagData || !isFullBasicAnalysis()}/>}
       <Divider />
