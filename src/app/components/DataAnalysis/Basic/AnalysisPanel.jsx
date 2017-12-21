@@ -853,6 +853,8 @@ _onBubbleAxisChanged(){
   let viewOption = EnergyStore.getSubmitParams().viewOption;
   let title = this.props.chartTitle || I18N.Folder.NewWidget.Menu1;
 
+  viewOption.IsTouTariff=this.state.touType;
+  
   let params = {
     title: title,
     tagIds: tagIds,
