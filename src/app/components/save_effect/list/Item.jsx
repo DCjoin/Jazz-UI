@@ -6,12 +6,25 @@ import ListStore from '../../../stores/save_effect/ListStore.jsx';
 import classNames from 'classnames';
 import {calcState} from "constants/actionType/Effect.jsx";
 import {stepLabelProps} from '../../Diagnose/CreateDiagnose.jsx';
+import CurrentUserStore from 'stores/CurrentUserStore.jsx';
+import privilegeUtil from 'util/privilegeUtil.jsx';
+import PermissionCode from 'constants/PermissionCode.jsx';
 
 import {
   Step,
   Stepper,
   StepLabel,
 } from 'material-ui/Stepper';
+
+function privilegeWithBestSolution( privilegeCheck ) {
+  // return true
+	return privilegeCheck(PermissionCode.BEST_SOLUTION, CurrentUserStore.getCurrentPrivilege());
+}
+
+function BestIsFullOrIsView() {
+	// return false
+	return privilegeWithBestSolution(privilegeUtil.isFull.bind(privilegeUtil)) || privilegeWithBestSolution(privilegeUtil.isView.bind(privilegeUtil));
+}
 
 function validValue(value) {
 	return value!==null?util.getLabelData(value*1):'-';
@@ -56,7 +69,7 @@ export class ItemForConsultant extends Component {
     var {CalcState,EnergySolutionName,IsBestSolution}=this.props.effect.toJS();
     return(
       <div className="jazz-effect-item-info-title">
-        <span className="isPreferred">{IsBestSolution && <FontIcon className="icon-medal" style={{fontSize:'12px'}} color="#ff9000"/>}</span>
+        <span className="isPreferred">{IsBestSolution && BestIsFullOrIsView() && <FontIcon className="icon-medal" style={{fontSize:'12px'}} color="#ff9000"/>}</span>
         <span className="name" title={EnergySolutionName}>{EnergySolutionName}</span>
         {CalcState!==null && (CalcState===calcState.Being?<CalculatingIcon/>:<CalculatedIcon/>)}
       </div>
@@ -128,7 +141,7 @@ export class ItemForManager extends Component {
     var {CalcState,EnergySolutionName,IsBestSolution}=this.props.effect.toJS();
     return(
       <div className="jazz-effect-item-info-title">
-        <span className="isPreferred">{IsBestSolution && <FontIcon className="icon-medal" style={{fontSize:'12px'}} color="#ff9000"/>}</span>
+        <span className="isPreferred">{IsBestSolution && BestIsFullOrIsView() && <FontIcon className="icon-medal" style={{fontSize:'12px'}} color="#ff9000"/>}</span>
         <span className="name" title={EnergySolutionName}>{EnergySolutionName}</span>
         {CalcState!==null && (CalcState===calcState.Being?<CalculatingIcon/>:<CalculatedIcon/>)}
       </div>
