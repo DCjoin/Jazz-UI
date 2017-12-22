@@ -99,7 +99,7 @@ var PTagBasic = React.createClass({
      for(var i=0;i<=23;i++){
        list.push({
          payload: i,
-         text: i,
+         text: i+'',
        })
      }
     return list;
@@ -111,16 +111,16 @@ var PTagBasic = React.createClass({
         disabled:true
      }, {
       payload: 0,
-      text: 0
+      text: '0'
     }, {
       payload: 15,
-      text: 15
+      text: '15'
     }, {
       payload: 30,
-      text: 30
+      text: '30'
     }, {
       payload: 45,
-      text: 45
+      text: '45'
     }];
      
     return list;
