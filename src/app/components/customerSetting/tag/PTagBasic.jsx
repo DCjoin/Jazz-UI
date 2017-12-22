@@ -30,6 +30,7 @@ var PTagBasic = React.createClass({
   },
   getEnableSave:function(){
     var {offset,offsetStartTime,offsetStartHour,offsetStartMinute}=this.state;
+    if(!Regex.TagRule.test(offset)) return false;
     return (offset===null || offset==='') && offsetStartTime===null && offsetStartHour===null && offsetStartMinute===null ||
           !(offset==null || offset==='') && offsetStartTime!==null && offsetStartHour!==null && offsetStartMinute!==null
   },
