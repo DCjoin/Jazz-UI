@@ -30,8 +30,8 @@ var PTagBasic = React.createClass({
   },
   getEnableSave:function(){
     var {offset,offsetStartTime,offsetStartHour,offsetStartMinute}=this.state;
-    return offset===null && offsetStartTime===null && offsetStartHour===null && offsetStartMinute===null ||
-          offset!==null && offsetStartTime!==null && offsetStartHour!==null && offsetStartMinute!==null
+    return (offset===null || offset==='') && offsetStartTime===null && offsetStartHour===null && offsetStartMinute===null ||
+          !(offset==null || offset==='') && offsetStartTime!==null && offsetStartHour!==null && offsetStartMinute!==null
   },
   _mergeTag: function(data) {
     if (this.props.mergeTag) {
@@ -222,7 +222,7 @@ var PTagBasic = React.createClass({
 																 }}/>
             </div>    }        
           </div>
-          <div className="pop-customer-detail-content-left-item">
+         {this.state.offset!==null && this.state.offset!=='' && <div className="pop-customer-detail-content-left-item">
             <header style={TITLE_STYLE}>{I18N.Setting.Tag.OffsetTime}</header>
             <div style={{display:'flex'}}>
               <div style={{marginTop:'5px'}}>
@@ -234,7 +234,7 @@ var PTagBasic = React.createClass({
               <ViewableDropDownMenu {...minuteProps}/>
             </div>
  
-          </div>
+          </div>}
         </div>
     }
 
