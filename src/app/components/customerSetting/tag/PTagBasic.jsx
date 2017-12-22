@@ -30,8 +30,9 @@ var PTagBasic = React.createClass({
   },
   getEnableSave:function(){
     var {offset,offsetStartTime,offsetStartHour,offsetStartMinute}=this.state;
-    return offset===null && offsetStartTime===null && offsetStartHour===null && offsetStartMinute===null ||
-          offset!==null && offsetStartTime!==null && offsetStartHour!==null && offsetStartMinute!==null
+    if(!Regex.TagRule.test(offset)) return false;
+    return (offset===null || offset==='') && offsetStartTime===null && offsetStartHour===null && offsetStartMinute===null ||
+          !(offset==null || offset==='') && offsetStartTime!==null && offsetStartHour!==null && offsetStartMinute!==null
   },
   _mergeTag: function(data) {
     if (this.props.mergeTag) {
@@ -99,7 +100,7 @@ var PTagBasic = React.createClass({
      for(var i=0;i<=23;i++){
        list.push({
          payload: i,
-         text: i,
+         text: i+'',
        })
      }
     return list;
@@ -111,16 +112,16 @@ var PTagBasic = React.createClass({
         disabled:true
      }, {
       payload: 0,
-      text: 0
+      text: '0'
     }, {
       payload: 15,
-      text: 15
+      text: '15'
     }, {
       payload: 30,
-      text: 30
+      text: '30'
     }, {
       payload: 45,
-      text: 45
+      text: '45'
     }];
      
     return list;
@@ -222,7 +223,7 @@ var PTagBasic = React.createClass({
 																 }}/>
             </div>    }        
           </div>
-          <div className="pop-customer-detail-content-left-item">
+         {this.state.offset!==null && this.state.offset!=='' && <div className="pop-customer-detail-content-left-item">
             <header style={TITLE_STYLE}>{I18N.Setting.Tag.OffsetTime}</header>
             <div style={{display:'flex'}}>
               <div style={{marginTop:'5px'}}>
@@ -234,7 +235,7 @@ var PTagBasic = React.createClass({
               <ViewableDropDownMenu {...minuteProps}/>
             </div>
  
-          </div>
+          </div>}
         </div>
     }
 

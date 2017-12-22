@@ -522,7 +522,9 @@ let Tag = React.createClass({
       HierarchyName: " ",
       DimensionName: " ",
       TagModifyMode: 0,
-      EnergyLabelId:null
+      EnergyLabelId:null,
+      NewOffset:null,
+      NewOffsetStartTime:null
     };
     this.setState({
       selectedIndex: null,
