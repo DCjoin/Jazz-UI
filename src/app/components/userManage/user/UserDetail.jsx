@@ -461,7 +461,7 @@ var UserDetail = React.createClass({
         Id = userType.get("Id");
         Name = userType.get("Name");
       }
-      var codeList = CurrentUserStore.getCurrentPrivilegeByUser(this.props.user.toJS(), this.props.userRoleList.toJS());
+      var codeList = CurrentUserStore.getCurrentPrivilegeByUser(this.props.user.size>0?this.props.user.toJS():{UserType:Id}, this.props.userRoleList.toJS());
       var role = privilegeUtil.getRolePrivilegeList(),
         rolePrivilege = [];
       // var commonPrivilegeList = commonPrivilege.map((item) => {

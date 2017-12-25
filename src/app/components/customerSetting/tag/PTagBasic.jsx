@@ -30,7 +30,7 @@ var PTagBasic = React.createClass({
   },
   getEnableSave:function(){
     var {offset,offsetStartTime,offsetStartHour,offsetStartMinute}=this.state;
-    if(!Regex.TagRule.test(offset)) return false;
+    if(offset!==null && offset!=='' && !Regex.TagRule.test(offset)) return false;
     return (offset===null || offset==='') && offsetStartTime===null && offsetStartHour===null && offsetStartMinute===null ||
           !(offset==null || offset==='') && offsetStartTime!==null && offsetStartHour!==null && offsetStartMinute!==null
   },
@@ -162,7 +162,7 @@ var PTagBasic = React.createClass({
             isViewStatus: false,
             defaultValue: this.state.offsetStartHour=== null?-1:this.state.offsetStartHour,
             dataItems: me._getOffsetHourList(),
-            labelStyle:{fontSize:'14px',paddingRight:'0px'},
+            labelStyle:{fontSize:'14px',paddingRight:'0px',color:this.state.offsetStartHour===null?'#a6aaa9':'#464949'},
             style:{marginLeft:'21px',width:'122px'},
             menuItemStyle:{paddingRight:'0px'},
             didChanged: value => {
@@ -179,7 +179,7 @@ var PTagBasic = React.createClass({
             isViewStatus: false,
             defaultValue: this.state.offsetStartMinute=== null?-1:this.state.offsetStartMinute,
             dataItems: me._getOffsetMinuteList(),
-            labelStyle:{fontSize:'14px',paddingRight:'0px'},
+            labelStyle:{fontSize:'14px',paddingRight:'0px',color:this.state.offsetStartMinute=== null?'#a6aaa9':'#464949'},
             style:{marginLeft:'21px',width:'122px'},
             didChanged: value => {
               this.setState({
@@ -242,7 +242,16 @@ var PTagBasic = React.createClass({
   },
   componentWillMount: function() {},
   componentDidMount: function() {},
-  componentWillReceiveProps: function(nextProps) {},
+  componentWillReceiveProps: function(nextProps) {
+    if(nextProps.isViewStatus!==this.props.isViewStatus){
+      this.setState({
+              offset:null,
+              offsetStartTime:null,
+              offsetStartHour:null,
+              offsetStartMinute:null,
+      })
+    }
+  },
   componentWillUnmount: function() {},
   render: function() {
     var me = this;
