@@ -242,7 +242,16 @@ var PTagBasic = React.createClass({
   },
   componentWillMount: function() {},
   componentDidMount: function() {},
-  componentWillReceiveProps: function(nextProps) {},
+  componentWillReceiveProps: function(nextProps) {
+    if(nextProps.isViewStatus!==this.props.isViewStatus){
+      this.setState({
+              offset:null,
+              offsetStartTime:null,
+              offsetStartHour:null,
+              offsetStartMinute:null,
+      })
+    }
+  },
   componentWillUnmount: function() {},
   render: function() {
     var me = this;
