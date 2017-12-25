@@ -594,7 +594,7 @@ var Cost = React.createClass({
             <DeletableItem {...deleteProps}>
             <YearMonthItem {...dateProps}/>
             <div className='jazz-fromenddate-item-text'>{I18N.Setting.Cost.PriceType}</div>
-              <RadioButtonGroup name="price" defaultSelected={defaultSelected} onChange={(event, value) => {
+              <RadioButtonGroup name="price" valueSelected={defaultSelected} onChange={(event, value) => {
             this._onPowerPriceChange(value, id, index)
           }} style={styles.group}>
                 <RadioButton
