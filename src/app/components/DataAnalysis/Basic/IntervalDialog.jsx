@@ -290,7 +290,7 @@ export default class IntervalDialog extends Component {
               <TableHeader {...head}/>
               {ErrorCode===102?
                 <div style={style}>
-                  <FontIcon className="icon-glyph" style={{fontSize:'14px',height:'14px',width:'14px',marginRight:'10px'}} color="#505559"/>
+                  <FontIcon className="icon-glyph" style={{fontSize:'18px',height:'18px',width:'18px',marginRight:'10px'}} color="#9FA0A4"/>
                   {I18N.Setting.DataAnalysis.NotSupportIntervalAnalysis}</div>
               :Items.map((item,index)=>(
                 <TableRow time={this.state.tabNo===1?tou[index]:formatSplit(item.TimeSplit)}
@@ -421,13 +421,9 @@ export default class IntervalDialog extends Component {
         lineHeight:'52px',
         marginBottom:'0',
         paddingLeft:'10px',
-        marginLeft:'72px',
-        marginRight:'72px',
         alignItems:'center'
       },
       content:{
-        marginLeft:'72px',
-        marginRight:'72px',
         display: 'block',
         flexDirection: 'column',
         alignItems: 'center',
