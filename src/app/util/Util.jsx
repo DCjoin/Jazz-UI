@@ -1490,7 +1490,7 @@ let CommonFuns = {
         var idx = minmax.indexOf('-');
         var min = minmax.substring(0, idx);
         var max = minmax.substring(idx + 1);
-        yaxis.val = chartType==='scatterplot'?[min===''?'':Number(min), max===''?'':Number(max)]:[Number(min),Number(max)];
+        yaxis.val = chartType==='scatterplot' || chartType==='bubble'?[min===''?'':Number(min), max===''?'':Number(max)]:[Number(min),Number(max)];
         ++i;
         yaxisConfig.push(yaxis);
       }
