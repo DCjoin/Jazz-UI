@@ -162,7 +162,7 @@ var PTagBasic = React.createClass({
             isViewStatus: false,
             defaultValue: this.state.offsetStartHour=== null?-1:this.state.offsetStartHour,
             dataItems: me._getOffsetHourList(),
-            labelStyle:{fontSize:'14px',paddingRight:'0px'},
+            labelStyle:{fontSize:'14px',paddingRight:'0px',color:this.state.offsetStartHour===null?'#a6aaa9':'#464949'},
             style:{marginLeft:'21px',width:'122px'},
             menuItemStyle:{paddingRight:'0px'},
             didChanged: value => {
@@ -179,7 +179,7 @@ var PTagBasic = React.createClass({
             isViewStatus: false,
             defaultValue: this.state.offsetStartMinute=== null?-1:this.state.offsetStartMinute,
             dataItems: me._getOffsetMinuteList(),
-            labelStyle:{fontSize:'14px',paddingRight:'0px'},
+            labelStyle:{fontSize:'14px',paddingRight:'0px',color:this.state.offsetStartMinute=== null?'#a6aaa9':'#464949'},
             style:{marginLeft:'21px',width:'122px'},
             didChanged: value => {
               this.setState({
