@@ -374,7 +374,6 @@ export default class Bubble extends Component {
               </div>
       )  
     }
-    console.log(JSON.stringify(this.getConfigObj()));
     return(
         <Highcharts ref="highstock" className="heatmap" options={this.getConfigObj()} afterChartCreated={this.props.afterChartCreated?()=>{this.props.afterChartCreated()}:()=>{}}></Highcharts>
     
