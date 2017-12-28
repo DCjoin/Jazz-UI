@@ -231,7 +231,7 @@ var PTagBasic = React.createClass({
          {this.state.offset!==null && this.state.offset!=='' && <div className="pop-customer-detail-content-left-item">
             <header style={TITLE_STYLE}>{I18N.Setting.Tag.OffsetTime}</header>
             <div style={{display:'flex'}}>
-              <div style={{marginTop:'5px'}}>
+              <div style={{marginTop:'5px'}} className="ptag-date-picker">
              <ViewableDatePicker  hintText={I18N.Setting.Tag.OffsetDate} onChange={(val)=>{this.setState({offsetStartTime:val})}} datePickerClassName='date-picker-inline' width={122} 
               value={this.state.offsetStartTime || ''} 
               shouldDisableDate={(date)=>(moment(date).isBefore(moment().add(-6,'M')))}/>
