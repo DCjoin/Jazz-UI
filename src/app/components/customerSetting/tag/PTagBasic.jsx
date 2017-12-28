@@ -208,7 +208,12 @@ var PTagBasic = React.createClass({
                                     })
 																 }}/>
             :<div style={{display:'flex',alignItems:'center'}}>
-              <div style={FONT_STYLE}>{`${NewOffset} (${I18N.Setting.Tag.OffsetHistory}) + `}</div>
+              <div style={{
+                fontSize: '14px',
+                color:'#464949',
+                height:'52px',
+                lineHeight:Regex.TagRule.test(this.state.offset || '') || this.state.offset===null || this.state.offset===''?'52px':'42px'
+              }}>{`${NewOffset} (${I18N.Setting.Tag.OffsetHistory}) + `}</div>
               <ViewableTextField errorMessage={I18N.SaveEffect.Create.TriggerVaildTip} regex={Regex.TagRule} style={{marginTop:'10px',marginLeft:'10px',width:230}} 
                                   labelStyle={{fontSize:'14px',color:'#464949'}}
                                   hintStyle={{fontSize:'14px',color:'#a6aaa9'}}
