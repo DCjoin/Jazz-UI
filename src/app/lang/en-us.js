@@ -2372,8 +2372,11 @@ I18N.Setting.DataAnalysis.Tou.NotSupport = 'This {0} does not support peak-valle
 I18N.Setting.DataAnalysis.Tou.ChangeStep = 'please change step size or switch';
 I18N.Setting.DataAnalysis.Tou.ChangeChartType = 'Please change chart type';
 I18N.Setting.DataAnalysis.Tou.Try = 'Try!';
-I18N.Setting.DataAnalysis.Tou.NotSupportHistory = 'Peak-valley analysis is not supported during history comparison, please cancle history comparison and try again.';
-I18N.Setting.DataAnalysis.Tou.NotSupportMulti = 'Peak-valley analysis only supports single data point, please delete extra data points.';
+I18N.Setting.DataAnalysis.Tou.NotSupportHistory = '历史对比时无法进行峰平谷分析，是否取消历史对比？';
+I18N.Setting.DataAnalysis.Tou.NotSupportMulti = '峰平谷分析仅支持单个数据点，请选择！';
+I18N.Setting.DataAnalysis.Tou.TagNotSupport = '不支持峰平谷分析';
+I18N.Setting.DataAnalysis.Tou.CancelMulti = '是';
+I18N.Setting.DataAnalysis.Tou.NotCancelMulti = '否';
 
 I18N.Setting.ECM = {};
 I18N.Setting.ECM.EstimatedAnnualCostSavings = 'Estimated Annual Cost Savings';
