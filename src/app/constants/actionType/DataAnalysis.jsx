@@ -18,6 +18,7 @@ module.exports = {
       MODIFY_SPLIT:null,
       REFRESH_SPLITS:null,
       CLEAR_INTERVAL_INFO:null,
+      GET_TOU_TAGS_INFO:null
   }),
   status:{
     ADD:1,

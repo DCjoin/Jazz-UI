@@ -2371,8 +2371,11 @@ I18N.Setting.DataAnalysis.Tou.NotSupport = '该{0}不支持峰平谷分析';
 I18N.Setting.DataAnalysis.Tou.ChangeStep = '请换个步长或切换';
 I18N.Setting.DataAnalysis.Tou.ChangeChartType = '请切换';
 I18N.Setting.DataAnalysis.Tou.Try = '试试！';
-I18N.Setting.DataAnalysis.Tou.NotSupportHistory = '历史对比时无法进行峰平谷分析，请取消历史对比后重试！';
-I18N.Setting.DataAnalysis.Tou.NotSupportMulti = '峰平谷分析仅支持单个数据点，请删除多余数据点！';
+I18N.Setting.DataAnalysis.Tou.NotSupportHistory = '历史对比时无法进行峰平谷分析，是否取消历史对比？';
+I18N.Setting.DataAnalysis.Tou.NotSupportMulti = '峰平谷分析仅支持单个数据点，请选择！';
+I18N.Setting.DataAnalysis.Tou.TagNotSupport = '不支持峰平谷分析';
+I18N.Setting.DataAnalysis.Tou.CancelMulti = '是';
+I18N.Setting.DataAnalysis.Tou.NotCancelMulti = '否';
 
 I18N.Setting.ECM = {};
 I18N.Setting.ECM.EstimatedAnnualCostSavings = '预计年节约成本';

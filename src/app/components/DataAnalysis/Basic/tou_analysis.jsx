@@ -7,6 +7,13 @@ import IconButton from 'material-ui/IconButton';
 import NewFlatButton from 'controls/NewFlatButton.jsx';
 import Immutable from 'immutable';
 import TagAction from 'actions/TagAction.jsx';
+import TouTariffStore from 'stores/DataAnalysis/touTariff_store.jsx';
+import TouTariffAction from 'actions/DataAnalysis/touTariff_action.jsx';
+import { CircularProgress} from 'material-ui';
+import HierarchyStore from 'stores/HierarchyStore.jsx';
+import {find} from 'lodash-es';
+import { Snackbar} from 'material-ui';
+import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 
 const ASC_STEP = [
 	TimeGranularity.None,
@@ -20,6 +27,10 @@ const ASC_STEP = [
 
 const SUPPORT_CHART_TYPE=['column','stack','pie'];
 
+var findBuilding=(buildingId)=>find(HierarchyStore.getBuildingList(), building =>building.Id === buildingId * 1);
+
+var checkBuildingHasTouProperty=(buildingId)=>findBuilding(buildingId) && findBuilding(buildingId).HasTouTariff
+
 var checkSupportChartType=(chartType)=>SUPPORT_CHART_TYPE.indexOf(chartType)>-1;
 
 var checkSupportStep=(chartType,step)=>(
@@ -30,12 +41,34 @@ var checkSupportStep=(chartType,step)=>(
 
 var checkSupportTag=()=>AlarmTagStore.getSearchTagList() && AlarmTagStore.getSearchTagList().length<=1
 
+var checkTagProperty=(tag)=>(checkBuildingHasTouProperty(tag.get('HierarchyId'))
+                                                    && tag.get('CommodityId')===1 
+                                                    && tag.get('UomId')===1
+                                                    && tag.get("CalculationType")===1)
+
+var checkTagsProperty=(tagInfos)=>tagInfos.map(tag=>checkTagProperty(tag))
+                                         .includes(true)
+
+var getIds=()=>AlarmTagStore.getSearchTagList().map(tag=>tag.tagId)
 
 
 export default class TouAnalysis extends Component {
 
+  constructor(props) {
+    super(props);
+    this._onChanged = this._onChanged.bind(this);
+  }
+
   state={
-    tags:Immutable.fromJS(AlarmTagStore.getSearchTagList())
+    selectedTagId:null,
+    tags:Immutable.fromJS(AlarmTagStore.getSearchTagList()),
+    tagInfos:null
+  }
+
+  _onChanged(){
+    this.setState({
+      tagInfos:TouTariffStore.getTagsInfo()
+    })
   }
 
   _renderStepErrorDialog(){
@@ -99,14 +132,14 @@ export default class TouAnalysis extends Component {
 
   _onConfirm(){
     var allTags=Immutable.fromJS(AlarmTagStore.getSearchTagList());
-    allTags=allTags.delete(allTags.findIndex(tag=>tag.get('tagId')===this.state.tags.getIn([0,'tagId'])));
+    allTags=allTags.delete(allTags.findIndex(tag=>tag.get('tagId')===this.state.selectedTagId));
     this.props.onTagConfirm(allTags.toJS());
   }
 
   _renderTagErrorDialog(){
     let actions = [
 			<NewFlatButton style={{marginLeft: 16,float:'right',border:'1px solid #9fa0a4',width:'80px',minWidth:'80px',lineHeight:'34px'}} label={I18N.Common.Button.Cancel2} onClick={this.props.onClose}/>,
-			<NewFlatButton primary label={I18N.Common.Button.Confirm} disabled={this.state.tags.size!==1} onClick={this._onConfirm.bind(this)} style={{float:'right',width:'80px',minWidth:'80px',lineHeight:'34px'}}/>	
+			<NewFlatButton primary label={I18N.Common.Button.Confirm} disabled={this.state.selectedTagId===null} onClick={this._onConfirm.bind(this)} style={{float:'right',width:'80px',minWidth:'80px',lineHeight:'34px'}}/>	
 		];
     return(
       <NewDialog
@@ -118,22 +151,51 @@ export default class TouAnalysis extends Component {
           >
           <div className="tou-dialog-error" style={{flexDirection:'column'}}>
             {I18N.Setting.DataAnalysis.Tou.NotSupportMulti}
-            {this.state.tags.map((tag,index)=><div className="tou-dialog-error" style={{marginTop:'20px',alignItems:'center'}}>
-              <div className="tou-dialog-error-tagname" title={tag.get('tagName')}>{tag.get('tagName')}</div>
-              {this.state.tags.size!==1 && <IconButton iconClassName="icon-close" iconStyle={{fontSize:'14px',color:'#626469',marginLeft:'16px'}}
-                                                         style={{width:'14px',height:'24px',padding:'0'}}
-                                                         onClick={()=>{
-                                                          this.setState({
-                                                            tags:this.state.tags.delete(index)
-                                                          })
-                                                         }} />}
-              </div>)}
+            <RadioButtonGroup name="tagSelect" valueSelected={this.state.selectedTagId} onChange={(e,value)=>{
+                                                                                                  this.setState({
+                                                                                                    selectedTagId:value
+                                                                                                  })}}
+                                                                                        style={{marginTop:'18px'}}>
+              {AlarmTagStore.getSearchTagList().map(tag=>{
+                                                        var disabled=!checkTagProperty(this.state.tagInfos.find(tagInfo=>tagInfo.get('Id')===tag.tagId))
+                                                        return(<RadioButton
+                                                          value={tag.tagId}
+                                                          label={tag.tagName+(disabled?`  (${I18N.Setting.DataAnalysis.Tou.TagNotSupport})`:'')}
+                                                          disabled={disabled}
+                                                          labelStyle={{fontSize:'16px'}}
+                                                          style={{marginBottom:'18px'}}
+                                                        />)})}
+            </RadioButtonGroup>
           </div>
         </NewDialog>
     )
   }
 
   _renderMultiTimeDialog(){
+
+    let actions = [
+			<NewFlatButton style={{marginLeft: 16,float:'right',border:'1px solid #9fa0a4',width:'80px',minWidth:'80px',lineHeight:'34px'}} label={I18N.Setting.DataAnalysis.Tou.NotCancelMulti} onClick={this.props.onClose}/>,
+			<NewFlatButton primary label={I18N.Setting.DataAnalysis.Tou.CancelMulti} onClick={()=>{this.props.cancelMulti();
+                                                                                              this.props.onSuccess();
+                                                                                             }} 
+                             style={{float:'right',width:'80px',minWidth:'80px',lineHeight:'34px'}}/>	
+		];
+    return(
+        <NewDialog
+          open={true}
+          modal={true}
+          actions={actions}
+          titleStyle={{marginBottom:'0',height:'16px',lineHeight:'16px'}}
+          actionsContainerStyle={{margin:'16px 24px 16px 0'}}
+          contentStyle={{marginBottom:'40px'}}
+          >
+          <div className="tou-dialog-error">
+            {I18N.Setting.DataAnalysis.Tou.NotSupportHistory}
+          </div>
+        </NewDialog>)
+  }
+
+  _renderLoading(){
     return(
         <NewDialog
           open={true}
@@ -144,19 +206,38 @@ export default class TouAnalysis extends Component {
           actionsContainerStyle={{display:'none'}}
           contentStyle={{marginBottom:'40px'}}
           >
-          <div className="tou-dialog-error">
-            {I18N.Setting.DataAnalysis.Tou.NotSupportHistory}
-          </div>
+          <div className="no_weather_config">
+            <CircularProgress  mode="indeterminate" size={40} />
+         </div>
         </NewDialog>)
+  }
+
+  _renderTagNotSupportSnackBar(){
+    return <Snackbar style={{
+        maxWidth: 'none'
+      }} message={I18N.Message.M02028} autoHideDuration={4000} open={true} onRequestClose={this.props.onClose} ref='errorMessageDialog' />;
+  }
+
+  componentDidMount(){
+    TouTariffStore.addChangeListener(this._onChanged);
+    TouTariffAction.getTagsInfo(getIds());
+  }
+
+  componentWillUnmount(){
+    TouTariffStore.removeChangeListener(this._onChanged);
   }
 
   render(){
     var {chartType,step,isMultiTime,onSuccess}=this.props;
     var content;
-    if(isMultiTime){
-      content=this._renderMultiTimeDialog()
+    if(this.state.tagInfos===null){
+      content=this._renderLoading()      
+    }else if(!checkTagsProperty(this.state.tagInfos)){
+      content=this._renderTagNotSupportSnackBar()
     }else if(!checkSupportTag()){
       content=this._renderTagErrorDialog()
+    }else if(isMultiTime){
+      content=this._renderMultiTimeDialog()
     }else if(!checkSupportChartType(chartType)){
       content=this._renderChartTypeErrorDialog()
     }else  {

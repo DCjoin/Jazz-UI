@@ -1832,6 +1832,7 @@ _onBubbleAxisChanged(){
 
   render(){
     var errorDialog;
+    var that=this;
     var props={
       subToolBar:{
         ref:'subToolBar',
@@ -1889,6 +1890,10 @@ _onBubbleAxisChanged(){
                                                     isMultiTime={this.isMultiTime}
                                                     chartType={this.state.selectedChartType}
                                                     step={this.state.step}
+                                                    cancelMulti={function(){
+                                                      that.isMultiTime=false;
+                                                      MultipleTimespanStore.clearMultiTimespan('both');
+                                                    }}
                                                     onSuccess={()=>{
                                                         this.setState({
                                                           touAnalysisShow:false,
