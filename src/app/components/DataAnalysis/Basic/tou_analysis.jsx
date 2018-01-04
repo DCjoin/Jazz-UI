@@ -195,23 +195,6 @@ export default class TouAnalysis extends Component {
         </NewDialog>)
   }
 
-  _renderLoading(){
-    return(
-        <NewDialog
-          open={true}
-          modal={false}
-          isOutsideClose={false}
-          onRequestClose={this.props.onClose}
-          titleStyle={{marginBottom:'0',height:'16px',lineHeight:'16px'}}
-          actionsContainerStyle={{display:'none'}}
-          contentStyle={{marginBottom:'40px'}}
-          >
-          <div className="no_weather_config">
-            <CircularProgress  mode="indeterminate" size={40} />
-         </div>
-        </NewDialog>)
-  }
-
   _renderTagNotSupportSnackBar(){
     return <Snackbar style={{
         maxWidth: 'none'
@@ -231,7 +214,7 @@ export default class TouAnalysis extends Component {
     var {chartType,step,isMultiTime,onSuccess}=this.props;
     var content;
     if(this.state.tagInfos===null){
-      content=this._renderLoading()      
+      content=null     
     }else if(!checkTagsProperty(this.state.tagInfos)){
       content=this._renderTagNotSupportSnackBar()
     }else if(!checkSupportTag()){
