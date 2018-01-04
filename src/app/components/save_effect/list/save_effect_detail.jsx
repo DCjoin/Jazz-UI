@@ -285,7 +285,7 @@ export default class EffectDetail extends Component {
 													getEnergySolution(this.props.effect.get("EnergyProblemId"));
 													}}
 													style={style.btn} labelStyle={style.lable} secondary={true}/>
-						{!this.state.isBest && isFull() &&  (BestIsFull() || BestIsView()) && <FlatButton label={I18N.SaveEffect.SetBest} onTouchTap={this._onBestShow.bind(this)}
+						{!this.state.isBest && isFull() &&  BestIsFull() && <FlatButton label={I18N.SaveEffect.SetBest} onTouchTap={this._onBestShow.bind(this)}
 													style={style.btn} labelStyle={style.lable} secondary={true}/>}
 					</span>
 				</div>

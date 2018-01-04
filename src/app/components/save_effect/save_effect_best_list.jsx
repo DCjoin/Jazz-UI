@@ -122,7 +122,7 @@ export default class SaveEffectBestList extends Component {
 	render() {
 		if(!BestIsFullOrIsView()){
 			return (
-        <div className="jazz-effect-best-list flex-center" style={{fontSize:'20px',color:'#626469'}}>
+        <div className="jazz-effect-best-list flex-center">
          {I18N.SaveEffect.NoBestSulutionTip}
        </div>
       )
