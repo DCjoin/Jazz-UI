@@ -548,7 +548,7 @@ export default class Step2 extends Component {
 				{this.state.showModelTip && <Paper
           
 					style={{
-						width:'450px',
+						width:'auto',
 						position:'fixed',
 						zIndex:'10',
 						top:this.state.anchorEl.x+18,

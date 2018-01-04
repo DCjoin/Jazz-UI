@@ -147,6 +147,7 @@ export default class TouAnalysis extends Component {
           modal={true}
           actions={actions}
           titleStyle={{marginBottom:'0',height:'16px',lineHeight:'16px'}}
+          contentStyle={{overflowY:'auto'}}
           actionsContainerStyle={{margin:'16px 24px 16px 0'}}
           >
           <div className="tou-dialog-error" style={{flexDirection:'column'}}>

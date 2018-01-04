@@ -143,7 +143,7 @@ class SumTableRow extends Component{
     return(
       <div style={style}>
          <div style={{paddingLeft:'12px',paddingRight:'20px',flex:'1',whiteSpace: 'nowrap',textOverflow: 'ellipsis',overflow: 'hidden'}} 
-              title={tagName}><div>{tagName}</div><div>{otherName}</div></div>
+              title={tagName}><div style={{whiteSpace: 'nowrap',textOverflow: 'ellipsis',overflow: 'hidden'}}>{tagName}</div><div>{otherName}</div></div>
         <div style={{paddingRight:'20px',width:'110px',minWidth:'110px'}}>{avg}</div>
         <div style={{paddingRight:'20px',width:'110px',minWidth:'110px'}}>{max}</div>
         <div style={{paddingRight:'20px',width:'110px',minWidth:'110px'}}>{min}</div>
