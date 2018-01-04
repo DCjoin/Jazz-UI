@@ -27,6 +27,9 @@ import TagSelect from'../../KPI/Single/TagSelect.jsx';
 import HierarchyStore from 'stores/HierarchyStore.jsx';
 
 import {RadioButton} from 'material-ui/RadioButton';
+import Popover from 'material-ui/Popover/Popover';
+
+import Paper from 'material-ui/Paper';
 
 const CALENDAR_TYPE_WORKTIME = 2;
 const CALENDAR_TYPE_NO_WORKTIME = 3;
@@ -83,7 +86,8 @@ export default class Step2 extends Component {
 	}
 	state={
 		showRefresh:false,
-		showTagSelectDialog:false
+		showTagSelectDialog:false,
+		showModelTip:false
 	}
   _afterChartCreated(chartObj) {
     if (chartObj.options.scrollbar && chartObj.options.scrollbar.enabled) {
@@ -517,6 +521,54 @@ export default class Step2 extends Component {
 		)
 	}
 
+	_renderModelTip(){
+		return(
+			<div style={{position:'absolute',
+						top:'-1px',
+						left:'70px'}}
+						onMouseLeave={(e)=>{																	
+																if(this.state.showModelTip){
+																					this.setState({
+																					showModelTip:false,
+																				})}
+																	
+																			}}>
+				<div className="model-tip" onMouseEnter={(e)=>{																										
+																											this.setState({
+																												showModelTip:true,
+																												anchorEl:{
+																													x:e.target.getBoundingClientRect().top,
+																													y:e.target.getBoundingClientRect().left,
+																												}
+																											})
+																											}}
+																	   >
+				<FontIcon className="icon-explain-n" style={{fontSize:'14px',color:'#9fa0a4'}} />
+				</div>
+				{this.state.showModelTip && <Paper
+          
+					style={{
+						width:'450px',
+						position:'fixed',
+						zIndex:'10',
+						top:this.state.anchorEl.x+18,
+						left:this.state.anchorEl.y,
+  					borderRadius: '3px',
+  					boxShadow: '0 0 3px 0 rgba(0, 0, 0, 0.2)',
+						padding:'12px 12px 0 12px'}}
+        >
+				<TipItem title={I18N.SaveEffect.Model.Easy} content={I18N.SaveEffect.Model.EasyTip}/>
+				<TipItem title={I18N.SaveEffect.Model.Contrast} content={I18N.SaveEffect.Model.ContrastTip}/>
+				<TipItem title={I18N.SaveEffect.Model.Manual} content={I18N.SaveEffect.Model.ManualTip}/>
+				<TipItem title={I18N.SaveEffect.Model.Increment} content={I18N.SaveEffect.Model.IncrementTip}/>
+				<TipItem title={I18N.SaveEffect.Model.Relation} content={I18N.SaveEffect.Model.RelationTip}/>
+				<TipItem title={I18N.SaveEffect.Model.Efficiency} content={I18N.SaveEffect.Model.EfficiencyTip}/>
+				<TipItem title={I18N.SaveEffect.Model.Simulation} content={I18N.SaveEffect.Model.SimulationTip}/>
+				</Paper>}
+			</div>
+		)	
+	}
+
 	  componentDidMount(){
       if(this.props.isFromEdit) {
 				this.props.onGetChartData();
@@ -637,7 +689,7 @@ export default class Step2 extends Component {
 				<div className='create-block step2-side' style={{display:'flex',flexDirection:'column'}}>
 					<header className='step2-side-header'>{I18N.SaveEffect.Create.ConfigModel}</header>
 					<div className='step2-side-content' style={{overflowY:'auto'}}>
-						<div>
+						<div style={{position:'relative'}}>
 							<ViewableDropDownMenu
 								defaultValue={BenchmarkModel}
 								title={I18N.SaveEffect.Model.Title}
@@ -646,6 +698,7 @@ export default class Step2 extends Component {
 								dataItems={getModelDataItems()}
 								didChanged={onChangeModelType}
 								style={{width: 170}}/>
+								{this._renderModelTip()}
 						</div>
 						<div>
 							<ViewableDropDownMenu
@@ -721,4 +774,14 @@ function subtractStep(time, step) {
   return moment(
     moment(time).valueOf() - TIME_GRANULARITY_MAP_VAL[step] * 1000
   ).format('YYYY-MM-DDTHH:mm:ss');
+}
+
+class TipItem extends Component {
+	render(){
+		return(<div style={{marginBottom:'12px'}}>
+			<div style={{fontSize: '12px',color: '#0f0f0f'}}>{this.props.title}</div>
+			<div style={{fontSize: '12px',color: '#9fa0a4',marginTop:'4px'}}>{this.props.content}</div>
+		</div>)
+	}
+
 }

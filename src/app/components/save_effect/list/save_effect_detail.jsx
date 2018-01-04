@@ -11,7 +11,7 @@ import {calcState} from "constants/actionType/Effect.jsx";
 import FlatButton from "controls/NewFlatButton.jsx";
 import DropdownButton from '../../../controls/NewDropdownButton.jsx';
 import {IconText} from '../../ECM/MeasuresItem.jsx';
-import {getDetail,deleteItem,changeEnergySystemForEffect,getContrastChartData,getSavingChartData,saveBest,deleteBest,ignoreBest,cleanDetail} from 'actions/save_effect_action.js';
+import {getEnergySolution,getDetail,deleteItem,changeEnergySystemForEffect,getContrastChartData,getSavingChartData,saveBest,deleteBest,ignoreBest,cleanDetail} from 'actions/save_effect_action.js';
 import { CircularProgress,Dialog,Snackbar} from 'material-ui';
 import NewDialog from 'controls/NewDialog.jsx';
 import PreCreate from '../create/pre_create.jsx';
@@ -24,6 +24,14 @@ import {LessInvest,HighCost,Easy,HighReturn} from '../best/icon.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
 import PermissionCode from 'constants/PermissionCode.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
+import CreateStore from 'stores/save_effect/create_store';
+import {Solution,SolutionLabel} from 'components/ECM/MeasurePart/Solution.jsx';
+import Problem from 'components/ECM/MeasurePart/Problem.jsx';
+import SolutionGallery from 'components/ECM/MeasurePart/SolutionGallery.jsx';
+import Supervisor from 'components/ECM/MeasurePart/Supervisor.jsx';
+import StatusCmp from 'components/ECM/MeasurePart/Status.jsx'
+import {EnergySys} from 'components/ECM/MeasurePart/MeasureTitle.jsx';
+import Remark from 'components/ECM/MeasurePart/Remark.jsx';
 
 const type={
 	"Saving":0,
@@ -114,6 +122,8 @@ export default class EffectDetail extends Component {
         this._onChanged = this._onChanged.bind(this);
 				this._handleEditTagChange = this._handleEditTagChange.bind(this);
 				this._handleDeleteTagChange = this._handleDeleteTagChange.bind(this);
+				this._onSolutionChanged = this._onSolutionChanged.bind(this);
+				
   }
 
   state={
@@ -131,7 +141,9 @@ export default class EffectDetail extends Component {
 		isBest:false,
 		characteristics:'',
 		recommendReason:null,
-		IgnoreBestShow:false
+		IgnoreBestShow:false,
+		energySolution: null,
+		measureShow: false,
   }
 
   _onChanged(){
@@ -150,6 +162,12 @@ export default class EffectDetail extends Component {
 		}
 
   }
+
+	_onSolutionChanged(){
+		this.setState({
+			energySolution:CreateStore.getEnergySolution()
+		})
+	}
 
 	_onEnergySystemDialogShow(){
 		this.setState({
@@ -260,6 +278,13 @@ export default class EffectDetail extends Component {
 						<div className="jazz-effect-detail-header-title">{this.props.effect.get('EnergySolutionName')}</div>
 					</span>
 					<span>
+						<FlatButton label={I18N.SaveEffect.SolutionDetail} onTouchTap={()=>{
+												this.setState({
+													measureShow: true 
+													});
+													getEnergySolution(this.props.effect.get("EnergyProblemId"));
+													}}
+													style={style.btn} labelStyle={style.lable} secondary={true}/>
 						{!this.state.isBest && isFull() &&  (BestIsFull() || BestIsView()) && <FlatButton label={I18N.SaveEffect.SetBest} onTouchTap={this._onBestShow.bind(this)}
 													style={style.btn} labelStyle={style.lable} secondary={true}/>}
 					</span>
@@ -811,14 +836,109 @@ export default class EffectDetail extends Component {
     )
 	}
 
+		_renderPersonInCharge(problem,indetail){
+	  return(
+	    <Supervisor person={problem.get('Supervisor')} supervisorList={this.state.supervisorList}
+	        usedInDetail={indetail}
+	        canEdit={false}
+	        energySys={problem.get('EnergySys')}/>
+	  )
+	}
+	
+		_renderMeasureDialog(){
+	  var currentSolution=this.state.energySolution;
+	  var onClose=()=>{
+	    this.setState({
+	      measureShow:false,
+	    })
+	  };
+	  if( !currentSolution ) {
+		return (
+	    <NewDialog
+	      open={this.state.measureShow}
+	      isOutsideClose={false}
+	      onRequestClose={onClose}
+	      overlayStyle={{overflowY:"auto"}}
+	      style={{overflow:"visible"}}
+	      wrapperStyle={{overflow:"visible"}}
+	      titleStyle={{margin:'0 7px',paddingTop:"7px"}}
+	      contentStyle={{overflowY:"auto",display:'block',padding:"6px 28px 14px 32px",margin:0}}>
+	      <div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>
+	     </NewDialog>)
+	  }
+		let problem = currentSolution.get('EnergyProblem');
+	 var props={
+	   title:{
+	     measure:currentSolution,
+	     canNameEdit:false,
+	     canEnergySysEdit:false,
+	   },
+	   problem:{
+	     measure:currentSolution,
+	     canEdit:false,
+	   },
+	   solution:{
+	     measure:currentSolution,
+	     canEdit:false,
+	   },
+	   gallery: {
+	    measure:currentSolution,
+	    isView: true,
+	   },
+	   remark:{
+	   	remarkList: currentSolution.get('Remarks'),
+	     problemId:problem.get('Id'),
+	     canEdit:false,
+	     onScroll:(height)=>{ReactDom.findDOMNode(this).querySelector(".dialog-content").scrollTop+=height+15}
+	   },
+	   energySys:{
+	     measure:currentSolution,
+	     canNameEdit:false,
+	     canEnergySysEdit:false,
+	   }
+	 }
+	  return(
+	    <NewDialog
+	      open={this.state.measureShow}
+	      hasClose
+	      isOutsideClose={false}
+	      onRequestClose={onClose}
+	      overlayStyle={{overflowY:"auto"}}
+	      style={{overflow:"visible"}}
+	      wrapperStyle={{overflow:"visible"}}
+	      titleStyle={{margin:'0 7px',paddingTop:"7px"}}
+	      contentStyle={{overflowY:"auto",display:'block',padding:"6px 28px 14px 32px",margin:0}}>
+	      <div style={{paddingLeft:'9px',borderBottom:"1px solid #e6e6e6",paddingRight:'19px'}}>
+		      <div className="jazz-ecm-push-operation">
+		        <StatusCmp status={problem.get('Status')} canEdit={false}/>
+		        {this._renderPersonInCharge(problem,true)}
+		        <EnergySys {...props.energySys}/>
+		      </div>
+	      </div>
+	      <SolutionLabel {...props.solution}/>
+	      <Solution {...props.solution}/>
+	      <Problem {...props.problem}/>
+	      <div style={{margin:"46px 20px 0 16px"}}><SolutionGallery {...props.gallery}/></div>
+	      <div style={{display:"flex",alignItems:"flex-end",marginTop:'36px'}}>
+	        <div className="jazz-ecm-push-operation-label">{`${I18N.Setting.ECM.PushPanel.CreateUser}：`}</div>
+	        <div style={{fontSize:'12px',color:'#9fa0a4',marginLeft:'5px'}}>{problem.get('CreateUserName') || '-'}</div>
+	      </div>
+	      <Remark {...props.remark}/>
+	    </NewDialog>
+	  )
+	}
+
   componentDidMount(){
     getDetail(this.props.effect.get('EnergyEffectId'));
 		this._getChartData(this.props.effect.get("EnergyEffectId"),null);
     ListStore.addChangeListener(this._onChanged);
+		CreateStore.addChangeListener(this._onSolutionChanged);
+		
   }
 
   componentWillUnmount(){
     ListStore.removeChangeListener(this._onChanged);
+		CreateStore.removeChangeListener(this._onSolutionChanged);
   }
 
   render(){
@@ -841,6 +961,7 @@ export default class EffectDetail extends Component {
 					{this.state.deleteConfirmShow && this._renderDeleteDialog()}
 					{this.state.configBestShow && this._renderConfigBestDialog()}
 					{this.state.IgnoreBestShow && this._renderIgnoreBestDialog()}
+					{this._renderMeasureDialog()}
 					{this.state.energySystemDialogShow &&
 					<PreCreate isEdit
 						EnergySystem={EnergySystem}

@@ -2646,6 +2646,7 @@ I18N.SaveEffect.IgnoreSuccess='方案已进入“已忽略方案”页面';
 I18N.SaveEffect.SolutionName='方案名称';
 I18N.SaveEffect.SolutionCharacter='方案特点';
 I18N.SaveEffect.NoBestSulutionTip='想获取最佳方案，请购买高级咨询服务';
+I18N.SaveEffect.SolutionDetail='方案详情';
 
 I18N.SaveEffect.Model = {};
 I18N.SaveEffect.Model.Title = '基准值模型';
@@ -2657,6 +2658,13 @@ I18N.SaveEffect.Model.Relation = '关联型';
 I18N.SaveEffect.Model.Efficiency = '效率型';
 I18N.SaveEffect.Model.Simulation = '模拟型';
 I18N.SaveEffect.Model.Alert = '请重新配置！';
+I18N.SaveEffect.Model.EasyTip = '适用于使用历史平均值与实际值做对比计算节能量的方案';
+I18N.SaveEffect.Model.ContrastTip = '适用于使用上一年同期数据与实际值做对比计算节能量的方案';
+I18N.SaveEffect.Model.ManualTip = '适用于手动输入计算过的基准能耗，并与实际能耗对比计算节能量的方案';
+I18N.SaveEffect.Model.IncrementTip = '适用于能耗受其他变量线性影响的节能方案';
+I18N.SaveEffect.Model.RelationTip = '适用于通过优化参数控制设备运行的节能方案，例如根据CO数值控制排风机运行';
+I18N.SaveEffect.Model.EfficiencyTip = '适用于节能措施实施前后设备效率发生变化的方案';
+I18N.SaveEffect.Model.SimulationTip = '适用于能耗受其他变量影响，需要采用回归模型进行校验的方案';
 
 I18N.SaveEffect.Create = {};
 I18N.SaveEffect.Create.Start = '开始配置';

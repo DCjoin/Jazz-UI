@@ -4,12 +4,12 @@
 
 @font-face {
   font-family: "fontcustom";
-  src: url("./fontcustom_9206548c737cda78bd4671fbdde5b38e.eot");
-  src: url("./fontcustom_9206548c737cda78bd4671fbdde5b38e.eot?#iefix") format("embedded-opentype"),
-       url("./fontcustom_9206548c737cda78bd4671fbdde5b38e.woff2") format("woff2"),
-       url("./fontcustom_9206548c737cda78bd4671fbdde5b38e.woff") format("woff"),
-       url("./fontcustom_9206548c737cda78bd4671fbdde5b38e.ttf") format("truetype"),
-       url("./fontcustom_9206548c737cda78bd4671fbdde5b38e.svg#fontcustom") format("svg");
+  src: url("./fontcustom_5398132c23a5ab5f7b8544c10b961089.eot");
+  src: url("./fontcustom_5398132c23a5ab5f7b8544c10b961089.eot?#iefix") format("embedded-opentype"),
+       url("./fontcustom_5398132c23a5ab5f7b8544c10b961089.woff2") format("woff2"),
+       url("./fontcustom_5398132c23a5ab5f7b8544c10b961089.woff") format("woff"),
+       url("./fontcustom_5398132c23a5ab5f7b8544c10b961089.ttf") format("truetype"),
+       url("./fontcustom_5398132c23a5ab5f7b8544c10b961089.svg#fontcustom") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -17,15 +17,17 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: "fontcustom";
-    src: url("./fontcustom_9206548c737cda78bd4671fbdde5b38e.svg#fontcustom") format("svg");
+    src: url("./fontcustom_5398132c23a5ab5f7b8544c10b961089.svg#fontcustom") format("svg");
   }
 }
 
 [data-icon]:before { content: attr(data-icon); }
 
 [data-icon]:before,
+.icon-Drag:before,
 .icon-HAVC:before,
 .icon-Low-voltage-electric:before,
+.icon-No-data:before,
 .icon-Rectangle-solid:before,
 .icon-VIP:before,
 .icon-accessory:before,
@@ -78,6 +80,7 @@
 .icon-contact-us:before,
 .icon-cool:before,
 .icon-copy:before,
+.icon-copy2:before,
 .icon-cost_saving:before,
 .icon-current:before,
 .icon-currentindex:before,
@@ -98,6 +101,8 @@
 .icon-dust-concentration:before,
 .icon-easytodo:before,
 .icon-edit:before,
+.icon-edit-2:before,
+.icon-edit3:before,
 .icon-electricity:before,
 .icon-email:before,
 .icon-end-user:before,
@@ -109,6 +114,8 @@
 .icon-equipment:before,
 .icon-equipment-box:before,
 .icon-error-message:before,
+.icon-explain-n:before,
+.icon-explain-s:before,
 .icon-export:before,
 .icon-eye:before,
 .icon-factory:before,
@@ -232,6 +239,7 @@
 .icon-set-alarm:before,
 .icon-setalarm:before,
 .icon-setting:before,
+.icon-share:before,
 .icon-show:before,
 .icon-signal1:before,
 .icon-signal2:before,
@@ -293,8 +301,10 @@
   font-smoothing: antialiased;
 }
 
+.icon-Drag:before { content: "\f20b"; }
 .icon-HAVC:before { content: "\f1a1"; }
 .icon-Low-voltage-electric:before { content: "\f1a2"; }
+.icon-No-data:before { content: "\f20a"; }
 .icon-Rectangle-solid:before { content: "\f1cc"; }
 .icon-VIP:before { content: "\f1c2"; }
 .icon-accessory:before { content: "\f147"; }
@@ -347,6 +357,7 @@
 .icon-contact-us:before { content: "\f1b9"; }
 .icon-cool:before { content: "\f1db"; }
 .icon-copy:before { content: "\f178"; }
+.icon-copy2:before { content: "\f206"; }
 .icon-cost_saving:before { content: "\f199"; }
 .icon-current:before { content: "\f135"; }
 .icon-currentindex:before { content: "\f1f0"; }
@@ -367,6 +378,8 @@
 .icon-dust-concentration:before { content: "\f136"; }
 .icon-easytodo:before { content: "\f1dd"; }
 .icon-edit:before { content: "\f142"; }
+.icon-edit-2:before { content: "\f207"; }
+.icon-edit3:before { content: "\f208"; }
 .icon-electricity:before { content: "\f1de"; }
 .icon-email:before { content: "\f1ba"; }
 .icon-end-user:before { content: "\f1a9"; }
@@ -378,6 +391,8 @@
 .icon-equipment:before { content: "\f1fa"; }
 .icon-equipment-box:before { content: "\f1fc"; }
 .icon-error-message:before { content: "\f1fe"; }
+.icon-explain-n:before { content: "\f20c"; }
+.icon-explain-s:before { content: "\f20d"; }
 .icon-export:before { content: "\f117"; }
 .icon-eye:before { content: "\f1bd"; }
 .icon-factory:before { content: "\f1aa"; }
@@ -501,6 +516,7 @@
 .icon-set-alarm:before { content: "\f152"; }
 .icon-setalarm:before { content: "\f12e"; }
 .icon-setting:before { content: "\f12f"; }
+.icon-share:before { content: "\f209"; }
 .icon-show:before { content: "\f1b8"; }
 .icon-signal1:before { content: "\f188"; }
 .icon-signal2:before { content: "\f189"; }
