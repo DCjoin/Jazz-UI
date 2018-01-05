@@ -147,6 +147,7 @@ export default class TouAnalysis extends Component {
           modal={true}
           actions={actions}
           titleStyle={{marginBottom:'0',height:'16px',lineHeight:'16px'}}
+          contentStyle={{overflowY:'auto'}}
           actionsContainerStyle={{margin:'16px 24px 16px 0'}}
           >
           <div className="tou-dialog-error" style={{flexDirection:'column'}}>
@@ -156,11 +157,11 @@ export default class TouAnalysis extends Component {
                                                                                                     selectedTagId:value
                                                                                                   })}}
                                                                                         style={{marginTop:'18px'}}>
-              {AlarmTagStore.getSearchTagList().map(tag=>{
-                                                        var disabled=!checkTagProperty(this.state.tagInfos.find(tagInfo=>tagInfo.get('Id')===tag.tagId))
+              {this.state.tagInfos.map(tag=>{
+                                                        var disabled=!checkTagProperty(tag)
                                                         return(<RadioButton
-                                                          value={tag.tagId}
-                                                          label={tag.tagName+(disabled?`  (${I18N.Setting.DataAnalysis.Tou.TagNotSupport})`:'')}
+                                                          value={tag.get('Id')}
+                                                          label={tag.get('Name')+(disabled?`  (${I18N.Setting.DataAnalysis.Tou.TagNotSupport})`:'')}
                                                           disabled={disabled}
                                                           labelStyle={{fontSize:'16px'}}
                                                           style={{marginBottom:'18px'}}
