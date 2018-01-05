@@ -157,11 +157,11 @@ export default class TouAnalysis extends Component {
                                                                                                     selectedTagId:value
                                                                                                   })}}
                                                                                         style={{marginTop:'18px'}}>
-              {AlarmTagStore.getSearchTagList().map(tag=>{
-                                                        var disabled=!checkTagProperty(this.state.tagInfos.find(tagInfo=>tagInfo.get('Id')===tag.tagId))
+              {this.state.tagInfos.map(tag=>{
+                                                        var disabled=!checkTagProperty(tag)
                                                         return(<RadioButton
-                                                          value={tag.tagId}
-                                                          label={tag.tagName+(disabled?`  (${I18N.Setting.DataAnalysis.Tou.TagNotSupport})`:'')}
+                                                          value={tag.get('Id')}
+                                                          label={tag.get('Name')+(disabled?`  (${I18N.Setting.DataAnalysis.Tou.TagNotSupport})`:'')}
                                                           disabled={disabled}
                                                           labelStyle={{fontSize:'16px'}}
                                                           style={{marginBottom:'18px'}}
