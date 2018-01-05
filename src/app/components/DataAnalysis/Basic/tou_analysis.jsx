@@ -163,7 +163,7 @@ export default class TouAnalysis extends Component {
                                                           value={tag.get('Id')}
                                                           label={tag.get('Name')+(disabled?`  (${I18N.Setting.DataAnalysis.Tou.TagNotSupport})`:'')}
                                                           disabled={disabled}
-                                                          labelStyle={{fontSize:'16px'}}
+                                                          labelStyle={{fontSize:'16px',wordBreak: 'break-all'}}
                                                           style={{marginBottom:'18px'}}
                                                         />)})}
             </RadioButtonGroup>
