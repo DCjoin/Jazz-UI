@@ -44,7 +44,7 @@ var checkSupportTag=()=>AlarmTagStore.getSearchTagList() && AlarmTagStore.getSea
 var checkTagProperty=(tag)=>(checkBuildingHasTouProperty(tag.get('HierarchyId'))
                                                     && tag.get('CommodityId')===1
                                                     && tag.get('UomId')===1
-																										&& tag.get('CalculationStep')===1
+																										&& (tag.get('CalculationStep')===0 || tag.get('CalculationStep')===6)
                                                     && tag.get("CalculationType")===1)
 
 var checkTagsProperty=(tagInfos)=>tagInfos.map(tag=>checkTagProperty(tag))
