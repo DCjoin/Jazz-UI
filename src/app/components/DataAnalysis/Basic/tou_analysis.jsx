@@ -34,7 +34,7 @@ var checkBuildingHasTouProperty=(buildingId)=>findBuilding(buildingId) && findBu
 var checkSupportChartType=(chartType)=>SUPPORT_CHART_TYPE.indexOf(chartType)>-1;
 
 var checkSupportStep=(chartType,step)=>(
-    (chartType==='column' && ASC_STEP.indexOf(step)<=ASC_STEP.indexOf(TimeGranularity.Hourly)) 
+    (chartType==='column' && ASC_STEP.indexOf(step)<=ASC_STEP.indexOf(TimeGranularity.Hourly))
   || (chartType==='stack' && ASC_STEP.indexOf(step)>ASC_STEP.indexOf(TimeGranularity.Hourly))
   || chartType==='pie'
 )
@@ -42,8 +42,9 @@ var checkSupportStep=(chartType,step)=>(
 var checkSupportTag=()=>AlarmTagStore.getSearchTagList() && AlarmTagStore.getSearchTagList().length<=1
 
 var checkTagProperty=(tag)=>(checkBuildingHasTouProperty(tag.get('HierarchyId'))
-                                                    && tag.get('CommodityId')===1 
+                                                    && tag.get('CommodityId')===1
                                                     && tag.get('UomId')===1
+																										&& tag.get('CalculationStep')===1
                                                     && tag.get("CalculationType")===1)
 
 var checkTagsProperty=(tagInfos)=>tagInfos.map(tag=>checkTagProperty(tag))
@@ -139,7 +140,7 @@ export default class TouAnalysis extends Component {
   _renderTagErrorDialog(){
     let actions = [
 			<NewFlatButton style={{marginLeft: 16,float:'right',border:'1px solid #9fa0a4',width:'80px',minWidth:'80px',lineHeight:'34px'}} label={I18N.Common.Button.Cancel2} onClick={this.props.onClose}/>,
-			<NewFlatButton primary label={I18N.Common.Button.Confirm} disabled={this.state.selectedTagId===null} onClick={this._onConfirm.bind(this)} style={{float:'right',width:'80px',minWidth:'80px',lineHeight:'34px'}}/>	
+			<NewFlatButton primary label={I18N.Common.Button.Confirm} disabled={this.state.selectedTagId===null} onClick={this._onConfirm.bind(this)} style={{float:'right',width:'80px',minWidth:'80px',lineHeight:'34px'}}/>
 		];
     return(
       <NewDialog
@@ -178,8 +179,8 @@ export default class TouAnalysis extends Component {
 			<NewFlatButton style={{marginLeft: 16,float:'right',border:'1px solid #9fa0a4',width:'80px',minWidth:'80px',lineHeight:'34px'}} label={I18N.Setting.DataAnalysis.Tou.NotCancelMulti} onClick={this.props.onClose}/>,
 			<NewFlatButton primary label={I18N.Setting.DataAnalysis.Tou.CancelMulti} onClick={()=>{this.props.cancelMulti();
                                                                                               this.props.onSuccess();
-                                                                                             }} 
-                             style={{float:'right',width:'80px',minWidth:'80px',lineHeight:'34px'}}/>	
+                                                                                             }}
+                             style={{float:'right',width:'80px',minWidth:'80px',lineHeight:'34px'}}/>
 		];
     return(
         <NewDialog
@@ -215,7 +216,7 @@ export default class TouAnalysis extends Component {
     var {chartType,step,isMultiTime,onSuccess}=this.props;
     var content;
     if(this.state.tagInfos===null){
-      content=null     
+      content=null
     }else if(!checkTagsProperty(this.state.tagInfos)){
       content=this._renderTagNotSupportSnackBar()
     }else if(!checkSupportTag()){
