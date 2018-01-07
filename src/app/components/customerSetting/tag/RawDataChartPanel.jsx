@@ -55,7 +55,7 @@ var dataLabelFormatter = function(format) {
   return v;
 };
 let defaultConfig = {
-  
+
   colors: [
     '#42b4e6', '#e47f00', '#1a79a9', '#71cbf4', '#b10043',
     '#9fa0a4', '#87d200', '#626469', '#ffd100', '#df3870'
@@ -445,6 +445,7 @@ let RawDataChartPanel = React.createClass({
     var realData = this.convertData(data.Data, newConfig);
     var timeRange = this.initRange(newConfig, realData);
     //this.initNavigatorData(newConfig, timeRange, data);
+    this.props.chartType = "line";  //jacob: sometimes not display as line chart
     if (this.props.chartType === "line" || this.props.chartType === "column") {
       this.initFlagSeriesData(newConfig, realData);
     }
