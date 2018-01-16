@@ -56,7 +56,8 @@ export default class Saml extends Component {
       }).then(function (res) {
         return res.json();
       }).then(function (data) {
-        console.log(data.Result);     
+        console.log(data.Result);   
+        console.log(this.props.params.lang);  
         if(data.Result && data.Result.Id && data.Result.Token) {
           CookieUtil.set('UserId', data.Result.Id, {
             expires: 365
@@ -67,14 +68,14 @@ export default class Saml extends Component {
           CookieUtil.set('SkipLogin', 'true');
           window.currentUserId = data.Result.Id;
           window.currentUser = data.Result;
-          location.href = "/zh-cn/"; 
+          location.href = `/${this.props.params.lang}/`; 
         } else {
           console.log('Something wrong, please back to login again');
-          location.href = "/zh-cn/login";
+          location.href = `/${this.props.params.lang}/login`;
         }           
       }).catch(function(error) {
         console.log('request failed', error);
-        location.href = "/zh-cn/login"; 
+        location.href = `/${this.props.params.lang}/login`; 
       });
     }  
   }
