@@ -211,7 +211,7 @@ app.get("/saml/acs", (req, res) => {
 });
 
 app.get('/:lang/logout',(req, res) => {
-  return res.redirect(GUARD_UI_HOST + req.params.lang + "/logout?returnURL=" + encodeURIComponent(req.query.returnURL));
+  return res.redirect(GUARD_UI_HOST + req.params.lang + "/logout?returnURL=" + encodeURIComponent(req.query.returnURL+'/'+req.params.lang+'/'));
 });
 
 app.get('/:lang/*', returnIndexHtml);
