@@ -159,13 +159,12 @@ app.get('/:lang/spinitsso-redirect', (req, res) => {
   let acsURL = new URL(req.query.callbackURL);
   // Configure your endpoint for IdP-initiated / SP-initiated SSO
 
-  console.log("**********"+acsURL.origin);
   const sp = ServiceProvider({
     privateKey: fs.readFileSync(__dirname + '/SE-SP.pem'),
     privateKeyPass: 'sesp!@#',
     requestSignatureAlgorithm: 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256',
 
-    metadata: fs.readFileSync(__dirname + '/metadata_sp.xml', "utf-8").replace('${SSO_ACS_URL}', acsURL.origin + "/sso/acs")
+    metadata: fs.readFileSync(__dirname + '/metadata_sp.xml', "utf-8").replace('${SSO_ACS_URL}', acsURL.origin + req.params.lang+ "/sso/acs")
 
   });
 
@@ -194,6 +193,7 @@ app.get('/:lang/spinitsso-redirect', (req, res) => {
 app.post('/:lang/sso/acs', (req, res) => {
   console.log("get assertion and return to Jazz backend!");
   console.log(req);
+  console.log(req.params.lang);
   console.log(res);
   var id = Math.ceil(Math.random()*100000) + "" + Date.now();
   acsObj[id] = req.body.SAMLResponse;
