@@ -164,7 +164,7 @@ app.get('/:lang/spinitsso-redirect', (req, res) => {
     privateKeyPass: 'sesp!@#',
     requestSignatureAlgorithm: 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256',
 
-    metadata: fs.readFileSync(__dirname + '/metadata_sp.xml', "utf-8").replace('${SSO_ACS_URL}', acsURL.origin + req.params.lang+ "/sso/acs")
+    metadata: fs.readFileSync(__dirname + '/metadata_sp.xml', "utf-8").replace('${SSO_ACS_URL}', acsURL.origin +'/'+ req.params.lang+ "/sso/acs")
 
   });
 
@@ -197,7 +197,7 @@ app.post('/:lang/sso/acs', (req, res) => {
   console.log(res);
   var id = Math.ceil(Math.random()*100000) + "" + Date.now();
   acsObj[id] = req.body.SAMLResponse;
-  res.cookie('AssertId', id).redirect(301, '/zh-cn/saml');  
+  res.cookie('AssertId', id).redirect(301, `/${req.params.lang}/saml`);  
 });
 
 app.get("/saml/acs", (req, res) => {
