@@ -159,6 +159,7 @@ app.get('/:lang/spinitsso-redirect', (req, res) => {
   let acsURL = new URL(req.query.callbackURL);
   // Configure your endpoint for IdP-initiated / SP-initiated SSO
 
+  console.log("**********"+acsURL.origin);
   const sp = ServiceProvider({
     privateKey: fs.readFileSync(__dirname + '/SE-SP.pem'),
     privateKeyPass: 'sesp!@#',
@@ -168,8 +169,6 @@ app.get('/:lang/spinitsso-redirect', (req, res) => {
 
   });
 
-console.log('***********');
-console.log(GUARD_UI_HOST);
   const idp = IdentityProvider({
     metadata: fs.readFileSync(__dirname + '/onelogin_metadata.xml', "utf-8").split('${GUARD_UI_HOST}').join(GUARD_UI_HOST + "Saml/SignOnService")
   });
@@ -192,8 +191,10 @@ console.log(GUARD_UI_HOST);
 });
 
 // This is the assertion service url where SAML Response is sent to
-app.post('/sso/acs', (req, res) => {
+app.post('/:lang/sso/acs', (req, res) => {
   console.log("get assertion and return to Jazz backend!");
+  console.log(req);
+  console.log(res);
   var id = Math.ceil(Math.random()*100000) + "" + Date.now();
   acsObj[id] = req.body.SAMLResponse;
   res.cookie('AssertId', id).redirect(301, '/zh-cn/saml');  
