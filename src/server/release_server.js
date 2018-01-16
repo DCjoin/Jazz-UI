@@ -164,7 +164,7 @@ app.get('/:lang/spinitsso-redirect', (req, res) => {
     privateKeyPass: 'sesp!@#',
     requestSignatureAlgorithm: 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256',
 
-    metadata: fs.readFileSync(__dirname + '/metadata_sp.xml', "utf-8").replace('${SSO_ACS_URL}', acsURL.origin +req.params.lang+ "/sso/acs")
+    metadata: fs.readFileSync(__dirname + '/metadata_sp.xml', "utf-8").replace('${SSO_ACS_URL}', acsURL.origin + req.params.lang+ "/sso/acs")
 
   });
 
