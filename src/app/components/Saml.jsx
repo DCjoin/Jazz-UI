@@ -68,14 +68,14 @@ export default class Saml extends Component {
           CookieUtil.set('SkipLogin', 'true');
           window.currentUserId = data.Result.Id;
           window.currentUser = data.Result;
-          location.href = `/${this.props.params.lang}/`; 
+          location.href = `/${nextProps.params.lang}/`; 
         } else {
           console.log('Something wrong, please back to login again');
-          location.href = `/${this.props.params.lang}/login`;
+          location.href = `/${nextProps.params.lang}/login`;
         }           
       }).catch(function(error) {
         console.log('request failed', error);
-        location.href = `/${this.props.params.lang}/login`; 
+        location.href = `/${nextProps.params.lang}/login`; 
       });
     }  
   }
