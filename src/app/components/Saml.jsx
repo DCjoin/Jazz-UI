@@ -57,7 +57,7 @@ export default class Saml extends Component {
         return res.json();
       }).then(function (data) {
         console.log(data.Result);   
-        console.log(this.props.params.lang);  
+        console.log(nextProps.params.lang);  
         if(data.Result && data.Result.Id && data.Result.Token) {
           CookieUtil.set('UserId', data.Result.Id, {
             expires: 365
