@@ -482,11 +482,11 @@ export default class NewLogin extends Component {
 					});
 				}}/>
 				<header id='login-header'>
-					<img style={{height: 33, width: 266, marginTop: 20, marginLeft: 30}} src={require('../less/images/logo.png')} />
+					<img style={{height: 33, width: 266, marginTop: 20, marginLeft: 30}} src={require(`../less/images/logo-${this.props.params.lang || 'zh-cn'}.png`)} />
 					<div id='login-header-actions'>
 						{CAN_TRIAL_SP_NAME.indexOf(document.location.host.split('.')[0]) > -1 && <a href="javascript:void(0)" style={{marginRight: 50, color: '#fff'}} onClick={() => {
 							this.setState((state, props) => {return {showTrialDialog: true}});
-						}}>{'申请试用'}</a>}
+						}}>{I18N.Login.Demo}</a>}
 						<a className='jazz-mobile-qr-link' href="javascript:void(0)">
 							{I18N.Login.APP}
 							<div className='jazz-mobile-qr'>
@@ -498,7 +498,7 @@ export default class NewLogin extends Component {
 					</div>
 				</header>
 
-				<Container imageUrl={require(`../less/images/step1-${'zh-cn'||this.props.params.lang}.png`)} style={{
+				<Container imageUrl={require(`../less/images/step1-${this.props.params.lang || 'zh-cn'}.png`)} style={{
 					backgroundColor: '#fff'
 				}}>
 				<div style={{
@@ -518,7 +518,7 @@ export default class NewLogin extends Component {
 					</div>
 				</Container>
 
-				<Container imageUrl={require(`../less/images/step2-${'zh-cn'||this.props.params.lang}.png`)} style={{
+				<Container imageUrl={require(`../less/images/step2-${this.props.params.lang || 'zh-cn'}.png`)} style={{
 					backgroundColor: '#fff'
 				}}>
 					<div style={{
@@ -536,7 +536,7 @@ export default class NewLogin extends Component {
 					</div>
 				</Container>
 
-				<Container imageUrl={require(`../less/images/step3-${'zh-cn'||this.props.params.lang}.png`)} style={{
+				<Container imageUrl={require(`../less/images/step3-${this.props.params.lang || 'zh-cn'}.png`)} style={{
 					backgroundColor: '#fff'
 				}}>
 					<div style={{
@@ -554,7 +554,7 @@ export default class NewLogin extends Component {
 					</div>
 				</Container>
 
-				<Container imageUrl={require(`../less/images/step4-${'zh-cn'||this.props.params.lang}.png`)} style={{
+				<Container imageUrl={require(`../less/images/step4-${this.props.params.lang || 'zh-cn'}.png`)} style={{
 					backgroundColor: '#fff'
 				}}>
 					<div style={{
@@ -572,7 +572,7 @@ export default class NewLogin extends Component {
 				</Container>
 
 
-				<Container imageUrl={require(`../less/images/step5-${'zh-cn'||this.props.params.lang}.png`)} style={{
+				<Container imageUrl={require(`../less/images/step5-${this.props.params.lang || 'zh-cn'}.png`)} style={{
 					backgroundColor: '#fff'
 				}}>
 					<div style={{
@@ -723,7 +723,8 @@ const INLINE_BLOCK_SWITCH_STYLE = {
 	labelStyle: {
 		wordBreak: 'keep-all',
 		fontSize: '16px',
-		color:'#9fa0a4'
+		color:'#9fa0a4',
+    whiteSpace: 'nowrap',
 	},
 	iconStyle:{
 		marginRight:'12px',
@@ -837,24 +838,24 @@ class TrialDialog extends Component {
 	      actions = [
 					<FlatButton {...cancelProps} />,
 	        <FlatButton primary {...submitProps} />
-	        
+
 	      ];
 		return (
-			<Dialog wrapperStyle={{width: 640}} open={this.props.open} actions={actions} 
-							title={'申请试用'} 
+			<Dialog wrapperStyle={{width: 640}} open={this.props.open} actions={actions}
+							title={I18N.Login.TrialApply}
 							titleStyle={{height:50,lineHeight:'50px',margin:0,padding:'0 0 0 24px',fontSize:'16px',color:'#0f0f0f',fontWeight:'600',backgroundColor:'#f7f7f7'}}
 							contentStyle={{overflowY: 'auto', height: 'calc(100% - 129px)', margin: '0',paddingTop:'24px',paddingLeft:'24px'}}
 							actionsContainerStyle={{margin:'16px'}}>
 				<div className='jazz-trial-info-block'>
-					<header className='jazz-trial-info-block-title'>{'申请人信息'}</header>
+					<header className='jazz-trial-info-block-title'>{I18N.Login.Applicant}</header>
 					<div className='jazz-trial-info-field'>
 						<ViewableTextField
 							defaultValue={Name}
 							didChanged={v => this._updateInfo('Name', v)}
 							errorStyle={TEXT_FIELD_ERROR_STYLE}
 							inputStyle={{fontSize:'16px',color:'#626469'}}
-							title={'姓名'}
-							hintText={'请输入姓名'}
+							title={I18N.Login.TrialName}
+							hintText={I18N.Login.TrialNameEnter}
 							floatingLabelStyle={{fontSize:'16px',color:'#9fa0a4'}}
 							floatingLabelFocusStyle={{fontSize:'12px'}}
 							style={{width:'330px'}}/>
@@ -865,9 +866,10 @@ class TrialDialog extends Component {
 							didChanged={v => this._updateInfo('Email', v)}
 							errorStyle={TEXT_FIELD_ERROR_STYLE}
 							inputStyle={{fontSize:'16px',color:'#626469'}}
-							isRequired regex={/^[a-zA-Z0-9_.-]+$/} errorMessage={'支持数字、字母、下划线'}
-							title={'邮箱（必填）'}
-							hintText={'请输入邮箱'}
+							isRequired regex={/^[a-zA-Z0-9_.-]+$/}
+              errorMessage={I18N.Login.WrongEmail}
+							title={I18N.Login.TrialEmailRequire}
+							hintText={I18N.Login.TrialEmailEnter}
 							floatingLabelStyle={{fontSize:'16px',color:'#9fa0a4'}}
 							floatingLabelFocusStyle={{fontSize:'12px'}}
 							style={{width: 142}}/>
@@ -879,16 +881,17 @@ class TrialDialog extends Component {
 							didChanged={v => this._updateInfo('Phone', v)}
 							errorStyle={TEXT_FIELD_ERROR_STYLE}
 							inputStyle={{fontSize:'16px',color:'#626469'}}
-							regex={Regex.MobilePhoneRule} errorMessage={I18N.Login.WrongTelephone}
-							title={'手机'}
-							hintText={'请输入11位的手机号'}
+							regex={Regex.MobilePhoneRule}
+              errorMessage={I18N.Login.WrongTelephone}
+							title={I18N.Login.TrialMobile}
+							hintText={I18N.Login.TrialMobileEnter}
 							floatingLabelStyle={{fontSize:'16px',color:'#9fa0a4'}}
 							floatingLabelFocusStyle={{fontSize:'12px'}}
 							style={{width:'330px'}}/>
 					</div>
 				</div>
 				<div className='jazz-trial-info-block'>
-					<header className='jazz-trial-info-block-title' style={{marginTop:'20px'}}>{'客户信息'}</header>
+					<header className='jazz-trial-info-block-title' style={{marginTop:'20px'}}>{I18N.Login.TrialCustomer}</header>
 					<div className='jazz-trial-info-field'>
 						<ViewableTextField
 							isRequired
@@ -896,73 +899,74 @@ class TrialDialog extends Component {
 							didChanged={v => this._updateInfo('Company', v)}
 							errorStyle={TEXT_FIELD_ERROR_STYLE}
 							inputStyle={{fontSize:'16px',color:'#626469'}}
-							title={'公司名称（必填）'}
-							hintText={'请输入公司名称'}
+							title={I18N.Login.TrialCompany}
+							hintText={I18N.Login.TrialCompanyEnter}
 							floatingLabelStyle={{fontSize:'16px',color:'#9fa0a4'}}
 							floatingLabelFocusStyle={{fontSize:'12px'}}
 							style={{width:'330px'}}/>
 					</div>
 					<div className='jazz-trial-info-field'>
-						<span className='custom-title'>{'所属行业（必填）'}</span>
+						<span className='custom-title'>{I18N.Login.TrialSegment}</span>
 						<RadioButtonGroup valueSelected={Industry} onChange={(e, v) => {
 							this._updateInfo('Industry', v)
 						}}>
-						  <RadioButton {...INLINE_BLOCK_SWITCH_STYLE} value={1} label={'轻工'} />
-						  <RadioButton {...INLINE_BLOCK_SWITCH_STYLE} value={2} label={'建筑'} />
+						  <RadioButton {...INLINE_BLOCK_SWITCH_STYLE} value={1} label={I18N.Login.TrialLightIndustrial} />
+						  <RadioButton {...INLINE_BLOCK_SWITCH_STYLE} value={2} label={I18N.Login.TrialBuilding} />
 						</RadioButtonGroup>
 					</div>
 					<div className='jazz-trial-info-field'>
-						<span className='custom-title'>{'客户类型（必填）'}</span>
+						<span className='custom-title'>{I18N.Login.TrialCustomerType}</span>
 						<RadioButtonGroup valueSelected={CustomerType} onChange={(e, v) => {
 							this._updateInfo('CustomerType', v)
 						}}>
-						  <RadioButton {...INLINE_BLOCK_SWITCH_STYLE} value={1} label={'集团客户'} />
-						  <RadioButton {...INLINE_BLOCK_SWITCH_STYLE} value={2} label={'非集团客户'} />
+						  <RadioButton {...INLINE_BLOCK_SWITCH_STYLE} value={1} label={I18N.Login.TrialMultipleSites} />
+						  <RadioButton {...INLINE_BLOCK_SWITCH_STYLE} value={2} label={I18N.Login.TrialSingleSite} />
 						</RadioButtonGroup>
 					</div>
 					<div className='jazz-trial-info-field'>
-						<span className='custom-title'>{'客户意向'}</span>
+						<span className='custom-title'>{I18N.Login.TrialCustomerIntention}</span>
 						<div>
-							<Checkbox {...INLINE_BLOCK_SWITCH_STYLE} checked={Intention.indexOf(1) > -1} onCheck={(e, checked) => {this._updateInfoByMutilSwtich('Intention', 1, checked)}} label={'能源数据可视化'}/>
-							<Checkbox {...INLINE_BLOCK_SWITCH_STYLE} checked={Intention.indexOf(2) > -1} onCheck={(e, checked) => {this._updateInfoByMutilSwtich('Intention', 2, checked)}} label={'能源指标管理'}/>
-							<Checkbox {...INLINE_BLOCK_SWITCH_STYLE} checked={Intention.indexOf(4) > -1} onCheck={(e, checked) => {this._updateInfoByMutilSwtich('Intention', 4, checked)}} label={'节能技改'}/>
-							<Checkbox {...INLINE_BLOCK_SWITCH_STYLE} checked={Intention.indexOf(8) > -1} onCheck={(e, checked) => {this._updateInfoByMutilSwtich('Intention', 8, checked)}} label={'其他'}/>
+							<Checkbox {...INLINE_BLOCK_SWITCH_STYLE} checked={Intention.indexOf(1) > -1} onCheck={(e, checked) => {this._updateInfoByMutilSwtich('Intention', 1, checked)}} label={I18N.Login.TrialEnergyDataVisualization}/>
+							<Checkbox {...INLINE_BLOCK_SWITCH_STYLE} checked={Intention.indexOf(2) > -1} onCheck={(e, checked) => {this._updateInfoByMutilSwtich('Intention', 2, checked)}} label={I18N.Login.TrialEnergyIndexManagement}/>
+							<Checkbox {...INLINE_BLOCK_SWITCH_STYLE} checked={Intention.indexOf(4) > -1} onCheck={(e, checked) => {this._updateInfoByMutilSwtich('Intention', 4, checked)}} label={I18N.Login.TrialEnergySavingTransformation}/>
+							<Checkbox {...INLINE_BLOCK_SWITCH_STYLE} checked={Intention.indexOf(8) > -1} onCheck={(e, checked) => {this._updateInfoByMutilSwtich('Intention', 8, checked)}} label={I18N.Login.TrialOther}/>
 						</div>
 					</div>
 				</div>
 				<div className='jazz-trial-info-block'>
-					<header className='jazz-trial-info-block-title' style={{marginTop:'30px'}}>{'客户联系人信息'}</header>
+					<header className='jazz-trial-info-block-title' style={{marginTop:'30px'}}>{I18N.Login.TrialCustomerContact}</header>
 					<div className='jazz-trial-info-field'>
 						<ViewableTextField
 							defaultValue={ContactName}
 							didChanged={v => this._updateInfo('ContactName', v)}
 							errorStyle={TEXT_FIELD_ERROR_STYLE}
 							inputStyle={{fontSize:'16px',color:'#626469'}}
-							title={'姓名'}
-							hintText={'请输入姓名'}
+							title={I18N.Login.TrialName}
+							hintText={I18N.Login.TrialNameEnter}
 							floatingLabelStyle={{fontSize:'16px',color:'#9fa0a4'}}
 							floatingLabelFocusStyle={{fontSize:'12px'}}
 							style={{width:'330px'}}/>
 					</div>
 					<div className='jazz-trial-info-field'>
-						<span className='custom-title'>{'职位'}</span>
+						<span className='custom-title'>{I18N.Login.TrialPosition}</span>
 						<RadioButtonGroup valueSelected={ContactPosition} onChange={(e, v) => {
 							this._updateInfo('ContactPosition', v)
 						}}>
-						  <RadioButton {...INLINE_BLOCK_SWITCH_STYLE} value={1} label={'高管'} />
-						  <RadioButton {...INLINE_BLOCK_SWITCH_STYLE} value={2} label={'集团能源经理'} />
-						  <RadioButton {...INLINE_BLOCK_SWITCH_STYLE} value={3} label={'工厂或建筑能源经理'} />
+						  <RadioButton {...INLINE_BLOCK_SWITCH_STYLE} value={1} label={I18N.Login.TrialExecutives} />
+						  <RadioButton {...INLINE_BLOCK_SWITCH_STYLE} value={2} label={I18N.Login.TrialGroupEnergyManager} />
+						  <RadioButton {...INLINE_BLOCK_SWITCH_STYLE} value={3} label={I18N.Login.TrialSingleSiteEnergyManager} />
 						</RadioButtonGroup>
 					</div>
 					<div className='jazz-trial-info-field'>
 						<ViewableTextField
 							defaultValue={ContactEmail}
 							didChanged={v => this._updateInfo('ContactEmail', v)}
-							regex={Regex.Email} errorMessage={I18N.Login.WrongEmail}
+							regex={Regex.Email}
+              errorMessage={I18N.Login.WrongEmail}
 							errorStyle={TEXT_FIELD_ERROR_STYLE}
 							inputStyle={{fontSize:'16px',color:'#626469'}}
-							title={'邮箱'}
-							hintText={'请输入邮箱'}
+							title={I18N.Login.TrialEmail}
+							hintText={I18N.Login.TrialEmailEnter}
 							floatingLabelStyle={{fontSize:'16px',color:'#9fa0a4'}}
 							floatingLabelFocusStyle={{fontSize:'12px'}}
 							style={{width:'330px'}}/>
@@ -971,11 +975,12 @@ class TrialDialog extends Component {
 						<ViewableTextField
 							defaultValue={ContactPhone}
 							didChanged={v => this._updateInfo('ContactPhone', v)}
-							regex={Regex.MobilePhoneRule} errorMessage={I18N.Login.WrongTelephone}
+							regex={Regex.MobilePhoneRule}
+              errorMessage={I18N.Login.WrongTelephone}
 							errorStyle={TEXT_FIELD_ERROR_STYLE}
 							inputStyle={{fontSize:'16px',color:'#626469'}}
-							title={'手机'}
-							hintText={'请输入11位的手机号'}
+							title={I18N.Login.TrialMobile}
+							hintText={I18N.Login.TrialMobileEnter}
 							floatingLabelStyle={{fontSize:'16px',color:'#9fa0a4'}}
 							floatingLabelFocusStyle={{fontSize:'12px'}}
 							style={{width:'330px'}}/>

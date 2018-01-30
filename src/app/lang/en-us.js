@@ -123,8 +123,37 @@ I18N.Login.NoPriDetail = 'Customer or data authority is not configured. Please c
 I18N.Login.NoPriButton = 'back to Login';
 
 I18N.Login.Energymost = 'EnergyMost';
-I18N.Login.APP = 'EnergyMost App';
+I18N.Login.APP = 'Energy Advisor APP';
 I18N.Login.ScanDownloadAPP = 'Scan and Download EnergyMost App';
+I18N.Login.Demo = 'Demo';
+I18N.Login.TrialApply = 'Apply  Demo';
+I18N.Login.Applicant = 'Applicant';
+I18N.Login.TrialName = 'Name';
+I18N.Login.TrialNameEnter = 'Enter Name';
+I18N.Login.TrialEmail = 'Email';
+I18N.Login.TrialEmailRequire = 'Email(Required)';
+I18N.Login.TrialEmailEnter = 'Enter Email';
+I18N.Login.TrialMobile = 'Mobile';
+I18N.Login.TrialMobileEnter = 'Enter Mobile';
+I18N.Login.TrialCustomer = 'Customer';
+I18N.Login.TrialCompany = 'Company(Required)';
+I18N.Login.TrialCompanyEnter = 'Enter Company';
+I18N.Login.TrialSegment = 'Segment(Required)';
+I18N.Login.TrialLightIndustrial = 'Light Industrial';
+I18N.Login.TrialBuilding = 'Building';
+I18N.Login.TrialCustomerType = 'Customer Type(Required)';
+I18N.Login.TrialMultipleSites = 'Multiple Sites';
+I18N.Login.TrialSingleSite = 'Single Site';
+I18N.Login.TrialCustomerIntention = 'Customer Intention';
+I18N.Login.TrialEnergyDataVisualization = 'Energy Data Visualization';
+I18N.Login.TrialEnergyIndexManagement = 'Energy Index Management';
+I18N.Login.TrialEnergySavingTransformation = 'Energy-saving Transformation';
+I18N.Login.TrialOther = 'Other';
+I18N.Login.TrialCustomerContact = 'Customer Contact';
+I18N.Login.TrialPosition = 'Position';
+I18N.Login.TrialExecutives = 'Executives';
+I18N.Login.TrialGroupEnergyManager = 'Group Energy Manager';
+I18N.Login.TrialSingleSiteEnergyManager = 'Single Site Energy Manager';
 I18N.Login.Step1 = {};
 I18N.Login.Step1.Nav = 'AI Solutions';
 I18N.Login.Step1.Title = 'Directly-sent energy-saving solutions with no manual analysis required';
@@ -186,7 +215,7 @@ I18N.SelectCustomer.Title = "Select customer";
 I18N.SelectCustomer.SysManagement = "EnergyMost sys-management";
 I18N.SelectCustomer.SysManagementTip = "System management";
 I18N.SelectCustomer.Group = "Group";
-I18N.SelectCustomer.Single = "Project";
+I18N.SelectCustomer.Single = "Building";
 
 I18N.M212001 = 'User does not exist';
 I18N.M212002 = 'Service provider is invalid';
@@ -1731,37 +1760,37 @@ I18N.Kpi = {
   Month: '{0}Month',
   YearMonth: '{0}Year{1}Month',
   Yearly: '',
-  ActualValues: 'Actual Values',
-  TargetValues: 'Target Values',
-  PredictionValues: 'Prediction Values',
+  ActualValues: 'Actual',
+  TargetValues: 'Target',
+  PredictionValues: 'Forecast',
   MonthUsaged: 'Indicator Usage: {0}%',
-  MonthUsagedPrediction: 'Indicator Usage: {0}%(Prediction)',
+  MonthUsagedPrediction: 'Indicator Usage: {0}%(Forecast)',
   RatioMonthUsaged: 'year-on-year Energy Saving Rate: {0}%',
-  RatioMonthUsagedPrediction: 'year-on-year Energy Saving Rate: {0}%(Prediction)',
+  RatioMonthUsagedPrediction: 'year-on-year Energy Saving Rate: {0}%(Forecast)',
   EditTarget: 'Edit Target',
-  UpdatePrediction: 'Update Prediction',
+  UpdatePrediction: 'Update Forecast',
   ActualityFractionalEnergySaving: 'Energy Saving Rate by Last Month',
-  KPIActual: 'KPI Actuality',
+  KPIActual: 'KPI Status',
   GroupProject: 'Group Project',
-  IndexValue: 'Annual Quota Target Value',
-  SavingValue: 'Annual Energy Saving Index Target Value',
-  ActualSum: 'Annual Actual Value',
-  PredictSum: 'Annual Prediction Value',
+  IndexValue: 'Annual Target Quota',
+  SavingValue: 'Annual Target Energy Saving Rate',
+  ActualSum: 'Annual Actual',
+  PredictSum: 'Annual Forecast',
   ActualSaving: 'Annual Actual Energy Saving Rate',
-  PredictSaving: 'Annual Prediction Energy Saving Rate',
+  PredictSaving: 'Annual Forecast Energy Saving Rate',
 
   ByYearUntilNowValue: 'Annual Actual Value by Now',
-  ByYearValue: 'Annual Actual Value',
+  ByYearValue: 'Annual Actual',
   ByYearUntilNowSavingValue: 'Annual Actual Energy Saving Rate by Now',
   ByYearSavingRatioValue: '',
-  ByYearKPIUsagedPredict: 'Annual Predicted KPI Usage',
-  ByYearKPIUsagedValue: 'Annual Actual KPI Usage',
-  ByYearUsagedTarget: 'Annual Targeted Usage',
-  ByYearUsagedPredict: 'Annual Predicted Usage',
-  ByYearSavingPredict: 'Annual Predicted Energy Saving',
+  ByYearKPIUsagedPredict: 'Annual Forecast Quita Usage Ratio',
+  ByYearKPIUsagedValue: 'Annual Actual Quita Usage Ratio',
+  ByYearUsagedTarget: 'Annual Target Usage',
+  ByYearUsagedPredict: 'Annual Forecast Usage',
+  ByYearSavingPredict: 'Annual Forecast Energy Savings',
   ByYearUsagedValue: 'Annual Actual Usage',
   ByYearSavingValue: 'Annual Actual Energy Saving',
-  ByYearKPI: 'Annual KPI Value',
+  ByYearKPI: 'Annual KPI',
   ByYearUntilNowKPIUsaged: 'Annual KPI Usage by Now',
 
   Error:{
