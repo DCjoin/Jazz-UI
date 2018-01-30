@@ -482,7 +482,7 @@ export default class NewLogin extends Component {
 					});
 				}}/>
 				<header id='login-header'>
-					<img style={{height: 33, width: 266, marginTop: 20, marginLeft: 30}} src={require('../less/images/logo.png')} />
+					<img style={{height: 33, width: 266, marginTop: 20, marginLeft: 30}} src={require(`../less/images/logo-${'zh-cn'||this.props.params.lang}.png`)} />
 					<div id='login-header-actions'>
 						{CAN_TRIAL_SP_NAME.indexOf(document.location.host.split('.')[0]) > -1 && <a href="javascript:void(0)" style={{marginRight: 50, color: '#fff'}} onClick={() => {
 							this.setState((state, props) => {return {showTrialDialog: true}});
