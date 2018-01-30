@@ -482,7 +482,7 @@ export default class NewLogin extends Component {
 					});
 				}}/>
 				<header id='login-header'>
-					<img style={{height: 33, width: 266, marginTop: 20, marginLeft: 30}} src={require(`../less/images/logo-${'zh-cn'||this.props.params.lang}.png`)} />
+					<img style={{height: 33, width: 266, marginTop: 20, marginLeft: 30}} src={require(`../less/images/logo-${this.props.params.lang || 'zh-cn'}.png`)} />
 					<div id='login-header-actions'>
 						{CAN_TRIAL_SP_NAME.indexOf(document.location.host.split('.')[0]) > -1 && <a href="javascript:void(0)" style={{marginRight: 50, color: '#fff'}} onClick={() => {
 							this.setState((state, props) => {return {showTrialDialog: true}});
@@ -498,7 +498,7 @@ export default class NewLogin extends Component {
 					</div>
 				</header>
 
-				<Container imageUrl={require(`../less/images/step1-${'zh-cn'||this.props.params.lang}.png`)} style={{
+				<Container imageUrl={require(`../less/images/step1-${this.props.params.lang || 'zh-cn'}.png`)} style={{
 					backgroundColor: '#fff'
 				}}>
 				<div style={{
@@ -518,7 +518,7 @@ export default class NewLogin extends Component {
 					</div>
 				</Container>
 
-				<Container imageUrl={require(`../less/images/step2-${'zh-cn'||this.props.params.lang}.png`)} style={{
+				<Container imageUrl={require(`../less/images/step2-${this.props.params.lang || 'zh-cn'}.png`)} style={{
 					backgroundColor: '#fff'
 				}}>
 					<div style={{
@@ -536,7 +536,7 @@ export default class NewLogin extends Component {
 					</div>
 				</Container>
 
-				<Container imageUrl={require(`../less/images/step3-${'zh-cn'||this.props.params.lang}.png`)} style={{
+				<Container imageUrl={require(`../less/images/step3-${this.props.params.lang || 'zh-cn'}.png`)} style={{
 					backgroundColor: '#fff'
 				}}>
 					<div style={{
@@ -554,7 +554,7 @@ export default class NewLogin extends Component {
 					</div>
 				</Container>
 
-				<Container imageUrl={require(`../less/images/step4-${'zh-cn'||this.props.params.lang}.png`)} style={{
+				<Container imageUrl={require(`../less/images/step4-${this.props.params.lang || 'zh-cn'}.png`)} style={{
 					backgroundColor: '#fff'
 				}}>
 					<div style={{
@@ -572,7 +572,7 @@ export default class NewLogin extends Component {
 				</Container>
 
 
-				<Container imageUrl={require(`../less/images/step5-${'zh-cn'||this.props.params.lang}.png`)} style={{
+				<Container imageUrl={require(`../less/images/step5-${this.props.params.lang || 'zh-cn'}.png`)} style={{
 					backgroundColor: '#fff'
 				}}>
 					<div style={{
@@ -723,7 +723,8 @@ const INLINE_BLOCK_SWITCH_STYLE = {
 	labelStyle: {
 		wordBreak: 'keep-all',
 		fontSize: '16px',
-		color:'#9fa0a4'
+		color:'#9fa0a4',
+    whiteSpace: 'nowrap',
 	},
 	iconStyle:{
 		marginRight:'12px',
