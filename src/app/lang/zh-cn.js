@@ -451,6 +451,13 @@ I18N.Common.Control = {};
 I18N.Common.Control.ViewableNumberField = {};
 I18N.Common.Control.ViewableNumberField.Error = '请输入格式正确的数字';
 
+I18N.Common.WeatherTag = [];
+I18N.Common.WeatherTag[1] = '温度';
+I18N.Common.WeatherTag[2] = '湿度';
+I18N.Common.WeatherTag[3] = 'HDD18';
+I18N.Common.WeatherTag[4] = 'CDD26';
+I18N.Common.WeatherTag[5] = '焓值';
+
 I18N.DateTimeFormat = {};
 I18N.DateTimeFormat.HighFormat = {};
 I18N.DateTimeFormat.HighFormat.Millisecond = '%H点%M分%S秒%L毫秒';
@@ -512,6 +519,7 @@ I18N.EM.Hour = '小时';
 I18N.EM.Day = '天';
 I18N.EM.Month = '月';
 I18N.EM.Year = '年';
+I18N.EM.Years = '年';
 I18N.EM.Clock24 = '24点';
 I18N.EM.Clock24InWidget = '24点';
 I18N.EM.Clock24Minute0 = '24点00';
@@ -1794,6 +1802,18 @@ I18N.Kpi = {
   ByYearKPI: '年度指标值',
   ByYearUntilNowKPIUsaged: '年度迄今指标使用量',
 
+  YearRank: '年度排名',
+  MonthRank: '月度排名',
+  MobileView: '移动端可见',
+  PerRank: '名',
+
+  SetAsTheFirstReport: '设为首个报表',
+  ViewProjectReport: '查看各建筑报表',
+  Download: '下载',
+
+  ProjectReport: '建筑报表',
+  ChosseProject: '请在上方选择要查看的建筑',
+
   Error:{
     SelectBuilding: '请点击上方按钮，选择要查看或配置项目吧～',
     NonKPIConguredInThisYear: '本年度未配置指标，切换其他年份看看～',
@@ -2281,6 +2301,7 @@ I18N.Setting.KPI.Rank.Amount = '总量';
 I18N.Setting.KPI.Rank.ShowHistory = '查看排名历史';
 I18N.Setting.KPI.Rank.ShowByMonth = '查看逐月排名';
 I18N.Setting.KPI.Rank.UsageAmountRank = '指标使用量排名';
+I18N.Setting.KPI.Rank.UsageAmountRankQuota = '指标使用量排名';
 I18N.Setting.KPI.Rank.RatioMonthSavingRank = '同比节能率排名';
 I18N.Setting.KPI.Rank.LastRank = '最新排名';
 
@@ -2599,6 +2620,7 @@ I18N.Setting.Diagnose.Created='诊断已创建';
 
 I18N.Setting.Effect={};
 I18N.Setting.Effect.Config='配置节能效果';
+I18N.Setting.Effect.Config2='配置节能效果';
 I18N.Setting.Effect.Start='开始执行';
 I18N.Setting.Effect.AirConditioning='空调系统';
 I18N.Setting.Effect.Power='动力系统';
@@ -2653,6 +2675,8 @@ I18N.SaveEffect.Predict='预计';
 I18N.SaveEffect.TagSum='数据总和';
 I18N.SaveEffect.Saving='节能量图';
 I18N.SaveEffect.Saving2='节约量图';
+I18N.SaveEffect.Saving3='节能量图';
+I18N.SaveEffect.Saving4='节能量图';
 I18N.SaveEffect.Contrast='实际值与基准值对比图';
 I18N.SaveEffect.NoBest='暂无最佳方案';
 I18N.SaveEffect.SetBest='设置为最佳方案';
@@ -2757,3 +2781,15 @@ I18N.SaveEffect.OrderByBuilding = '按建筑展示';
 I18N.SaveEffect.Table.TotalSavingCost = '年度总节约成本';
 I18N.SaveEffect.Table.TotalSavingStandardCoal = '年度总节约标准煤';
 I18N.SaveEffect.Table.TotalSavingWater = '年度总节水量';
+I18N.SaveEffect.Ignore = '忽略';
+
+I18N.SaveEffect.SaveEffect = '节能效果';
+I18N.SaveEffect.EnergySaving2='节能量';
+I18N.Setting.Effect.Cost2 ='节约成本';
+I18N.SaveEffect.Name = '名称';
+I18N.SaveEffect.Description = '描述';
+
+I18N.NetworkChecker = {};
+I18N.NetworkChecker.Msg1 = '网络连接异常';
+I18N.NetworkChecker.Msg2 = '您的操作可能不会被保存';
+I18N.NetworkChecker.Msg3 = '网络连接已恢复';

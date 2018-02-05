@@ -82,7 +82,7 @@ export default class ReportPreview extends Component {
 		}, () => {
 			if( this.state.reportList && this.state.reportList.size > 0 ) {
 				this._selectReport( this.state.selectedReprotId || this.state.reportList.getIn([0, 'Id']) );
-			}			
+			}
 		});
 	}
 	_selectYear(year) {
@@ -129,7 +129,7 @@ export default class ReportPreview extends Component {
 	_renderDeleteDialog() {
 		let {showDeleteDialog, selectedReprotId} = this.state,
 		actions = [
-			(<FlatButton 
+			(<FlatButton
 				label={I18N.Common.Button.Delete}
 				inDialog={true}
       			primary={true}
@@ -145,10 +145,10 @@ export default class ReportPreview extends Component {
 	      		}}/>),
 			(<FlatButton label={I18N.Common.Button.Cancel2} onClick={() => this.setState({showDeleteDialog: false})}/>)
 		];
-		return (<NewDialog 
+		return (<NewDialog
 					title={`删除报表“${this._getSelectedReportById().get('Name')}”吗?`}
-					open={showDeleteDialog} 
-					modal='false' 
+					open={showDeleteDialog}
+					modal='false'
 					actions={actions}/>);
 	}
 	render() {
@@ -187,7 +187,7 @@ export default class ReportPreview extends Component {
 		};
 		return (
 			<div className='jazz-report-preview'>
-				<SwitchBar 
+				<SwitchBar
 					iconStyle={iconStyle}
 					className='switch-year'
         			label={this._getDateLabel()}
@@ -205,25 +205,25 @@ export default class ReportPreview extends Component {
 							'full-width': !preview || !showAll
 						})}>
 							<div className='jazz-report-chart-excel-list'>
-								{this.state.reportList.map(report => 
+								{this.state.reportList.map(report =>
 								<div className={classnames('tab', {
 									selected: this.state.selectedReprotId === report.get('Id')
 								})} onClick={() => {this.state.selectedReprotId !== report.get('Id') && this._selectReport(report.get('Id'))}}>{report.get('Name')}</div>).toJS()}
 							</div>
-						</div>						
-						{preview && showAll && <LinkButton 
+						</div>
+						{preview && showAll && <LinkButton
 										disabled={!this.props.hasAll}
-										className={'show-full-report'} 
+										className={'show-full-report'}
 										labelStyle={{
 											color: '#626469',
 										}}
 										iconName={'icon-eye'}
-										label={'查看各建筑报表'}
+										label={I18N.Kpi.ViewProjectReport}
 										onClick={() => {
 											util.openTab(RoutePath.report.actualityBuildingReport(this.props.router.params));
 										}}/>}
 					</div>
-					<ReportChart 
+					<ReportChart
 						onEdit={this._onEdit}
 						onDelete={this._onDelete}
 						onSetFirst={this._onSetFirst}

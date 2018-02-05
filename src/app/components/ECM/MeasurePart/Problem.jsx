@@ -92,7 +92,7 @@ export default class Problem extends Component {
           </div>
           <div className="row" style={{marginTop:"8px",paddingLeft:'11px',paddingRight:'42px'}}>
             <div className="label">
-              {I18N.Setting.UserManagement.Comment}
+              {I18N.SaveEffect.Description}
             </div>
             {canEdit?<TextField {...props.description}/>:<div className="jazz-ecm-measure-viewabletext">{this._renderMultiText(EnergyProblem.Description)}</div>}
           </div>

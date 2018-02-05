@@ -228,7 +228,7 @@ I18N.M212007 = 'Incorrect service provider domain name';
 I18N.Common = {};
 I18N.Common.Commodity = {};
 I18N.Common.Commodity.Electric = 'Electricity';
-I18N.Common.Commodity.ElectricOther = 'Electricity';
+I18N.Common.Commodity.ElectricOther = 'Electricity ';
 I18N.Common.Commodity.Water = 'Water';
 I18N.Common.Commodity.WaterOther = 'Water';
 I18N.Common.Commodity.Gas = 'Gas';
@@ -416,7 +416,7 @@ I18N.Common.Button.GoOn = 'Continue';
 I18N.Common.Button.Apply = 'Apply';
 I18N.Common.Button.Confirmed = 'OK';
 I18N.Common.Button.More = 'More';
-I18N.Common.Button.Setting = 'Configure';
+I18N.Common.Button.Setting = 'Configuration';
 I18N.Common.Button.Select = 'Select';
 I18N.Common.Button.Refresh = 'Refresh';
 
@@ -450,6 +450,13 @@ I18N.Common.AggregationStep.Yearly = 'Yearly';
 I18N.Common.Control = {};
 I18N.Common.Control.ViewableNumberField = {};
 I18N.Common.Control.ViewableNumberField.Error = 'Please input correct integer';
+
+I18N.Common.WeatherTag = [];
+I18N.Common.WeatherTag[1] = 'Temperature(Temp.)';
+I18N.Common.WeatherTag[2] = 'Relative Humidity(RH)';
+I18N.Common.WeatherTag[3] = 'HDD18';
+I18N.Common.WeatherTag[4] = 'CDD26';
+I18N.Common.WeatherTag[5] = 'Enthalpy';
 
 I18N.DateTimeFormat = {};
 I18N.DateTimeFormat.HighFormat = {};
@@ -511,6 +518,7 @@ I18N.EM.Hour = 'Hour';
 I18N.EM.Day = 'Day';
 I18N.EM.Month = 'Month';
 I18N.EM.Year = 'Year';
+I18N.EM.Years = 'Years';
 I18N.EM.Clock24 = '24';
 I18N.EM.Clock24InWidget = '24';
 I18N.EM.Clock24Minute0 = '24:00:00';
@@ -1052,7 +1060,7 @@ I18N.Setting.Tag.SearchText = 'Name or code';
 I18N.Setting.Tag.Tag = 'Tag';
 I18N.Setting.Tag.TagList = 'Tag list';
 I18N.Setting.Tag.TagFilter = 'Tag filter';
-I18N.Setting.Tag.isAccumulated = 'Accumulate';
+I18N.Setting.Tag.isAccumulated = 'Accumulative';
 I18N.Setting.Tag.isNotAccumulated = 'Non-Accumulate';
 I18N.Setting.Tag.Commodity = 'Commodity';
 I18N.Setting.Tag.Uom = 'Unit';
@@ -1604,7 +1612,7 @@ I18N.Template.Delete.Title = 'Delete {0}';
 I18N.Template.Delete.FolderContent = 'Delete folder "{0}". All contents of the folder will also be deleted';
 I18N.Template.Delete.WidgetContent = 'Chart "{0}" will be deleted';
 I18N.Template.Share = {};
-I18N.Template.Share.Title = 'Share chart';
+I18N.Template.Share.Title = 'Share {0}';
 I18N.Template.Share.Share = 'Share';
 I18N.Template.Share.User = 'Shared';
 I18N.Template.Share.Cancel = 'Quit';
@@ -1758,7 +1766,7 @@ I18N.Consultant = {
 
 I18N.Kpi = {
   Month: '{0}Month',
-  YearMonth: '{0}Year{1}Month',
+  YearMonth: '{0}/{1}',
   Yearly: '',
   ActualValues: 'Actual',
   TargetValues: 'Target',
@@ -1792,6 +1800,18 @@ I18N.Kpi = {
   ByYearSavingValue: 'Annual Actual Energy Saving',
   ByYearKPI: 'Annual KPI',
   ByYearUntilNowKPIUsaged: 'Annual KPI Usage by Now',
+
+  YearRank: 'Yearly',
+  MonthRank: 'Monthly',
+  MobileView: 'Mobile',
+  PerRank: '',
+
+  SetAsTheFirstReport: 'Set as the First Report',
+  ViewProjectReport: 'Project Reports',
+  Download: 'Download',
+
+  ProjectReport: 'Project Report',
+  ChosseProject: 'Choose Project',
 
   Error:{
     SelectBuilding: 'Please click the icon above to select or configure projects.',
@@ -2221,7 +2241,7 @@ I18N.Setting.KPI.Group.HeaderYear = '{0}Year';
 I18N.Setting.KPI.Group.New = '{0}-New Index';
 I18N.Setting.KPI.Group.Edit = 'Edit Index-{0}Year-{1}';
 I18N.Setting.KPI.Group.Prolong = '{0}-Prolong the Index of last year';
-I18N.Setting.KPI.Group.Config = 'Configure';
+I18N.Setting.KPI.Group.Config = 'Configuration';
 I18N.Setting.KPI.Group.SaveAndConfig = 'Save&Setting';
 I18N.Setting.KPI.Group.SelectPeolongKPI = 'Please choose prolong KPI';
 I18N.Setting.KPI.Group.GroupConfig ={};
@@ -2260,7 +2280,7 @@ I18N.Setting.KPI.Group.Ranking.kpi='Index Ranking';
 I18N.Setting.KPI.Group.Ranking.Up='Pinned Ranking';
 I18N.Setting.KPI.Group.Ranking.Algorithm='Ranking Algorithm';
 I18N.Setting.KPI.Group.Ranking.None='None';
-I18N.Setting.KPI.Group.Ranking.OrignValue='Total Value';
+I18N.Setting.KPI.Group.Ranking.OrignValue='Actual Values';
 I18N.Setting.KPI.Group.Ranking.TotalAreaUnit=' Unit Area';
 I18N.Setting.KPI.Group.Ranking.TotalRoomUnit=' Unit Room';
 I18N.Setting.KPI.Group.Ranking.TotalPersonUnit='Unit Person';
@@ -2279,8 +2299,9 @@ I18N.Setting.KPI.Rank.Name = 'Ranking';
 I18N.Setting.KPI.Rank.Amount = 'Total Amount';
 I18N.Setting.KPI.Rank.ShowHistory = 'Show Ranking History';
 I18N.Setting.KPI.Rank.ShowByMonth = 'Show Ranking By Month';
-I18N.Setting.KPI.Rank.UsageAmountRank = 'Ranking by Index Usage';
-I18N.Setting.KPI.Rank.RatioMonthSavingRank = 'Ranking by Monthly year-on-year saving';
+I18N.Setting.KPI.Rank.UsageAmountRank = 'Ranking by Actual Value';
+I18N.Setting.KPI.Rank.UsageAmountRankQuota = 'Ranking by Quota Usage Ratio';
+I18N.Setting.KPI.Rank.RatioMonthSavingRank = 'Ranking by Year-over-Year Energy Saving Rate';
 I18N.Setting.KPI.Rank.LastRank = 'Newest Ranking';
 
 I18N.Setting.KPI.Report = {};
@@ -2372,8 +2393,8 @@ I18N.Setting.DataAnalysis.Max = 'Maximum data';
 I18N.Setting.DataAnalysis.Total = 'Total';
 I18N.Setting.DataAnalysis.Statistics = 'Statistics';
 I18N.Setting.DataAnalysis.NoCanlendarConfig = 'No work-nonwork configuration for this tag';
-I18N.Setting.DataAnalysis.ByTag = 'Statistics by tags';
-I18N.Setting.DataAnalysis.ByCalendar = 'Statistics by calendar';
+I18N.Setting.DataAnalysis.ByTag = 'By Tags';
+I18N.Setting.DataAnalysis.ByCalendar = 'By Calendar';
 I18N.Setting.DataAnalysis.TimeSpan = 'Timespan';
 I18N.Setting.DataAnalysis.AddTimeSpanTip = 'Add timespan, click "Statistics" to get data';
 I18N.Setting.DataAnalysis.NotSupportIntervalAnalysis = 'This tag does not support time-sharing statistics';
@@ -2408,20 +2429,20 @@ I18N.Setting.DataAnalysis.Tou.CancelMulti = 'Yes';
 I18N.Setting.DataAnalysis.Tou.NotCancelMulti = 'Cancel';
 
 I18N.Setting.ECM = {};
-I18N.Setting.ECM.EstimatedAnnualCostSavings = 'Estimated Annual Cost Savings';
+I18N.Setting.ECM.EstimatedAnnualCostSavings = 'Estimated Cost Savings Annually';
 I18N.Setting.ECM.InvestmentAmount = 'Investment Amount';
 I18N.Setting.ECM.PaybackPeriod = 'Payback Period';
 I18N.Setting.ECM.NoECM = 'No Added Energy Saving Scheme';
 I18N.Setting.ECM.EnergyProblem = 'Energy Problems';
-I18N.Setting.ECM.AirConditioning = 'Air Conditioner';
+I18N.Setting.ECM.AirConditioning = 'Air Conditioning Compressed Air';
 I18N.Setting.ECM.Boiler = 'Boiler';
 I18N.Setting.ECM.StrongElectricity = 'Strong Electricity';
 I18N.Setting.ECM.WeakElectricity = 'Weak Electricity';
 I18N.Setting.ECM.Drainage = 'Water Supply and Drainage';
 I18N.Setting.ECM.AirCompression = 'Air Compression';
 I18N.Setting.ECM.Other = 'Others';
-I18N.Setting.ECM.AlreadyPush = 'Already Pushed';
-I18N.Setting.ECM.NotPush = 'Not Pushed Yet';
+I18N.Setting.ECM.AlreadyPush = 'Pushed';
+I18N.Setting.ECM.NotPush = 'Not Pushed';
 I18N.Setting.ECM.PushAll = 'Batch Push';
 I18N.Setting.ECM.Push = 'Push';
 I18N.Setting.ECM.PushContent = 'Confirm to push energy saving scheme{0}？';
@@ -2431,9 +2452,9 @@ I18N.Setting.ECM.PushSuccess = 'Scheme successfully pushed';
 I18N.Setting.ECM.Solution = 'Energy Saving Scheme';
 I18N.Setting.ECM.ProblemDetail = 'Operation Situation';
 I18N.Setting.ECM.ProblemDetailName = 'Problem';
-I18N.Setting.ECM.SolutionDetail = 'Energy Saving Scheme Details';
-I18N.Setting.ECM.ExpectedAnnualEnergySaving = 'Expected Annual Energy Saving';
-I18N.Setting.ECM.ExpectedAnnualCostSaving = 'Expected Annual Cost Saving';
+I18N.Setting.ECM.SolutionDetail = 'Energy-saving solution';
+I18N.Setting.ECM.ExpectedAnnualEnergySaving = 'Estimated  Usage Reduction Annually';
+I18N.Setting.ECM.ExpectedAnnualCostSaving = 'Estimated Cost Savings Annually';
 I18N.Setting.ECM.InvestmentAmount = 'Investment Amount';
 I18N.Setting.ECM.InvestmentReturn = 'Payback Period';
 I18N.Setting.ECM.NumberErrorText = 'The number should be more than or equal to 0, with at most 1 digit after the decimal point';
@@ -2442,8 +2463,8 @@ I18N.Setting.ECM.InvestmentReturnCycle.ImmediateRecovery='Immediate';
 I18N.Setting.ECM.InvestmentReturnCycle.Other='{0}year(s)';
 I18N.Setting.ECM.PushPanel ={};
 I18N.Setting.ECM.PushPanel.ToBe='To Be Assigned';
-I18N.Setting.ECM.PushPanel.Being='Processing';
-I18N.Setting.ECM.PushPanel.Done='Done';
+I18N.Setting.ECM.PushPanel.Being='In Progress';
+I18N.Setting.ECM.PushPanel.Done='Completed';
 I18N.Setting.ECM.PushPanel.Canceled= 'Canceled';
 I18N.Setting.ECM.PushPanel.ThisMonth= 'This Month';
 I18N.Setting.ECM.PushPanel.Last3Month= 'Last 3 Months';
@@ -2599,8 +2620,9 @@ I18N.Setting.Diagnose.Associate='Associate';
 I18N.Setting.Diagnose.Created='Diagnosis has been created';
 
 I18N.Setting.Effect={};
-I18N.Setting.Effect.Config='Configure effect';
-I18N.Setting.Effect.Start='Execution started';
+I18N.Setting.Effect.Config='Configuration';
+I18N.Setting.Effect.Config2='M&V Configuration';
+I18N.Setting.Effect.Start='Start data';
 I18N.Setting.Effect.AirConditioning='Air Conditioning System';
 I18N.Setting.Effect.Power='Power System';
 I18N.Setting.Effect.Lighting='Lighting System';
@@ -2610,17 +2632,17 @@ I18N.Setting.Effect.Heating ='Heating System';
 I18N.Setting.Effect.Water ='Water System';
 I18N.Setting.Effect.Other ='Others';
 I18N.Setting.Effect.ConfiguredTag ='Configured data points:';
-I18N.Setting.Effect.Cost ='Saved costs:';
+I18N.Setting.Effect.Cost ='Cost Savings:';
 I18N.Setting.Effect.List ='Effect list';
 I18N.Setting.Effect.TagName ='Data points:';
 I18N.Setting.Effect.Problem ='Belonged scheme:';
 I18N.Setting.Effect.ContinueConfig ='Continue to configure';
 
 I18N.SaveEffect={};
-I18N.SaveEffect.OverviewLabel='Effect overview';
-I18N.SaveEffect.ListLabel='Scheme effect';
-I18N.SaveEffect.BestLabel='Best solution';
-I18N.SaveEffect.ConfigSaveRatio='Configure energy saving rate';
+I18N.SaveEffect.OverviewLabel='Savings Summary';
+I18N.SaveEffect.ListLabel='Savings Details';
+I18N.SaveEffect.BestLabel='Best Practices';
+I18N.SaveEffect.ConfigSaveRatio='Configuration';
 I18N.SaveEffect.Configed='Configured';
 I18N.SaveEffect.AddTag='Add data points';
 I18N.SaveEffect.Step1='Select data points';
@@ -2635,12 +2657,12 @@ I18N.SaveEffect.EffectRateTip='Click the button below to configure energy saving
 I18N.SaveEffect.Draft='Draft';
 I18N.SaveEffect.NoDraft='No draft';
 I18N.SaveEffect.Calculating='Calculating';
-I18N.SaveEffect.Calculated='Calculation done';
+I18N.SaveEffect.Calculated='Calculation Ends';
 I18N.SaveEffect.DraftDeleteConfirm='Confirm to delete the draft of “{0}”?';
 I18N.SaveEffect.EnergySystem='System';
 I18N.SaveEffect.SelectTagAgain='Reselect';
 I18N.SaveEffect.SelectTag='Associate data points of energy saving rate';
-I18N.SaveEffect.UtilNow='By now';
+I18N.SaveEffect.UtilNow='So far ';
 I18N.SaveEffect.EnergySaving='Energy saving amount';
 I18N.SaveEffect.NoEffectDetail='No effect, please ';
 I18N.SaveEffect.EffectDeleteConfirm='Confirm to delete the configuration of “{0}”?';
@@ -2649,24 +2671,26 @@ I18N.SaveEffect.BaselinePeriod='Benchmark determination period';
 I18N.SaveEffect.EnergyCalculatePeriod='Consumption calculation period';
 I18N.SaveEffect.EnergyUnitPrice='Energy unit price（{0}）';
 I18N.SaveEffect.ConfigSuccess='Configured successfully';
-I18N.SaveEffect.Predict='Predict';
+I18N.SaveEffect.Predict='Estimated ';
 I18N.SaveEffect.TagSum='All tag';
 I18N.SaveEffect.Saving='Energy saving';
-I18N.SaveEffect.Saving2='Energy saved';
-I18N.SaveEffect.Contrast='Actual and Baseline Compare';
+I18N.SaveEffect.Saving2='';
+I18N.SaveEffect.Saving3='';
+I18N.SaveEffect.Saving4='Usage Reduction';
+I18N.SaveEffect.Contrast='Actual vs Baseline';
 I18N.SaveEffect.NoBest='No best solution';
-I18N.SaveEffect.SetBest='Set as best solution';
+I18N.SaveEffect.SetBest='To be Best Practice';
 I18N.SaveEffect.SelectCharacteristics='Please choose solution characters';
-I18N.SaveEffect.HighCost='High cost saving';
-I18N.SaveEffect.LessInvest='Low intesting';
-I18N.SaveEffect.Easy='Easy implement';
-I18N.SaveEffect.HighReturn='High saving rate';
+I18N.SaveEffect.HighCost='High Cost Savings';
+I18N.SaveEffect.LessInvest='Low Investment';
+I18N.SaveEffect.Easy='Easy to Implement';
+I18N.SaveEffect.HighReturn='High R.O.I';
 I18N.SaveEffect.RecommendReason='Recommend reason';
 I18N.SaveEffect.RecommendReasonHint='Please input recommend reason';
 I18N.SaveEffect.FormatVaildTip='Please input data larger than 0, Retained maximum period of 3 decimal places';
-I18N.SaveEffect.IgnoreSolution='Ignore solution';
+I18N.SaveEffect.IgnoreSolution='Ignored';
 I18N.SaveEffect.SolutionIgnored='Ignored';
-I18N.SaveEffect.IgnoredSolution='Ignored solutions';
+I18N.SaveEffect.IgnoredSolution='Ignored';
 I18N.SaveEffect.IgnoreTip='Ignored solution will enter in ignored list and can not recover, Ignore anyway?';
 I18N.SaveEffect.Ignore='Ignore';
 I18N.SaveEffect.CreateUser='Solution source:';
@@ -2675,7 +2699,7 @@ I18N.SaveEffect.IgnoreSuccess='Solution become "Ignored"';
 I18N.SaveEffect.SolutionName='Name';
 I18N.SaveEffect.SolutionCharacter='Character';
 I18N.SaveEffect.NoBestSulutionTip='For Best Practices, please buy advanced consulting services';
-I18N.SaveEffect.SolutionDetail='Solution Details';
+I18N.SaveEffect.SolutionDetail='Project Details';
 
 I18N.SaveEffect.Model = {};
 I18N.SaveEffect.Model.Title = 'Benchmark model';
@@ -2740,27 +2764,41 @@ I18N.SaveEffect.Create.TriggerVaildTip = 'Only support numbers, 6 digits after t
 I18N.SaveEffect.Create.TriggerArea = 'Diagnosis condition trigger area';
 
 I18N.SaveEffect.Chart = {};
-I18N.SaveEffect.Chart.PredictSaving = 'Predicted Energy Saving';
-I18N.SaveEffect.Chart.PredictSavingWater = 'Predicted Water Saving';
-I18N.SaveEffect.Chart.ActualSaving = 'Actual Energy Saving';
-I18N.SaveEffect.Chart.ActualSavingWater = 'Actual Water Saving';
+I18N.SaveEffect.Chart.PredictSaving = 'Estimated';
+I18N.SaveEffect.Chart.PredictSavingWater = 'Estimated';
+I18N.SaveEffect.Chart.PredictSaving2 = 'Estimated  Annual Usage Reduction';
+I18N.SaveEffect.Chart.PredictSavingWater2 = 'Estimated  Annual Usage Reduction';
+I18N.SaveEffect.Chart.ActualSaving = 'Actual Usage Reduction';
+I18N.SaveEffect.Chart.ActualSavingWater = 'Actual Usage Reduction';
 I18N.SaveEffect.Chart.Benchmark = 'Benchmark';
-I18N.SaveEffect.Chart.SavingValue = 'Annual Energy Saving';
-I18N.SaveEffect.Chart.SavingWaterValue = 'Annual Water Saving';
-I18N.SaveEffect.Chart.SavingRate = 'Annual Energy Saving Rate';
+I18N.SaveEffect.Chart.SavingValue = 'Annual Usage Reduction';
+I18N.SaveEffect.Chart.SavingWaterValue = 'Annual Usage Reduction';
+I18N.SaveEffect.Chart.SavingRate = 'Annual Saving Rate';
 I18N.SaveEffect.Chart.SavingWaterRate = 'Annual Water Saving Rate';
-I18N.SaveEffect.Chart.ByMonthValue = 'Monthly Value';
+I18N.SaveEffect.Chart.ByMonthValue = 'Monthly';
 I18N.SaveEffect.EnergySavingWater='Water Saving';
-I18N.SaveEffect.SavingCoalValue='Annual Saved Standard Coal';
+I18N.SaveEffect.SavingCoalValue='Annual Standard Coal Rediction';
 I18N.SaveEffect.Tip = 'No Energy Saving Effect';
 
 I18N.SaveEffect.Table = {};
-I18N.SaveEffect.Table.SavingCost = 'Annual Saved Cost';
-I18N.SaveEffect.Table.SavingValue = 'Annual Energy (Water) Saving';
-I18N.SaveEffect.Table.SavingRate = 'Annual Energy (Water) Saving Rate';
-I18N.SaveEffect.ByYear = 'Annual Energy Saving Effect';
-I18N.SaveEffect.OrderByCommo = 'Display by media';
-I18N.SaveEffect.OrderByBuilding = 'Display by building';
-I18N.SaveEffect.Table.TotalSavingCost = 'Total Annual Saved Cost';
-I18N.SaveEffect.Table.TotalSavingStandardCoal = 'Total Annual Standard Coal Saving';
-I18N.SaveEffect.Table.TotalSavingWater = 'Total Annual Water Saving';
+I18N.SaveEffect.Table.SavingCost = 'Annual Cost Savings';
+I18N.SaveEffect.Table.SavingValue = 'Annual Energy(Water) Reduction';
+I18N.SaveEffect.Table.SavingRate = 'Annual Saving Rate';
+I18N.SaveEffect.ByYear = 'Annual Savings';
+I18N.SaveEffect.OrderByCommo = 'Display by Commodity';
+I18N.SaveEffect.OrderByBuilding = 'Display by Building';
+I18N.SaveEffect.Table.TotalSavingCost = 'Total Annual Cost Savings';
+I18N.SaveEffect.Table.TotalSavingStandardCoal = 'Total Annual Standard Coal Reduction';
+I18N.SaveEffect.Table.TotalSavingWater = 'Total Annual Water Reduction';
+I18N.SaveEffect.Ignore = 'Ignore';
+
+I18N.SaveEffect.SaveEffect = '';
+I18N.SaveEffect.EnergySaving2='Usage Reduction';
+I18N.Setting.Effect.Cost2 ='Cost Savings';
+I18N.SaveEffect.Name = 'Title';
+I18N.SaveEffect.Description = 'Description';
+
+I18N.NetworkChecker = {};
+I18N.NetworkChecker.Msg1 = 'Abnormal network connection, ';
+I18N.NetworkChecker.Msg2 = 'your actions may not be saved';
+I18N.NetworkChecker.Msg3 = '网络连接已恢复';

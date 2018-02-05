@@ -211,7 +211,7 @@ export default class Actuality extends Component {
 				<KPIActuality router={this.props.router} hierarchyId={this._getHierarchyId(this.props.router, this.context)}/>
 			</div>}
 			{isReport(this.props) && <div className='jazz-actuality-item'>
-				<div className='jazz-actuality-item-title'>{'报表'}</div>
+				<div className='jazz-actuality-item-title'>{I18N.MainMenu.ActualityReport}</div>
 				{isFull() &&
 				<div style={{marginLeft: 5, display: 'inline-block', height: 23, verticalAlign: 'top'}}>
 					<a href="javascript:void(0)" className='icon-add' onClick={() => {

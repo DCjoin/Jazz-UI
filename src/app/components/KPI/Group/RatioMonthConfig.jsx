@@ -79,8 +79,8 @@ export default class RatioMonthConfig extends Component {
     return(
       <div className="jazz-kpi-config-edit-step-action">
                              {!this.props.isCreate && <FlatButton label={I18N.Common.Button.Cancel2} secondary={true} style={{float:'right',minWidth:'68px'}} onTouchTap={this.props.onCancel}/>}
-                             <FlatButton label={I18N.Common.Button.Save} disabled={!MonthKPIStore.validateRatioMonthInfo(this.state.buildingInfo)} primary={true} style={this.props.isCreate?{float:'right',minWidth:'68px'}:{float:'right',minWidth:'68px',marginRight:'20px'}} 
-                                onTouchTap={this._onSave}/>    
+                             <FlatButton label={I18N.Common.Button.Save} disabled={!MonthKPIStore.validateRatioMonthInfo(this.state.buildingInfo)} primary={true} style={this.props.isCreate?{float:'right',minWidth:'68px'}:{float:'right',minWidth:'68px',marginRight:'20px'}}
+                                onTouchTap={this._onSave}/>
                       </div>
     )
   }
@@ -97,7 +97,7 @@ export default class RatioMonthConfig extends Component {
       return `(${uom}/${ratioUom})`
     }
     else return ''
-   
+
   }
 
   _validateQuota(value){
@@ -139,10 +139,16 @@ export default class RatioMonthConfig extends Component {
                               },
           defaultValue: CommonFuns.toThousands(value) || '',
           title: title,
-          hintText:annualHint, 
+          hintText:annualHint,
           autoFocus:true,
           regexFn:IndicatorType===Type.Quota?this._validateQuota:this._validateSavingRate,
-          style:{width:'150px'}
+          style:{width:'150px'},
+          floatingLabelStyle: {
+            width: '200%'
+          },
+          hintStyle: {
+            width: '200%'
+          }
         };
     return(
       <ViewableTextField {...annualProps}/>
