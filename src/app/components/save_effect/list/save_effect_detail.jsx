@@ -81,7 +81,7 @@ function getEffectItemId(tagId,tags){
 }
 
 function Immu2PlainPureRender(Comp) {
-	return class Basic extends Component {		
+	return class Basic extends Component {
 		shouldComponentUpdate(nextProps, nextState) {
 			return !util.shallowEqual(this.props, nextProps) || !util.shallowEqual(this.state, nextState);
 		}
@@ -123,7 +123,7 @@ export default class EffectDetail extends Component {
 				this._handleEditTagChange = this._handleEditTagChange.bind(this);
 				this._handleDeleteTagChange = this._handleDeleteTagChange.bind(this);
 				this._onSolutionChanged = this._onSolutionChanged.bind(this);
-				
+
   }
 
   state={
@@ -219,7 +219,7 @@ export default class EffectDetail extends Component {
 			this._getChartData(this.props.effect.get("EnergyEffectId"),getEffectItemId(this.state.displayTagId,tags));
 		})
 	}
-	
+
 	_handelCharacterChange(value){
 		var character=this.state.characteristics,index=character.indexOf(value+'');
 		if(index>-1){
@@ -280,7 +280,7 @@ export default class EffectDetail extends Component {
 					<span>
 						<FlatButton label={I18N.SaveEffect.SolutionDetail} onTouchTap={()=>{
 												this.setState({
-													measureShow: true 
+													measureShow: true
 													});
 													getEnergySolution(this.props.effect.get("EnergyProblemId"));
 													}}
@@ -331,8 +331,8 @@ export default class EffectDetail extends Component {
               {CalcState===calcState.Being?<FontIcon className="icon-sandglass" style={{fontSize:'14px'}}/>
 						:<FontIcon className="icon-sync-ok" style={{fontSize:'14px',lineHeight:'14px'}} color="#434343"/>}
                 <div className="font" style={{marginLeft:'5px'}}>
-                  {CalcState===calcState.Being?`${I18N.MainMenu.SaveEffect}${I18N.SaveEffect.Calculating}`
-                    :`${I18N.MainMenu.SaveEffect}${I18N.SaveEffect.Calculated}`}
+                  {CalcState===calcState.Being?`${I18N.SaveEffect.SaveEffect}${I18N.SaveEffect.Calculating}`
+                    :`${I18N.SaveEffect.SaveEffect}${I18N.SaveEffect.Calculated}`}
                 </div>
             </span>
           </div>
@@ -357,8 +357,8 @@ export default class EffectDetail extends Component {
               {CalcState===calcState.Being?<FontIcon className="icon-sandglass" style={{fontSize:'14px'}}/>
 						:<FontIcon className="icon-sync-ok" style={{fontSize:'14px',lineHeight:'14px'}} color="#434343"/>}
                 <div className="font" style={{marginLeft:'5px'}}>
-                  {CalcState===calcState.Being?`${I18N.MainMenu.SaveEffect}${I18N.SaveEffect.Calculating}`
-                    :`${I18N.MainMenu.SaveEffect}${I18N.SaveEffect.Calculated}`}
+                  {CalcState===calcState.Being?`${I18N.SaveEffect.SaveEffect}${I18N.SaveEffect.Calculating}`
+                    :`${I18N.SaveEffect.SaveEffect}${I18N.SaveEffect.Calculated}`}
                 </div>
 
             </span>
@@ -445,7 +445,7 @@ export default class EffectDetail extends Component {
 							this.state.detailInfo.get('Status')===1?
 																		<div className="jazz-effect-detail-best-operation">
 																				<FlatButton icon={ignoreIcon} label={I18N.SaveEffect.IgnoreSolution} style={style.ignoreBtn} labelStyle={style.ignoreLabel} onClick={this._onIgnoreBestShow.bind(this)}/>
-																		</div>					
+																		</div>
 																		:<FlatButton icon={ignoreIcon} label={I18N.SaveEffect.SolutionIgnored} style={style.ignoredBtn} labelStyle={style.ignoredLabel} disabled={true}/>
 							:isFull() && BestIsFull() && <div className="jazz-effect-detail-best-operation">
 									<FlatButton label={I18N.Common.Button.Edit} style={style.btn} labelStyle={style.label} onClick={this._onBestShow.bind(this)}/>
@@ -472,13 +472,13 @@ export default class EffectDetail extends Component {
 		if(tags.size>1){
 			menus.push()
 		}
-	
+
 		return(
 			<div className="jazz-effect-detail-content-chart-field">
 				<div className="operation">
 					<div className="tag-select">
 						{tags.size===1?<div className="single">{tags.getIn([0,"TagName"])}</div>
-													:     
+													:
 													 <DropDownMenu
                    					 style={{height: '26px'}}
                     				 labelStyle={{fontSize:'14px',color:"#32ad3d",lineHeight:'26px',height:'26px',paddingLeft:'11px',paddingRight:'28px'}}
@@ -500,7 +500,7 @@ export default class EffectDetail extends Component {
     												</DropDownMenu>}
 					</div>
 					<div className="chart-select">
-					<IconLabel label={I18N.SaveEffect.Saving} selected={this.state.displayChartType===type.Saving} onClick={this._handlechartTypeChange.bind(this,type.Saving,tags)}/>
+					<IconLabel label={I18N.SaveEffect.Saving4} selected={this.state.displayChartType===type.Saving} onClick={this._handlechartTypeChange.bind(this,type.Saving,tags)}/>
 					<IconLabel label={I18N.SaveEffect.Contrast} selected={this.state.displayChartType===type.Contrast} onClick={this._handlechartTypeChange.bind(this,type.Contrast,tags)}/>
 					</div>
 
@@ -604,11 +604,10 @@ export default class EffectDetail extends Component {
 						</div>}
 					</div>
 					<div className="jazz-effect-detail-content-save-energy">
-							<IconText style={{width:'140px',marginLeft:'0px'}} valueStyle={{fontSize:'22px'}} icon={saveIcon} label={`${preTitle}${I18N.SaveEffect.EnergySaving}`} value={validValue(EnergySaving)} uom={util.getUomById(EnergySavingUomId).Code}/>
-							<IconText style={{width:'140px',marginLeft:'0px'}} valueStyle={{fontSize:'22px'}} icon={costIcon} label={`${preTitle}${I18N.Setting.Effect.Cost}`} value={validValue(EnergySavingCosts)} uom="RMB"/>
-						
-							<IconText style={{width:'140px',marginLeft:'0px'}} valueStyle={{fontSize:'22px'}} icon={amountIcon} label={I18N.Setting.ECM.InvestmentAmount} value={validValue(InvestmentAmount)} uom="RMB"/>
-							<IconText style={{width:'140px',marginLeft:'0px'}} valueStyle={{fontSize:'22px'}} icon={cycleIcon} label={`${prePeriod}${I18N.Setting.ECM.PaybackPeriod}`} value={tansferReturnCycle(InvestmentReturnCycle) || '-'}
+							<IconText style={{width:'200px',marginLeft:'0px'}} valueStyle={{fontSize:'22px'}} icon={saveIcon} label={`${preTitle}${I18N.SaveEffect.EnergySaving2}`} value={validValue(EnergySaving)} uom={util.getUomById(EnergySavingUomId).Code}/>
+							<IconText style={{width:'200px',marginLeft:'0px'}} valueStyle={{fontSize:'22px'}} icon={costIcon} label={`${preTitle}${I18N.Setting.Effect.Cost2}`} value={validValue(EnergySavingCosts)} uom="RMB"/>
+							<IconText style={{width:'200px',marginLeft:'0px'}} valueStyle={{fontSize:'22px'}} icon={amountIcon} label={I18N.Setting.ECM.InvestmentAmount} value={validValue(InvestmentAmount)} uom="RMB"/>
+							<IconText style={{width:'200px',marginLeft:'0px'}} valueStyle={{fontSize:'22px'}} icon={cycleIcon} label={`${prePeriod}${I18N.Setting.ECM.PaybackPeriod}`} value={tansferReturnCycle(InvestmentReturnCycle) || '-'}
 												uom={util.isNumber(InvestmentReturnCycle) && InvestmentReturnCycle!==0?I18N.EM.Year:''}/>
 					</div>
 					{this._renderChart()}
@@ -743,7 +742,7 @@ export default class EffectDetail extends Component {
 				notSelected:{
 					color:'#9fa0a4',
 					fontSize:'15px'
-				}			
+				}
 			}
 		};
 		var highCost=this.isCharacterSelected(characterType.HighCost),
@@ -757,29 +756,29 @@ export default class EffectDetail extends Component {
 
 					<FlatButton label={I18N.SaveEffect.HighCost}
 											labelStyle={highCost?style.label.selected:style.label.notSelected}
-											icon={<FontIcon className="icon-check-circle" style={highCost?style.icon.selected:style.icon.notSelected}/>}	
+											icon={<FontIcon className="icon-check-circle" style={highCost?style.icon.selected:style.icon.notSelected}/>}
 											style={highCost?style.btn.selected:style.btn.notSelected}
 											onClick={this._handelCharacterChange.bind(this,characterType.HighCost)}/>
 
 					<FlatButton label={I18N.SaveEffect.LessInvest}
 											labelStyle={lessInvest?style.label.selected:style.label.notSelected}
-											icon={<FontIcon className="icon-check-circle" style={lessInvest?style.icon.selected:style.icon.notSelected}/>}	
+											icon={<FontIcon className="icon-check-circle" style={lessInvest?style.icon.selected:style.icon.notSelected}/>}
 											style={lessInvest?style.btn.selected:style.btn.notSelected}
 											onClick={this._handelCharacterChange.bind(this,characterType.LessInvest)}/>
 
 					<FlatButton label={I18N.SaveEffect.Easy}
 											labelStyle={easy?style.label.selected:style.label.notSelected}
-											icon={<FontIcon className="icon-check-circle" style={easy?style.icon.selected:style.icon.notSelected}/>}	
+											icon={<FontIcon className="icon-check-circle" style={easy?style.icon.selected:style.icon.notSelected}/>}
 											style={easy?style.btn.selected:style.btn.notSelected}
 											onClick={this._handelCharacterChange.bind(this,characterType.Easy)}/>
 
 					<FlatButton label={I18N.SaveEffect.HighReturn}
 											labelStyle={highReturn?style.label.selected:style.label.notSelected}
-											icon={<FontIcon className="icon-check-circle" style={highReturn?style.icon.selected:style.icon.notSelected}/>}	
+											icon={<FontIcon className="icon-check-circle" style={highReturn?style.icon.selected:style.icon.notSelected}/>}
 											style={highReturn?style.btn.selected:style.btn.notSelected}
 											onClick={this._handelCharacterChange.bind(this,characterType.HighReturn)}/>
 				</div>
-				
+
 				<div className="jazz-effect-best-font" style={{marginTop:'30px',marginBottom:'6px'}}>{I18N.SaveEffect.RecommendReason}</div>
 
 				<div className="jazz-effect-best-recommend">
@@ -844,7 +843,7 @@ export default class EffectDetail extends Component {
 	        energySys={problem.get('EnergySys')}/>
 	  )
 	}
-	
+
 		_renderMeasureDialog(){
 	  var currentSolution=this.state.energySolution;
 	  var onClose=()=>{
@@ -933,7 +932,7 @@ export default class EffectDetail extends Component {
 		this._getChartData(this.props.effect.get("EnergyEffectId"),null);
     ListStore.addChangeListener(this._onChanged);
 		CreateStore.addChangeListener(this._onSolutionChanged);
-		
+
   }
 
   componentWillUnmount(){
@@ -979,7 +978,7 @@ export default class EffectDetail extends Component {
 							ExecutedTime,
 						EnergySystem}}
 						onSubmitDone={()=>{
-							
+
 							this.setState({
 								chartData:null,
 								detailInfo:null,
@@ -987,7 +986,7 @@ export default class EffectDetail extends Component {
 							getDetail(this.props.effect.get('EnergyEffectId'),(data)=>{
 								this._updateChart(data);
 							});
-							
+
 							})
 
 							}}
@@ -999,7 +998,7 @@ export default class EffectDetail extends Component {
 									detailInfo:null
 								})
 							}else {
-								
+
 								this.setState({
 									createShow:false,
 									detailInfo:null,
@@ -1008,35 +1007,35 @@ export default class EffectDetail extends Component {
 									getDetail(this.props.effect.get('EnergyEffectId'),(data)=>{
 										this._updateChart(data);
 									});
-									
+
 								})
 							}
 
 						}}/>}
 						{this.state.editShow && <Edit effect={this.props.effect.set('EnergyEffectItemId',this.state.detailInfo.getIn(['EffectItems',this.state.editIndex,"EnergyEffectItemId"]))}
 																					editTagName={this.state.detailInfo.getIn(['EffectItems',this.state.editIndex,"TagName"])}
-																					onSubmitDone={()=>{																						
+																					onSubmitDone={()=>{
 																						this.setState({
 																							detailInfo:null,
 																							chartData:null,
 																						},()=>{
 																						getDetail(this.props.effect.get('EnergyEffectId'),(data)=>{
 																								this._updateChart(data);
-																							});																						
+																							});
 																						})
 																						}}
 																					onClose={()=>{
 																										this.setState({
 																										editShow:false,
-																										editIndex:null,																										
+																										editIndex:null,
 																						},()=>{
 																							{/*getDetail(this.props.effect.get('EnergyEffectId'),(data)=>{
 																								this._updateChart(data);
 																							});*/}
-																							
+
 																						})
 																					}
-																		
+
 																					}
 						/>}
 						<Snackbar ref='snackbar' autoHideDuration={4000} open={!!this.state.saveSuccessText} onRequestClose={()=>{this.setState({saveSuccessText:null})}} message={this.state.saveSuccessText}/>

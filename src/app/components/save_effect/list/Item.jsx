@@ -119,7 +119,7 @@ export class ItemForConsultant extends Component {
           <span className="jazz-effect-item-action" onClick={(e)=>{
               e.stopPropagation();
               if(this.props.canEdit) this.props.onConfig();
-            }}>{I18N.Setting.Effect.Config}</span>
+            }}>{I18N.Setting.Effect.Config2}</span>
         </div>
       </div>
     )

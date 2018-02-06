@@ -50,14 +50,14 @@ class Item extends Component {
 						<div className="font">{`${I18N.SaveEffect.HierarchyFrom}${solution.get("HierarchyName")}`}</div>
 					</div>
 					<div className="jazz-effect-best-list-item-info-side-middle">
-						<div className="name">{solution.getIn(["SolutionInfo","EnergySolutionName"])}</div>	
-										<div className="jazz-effect-best-list-item-info-side-middle-operation" 
+						<div className="name">{solution.getIn(["SolutionInfo","EnergySolutionName"])}</div>
+										<div className="jazz-effect-best-list-item-info-side-middle-operation"
 						 onClick={(e)=>{e.stopPropagation();
 													  onIgnore();
-														}}>{I18N.ALarm.IgnoreWindow.Ignore}</div>
+														}}>{I18N.SaveEffect.Ignore}</div>
 					</div>
-							
-					<div className="reason" title={solution.getIn(["BestInfo","RecommendReason"])}>{solution.getIn(["BestInfo","RecommendReason"])}</div>			
+
+					<div className="reason" title={solution.getIn(["BestInfo","RecommendReason"])}>{solution.getIn(["BestInfo","RecommendReason"])}</div>
 				</div>
 
 			</div>
@@ -67,7 +67,7 @@ class Item extends Component {
 						{highCost && <HighCost/>}
 						{easy && <Easy/>}
 			</div>
-					
+
 			</div>
 				)
 
@@ -86,7 +86,7 @@ export default class SaveEffectBestList extends Component {
         super(props)
         this._onChanged = this._onChanged.bind(this);
 				this._onIgnoreSuccessd = this._onIgnoreSuccessd.bind(this);
-				
+
   	}
 
 		state={
@@ -150,7 +150,7 @@ export default class SaveEffectBestList extends Component {
 				<div className="jazz-effect-best-list">
 					<div className="jazz-effect-best-list-header">
 						<div className="jazz-effect-best-list-header-header">{I18N.SaveEffect.BestLabel}</div>
-						{BestStore.getIgnoredBest().size!==0 && <div className="jazz-effect-best-list-ignored-btn" 
+						{BestStore.getIgnoredBest().size!==0 && <div className="jazz-effect-best-list-ignored-btn"
 					onClick={()=>{
 						openTab(RoutePath.saveEffect.ignoredbBest(this.props.params)+'?init_hierarchy_id='+this.context.hierarchyId);
 						}}>{I18N.SaveEffect.IgnoredSolution}</div>}
@@ -167,7 +167,7 @@ export default class SaveEffectBestList extends Component {
 									effectDetailShow:true,
 									detailEffect:best
 								})}}/>)}
-					
+
 				</div>
 				<Snackbar ref="snackbar" autoHideDuration={4000} open={!!this.state.saveSuccessText} onRequestClose={()=>{this.setState({saveSuccessText:null})}} message={this.state.saveSuccessText}/>
 			</div>

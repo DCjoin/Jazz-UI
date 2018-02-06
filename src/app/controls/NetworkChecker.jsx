@@ -60,7 +60,7 @@ var NetworkChecker = React.createClass({
         var content = null;
         if(this.state.status == 'offline'){
             content = (<div className="networkchecker networkoffline"  key="networkchecker">
-                <h5>网络连接异常</h5><span>您的操作可能不会被保存</span></div>);
+                <h5>{I18N.NetworkChecker.Msg1}</h5><span>{I18N.NetworkChecker.Msg2}</span></div>);
         }
         else if(this.state.status == 'online'){
             content = (<div className="networkchecker networkonline"  key="networkchecker">网络连接已恢复</div>);

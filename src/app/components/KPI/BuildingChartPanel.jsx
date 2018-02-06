@@ -127,7 +127,7 @@ export default class BuildingChartPanel extends Component {
 
 		return (
 			<div>
-				{topRank && year <= SingleKPIStore.getCustomerCurrentYear() && 
+				{topRank && year <= SingleKPIStore.getCustomerCurrentYear() &&
 				<div className='jazz-building-top-rank'>
 					<div className='top-rank-item'>
 						<div className='jazz-building-top-rank-title'>{getRanlLabelDate(year)}</div>
@@ -213,7 +213,7 @@ export default class BuildingChartPanel extends Component {
 						return (<div className="jazz-kpi-rank-history-subtitle">
 							<span>{year + I18N.Kpi.Yearly}</span>
 							<span>{I18N.Setting.KPI.Rank.Name + ' ' + selectedRank.Index + '/' + selectedRank.Count}</span>
-							<span>{RankingKPIStore.getUnitType(selectedRank.UnitType) + ' ' + getValue(selectedRank)}</span>
+							<span style={{flex: 'none'}}>{RankingKPIStore.getUnitType(selectedRank.UnitType) + ' ' + getValue(selectedRank)}</span>
 							<span/>
 						</div>)
 					}}

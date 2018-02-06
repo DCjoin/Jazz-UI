@@ -201,7 +201,7 @@ var YaxisDialog = React.createClass({
       label={I18N.Common.Button.Cancel2}
       secondary={true}
       onClick={this._onDialogCancel} style={{
-        marginRight: '20px',width:'68px',minWidth:'68px'
+        marginRight: '20px',minWidth:'68px'
       }}/>,
       <NewFlatButton
       label={I18N.Common.Button.Save}

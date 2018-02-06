@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Immutable from 'immutable'; 
+import Immutable from 'immutable';
 import {find} from 'lodash-es';
 import {Type} from 'constants/actionType/KPI.jsx';
 import ViewableTextField from 'controls/ViewableTextField.jsx';
@@ -20,7 +20,7 @@ export default class GroupConfig extends Component {
 	static contextTypes = {
 		router: React.PropTypes.object,
 	};
-  
+
   state={
     kpiInfo:this.props.kpiInfo
   }
@@ -80,11 +80,14 @@ export default class GroupConfig extends Component {
                               },
           defaultValue: this.props.configStep!==1?CommonFuns.getLabelData(parseFloat(value)) || '':CommonFuns.toThousands(value) || '',
           title: title,
-          hintText:annualHint, 
+          hintText:annualHint,
           autoFocus:true,
           regexFn:IndicatorType===Type.Quota?this._validateQuota:this._validateSavingRate,
-          style:{width:'260px',marginBottom:'15px'}
-          
+          style:{width:'260px',marginBottom:'15px'},
+          floatingLabelShrinkStyle: {
+            width: '200%'
+          }
+
         };
     return(
       <ViewableTextField {...annualProps}/>
@@ -102,18 +105,18 @@ export default class GroupConfig extends Component {
 	render() {
     let {AnnualQuota,AnnualSavingRate}=this.state.kpiInfo.toJS();
     return(
-      <StepComponent step={1} isfolded={false} title={I18N.Setting.KPI.Config.Group} 
+      <StepComponent step={1} isfolded={false} title={I18N.Setting.KPI.Config.Group}
                     isView={this.props.configStep!==1} editDisabled={this.props.configStep!==null} onEdit={this.props.onEdit}>
                     <div style={{display:'flex',flexDirection:'column',paddingRight:'15px'}}>
                       {this._renderConfig()}
-                      {this.props.configStep===1 && 
+                      {this.props.configStep===1 &&
                           <div className="jazz-kpi-config-edit-step-action" style={{marginTop:'-20px'}}>
                              {(this.props.kpiInfo.get("AnnualQuota")!==null || this.props.kpiInfo.get("AnnualSavingRate")!==null) && <FlatButton label={I18N.Common.Button.Cancel2} secondary={true} style={{float:'right',minWidth:'68px'}} onTouchTap={this.props.onCancel}/>}
-                             <FlatButton label={I18N.Common.Button.Save} disabled={!AnnualQuota && !AnnualSavingRate} primary={true} style={(this.props.kpiInfo.get("AnnualQuota")!==null || this.props.kpiInfo.get("AnnualSavingRate")!==null)?{float:'right',minWidth:'68px',marginRight:'20px'}:{float:'right',minWidth:'68px'}} 
+                             <FlatButton label={I18N.Common.Button.Save} disabled={!AnnualQuota && !AnnualSavingRate} primary={true} style={(this.props.kpiInfo.get("AnnualQuota")!==null || this.props.kpiInfo.get("AnnualSavingRate")!==null)?{float:'right',minWidth:'68px',marginRight:'20px'}:{float:'right',minWidth:'68px'}}
                                 onTouchTap={()=>{
                                    GroupKPIAction.updateKpiInfo(this.state.kpiInfo);
                                     this.props.onSave();
-                              }}/>    
+                              }}/>
                       </div>}
                     </div>
 

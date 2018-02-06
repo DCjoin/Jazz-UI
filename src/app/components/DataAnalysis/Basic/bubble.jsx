@@ -177,14 +177,14 @@ class DropDownMenu extends Component{
                                             'person-item': true,
                                             'selected':item.tagId===value
                                           })} onClick={()=>{handleMenuItemClick(item)}}>
-                                                <div className="name" 
+                                                <div className="name"
                                                   style={{
                                                     whiteSpace: 'nowrap',
                                                     textOverflow: 'ellipsis',
                                                     overflow: 'hidden'
                                                   }}
                                                   title={item.tagName}>{item.tagName}</div>
-                                    
+
 
                                               </div>
           ))}
@@ -224,7 +224,7 @@ export default class Bubble extends Component {
   _onChanged(){
     this.setState({
       xAxis:BubbleStore.getXaxis(),
-      yAxis:BubbleStore.getYaxis(), 
+      yAxis:BubbleStore.getYaxis(),
       area:BubbleStore.getArea(),
     })
   }
@@ -240,7 +240,7 @@ export default class Bubble extends Component {
     var that=this;
     return{
       colors:colorArr,
-      
+
       chart: {
         type: 'bubble',
         events:{
@@ -252,7 +252,7 @@ export default class Bubble extends Component {
       title: null,
       credits: {
             enabled: false
-        }, 
+        },
       xAxis: {
           xname:xAxisUom,
           title: {
@@ -364,7 +364,7 @@ export default class Bubble extends Component {
                 <FontIcon className="icon-chart1" color="#32ad3d" style={{fontSize:'50px'}}/>
                 {I18N.Setting.DataAnalysis.Scatter.AxisCanNotSame}
               </div>
-      )      
+      )
     }
     if(hasEmptyAxis(this.props.energyData)){
       return(
@@ -372,11 +372,11 @@ export default class Bubble extends Component {
                 <FontIcon className="icon-chart1" color="#32ad3d" style={{fontSize:'50px'}}/>
                 {I18N.Setting.DataAnalysis.Scatter.HasEmptyAxis}
               </div>
-      )  
+      )
     }
     return(
         <Highcharts ref="highstock" className="heatmap" options={this.getConfigObj()} afterChartCreated={this.props.afterChartCreated?()=>{this.props.afterChartCreated()}:()=>{}}></Highcharts>
-    
+
     )
   }
 
@@ -385,28 +385,28 @@ export default class Bubble extends Component {
     return(
       <div style={{position:'absolute',right:'30px',top:'50px',backgroundColor:'#ffffff'}}>
         <div style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
-          <div style={{fontSize:'12px',color:'#626469',width:'40px'}}>
+          <div style={{fontSize:'12px',color:'#626469',minWidth:'40px'}}>
           {I18N.Setting.DataAnalysis.Scatter.XAxis+'：'}
-          </div>  
+          </div>
           <DropDownMenu value={this.state.xAxis}
                         onItemClick={(value)=>{this.setAxisData(value,this.state.yAxis,this.state.area)}}
                         menuitems={menus}/>
         </div>
         <div style={{display:'flex',marginTop:'10px',flexDirection:'row',alignItems:'center'}}>
-          <div style={{fontSize:'12px',color:'#626469',width:'40px'}}>
+          <div style={{fontSize:'12px',color:'#626469',minWidth:'40px'}}>
           {I18N.Setting.DataAnalysis.Scatter.YAxis+'：'}
-          </div>      
+          </div>
           <DropDownMenu value={this.state.yAxis}
                         onItemClick={(value)=>{this.setAxisData(this.state.xAxis,value,this.state.area)}}
-                        menuitems={menus}/>     
+                        menuitems={menus}/>
         </div>
         <div style={{display:'flex',marginTop:'10px',flexDirection:'row',alignItems:'center'}}>
-          <div style={{fontSize:'12px',color:'#626469',width:'40px'}}>
+          <div style={{fontSize:'12px',color:'#626469',minWidth:'40px'}}>
           {I18N.Setting.DataAnalysis.Bubble.Area+'：'}
-          </div>      
+          </div>
           <DropDownMenu value={this.state.area}
                         onItemClick={(value)=>{this.setAxisData(this.state.xAxis,this.state.yAxis,value)}}
-                        menuitems={menus}/>     
+                        menuitems={menus}/>
         </div>
       </div>
     )
@@ -425,7 +425,7 @@ export default class Bubble extends Component {
   componentDidMount(){
     BubbleStore.addChangeListener(this._onChanged);
   }
-  
+
   componentWillReceiveProps(nextProps){
     var {xAxis,yAxis,area}=this.state;
     if(!this.props.isFromSolution){
@@ -478,9 +478,9 @@ export default class Bubble extends Component {
                       position:'relative',
                       backgroundColor:'#ffffff'
                     }}>
-      {this._renderContent()}       
+      {this._renderContent()}
       {!this.props.isFromSolution && this._renderAxisSelect()}
-      
+
     </div>
       )
   }

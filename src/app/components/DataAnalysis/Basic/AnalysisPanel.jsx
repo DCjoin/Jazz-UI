@@ -109,7 +109,7 @@ class AnalysisPanel extends Component {
     this._initYaxisDialog = this._initYaxisDialog.bind(this);
     this._onYaxisSelectorDialogSubmit = this._onYaxisSelectorDialogSubmit.bind(this);
     this._handleCalendarChange = this._handleCalendarChange.bind(this);
-    this._handleTouChange = this._handleTouChange.bind(this);    
+    this._handleTouChange = this._handleTouChange.bind(this);
     this.routerWillLeave  = this.routerWillLeave.bind(this);
     this.getCurrentWidgetDto  = this.getCurrentWidgetDto.bind(this);
     this.getRemarck  = this.getRemarck.bind(this);
@@ -120,7 +120,7 @@ class AnalysisPanel extends Component {
     this.checkMultiTag=this.checkMultiTag.bind(this);
     this._onScatterAxisChanged=this._onScatterAxisChanged.bind(this);
     this._onBubbleAxisChanged=this._onBubbleAxisChanged.bind(this);
-    
+
   }
 
   state={
@@ -272,7 +272,7 @@ _onScatterAxisChanged(){
     },()=>{
       this._onSearchDataButtonClick();
     })
-    
+
   }
 }
 _onBubbleAxisChanged(){
@@ -285,7 +285,7 @@ _onBubbleAxisChanged(){
     },()=>{
       this._onSearchDataButtonClick();
     })
-    
+
   }
 }
 
@@ -854,7 +854,7 @@ _onBubbleAxisChanged(){
   let title = this.props.chartTitle || I18N.Folder.NewWidget.Menu1;
 
   viewOption.IsTouTariff=this.state.touType;
-  
+
   let params = {
     title: title,
     tagIds: tagIds,
@@ -1028,7 +1028,7 @@ _onBubbleAxisChanged(){
     var checkScatterDisable=()=>{
       var xAxis=ScatterPlotStore.getXaxis(),
           yAxis=ScatterPlotStore.getYaxis();
-          // this.state.energyData==='initial' || 
+          // this.state.energyData==='initial' ||
       return (this.state.selectedChartType==='scatterplot' &&
               (this.state.energyData==='initial' ||
                 xAxis===0 ||
@@ -1041,7 +1041,7 @@ _onBubbleAxisChanged(){
       var xAxis=BubbleStore.getXaxis(),
           yAxis=BubbleStore.getYaxis(),
           area=BubbleStore.getArea();
-          // this.state.energyData==='initial' || 
+          // this.state.energyData==='initial' ||
       return (this.state.selectedChartType==='bubble' &&
               (this.state.energyData==='initial' ||
                 xAxis===0 ||
@@ -1249,7 +1249,7 @@ _onBubbleAxisChanged(){
   _onChartTypeChanged(e, selectedIndex, value){
     ScatterPlotAction.clearAxis();
     BubbleAction.clearAxis();
-    this._onSearchBtnItemTouchTap(value)    
+    this._onSearchBtnItemTouchTap(value)
   }
 
   _heatMapValid(){
@@ -1283,13 +1283,13 @@ _onBubbleAxisChanged(){
   let chartType = this.state.selectedChartType || 'line';
   return(
     <DropDownMenu disabled={AlarmTagStore.getSearchTagList().length===0}
-      style={{width: '95px',backgroundColor:'#ffffff'}} iconStyle={{padding:'0',width:'24px',height:'24px',right:'6px'}} labelStyle={{lineHeight:'30px',paddingRight:'0'}} value={chartType} onChange={this._onChartTypeChanged}>
+      style={{width: '120px',backgroundColor:'#ffffff'}} iconStyle={{padding:'0',width:'24px',height:'24px',right:'6px'}} labelStyle={{lineHeight:'30px',paddingRight:'0'}} value={chartType} onChange={this._onChartTypeChanged}>
     <MenuItem primaryText={I18N.EM.CharType.Line} value="line" leftIcon={lineIcon}/>
     <MenuItem primaryText={I18N.EM.CharType.Bar} value="column" leftIcon={columnIcon}/>
     <MenuItem primaryText={I18N.EM.CharType.Stack} value="stack" leftIcon={stackIcon}/>
     <MenuItem primaryText={I18N.EM.CharType.Pie} value="pie" leftIcon={pieIcon}/>
     <MenuItem primaryText={I18N.EM.CharType.GridTable} value="rawdata" leftIcon={rawdataIcon}/>
-    <MenuItem primaryText={I18N.EM.CharType.Scatter} value="scatterplot" leftIcon={scatterIcon}/>  
+    <MenuItem primaryText={I18N.EM.CharType.Scatter} value="scatterplot" leftIcon={scatterIcon}/>
     <MenuItem primaryText={I18N.EM.CharType.Bubble} value="bubble" leftIcon={bubbleIcon}/>
     <MenuItem primaryText={I18N.EM.CharType.HeatMap} value="heatmap" disabled={this._heatMapValid()} leftIcon={heatmapIcon}/>
   </DropDownMenu>
@@ -1671,7 +1671,7 @@ _onBubbleAxisChanged(){
     this.setState({
     isCalendarInited: false,
   });
-  
+
   if(step!==this.state.step){
     this.setState({
       step,
@@ -1682,7 +1682,7 @@ _onBubbleAxisChanged(){
   }
 
     // this.energyDataLoad(timeRanges, step, nodeOptions, relativeDateValue, null,DataUsageType[this.state.selectedChartType],this.state.selectedChartType!=='pie');
- 
+
   }
 
   routerWillLeave(nextLocation){
@@ -1756,7 +1756,7 @@ _onBubbleAxisChanged(){
 
       }
       this.isInitial=true;
-     
+
     }else{
       EnergyAction.setChartType('line');
       TagAction.setCurrentHierarchyId(this.props.hierarchyId);
@@ -1775,7 +1775,7 @@ _onBubbleAxisChanged(){
     WeatherStore.addChangeListener(this._onWeatherTagChanged);
     ScatterPlotStore.addChangeListener(this._onScatterAxisChanged);
     BubbleStore.addChangeListener(this._onBubbleAxisChanged);
-    
+
 
     if(!this.props.isNew){
       this._initChartPanelByWidgetDto();
@@ -1899,9 +1899,9 @@ _onBubbleAxisChanged(){
                                                           touAnalysisShow:false,
                                                           touType:true
                                                         },()=>{
-                                                          this._onTouAnalysis();   
-                                                        })                                   
-                                                                                                                               
+                                                          this._onTouAnalysis();
+                                                        })
+
                                                     }}
                                                     onChangeChartType={this._onChartTypeChanged}/>}
       </div>

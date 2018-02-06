@@ -251,13 +251,13 @@ export class Solution extends Component {
           </div>
           <div className="row" style={{paddingLeft:'8px',paddingRight:'42px'}}>
             <div className="label">
-              {I18N.EM.Report.Name}
+              {I18N.SaveEffect.Name}
             </div>
             {canEdit?<TextField {...props.name}/>:<div className="jazz-ecm-measure-viewabletext" stlye={{fontSize:"16px",color:"#626469"}}>{this._renderMultiText(Name)}</div>}
           </div>
           <div className="row" style={{marginTop:"8px",paddingLeft:"8px",paddingRight:'42px'}}>
             <div className="label">
-              {I18N.Setting.UserManagement.Comment}
+              {I18N.SaveEffect.Description}
             </div>
             {canEdit?<TextField {...props.description}/>:<div className="jazz-ecm-measure-viewabletext">{this._renderMultiText(Description)}</div>}
           </div>
