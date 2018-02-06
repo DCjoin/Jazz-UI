@@ -503,7 +503,7 @@ export default class NewLogin extends Component {
 				}}>
 				<div style={{
 						top: '30%',
-						left: '12%',
+						left: '14%',
 						position: 'absolute',
 						color: '#fff'
 					}}>
@@ -523,7 +523,7 @@ export default class NewLogin extends Component {
 				}}>
 					<div style={{
 						top: '30%',
-						left: '12%',
+						left: '14%',
 						position: 'absolute',
 						color: '#c11329'
 					}}>
@@ -559,7 +559,7 @@ export default class NewLogin extends Component {
 				}}>
 					<div style={{
 						top: '30%',
-						right: '12%',
+						right: '10%',
 						position: 'absolute',
 						color: '#fff'
 					}}>
@@ -577,7 +577,7 @@ export default class NewLogin extends Component {
 				}}>
 					<div style={{
 						top: '30%',
-						left: '12%',
+						left: '14%',
 						position: 'absolute',
 						color: '#fff'
 					}}>
