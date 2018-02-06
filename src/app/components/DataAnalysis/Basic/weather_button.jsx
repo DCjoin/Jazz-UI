@@ -76,7 +76,7 @@ export default class WeatherButton extends Component {
         }} backgroundColor="#f3f5f7" disabled={this.props.disabled}>
         {building.Location && !this.state.showRefresh &&! this.state.loading  && this.state.taglist && this.state.taglist.map(tag=>{
           return(
-          <Checkbox label={tag.tagName} iconStyle={{width:'16px',height:'16px',marginTop:'2px'}} labelStyle={{fontSize:'14px',color:'#505559'}} style={{marginLeft:'15px'}} checked={this.state.selectedTag.findIndex((selected)=>selected.get("tagId")===tag.tagId)>-1}
+          <Checkbox label={tag.tagName} iconStyle={{width:'16px',height:'16px',marginTop:'2px'}} labelStyle={{fontSize:'14px',color:'#505559', width: 'auto'}} style={{marginLeft:'15px'}} checked={this.state.selectedTag.findIndex((selected)=>selected.get("tagId")===tag.tagId)>-1}
                     onCheck={(e,isInputChecked)=>{this._onCheck(tag,isInputChecked)}}
                     disabled={this._weatherTagdisabled(tag)}/>
         )
@@ -99,13 +99,13 @@ export default class WeatherButton extends Component {
                   loading:true
                 },()=>{
                   HierarchyAction.getBuildingListByCustomerId(parseInt(this.context.router.params.customerId),(buildinglist)=>{
-                    
+
                       if(findBuilding(this._getHierarchyId(this.context),buildinglist) && findBuilding(this._getHierarchyId(this.context),buildinglist).Location){
 		                      	WeatherAction.getCityWeatherTag(findBuilding(this._getHierarchyId(this.context),buildinglist).Location.CityId)
 	                  	}else{
 		                	    WeatherAction.clearCityWeatherTag()
 	                  	}
-                   
+
                   })
                 })}}>{I18N.Common.Button.Refresh}</div>
                 <FontIcon className="icon-sync" color="#32ad3c" style={{fontSize:'14px',lineHeight:'14px',marginLeft:'8px'}}/>
