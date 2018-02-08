@@ -27,12 +27,16 @@
       line-height: 1.5;
       text-align: left;
       color: @slate-grey;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
   }
   .side{
     display: flex;
     flex-direction: row;
     align-items: center;
+    white-space: nowrap;
+    overflow: hidden;
   }
   .measuresItem-content{
     display: flex;

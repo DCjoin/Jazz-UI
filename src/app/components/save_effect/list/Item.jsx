@@ -80,7 +80,7 @@ export class ItemForConsultant extends Component {
     var {ExecutedTime,EnergySystem,ConfigedTagCount,TotalTagCount,AnnualCostSaving}=this.props.effect.toJS();
     return(
       <div className="jazz-effect-item-info-subTitle">
-        <div>
+        <div style={{flex: 'none'}}>
           <span>{moment(util.DataConverter.JsonToDateTime(ExecutedTime)).format(I18N.DateTimeFormat.IntervalFormat.FullDate)}</span>
           <span>{I18N.Setting.Effect.Start}</span>
           {ConfigedTagCount>0 && <span>|</span>}

@@ -435,8 +435,8 @@ export default class KPIReport extends Component {
 		}}>
 			<FontIcon style={{fontSize: '18px', color: '#ff0f0f', marginRight: 15}} className='icon-alarm-notification'/>
 			<div>
-				<div>{'预测全年用量将超标'}</div>
-				<div>{'请及时采取节能措施'}</div>
+				<div>{I18N.Kpi.OverflowTip1}</div>
+				<div>{I18N.Kpi.OverflowTip2}</div>
 			</div>
 		</div>
 	}
