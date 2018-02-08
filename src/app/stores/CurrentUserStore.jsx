@@ -111,13 +111,13 @@ var CurrentUserStore = assign({}, PrototypeStore, {
       privilege = PRIVILEGE_ADMIN;
 
     } else {
-      userRoleList.forEach(role => {
+      userRoleList && userRoleList.forEach(role => {
         if (role.Id == user.UserType) {
           privilege = role.PrivilegeCodes;
         }
       });
     }
-    return privilege.filter(code => this.getSpPrivilege().indexOf(+code) !== -1);
+    return privilege.filter(code => this.getSpPrivilege() && this.getSpPrivilege().indexOf(+code) !== -1);
   },
   permit:function(code){
   if (!_currentPrivilege || this.getCurrentPrivilege().length===0){
