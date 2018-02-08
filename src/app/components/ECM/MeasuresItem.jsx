@@ -135,7 +135,7 @@ export class MeasuresItem extends Component {
 																									}}/>}
             {this.getName()}
           </div>
-          <div style={{fontSize:'14px',color: '#626469'}}>{MeasuresStore.getEnergySys(EnergyProblem.EnergySys)}</div>
+          <div style={{fontSize:'14px',color: '#626469', flex: 'none', marginLeft: 30}}>{MeasuresStore.getEnergySys(EnergyProblem.EnergySys)}</div>
         </div>
       )
     }

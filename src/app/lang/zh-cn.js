@@ -1826,7 +1826,10 @@ I18N.Kpi = {
     KPINonMoreBuilding: '楼宇数据权限不足，请联系您的管理员。',
     KPINonBuilding: '未配置任何建筑，请联系您的咨询顾问。',
     KPINonBuildingAdmin: '未配置任何建筑，请新建您的层级。',
-  }
+  },
+
+  OverflowTip1: '预测全年用量将超标',
+  OverflowTip2: '请及时采取节能措施',
 };
 
 I18N.Map = {};

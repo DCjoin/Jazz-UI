@@ -533,8 +533,8 @@ I18N.EM.UseYear = 'By year';
 I18N.EM.StepError = 'Selected tag does not support {0} interval. Please change to another interval and try.';
 I18N.EM.StepErrorForHeatMap = 'Selected tag does not support {0} interval. Please change tag.';
 
-I18N.EM.ConversionWan = 'W';
-I18N.EM.ConversionYi = 'Yi';
+I18N.EM.ConversionWan = 'E4';
+I18N.EM.ConversionYi = 'E8';
 
 I18N.EM.Tool = {};
 I18N.EM.Tool.ClearChart = 'Clear chart';
@@ -1790,7 +1790,7 @@ I18N.Kpi = {
   ByYearUntilNowValue: 'Annual Actual Value by Now',
   ByYearValue: 'Annual Actual',
   ByYearUntilNowSavingValue: 'Annual Actual Energy Saving Rate by Now',
-  ByYearSavingRatioValue: '',
+  ByYearSavingRatioValue: 'Annual Actual Energy Saving Rate',
   ByYearKPIUsagedPredict: 'Annual Forecast Quita Usage Ratio',
   ByYearKPIUsagedValue: 'Annual Actual Quita Usage Ratio',
   ByYearUsagedTarget: 'Annual Target Usage',
@@ -1825,7 +1825,9 @@ I18N.Kpi = {
     KPINonMoreBuilding: 'Insufficient building data authority, please contact your administrator.',
     KPINonBuilding: 'No building is set, please contact your consultant',
     KPINonBuildingAdmin: 'No building is set, please create your hierarchy.',
-  }
+  },
+  OverflowTip1: 'Forecast Beyond Target,',
+  OverflowTip2: 'Please Take Measures',
 };
 
 I18N.Map = {};
@@ -2434,12 +2436,12 @@ I18N.Setting.ECM.InvestmentAmount = 'Investment Amount';
 I18N.Setting.ECM.PaybackPeriod = 'Payback Period';
 I18N.Setting.ECM.NoECM = 'No Added Energy Saving Scheme';
 I18N.Setting.ECM.EnergyProblem = 'Energy Problems';
-I18N.Setting.ECM.AirConditioning = 'Air Conditioning Compressed Air';
+I18N.Setting.ECM.AirConditioning = 'Air Conditioning';
 I18N.Setting.ECM.Boiler = 'Boiler';
 I18N.Setting.ECM.StrongElectricity = 'Strong Electricity';
 I18N.Setting.ECM.WeakElectricity = 'Weak Electricity';
 I18N.Setting.ECM.Drainage = 'Water Supply and Drainage';
-I18N.Setting.ECM.AirCompression = 'Air Compression';
+I18N.Setting.ECM.AirCompression = 'Compressed Air';
 I18N.Setting.ECM.Other = 'Others';
 I18N.Setting.ECM.AlreadyPush = 'Pushed';
 I18N.Setting.ECM.NotPush = 'Not Pushed';
@@ -2677,7 +2679,7 @@ I18N.SaveEffect.Saving='Energy saving';
 I18N.SaveEffect.Saving2='';
 I18N.SaveEffect.Saving3='';
 I18N.SaveEffect.Saving4='Usage Reduction';
-I18N.SaveEffect.Contrast='Actual vs Baseline';
+I18N.SaveEffect.Contrast='Actual vs Benchmark';
 I18N.SaveEffect.NoBest='No best solution';
 I18N.SaveEffect.SetBest='To be Best Practice';
 I18N.SaveEffect.SelectCharacteristics='Please choose solution characters';
@@ -2764,8 +2766,8 @@ I18N.SaveEffect.Create.TriggerVaildTip = 'Only support numbers, 6 digits after t
 I18N.SaveEffect.Create.TriggerArea = 'Diagnosis condition trigger area';
 
 I18N.SaveEffect.Chart = {};
-I18N.SaveEffect.Chart.PredictSaving = 'Estimated';
-I18N.SaveEffect.Chart.PredictSavingWater = 'Estimated';
+I18N.SaveEffect.Chart.PredictSaving = 'Estimated Usage Reduction';
+I18N.SaveEffect.Chart.PredictSavingWater = 'Estimated Usage Reduction';
 I18N.SaveEffect.Chart.PredictSaving2 = 'Estimated  Annual Usage Reduction';
 I18N.SaveEffect.Chart.PredictSavingWater2 = 'Estimated  Annual Usage Reduction';
 I18N.SaveEffect.Chart.ActualSaving = 'Actual Usage Reduction';
