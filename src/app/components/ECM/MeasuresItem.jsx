@@ -24,7 +24,7 @@ export class IconText extends Component{
       <div style={style}>
         <div style={{display:'flex',flexDirection:'row', position: 'relative'}}>
           {this.props.icon}
-          <div style={{fontSize:'12px',marginLeft:'5px',color:"#626469", position: 'absolute', left: 18}}>{this.props.label}</div>
+          <div title={this.props.label} style={{fontSize:'12px',marginLeft:'5px',color:"#626469", overflow: 'hidden', textOverflow: 'ellipsis'}}>{this.props.label}</div>
         </div>
 				{(this.props.value || this.props.uom) && <div style={{display:'flex',flexDirection:'row',marginTop:'10px',alignItems:'baseline',height:"32px"}}>
 					<div style={assign({
@@ -56,7 +56,7 @@ export class MeasuresItem extends Component {
     getName(){
       var {EnergyProblem,EnergySolution}=this.props.measure.toJS();
       if(EnergySolution.Name!==null){
-        return <div className="measuresItem-title">{EnergySolution.Name}</div>
+        return <div className="measuresItem-title" title={EnergySolution.Name}>{EnergySolution.Name}</div>
       }
       else {
         let iconStyle = {

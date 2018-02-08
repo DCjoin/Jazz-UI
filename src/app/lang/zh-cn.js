@@ -995,6 +995,7 @@ I18N.Setting.CustomerManagement.LogoUpload = '上传本地图片';
 I18N.Setting.CustomerManagement.LogoUploadInfo = '请上传客户logo';
 I18N.Setting.CustomerManagement.Address = '地址';
 I18N.Setting.CustomerManagement.Principal = '负责人';
+I18N.Setting.CustomerManagement.PrincipalShort = '负责人';
 I18N.Setting.CustomerManagement.Telephone = '负责人电话';
 I18N.Setting.CustomerManagement.Email = '负责人电子邮箱';
 I18N.Setting.CustomerManagement.OperationStartTime = '运营时间';

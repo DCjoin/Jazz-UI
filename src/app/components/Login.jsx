@@ -491,7 +491,7 @@ export default class NewLogin extends Component {
 							{I18N.Login.APP}
 							<div className='jazz-mobile-qr'>
 								<img src={require('../less/images/QRIcon.png')}/>
-								<div>{I18N.Login.ScanDownloadAPP}</div>
+								<div style={{margin: '0 8px'}}>{I18N.Login.ScanDownloadAPP}</div>
 							</div>
 						</a>
 						<button className='login-button' onClick={this._onClickLogin}>{I18N.Login.Login}</button>
