@@ -149,7 +149,7 @@ export class SolutionLabel extends Component {
               </div>
             </IconLabelField>
             <IconLabelField {...props.cycleIcon}>
-              <div style={{height:"30px",marginTop:"4px"}}>{`${InvestmentReturnCycle || ' — '} ${uom}`}</div>
+              <div style={{height:"30px",marginTop:"4px", lineHeight: '30px'}}>{`${InvestmentReturnCycle || ' — '} ${uom}`}</div>
             </IconLabelField>
           </div>
         </div>

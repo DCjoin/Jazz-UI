@@ -64,7 +64,7 @@ export default class RankHistory extends Component {
       <div className="jazz-kpi-rank-history-header">
             <div>{I18N.Setting.Calendar.Time}</div>
             <div>{I18N.Common.Glossary.Rank}</div>
-            <div style={{flex: 'none'}}>{I18N.Setting.KPI.Group.Ranking.History.Ratio}</div>
+            <div>{I18N.Setting.KPI.Group.Ranking.History.Ratio}</div>
             {this.props.rankType===RankType.TopRank && <div>{`${RankingKPIStore.getUnitType(type)} (${uom})`}</div>}
       </div>
     );
