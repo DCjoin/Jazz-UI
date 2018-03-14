@@ -234,7 +234,7 @@ export default class RankChart extends Component {
 	}
 	_getRankLabel() {
 		let rankIndex = this.state.rankIndex;
-		return (rankIndex + 1) + '-' + (rankIndex + 10) + '名';
+		return (rankIndex + 1) + '-' + (rankIndex + 10) + I18N.Kpi.PerRank;
 	}
 	_getDataLabel(index) {
 		let rank = this._getRankByIndex(index);
@@ -367,15 +367,15 @@ export default class RankChart extends Component {
         	<div className='kpi-rank-chart'>
         		<div className='kpi-rank-chart-title'>
 					<div className='kpi-rank-chart-title-name'>{RankName}</div>
-					{privilegeUtil.isFull(PermissionCode.INDEX_AND_REPORT, CurrentUserStore.getCurrentPrivilege()) && <Toggle style={{width: 'auto'}} label={'移动端可见'} disabled={!MobileViewState && disabledToggle} toggled={MobileViewState} onToggle={(e, val) => {
+					{privilegeUtil.isFull(PermissionCode.INDEX_AND_REPORT, CurrentUserStore.getCurrentPrivilege()) && <Toggle style={{width: 'auto'}} label={I18N.Kpi.MobileView} disabled={!MobileViewState && disabledToggle} toggled={MobileViewState} onToggle={(e, val) => {
 						SingleKPIAction.toggleMobileVisable(GroupKpiId, idx, +val, true, RankType);
 					}}/>}
         		</div>
         		<div className='kpi-rank-chart-action'>
         			<div style={{display: 'flex'}}>
 		        		{hasRankByYear && <div className='kpi-rank-chart-type'>
-		        			<button onClick={switchByYear(true)} className={classnames({selected: byYear})}>{'年度排名'}</button>
-		        			<button onClick={switchByYear(false)} className={classnames({selected: !byYear})}>{'月度排名'}</button>
+		        			<button onClick={switchByYear(true)} className={classnames({selected: byYear})}>{I18N.Kpi.YearRank}</button>
+		        			<button onClick={switchByYear(false)} className={classnames({selected: !byYear})}>{I18N.Kpi.MonthRank}</button>
 		        		</div>}
 		        		{!byYear &&
 		        		<div style={{marginBottom: hasRankByYear && 10}}>

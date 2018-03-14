@@ -22,9 +22,9 @@ export class IconText extends Component{
     }, this.props.style);
     return(
       <div style={style}>
-        <div style={{display:'flex',flexDirection:'row'}}>
+        <div style={{display:'flex',flexDirection:'row', position: 'relative'}}>
           {this.props.icon}
-          <div style={{fontSize:'12px',marginLeft:'5px',color:"#626469"}}>{this.props.label}</div>
+          <div title={this.props.label} style={{fontSize:'12px',marginLeft:'5px',color:"#626469", overflow: 'hidden', textOverflow: 'ellipsis'}}>{this.props.label}</div>
         </div>
 				{(this.props.value || this.props.uom) && <div style={{display:'flex',flexDirection:'row',marginTop:'10px',alignItems:'baseline',height:"32px"}}>
 					<div style={assign({
@@ -56,7 +56,7 @@ export class MeasuresItem extends Component {
     getName(){
       var {EnergyProblem,EnergySolution}=this.props.measure.toJS();
       if(EnergySolution.Name!==null){
-        return <div className="measuresItem-title">{EnergySolution.Name}</div>
+        return <div className="measuresItem-title" title={EnergySolution.Name}>{EnergySolution.Name}</div>
       }
       else {
         let iconStyle = {
@@ -103,7 +103,7 @@ export class MeasuresItem extends Component {
             <IconText icon={costIcon} style={{marginLeft:'30px',flex:1}} label={I18N.Setting.ECM.EstimatedAnnualCostSavings} value={validValue(ExpectedAnnualCostSaving)} uom="RMB"/>
             <IconText icon={sumIcon} style={{marginLeft:'30px',flex:1}} label={I18N.Setting.ECM.InvestmentAmount} value={validValue(InvestmentAmount)} uom="RMB"/>
             <IconText icon={periodIcon} style={{marginLeft:'30px',flex:1}} label={I18N.Setting.ECM.PaybackPeriod} value={InvestmentReturnCycle || '-'}
-											uom={CommonFuns.isNumber(InvestmentReturnCycle)?I18N.EM.Year:''}/>
+											uom={CommonFuns.isNumber(InvestmentReturnCycle)?I18N.EM.Years:''}/>
             <div>{this.props.personInCharge}</div>
           </div>
           <div className="side">
@@ -135,7 +135,7 @@ export class MeasuresItem extends Component {
 																									}}/>}
             {this.getName()}
           </div>
-          <div style={{fontSize:'14px',color: '#626469'}}>{MeasuresStore.getEnergySys(EnergyProblem.EnergySys)}</div>
+          <div style={{fontSize:'14px',color: '#626469', flex: 'none', marginLeft: 30}}>{MeasuresStore.getEnergySys(EnergyProblem.EnergySys)}</div>
         </div>
       )
     }

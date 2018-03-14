@@ -127,7 +127,7 @@ export default class BuildingChartPanel extends Component {
 
 		return (
 			<div>
-				{topRank && year <= SingleKPIStore.getCustomerCurrentYear() && 
+				{topRank && year <= SingleKPIStore.getCustomerCurrentYear() &&
 				<div className='jazz-building-top-rank'>
 					<div className='top-rank-item'>
 						<div className='jazz-building-top-rank-title'>{getRanlLabelDate(year)}</div>
@@ -175,7 +175,7 @@ export default class BuildingChartPanel extends Component {
 						<div className='jazz-building-kpi-rank'>
 							<header className='jazz-building-kpi-rank-header'>
 								<em className='jazz-building-kpi-rank-icon icon-energy_saving'/>
-								<div className='jazz-building-kpi-rank-name hiddenEllipsis'>{currentTag.get('name')}</div>
+								<div className='jazz-building-kpi-rank-name'>{currentTag.get('name')}</div>
 								<div className='jazz-building-kpi-rank-time'>{
 									this.context.router.location.query.groupKpiId ?
 										(isThisYear ? I18N.Setting.KPI.Rank.LastRank : getRanlLabelDate(year)):
@@ -213,7 +213,7 @@ export default class BuildingChartPanel extends Component {
 						return (<div className="jazz-kpi-rank-history-subtitle">
 							<span>{year + I18N.Kpi.Yearly}</span>
 							<span>{I18N.Setting.KPI.Rank.Name + ' ' + selectedRank.Index + '/' + selectedRank.Count}</span>
-							<span>{RankingKPIStore.getUnitType(selectedRank.UnitType) + ' ' + getValue(selectedRank)}</span>
+							<span style={{flex: 'none'}}>{RankingKPIStore.getUnitType(selectedRank.UnitType) + ' ' + getValue(selectedRank)}</span>
 							<span/>
 						</div>)
 					}}

@@ -104,14 +104,14 @@ export default class NotPushPanel extends Component {
           lineHeight: '1.5',
           textAlign: 'left',
           color: '#0f0f0f',
-          width:'28px'
+          // width:'28px'
         },
         box:{
           marginRight:'15px',
-          width:'54px'
+          // width:'54px'
         },
         btn:{
-          width: '100px',
+          width: '130px',
           height: '25px',
           borderRadius: '2px',
           border: 'solid 1px #dfdfdf',

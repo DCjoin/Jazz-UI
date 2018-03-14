@@ -435,8 +435,8 @@ export default class KPIReport extends Component {
 		}}>
 			<FontIcon style={{fontSize: '18px', color: '#ff0f0f', marginRight: 15}} className='icon-alarm-notification'/>
 			<div>
-				<div>{'预测全年用量将超标'}</div>
-				<div>{'请及时采取节能措施'}</div>
+				<div>{I18N.Kpi.OverflowTip1}</div>
+				<div>{I18N.Kpi.OverflowTip2}</div>
 			</div>
 		</div>
 	}
@@ -459,7 +459,7 @@ export default class KPIReport extends Component {
 				</div>
 				<div className='jazz-kpi-report-header'>
 					<div className='jazz-kpi-report-header-name'>{data.get('name')}</div>
-					{isGroup && privilegeUtil.isFull(PermissionCode.INDEX_AND_REPORT, CurrentUserStore.getCurrentPrivilege()) && <Toggle style={{width: 'auto'}} label={'移动端可见'} defaultToggled={data.get('MobileViewState')} onToggle={(e, val) => {
+					{isGroup && privilegeUtil.isFull(PermissionCode.INDEX_AND_REPORT, CurrentUserStore.getCurrentPrivilege()) && <Toggle style={{width: 'auto'}} label={I18N.Kpi.MobileView} defaultToggled={data.get('MobileViewState')} onToggle={(e, val) => {
 						SingleKPIAction.toggleMobileVisable(data.get('id'), idx, +val);
 					}}/>}
 				</div>

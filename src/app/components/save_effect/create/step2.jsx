@@ -48,27 +48,27 @@ let getModelDataItems = () => [
 let getStepDataItems = (model) =>{
 	switch (model) {
 		case Model.Contrast:
-		case Model.Manual:	
+		case Model.Manual:
 				return [{ id: TimeGranularity.Daily, label: I18N.EM.Day },
 								{ id: TimeGranularity.Monthly, label: I18N.EM.Month }]
 			break;
 		case Model.Easy:
-		case Model.Efficiency:	
+		case Model.Efficiency:
 				return [{ id: TimeGranularity.Hourly, label: I18N.EM.Hour },
 								{ id: TimeGranularity.Daily, label: I18N.EM.Day }]
-			break;	
+			break;
 		case Model.Increment:
-		case Model.Simulation:	
+		case Model.Simulation:
 				return [{ id: TimeGranularity.Hourly, label: I18N.EM.Hour },
 								{ id: TimeGranularity.Daily, label: I18N.EM.Day },
 								{ id: TimeGranularity.Monthly, label: I18N.EM.Month }]
 			break;
-		case Model.Relation:	
+		case Model.Relation:
 				return [{ id: TimeGranularity.Minite, label: I18N.EM.Raw },
 								{ id: TimeGranularity.Hourly, label: I18N.EM.Hour },
 								{ id: TimeGranularity.Daily, label: I18N.EM.Day },
 								{ id: TimeGranularity.Monthly, label: I18N.EM.Month }]
-			break;					
+			break;
 	}
 }
 
@@ -219,12 +219,12 @@ export default class Step2 extends Component {
 			}else if(time.TimePeriodType===CalendarItemType.RestDayCalcTime && time.ConfigStep===2){
 				holidayItems.push(time)
 			}
-			
+
 		})
 
 		return(
 			<div className='calendar-content'>
-			
+
 					<TimePeriodComp
 						workRuningTimes={workItems}
 						title={I18N.SaveEffect.Create.WorkCaculateTime}
@@ -289,9 +289,9 @@ export default class Step2 extends Component {
 										this.props.checkCalendar();
 									})}}>{I18N.Common.Button.Refresh}</div>
 									<FontIcon className="icon-sync" color="#32ad3c" style={{fontSize:'14px',lineHeight:'14px',marginLeft:'8px'}}/>
-							</div>	
+							</div>
 				</div>
-						
+
 				:<div>
 					<div style={{fontSize: '12px',color:'#9fa0a4',marginTop:'23px'}}>{I18N.SaveEffect.Create.CaculateTime}</div>
 						<div className="calendar_no_config">
@@ -305,10 +305,10 @@ export default class Step2 extends Component {
             }}>{I18N.Setting.Calendar.TabName}</div>
           <span>{I18N.Setting.DataAnalysis.Weather.Config}</span>
 
-				
+
 			</div>
 				</div>
-	
+
 
 		)
 		}
@@ -370,7 +370,7 @@ export default class Step2 extends Component {
 								border:'none'
 							}
 						};
-					
+
 					content=<NewFlatButton label={I18N.Setting.Tag.Tag} labelStyle={styles.label} secondary={true}
                      icon={<FontIcon className="icon-add" style={styles.label}/>} style={styles.button}
                      onClick={()=>{
@@ -404,14 +404,14 @@ export default class Step2 extends Component {
 			},
     	onCancel:()=>{this.setState({showTagSelectDialog:false})}
     };
-	
+
 		return(
 			<TagSelect {...tagSelectProps}/>
 		)
 	}
 
 	_renderFormula(){
-		var labelingLevels=this.props.data.get("LabelingLevels"); 
+		var labelingLevels=this.props.data.get("LabelingLevels");
 
 		if(labelingLevels===null) return null;
 
@@ -475,8 +475,8 @@ export default class Step2 extends Component {
 							onTriggersChanged(Triggers)
 							}}
 						/>
-						{Triggers[0].ConditionType === TriggerConditionType.Greater && 
-							<ViewableTextField errorMessage={I18N.SaveEffect.Create.TriggerVaildTip} regex={Regex.TagRule} style={{marginTop:'10px',width:150}} 
+						{Triggers[0].ConditionType === TriggerConditionType.Greater &&
+							<ViewableTextField errorMessage={I18N.SaveEffect.Create.TriggerVaildTip} regex={Regex.TagRule} style={{marginTop:'10px',width:150}}
 																 hintText={I18N.SaveEffect.Create.AuxiliaryHint} defaultValue={Triggers[0].Value} didChanged={(value)=>{
 																		Triggers[0].Value=value;
 																		onTriggersChanged(Triggers)
@@ -497,8 +497,8 @@ export default class Step2 extends Component {
 							onTriggersChanged(Triggers)
 							}}
 						/>
-						{Triggers[0].ConditionType === TriggerConditionType.Less && 
-							<ViewableTextField errorMessage={I18N.SaveEffect.Create.TriggerVaildTip} regex={Regex.TagRule} style={{marginTop:'10px',width:150}} 
+						{Triggers[0].ConditionType === TriggerConditionType.Less &&
+							<ViewableTextField errorMessage={I18N.SaveEffect.Create.TriggerVaildTip} regex={Regex.TagRule} style={{marginTop:'10px',width:150}}
 																 hintText={I18N.SaveEffect.Create.AuxiliaryHint} defaultValue={Triggers[0].Value} didChanged={(value)=>{
 																		Triggers[0].Value=value;
 																		onTriggersChanged(Triggers)
@@ -509,14 +509,14 @@ export default class Step2 extends Component {
 				<div style={{fontSize: '12px',color:'#9fa0a4',marginTop:'23px'}}>{I18N.SaveEffect.Create.ActualTrigger+uom}</div>
 				<div style={styles.group}>
 							<div style={{fontSize:'14px',color:'#434343'}}>{I18N.SaveEffect.Create.Greater}</div>
-							<ViewableTextField errorMessage={I18N.SaveEffect.Create.TriggerVaildTip} regex={Regex.TagRule} style={{marginTop:'10px',marginLeft:'15px',width:150}} 
+							<ViewableTextField errorMessage={I18N.SaveEffect.Create.TriggerVaildTip} regex={Regex.TagRule} style={{marginTop:'10px',marginLeft:'15px',width:150}}
 																 hintText={I18N.SaveEffect.Create.ActualHint} defaultValue={Triggers[1].Value} didChanged={(value)=>{
 																		Triggers[1].Value=value;
 																		onTriggersChanged(Triggers)
 																 }}/>
 						</div>
 
-				
+
 							</div>
 		)
 	}
@@ -525,15 +525,15 @@ export default class Step2 extends Component {
 		return(
 			<div style={{position:'absolute',
 						top:'-1px',
-						left:'70px'}}
-						onMouseLeave={(e)=>{																	
+						right:'50px'}}
+						onMouseLeave={(e)=>{
 																if(this.state.showModelTip){
 																					this.setState({
 																					showModelTip:false,
 																				})}
-																	
+
 																			}}>
-				<div className="model-tip" onMouseEnter={(e)=>{																										
+				<div className="model-tip" onMouseEnter={(e)=>{
 																											this.setState({
 																												showModelTip:true,
 																												anchorEl:{
@@ -546,7 +546,7 @@ export default class Step2 extends Component {
 				<FontIcon className="icon-explain-n" style={{fontSize:'14px',color:'#9fa0a4'}} />
 				</div>
 				{this.state.showModelTip && <Paper
-          
+
 					style={{
 						width:'auto',
 						position:'fixed',
@@ -566,7 +566,7 @@ export default class Step2 extends Component {
 				<TipItem title={I18N.SaveEffect.Model.Simulation} content={I18N.SaveEffect.Model.SimulationTip}/>
 				</Paper>}
 			</div>
-		)	
+		)
 	}
 
 	  componentDidMount(){
@@ -637,7 +637,7 @@ export default class Step2 extends Component {
 											lockLegend: true,
 											enableDelete: false,
 											name: BenchmarkModel===Model.Relation?I18N.SaveEffect.Create.TriggerArea:I18N.SaveEffect.Create.CaculateTime,
-											color: PLOT_BACKGROUND_COLOR, 
+											color: PLOT_BACKGROUND_COLOR,
 											lineWidth: 12,
 											marker: {
 													symbol: 'null',
@@ -647,21 +647,21 @@ export default class Step2 extends Component {
 										return {
 											color: PLOT_BACKGROUND_COLOR,
 											from: moment.utc(StartTime).valueOf(),
-											to: moment.utc(EndTime).valueOf()        
+											to: moment.utc(EndTime).valueOf()
 										}
 									});
 
 								}
 							}
-				
+
 					if(BenchmarkModel===Model.Simulation){
 						newConfig.navigator.margin=60;
 						newConfig.title={
 							useHTML:true,
           		align:'left',
-          		verticalAlign:'bottom',    
+          		verticalAlign:'bottom',
           		x:40,
-         		  y:-80,      
+         		  y:-80,
           		text:that._renderFormula(),
 						}
 					}
@@ -746,7 +746,7 @@ export default class Step2 extends Component {
 							</div>
 							<span>{I18N.EM.Report.Step + ': ' + find(getStepDataItems(BenchmarkModel), item => item.id === CalculationStep).label}</span>
 						</header>
-						{data ?	<ChartBasicComponent {...chartProps}/> 
+						{data ?	<ChartBasicComponent {...chartProps}/>
 						:<div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>}
 					</div>
 				</div>

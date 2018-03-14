@@ -131,7 +131,7 @@ export default class IntervalDialog extends Component {
     super(props);
     this._onChange = this._onChange.bind(this);
     this._onTimeChange = this._onTimeChange.bind(this);
-    
+
 
   }
 
@@ -149,12 +149,12 @@ export default class IntervalDialog extends Component {
       tabNo:2
     },()=>{
      if(this.state.splits && this.state.splits.size>0){
-        this._getGatherInfo()     
+        this._getGatherInfo()
     }else{
       this.setState({
         gatherInfo:null,
       },()=>{
-         IntervalStatisticAction.clearAll();  
+         IntervalStatisticAction.clearAll();
         IntervalStatisticAction.modifySplit(-1, status.ADD,{StartMoment:-1,EndMoment:-1});
       })
     }
@@ -208,14 +208,14 @@ export default class IntervalDialog extends Component {
       StartMoment:startTime,
       EndMoment:endTime
     })
-    
+
   }
 
    _onTimeChange(index, data) {
     var timeData = this.getTimeData(data);
     IntervalStatisticAction.modifySplit(index, status.MODIFY,timeData);
   }
-  
+
   _onDeleteTimeData(index) {
     IntervalStatisticAction.modifySplit(index, status.DELETE,{});
   }
@@ -250,10 +250,10 @@ export default class IntervalDialog extends Component {
           <FromEndTime {...props}></FromEndTime>
           );
         })}
-        <IconButton iconClassName="icon-add" style={{padding:0,width:'33px',height:'30px',borderRadius:'1px',border:'solid 1px #e6e6e6',marginLeft:'25px'}} 
+        <IconButton iconClassName="icon-add" style={{padding:0,width:'33px',height:'30px',borderRadius:'1px',border:'solid 1px #e6e6e6',marginLeft:'25px'}}
           iconStyle={{fontSize:'13px',height:'13px',width:'13px',color:'#32ad3d'}} disabled={this.state.splits.size===4}
           onClick={()=>{IntervalStatisticAction.modifySplit(-1, status.ADD,{StartMoment:-1,EndMoment:-1});}}/>
-        <NewFlatButton label={I18N.Setting.DataAnalysis.Statistics} disabled={!this._valid()} primary={true} style={{width:'76px',minWidth:'76px',height:'30px',marginLeft:'20px',lineHeight:'28px'}} onClick={()=>{this.setState({gatherInfo:'loading'},()=>{this._getGatherInfo()})}}/>
+        <NewFlatButton label={I18N.Setting.DataAnalysis.Statistics} disabled={!this._valid()} primary={true} style={{/*width:'76px',*/minWidth:'76px',height:'30px',marginLeft:'20px',lineHeight:'28px'}} onClick={()=>{this.setState({gatherInfo:'loading'},()=>{this._getGatherInfo()})}}/>
       </div>
     )
   }
@@ -278,7 +278,7 @@ export default class IntervalDialog extends Component {
         var j2d = CommonFuns.DataConverter.JsonToDateTime;
         var start=new Date(j2d(StartTime)),end=new Date(j2d(EndTime));
         var title=!isMultiTime?TagName:DataAnalysisStore.getDisplayDate(start,false)+I18N.Setting.DataAnalysis.To+DataAnalysisStore.getDisplayDate(end,true);
-        
+
         var head={
           column1Name:this.state.tabNo===1?I18N.Setting.DataAnalysis.Tou.TouTimeSpan:I18N.Setting.DataAnalysis.TimeSpan,
           column2Name:type[CalculationType]+(UomName==='null'?'':`(${UomName})`),
@@ -336,14 +336,14 @@ export default class IntervalDialog extends Component {
         <div className={classNames({
               "statistics-tabs-tab": true,
               "selected":this.state.tabNo===1,
-            })} style={{width:'82px'}} onClick={()=>{                               
-                                  IntervalStatisticAction.refreshSplit()                             
+            })} style={{width:'82px'}} onClick={()=>{
+                                  IntervalStatisticAction.refreshSplit()
                                this.setState({
                                    tabNo:1,
                                    gatherInfo:'loading'
                                  },()=>{
                                    this._getGatherInfo();
-                                   
+
                                  })
             }}>{I18N.Setting.DataAnalysis.Tou.Title}</div>
         <div className={classNames({
@@ -355,14 +355,14 @@ export default class IntervalDialog extends Component {
                                    tabNo:2,
                                    gatherInfo:this.state.splits && this.state.splits.size>0?'loading':null
                                 }
-                                 ,()=>{                                  
+                                 ,()=>{
                                    if(this.state.splits && this.state.splits.size>0 && this._valid()){
                                     this._getGatherInfo()
-                                   }else{   
-                                      IntervalStatisticAction.clearAll();                                  
+                                   }else{
+                                      IntervalStatisticAction.clearAll();
                                      IntervalStatisticAction.modifySplit(-1, status.ADD,{StartMoment:-1,EndMoment:-1});
                                    }
-                                   
+
                                  })
             }}>{I18N.Common.DateRange.Customerize}</div>
       </div>
@@ -373,7 +373,7 @@ export default class IntervalDialog extends Component {
   componentWillMount(){
     isMultiTime=MultipleTimespanStore.getSubmitTimespans()!==null;
   }
-  
+
   componentDidMount(){
     IntervalStatisticStore.addChangeListener(this._onChange);
 
@@ -386,7 +386,7 @@ export default class IntervalDialog extends Component {
          hasTab:false
        },()=>{
         this._getGatherInfo()
-       })      
+       })
     }else{
       this.setState({
         gatherInfo:null,

@@ -24,6 +24,7 @@ import UserCustomerPermission from './UserCustomerPermission.jsx';
 
 import UserAction from 'actions/UserAction.jsx';
 import UserStore from 'stores/UserStore.jsx';
+import CurrentUserCustomerStore from 'stores/CurrentUserCustomerStore.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 
 
@@ -618,7 +619,14 @@ var UserDetail = React.createClass({
     enableSave={!disabledSaveButton}
     status={this.props.formStatus}
     onSave={this._handleSaveUser}
-    allowDelete={that.props.infoTab && !isSuperAdmin && !isUserSelf}
+    allowDelete={that.props.infoTab}
+    deleteBtnProps={{
+      disabled: !CurrentUserStore.getCurrentUser() || isSuperAdmin || isUserSelf ||
+                (
+                  CurrentUserStore.getCurrentUser().UserType !== -1 &&
+                  CurrentUserStore.getCurrentPrivilegeByUser( this.props.user.toJS(), this.props.userRoleList.toJS() ).indexOf(PermissionCode.PLATFORM_MANAGEMENT.FULL + '') !== -1
+                )
+    }}
     onDelete={function() {
       that.setState({
         dialogStatus: true
@@ -627,6 +635,18 @@ var UserDetail = React.createClass({
     onCancel={this.props.handleCancel}
     onEdit={ () => {
       that.props.setEditStatus()
+    }}
+    editBtnProps={{
+      disabled: !CurrentUserStore.getCurrentUser() || (
+          (
+            isSuperAdmin ||
+            (
+              CurrentUserStore.getCurrentUser().UserType !== -1 &&
+              CurrentUserStore.getCurrentPrivilegeByUser( this.props.user.toJS(), this.props.userRoleList.toJS() ).indexOf(PermissionCode.PLATFORM_MANAGEMENT.FULL + '') !== -1
+            )
+          ) &&
+        !isUserSelf
+      )
     }}/>
     );
     var addStyle = isAdd ? null : {

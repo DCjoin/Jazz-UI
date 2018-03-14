@@ -95,22 +95,22 @@ export default class BuildingReportActuality extends Component {
 	        }].concat(buildingList),
 	    };
 		return (<div className='jazz-report-actuality-header' style={{marginLeft: 20,paddingTop: 20,position: 'relative'}}>
-			<span>{'建筑报表'}</span>
+			<span>{I18N.Kpi.ProjectReport}</span>
 			<ViewableDropDownMenu {...buildingProps}/>
 		</div>)
 	}
 	_renderContent() {
 		if(this.state.hierarchyId) {
 			return (
-				<ReportPreview 
+				<ReportPreview
 					preview={false}
 					ref={'report_preview'}
 					showReportEdit={this._showReportEdit}
-					router={this.props.router} 
+					router={this.props.router}
 					hierarchyId={this.state.hierarchyId}/>);
 		} else {
 
-		return (<div className='flex-center' style={{height: 200}}>{'请在上方选择要查看的建筑'}</div>);
+		return (<div className='flex-center' style={{height: 200}}>{I18N.Kpi.ChosseProject}</div>);
 		}
 	}
 	_renderEdit() {
@@ -118,14 +118,14 @@ export default class BuildingReportActuality extends Component {
 		if( edit ) {
 			let data = edit.data;
 			return (<div className='jazz-actuality-edit'>
-				<ReportConfig 
-					hierarchyId={this.state.hierarchyId} 
-					hierarchyName={this._getSelectedHierarchy().Name} 
-					report={data} 
+				<ReportConfig
+					hierarchyId={this.state.hierarchyId}
+					hierarchyName={this._getSelectedHierarchy().Name}
+					report={data}
 					onSave={() => {
 						data && data.get('Id') && this.refs.report_preview.update(data.get('Id'));
 						this._removeEditPage();
-					}} 
+					}}
 					onCancel={this._removeEditPage}/>
 			</div>);
 		}

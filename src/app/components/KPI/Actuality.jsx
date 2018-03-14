@@ -191,12 +191,17 @@ export default class Actuality extends Component {
 		    		});
  			 },
       buttonIcon: 'icon-arrow-unfold',
-      buttonStyle:{marginLeft:'12px'}
+      buttonStyle:{
+        marginLeft:'12px',
+        width: 'auto',
+        paddingLeft: 5,
+        paddingRight: 5,
+      }
     };
 		if(singleKPI) {
-    		prefixTitle = 
-    			I18N.Setting.KPI.Building + 
-    			this._getSelectedHierarchy().Name + '-' + 
+    		prefixTitle =
+    			I18N.Setting.KPI.Building +
+    			this._getSelectedHierarchy().Name + '-' +
     			this.props.router.location.query.kpiName + '-';
 		}
 		return (<div className='jazz-actuality-content'>
@@ -206,7 +211,7 @@ export default class Actuality extends Component {
 				<KPIActuality router={this.props.router} hierarchyId={this._getHierarchyId(this.props.router, this.context)}/>
 			</div>}
 			{isReport(this.props) && <div className='jazz-actuality-item'>
-				<div className='jazz-actuality-item-title'>{'报表'}</div>
+				<div className='jazz-actuality-item-title'>{I18N.MainMenu.ActualityReport}</div>
 				{isFull() &&
 				<div style={{marginLeft: 5, display: 'inline-block', height: 23, verticalAlign: 'top'}}>
 					<a href="javascript:void(0)" className='icon-add' onClick={() => {
@@ -214,14 +219,14 @@ export default class Actuality extends Component {
 				      }}/>
 			    </div>
 		    	}
-				<ReportPreview 
+				<ReportPreview
 					ref={'report_preview'}
 					isFull={isFull()}
 					preview={true}
 					showAll={isCustomer}
 					hasAll={this.state.allBuildingsExistence}
 					showReportEdit={this._showReportEdit}
-					router={this.props.router} 
+					router={this.props.router}
 					hierarchyId={this._getHierarchyId(this.props.router, this.context)}/>
 			</div>}
 		</div>);
@@ -231,14 +236,14 @@ export default class Actuality extends Component {
 			let {type, data} = this.state.edit,
 			content = null;
 			if( type === 'report' ) {
-				content = (<ReportConfig 
+				content = (<ReportConfig
 								hierarchyId={this._getHierarchyId(this.props.router, this.context)}
-								hierarchyName={this._getSelectedHierarchy().Name} 
-								report={data} 
+								hierarchyName={this._getSelectedHierarchy().Name}
+								report={data}
 								onSave={(id) => {
 									this.refs.report_preview.update(id);
 									this._removeEditPage();
-								}} 
+								}}
 								onCancel={this._removeEditPage}/>);
 			}
 			return (<div className='jazz-actuality-edit'>{content}</div>);
@@ -282,9 +287,9 @@ export default class Actuality extends Component {
 		let {buildingList, userCustomers} = this.state,
 		message;
 		if( !buildingList || !userCustomers || userCustomers.size === 0 ) {
-			return (<div className='jazz-actuality flex-center'><CircularProgress mode="indeterminate" size={80} /></div>); 
+			return (<div className='jazz-actuality flex-center'><CircularProgress mode="indeterminate" size={80} /></div>);
 		}
-		if( buildingList.length !== 1 ) {			
+		if( buildingList.length !== 1 ) {
 			if( this._privilegedCustomer() ) {
 				if( !buildingList.length ) {
 					if( isOnlyView() ) {
@@ -302,8 +307,8 @@ export default class Actuality extends Component {
 					} else {
 						message = I18N.Kpi.Error.KPIConguredNotAnyBuildingAdmin;
 					}
-					
-				}				
+
+				}
 			}
 		}
 		// if( show.kpi === false && show.report === false ) {

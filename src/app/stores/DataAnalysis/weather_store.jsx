@@ -18,7 +18,7 @@ const WeatherStore = assign({}, PrototypeStore, {
     }else{
     _tagList=list.map(item=>({
       tagId:item.TagId,
-      tagName:item.TagName,
+      tagName:I18N.Common.WeatherTag[item.WeatherType],
       weatherType:item.WeatherType
     }))
     }
@@ -92,19 +92,19 @@ WeatherStore.dispatchToken = AppDispatcher.register(function(action) {
   case Action.CHECKED_TAG:
        WeatherStore.checkedTag(action.tag);
        WeatherStore.emitChange()
-      break;  
+      break;
   case FolderAction.GET_WIDGETDTOS_SUCCESS:
        WeatherStore.doWidgetDtos(action.widgetDto[0]);
        WeatherStore.emitChange()
-       break;   
+       break;
   case AlarmTagAction.REMOVE_SEARCH_TAGLIST_CHANGED:
       WeatherStore.checkedTag(action.tagNode);
       WeatherStore.emitChange()
-      break; 
+      break;
   case TagAction.SET_TAGSTATUS_TAGLIST_TOU:
       WeatherStore.checkedTagByTou(action.tagList);
       WeatherStore.emitChange()
-      break; 
-  } 
+      break;
+  }
 });
 export default WeatherStore

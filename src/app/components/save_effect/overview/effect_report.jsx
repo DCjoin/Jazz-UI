@@ -48,7 +48,7 @@ export function getConfigByCommodityId(commodityId) {
     case CommodityMap.ElectricOther:
       return {
         name: I18N.Common.Commodity.ElectricOther,
-        reportName: I18N.Common.Commodity.ElectricOther + I18N.SaveEffect.Saving,
+        reportName: I18N.Common.Commodity.ElectricOther + I18N.SaveEffect.Saving3,
         icon: 'icon-electricity',
         color: '#4CAF50',
       };
@@ -64,7 +64,7 @@ export function getConfigByCommodityId(commodityId) {
     case CommodityMap.Gas:
       return {
         name: I18N.Common.Commodity.Gas,
-        reportName: I18N.Common.Commodity.Gas + I18N.SaveEffect.Saving,
+        reportName: I18N.Common.Commodity.Gas + I18N.SaveEffect.Saving3,
         icon: 'icon-gas',
         color: '#6C7FFE',
       };
@@ -72,7 +72,7 @@ export function getConfigByCommodityId(commodityId) {
     case CommodityMap.CoolQ:
       return {
         name: I18N.Common.Commodity.CoolQ,
-        reportName: I18N.Common.Commodity.CoolQ + I18N.SaveEffect.Saving,
+        reportName: I18N.Common.Commodity.CoolQ + I18N.SaveEffect.Saving3,
         icon: 'icon-cool',
         color: '#86BAFD',
       };
@@ -80,7 +80,7 @@ export function getConfigByCommodityId(commodityId) {
     case CommodityMap.HeatQ:
       return {
         name: I18N.Common.Commodity.HeatQ,
-        reportName: I18N.Common.Commodity.HeatQ + I18N.SaveEffect.Saving,
+        reportName: I18N.Common.Commodity.HeatQ + I18N.SaveEffect.Saving3,
         icon: 'icon-heat',
         color: '#FFB300',
       };
@@ -88,7 +88,7 @@ export function getConfigByCommodityId(commodityId) {
     case CommodityMap.LiquidGas:
       return {
         name: I18N.Common.Commodity.LiquidGas,
-        reportName: I18N.Common.Commodity.LiquidGas + I18N.SaveEffect.Saving,
+        reportName: I18N.Common.Commodity.LiquidGas + I18N.SaveEffect.Saving3,
         icon: 'icon-liquefied-gas',
         color: '#82e2ff',
       };
@@ -96,7 +96,7 @@ export function getConfigByCommodityId(commodityId) {
     case CommodityMap.CoalOther:
       return {
         name: I18N.Common.Commodity.CoalOther,
-        reportName: I18N.Common.Commodity.CoalOther + I18N.SaveEffect.Saving,
+        reportName: I18N.Common.Commodity.CoalOther + I18N.SaveEffect.Saving3,
         icon: 'icon-coal',
         color: '#7A91B5',
       };
@@ -104,7 +104,7 @@ export function getConfigByCommodityId(commodityId) {
     case CommodityMap.DieselOil:
       return {
         name: I18N.Common.Commodity.DieselOil,
-        reportName: I18N.Common.Commodity.DieselOil + I18N.SaveEffect.Saving,
+        reportName: I18N.Common.Commodity.DieselOil + I18N.SaveEffect.Saving3,
         icon: 'icon-diesel',
         color: '#ab47bc',
       };
@@ -112,7 +112,7 @@ export function getConfigByCommodityId(commodityId) {
     case CommodityMap.HeavyOil:
       return {
         name: I18N.Common.Commodity.HeavyOil,
-        reportName: I18N.Common.Commodity.HeavyOil + I18N.SaveEffect.Saving,
+        reportName: I18N.Common.Commodity.HeavyOil + I18N.SaveEffect.Saving3,
         icon: 'icon-diesel',
         color: '#009688',
       };
@@ -120,7 +120,7 @@ export function getConfigByCommodityId(commodityId) {
     case CommodityMap.Kerosene:
       return {
         name: I18N.Common.Commodity.Kerosene,
-        reportName: I18N.Common.Commodity.Kerosene + I18N.SaveEffect.Saving,
+        reportName: I18N.Common.Commodity.Kerosene + I18N.SaveEffect.Saving3,
         icon: 'icon-diesel',
         color: '#795548',
       };
@@ -130,7 +130,7 @@ export function getConfigByCommodityId(commodityId) {
       // let name = getCommodityNameById(commodityId) || I18N.Setting.ECM.Other;
       return {
         name,
-        reportName: name + I18N.SaveEffect.Saving,
+        reportName: name + I18N.SaveEffect.Saving3,
         icon: 'icon-other',
         color: '#59715b',
       };
@@ -205,7 +205,7 @@ export default class EffectReport extends Component {
                   <span>{
                     (isWater ? I18N.SaveEffect.Chart.SavingWaterValue : I18N.SaveEffect.Chart.SavingValue)
                     + (currentYear ? '/' : '') +
-                    (currentYear ? (isWater ? I18N.SaveEffect.Chart.PredictSavingWater : I18N.SaveEffect.Chart.PredictSaving) : '')
+                    (currentYear ? (isWater ? I18N.SaveEffect.Chart.PredictSavingWater2 : I18N.SaveEffect.Chart.PredictSaving2) : '')
                 }</span>
                 </header>
                 <div className='report-sum-content'>

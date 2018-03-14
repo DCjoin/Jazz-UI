@@ -48,7 +48,7 @@ export default class ViewableKPIType extends Component {
 				label:{
 					fontSize: '14px',
 					color:'#0f0f0f',
-					width:'70px'
+					// width:'70px',
 				},
 				icon:{
 					width:'16px',
@@ -85,7 +85,7 @@ export default class ViewableKPIType extends Component {
 						checked={indicatorClass===Type.Dosage}
 						value={Type.Dosage}
 						label={I18N.Setting.KPI.YearAndType.Dosage}
-						style={{width:'120px'}}
+						style={{width:'140px'}}
 						labelStyle={styles.label}
 						iconStyle={styles.icon}
 						onCheck={onClassChange.bind(Type.Dosage)}
@@ -94,7 +94,7 @@ export default class ViewableKPIType extends Component {
 						{indicatorClass===Type.Dosage && <div style={styles.group}>
 							<FlatButton {...prop.savingRate}/>
 							<FlatButton {...prop.quota}/>
-						
+
 						</div>}
 
 				</div>
@@ -103,7 +103,7 @@ export default class ViewableKPIType extends Component {
 						checked={indicatorClass===Type.Ratio}
 						value={Type.Ratio}
 						label={I18N.Setting.KPI.YearAndType.Ratio}
-						style={{width:'120px'}}
+						style={{width:'140px'}}
 						labelStyle={styles.label}
 						iconStyle={styles.icon}
 						onCheck={onClassChange.bind(Type.Ratio)}
@@ -112,7 +112,7 @@ export default class ViewableKPIType extends Component {
 						{indicatorClass===Type.Ratio && <div style={styles.group}>
 							<FlatButton {...prop.savingRate}/>
 						<FlatButton {...prop.quota}/>
-						
+
 						</div>}
 
 				</div>

@@ -47,11 +47,11 @@ export default class ReportChart extends Component {
 					<ul className='jazz-report-chart-table-header-action' style={{
 						width: url ? false : 100
 					}}>
-						{isFull() && <li><LinkButton iconName='icon-edit' onClick={() => onEdit(id)} label={'编辑'}/></li>}
-						{isFull() && <li><LinkButton iconName='icon-delete' onClick={() => onDelete(id)} label={'删除'}/></li>}
-						<li>{url && <LinkButton iconName='icon-check-circle' onClick={() => onSetFirst(id)} label={'设为首个报表'}/>}</li>
+						{isFull() && <li><LinkButton iconName='icon-edit' onClick={() => onEdit(id)} label={I18N.Common.Button.Edit}/></li>}
+						{isFull() && <li><LinkButton iconName='icon-delete' onClick={() => onDelete(id)} label={I18N.Common.Button.Delete}/></li>}
+						<li>{url && <LinkButton iconName='icon-check-circle' onClick={() => onSetFirst(id)} label={I18N.Kpi.SetAsTheFirstReport}/>}</li>
 					</ul>
-					<li>{url && <LinkButton iconName='icon-download' onClick={() => onDownload(id)} label={'下载'}/>}</li>
+					<li>{url && <LinkButton iconName='icon-download' onClick={() => onDownload(id)} label={I18N.Kpi.Download}/>}</li>
 				</div>
 				{url ? <iframe
 					id='iframe1'
