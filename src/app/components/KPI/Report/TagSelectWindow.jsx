@@ -296,7 +296,7 @@ _onSearchClick() {
 _onSelectDimNode(node){
   if(node.get("Type")===nodeType.Customer || node.get("Type")===nodeType.Building){
     filters = null;
-    ReportAction.getTagData(customerId,node.get("Id"), nodeType.HierarchyOnly, filters,this.props.type);
+    ReportAction.getTagData(customerId,node.get("Id"), nodeType.Hierarchy, filters,this.props.type);
     this.setState({
       nodeId: node.get("Id"),
       optionType: nodeType.HierarchyOnly,
