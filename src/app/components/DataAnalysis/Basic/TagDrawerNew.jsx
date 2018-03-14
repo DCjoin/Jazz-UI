@@ -91,7 +91,7 @@ export default class TagDrawer extends Component {
       dimTree:null,
       tagList:[],
       tagId: hierarchyId,
-      optionType: nodeType.HierarchyOnly,
+      optionType: nodeType.Hierarchy,
     },()=>{
       DimAction.loadall(hierarchyId);
       TagAction.setCurrentHierarchyId(hierarchyId);
@@ -104,11 +104,11 @@ export default class TagDrawer extends Component {
   _onSelectDimNode(node){
     if(node.get("Type")===nodeType.Customer || node.get("Type")===nodeType.Building){
       filters = null;
-      TagAction.loadData(this.props.customerId,node.get("Id"), nodeType.HierarchyOnly, 1, null, filters);
+      TagAction.loadData(this.props.customerId,node.get("Id"), nodeType.Hierarchy, 1, null, filters);
       page = 1;
       this.setState({
         tagId: node.get("Id"),
-        optionType: nodeType.HierarchyOnly,
+        optionType: nodeType.Hierarchy,
         selectedDimNode:node,
         tagList:null
       })
@@ -141,7 +141,8 @@ export default class TagDrawer extends Component {
       searchShow,
       searchFilter:null,
       tagList:[],
-      optionType:searchShow?nodeType.Hierarchy:nodeType.HierarchyOnly
+      //optionType:searchShow?nodeType.Hierarchy:nodeType.HierarchyOnly
+      optionType:nodeType.Hierarchy
     })
   }
 
@@ -391,7 +392,7 @@ export default class TagDrawer extends Component {
           tagId: this.props.tagId,
           dimId:null
         },
-        optionType=nodeType.HierarchyOnly;
+        optionType=nodeType.Hierarchy;
 
         let hierNode=Immutable.fromJS({
           Id:this.props.hierarchyId,
