@@ -394,10 +394,10 @@ export default class NewLogin extends Component {
 		if( LoginStore.hasAuthLoginToken() ) {
 			LoginAction.authLogin( LoginStore.getCurrentUserId(), LoginStore.getAuthLoginToken() );
 		} else {
-			// location.href = RoutePath.spinitsso(this.props.params, location.href);
-			this.setState({
-				showLoginDialog: true
-			});
+			location.href = RoutePath.spinitsso(this.props.params, location.href);
+			// this.setState({
+			// 	showLoginDialog: true
+			// });
 		}
 	}
 	_onLogin() {
