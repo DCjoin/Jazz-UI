@@ -2004,7 +2004,7 @@ I18N.Privilege.Role.BuildingList = 'Project List';
 I18N.Privilege.Role.SaveEffect = 'Energy Saving Effect';
 I18N.Privilege.Role.CLevelAPP = 'C-Level APP';
 I18N.Privilege.Role.BestSolution = 'best practices';
-I18N.Privilege.Role.DataSpirit = 'Data Spirit';
+I18N.Privilege.Role.SolutionLibrary = 'Solution Library';
 
 I18N.Remark = {};
 I18N.Remark.Label = 'Comment';
