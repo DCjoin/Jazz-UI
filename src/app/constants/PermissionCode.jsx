@@ -234,7 +234,7 @@ const PermissionCode = function() {
 	},
 
   DATA_SPIRIT: {
-    getLabel: () => I18N.Privilege.Role.BestSolution,
+    getLabel: () => I18N.Privilege.Role.DataSpirit,
     FULL: 1500,
   },
 
