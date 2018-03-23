@@ -231,7 +231,12 @@ const PermissionCode = function() {
 		getLabel: () => I18N.Privilege.Role.BestSolution,
     FULL: 1335,
 		READONLY: 1334,
-	}
+	},
+
+  DATA_SPIRIT: {
+    getLabel: () => I18N.Privilege.Role.BestSolution,
+    FULL: 1500,
+  },
 
 };
 };
