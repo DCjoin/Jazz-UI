@@ -231,7 +231,12 @@ const PermissionCode = function() {
 		getLabel: () => I18N.Privilege.Role.BestSolution,
     FULL: 1335,
 		READONLY: 1334,
-	}
+	},
+
+  SOLUTION_LIBRARY: {
+    getLabel: () => I18N.Privilege.Role.SolutionLibrary,
+    FULL: 1500,
+  },
 
 };
 };
