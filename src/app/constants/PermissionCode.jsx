@@ -233,8 +233,8 @@ const PermissionCode = function() {
 		READONLY: 1334,
 	},
 
-  DATA_SPIRIT: {
-    getLabel: () => I18N.Privilege.Role.DataSpirit,
+  SOLUTION_LIBRARY: {
+    getLabel: () => I18N.Privilege.Role.SolutionLibrary,
     FULL: 1500,
   },
 
