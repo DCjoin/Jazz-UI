@@ -2006,7 +2006,7 @@ I18N.Privilege.Role.BuildingList = '项目列表';
 I18N.Privilege.Role.SaveEffect = '节能效果';
 I18N.Privilege.Role.CLevelAPP = 'C-Level APP';
 I18N.Privilege.Role.BestSolution = '最佳方案';
-I18N.Privilege.Role.DataSpirit = '方案库';
+I18N.Privilege.Role.SolutionLibrary = '方案库';
 
 I18N.Remark = {};
 I18N.Remark.Label = '备注';
