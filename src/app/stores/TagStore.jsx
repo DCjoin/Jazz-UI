@@ -19,7 +19,7 @@ let BASELINE_BTN_DISABLED_EVENT = 'baselinebtndisabled';
 let WEATHER_BTN_DISABLED_EVENT = 'weatherbtndisabled';
 let DATA_CHANGED_EVENT = "datachanged";
 var _data = [];
-var _totalTagStatus = [];
+var _totalTagStatus = Immutable.fromJS([]);
 var _hierId = null;
 var _dimId = null;
 var _dimName = null;
@@ -51,23 +51,33 @@ var TagStore = assign({}, PrototypeStore, {
     var tagTotal = _tagTotal;
     //total的加减 emit total change 判断 total>30  和 第一次小于30的情况 都调用emit
 
-    _totalTagStatus.forEach(function(tagNode) {
-      if (tagNode.hierId == _hierId && _hierId!==null) {
-        hasHierId = true;
-        if (selected) {
-          tagNode.tagStatus = tagNode.tagStatus.push(node.Id?node.Id:node.tagId);
-        } else {
-          let index = tagNode.tagStatus.indexOf(node.Id?node.Id:node.tagId);
-          tagNode.tagStatus = tagNode.tagStatus.delete(index);
-        }
+    // _totalTagStatus.forEach(function(tagNode) {
+    //   if (tagNode.hierId == _hierId && _hierId!==null) {
+    //     hasHierId = true;
+    //     if (selected) {
+    //       tagNode.tagStatus = tagNode.tagStatus.push(node.Id?node.Id:node.tagId);
+    //     } else {
+    //       let index = tagNode.tagStatus.indexOf(node.Id?node.Id:node.tagId);
+    //       tagNode.tagStatus = tagNode.tagStatus.delete(index);
+    //     }
 
-      }
-    });
-    if (!hasHierId) {
-      _totalTagStatus.push({
-        hierId: _hierId,
-        tagStatus: Immutable.List.of(node.Id?node.Id:node.tagId),
-      });
+    //   }
+    // });
+    // if (!hasHierId) {
+    //   _totalTagStatus.push({
+    //     hierId: _hierId,
+    //     tagStatus: Immutable.List.of(node.Id?node.Id:node.tagId),
+    //   });
+    // }
+
+    let index=_totalTagStatus.findIndex(item=>item.get("Id")===(node.Id?node.Id:node.tagId));
+    if(selected){
+      _totalTagStatus=_totalTagStatus.push(Immutable.fromJS({
+        hierId:node.AreaDimensionId!==null?node.AreaDimensionId:node.HierarchyId,
+        Id:node.Id?node.Id:node.tagId
+      }))
+    }else{
+      _totalTagStatus=_totalTagStatus.delete(index)
     }
 
     if (selected) {
@@ -88,64 +98,81 @@ var TagStore = assign({}, PrototypeStore, {
   },
   setTagStatusById: function(hierId, tagId) {
     _tagTotal++;
-    if (_totalTagStatus.length === 0) {
-      _totalTagStatus.push({
+    _totalTagStatus=_totalTagStatus.push(Immutable.fromJS({
         hierId: hierId,
-        tagStatus: Immutable.List.of(tagId),
-      });
-    } else {
-      let hasHierId = false;
-      _totalTagStatus.forEach(function(tagNode) {
-        if (tagNode.hierId == hierId) {
-          hasHierId = true;
-          tagNode.tagStatus = tagNode.tagStatus.push(tagId);
-        }
-      });
-      if (!hasHierId) {
-        _totalTagStatus.push({
-          hierId: hierId,
-          tagStatus: Immutable.List.of(tagId),
-        });
-      }
-    }
+        Id: tagId,
+      }));
+    // if (_totalTagStatus.length === 0) {
+    //   _totalTagStatus.push({
+    //     hierId: hierId,
+    //     tagId: Immutable.List.of(tagId),
+    //   });
+    // } else {
+    //   let hasHierId = false;
+    //   _totalTagStatus.forEach(function(tagNode) {
+    //     if (tagNode.hierId == hierId) {
+    //       hasHierId = true;
+    //       tagNode.tagStatus = tagNode.tagStatus.push(tagId);
+    //     }
+    //   });
+    //   if (!hasHierId) {
+    //     _totalTagStatus.push({
+    //       hierId: hierId,
+    //       tagStatus: Immutable.List.of(tagId),
+    //     });
+    //   }
+    // }
     this.setCurrentHierarchyId(hierId);
   },
   setTagStatusByTagList: function(tagList, add) {
     var hasHierId = false;
     var tagTotal = _tagTotal;
     var tagStatus = Immutable.List([]);
-    _totalTagStatus.forEach(function(tagNode) {
-      if (tagNode.hierId == _hierId) {
-        hasHierId = true;
-        tagStatus = tagNode.tagStatus;
-        tagList.forEach(function(tagNode) {
-          let index = tagStatus.indexOf(tagNode.Id);
-          if (add) {
-            if (index < 0) {
-              tagStatus = tagStatus.push(tagNode.Id);
-              _tagTotal++;
-            }
-          } else {
-            if (index >= 0) {
-              tagStatus = tagStatus.delete(index);
-              _tagTotal--;
-            }
-          }
-
-        });
-        tagNode.tagStatus = tagStatus;
+    tagList.forEach(tag=>{
+      let index=_totalTagStatus.findIndex(item=>item.get("Id")===tag.Id);
+      if(add){
+        if(index===-1){
+          _totalTagStatus=_totalTagStatus.push({
+            hierId: tag.AreaDimensionId!==null?tag.AreaDimensionId:tag.HierarchyId,
+            Id: tag.Id,
+          })
+        }
+      }else{
+        _totalTagStatus=_totalTagStatus.delete(index)
       }
-    });
-    if (!hasHierId) {
-      tagList.forEach(function(tagNode) {
-        tagStatus = tagStatus.push(tagNode.Id);
-        _tagTotal++;
-      });
-      _totalTagStatus.push({
-        hierId: _hierId,
-        tagStatus: tagStatus,
-      });
-    }
+    })
+    // _totalTagStatus.forEach(function(tagNode) {
+    //   if (tagNode.hierId == _hierId) {
+    //     hasHierId = true;
+    //     tagStatus = tagNode.tagStatus;
+    //     tagList.forEach(function(tagNode) {
+    //       let index = tagStatus.indexOf(tagNode.Id);
+    //       if (add) {
+    //         if (index < 0) {
+    //           tagStatus = tagStatus.push(tagNode.Id);
+    //           _tagTotal++;
+    //         }
+    //       } else {
+    //         if (index >= 0) {
+    //           tagStatus = tagStatus.delete(index);
+    //           _tagTotal--;
+    //         }
+    //       }
+
+    //     });
+    //     tagNode.tagStatus = tagStatus;
+    //   }
+    // });
+    // if (!hasHierId) {
+    //   tagList.forEach(function(tagNode) {
+    //     tagStatus = tagStatus.push(tagNode.Id);
+    //     _tagTotal++;
+    //   });
+    //   _totalTagStatus.push({
+    //     hierId: _hierId,
+    //     tagStatus: tagStatus,
+    //   });
+    // }
     if (add) {
       if (_tagTotal == _tagSum) {
         this.setTagTotalStatus();
@@ -160,24 +187,27 @@ var TagStore = assign({}, PrototypeStore, {
   },
   getCurrentHierIdTagStatus: function() {
     var tagStatus = Immutable.List([]);
-    _totalTagStatus.forEach(function(tagNode) {
-      if (tagNode.hierId == _hierId) {
-        tagStatus = tagNode.tagStatus;
-      }
-    });
-    return tagStatus;
+    // _totalTagStatus.forEach(function(tagNode) {
+    //   if (tagNode.hierId == _hierId) {
+    //     tagStatus = tagNode.tagStatus;
+    //   }
+    // });
+    return _totalTagStatus;
   },
   getTotalTagStatus: function() {
     return _totalTagStatus;
   },
   removeTagStatusByTagId: function(tagId) {
-    _totalTagStatus.forEach(function(tagNode) {
-      let index = tagNode.tagStatus.indexOf(tagId);
-      if (index >= 0) {
-        tagNode.tagStatus = tagNode.tagStatus.delete(index);
-        _tagTotal--;
-      }
-    });
+    // _totalTagStatus.forEach(function(tagNode) {
+    //   let index = tagNode.tagStatus.indexOf(tagId);
+    //   if (index >= 0) {
+    //     tagNode.tagStatus = tagNode.tagStatus.delete(index);
+    //     _tagTotal--;
+    //   }
+    // });
+    _tagTotal--;
+    let index=_totalTagStatus.findIndex(item=>item.get("Id")===tagId);
+    _totalTagStatus=_totalTagStatus.delete(index);
     if (_tagTotalStatus && _tagTotal < _tagSum) {
       this.setTagTotalStatus();
     }
@@ -192,7 +222,7 @@ var TagStore = assign({}, PrototypeStore, {
   },
   clearTagStatus: function() {
     _tagTotal = 0;
-    _totalTagStatus = [];
+    _totalTagStatus = Immutable.fromJS([]);
     this.checkAllStatus();
     if (_tagTotalStatus) {
       this.setTagTotalStatus();
@@ -208,7 +238,7 @@ var TagStore = assign({}, PrototypeStore, {
   },
   resetTagInfo: function(widgetType) {
     _data = [];
-    _totalTagStatus = [];
+    _totalTagStatus = Immutable.fromJS([]);
     _dimId = null;
     _dimName = null;
     _tagTotal = 0;
@@ -238,13 +268,13 @@ var TagStore = assign({}, PrototypeStore, {
     var selectedNum = 0;
     var tagStatus = Immutable.List([]);
     var checkStauts = null;
-    _totalTagStatus.forEach(function(tagNode) {
-      if (tagNode.hierId == _hierId) {
-        tagStatus = tagNode.tagStatus;
-      }
-    });
+    // _totalTagStatus.forEach(function(tagNode) {
+    //   if (tagNode.hierId == _hierId) {
+    //     tagStatus = tagNode.tagStatus;
+    //   }
+    // });
     _tagList.forEach(function(tagNode) {
-      if (tagStatus.indexOf(tagNode.Id) >= 0) {
+      if (_totalTagStatus.findIndex(item=>item.get("Id")===tagNode.Id) >= 0) {
         selectedNum++;
       }
     });
@@ -281,14 +311,17 @@ var TagStore = assign({}, PrototypeStore, {
     this.emitBaselineBtnDisabledChange();
   },
   checkWeatherBtnDisabled: function() {
-    if (_totalTagStatus.length > 1) {
-      let validHierCount = 0;
+    if (_totalTagStatus.size > 1) {
+      let validHierArray = [];
       _totalTagStatus.forEach(item => {
-        if (item.tagStatus && item.tagStatus.size > 0) {
-          ++validHierCount;
+        // if (item.tagStatus && item.tagStatus.size > 0) {
+        //   ++validHierCount;
+        // }
+        if(validHierArray.indexOf(item.get("hierId"))===-1){
+          validHierArray.push(item.get("hierId"))
         }
       });
-      if (validHierCount < 2) {
+      if (validHierArray.length < 2) {
         weather_btn_disabled = false;
       } else {
         weather_btn_disabled = true;
