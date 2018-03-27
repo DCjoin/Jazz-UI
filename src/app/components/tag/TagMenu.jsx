@@ -72,7 +72,7 @@ var TagMenu = React.createClass({
 
     this.props.tagList.forEach(function(nodeData, i) {
       var tagStatus = false;
-      if (that.state.tagStatus.includes(nodeData.Id)) {
+      if (that.state.tagStatus.findIndex(item=>item.get("Id")===nodeData.Id)>-1) {
         tagStatus = true;
       }
 
