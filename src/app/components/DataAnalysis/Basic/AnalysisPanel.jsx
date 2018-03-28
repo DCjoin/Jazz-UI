@@ -1745,7 +1745,7 @@ _onBubbleAxisChanged(){
         });
       }
       if (!!hierNode) {
-        let tagId = TagStore.getCurrentHierIdTagStatus().last();
+        let tagId = TagStore.getCurrentHierIdTagStatus().last().get("Id");
         if(DataAnalysisStore.getHierarchyName(hierNode.hierId)){
           this.setState({
             hierarchyId:hierNode.hierId,
