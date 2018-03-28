@@ -148,7 +148,7 @@ export default class TagSelect extends Component {
 																										<tr className={classNames({
 		        																		'selected': this.state.selectedTag && tag.get('Id')===this.state.selectedTag.get('Id'),
 		      															})} onClick={this._onSelectTag.bind(this,tag)}>
-																				<td className="column1">{tag.get('Name')}</td>
+																				<td className="column1" title={tag.get('Name')}>{tag.get('Name')}</td>
 																				<td className="column2">{CommonFuns.getCommodityById(tag.get('CommodityId')).Comment}</td>
 																				<td className="column3">{CommonFuns.getUomById(tag.get('UomId')).Code}</td>
 																			</tr>

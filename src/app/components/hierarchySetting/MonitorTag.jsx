@@ -503,7 +503,8 @@ var MonitorTag = React.createClass({
         page: 1,
         association: (nextProps.formStatus === formStatus.VIEW ? viewOption : editOption),
         addingTags: emptyList(),
-        showFilter: false
+        showFilter: false,
+        filterObj: this._getInitFilterObj()
       }, () => {
         that.getAssociatedTag();
       });

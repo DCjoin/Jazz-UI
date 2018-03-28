@@ -92,6 +92,8 @@ let HierarchyAction = {
       associationObj.Associatiable = true;
     }
     Ajax.post('/Tag/GetTagsByFilter', {
+      avoidDuplicate:true,
+      tag:'GetTagsByFilter',
       params: {
         filter: {
           CustomerId: parseInt(customerId),
