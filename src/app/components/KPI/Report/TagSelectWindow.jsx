@@ -506,7 +506,7 @@ _renderDimTreeNode(nodeData){
         }
    
 
-    ReportAction.getTagData(customerId,this.props.hierarchyId, 2, null,this.props.Type);
+    if(!selectedTaglist || selectedTaglist.size===0){ReportAction.getTagData(customerId,this.props.hierarchyId, 2, null,this.props.Type);}
     ReportStore.addTagListChangeListener(this._onTagListChange);
     ReportStore.addSelectedTagListChangeListener(this._onSelectedTagListChange);
   },
