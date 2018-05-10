@@ -192,9 +192,11 @@ export default class PushPanel extends Component {
     )
   }
 
-  _renderPersonInCharge(problem,indetail=false,index){
+  _renderPersonInCharge(problem,indetail=false,index,hasSolution=false){
     return(
-      <Supervisor person={problem.get('Supervisor')} supervisorList={this.state.supervisorList}
+      <div style={{width: '215px',paddingLeft: '20px', borderLeft: '1px dashed #e6e6e6'}}>
+             {hasSolution && <div style={{height:'40px'}}/>}
+              <Supervisor person={problem.get('Supervisor')} supervisorList={this.state.supervisorList}
                   onSuperviorClick={(id)=>{
                     if(indetail){
                       var currentSolution=this.state.solutionList.getIn([this.state.measureIndex]);
@@ -235,6 +237,8 @@ export default class PushPanel extends Component {
                   usedInDetail={indetail}
                   canEdit={canEditSupervisor(this.state.infoTabNo)}
                   energySys={problem.get('EnergySys')}/>
+      </div>
+
     )
   }
 
@@ -264,7 +268,8 @@ export default class PushPanel extends Component {
         var prop={
           measure:solution,
           hasCheckBox:false,
-          personInCharge:this._renderPersonInCharge(solution.get('EnergyProblem'),false,index),
+          // personInCharge:this._renderPersonInCharge(solution.get('EnergyProblem'),false,index,solution.get('Solutions').size>1),
+          personInCharge:this._renderPersonInCharge(solution.get('EnergyProblem'),false,index,true),
           onClick:()=>{this._onMeasureItemClick(index)},
           displayUnread:displayUnread(this.state.infoTabNo),
 					action:this._renderEffectAction(solution)

@@ -23,6 +23,7 @@
     justify-content: space-between;
     background-color: @ultra-light-gray;
     .measuresItem-title{
+      margin-left:10px;
       font-size: 14px;
       font-weight: 500;
       line-height: 1.5;
@@ -67,9 +68,7 @@
   background-color: #f3f5f7;
   flex-direction: column;
   &-content{
-    min-width: 1024px;
-    // width: 74%;
-    padding: 0 13%;
+    width: 100%;
     display: flex;
     // align-items:  center;
     // flex-direction: column;
@@ -81,24 +80,25 @@
 .jazz-ecm-tab-title{
   display: flex;
   justify-content: center;
+  align-items: baseline;
 }
 .jazz-ecm-tabs{
-        padding:14px 0;
+        padding:10px 0;
         margin:0 20px;
         border-bottom: 1px solid @border-gray;
         display: flex;
         justify-content: center;
-        min-height: 36px;
+        min-height: 30px;
         >span{
           .pointer;
           margin-right:15px;
           font-size: 14px;
           color:@medium-gray;
-          line-height: 31px;
+          line-height: 30px;
           text-align: center;
-          // width: 72px;
-          padding: 0 10px;
-          height: 31px;
+          height: 30px;
+          width: 72px;
+          min-width: 72px;
           &.selected {
               color:@dark-gray;
               border-radius: 2px;
@@ -109,10 +109,12 @@
     }
 
 .jazz-ecm-notPush{
+  margin: 0 auto;
   margin-top: 23px;
-  width: 100%;
+    min-width: 1024px;
+    max-width: 1440px;
+    width: 75%;
   display: flex;
-  flex: 1;
   flex-direction: column;
   .action{
     min-height: 25px;
@@ -130,9 +132,11 @@
 
 .jazz-ecm-push{
   margin-top: 6px;
-  width: 100%;
+   margin: 0 auto;
+    min-width: 1024px;
+    max-width: 1440px;
+    width: 75%;
   display: flex;
-  flex: 1;
   flex-direction: column;
   &-tabs{
     .f14;
@@ -141,7 +145,7 @@
     display: flex;
     width: 100%;
     text-align: center;
-    margin-top: 30px;
+    margin-top: 12px;
     height:30px;
     min-height: 30px;
     border-bottom: 1px solid @light-gray;
@@ -153,6 +157,7 @@
         padding: 0 10px;
         box-sizing: border-box;
         margin-right:30px;
+        color:#9fa0a4;
         &.selected {
             color: @normal-black;
             border-bottom:2px solid @medium-green;
@@ -308,4 +313,64 @@
   width:100%;
   // min-height: 180px;
   position: relative;
+}
+
+.alarm-text{
+  margin-left:10px;
+    padding:0 12px;
+  height: 23px;
+  border-radius: 2px;
+  background-color: rgba(255,77,77,0.1);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size: 11px;
+  color: #ff4d4d;
+}
+.solution-select{
+  margin-left:30px;
+  &-box{
+  width: 100px;
+  height: 28px;
+  border: solid 1px #e6e6e6;
+  padding:0 11px 0 8px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  &:hover{
+    cursor: pointer;
+  }
+  &-text{
+    font-size:14px; 
+    color:#626469;
+  }
+}
+&-paper{
+  width: 150px;
+  height: 172px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-radius: 2px;
+  background-color: #ffffff;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.08), 0 0 8px 0 rgba(0, 0, 0, 0.12);
+  padding:8px 0;
+
+  &-item{
+    width:150px;
+    height:32px;
+    padding-left: 24px;
+    line-height: 32px;
+    font-size: 14px;
+    color: #666666;
+    &:hover{
+      background-color: #f2f2f2;
+      cursor: pointer
+    }
+  }
+
+  >.selected{
+    color: #32ad3c;
+  }
+}
 }
