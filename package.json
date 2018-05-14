@@ -122,9 +122,10 @@
     "react-grid-layout": "0.13.2",
     "react-motion": "^0.4.7",
     "react-router": "3.0.0",
-    "superagent": "1.0.0",
     "request": "2.83.0",
     "samlify": "^2.3.3",
+    "styled-components": "^3.2.6",
+    "superagent": "1.0.0",
     "whatwg-fetch": "2.0.3"
   },
   "jshintConfig": {

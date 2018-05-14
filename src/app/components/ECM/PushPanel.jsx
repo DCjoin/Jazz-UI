@@ -24,6 +24,7 @@ import FlatButton from 'controls/FlatButton.jsx';
 import NewFlatButton from 'controls/NewFlatButton.jsx';
 import Remark from './MeasurePart/Remark.jsx';
 import DisappareItem from './MeasurePart/DisappareItem.jsx';
+import EditSolution from './edit_solution.jsx';
 
 function privilegeWithPush( privilegeCheck ) {
   // return true
@@ -120,8 +121,8 @@ export default class PushPanel extends Component {
 
   _onMeasureItemClick(index){
     var measure=this.state.solutionList.getIn([index]);
-    if(displayUnread(this.state.infoTabNo) && !measure.getIn(['EnergyProblem','IsRead'])){
-      MeasuresAction.readProblem(measure.getIn(['EnergyProblem','Id']));
+    if(displayUnread(this.state.infoTabNo) && !measure.getIn(['Problem','IsRead'])){
+      MeasuresAction.readProblem(measure.getIn(['Problem','Id']));
     }
     this.setState({
       measureShow:true,
@@ -142,7 +143,7 @@ export default class PushPanel extends Component {
   }
 
   _onStatusChange(value){
-    if(value!==this.state.solutionList.getIn([this.state.measureIndex,'EnergyProblem','Status'])){
+    if(value!==this.state.solutionList.getIn([this.state.measureIndex,'Problem','Status'])){
       this.setState({
         toBeStatus:value,
         statusDialogShow:true
@@ -194,7 +195,7 @@ export default class PushPanel extends Component {
 
   _renderPersonInCharge(problem,indetail=false,index,hasSolution=false){
     return(
-      <div style={{width: '215px',paddingLeft: '20px', borderLeft: '1px dashed #e6e6e6'}}>
+      <div style={{width: '220px',paddingLeft: indetail?'0':'20px', borderLeft: indetail?'':'1px dashed #e6e6e6'}}>
              {hasSolution && <div style={{height:'40px'}}/>}
               <Supervisor person={problem.get('Supervisor')} supervisorList={this.state.supervisorList}
                   onSuperviorClick={(id)=>{
@@ -251,7 +252,7 @@ export default class PushPanel extends Component {
 														style={{width:'95px',height:'30px',lineHeight:'28px',float:'right'}}
 														onTouchTap={(e)=>{
 															e.stopPropagation();
-															openTab(RoutePath.saveEffect.list(this.props.params)+'/'+solution.getIn(["EnergyProblem","Id"])+'?init_hierarchy_id='+this.props.hierarchyId);
+															openTab(RoutePath.saveEffect.list(this.props.params)+'/'+solution.getIn(["Problem","Id"])+'?init_hierarchy_id='+this.props.hierarchyId);
 														}}/>}
 			</div>
 		)
@@ -263,13 +264,13 @@ export default class PushPanel extends Component {
               :I18N.Setting.ECM.PushPanel.Earlier;
     var List=[];
     this.state.solutionList.forEach((solution,index)=>{
-      var time=DataConverter.JsonToDateTime(solution.getIn(['EnergyProblem','CreateTime']));
+      var time=DataConverter.JsonToDateTime(solution.getIn(['Problem','CreateTime']));
       if(MeasuresStore.isSolutionValid(type,time)){
         var prop={
           measure:solution,
           hasCheckBox:false,
-          // personInCharge:this._renderPersonInCharge(solution.get('EnergyProblem'),false,index,solution.get('Solutions').size>1),
-          personInCharge:this._renderPersonInCharge(solution.get('EnergyProblem'),false,index,true),
+          // personInCharge:this._renderPersonInCharge(solution.get('Problem'),false,index,solution.get('Solutions').size>1),
+          personInCharge:this._renderPersonInCharge(solution.get('Problem'),false,index,true),
           onClick:()=>{this._onMeasureItemClick(index)},
           displayUnread:displayUnread(this.state.infoTabNo),
 					action:this._renderEffectAction(solution)
@@ -356,13 +357,13 @@ export default class PushPanel extends Component {
               onClick={()=>{
                 var currentSolution=this.state.solutionList.getIn([this.state.measureIndex]);
 
-                currentSolution=currentSolution.setIn(['EnergyProblem','Status'],this.state.toBeStatus);
+                currentSolution=currentSolution.setIn(['Problem','Status'],this.state.toBeStatus);
                 this.setState({
                   measureShow:false,
                   statusDialogShow:false
                 },()=>{
                   if(this.state.infoTabNo===4){
-                    currentSolution=currentSolution.setIn(['EnergyProblem','Supervisor'],null)
+                    currentSolution=currentSolution.setIn(['Problem','Supervisor'],null)
                   }
                   MeasuresAction.updateSolution(currentSolution.toJS());
                   this._afterAnimation=()=>{
@@ -392,7 +393,7 @@ export default class PushPanel extends Component {
   }
 
   _renderOperation(){
-    var problem=this.state.solutionList.getIn([this.state.measureIndex,'EnergyProblem']),
+    var problem=this.state.solutionList.getIn([this.state.measureIndex,'Problem']),
         status=problem.get('Status'),
         createUserId=problem.get('CreateUserId'),
         currentSolution=this.state.solutionList.getIn([this.state.measureIndex]);;
@@ -407,15 +408,16 @@ export default class PushPanel extends Component {
     return(
       <div className="jazz-ecm-push-operation">
         <StatusCmp status={status} canEdit={canEditStatus(createUserId,this.state.infoTabNo)} onChange={this._onStatusChange.bind(this)}/>
-        {this._renderPersonInCharge(problem,true)}
         <EnergySys {...prop.energySys}/>
+        {this._renderPersonInCharge(problem,true)}
+        
       </div>
     )
   }
 
   _renderMeasureDialog(){
     var currentSolution=this.state.solutionList.getIn([this.state.measureIndex]);
-    var createUserId=this.state.solutionList.getIn([this.state.measureIndex,'EnergyProblem','CreateUserId']);
+    var createUserId=this.state.solutionList.getIn([this.state.measureIndex,'Problem','CreateUserId']);
     var onClose=()=>{
       this.setState({
         measureShow:false,
@@ -425,7 +427,7 @@ export default class PushPanel extends Component {
         MeasuresAction.updateSolution(currentSolution.toJS(),()=>{this.refresh(status[this.state.infoTabNo-1])});
       })
     };
-    var problem=this.state.solutionList.getIn([this.state.measureIndex,'EnergyProblem']),
+    var problem=this.state.solutionList.getIn([this.state.measureIndex,'Problem']),
         user=problem.get('CreateUserName');
    var props={
      title:{
@@ -447,17 +449,17 @@ export default class PushPanel extends Component {
      gallery: {
       measure:currentSolution,
       onDelete: (idx) => {
-        let imagesPath = ['EnergyProblem','EnergyProblemImages'];
+        let imagesPath = ['Problem','EnergyProblemImages'];
         this.merge(imagesPath, currentSolution.getIn(imagesPath).delete(idx));
       }
      },
      remark:{
-       problemId:currentSolution.getIn(['EnergyProblem','Id']),
+       problemId:currentSolution.getIn(['Problem','Id']),
        canEdit:PushIsFull() || PushAndNotPushIsFull(),
        onScroll:(height)=>{ReactDom.findDOMNode(this).querySelector(".dialog-content").scrollTop+=height+15}
      }
    }
-    return(
+    /*return(
       <NewDialog
         open={this.state.measureShow}
         hasClose
@@ -479,6 +481,10 @@ export default class PushPanel extends Component {
         </div>
         <Remark {...props.remark}/>
       </NewDialog>
+    )*/
+    return(
+      <EditSolution solution={currentSolution} operation={this._renderOperation()}
+                                               hasRemarkPriviledge={PushIsFull() || PushAndNotPushIsFull()}/>
     )
   }
 
@@ -580,7 +586,7 @@ export default class PushPanel extends Component {
       <div className="jazz-ecm-push">
         {this._renderTab()}
         {this._renderList()}
-        {this.state.solutionList!==null && this.state.solutionList.size!==0 && this._renderMeasureDialog()}
+        {this.state.solutionList!==null && this.state.solutionList.size!==0 && this.state.measureShow && this._renderMeasureDialog()}
         {this.state.statusDialogShow && this._renderStatusDialog()}
         {this.state.deleteSupervisorErrorMsg!==null && this._renderDeleteSupervisorError()}
         <Snackbar ref='snackbar' open={!!this.state.snackbarText} onRequestClose={()=>{

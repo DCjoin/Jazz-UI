@@ -207,7 +207,7 @@ const MeasuresAction = {
   cleanSolutionList() {
     AppDispatcher.dispatch({
       type: Action.GET_ENERGY_SOLUTION_SUCCESS,
-      data: null,
+      data: [],
     })
   },
   deleteSupervisor(supervisorId){

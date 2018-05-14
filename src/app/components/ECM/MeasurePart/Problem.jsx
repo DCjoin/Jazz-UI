@@ -28,8 +28,8 @@ export default class Problem extends Component {
 
     componentDidMount(){
       var {canEdit,measure}=this.props;
-      var {EnergyProblem}=measure.toJS();
-      var {Description,Name}=EnergyProblem;
+      var {Problem}=measure.toJS();
+      var {Description,Name}=Problem;
       this.setState({
         Name,Description
       })
@@ -37,8 +37,8 @@ export default class Problem extends Component {
 
     componentWillReceiveProps(nextProps){
       var {canEdit,measure}=nextProps;
-      var {EnergyProblem}=measure.toJS();
-      var {Description,Name}=EnergyProblem;
+      var {Problem}=measure.toJS();
+      var {Description,Name}=Problem;
       this.setState({
         Description,Name
       })
@@ -47,15 +47,15 @@ export default class Problem extends Component {
 
     render(){
       var {canEdit,measure}=this.props;
-      var {EnergyProblem}=measure.toJS();
+      var {Problem}=measure.toJS();
       var {Description,Name}=this.state;
       var props={
         name:{
-          key:'EnergyProblem'+EnergyProblem.Id+'_Name',
-          id:'EnergyProblem'+EnergyProblem.Id+'_Name',
+          key:'EnergyProblem'+Problem.Id+'_Name',
+          id:'EnergyProblem'+Problem.Id+'_Name',
           onChange:(ev,value)=>{
                                 if(value===''){value=Name}
-                                this.props.merge(['EnergyProblem','Name'],value)
+                                this.props.merge(['Problem','Name'],value)
                               },
           value:Name,
           hintText:I18N.Setting.ECM.AddProblemName,
@@ -65,11 +65,11 @@ export default class Problem extends Component {
           multiLine:true,
         },
         description:{
-          key:'EnergyProblem'+EnergyProblem.Id+'_Description',
-          id:'EnergyProblem'+EnergyProblem.Id+'_Description',
+          key:'EnergyProblem'+Problem.Id+'_Description',
+          id:'EnergyProblem'+Problem.Id+'_Description',
           onChange:(ev,value)=>{
                                 if(value===''){value=Description}
-                                this.props.merge(['EnergyProblem','Description'],value)
+                                this.props.merge(['Problem','Description'],value)
                               },
           value:Description,
           hintText:I18N.Setting.ECM.AddProblemDescription,
@@ -88,13 +88,13 @@ export default class Problem extends Component {
             <div className="label">
               {I18N.Setting.ECM.ProblemDetailName}
             </div>
-            {canEdit?<TextField {...props.name}/>:<div className="jazz-ecm-measure-viewabletext" stlye={{fontSize:"16px",color:"#626469"}}>{this._renderMultiText(EnergyProblem.Name)}</div>}
+            {canEdit?<TextField {...props.name}/>:<div className="jazz-ecm-measure-viewabletext" stlye={{fontSize:"16px",color:"#626469"}}>{this._renderMultiText(Problem.Name)}</div>}
           </div>
           <div className="row" style={{marginTop:"8px",paddingLeft:'11px',paddingRight:'42px'}}>
             <div className="label">
               {I18N.SaveEffect.Description}
             </div>
-            {canEdit?<TextField {...props.description}/>:<div className="jazz-ecm-measure-viewabletext">{this._renderMultiText(EnergyProblem.Description)}</div>}
+            {canEdit?<TextField {...props.description}/>:<div className="jazz-ecm-measure-viewabletext">{this._renderMultiText(Problem.Description)}</div>}
           </div>
         </div>
       )

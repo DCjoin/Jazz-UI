@@ -26,7 +26,7 @@ export default class SolutionGallery extends Component {
 		};
 	}
 	_getImages() {
-		return this.props.measure.getIn(['EnergyProblem', 'EnergyProblemImages']).toJS();
+		return this.props.measure.getIn(['Problem', 'EnergyProblemImages']).toJS();
 	}
 	_onDelete() {
 		let onDelete = this.props.onDelete;

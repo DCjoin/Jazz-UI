@@ -8,22 +8,22 @@ import IconButton from 'material-ui/IconButton';
 export class EnergySys extends Component {
 
   _renderEnergySys(){
-    var {EnergySys}=this.props.measure.get('EnergyProblem').toJS();
+    var {EnergySys}=this.props.measure.get('Problem').toJS();
     var energySysList=MeasuresStore.getAllEnergySys();
-    return(
-      <DropDownMenu
-                    style={{height: '26px'}}
-                    // style={{marginTop:'-10px',border:'1px solid #d7d7d7',height:'26px',borderRadius:'4px',width: '95px',
-                    //                 height: '28px'}}
-                    labelStyle={{fontSize:'14px',color:"#626469",border:"1px solid #e6e6e6",borderRadius: "4px",lineHeight:'26px',height:'26px',paddingLeft:'11px',paddingRight:'28px'}}
-                    iconButton={<IconButton iconClassName="icon-arrow-down" iconStyle={{fontSize:"10px"}} style={{width:14,height:14}}/>}
-                    // iconStyle={styles.icon}
-                    iconStyle={{marginTop:'-12px',padding:'0',right:'15px',width:'24px',top:"2px"}}
-                    // underlineStyle={{border:'none'}}
+    return(<div style={{marginLeft:'30px'}}>
+            <div className='jazz-ecm-push-operation-label'>{I18N.Setting.DataAnalysis.EnergyProblem.Mark}</div>
+            <DropDownMenu
+                    style={{height: '36px',width:'220px',marginTop:'8px'}}
+                    labelStyle={{fontSize:'14px',color:"#626469",border:"1px solid #e6e6e6",borderRadius: "4px",lineHeight:'36px',height:'36px',paddingLeft:'11px',paddingRight:'28px'}}
+                      iconButton={<IconButton iconClassName="icon-arrow-unfold" iconStyle={{fontSize:"10px"}} style={{width:14,height:14}}/>}
+                      iconStyle={{marginTop:'-12px',padding:'0',right:'15',width:'24px',top:'8px'}}
+                      underlineStyle={{border:'none'}}
+                      menuItemStyle={{width:'220px'}}
+                      menuStyle={{width:'220px'}}
+                      listStyle={{width:'220px'}}
                     value={EnergySys}
-                    underlineStyle={{display:"none"}}
                     onChange={(e, selectedIndex, value)=>{
-                      this.props.merge(['EnergyProblem','EnergySys'],value)
+                      this.props.merge(['Problem','EnergySys'],value)
                     }}>
       <MenuItem primaryText={energySysList.AirConditioning.label} value={energySysList.AirConditioning.value}/>
       <MenuItem primaryText={energySysList.Boiler.label} value={energySysList.Boiler.value}/>
@@ -33,16 +33,19 @@ export class EnergySys extends Component {
       <MenuItem primaryText={energySysList.AirCompression.label} value={energySysList.AirCompression.value}/>
       <MenuItem primaryText={energySysList.Other.label} value={energySysList.Other.value}/>
     </DropDownMenu>
+
+    </div>
+
     )
   }
 
   render(){
     var {canEnergySysEdit,measure}=this.props;
-    var {EnergyProblem}=measure.toJS();
+    var {Problem}=measure.toJS();
     return(
       <div style={{display:'flex',justifyContent:'cneter'}}>
         {canEnergySysEdit?this._renderEnergySys()
-                         :<div style={{fontSize:'14px',color:'#626469',marginRight:'28px'}}>{MeasuresStore.getEnergySys(EnergyProblem.EnergySys)}</div>}
+                         :<div style={{fontSize:'14px',color:'#626469',marginRight:'28px'}}>{MeasuresStore.getEnergySys(Problem.EnergySys)}</div>}
       </div>
     )
   }
@@ -63,7 +66,7 @@ export class MeasureTitle extends Component {
 
     _renderName(){
       var {canNameEdit,measure}=this.props;
-      var {EnergySolution}=measure.toJS();
+      var {Solutions}=measure.toJS();
       return(
         <div style={{display:'flex',fontSize:'16px',alignItems:'center',fontWeight: '500', color: '#1b1f2c'}}>
           <span style={{marginRight:'15px',minWidth:'80px'}}>{I18N.Setting.ECM.Solution}</span>

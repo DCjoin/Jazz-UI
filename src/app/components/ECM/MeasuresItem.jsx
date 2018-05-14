@@ -18,7 +18,7 @@ function validValue(value) {
 }
 
 let AlarmText=({text})=>(<div className="alarm-text">  
-   <FontIcon className="icon-no_ecm" color="#fd625e" iconStyle ={{fontSize:'10px'}} style={{fontSize:'10px'}}/>
+   <FontIcon className="icon-no_ecm" color="#fd625e" iconStyle ={{fontSize:'10px'}} style={{fontSize:'10px',height:'10px'}}/>
   <div style={{marginLeft:'4px'}}>{text}</div></div>)
 
 
@@ -100,7 +100,7 @@ class SolutionSelect extends Component {
                     animation={PopoverAnimationVertical}
                   >
                   <div className="solution-select-paper">
-                    {SOLUTION_NAMES.slice(0,sum-1).map((sulutionName,index)=>
+                    {SOLUTION_NAMES.slice(0,sum).map((sulutionName,index)=>
                                                         <div className={classnames({
                                                           "solution-select-paper-item":true,
                                                           "selected":index===this.props.index
@@ -132,24 +132,23 @@ export class MeasuresItem extends Component {
     }
 
     getName(){
-      var {EnergyProblem,EnergySolution}=this.props.measure.toJS();
-      if(EnergySolution.Name!==null){
+      var {Problem}=this.props.measure.toJS();
+      if(Problem.SolutionTitle!==null){
         return (<div style={{display:"flex",flexDirection:'row',alignItems:'center'}}>
-              <div className="measuresItem-title" title={EnergySolution.Name}>{EnergySolution.Name}</div>
+              <div className="measuresItem-title" title={I18N.format(I18N.Setting.ECM.SolutionTitle,Problem.SolutionTitle)}>{I18N.format(I18N.Setting.ECM.SolutionTitle,Problem.SolutionTitle)}</div>
               {this.props.disabled && <AlarmText text={I18N.Setting.ECM.Uncompleted}/>}</div>)
       }
       else {
         return <div style={{display:"flex",flexDirection:'row',alignItems:'center'}}>
                 <AlarmText text={I18N.Setting.ECM.NoECMName}/>
-                <div style={{color:'#4f5156',marginLeft:'10px',fontSize:'10px'}}>{`(${I18N.Setting.ECM.EnergyProblemName}:${EnergyProblem.Name})`}</div>
+                <div style={{color:'#4f5156',marginLeft:'10px',fontSize:'10px'}}>{`(${I18N.Setting.ECM.EnergyProblemName}:${Problem.Name})`}</div>
               </div>
       }
     }
 
     _renderContent(){
-      var {EnergySolution,EnergyProblem}=this.props.measure.toJS();
+      var {Problem}=this.props.measure.toJS();
       var {Solutions}=this.props.measure.toJS();
-      Solutions=[EnergySolution,EnergySolution,EnergySolution,EnergySolution,EnergySolution];
       var {ExpectedAnnualCostSaving,InvestmentAmount}=Solutions[this.state.displaySolutionIdx];
 			var InvestmentReturnCycle=MeasuresStore.getInvestmentReturnCycle(InvestmentAmount,ExpectedAnnualCostSaving);
 
@@ -169,7 +168,7 @@ export class MeasuresItem extends Component {
       return(
         <div className="measuresItem-content">
           <div className="side" style={{flex:1}}>
-            <div className="image" style={{backgroundImage:getUrl(EnergyProblem.ThumbnailUrl)}}></div>
+            <div className="image" style={{backgroundImage:getUrl(Problem.ThumbnailUrl)}}></div>
             <div style={{display:'flex',flexDirection:'column',flex:1}}>
               {Solutions.length>1 && <SolutionSelect sum={Solutions.length}
                                                      index={this.state.displaySolutionIdx}
@@ -195,7 +194,7 @@ export class MeasuresItem extends Component {
     }
 
     _renderName(){
-      var {EnergyProblem}=this.props.measure.toJS();
+      var {Problem}=this.props.measure.toJS();
 			var styles={
 				box:{
 					width: '18px',
@@ -216,7 +215,7 @@ export class MeasuresItem extends Component {
 																									}}/>}
             {this.getName()}
           </div>
-          <div style={{fontSize:'14px',color: '#626469', flex: 'none', marginLeft: 30}}>{MeasuresStore.getEnergySys(EnergyProblem.EnergySys)}</div>
+          <div style={{fontSize:'14px',color: '#626469', flex: 'none', marginLeft: 30}}>{MeasuresStore.getEnergySys(Problem.EnergySys)}</div>
         </div>
       )
     }
@@ -224,7 +223,7 @@ export class MeasuresItem extends Component {
 	render() {
     return(
 			<div className="jazz-complex-measuresItem">
-				{this.props.displayUnread && !this.props.measure.getIn(['EnergyProblem','IsRead'])?<BubbleIcon style={{width:'5px',height:'5px'}}/>:<div style={{marginRight:'5px'}}/>}
+				{this.props.displayUnread && !this.props.measure.getIn(['Problem','IsRead'])?<BubbleIcon style={{width:'5px',height:'5px'}}/>:<div style={{marginRight:'5px'}}/>}
 				<div className="jazz-energy-conservation-measuresItem" onClick={this.props.onClick}>
 					{this._renderName()}
 					{this._renderContent()}

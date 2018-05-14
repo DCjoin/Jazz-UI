@@ -18,6 +18,123 @@ var _solutionList=null,
     _unRead=[],
     _remarkList=null;
 var CHANGE_EVENT = 'change';
+
+const DEFAULT_SOLUTION={
+    "Problem": {
+      "Id": 0,
+      "TagIds": [
+        0
+      ],
+      "HierarchyId": 0,
+      "Name": "string",
+      "EnergySys": 1,
+      "Description": "string",
+      "Status": 0,
+      "IsRead": true,
+      "CreateUserId": 0,
+      "CreateUserName": "string",
+      "IsConsultant": true,
+      "CreateTime": "2018-05-11T06:19:36.799Z",
+      "ThumbnailUrl": "http://se-test-data.oss-cn-hangzhou.aliyuncs.com/EnergyWidgetGraph_763_0?x-oss-process=image/resize,w_146,h_97/format,png",
+      "EnergyProblemImages": [
+        {
+          Content:null,
+          EnergyProblemId:763,
+          Id:965,
+          ImageUrl:"http://se-test-data.oss-cn-hangzhou.aliyuncs.com/EnergyWidgetGraph_763_0?x-oss-process=image/resize,w_600,h_400/format,png",
+          Name:"bug 20065",
+          OssKey:"EnergyWidgetGraph_763_0"
+        }
+      ],
+      "Supervisor": {
+        "Id": 0,
+        "HierarchyId": 0,
+        "Name": "string",
+        "PhoneNumber": "string",
+        "EnergySys": 1,
+        "CreateTime": "2018-05-11T06:19:36.799Z"
+      },
+      "ProblemTypeId": 0,
+      "SolutionTitle": null
+    },
+    "Solutions": [
+      {
+        "Id": 0,
+        "Name": "string",
+        "ExpectedAnnualEnergySaving": 0,
+        "EnergySavingUnit": "string",
+        "ExpectedAnnualCostSaving": 0,
+        "InvestmentAmount": 0,
+        "ROI": 0,
+        "SolutionDescription": "string",
+        "ProblemTypeName": "string",
+        "EnergeyLabel": "string",
+        "IndustryDesc": "string",
+        "CreatorUserId": 0,
+        "CreatorUserName": "string",
+        "SolutionImages": [
+          {
+            "Id": 0,
+            "EnergySolutionId": 0,
+            "Name": "string",
+            "ImageUrl": "string",
+            "Content": "string",
+            "OssKey": "string"
+          }
+        ]
+      },
+            {
+        "Id": 0,
+        "Name": "string",
+        "ExpectedAnnualEnergySaving": 0,
+        "EnergySavingUnit": "string",
+        "ExpectedAnnualCostSaving": 0,
+        "InvestmentAmount": 0,
+        "ROI": 0,
+        "SolutionDescription": "string",
+        "ProblemTypeName": "string",
+        "EnergeyLabel": "string",
+        "IndustryDesc": "string",
+        "CreatorUserId": 0,
+        "CreatorUserName": "string",
+        "SolutionImages": [
+          {
+            "Id": 0,
+            "EnergySolutionId": 0,
+            "Name": "string",
+            "ImageUrl": "string",
+            "Content": "string",
+            "OssKey": "string"
+          }
+        ]
+      },      {
+        "Id": 0,
+        "Name": "string",
+        "ExpectedAnnualEnergySaving": 0,
+        "EnergySavingUnit": "string",
+        "ExpectedAnnualCostSaving": 0,
+        "InvestmentAmount": 0,
+        "ROI": 0,
+        "SolutionDescription": "string",
+        "ProblemTypeName": "string",
+        "EnergeyLabel": "string",
+        "IndustryDesc": "string",
+        "CreatorUserId": 0,
+        "CreatorUserName": "string",
+        "SolutionImages": [
+          {
+            "Id": 0,
+            "EnergySolutionId": 0,
+            "Name": "string",
+            "ImageUrl": "string",
+            "Content": "string",
+            "OssKey": "string"
+          }
+        ]
+      }
+    ]
+  }
+
 const MeasuresStore = assign({}, PrototypeStore, {
   init(){
     _solutionList=null;
@@ -26,6 +143,8 @@ const MeasuresStore = assign({}, PrototypeStore, {
   setSolutionList(data,status){
     this.init();
     _solutionList=Immutable.fromJS(data);
+
+    _solutionList=Immutable.fromJS(_.fill(Array(data.length),DEFAULT_SOLUTION));
     if(status===Status.NotPush){
       _solutionList.forEach(solution=>{
         _checkList.push({
@@ -86,7 +205,7 @@ const MeasuresStore = assign({}, PrototypeStore, {
     if(index==='Batch'){
       _solutionList.forEach((solution,index)=>{
         if(_checkList[index].checked){
-          var name=`“${solution.getIn(['EnergySolution','Name'])}”`;
+          var name=`“${solution.getIn(['Problem','SolutionTitle'])}”`;
           if(names===null){
             return names=name;
           }else {
@@ -96,7 +215,7 @@ const MeasuresStore = assign({}, PrototypeStore, {
       })
     }
     else {
-      names=_solutionList.getIn([index,'EnergySolution','Name'])?`“${_solutionList.getIn([index,'EnergySolution','Name'])}”`:''
+      names=_solutionList.getIn([index,'Problem','SolutionTitle'])?`“${_solutionList.getIn([index,'Problem','SolutionTitle'])}”`:''
     }
     return names
   },
@@ -116,10 +235,16 @@ const MeasuresStore = assign({}, PrototypeStore, {
     return energySys.find(item=>(item.get('value')===value)).get('label')
   },
   IsSolutionDisable(measure){
-    var {EnergySolution,EnergyProblem}=measure;
-    return EnergySolution.Name===null || EnergySolution.ExpectedAnnualEnergySaving===null
-              || EnergySolution.EnergySavingUnit===null || EnergySolution.ExpectedAnnualCostSaving===null || EnergySolution.Description===null
-              || EnergyProblem.Name===null || EnergyProblem.Description===null
+    var {Solutions,Problem}=measure;
+    var disabled=Problem.SolutionTitle===null || Problem.Name===null || Problem.Description===null
+
+    Solutions.forEach(solution=>{
+      disabled=disabled || solution.Name===null || solution.Description===null || solution.ExpectedAnnualEnergySaving===null
+              || solution.EnergySavingUnit===null || solution.ExpectedAnnualCostSaving===null
+    })
+
+    return disabled
+
   },
   getAllSelectedStatus(){
     var abledAndunCheck=Immutable.fromJS(_checkList).findIndex(item=>(!item.get('disabled') && !item.get('checked')))>-1;
