@@ -40,6 +40,16 @@ app.use((req, res, next) => {
   console.log(req.hostname);
   console.log(req.url);
   console.log("%j", req.headers);
+
+  //add modified reg for validated host
+  let host = req.host;
+  let reg = /^(.*\.energymost.com)$/;   
+  let trust = reg.test(host);
+  if(!trust) {
+    res.send(404,'Page Not Found!');
+    return res;
+  }
+
   let forwardProto = req.get("x-forwarded-proto");
   console.log(forwardProto);
   let proto = forwardProto || req.protocol;

@@ -121,7 +121,17 @@ app.get('/:lang/logout',(req, res) => {
 });
 
 
-app.get('/:lang/*', returnIndexHtml);
+app.get('/:lang/*', (req,res) => {
+  var host = req.hostname;
+  var reg = /^((127\.0\.0\.1)|(localhost))$/;   
+　var trust = reg.test(host);
+  console.log(host,trust);
+  if(!trust) {
+    res.send(404,'Page Not Found!');
+    return res;
+  }
+  return returnIndexHtml(req,res);
+});
 
 app.get('/', (req, res) => {
     return res.redirect(301, '/zh-cn/');
