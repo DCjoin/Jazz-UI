@@ -6,6 +6,8 @@ import FontIcon from 'material-ui/FontIcon';
 import CommonFuns from 'util/Util.jsx';
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
 import BubbleIcon from '../BubbleIcon.jsx';
+import Popover, {PopoverAnimationVertical} from 'material-ui/Popover';
+import classnames from "classnames";
 
 function getUrl(url) {
 	return "url(" + url+")";
@@ -14,6 +16,11 @@ function getUrl(url) {
 function validValue(value) {
 	return value!==null?CommonFuns.getLabelData(value*1):'-';
 }
+
+let AlarmText=({text})=>(<div className="alarm-text">  
+   <FontIcon className="icon-no_ecm" color="#fd625e" iconStyle ={{fontSize:'10px'}} style={{fontSize:'10px',height:'10px'}}/>
+  <div style={{marginLeft:'4px'}}>{text}</div></div>)
+
 
 export class IconText extends Component{
   render(){
@@ -47,40 +54,102 @@ IconText.propTypes = {
   valueStyle:React.PropTypes.object
 };
 
+const SOLUTION_NAMES=[I18N.Setting.ECM.SolutionName.First,I18N.Setting.ECM.SolutionName.Second,I18N.Setting.ECM.SolutionName.Third,
+                      I18N.Setting.ECM.SolutionName.Fourth,I18N.Setting.ECM.SolutionName.Fifth,I18N.Setting.ECM.SolutionName.Sixth,
+                      I18N.Setting.ECM.SolutionName.Seventh,I18N.Setting.ECM.SolutionName.Eighth,I18N.Setting.ECM.SolutionName.Ninth,
+                      I18N.Setting.ECM.SolutionName.Tenth]
+
+class SolutionSelect extends Component {
+    constructor(props) {
+      super(props);
+      this.state={
+        selectMenuShow:false,
+        anchorEl:null
+      }
+    }
+
+    handleClick=(event)=>{
+      event.preventDefault();
+      event.stopPropagation();
+      this.setState({
+        selectMenuShow:true,
+        anchorEl: event.currentTarget
+      })
+    }
+
+    handleRequestClose = () => {
+      this.setState({
+       selectMenuShow: false,
+    });
+  }
+
+    render(){
+      var {sum,onClick}=this.props;
+      return(
+                <div className="solution-select">
+                  <div className="solution-select-box" onClick={this.handleClick}>
+                    <div className="solution-select-box-text">{SOLUTION_NAMES[this.props.index]}</div>
+                    <FontIcon className="icon-arrow-unfold" color="#c0c0c0" iconStyle ={{fontSize:'10px'}} style={{fontSize:'10px'}}/>
+                  </div>
+                  <Popover
+                    open={this.state.selectMenuShow}
+                    anchorEl={this.state.anchorEl}
+                    anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+                    targetOrigin={{horizontal: 'left', vertical: 'top'}}
+                    onRequestClose={this.handleRequestClose}
+                    animation={PopoverAnimationVertical}
+                  >
+                  <div className="solution-select-paper">
+                    {SOLUTION_NAMES.slice(0,sum).map((sulutionName,index)=>
+                                                        <div className={classnames({
+                                                          "solution-select-paper-item":true,
+                                                          "selected":index===this.props.index
+                                                        })}
+                                                         
+                                                             onClick={(e)=>{
+                                                                e.preventDefault();
+                                                                this.setState({
+                                                                  selectMenuShow:false
+                                                                },()=>{
+                                                                  onClick(index);
+                                                                })                                                                
+                                                             }}>{sulutionName}</div>)}
+                  </div>
+                  </Popover>
+              </div>
+      )
+    }
+}
+
+
 export class MeasuresItem extends Component {
 
     constructor(props) {
       super(props);
+      this.state={
+        displaySolutionIdx:0
+      }
     }
 
     getName(){
-      var {EnergyProblem,EnergySolution}=this.props.measure.toJS();
-      if(EnergySolution.Name!==null){
-        return <div className="measuresItem-title" title={EnergySolution.Name}>{EnergySolution.Name}</div>
+      var {Problem}=this.props.measure.toJS();
+      if(Problem.SolutionTitle!==null){
+        return (<div style={{display:"flex",flexDirection:'row',alignItems:'center'}}>
+              <div className="measuresItem-title" title={I18N.format(I18N.Setting.ECM.SolutionTitle,Problem.SolutionTitle)}>{I18N.format(I18N.Setting.ECM.SolutionTitle,Problem.SolutionTitle)}</div>
+              {this.props.disabled && <AlarmText text={I18N.Setting.ECM.Uncompleted}/>}</div>)
       }
       else {
-        let iconStyle = {
-            fontSize: '14px'
-          },
-          style = {
-            padding: '0px',
-            height: '13.5px',
-            width: '14.5px',
-            fontSize: '14px',
-            marginTop:'-5px',
-						marginRight:'5px'
-          };
-        return <div style={{display:"flex",flexDirection:'row',alignItems:'center',marginTop:'-3px'}}>
-                <FontIcon className="icon-no_ecm" color="#dc0a0a" iconStyle ={iconStyle} style = {style} />
-                <div style={{color:'#dc0a0a',fontSize:'14px'}}>{I18N.Setting.ECM.NoECM}</div>
-                <div style={{color:'#4f5156',marginLeft:'10px',fontSize:'10px'}}>{`(${I18N.Setting.ECM.EnergyProblem}:${EnergyProblem.Name})`}</div>
+        return <div style={{display:"flex",flexDirection:'row',alignItems:'center'}}>
+                <AlarmText text={I18N.Setting.ECM.NoECMName}/>
+                <div style={{color:'#4f5156',marginLeft:'10px',fontSize:'10px'}}>{`(${I18N.Setting.ECM.EnergyProblemName}:${Problem.Name})`}</div>
               </div>
       }
     }
 
     _renderContent(){
-      var {EnergySolution,EnergyProblem}=this.props.measure.toJS();
-      var {ExpectedAnnualCostSaving,InvestmentAmount}=EnergySolution;
+      var {Problem}=this.props.measure.toJS();
+      var {Solutions}=this.props.measure.toJS();
+      var {ExpectedAnnualCostSaving,InvestmentAmount}=Solutions[this.state.displaySolutionIdx];
 			var InvestmentReturnCycle=MeasuresStore.getInvestmentReturnCycle(InvestmentAmount,ExpectedAnnualCostSaving);
 
       let iconStyle = {
@@ -99,11 +168,22 @@ export class MeasuresItem extends Component {
       return(
         <div className="measuresItem-content">
           <div className="side" style={{flex:1}}>
-            <div className="image" style={{backgroundImage:getUrl(EnergyProblem.ThumbnailUrl)}}></div>
-            <IconText icon={costIcon} style={{marginLeft:'30px',flex:1}} label={I18N.Setting.ECM.EstimatedAnnualCostSavings} value={validValue(ExpectedAnnualCostSaving)} uom="RMB"/>
-            <IconText icon={sumIcon} style={{marginLeft:'30px',flex:1}} label={I18N.Setting.ECM.InvestmentAmount} value={validValue(InvestmentAmount)} uom="RMB"/>
-            <IconText icon={periodIcon} style={{marginLeft:'30px',flex:1}} label={I18N.Setting.ECM.PaybackPeriod} value={InvestmentReturnCycle || '-'}
+            <div className="image" style={{backgroundImage:getUrl(Problem.ThumbnailUrl)}}></div>
+            <div style={{display:'flex',flexDirection:'column',flex:1}}>
+              {Solutions.length>1 && <SolutionSelect sum={Solutions.length}
+                                                     index={this.state.displaySolutionIdx}
+                                                     onClick={(index)=>{
+                                                       this.setState({displaySolutionIdx:index})
+                                                     }}/>}
+              <div style={{marginTop:'15px',display:'flex'}}>
+                <IconText icon={costIcon} style={{marginLeft:'30px',flex:1}} label={I18N.Setting.ECM.EstimatedAnnualCostSavings} value={validValue(ExpectedAnnualCostSaving)} uom="RMB"/>
+                <IconText icon={sumIcon} style={{marginLeft:'30px',flex:1}} label={I18N.Setting.ECM.InvestmentAmount} value={validValue(InvestmentAmount)} uom="RMB"/>
+                <IconText icon={periodIcon} style={{marginLeft:'30px',flex:1}} label={I18N.Setting.ECM.PaybackPeriod} value={InvestmentReturnCycle || '-'}
 											uom={CommonFuns.isNumber(InvestmentReturnCycle)?I18N.EM.Years:''}/>
+              </div>
+
+            </div>
+            
             <div>{this.props.personInCharge}</div>
           </div>
           <div className="side">
@@ -114,7 +194,7 @@ export class MeasuresItem extends Component {
     }
 
     _renderName(){
-      var {EnergyProblem}=this.props.measure.toJS();
+      var {Problem}=this.props.measure.toJS();
 			var styles={
 				box:{
 					width: '18px',
@@ -135,7 +215,7 @@ export class MeasuresItem extends Component {
 																									}}/>}
             {this.getName()}
           </div>
-          <div style={{fontSize:'14px',color: '#626469', flex: 'none', marginLeft: 30}}>{MeasuresStore.getEnergySys(EnergyProblem.EnergySys)}</div>
+          <div style={{fontSize:'14px',color: '#626469', flex: 'none', marginLeft: 30}}>{MeasuresStore.getEnergySys(Problem.EnergySys)}</div>
         </div>
       )
     }
@@ -143,7 +223,7 @@ export class MeasuresItem extends Component {
 	render() {
     return(
 			<div className="jazz-complex-measuresItem">
-				{this.props.displayUnread && !this.props.measure.getIn(['EnergyProblem','IsRead'])?<BubbleIcon style={{width:'5px',height:'5px'}}/>:<div style={{marginRight:'5px'}}/>}
+				{this.props.displayUnread && !this.props.measure.getIn(['Problem','IsRead'])?<BubbleIcon style={{width:'5px',height:'5px'}}/>:<div style={{marginRight:'5px'}}/>}
 				<div className="jazz-energy-conservation-measuresItem" onClick={this.props.onClick}>
 					{this._renderName()}
 					{this._renderContent()}

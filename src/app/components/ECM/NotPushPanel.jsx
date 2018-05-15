@@ -16,6 +16,9 @@ import {Solution,SolutionLabel} from './MeasurePart/Solution.jsx';
 import SolutionGallery from './MeasurePart/SolutionGallery.jsx';
 import DisappareItem from './MeasurePart/DisappareItem.jsx';
 import {EnergySys} from './MeasurePart/MeasureTitle.jsx';
+import Immutable from 'immutable';
+
+import PushConfirmDialog from'./push_confirm_dialog.jsx';
 
 export default class NotPushPanel extends Component {
   constructor(props) {
@@ -63,7 +66,7 @@ export default class NotPushPanel extends Component {
     }
     this.setState({
       handleIndex:null,
-      solutionList:null
+      solutionList:null,
     })
   }
 
@@ -174,7 +177,7 @@ export default class NotPushPanel extends Component {
     };
     return(
       <div style={{display:'inline-block'}} onClick={(e)=>{e.stopPropagation()}}>
-        <FlatButton disabled={disabled} label={I18N.Setting.ECM.Push} style={styles.pushBtn}
+        <FlatButton disabled={disabled} label={I18N.Setting.ECM.PushBtn} style={styles.pushBtn}
                     onClick={(e)=>{
                       e.stopPropagation();
                         this.setState({
@@ -208,6 +211,7 @@ export default class NotPushPanel extends Component {
       return(
         <div ref="content" className="content">
           {this.state.solutionList.map((solution,index)=>{
+            // measure:solution
             var prop={
               measure:solution,
               hasCheckBox:true,
@@ -247,9 +251,9 @@ export default class NotPushPanel extends Component {
     };
     var content=this.state.dialogType===DIALOG_TYPE.BATCH_PUSH
                 ?I18N.format(I18N.Setting.ECM.BatchPushContent,MeasuresStore.getNamesById('Batch'))
-                :I18N.format(I18N.Setting.ECM.PushContent,MeasuresStore.getNamesById(this.state.handleIndex));
-    return(
-      <NewDialog
+                :I18N.format(I18N.Setting.ECM.PushContent);
+return(
+     <NewDialog
         open={true}
         overlayStyle={{zIndex:'1000'}}
         actionsContainerStyle={styles.action}
@@ -268,7 +272,6 @@ export default class NotPushPanel extends Component {
                   }
                 })
               }} />,
-
             <FlatButton
               label={I18N.Common.Button.Cancel2}
               onClick={() => {this.setState({
@@ -277,6 +280,9 @@ export default class NotPushPanel extends Component {
                               })}} />
           ]}
       ><div className="jazz-ecm-measure-viewabletext">{content}</div></NewDialog>
+
+   
+
     )
   }
 
@@ -291,7 +297,7 @@ export default class NotPushPanel extends Component {
         padding:'0 30px'
       }
     };
-    var content=I18N.format(I18N.Setting.ECM.DeleteContent,MeasuresStore.getNamesById(this.state.handleIndex));
+    var content=I18N.format(I18N.Setting.ECM.DeleteContent);
     return(
       <NewDialog
         open={true}
@@ -302,7 +308,6 @@ export default class NotPushPanel extends Component {
             <RaisedButton
               label={I18N.Common.Button.Delete}
               onClick={this._onDelete} />,
-
             <FlatButton
               label={I18N.Common.Button.Cancel2}
               onClick={() => {this.setState({
@@ -316,7 +321,7 @@ export default class NotPushPanel extends Component {
 
   _renderMeasureDialog(){
     var currentSolution=this.state.solutionList.getIn([this.state.measureIndex]);
-    var onClose=()=>{
+    var onSave=()=>{
       this.setState({
         measureShow:false,
         measureIndex:null
@@ -347,12 +352,12 @@ export default class NotPushPanel extends Component {
      gallery: {
       measure:currentSolution,
       onDelete: (idx) => {
-        let imagesPath = ['EnergyProblem','EnergyProblemImages'];
+        let imagesPath = ['Problem','EnergyProblemImages'];
         this.merge(imagesPath, currentSolution.getIn(imagesPath).delete(idx));
       }
      }
    }
-    return(
+    /*return(
       <NewDialog
         open={this.state.measureShow}
         hasClose
@@ -372,7 +377,29 @@ export default class NotPushPanel extends Component {
         <div style={{margin:"46px 20px 0 16px"}}><SolutionGallery {...props.gallery}/></div>
 
       </NewDialog>
-    )
+    )*/
+
+    return <PushConfirmDialog solution={currentSolution}
+                               onPush={(e)=>{
+                                 e.stopPropagation();
+                                this.setState({
+                                  dialogType:DIALOG_TYPE.PUSH,
+                                  handleIndex:this.state.measureIndex
+                                })
+                               }}
+                               onDelete={(e)=>{
+                                 e.stopPropagation();
+                                this.setState({
+                                  dialogType:DIALOG_TYPE.DELETE,
+                                  handleIndex:this.state.measureIndex
+                                })
+                               }}
+                               onClose={()=>{
+                                 this.setState({
+                                   measureShow:false
+                                 })
+                               }}
+                               onSave={onSave}/>
   }
 
   getProps(){
@@ -430,7 +457,7 @@ export default class NotPushPanel extends Component {
         {this._renderAction()}
         {this._renderList()}
         {dialog}
-        {this.state.solutionList!==null && this.state.solutionList.size!==0 && this._renderMeasureDialog()}
+        {this.state.solutionList!==null && this.state.solutionList.size!==0 && this.state.measureShow && this._renderMeasureDialog()}
         <Snackbar ref='snackbar' open={!!this.state.snackbarText} onRequestClose={()=>{
             MeasuresAction.resetErrorText()
           }} message={this.state.snackbarText}/>
