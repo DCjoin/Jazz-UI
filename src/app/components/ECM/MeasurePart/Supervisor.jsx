@@ -219,11 +219,11 @@ class SupervisorDropDownMenu extends Component{
 
     var styles={
       btnStyle:{
-        width: '155px',
-        height: '28px',
+        width: '220px',
+        height: '36px',
         borderRadius: '4px',
         border: 'solid 1px #e6e6e6',
-        lineHeight:'28px',
+        lineHeight:'36px',
         textAlign:"start",
         paddingLeft:'11px'
       },
@@ -388,8 +388,8 @@ export default class Supervisor extends Component {
     if(this.props.usedInDetail){
       return(
         <div className="indetail">
-          <div className="jazz-ecm-push-operation-label" style={{marginRight:"5px"}}>{I18N.Setting.CustomerManagement.PrincipalShort+'：'}</div>
-          <SupervisorDropDownMenu {...prop}/>
+          <div className="jazz-ecm-push-operation-label">{I18N.Setting.CustomerManagement.PrincipalShort}</div>
+          <div style={{marginTop:'8px'}}><SupervisorDropDownMenu {...prop}/></div>
         </div>
       )
     }

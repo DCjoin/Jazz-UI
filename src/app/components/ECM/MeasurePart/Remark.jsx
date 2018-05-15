@@ -27,42 +27,55 @@ class AddRemark extends Component{
       }
 
   state={
-    value:''
+    value:'',
+    errorshow:false
   }
   render(){
-    var prop = {
-      onChange: (e,value)=>{this.setState({value})},
-      value: this.state.value,
-      hintText:I18N.Setting.ECM.AddRemark,
-      hintStyle:{fontSize:"12px",paddingLeft:"8px"},
-      multiLine:true,
-      style:{width:'100%'}
-    };
+    var MULTISTYLE={
+        width: '770px',
+        fontSize:'14px',
+        padding:'0 10px',
+        boxSizing:' border-box'     
+};
+    // var prop = {
+    //   onChange: (e,value)=>{this.setState({value})},
+    //   value: this.state.value,
+    //   hintText:I18N.Setting.ECM.AddRemark,
+    //   hintStyle:{fontSize:"12px",paddingLeft:"8px"},
+    //   multiLine:true,
+    //   style:{width:'100%'}
+    // };
     return(
       <div className="add_remark_item">
-        <TextField {...prop}/>
-        <div style={{marginTop:'15px'}}>
+        <div className="text-field">
+              <div className="text">
+                  <TextField hintText={I18N.Setting.ECM.AddRemark}
+                             hintStyle={{bottom:'15px'}}
+                             multiLine={true}
+                             rowsMax={10000}
+                             value={this.state.value}
+                            style={MULTISTYLE}
+                            underlineShow={false}
+                            onChange={(e,value)=>{this.setState({value,errorshow:false})}}/>                                                               
+                                                </div>
+                                                </div>
+        <div style={{marginTop:'24px',display:'flex'}}>
           <FlatButton
-            style={{width: '67px',height: '24px',borderRadius: '2px',border: 'solid 1px #3dcd58',lineHeight:'22px',minWidth:"67px"}}
+            style={{width: '86px',height: '28px',borderRadius: '2px',border: 'solid 1px #3dcd58',lineHeight:'28px',minWidth:"86px"}}
             labelStyle={{color:'#3dcd58',fontSize:'14px',padding:'0px',verticalAlign:'baseline'}}
-            label={I18N.Common.Button.Save}
-            disabled={this.state.value===''}
+            label={I18N.Setting.ECM.AddRemark}
             onClick={()=>{
-                          this.props.onSave(this.state.value);
+                          if(this.state.value===''){
+                            this.setState({errorshow:true})
+                          }else{
+                            this.props.onSave(this.state.value);
                           this.setState({
-                            value:""
+                            errorshow:false,
+                            value:"",
                           })
+                          }
                         }} />
-          <FlatButton
-            style={{width: '67px',height: '24px',borderRadius: '2px',lineHeight:'22px',minWidth:"67px",marginLeft:'25px'}}
-            labelStyle={{color:'#626469',fontSize:'14px',padding:'0px',verticalAlign:'baseline'}}
-            label={I18N.Common.Button.Cancel2}
-            onClick={()=>{
-              this.props.onCancel();
-              this.setState({
-                value:""
-              })
-            }} />
+            {this.state.errorshow && <div style={{}}>{I18N.Setting.ECM.AddRemarkTip}</div>}
           </div>
       </div>
     )
@@ -119,6 +132,17 @@ RemarkItem.propTypes = {
   canEdit:React.PropTypes.bool,
   onDelete:React.PropTypes.func,
 };
+
+ const ICONSTYLE = {
+        fontSize: '20px'
+      },
+      STYLE = {
+        padding: '0px',
+        fontSize: '20px',
+        lineHeight:"20px",
+        marginRight:'12px'
+      };
+
 export default class Remark extends Component {
 
     constructor(props) {
@@ -187,7 +211,7 @@ export default class Remark extends Component {
          </div>
         )
       }else {
-        return(
+        /*return(
           <div className="measure-remark">
             <div className="title">
               <div className="name">{I18N.Remark.Label}</div>
@@ -197,6 +221,22 @@ export default class Remark extends Component {
               remark && <RemarkItem remark={remark} canEdit={this.props.canEdit} onDelete={this._onDelete.bind(this,remark.get('Id'))}/>
             ))}
           </div>
+        )*/
+        return(
+          <div className="measure-remark">
+                      <div className="push-panel-solution-header">
+                        <div className="push-panel-solution-header-title">
+                              <FontIcon className="icon-pay-back-period" color="#32ad3c" iconStyle ={ICONSTYLE} style = {STYLE} />
+                              <div className="font">{I18N.Remark.Label}</div>
+                        </div>
+                    </div>
+                    {this.props.canEdit && <AddRemark onSave={this._onSave.bind(this)} onCancel={this._onCancel.bind(this)}/>}
+            {(this.props.remarkList || this.state.remarkList).map(remark=>(
+              remark && <RemarkItem remark={remark} canEdit={this.props.canEdit} onDelete={this._onDelete.bind(this,remark.get('Id'))}/>
+            ))}
+
+          </div>
+
         )
       }
     }
