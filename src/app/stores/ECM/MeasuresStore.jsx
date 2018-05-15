@@ -77,7 +77,22 @@ const DEFAULT_SOLUTION={
             "Id": 0,
             "EnergySolutionId": 0,
             "Name": "string",
-            "ImageUrl": "string",
+            "ImageUrl": "http://se-test-data.oss-cn-hangzhou.aliyuncs.com/EnergyWidgetGraph_763_0?x-oss-process=image/resize,w_146,h_97/format,png",
+            "Content": "string",
+            "OssKey": "string"
+          },
+                    {
+            "Id": 0,
+            "EnergySolutionId": 0,
+            "Name": "string",
+            "ImageUrl": "http://se-test-data.oss-cn-hangzhou.aliyuncs.com/EnergyWidgetGraph_763_0?x-oss-process=image/resize,w_146,h_97/format,png",
+            "Content": "string",
+            "OssKey": "string"
+          },          {
+            "Id": 0,
+            "EnergySolutionId": 0,
+            "Name": "string",
+            "ImageUrl": "http://se-test-data.oss-cn-hangzhou.aliyuncs.com/EnergyWidgetGraph_763_0?x-oss-process=image/resize,w_146,h_97/format,png",
             "Content": "string",
             "OssKey": "string"
           }

@@ -57,8 +57,8 @@ class AddRemark extends Component{
                             style={MULTISTYLE}
                             underlineShow={false}
                             onChange={(e,value)=>{this.setState({value,errorshow:false})}}/>                                                               
-                                                </div>
-                                                </div>
+              </div>
+          </div>
         <div style={{marginTop:'24px',display:'flex'}}>
           <FlatButton
             style={{width: '86px',height: '28px',borderRadius: '2px',border: 'solid 1px #3dcd58',lineHeight:'28px',minWidth:"86px"}}

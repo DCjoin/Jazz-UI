@@ -78,13 +78,15 @@ class ImageItemContainer extends Component{
 					onClick={this.props.onClick}
 					imageId={this.props.diagram.get('ImageId')} mode="cover"
 					imageContent={this.props.diagram.get('Content')} 
-          url={this.props.diagram.get('ImageUrl')}/>
+          url={'url('+this.props.diagram.get('ImageUrl')+')'}/>
 				{buttonContainer}
 			</div>
 		);
 	}
 }
 
+// example:
+//<ImagGroupPanel diagrams={this.state.solution.getIn(["Solutions",0,"SolutionImages"])} width={145} height={100} editable={false}/>
 
 export default class ImageFroupPanel extends Component{
 
@@ -132,8 +134,8 @@ export default class ImageFroupPanel extends Component{
         render(){
           var {diagrams,height,width,editable}=this.props;
           return(
-            <div>
-              {diagrams.map((diagram,index)=><ImageItemContainer width={width}
+            <div className="image-group">
+              {diagrams.map((diagram,index)=><div style={{width:width,height:height,minWidth:width,marginRight:'10px',marginTop:'10px'}}><ImageItemContainer width={width}
                                                                  height={height}
                                                                  diagram={diagram}
                                                                  index={index}
@@ -142,7 +144,9 @@ export default class ImageFroupPanel extends Component{
                                                                     e.preventDefault();
                                                                     e.stopPropagation();
                                                                     this._handleShowImage({index:index,images:diagrams})}
-                                                                }/>)}
+                                                                }/>
+                                                                </div>)}
+            {this.state.showMax!==null && this._renderOverlay()}
             </div>
           )
         }

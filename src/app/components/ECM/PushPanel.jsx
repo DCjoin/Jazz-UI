@@ -409,8 +409,7 @@ export default class PushPanel extends Component {
       <div className="jazz-ecm-push-operation">
         <StatusCmp status={status} canEdit={canEditStatus(createUserId,this.state.infoTabNo)} onChange={this._onStatusChange.bind(this)}/>
         <EnergySys {...prop.energySys}/>
-        {this._renderPersonInCharge(problem,true)}
-        
+        {this._renderPersonInCharge(problem,true)}        
       </div>
     )
   }
@@ -418,13 +417,13 @@ export default class PushPanel extends Component {
   _renderMeasureDialog(){
     var currentSolution=this.state.solutionList.getIn([this.state.measureIndex]);
     var createUserId=this.state.solutionList.getIn([this.state.measureIndex,'Problem','CreateUserId']);
-    var onClose=()=>{
+    var onSave=(solution)=>{
       this.setState({
         measureShow:false,
         measureIndex:null
       },()=>{
         //currentSolution=MeasuresStore.getValidParams(currentSolution);
-        MeasuresAction.updateSolution(currentSolution.toJS(),()=>{this.refresh(status[this.state.infoTabNo-1])});
+        MeasuresAction.updateSolution(solution.toJS(),()=>{this.refresh(status[this.state.infoTabNo-1])});
       })
     };
     var problem=this.state.solutionList.getIn([this.state.measureIndex,'Problem']),
@@ -484,7 +483,9 @@ export default class PushPanel extends Component {
     )*/
     return(
       <EditSolution solution={currentSolution} operation={this._renderOperation()}
-                                               hasRemarkPriviledge={PushIsFull() || PushAndNotPushIsFull()}/>
+                                               hasRemarkPriviledge={PushIsFull() || PushAndNotPushIsFull()}
+                                               onSave={onSave}
+                                               onClose={()=>{this.setState({measureShow:false})}}/>
     )
   }
 

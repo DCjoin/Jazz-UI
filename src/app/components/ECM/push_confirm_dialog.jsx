@@ -6,6 +6,7 @@ import Snackbar from 'material-ui/Snackbar';
 import Immutable from 'immutable';
 import NewDialog from 'controls/NewDialog.jsx';
 import RaisedButton from 'material-ui/RaisedButton';
+import ImagGroupPanel from 'controls/ImagGroupPanel.jsx';
 
 export default class PushConfirmDialog extends Component {
   constructor(props) {
@@ -68,7 +69,7 @@ export default class PushConfirmDialog extends Component {
         actions={[
             <RaisedButton
               label={I18N.Common.Button.Save}
-              onClick={this.props.onSave} />,
+              onClick={()=>{this.props.onSave(this.state.solution)}} />,
             <FlatButton
               label={I18N.Common.Button.NotSave}
               onClick={() => {this.setState({
@@ -87,6 +88,7 @@ export default class PushConfirmDialog extends Component {
             <IconButton iconClassName="icon-close" style={{padding:0,width:'24px',height:'26px'}} iconStyle={{fontSize:'24px',color:"#9fa0a4"}}
              onClick={this._onClose}/>
           </div>
+         
           {this._renderFooter()}
          <Snackbar ref='snackbar' autoHideDuration={1500} open={!!this.state.snackBarOpen} onRequestClose={()=>{this.setState({snackBarOpen:false})}} message={I18N.Setting.ECM.RequiredTip}/>
          {this.state.saveTipShow && this._renderSaveTip()}

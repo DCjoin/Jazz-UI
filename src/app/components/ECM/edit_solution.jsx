@@ -6,6 +6,9 @@ import Immutable from 'immutable';
 import FontIcon from 'material-ui/FontIcon';
 import Remark from './MeasurePart/Remark.jsx';
 import ReactDom from 'react-dom';
+import NewDialog from 'controls/NewDialog.jsx';
+import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'controls/FlatButton.jsx';
 
  const ICONSTYLE = {
         fontSize: '20px'
@@ -35,12 +38,13 @@ export default class EditSolution extends Component {
     }
 
     _onClose(){
-      if(MeasuresStore.IsSolutionDisable(this.state.solution.toJS())){
+      var currentSolution=this.state.solution.setIn(["Problem",'EnergySys'],this.state.energySys);
+      if(MeasuresStore.IsSolutionDisable(currentSolution.toJS())){
         this.setState({
           snackBarOpen:true
         })
       }else{
-        if(Immutable.is(this.state.solution.setIn(["Problem",'EnergySys'],this.state.energySys),this.props.solution)){
+        if(Immutable.is(currentSolution,this.props.solution)){
           this.props.onClose()
         }else{
           this.setState({
@@ -71,6 +75,38 @@ export default class EditSolution extends Component {
           </div>
         </div>
       )
+    }
+
+        _renderSaveTip(){
+          var styles={
+      content:{
+        padding:'30px',
+        display:'flex',
+        justifyContent:'center'
+      },
+      action:{
+        padding:'0 30px'
+      }
+    };
+    var content=I18N.format(I18N.Setting.ECM.SaveTip);
+    return(
+      <NewDialog
+        open={true}
+        actionsContainerStyle={styles.action}
+        overlayStyle={{zIndex:'1000'}}
+        contentStyle={styles.content}
+        actions={[
+            <RaisedButton
+              label={I18N.Common.Button.Save}
+              onClick={()=>{this.props.onSave(this.state.solution.setIn(["Problem",'EnergySys'],this.state.energySys))}} />,
+            <FlatButton
+              label={I18N.Common.Button.NotSave}
+              onClick={() => {this.setState({
+                              saveTipShow:false
+                              })}} />
+          ]}
+      ><div className="jazz-ecm-measure-viewabletext">{content}</div></NewDialog>
+    )
     }
 
     _renderRemark(){
