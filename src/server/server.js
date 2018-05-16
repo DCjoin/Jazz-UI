@@ -160,6 +160,7 @@ var APP_DOWNLOAD_LOCAL = process.env.APP_DOWNLOAD_LOCAL;
 var APP_DOWNLOAD_QQ = process.env.APP_DOWNLOAD_QQ;
 var APP_DOWNLOAD_WDJ = process.env.APP_DOWNLOAD_WDJ;
 var APP_DOWNLOAD_BAIDU = process.env.APP_DOWNLOAD_BAIDU;
+var GUARD_UI_HOST = process.env.GUARD_UI_HOST;
 
 function getLang(req) {
   var lang = req.params.lang;
@@ -206,6 +207,11 @@ function returnIndexHtml(req,res){
   if(JAZZ_WEBAPI_HOST) {
     html = html.replace('__JAZZ_WEBAPI_HOST__', JAZZ_WEBAPI_HOST);
   }
+
+   if(GUARD_UI_HOST) {
+    html = html.replace('__GUARD_UI_HOST__', GUARD_UI_HOST);
+  }
+
   return res.status(200).type('.html').end(html);
 }
 

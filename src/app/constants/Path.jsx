@@ -127,5 +127,8 @@ module.exports = {
     buildingOverviewTotal:'/energyeffect/building/Overview/total/{hierarchyId}/{year}',
     BuildingShow:'/energyeffect/group/Overview/BuildingShow/{customerId}/{year}',
     overviewMinYear: '/energyeffect/Overview/MinYear/{isBuilding}/{hierarchyId}',
+  },
+  User:{
+    startChangePassword:'/user/startChangePassword/{userName}'
   }
 };

@@ -159,7 +159,7 @@ const MeasuresStore = assign({}, PrototypeStore, {
     this.init();
     _solutionList=Immutable.fromJS(data);
 
-    _solutionList=Immutable.fromJS(_.fill(Array(data.length),DEFAULT_SOLUTION));
+    // _solutionList=Immutable.fromJS(_.fill(Array(data.length),DEFAULT_SOLUTION));
     if(status===Status.NotPush){
       _solutionList.forEach(solution=>{
         _checkList.push({
