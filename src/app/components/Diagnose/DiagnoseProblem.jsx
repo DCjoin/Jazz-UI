@@ -313,7 +313,9 @@ export default class DiagnoseProblem extends Component {
     }
 
 		getProblem(props,start,end){
-			DiagnoseAction.getproblemdata(props.selectedNode.get('Id'),start,end);
+      let selectedId = props.selectedNode.get('Id');
+			DiagnoseAction.getproblemdata(selectedId,start,end);
+      DiagnoseAction.getSuggestSolutions( DiagnoseStore.findLabelById(selectedId).get('Id'), this.context.hierarchyId, DiagnoseStore.findProblemById(selectedId).get('Id'));
 		}
 
 		componentDidMount(){
@@ -363,9 +365,13 @@ export default class DiagnoseProblem extends Component {
         <div className="detail-content-content-head">
             <div className="name">{Name}</div>
           {isFull && <div className="side">
-                      <GenerateSolutionButton onOpen={this._onSolutionShow.bind(this)} disabled={this.state.chartData===null}/>
-                      {this._renderIconMenu()}
-                      </div>}
+            <span style={{
+              color: '#32ad3d',
+              marginRight: 10,
+            }}><span className='icon-glyph' tooltip='点击"生成方案"可引用标准解决方案'/>{`${6}个可用方案推荐`}</span>
+            <GenerateSolutionButton onOpen={this._onSolutionShow.bind(this)} disabled={this.state.chartData===null}/>
+            {this._renderIconMenu()}
+          </div>}
         </div>
 				<div className="detail-content-content-problem-chart">
 					{this.state.timeselectorShow && <div style={{height:'60px',display:'flex',backgroundColor:'#f7f7f7'}}>

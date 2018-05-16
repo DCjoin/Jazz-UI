@@ -54,8 +54,8 @@ app.get('/:lang/spinitsso-redirect',(req, res) => {
     metadata: fs.readFileSync(__dirname + '/onelogin_metadata.xml', "utf-8").split('${GUARD_UI_HOST}').join("http://passport-test.energymost.com/Saml/SignOnService")
   });
 
-  const url = sp.createLoginRequest(idp, 'redirect');  
-  const redirectURL = new URL(url.context);  
+  const url = sp.createLoginRequest(idp, 'redirect');
+  const redirectURL = new URL(url.context);
   redirectURL.pathname = req.params.lang + redirectURL.pathname;
   // let spDomain = req.hostname.split(".")[0] ? req.hostname.split(".")[0] : "";
 
@@ -70,12 +70,12 @@ app.post('/sso/acs', (req, res) => {
   var id = Math.ceil(Math.random()*100000) + "" + Date.now();
   acsObj[id] = req.body.SAMLResponse;
   res.cookie('AssertId', id)
-    .redirect(301, '/zh-cn/saml');  
+    .redirect(301, '/zh-cn/saml');
 
   // get assertion and return to Jazz backend
   // var options = {
-  //   url: 'http://web-api-test.energymost.com/API/AccessControl/ValidateUser', 
-  //   formData: req.body, 
+  //   url: 'http://web-api-test.energymost.com/API/AccessControl/ValidateUser',
+  //   formData: req.body,
   //   proxy: 'http://10.198.157.120:9400'// noNeed4prod
   // };
   // request.post(options, function optionalCallback(err, httpResponse, body) {
@@ -99,10 +99,10 @@ app.post('/sso/acs', (req, res) => {
   //         .cookie('SkipLogin', 'true')
   //         .redirect(301, '/zh-cn/');
   //     } else {
-  //       console.log("fail!"); 
+  //       console.log("fail!");
   //       res.redirect(301, '/zh-cn/login');
   //     }
-  //   }    
+  //   }
   // });
 });
 

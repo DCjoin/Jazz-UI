@@ -19,6 +19,9 @@ import HierarchyStore from 'stores/HierarchyStore.jsx';
 import util from 'util/Util.jsx';
 import RoutePath from 'util/RoutePath.jsx';
 
+import SimilarProblem from './similar_problem.jsx';
+import GenerateSolution from './generate_solution.jsx';
+
 
 function getFirstMenuPathFunc(menu) {
   let firstMenu = menu[0];
@@ -202,15 +205,15 @@ export default class Diagnose extends Component {
 render(){
   return(
     <div className="diagnose-panel">
-      <LabelList ref='list' isFromProbem={this.state.infoTabNo===1} selectedNode={DiagnoseStore.findDiagnoseById(this.state.selectedId)}
-        onItemTouchTap={this._onItemTouchTap} onTabSwitch={this._onBasicTabSwitch}
-        onAdd={(label)=>{this.setState({
-          formStatus:formStatus.ADD,
-          addLabel:label
-        })}}/>
-
+      <GenerateSolution/>
+      {this._renderTab()}
       <div className="content">
-          {this._renderTab()}
+        <LabelList ref='list' isFromProbem={this.state.infoTabNo===1} selectedNode={DiagnoseStore.findDiagnoseById(this.state.selectedId)}
+          onItemTouchTap={this._onItemTouchTap} onTabSwitch={this._onBasicTabSwitch}
+          onAdd={(label)=>{this.setState({
+            formStatus:formStatus.ADD,
+            addLabel:label
+          })}}/>
           <LabelDetail isFromProbem={this.state.infoTabNo===1} selectedNode={DiagnoseStore.findDiagnoseById(this.state.selectedId)}
                        isBasic={this.state.isBasic} formStatus={this.state.formStatus} addLabel={this.state.addLabel}
                        onEdit={(label)=>{this.setState({

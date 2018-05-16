@@ -183,6 +183,36 @@ const DiagnoseStore = assign({}, PrototypeStore, {
   getConsultant(){
     return _consultant;
   },
+  findProblemById(id){
+    if(_diagnoseList===null) return null
+    var temp=null;
+    _diagnoseList.forEach(diagnose=>{
+      diagnose.get('Children').forEach(child=>{
+        if(child.get('Children') && temp===null) {
+          if( child.get('Children').find(item=>(item.get('Id')===id)) ) {
+            temp = diagnose;
+          }
+        }
+      })
+
+    })
+    return temp || Immutable.fromJS({});
+  },
+  findLabelById(id){
+    if(_diagnoseList===null) return null
+    var temp=null;
+    _diagnoseList.forEach( diagnose =>{
+      diagnose.get('Children').forEach(child=>{
+        if(child.get('Children') && temp===null) {
+          if( child.get('Children').find(item=>(item.get('Id')===id)) ) {
+            temp = child;
+          }
+        }
+      })
+
+    })
+    return temp || Immutable.fromJS({});
+  },
   findDiagnoseById(id){
     if(_diagnoseList===null) return null
     var temp=null;
