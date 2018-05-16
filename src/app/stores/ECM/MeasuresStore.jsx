@@ -206,12 +206,12 @@ const MeasuresStore = assign({}, PrototypeStore, {
     if(index==='Batch'){
       _solutionList.forEach((solution,index)=>{
         if(_checkList[index].checked){
-          ids.push(solution.getIn(['EnergyProblem','Id']))
+          ids.push(solution.getIn(['Problem','Id']))
         }
       })
     }
     else {
-      ids.push(_solutionList.getIn([index,'EnergyProblem','Id']))
+      ids.push(_solutionList.getIn([index,'Problem','Id']))
     }
     return ids
   },

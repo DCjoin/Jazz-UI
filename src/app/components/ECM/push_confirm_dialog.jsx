@@ -7,11 +7,13 @@ import Immutable from 'immutable';
 import NewDialog from 'controls/NewDialog.jsx';
 import RaisedButton from 'material-ui/RaisedButton';
 import ImagGroupPanel from 'controls/ImagGroupPanel.jsx';
-
+import {PlanTitle,ProblemDetail,PlanDetail} from '../Diagnose/generate_solution.jsx';
 export default class PushConfirmDialog extends Component {
   constructor(props) {
     super(props);
     this._onClose=this._onClose.bind(this);
+    this._onChange=this._onChange.bind(this);
+    
   }
 
     state={
@@ -35,6 +37,12 @@ export default class PushConfirmDialog extends Component {
         }
       }
     }
+
+     _onChange( paths, value ) {
+        this.setState({
+          solution: this.state.solution.setIn(paths, value)
+        });
+      }
 
     _renderFooter(){
                 return(
@@ -87,6 +95,18 @@ export default class PushConfirmDialog extends Component {
             <div className="solution-head">{I18N.Setting.ECM.Solution}</div>
             <IconButton iconClassName="icon-close" style={{padding:0,width:'24px',height:'26px'}} iconStyle={{fontSize:'24px',color:"#9fa0a4"}}
              onClick={this._onClose}/>
+             <div className="solution-content">
+                <session className='session-container'>
+                  <PlanTitle isRequired={true} energySolution={this.state.solution} onChange={this._onChange}/>
+                </session>
+                <session className='session-container'>
+                  <PlanDetail isRequired={true} Solutions={this.state.solution.get('Solutions')} onChange={this._onChange}/>
+                </session>
+                <session className='session-container'>
+                  <ProblemDetail isRequired={true} energySolution={this.state.solution} onChange={this._onChange} hasEnergySys={false}/>
+                </session>
+             </div>
+
           </div>
          
           {this._renderFooter()}

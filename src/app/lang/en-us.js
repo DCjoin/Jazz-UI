@@ -2519,6 +2519,7 @@ I18N.Setting.ECM.SolutionName.Ninth='方案九';
 I18N.Setting.ECM.SolutionName.Tenth='方案十';
 I18N.Setting.ECM.RequiredTip='请完整填写必填项';
 I18N.Setting.ECM.SaveTip='是否保存对该方案的修改？';
+I18N.Setting.ECM.SaveSuccess='保存成功';
 
 I18N.Setting.Diagnose={};
 I18N.Setting.Diagnose.EnergyLabel='Energy Label';
