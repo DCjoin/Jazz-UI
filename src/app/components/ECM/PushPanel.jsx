@@ -88,6 +88,8 @@ export default class PushPanel extends Component {
     this._handlerSwitchTab=this._handlerSwitchTab.bind(this);
     this._onMeasureItemClick=this._onMeasureItemClick.bind(this);
     this.merge=this.merge.bind(this);
+    this._onStatusChange=this._onStatusChange.bind(this);
+    this._renderPersonInCharge=this._renderPersonInCharge.bind(this); 
 
   }
 
@@ -482,10 +484,13 @@ export default class PushPanel extends Component {
       </NewDialog>
     )*/
     return(
-      <EditSolution solution={currentSolution} operation={this._renderOperation()}
-                                               hasRemarkPriviledge={PushIsFull() || PushAndNotPushIsFull()}
+      <EditSolution solution={currentSolution} hasRemarkPriviledge={PushIsFull() || PushAndNotPushIsFull()}
+                                               hasSysPriviledge={canEdit(createUserId)}
+                                               hasStatusPriviledge={canEditStatus(createUserId,this.state.infoTabNo)}
                                                onSave={onSave}
-                                               onClose={()=>{this.setState({measureShow:false})}}/>
+                                               onClose={()=>{this.setState({measureShow:false,measureIndex:null})}}
+                                               onStatusChange={this._onStatusChange}
+                                               person={this._renderPersonInCharge}/>
     )
   }
 

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Immutable from 'immutable';
-import nzh from 'nzh/cn';
+// import nzh from 'nzh/cn';
 import FlatButton from 'controls/FlatButton.jsx';
 import { Gallery } from '../DataAnalysis/Basic/GenerateSolution.jsx';
 
@@ -25,13 +25,13 @@ export class PlanTitle extends Component {
   _initTextBoxProps(key) {
     let { energySolution, errorData, onChange } = this.props;
     return {
-      errorMsg: errorData && errorData.getIn(['EnergyProblem', key]),
-      value: energySolution.getIn(['EnergyProblem', key]),
-      onChange: e => onChange(['EnergyProblem', key], e.target.value),
+      errorMsg: errorData && errorData.getIn(['Problem', key]),
+      value: energySolution.getIn(['Problem', key]),
+      onChange: e => onChange(['Problem', key], e.target.value),
     }
   }
   render() {
-    let { isRequired } = this.props;
+    let { isRequired} = this.props;
     return (<div >
       <SessionTitle title={'方案标题'} subtitle={isRequired && '(必填)'} style={{marginBottom: 20}}/>
       <div className='field-title'>{'方案标题'}</div>
@@ -46,6 +46,7 @@ PlanTitle.propTypes = {
   onChange: PropTypes.func,
 }
 
+
 export class ProblemDetail extends Component {
   constructor(props) {
     super(props);
@@ -57,38 +58,34 @@ export class ProblemDetail extends Component {
   _initTextBoxProps(key) {
     let { energySolution, errorData, onChange } = this.props;
     return {
-      errorMsg: errorData && errorData.getIn(['EnergyProblem', key]),
-      value: energySolution.getIn(['EnergyProblem', key]),
-      onChange: e => onChange(['EnergyProblem', key], e.target.value),
+      errorMsg: errorData && errorData.getIn(['Problem', key]),
+      value: energySolution.getIn(['Problem', key]),
+      onChange: e => onChange(['Problem', key], e.target.value),
     }
   }
   _renderChart() {
-    let src = this.props.energySolution.getIn(['EnergyProblem', 'EnergyProblemImages', this.state.selectedIdx, 'ImageUrl']);
+    let src = this.props.energySolution.getIn(['Problem', 'EnergyProblemImages', this.state.selectedIdx, 'ImageUrl']);
     return (<img src={src} width="100%" height="332px"/>);
   }
-  render() {
-    let { isRequired, errorMsg, energySolution, onChange } = this.props;
+  _renderViewStatus(){
+    var {energySolution}=this.props;
     let { selectedIdx } = this.state;
     return (<div >
-      <SessionTitle title={'问题详情'} subtitle={isRequired && '(必填)'} style={{marginBottom: 20}}/>
+      <SessionTitle title={'问题详情'} style={{marginBottom: 20}}/>
       <div className='field-wrapper flex-bar'>
         <div>
-          <div className='field-title'>{'问题名称'}{!isRequired && <span className='subtitle'>{'(必填)'}</span>}</div>
-          <TextBox {...this._initTextBoxProps('Name')} hintText={'请输入问题名称'}/>
-        </div>
-        <div style={{marginLeft: 20}}>
-          <div className='field-title'>{'能源系统标识'}{!isRequired && <span className='subtitle'>{'(必填)'}</span>}</div>
-          <TextBox {...this._initTextBoxProps('EnergySys')} style={{width: 346}} hintText={'请选择'}/>
+          <div className='field-title'>{'问题名称'}</div>
+          <div className="field-text" style={{marginTop:'8px'}}>{energySolution.getIn(['Problem', 'Name'])}</div>
         </div>
       </div>
       <div className='field-wrapper'>
         <div className='field-title'>{'问题描述'}</div>
-        <TextBox {...this._initTextBoxProps('Description')} style={{width: 770}} hintText={'请输入问题描述'}/>
+         <div className="field-text" style={{marginTop:'16px'}}>{energySolution.getIn(['Problem', 'Description'])}</div>
       </div>
       <div className='field-wrapper' style={{width: 770}}>
         <div className='field-title'>{'问题图表'}</div>
         <Gallery
-          names={energySolution.getIn(['EnergyProblem', 'EnergyProblemImages']).map( img => img.get('Name') ).toJS()}
+          names={energySolution.getIn(['Problem', 'EnergyProblemImages']).map( img => img.get('Name') ).toJS()}
           selectedIdx={selectedIdx}
           onLeft={() => {
             this.setState({
@@ -101,10 +98,60 @@ export class ProblemDetail extends Component {
             });
           }}
           onDelete={() => {
-            onChange(['EnergyProblem', 'EnergyProblemImages'], energySolution.getIn(['EnergyProblem', 'EnergyProblemImages']).delete(selectedIdx));
-            if( selectedIdx === energySolution.getIn(['EnergyProblem', 'EnergyProblemImages']).length - 1 ) {
+            onChange(['Problem', 'EnergyProblemImages'], energySolution.getIn(['Problem', 'EnergyProblemImages']).delete(selectedIdx));
+            if( selectedIdx === energySolution.getIn(['Problem', 'EnergyProblemImages']).length - 1 ) {
               this.setState({
-                selectedIdx: energySolution.getIn(['EnergyProblem', 'EnergyProblemImages']).size - 2
+                selectedIdx: energySolution.getIn(['Problem', 'EnergyProblemImages']).size - 2
+              })
+            }
+          }}
+          renderContent={this._renderChart}/>
+      </div>
+    </div>)
+  }
+
+  render() {
+    let { isRequired, errorMsg, energySolution, onChange, isView,hasEnergySys} = this.props;
+    let { selectedIdx } = this.state;
+
+    if(isView) return this._renderViewStatus()
+
+    return (<div >
+      <SessionTitle title={'问题详情'} subtitle={isRequired && '(必填)'} style={{marginBottom: 20}}/>
+      <div className='field-wrapper flex-bar'>
+        <div>
+          <div className='field-title'>{'问题名称'}{!isRequired && <span className='subtitle'>{'(必填)'}</span>}</div>
+          <TextBox {...this._initTextBoxProps('Name')} hintText={'请输入问题名称'}/>
+        </div>
+        {hasEnergySys && <div style={{marginLeft: 20}}>
+          <div className='field-title'>{'能源系统标识'}{!isRequired && <span className='subtitle'>{'(必填)'}</span>}</div>
+          <TextBox {...this._initTextBoxProps('EnergySys')} style={{width: 346}} hintText={'请选择'}/>
+        </div>}
+      </div>
+      <div className='field-wrapper'>
+        <div className='field-title'>{'问题描述'}</div>
+        <TextBox {...this._initTextBoxProps('Description')} style={{width: 770}} hintText={'请输入问题描述'}/>
+      </div>
+      <div className='field-wrapper' style={{width: 770}}>
+        <div className='field-title'>{'问题图表'}</div>
+        <Gallery
+          names={energySolution.getIn(['Problem', 'EnergyProblemImages']).map( img => img.get('Name') ).toJS()}
+          selectedIdx={selectedIdx}
+          onLeft={() => {
+            this.setState({
+              selectedIdx: --selectedIdx
+            });
+          }}
+          onRight={() => {
+            this.setState({
+              selectedIdx: ++selectedIdx
+            });
+          }}
+          onDelete={() => {
+            onChange(['Problem', 'EnergyProblemImages'], energySolution.getIn(['Problem', 'EnergyProblemImages']).delete(selectedIdx));
+            if( selectedIdx === energySolution.getIn(['Problem', 'EnergyProblemImages']).length - 1 ) {
+              this.setState({
+                selectedIdx: energySolution.getIn(['Problem', 'EnergyProblemImages']).size - 2
               })
             }
           }}
@@ -118,35 +165,105 @@ ProblemDetail.propTypes = {
   errorData: PropTypes.object,
   energySolution: PropTypes.object,
   onChange: PropTypes.func,
+  isView:PropTypes.boolean,
+  hasEnergySys:PropTypes.boolean,
 }
+ProblemDetail.defaultProps = {
+	isView:false,
+  hasEnergySys:true
+}
+
+const SOLUTION_NAMES=[I18N.Setting.ECM.SolutionName.First,I18N.Setting.ECM.SolutionName.Second,I18N.Setting.ECM.SolutionName.Third,
+                      I18N.Setting.ECM.SolutionName.Fourth,I18N.Setting.ECM.SolutionName.Fifth,I18N.Setting.ECM.SolutionName.Sixth,
+                      I18N.Setting.ECM.SolutionName.Seventh,I18N.Setting.ECM.SolutionName.Eighth,I18N.Setting.ECM.SolutionName.Ninth,
+                      I18N.Setting.ECM.SolutionName.Tenth]
+
 
 export class PlanDetail extends Component {
   _bindChange( paths ) {
     return e => {
-      this.props.onChange( ['EnergySolutions'].concat(paths), e.target.value );
+      this.props.onChange( ['Solutions'].concat(paths), e.target.value );
     }
   }
   _initTextBoxProps(idx, key) {
-    let { EnergySolutions, errorData, onChange } = this.props;
+    let { Solutions, errorData, onChange } = this.props;
     return {
-      errorMsg: errorData && errorData.getIn(['EnergySolutions', idx, key]),
-      value: EnergySolutions.getIn([idx, key]),
+      errorMsg: errorData && errorData.getIn(['Solutions', idx, key]),
+      value: Solutions.getIn([idx, key]),
       onChange: this._bindChange([idx, key]),
     }
   }
   _bindDelete(idx) {
-    let { EnergySolutions, errorData, onChange } = this.props;
+    let { Solutions, errorData, onChange } = this.props;
     return () => {
-      onChange( ['EnergySolutions'], EnergySolutions.delete(idx) );
+      onChange( ['Solutions'], Solutions.delete(idx) );
     }
   }
+  _renderViewStatus(){
+    let { Solutions, errorData, onChange,isRequired,solutionTitle} = this.props;
+        return (
+        <div className='plan-detail'>
+      <SessionTitle title={solutionTitle} style={{marginBottom: 30}}/>
+      {Solutions && Solutions.map( (EnergySolution, idx) => (<div>
+        {Solutions.size > 1 && <header style={{marginTop: idx && 32}} className='plan-detail-header'>
+          <span>{SOLUTION_NAMES[idx]}</span>
+        </header>}
+        <div className='field-wrapper flex-bar'>
+          <div className='plan-detail-num-panel'>
+            <span className='num-icon icon-energy_saving'/>
+            <div className='plan-detail-num-title-panel'>
+              <div className='num-title'>{'预计年节能量'}</div>
+              <span className='num-text'>{Solutions.getIn([idx, 'ExpectedAnnualEnergySaving'])}</span>
+            </div>
+            <span className='num-text'>{Solutions.getIn([idx, 'EnergySavingUnit'])}</span>
+          </div>
+          <div className='plan-detail-num-panel'>
+            <span className='num-icon icon-energy_saving'/>
+            <div className='plan-detail-num-title-panel'>
+              <div className='num-title'>{'预计年节约成本'}</div>
+              <span className='num-text'>{Solutions.getIn([idx, 'ExpectedAnnualCostSaving'])}</span>
+            </div>
+            <span className='num-text'>{'元'}</span>
+          </div>
+          <div className='plan-detail-num-panel'>
+            <span className='num-icon icon-investment-amount'/>
+            <div className='plan-detail-num-title-panel'>
+              <div className='num-title'>{'投资金额'}</div>
+              <span className='num-text'>{Solutions.getIn([idx, 'InvestmentAmount'])}</span>
+            </div>
+            <span className='num-text'>{'元'}</span>
+          </div>
+          <div className='plan-detail-num-panel'>
+            <span className='num-icon icon-pay-back-period'/>
+            <div className='plan-detail-num-title-panel'>
+              <div className='num-title'>{'投资回报期'}</div>
+              <span className='num-text' style={{alignSelf: 'flex-start' }}>{Solutions.get('ROI') || 0 + '年'}</span>
+            </div>
+          </div>
+        </div>
+        <div className='field-wrapper'>
+          <div className='field-title'>{'方案名称'}</div>
+          <div className="field-text" style={{marginTop:'8px'}}>{Solutions.getIn([idx, 'Name'])}</div>
+        </div>
+        <div className='field-wrapper'>
+          <div className='field-title'>{'方案描述'}</div>
+          <div className="field-text" style={{marginTop:'8px'}}>{Solutions.getIn([idx, 'SolutionDescription'])}</div>
+        </div>
+        <div className='field-wrapper'>
+          <div className='field-title'>{'方案图片'}</div>
+          {/*<TextBox style={{width: 770}} value={value} hintText={'请输入问题描述'} onChange={this.onChange}/>*/}
+        </div>
+      </div>) )}
+    </div>)
+  }
   render() {
-    let { EnergySolutions, errorData, onChange } = this.props;
+    let { Solutions, errorData, onChange,isRequired,isView} = this.props;
+    if(isView) return this._renderViewStatus()
     return (<div className='plan-detail'>
-      <SessionTitle title={'方案详情'} subtitle={'(选填)'} style={{marginBottom: 30}}/>
-      {EnergySolutions && EnergySolutions.map( (EnergySolution, idx) => (<div>
-        {EnergySolutions.size > 1 && <header style={{marginTop: idx && 32}} className='plan-detail-header'>
-          <span>{'方案' + nzh.encodeS(idx + 1)}</span>
+      <SessionTitle title={'方案详情'} subtitle={isRequired?'(必填)':'(选填)'} style={{marginBottom: 30}}/>
+      {Solutions && Solutions.map( (EnergySolution, idx) => (<div>
+        {Solutions.size > 1 && <header style={{marginTop: idx && 32}} className='plan-detail-header'>
+          <span>{SOLUTION_NAMES[idx]}</span>
           <span className='split-line'/>
           <span className='icon-delete' onClick={this._bindDelete(idx)}/>
         </header>}
@@ -179,7 +296,7 @@ export class PlanDetail extends Component {
             <span className='num-icon icon-pay-back-period'/>
             <div className='plan-detail-num-title-panel'>
               <div className='num-title'>{'投资回报期'}</div>
-              <span className='num-text' style={{alignSelf: 'flex-start' }}>{EnergySolutions.get('ROI') || 0 + '年'}</span>
+              <span className='num-text' style={{alignSelf: 'flex-start' }}>{Solutions.get('ROI') || 0 + '年'}</span>
             </div>
           </div>
         </div>
@@ -203,10 +320,14 @@ PlanDetail.propTypes = {
   errorData: PropTypes.object,
   energySolution: PropTypes.object,
   onChange: PropTypes.func,
+  isView: PropTypes.boolean,
+}
+PlanDetail.defaultProps = {
+	isView:false,
 }
 
 const testData = Immutable.fromJS({
-  "EnergyProblem": {
+  "Problem": {
     "Id": 0,
     "TagIds": [
       0
@@ -251,7 +372,7 @@ const testData = Immutable.fromJS({
     "ProblemTypeId": 0,
     "SolutionTitle": "string"
   },
-  "EnergySolutions": [{
+  "Solutions": [{
     "Id": 0,
     "Name": "string",
     "ExpectedAnnualEnergySaving": 0,
@@ -342,7 +463,7 @@ export default class GenerateSolution extends Component {
           <ProblemDetail isRequired={true} energySolution={energySolution} onChange={this._onChange}/>
         </session>
         <session className='session-container'>
-          <PlanDetail EnergySolutions={energySolution.get('EnergySolutions')} onChange={this._onChange}/>
+          <PlanDetail isRequired={false} Solutions={energySolution.get('Solutions')} onChange={this._onChange}/>
         </session>
         <footer className='generate-solution-footer'>
           <FlatButton label={'生成方案'}/>

@@ -484,3 +484,30 @@
   }
 }
 
+.solution-content {
+  display: flex;
+  flex-direction: column;
+
+
+  & .session-container {
+    margin-bottom: 50px;
+    width: 770px;
+    &:first-of-type {
+      margin-top: 20px;
+    }
+    &:last-of-type {
+      margin-bottom: 20px;
+    }
+
+    .flex-bar {
+      display: flex;
+    }
+
+    .field-wrapper {
+      &:not(:last-of-type) {
+        margin-bottom: 30px;
+      }
+    }
+  }
+}
+

@@ -2521,6 +2521,7 @@ I18N.Setting.ECM.RequiredTip='请完整填写必填项';
 I18N.Setting.ECM.SaveTip='是否保存对该方案的修改？';
 I18N.Setting.ECM.UnFold='收起方案';
 I18N.Setting.ECM.Fold='展开方案';
+I18N.Setting.ECM.SaveSuccess='保存成功';
 
 I18N.Setting.Diagnose={};
 I18N.Setting.Diagnose.EnergyLabel='能源标签';
