@@ -40,6 +40,16 @@ app.use((req, res, next) => {
   console.log(req.hostname);
   console.log(req.url);
   console.log("%j", req.headers);
+
+  //add modified reg for validated host
+  let host = req.host;
+  let reg = /^(.*\.energymost.com)$/;   
+  let trust = reg.test(host);
+  if(!trust) {
+    res.send(404,'Page Not Found!');
+    return res;
+  }
+
   let forwardProto = req.get("x-forwarded-proto");
   console.log(forwardProto);
   let proto = forwardProto || req.protocol;
@@ -123,7 +133,8 @@ function returnIndexHtml(req,res){
   html = html.replace('__LANG_JS__', JAZZ_STATIC_CDN + '/' + version + '/' + getLang(req) + '.js');
 
   html = html.replace(/__JAZZ_STATIC_CDN__/g, JAZZ_STATIC_CDN + '/' + version)
-            .replace(/__JAZZ_WEBAPI_HOST__/g, JAZZ_WEBAPI_HOST);
+            .replace(/__JAZZ_WEBAPI_HOST__/g, JAZZ_WEBAPI_HOST)
+            .replace(/__GUARD_UI_HOST__/g, GUARD_UI_HOST);
 
   if(JAZZ_UI_UMENG_CNZZ_SDK_URL) {
     html = html.replace('__JAZZ_UI_UMENG_CNZZ_SDK_URL__', JAZZ_UI_UMENG_CNZZ_SDK_URL);

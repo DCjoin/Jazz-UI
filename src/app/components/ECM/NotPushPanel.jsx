@@ -321,13 +321,13 @@ return(
 
   _renderMeasureDialog(){
     var currentSolution=this.state.solutionList.getIn([this.state.measureIndex]);
-    var onSave=()=>{
+    var onSave=(solution)=>{
       this.setState({
         measureShow:false,
         measureIndex:null
     },()=>{
       // currentSolution=MeasuresStore.getValidParams(currentSolution);
-      MeasuresAction.updateSolution(currentSolution.toJS(),()=>{
+      MeasuresAction.updateSolution(solution.toJS(),()=>{
         MeasuresAction.getGroupSettingsList(this.props.hierarchyId,Status.NotPush)
       });
     })

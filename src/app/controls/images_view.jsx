@@ -11,7 +11,7 @@ import assign from 'object-assign';
 import Events from 'material-ui/utils/events';
 import Config from 'config';
 import FontIcon from 'material-ui/FontIcon';
-import SingleImageView from '.../sections/SingleImageView.jsx';
+import SingleImageView from '../sections/SingleImageView.jsx';
 
 const KEY_UP = 38;
 const KEY_DOWN = 40;
@@ -40,7 +40,7 @@ export default class ImagesView extends Component {
 
         constructor(props) {
 		        super(props);
-            his._handleKeyInput = this._handleKeyInput.bind(this);
+            this._handleKeyInput = this._handleKeyInput.bind(this);
 		        this.state = {
                         idx: this.props.idx,
 			                  data: this.props.data,
@@ -119,7 +119,7 @@ export default class ImagesView extends Component {
                                 </div>
                                 <div className="images-image">
                       {(logPictures && logPictures.size === 0) ? null : (<div className="images-image-bg">
-                                                                        <SingleImageView ref="image" url={this.props.data.getIn(["Pictures",idx,'Url'])}/>
+                                                                        <SingleImageView ref="image" url={this.props.data.getIn(["Pictures",idx,'ImageUrl'])}/>
                                                                                                                   </div>) }
                       {(logPictures && logPictures.size > 0) ? (<div className="image-seq-num">{idx + 1}/{logPictures.size}</div>) : null}
                                 </div>

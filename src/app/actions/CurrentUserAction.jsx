@@ -5,6 +5,8 @@ import UserAction from 'actions/UserAction.jsx';
 import { Action } from 'constants/actionType/CurrentUser.jsx';
 import Ajax from '../ajax/Ajax.jsx';
 import Immutable from 'immutable';
+import util from 'util/Util.jsx';
+
 var UserTypeName = null,
   UserType = null;
 let CurrentUserAction = {
@@ -123,6 +125,16 @@ let CurrentUserAction = {
       }
     });
   },
+  startChangePassword(userName,callback){
+    Ajax.post(util.replacePathParams('/user/startChangePassword/{userName}', userName), {
+      success: function(result) {
+        callback(result)
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  }
 };
 
 module.exports = CurrentUserAction;

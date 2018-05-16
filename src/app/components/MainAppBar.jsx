@@ -30,6 +30,7 @@ import Config from 'config';
 import LoginActionCreator from 'actions/LoginActionCreator.jsx';
 import RoutePath from 'util/RoutePath.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
+import util from 'util/Util.jsx';
 
 var f = lang.f;
 const MAX_LENGTH = 200;
@@ -215,9 +216,19 @@ var MainAppBar = React.createClass({
     }));
   },
   _editPassword: function() {
-    this.setState(assign({}, this.getInitialState(), {
-      dialogType: DIALOG_TYPE.MODIIFY_PASSWORD
-    }));
+    // this.setState(assign({}, this.getInitialState(), {
+    //   dialogType: DIALOG_TYPE.MODIIFY_PASSWORD
+    // }));
+    var userName=currentUser().Name;
+    CurrentUserAction.startChangePassword(userName,(reslult)=>{
+      if(reslult){
+        var hostname=window.location.host;
+        var spDomain = hostname.split(".")[0] ? hostname.split(".")[0] : "";
+
+        window.open(`${window.GUARD_UI_HOST}/set-password&sysId=0&spDomain=${spDomain}&userName=${userName}`);
+        // window.open(`https://passport-dev.energymost.com/set-password&sysId=0&spDomain=dev&userName=${userName}`);
+      }
+    })
   },
   _showLogout: function() {
     let doned = false
