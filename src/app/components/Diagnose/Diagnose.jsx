@@ -20,6 +20,7 @@ import util from 'util/Util.jsx';
 import RoutePath from 'util/RoutePath.jsx';
 
 import SimilarProblem from './similar_problem.jsx';
+import SolutionSuggest from './solution_suggest.jsx';
 import GenerateSolution from './generate_solution.jsx';
 
 
@@ -88,15 +89,18 @@ export default class Diagnose extends Component {
     }
 
   state={
-        infoTabNo:isBasicNoPrivilege()?2:1,
-        hasProblem:false,
-        selectedId:null,
-        isBasic:true,
-        formStatus:formStatus.VIEW,
-        addLabel:null,
-        createSuccessMeg: false,
-        showSolutionTip:false
-    }
+    infoTabNo:isBasicNoPrivilege()?2:1,
+    hasProblem:false,
+    selectedId:null,
+    isBasic:true,
+    formStatus:formStatus.VIEW,
+    addLabel:null,
+    createSuccessMeg: false,
+    showSolutionTip:false,
+    createStep: 0,
+    createRefProblems: [],
+    createRefPlans: [],
+  }
 
   _onChanged(){
     this.forceUpdate()
@@ -169,12 +173,39 @@ export default class Diagnose extends Component {
   }
 
 
+  _goStep0() {
+    this.setState({createStep: 0, createRefProblems: [], createRefPlans: []});
+  }
+
   getProblem(hierarchyId){
     this.setState({
       nodeDetail:null
     },()=>{
       DiagnoseAction.getDiagnoseStatic(hierarchyId)
     })
+  }
+
+  _goStep1() {
+    if( false && this.state.selectedId && DiagnoseStore.findLabelById( this.state.selectedId ) && DiagnoseStore.findLabelById( this.state.selectedId ).get('Children').size > 0 ) {
+      this.setState({createStep: 1});
+    } else {
+      this._goStep2();
+    }
+  }
+  _goStep2() {
+    if( DiagnoseStore.getSuggestSolutions() && DiagnoseStore.getSuggestSolutions().size > 0 ) {
+      this.setState({createStep: 2});
+    } else {
+      this._goCustom();
+    }
+  }
+
+  _goStep3() {
+    this.setState({createStep: 3});
+  }
+
+  _goCustom() {
+    this.setState({createStep: 3});
   }
 
   componentDidMount(){
@@ -205,7 +236,35 @@ export default class Diagnose extends Component {
 render(){
   return(
     <div className="diagnose-panel">
-      <GenerateSolution/>
+      {this.state.createStep === 1 && <SimilarProblem
+        onChange={ refProblems => {
+          this.setState({
+            createRefProblems: refProblems
+          })
+        }}
+        onBack={() => this._goStep0()}
+        onNext={() => this.setState({createStep: 2})}
+        onCancel={() => this._goStep0()}
+        chartDatas={DiagnoseStore.getSimilarProblemChart()}
+        currentProblemId={this.state.selectedId}
+        checkedProblems={this.state.createRefProblems}
+        problems={DiagnoseStore.findLabelById( this.state.selectedId ).get('Children')}
+      />}
+      {this.state.createStep === 2 && <SolutionSuggest
+        onChange={ refPlans => {
+          this.setState({
+            createRefPlans: refPlans
+          })
+        }}
+        onBack={() => this.setState({createStep: 1})}
+        onNext={() => this.setState({createStep: 3})}
+        onCancel={() => this._goStep0()}
+        checkedPlan={this.state.createRefPlans}
+        plans={DiagnoseStore.getSuggestSolutions()}/>}
+      {this.state.createStep === 3 && <GenerateSolution
+        onBack={() => this.setState({createStep: 2})}
+        onNext={() => this._goStep0()}
+        onCancel={() => this._goStep0()}/>}
       {this._renderTab()}
       <div className="content">
         <LabelList ref='list' isFromProbem={this.state.infoTabNo===1} selectedNode={DiagnoseStore.findDiagnoseById(this.state.selectedId)}
@@ -220,6 +279,7 @@ render(){
                          formStatus:formStatus.EDIT,
                          addLabel:label
                        })}}
+                       willCreate={() => {this._goStep1()}}
                        />
       </div>
       {this.state.formStatus === formStatus.ADD &&
