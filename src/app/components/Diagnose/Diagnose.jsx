@@ -336,7 +336,7 @@ render(){
           })
         }}
         onBack={() => this._goStep0()}
-        onNext={() => this.setState({createStep: 2})}
+        onNext={() => this._goStep2()}
         onCancel={() => this._goStep0()}
         chartDatas={DiagnoseStore.getSimilarProblemChart()}
         currentProblemId={this.state.selectedId}
