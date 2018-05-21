@@ -82,6 +82,8 @@ export default class PushConfirmDialog extends Component {
               label={I18N.Common.Button.NotSave}
               onClick={() => {this.setState({
                               saveTipShow:false
+                              },()=>{
+                                this.props.onClose()
                               })}} />
           ]}
       ><div className="jazz-ecm-measure-viewabletext">{content}</div></NewDialog>
