@@ -132,9 +132,13 @@ function returnIndexHtml(req,res){
 
   html = html.replace('__LANG_JS__', JAZZ_STATIC_CDN + '/' + version + '/' + getLang(req) + '.js');
 
+  console.log(GUARD_UI_HOST);
+
   html = html.replace(/__JAZZ_STATIC_CDN__/g, JAZZ_STATIC_CDN + '/' + version)
             .replace(/__JAZZ_WEBAPI_HOST__/g, JAZZ_WEBAPI_HOST)
             .replace(/__GUARD_UI_HOST__/g, GUARD_UI_HOST);
+
+    console.log(html); 
 
   if(JAZZ_UI_UMENG_CNZZ_SDK_URL) {
     html = html.replace('__JAZZ_UI_UMENG_CNZZ_SDK_URL__', JAZZ_UI_UMENG_CNZZ_SDK_URL);
