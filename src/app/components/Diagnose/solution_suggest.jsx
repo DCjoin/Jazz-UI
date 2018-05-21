@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import Checkbox from 'material-ui/Checkbox';
 import { Snackbar} from 'material-ui';
 import FlatButton from 'controls/FlatButton.jsx';
+import Dialog from 'controls/NewDialog.jsx';
 
 /*
 
@@ -18,17 +19,19 @@ export default class SolutionSuggest extends Component {
     open: false,
   }
   render() {
-    let { plans, checkedPlan, onChange, onNext, onBack, onCancel } = this.props;
+    let { plans, checkedPlan, onChange, onNext, onCustom, onBack, onCancel } = this.props;
     return (
       <div className='solution-suggest'>
         <header className='solution-suggest-header'>
           <span className='icon-return' onClick={() => this.setState({dialogKey: BACK_DIALOG})}/>
           {'解决方案推荐'}
-          <span classNames='icon-close' onClick={() => this.setState({dialogKey: CANCEL_DIALOG})}/>
+          <span className='icon-close' onClick={() => this.setState({dialogKey: CANCEL_DIALOG})}/>
         </header>
         <div className='solution-suggest-tip'>{'您可以勾选一个或多个方案来生成解决方案。'}</div>
-        {plans.map( plan => (
-          <div key={plan.get('Id')} className='solution-suggest-item'>
+        {plans.map( (plan, idx) => (
+          <div key={plan.get('Id')} className='solution-suggest-item' style={{
+            marginBottom: idx < plans.size - 1 ? 16 : 70
+          }}>
             <div style={{width: 84, height: 152, flex: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center'}} onClick={(e, checked) => {
               if( !~checkedPlan.map( plan => plan.Id ).indexOf(plan.get('Id')) ) {
                 onChange( checkedPlan.concat(plan.toJS()) );
@@ -56,7 +59,7 @@ export default class SolutionSuggest extends Component {
               onNext();
             }
           }}/>
-          <FlatButton style={{marginRight: 16}} label={'自定义方案 >'} onClick={onNext}/>
+          <FlatButton style={{marginRight: 16}} label={'自定义方案 >'} onClick={onCustom}/>
           <span className='icon-no_ecm'>{'若以上方案都不符合，您可自定义方案。'}</span>
         </footer>
         <Snackbar style={{

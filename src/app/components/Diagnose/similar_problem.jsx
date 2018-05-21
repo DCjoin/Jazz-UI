@@ -24,6 +24,15 @@ function formatChartTime( data, tail ) {
 }
 
 class ProblemItem extends Component {
+  constructor(props) {
+    super(props);
+
+    let { problem, chartDatas, checked } = props;
+    let chartData = chartDatas[problem.get('Id')];
+    if( !chartData ) {
+      DiagnoseAction.getSimilarProblemChart(problem.get('Id'));
+    }
+  }
   state = {
     showDetail: false,
     svgString: false,
@@ -86,9 +95,6 @@ class ProblemItem extends Component {
             this.setState({
               showDetail: !this.state.showDetail
             })
-            if( !chartData ) {
-              DiagnoseAction.getSimilarProblemChart(problem.get('Id'));
-            }
           }}>{showDetail ? '收起详情' : '展开详情'}</span>
         </div>
         <div className='similar-problem-detail'>
@@ -112,6 +118,7 @@ export default class SimilarProblem extends Component {
     return (
       <div className='similar-problem'>
         <header className='similar-problem-header'>
+          <span className='icon-close' onClick={() => this.setState({dialogKey: CANCEL_DIALOG})}/>
           <span className='icon-return' onClick={() => this.setState({dialogKey: BACK_DIALOG})}/>
           {'相似方案列表'}
         </header>
@@ -124,7 +131,7 @@ export default class SimilarProblem extends Component {
         <div className='similar-problem-checkbox-layout'>
           <Checkbox checked={ checkedProblems && (checkedProblems.length === problems.size - 1) } onCheck={(e, checked) => {
             if( checked ) {
-              this.props.onChange( problems.filter( id => id !== currentProblemId ).toJS() );
+              this.props.onChange( problems.filter( problem => problem.get('Id') !== currentProblemId ).toJS() );
             } else {
               this.props.onChange( [] );
             }

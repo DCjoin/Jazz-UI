@@ -317,7 +317,30 @@ export default class DiagnoseProblem extends Component {
       let selectedId = props.selectedNode.get('Id');
 			DiagnoseAction.getproblemdata(selectedId,start,end);
       DiagnoseAction.getSuggestSolutions( DiagnoseStore.findLabelById(selectedId).get('Id'), this.context.hierarchyId, DiagnoseStore.findProblemById(selectedId).get('Id'));
+      DiagnoseAction.getSimilarProblemChart(selectedId);
 		}
+
+    _renderHideChart() {
+      const SVG_WIDTH = 733;
+      const SVG_HEIGHT = 351;
+      let problemId = this.props.selectedNode.get('Id');
+      let chartData = this.state.chartData;
+      return (<div style={{position: 'relative', overflowX: 'hidden'}} className='similar-problem-img'>
+              <div id={'chart_basic_component_' + problemId} style={{
+                  flex: 1,
+                  position: 'absolute',
+                  width: SVG_WIDTH,
+                  height: SVG_HEIGHT,
+                  display: 'flex',
+                  opacity: 0,
+                  flexDirection: 'column',
+                  marginBottom: '0px',
+                  marginLeft: '9px'
+                }}>
+                  <DiagnoseChart data={chartData}/>
+            </div>
+          </div>);
+    }
 
 		componentDidMount(){
 			DiagnoseStore.addChangeListener(this._onChanged);
@@ -385,7 +408,6 @@ export default class DiagnoseProblem extends Component {
 						 _onDateSelectorChanged={this._onDateSelectorChanged}/>
 					</div>
 						}
-
 
 					 {this.state.chartData?<DiagnoseChart hiddenAssociateLabel isTypeC={DiagnoseModel === 3} data={this.state.chartData}/>
 																:<div className="flex-center">

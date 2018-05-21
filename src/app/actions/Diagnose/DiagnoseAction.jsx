@@ -306,6 +306,13 @@ const DiagnoseAction = {
 
   },
 
+  createDiagnose(params, callback) {
+    Ajax.post(Path.Diagnose.createSolution, {
+      params,
+      success: callback
+    });
+  },
+
   getSuggestSolutions(EnergyLabelId, HierarchyId, ProblemTypeId) {
     Ajax.post(Path.Diagnose.getSuggestSolutions, {
       params: {
@@ -363,7 +370,56 @@ const DiagnoseAction = {
             "SolutionName": "string",
             "Status": 1,
             "UpdateTime": "2018-05-21T06:47:11.937Z"
-          }
+          },
+          {
+            "BusinessTypes": [
+              1
+            ],
+            "CreateTime": "2018-05-21T06:47:11.937Z",
+            "CreatorUserId": 0,
+            "CreatorUserName": "string",
+            "DSIndustryNames": [
+              {
+                "Id": 0,
+                "Name": "string"
+              }
+            ],
+            "Id": "string1",
+            "Images": [
+              {
+                "Content": "string",
+                "Name": "string",
+                "OssKey": "string",
+                "Url": "https://cdn4.buysellads.net/uu/1/3386/1525189943-38523.png"
+              }
+            ],
+            "Industries": [
+              0
+            ],
+            "ProblemDescription": "string",
+            "ProblemLabels": [
+              {
+                "DataLabels": [
+                  0
+                ],
+                "DataLabelsName": [
+                  {
+                    "Id": 0,
+                    "Name": "string"
+                  }
+                ],
+                "ProblemTypeId": 0,
+                "ProblemTypeName": "string"
+              }
+            ],
+            "ProblemName": "string",
+            "ROI": 0,
+            "RiskDescription": "string",
+            "SolutionDescription": "string",
+            "SolutionName": "string",
+            "Status": 1,
+            "UpdateTime": "2018-05-21T06:47:11.937Z"
+          },
         ];
         AppDispatcher.dispatch({
           type: Action.GET_SUGGEST_SOLUTIONS,
