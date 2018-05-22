@@ -221,7 +221,7 @@ export class ProblemDetail extends Component {
               this.setState({
                 anchorEl: null
               });
-              onChange(['Problem', 'EnergySys'], ProblemMarkEnum[key]);
+              onChange(['Problem', 'EnergySys'], parseInt(ProblemMarkEnum[key]));
             }} primaryText={I18N.Setting.DataAnalysis.EnergyProblem.MarkEnum[ProblemMarkEnum[key]]} value={ProblemMarkEnum[key]}/>
             ))}
           </Popover>
