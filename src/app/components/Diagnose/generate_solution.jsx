@@ -7,6 +7,7 @@ import { CircularProgress} from 'material-ui';
 // import nzh from 'nzh/cn';
 import FlatButton from 'controls/FlatButton.jsx';
 import Dialog from 'controls/NewDialog.jsx';
+import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
 import { ProblemMarkEnum } from 'constants/AnalysisConstants.jsx';
 import DiagnoseChart from './DiagnoseChart.jsx';
 import { Gallery } from '../DataAnalysis/Basic/GenerateSolution.jsx';
@@ -15,12 +16,16 @@ import ImagGroupPanel from 'controls/ImagGroupPanel.jsx';
 const SVG_WIDTH = 750;
 const SVG_HEIGHT = 360;
 
-function getProblemMarkMenuItem() {
-  return [
-    <MenuItem primaryText={I18N.Common.Label.CommoEmptyText} value={0} disabled={true}/>
-    ].concat(Object.keys(ProblemMarkEnum).map(key => {
-    return <MenuItem primaryText={I18N.Setting.DataAnalysis.EnergyProblem.MarkEnum[ProblemMarkEnum[key]]} value={ProblemMarkEnum[key]}/>
-    }));
+function getROILabel( solution ) {
+
+  let roi = MeasuresStore.getInvestmentReturnCycle(
+    solution.get('InvestmentAmount'),
+    solution.get('ExpectedAnnualCostSaving')
+  )
+  if( +roi === roi ) {
+    roi += '年';
+  }
+  return roi;
 }
 
 function SessionTitle(props) {
@@ -359,7 +364,7 @@ export class PlanDetail extends Component {
             <span className='num-icon icon-pay-back-period'/>
             <div className='plan-detail-num-title-panel'>
               <div className='num-title'>{'投资回报期'}</div>
-              <span className='num-text' style={{alignSelf: 'flex-start' }}>{Solutions.getIn([idx,'ROI']) || 0 + '年'}</span>
+              <span className='num-text' style={{alignSelf: 'flex-start' }}>{ getROILabel(Solutions.get(idx)) }</span>
             </div>
           </div>
         </div>
@@ -433,7 +438,7 @@ export class PlanDetail extends Component {
             <span className='num-icon icon-pay-back-period'/>
             <div className='plan-detail-num-title-panel'>
               <div className='num-title'>{'投资回报期'}</div>
-              <span className='num-text' style={{alignSelf: 'flex-start' }}>{Solutions.getIn([idx,'ROI']) || 0 + '年'}</span>
+              <span className='num-text' style={{alignSelf: 'flex-start' }}>{ getROILabel(Solutions.get(idx)) }</span>
             </div>
           </div>
         </div>
@@ -480,131 +485,6 @@ PlanDetail.defaultProps = {
 	isView:false,
 }
 
-const testData = Immutable.fromJS({
-  "Problem": {
-    "Id": 0,
-    "TagIds": [
-      0
-    ],
-    "HierarchyId": 0,
-    "Name": "string",
-    "EnergySys": 0,
-    "Description": `12
-
-    123`,
-    "Status": 0,
-    "IsRead": true,
-    "CreateUserId": 0,
-    "CreateUserName": "string",
-    "IsConsultant": true,
-    "CreateTime": "2018-05-15T06:23:36.928Z",
-    "ThumbnailUrl": "string",
-    "EnergyProblemImages": [
-      {
-        "Id": 0,
-        "EnergyProblemId": 0,
-        "Name": "string",
-        "ImageUrl": 'http://energymost-upload.oss-cn-hangzhou.aliyuncs.com/EnergyWidgetGraph_35_0?x-oss-process=image/resize,w_600,h_400/format,png',
-        "Content": "string",
-        "OssKey": "string"
-      },
-      {
-        "Id": 1,
-        "EnergyProblemId": 0,
-        "Name": "string",
-        "ImageUrl": 'http://energymost-upload.oss-cn-hangzhou.aliyuncs.com/EnergyWidgetGraph_35_0?x-oss-process=image/resize,w_600,h_400/format,png',
-        "Content": "string",
-        "OssKey": "string"
-      }
-    ],
-    "Supervisor": {
-      "Id": 0,
-      "HierarchyId": 0,
-      "Name": "string",
-      "PhoneNumber": "string",
-      "EnergySys": 1,
-      "CreateTime": "2018-05-15T06:23:36.928Z"
-    },
-    "ProblemTypeId": 0,
-    "SolutionTitle": "string"
-  },
-  "Solutions": [{
-    "Id": 0,
-    "Name": "string",
-    "ExpectedAnnualEnergySaving": 0,
-    "EnergySavingUnit": "string",
-    "ExpectedAnnualCostSaving": 0,
-    "InvestmentAmount": 0,
-    "ROI": 0,
-    "SolutionDescription": "string",
-    "ProblemTypeName": "string",
-    "EnergeyLabel": "string",
-    "IndustryDesc": "string",
-    "CreatorUserId": 0,
-    "CreatorUserName": "string",
-    "SolutionImages": [
-               {
-            "Id": 0,
-            "EnergySolutionId": 0,
-            "Name": "string",
-            "ImageUrl": "http://se-test-data.oss-cn-hangzhou.aliyuncs.com/EnergyWidgetGraph_763_0?x-oss-process=image/resize,w_146,h_97/format,png",
-            "Content": "string",
-            "OssKey": "string"
-          },
-                    {
-            "Id": 0,
-            "EnergySolutionId": 0,
-            "Name": "string",
-            "ImageUrl": "http://se-test-data.oss-cn-hangzhou.aliyuncs.com/EnergyWidgetGraph_763_0?x-oss-process=image/resize,w_146,h_97/format,png",
-            "Content": "string",
-            "OssKey": "string"
-          },          {
-            "Id": 0,
-            "EnergySolutionId": 0,
-            "Name": "string",
-            "ImageUrl": "http://se-test-data.oss-cn-hangzhou.aliyuncs.com/EnergyWidgetGraph_763_0?x-oss-process=image/resize,w_146,h_97/format,png",
-            "Content": "string",
-            "OssKey": "string"
-          }
-    ]
-  }, {
-    "Id": 0,
-    "Name": "string",
-    "ExpectedAnnualEnergySaving": 0,
-    "EnergySavingUnit": "string",
-    "ExpectedAnnualCostSaving": 0,
-    "InvestmentAmount": 0,
-    "ROI": 0,
-    "SolutionDescription": "string",
-    "ProblemTypeName": "string",
-    "EnergeyLabel": "string",
-    "IndustryDesc": "string",
-    "CreatorUserId": 0,
-    "CreatorUserName": "string",
-    "SolutionImages": [
-      {
-        "Id": 0,
-        "EnergySolutionId": 0,
-        "Name": "string",
-        "ImageUrl": "string",
-        "Content": "string",
-        "OssKey": "string"
-      }
-    ]
-  }],
-  "Remarks": [
-    {
-      "Id": 0,
-      "EnergyProblemId": 0,
-      "Remark": "string",
-      "CreateUserId": 0,
-      "CreateUserName": "string",
-      "CreateTime": "2018-05-15T06:23:36.928Z"
-    }
-  ],
-  "EnergyEffectStatus": true
-});
-
 const BACK_DIALOG = 'BACK_DIALOG';
 const CANCEL_DIALOG = 'CANCEL_DIALOG';
 const DELETE_DIALOG = 'DELETE_DIALOG';
@@ -642,7 +522,23 @@ export default class GenerateSolution extends Component {
         </session>
         <footer className='generate-solution-footer'>
           <FlatButton label={'生成方案'} onClick={() => {
-            onCreate(this.state.energySolution.toJS());
+            onCreate(
+              energySolution.set(
+                'Solutions',
+                energySolution
+                  .get('Solutions')
+                  .map( solution =>
+                    solution.set(
+                      'ROI',
+                      MeasuresStore.getInvestmentReturnCycle(
+                        solution.get('InvestmentAmount'),
+                        solution.get('ExpectedAnnualCostSaving')
+                      )
+                    )
+                  )
+              )
+              .toJS()
+            );
           }}/>
           <FlatButton style={{marginLeft: 16}} label={'取消'} onClick={() => this.setState({dialogKey: CANCEL_DIALOG})}/>
         </footer>
