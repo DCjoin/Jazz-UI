@@ -136,16 +136,16 @@ function go(targetIdx) {
 		active(targetIdx, type);
 
 
-		var footer = getFooter();
-		if(footer.style.display !== 'none') {
+		// var footer = getFooter();
+		// if(footer.style.display !== 'none') {
 
-			footer.style.transform = 'translate3d(0, 100%, 0)';
-			containers[containers.length - 1].style.transform = 'translate3d(0, 0, 0)';
-			setTimeout(function() {
-				footer.style.display = 'none';
-			}, DEACTIVE_ANIMATION_DURATION);
+		// 	footer.style.transform = 'translate3d(0, 100%, 0)';
+		// 	containers[containers.length - 1].style.transform = 'translate3d(0, 0, 0)';
+		// 	setTimeout(function() {
+		// 		footer.style.display = 'none';
+		// 	}, DEACTIVE_ANIMATION_DURATION);
 
-		}
+		// }
 	}
 }
 
@@ -162,18 +162,18 @@ function scrollListener(e) {
 function scrollUp() {
 	var containers = getContainers();
 
-	var footer = getFooter();
-	if(footer.style.display !== 'none') {
+	// var footer = getFooter();
+	// if(footer.style.display !== 'none') {
 
-		footer.style.transform = 'translate3d(0, 100%, 0)';
-		containers[containers.length - 1].style.transform = 'translate3d(0, 0, 0)';
-		setTimeout(function() {
-			footer.style.display = 'none';
-		}, DEACTIVE_ANIMATION_DURATION);
+	// 	footer.style.transform = 'translate3d(0, 100%, 0)';
+	// 	containers[containers.length - 1].style.transform = 'translate3d(0, 0, 0)';
+	// 	setTimeout(function() {
+	// 		footer.style.display = 'none';
+	// 	}, DEACTIVE_ANIMATION_DURATION);
 
-	} else if(currentIdx > 0) {
-		toggleContainer(ANIMATION_TYPE.DOWN);
-	}
+	// } else if(currentIdx > 0) {
+	// 	toggleContainer(ANIMATION_TYPE.DOWN);
+	// }
 	var header = getHeader();
 	if(header.style.display === 'none') {
 		header.style.display = 'block';
@@ -199,15 +199,15 @@ function scrollDown() {
 
 	} else {
 
-		var footer = getFooter();
-		if(footer.style.display === 'none') {
-			footer.style.display = 'flex';
-			footer.style.transform = 'translate3d(0, 100%, 0)';
-			containers[containers.length - 1].style.transform = 'translate3d(0, -80px, 0)';
-			setTimeout(() => {
-				footer.style.transform = 'translate3d(0, 0, 0)';
-			}, 0);
-		}
+		// var footer = getFooter();
+		// if(footer.style.display === 'none') {
+		// 	footer.style.display = 'flex';
+		// 	footer.style.transform = 'translate3d(0, 100%, 0)';
+		// 	containers[containers.length - 1].style.transform = 'translate3d(0, -80px, 0)';
+		// 	setTimeout(() => {
+		// 		footer.style.transform = 'translate3d(0, 0, 0)';
+		// 	}, 0);
+		// }
 	}
 }
 
@@ -589,8 +589,8 @@ export default class NewLogin extends Component {
 					</div>
 				</Container>
 
-				<footer className="jazz-public-footer" id='login-footer' style={{display: 'none'}}>
-					<div className="jazz-public-footer-about">
+				<footer className="jazz-public-footer" id='login-footer' style={{flexDirection:'row',height:'44px',boxSizing: 'border-box'}}>
+					<div className="jazz-public-footer-about" style={{marginRight:'0'}}>
 				  	<a className='contact-us-link' href='javascript:void(0)' target="_blank">
 				  		{I18N.Login.ContactUS}
 				  		<div className='contact-us-card'>
@@ -602,7 +602,8 @@ export default class NewLogin extends Component {
 				    	lang: (this.props.router.params.lang === 'en-us') ? 'zh-cn' : 'en-us'
 				   })}`} target="_blank">{I18N.Platform.InEnglish}</a>
 				  </div>
-				  <div className="jazz-public-footer-about">
+					|
+				  <div className="jazz-public-footer-about" style={{marginLeft:'0'}}>
 				    <div style={{ marginRight: "2em" }}>{I18N.Login.Copyright}</div>
 				  	<a href="http://www.miibeian.gov.cn/" target="_blank">京ICP备05053940号-5</a>
 				  </div>
