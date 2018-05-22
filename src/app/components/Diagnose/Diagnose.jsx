@@ -279,17 +279,25 @@ export default class Diagnose extends Component {
   }
 
   _goStep1() {
-    if( this.state.createStep > 1 || (this.state.selectedId && DiagnoseStore.findLabelById( this.state.selectedId ) && DiagnoseStore.findLabelById( this.state.selectedId ).get('Children').size > 0) ) {
-      this.setState({createStep: 1});
+    if( (this.state.selectedId && DiagnoseStore.findLabelById( this.state.selectedId ) && DiagnoseStore.findLabelById( this.state.selectedId ).get('Children').size > 0) ) {
+      this.setState({createStep: 1, createRefPlans: []});
     } else {
-      this._goStep2();
+      if( this.state.createStep > 1 ) {
+        this._goStep0();
+      } else {
+        this._goStep2();
+      }
     }
   }
   _goStep2() {
-    if( this.state.createStep > 2 || (DiagnoseStore.getSuggestSolutions() && DiagnoseStore.getSuggestSolutions().size > 0) ) {
+    if( (DiagnoseStore.getSuggestSolutions() && DiagnoseStore.getSuggestSolutions().size > 0) ) {
       this.setState({createStep: 2});
     } else {
-      this._goCustom();
+      if( this.state.createStep > 2 ) {
+        this._goStep1();
+      } else {
+        this._goCustom();
+      }
     }
   }
 
