@@ -10,6 +10,7 @@ import Dialog from 'controls/NewDialog.jsx';
 import { ProblemMarkEnum } from 'constants/AnalysisConstants.jsx';
 import DiagnoseChart from './DiagnoseChart.jsx';
 import { Gallery } from '../DataAnalysis/Basic/GenerateSolution.jsx';
+import ImagGroupPanel from 'controls/ImagGroupPanel.jsx';
 
 const SVG_WIDTH = 750;
 const SVG_HEIGHT = 360;
@@ -358,7 +359,7 @@ export class PlanDetail extends Component {
             <span className='num-icon icon-pay-back-period'/>
             <div className='plan-detail-num-title-panel'>
               <div className='num-title'>{'投资回报期'}</div>
-              <span className='num-text' style={{alignSelf: 'flex-start' }}>{Solutions.get('ROI') || 0 + '年'}</span>
+              <span className='num-text' style={{alignSelf: 'flex-start' }}>{Solutions.getIn([idx,'ROI']) || 0 + '年'}</span>
             </div>
           </div>
         </div>
@@ -373,6 +374,7 @@ export class PlanDetail extends Component {
         <div className='field-wrapper'>
           <div className='field-title'>{'方案图片'}</div>
           {/*<TextBox style={{width: 770}} value={value} hintText={'请输入问题描述'} onChange={this.onChange}/>*/}
+          <ImagGroupPanel diagrams={Solutions.getIn([idx,"SolutionImages"])} width={145} height={100} editable={false}/>
         </div>
       </div>) )}
     </div>)
@@ -431,7 +433,7 @@ export class PlanDetail extends Component {
             <span className='num-icon icon-pay-back-period'/>
             <div className='plan-detail-num-title-panel'>
               <div className='num-title'>{'投资回报期'}</div>
-              <span className='num-text' style={{alignSelf: 'flex-start' }}>{Solutions.get('ROI') || 0 + '年'}</span>
+              <span className='num-text' style={{alignSelf: 'flex-start' }}>{Solutions.getIn([idx,'ROI']) || 0 + '年'}</span>
             </div>
           </div>
         </div>
@@ -462,6 +464,7 @@ export class PlanDetail extends Component {
         <div className='field-wrapper'>
           <div className='field-title'>{'方案图片'}</div>
           {/*<TextBox style={{width: 770}} value={value} hintText={'请输入问题描述'} onChange={this.onChange}/>*/}
+           <ImagGroupPanel diagrams={Solutions.getIn([idx,"SolutionImages"])} width={145} height={100} editable={false}/>
         </div>
       </div>) )}
     </div>)
@@ -540,14 +543,29 @@ const testData = Immutable.fromJS({
     "CreatorUserId": 0,
     "CreatorUserName": "string",
     "SolutionImages": [
-      {
-        "Id": 0,
-        "EnergySolutionId": 0,
-        "Name": "string",
-        "ImageUrl": "string",
-        "Content": "string",
-        "OssKey": "string"
-      }
+               {
+            "Id": 0,
+            "EnergySolutionId": 0,
+            "Name": "string",
+            "ImageUrl": "http://se-test-data.oss-cn-hangzhou.aliyuncs.com/EnergyWidgetGraph_763_0?x-oss-process=image/resize,w_146,h_97/format,png",
+            "Content": "string",
+            "OssKey": "string"
+          },
+                    {
+            "Id": 0,
+            "EnergySolutionId": 0,
+            "Name": "string",
+            "ImageUrl": "http://se-test-data.oss-cn-hangzhou.aliyuncs.com/EnergyWidgetGraph_763_0?x-oss-process=image/resize,w_146,h_97/format,png",
+            "Content": "string",
+            "OssKey": "string"
+          },          {
+            "Id": 0,
+            "EnergySolutionId": 0,
+            "Name": "string",
+            "ImageUrl": "http://se-test-data.oss-cn-hangzhou.aliyuncs.com/EnergyWidgetGraph_763_0?x-oss-process=image/resize,w_146,h_97/format,png",
+            "Content": "string",
+            "OssKey": "string"
+          }
     ]
   }, {
     "Id": 0,
