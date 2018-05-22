@@ -272,20 +272,24 @@ const MeasuresStore = assign({}, PrototypeStore, {
   IsAllCheckDisabled(){
     return !(Immutable.fromJS(_checkList).findIndex(item=>(!item.get('disabled')))>-1)
   },
-  getInvestmentReturnCycle(amount,cost){
-    if(cost===null || cost*1===0 || amount===null){
+  getInvestmentReturnNum(amount,cost){
+        if(cost===null || cost*1===0 || amount===null){
       return null
     }
     else {
       var cycle=amount/cost;
       cycle=parseFloat(cycle.toFixed(1));
+        return cycle
+
+    }
+  },
+  getInvestmentReturnCycle(amount,cost){
+      var cycle=this.getInvestmentReturnNum(amount,cost);
       if(cycle===0){
         return I18N.Setting.ECM.InvestmentReturnCycle.ImmediateRecovery
-      }
-      else {
+      }else{
         return cycle
       }
-    }
   },
   getDisplayText(text){
     return text===null?' — ':CommonFuns.getLabelData(text*1)
