@@ -13,6 +13,8 @@ export default class PushConfirmDialog extends Component {
     super(props);
     this._onClose=this._onClose.bind(this);
     this._onChange=this._onChange.bind(this);
+    this._onPush=this._onPush.bind(this);
+    
     
   }
 
@@ -44,12 +46,22 @@ export default class PushConfirmDialog extends Component {
         });
       }
 
+    _onPush(e){
+       if(MeasuresStore.IsSolutionDisable(this.state.solution.toJS())){
+        this.setState({
+          snackBarOpen:true
+        })
+      }else{
+        this.props.onPush(e)
+      }     
+    }
+
     _renderFooter(){
                 return(
                         <div className="solution-footer">
                                 <div className="action">
                                      <FlatButton flat primary label={I18N.Setting.ECM.PushBtn}
-                                             onClick={this.props.onPush}/>
+                                             onClick={this._onPush}/>
                                      <FlatButton outline secondary label={I18N.Common.Button.Delete} onClick={this.props.onDelete}/>
                                 </div>
                         </div>
