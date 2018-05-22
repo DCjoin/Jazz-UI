@@ -98,6 +98,7 @@ module.exports = {
     getConsultant: '/user/getconsultant/{hierarchyId}',
     energySolution:'/diagnose/{diagnoseId}/energysolution/create',
     getSuggestSolutions: '/energysolution/solutions',
+    createSolution: '/energysolution/create',
   },
 
   SaveEffect: {

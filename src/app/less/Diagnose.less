@@ -716,7 +716,7 @@
   padding: 50px 171px;
   padding-top: 0;
   color: #0f0f0f;
-  z-index: 1;
+  z-index: 2;
 
   &-header {
     font-size: 24px;
@@ -726,6 +726,14 @@
     flex: none;
     align-items: center;
     line-height: 24px;
+    position: relative;
+
+    & .icon-close {
+      position: absolute;
+      right: 20px;
+      font-size: 20px;
+      cursor: pointer;
+    }
 
     & .icon-return {
       font-size: 14px;
@@ -737,6 +745,7 @@
       display: inline-block;
       margin-right: 16px;
       text-align: center;
+      cursor: pointer;
     }
   }
 
@@ -834,7 +843,7 @@
   padding: 0 263px;
   padding-top: 0;
   color: #0f0f0f;
-  z-index: 1;
+  z-index: 2;
 
   &-header {
     font-size: 24px;
@@ -845,6 +854,14 @@
     line-height: 24px;
     border-bottom: 1px solid #e6e6e6;
     padding-bottom: 16px;
+    position: relative;
+
+    & .icon-close {
+      position: absolute;
+      right: 20px;
+      font-size: 20px;
+      cursor: pointer;
+    }
 
     & .icon-return {
       font-size: 14px;
@@ -856,6 +873,7 @@
       display: inline-block;
       margin-right: 16px;
       text-align: center;
+      cursor: pointer;
     }
   }
   &-tip {
@@ -870,6 +888,8 @@
     border: solid 1px #e6e6e6;
     display: flex;
     cursor: pointer;
+    margin-bottom: 16px;
+    flex: none;
     &:hover {
       box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.06);
     }
@@ -879,6 +899,7 @@
       overflow: hidden;
     }
   }
+
   &-name {
     font-size: 18px;
     margin-bottom: 20px;
@@ -909,6 +930,23 @@
     height: 50px;
     background-color: #fbfbfb;
     box-shadow: 0 -1px 4px 0 rgba(0, 0, 0, 0.1);
+
+    & .icon-no_ecm {
+      color: #9fa0a4;
+      font-size: 14px;
+
+      &:before {
+        margin-right: 6px;
+      }
+    }
+  }
+  & .icon-clean {
+    font-size: 14px;
+    color: #666;
+    &:before {
+      color: #ff4d4d;
+      margin-right: 8px;
+    }
   }
 }
 
@@ -926,7 +964,18 @@
   padding: 0 171px;
   margin-bottom: 50px;
   color: #0f0f0f;
-  z-index: 1;
+  z-index: 2;
+
+  & .select-field-overlay {
+    position: relative;
+    cursor: pointer;
+    & .icon-arrow-unfold {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      color: #c0c0c0;
+    }
+  }
 
   &-header {
     font-size: 24px;
@@ -948,6 +997,7 @@
       display: inline-block;
       margin-right: 16px;
       text-align: center;
+      cursor: pointer;
     }
   }
   &-footer {
@@ -1005,6 +1055,23 @@
   margin-left: 4px;
 }
 
+.contenteditable-desc {
+  padding: 8px 10px;
+  border: solid 1px #e6e6e6;
+  border-radius: 2px;
+  min-height: 88px;
+  color: #666;
+  font-family: Arial;
+  font-size: 14px;
+  white-space: pre;
+  outline: none;
+  &:empty:before {
+    content: attr(placeholder);
+    display: block;
+    color: #d0d0d0;
+  }
+}
+
 .solution-text-box {
   width: 404px;
   height: 34px;
@@ -1013,7 +1080,8 @@
   display: flex;
   position: relative;
 
-  &>input {
+  &>input, &>textarea {
+    font-family: Arial;
     margin: 0 8px;
     flex: 1;
     background-color: rgba(0, 0, 0, 0) !important;

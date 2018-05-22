@@ -20,8 +20,41 @@ import util from 'util/Util.jsx';
 import RoutePath from 'util/RoutePath.jsx';
 
 import SimilarProblem from './similar_problem.jsx';
+import SolutionSuggest from './solution_suggest.jsx';
 import GenerateSolution from './generate_solution.jsx';
 
+const SOLUTION_NAMES=[I18N.Setting.ECM.SolutionName.First,I18N.Setting.ECM.SolutionName.Second,I18N.Setting.ECM.SolutionName.Third,
+                      I18N.Setting.ECM.SolutionName.Fourth,I18N.Setting.ECM.SolutionName.Fifth,I18N.Setting.ECM.SolutionName.Sixth,
+                      I18N.Setting.ECM.SolutionName.Seventh,I18N.Setting.ECM.SolutionName.Eighth,I18N.Setting.ECM.SolutionName.Ninth,
+                      I18N.Setting.ECM.SolutionName.Tenth]
+let INIT_SOLUTION = Immutable.fromJS({
+  "Problem": {
+    "Id": 0,
+    "HierarchyId": 0,
+    "Name": "",
+    "EnergySys": 0,
+    "IsFocus": true,
+    "Description": "",
+    "Status": 1,
+    "IsConsultant": true,
+    "EnergyProblemImages": [],
+    "ProblemTypeId": 0,
+    "SolutionTitle": "",
+    "DataLabelId": 0,
+    "DataLabelName": ""
+  },
+  "Solutions": [
+    {
+      "Name": "",
+      "EnergySavingUnit": "",
+      "ROI": 0,
+      "SolutionDescription": "",
+      "SolutionImages": []
+    }
+  ],
+  "Remarks": [],
+  "EnergyEffectStatus": true
+});
 
 function getFirstMenuPathFunc(menu) {
   let firstMenu = menu[0];
@@ -88,15 +121,18 @@ export default class Diagnose extends Component {
     }
 
   state={
-        infoTabNo:isBasicNoPrivilege()?2:1,
-        hasProblem:false,
-        selectedId:null,
-        isBasic:true,
-        formStatus:formStatus.VIEW,
-        addLabel:null,
-        createSuccessMeg: false,
-        showSolutionTip:false
-    }
+    infoTabNo:isBasicNoPrivilege()?2:1,
+    hasProblem:false,
+    selectedId:null,
+    isBasic:true,
+    formStatus:formStatus.VIEW,
+    addLabel:null,
+    createSuccessMeg: false,
+    showSolutionTip:false,
+    createStep: 0,
+    createRefProblems: [],
+    createRefPlans: [],
+  }
 
   _onChanged(){
     this.forceUpdate()
@@ -168,6 +204,71 @@ export default class Diagnose extends Component {
 
   }
 
+  _getCombineSolution() {
+    let initSolution = this._getCustomSolution();
+    let problemId = this.state.selectedId;
+    let currentProblem = DiagnoseStore.findDiagnoseById( problemId );
+    if( this.state.createRefProblems ) {
+      if( this.state.createRefProblems.length === 0 ) {
+        initSolution = initSolution.setIn(['Problem', 'Name'], currentProblem.get('Name'));
+      } else {
+        initSolution = initSolution.setIn(['Problem', 'Name'], DiagnoseStore.findLabelById(problemId).get('Name') + '-' +  DiagnoseStore.findProblemById(problemId).get('Name'));
+
+      }
+    }
+
+    if( this.state.createRefPlans && this.state.createRefPlans.length > 0 ) {
+      if( this.state.createRefPlans.length === 1 ) {
+        initSolution = initSolution.setIn(['Problem', 'Description'], this.state.createRefPlans[0].ProblemDescription);
+      } else {
+        let descArr = [];
+        this.state.createRefPlans.map( (plan, idx) => {
+          descArr.push(SOLUTION_NAMES[idx]);
+          descArr.push('\r\n');
+          descArr.push(plan.ProblemDescription);
+          descArr.push('\r\n');
+          descArr.push('\r\n');
+        } );
+        initSolution = initSolution.setIn(['Problem', 'Description'], descArr.join(''));
+      }
+
+      initSolution = initSolution.set('Solutions', Immutable.fromJS(this.state.createRefPlans.map(
+        ({SolutionName, Id, ROI, SolutionDescription, ProblemLabels, CreatorUserName, CreatorUserId, Images}) => ({
+          Id,
+          Name: SolutionName,
+          ExpectedAnnualEnergySaving: '',
+          EnergySavingUnit: '',
+          ExpectedAnnualCostSaving: '',
+          InvestmentAmount: '',
+          ROI,
+          SolutionDescription: SolutionDescription,
+          ProblemTypeName: ProblemLabels[0].ProblemTypeName,
+          EnergeyLabel: ProblemLabels[0].DataLabelsName[0].Name,
+          CreatorUserId,
+          CreatorUserName,
+          SolutionImages: Images
+        }) )));
+    }
+    return initSolution;
+                        // .setIn(['Problem', 'EnergySys '], problems.find( problem => problem.get('Id') === currentProblemId ).get('EnergySys '))
+                        // .setIn(['Problem', 'HierarchyId'], this.context.hierarchyId);
+  }
+  _getCustomSolution() {
+    let currentProblem = DiagnoseStore.findDiagnoseById( this.state.selectedId );
+    return INIT_SOLUTION
+            .setIn(['Problem', 'Id'], this.state.selectedId)
+            .setIn(['Problem', 'HierarchyId'], this.context.hierarchyId)
+            .setIn(['Problem', 'EnergyProblemImages'], Immutable.fromJS([currentProblem.toJS()].concat(this.state.createRefProblems).map( problem => Immutable.fromJS({
+              Id: problem.Id,
+              Name: problem.Name,
+            }) ) ))
+            .setIn(['Problem', 'ProblemTypeId'], DiagnoseStore.findProblemById(this.state.selectedId).get('Id'))
+            .setIn(['Problem', 'DataLabelId'], DiagnoseStore.findLabelById(this.state.selectedId).get('Id'));
+  }
+
+  _goStep0() {
+    this.setState({createStep: 0, createRefProblems: [], createRefPlans: []});
+  }
 
   getProblem(hierarchyId){
     this.setState({
@@ -175,6 +276,29 @@ export default class Diagnose extends Component {
     },()=>{
       DiagnoseAction.getDiagnoseStatic(hierarchyId)
     })
+  }
+
+  _goStep1() {
+    if( this.state.createStep > 1 || (this.state.selectedId && DiagnoseStore.findLabelById( this.state.selectedId ) && DiagnoseStore.findLabelById( this.state.selectedId ).get('Children').size > 0) ) {
+      this.setState({createStep: 1});
+    } else {
+      this._goStep2();
+    }
+  }
+  _goStep2() {
+    if( this.state.createStep > 2 || (DiagnoseStore.getSuggestSolutions() && DiagnoseStore.getSuggestSolutions().size > 0) ) {
+      this.setState({createStep: 2});
+    } else {
+      this._goCustom();
+    }
+  }
+
+  _goStep3() {
+    this.setState({createStep: 3, energySolution: this._getCombineSolution()});
+  }
+
+  _goCustom() {
+    this.setState({createStep: 3, energySolution: this._getCustomSolution()});
   }
 
   componentDidMount(){
@@ -205,7 +329,46 @@ export default class Diagnose extends Component {
 render(){
   return(
     <div className="diagnose-panel">
-      <GenerateSolution/>
+      {this.state.createStep === 1 && <SimilarProblem
+        onChange={ refProblems => {
+          this.setState({
+            createRefProblems: refProblems
+          })
+        }}
+        onBack={() => this._goStep0()}
+        onNext={() => this._goStep2()}
+        onCancel={() => this._goStep0()}
+        chartDatas={DiagnoseStore.getSimilarProblemChart()}
+        currentProblemId={this.state.selectedId}
+        checkedProblems={this.state.createRefProblems}
+        problems={DiagnoseStore.findLabelById( this.state.selectedId ).get('Children')}
+      />}
+      {this.state.createStep === 2 && <SolutionSuggest
+        onChange={ refPlans => {
+          this.setState({
+            createRefPlans: refPlans
+          })
+        }}
+        onBack={() => this._goStep1()}
+        onNext={() => this._goStep3()}
+        onCustom={() => this._goCustom()}
+        onCancel={() => this._goStep0()}
+        checkedPlan={this.state.createRefPlans}
+        plans={DiagnoseStore.getSuggestSolutions()}/>}
+      {this.state.createStep === 3 && <GenerateSolution
+        onBack={() => this._goStep2()}
+        onNext={() => this._goStep0()}
+        onCancel={() => this._goStep0()}
+        energySolution={ this.state.energySolution }
+        currentProblemId={this.state.selectedId}
+        checkedProblems={this.state.createRefProblems}
+        chartDatas={DiagnoseStore.getSimilarProblemChart()}
+        onCreate={(data) => {
+          DiagnoseAction.createDiagnose(data, () => {
+            this.props.router.replace(RoutePath.ecm(this.props.params)+'?init_hierarchy_id='+this.context.hierarchyId);
+          });
+        }}
+        />}
       {this._renderTab()}
       <div className="content">
         <LabelList ref='list' isFromProbem={this.state.infoTabNo===1} selectedNode={DiagnoseStore.findDiagnoseById(this.state.selectedId)}
@@ -220,6 +383,7 @@ render(){
                          formStatus:formStatus.EDIT,
                          addLabel:label
                        })}}
+                       willCreate={() => {this._goStep1()}}
                        />
       </div>
       {this.state.formStatus === formStatus.ADD &&

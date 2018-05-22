@@ -1,9 +1,28 @@
 import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 import Immutable from 'immutable';
+import MenuItem from 'material-ui/MenuItem';
+import Popover from 'material-ui/Popover';
+import { CircularProgress} from 'material-ui';
 // import nzh from 'nzh/cn';
 import FlatButton from 'controls/FlatButton.jsx';
+import Dialog from 'controls/NewDialog.jsx';
+import { ProblemMarkEnum } from 'constants/AnalysisConstants.jsx';
+import DiagnoseChart from './DiagnoseChart.jsx';
 import { Gallery } from '../DataAnalysis/Basic/GenerateSolution.jsx';
 import ImagGroupPanel from 'controls/ImagGroupPanel.jsx';
+
+const SVG_WIDTH = 750;
+const SVG_HEIGHT = 360;
+
+function getProblemMarkMenuItem() {
+  return [
+    <MenuItem primaryText={I18N.Common.Label.CommoEmptyText} value={0} disabled={true}/>
+    ].concat(Object.keys(ProblemMarkEnum).map(key => {
+    return <MenuItem primaryText={I18N.Setting.DataAnalysis.EnergyProblem.MarkEnum[ProblemMarkEnum[key]]} value={ProblemMarkEnum[key]}/>
+    }));
+}
+
 function SessionTitle(props) {
   let {title, subtitle, style} = props;
   return (<div className='session-title' style={style}>
@@ -13,9 +32,9 @@ function SessionTitle(props) {
 
 class TextBox extends Component {
   render() {
-    let { onChange, value, hintText, style, errorMsg } = this.props;
+    let { onChange, value, hintText, style, errorMsg, multiLine } = this.props;
     return (<div className='solution-text-box' style={style}>
-      <input type='text' value={value} onChange={onChange} placeholder={hintText}/>
+      {multiLine ? <textarea type='text' value={value} onChange={onChange} placeholder={hintText}/> : <input type='text' value={value} onChange={onChange} placeholder={hintText}/>}
       {errorMsg && <span className='error-msg'>{errorMsg}</span>}
     </div>);
   }
@@ -51,7 +70,8 @@ export class ProblemDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedIdx: 0
+      selectedIdx: 0,
+      anchorEl: null,
     }
     this._renderChart = this._renderChart.bind(this);
   }
@@ -63,10 +83,66 @@ export class ProblemDetail extends Component {
       onChange: e => onChange(['Problem', key], e.target.value),
     }
   }
-  _renderChart() {
-    let src = this.props.energySolution.getIn(['Problem', 'EnergyProblemImages', this.state.selectedIdx, 'ImageUrl']);
-    return (<img src={src} width="100%" height="332px"/>);
+
+  _afterChartCreated(id) {
+    let svgString,
+    parent = ReactDOM.findDOMNode(this).querySelector('#chart_basic_component_' + id);
+    if(parent && parent.querySelector('svg')) {
+      svgString = new XMLSerializer().serializeToString(parent.querySelector('svg'));
+    }
+    if( svgString ) {
+      setTimeout(() => {
+        this.props.onChange([
+          'Problem',
+          'EnergyProblemImages',
+          this.props.energySolution.getIn(['Problem', 'EnergyProblemImages']).findIndex( img => img.get('Id') === id ),
+          'Content',
+        ], svgString);
+      })
+    }
   }
+
+  _renderHighChart(chartData, id) {
+    let currentImg = this.props.energySolution.getIn(['Problem', 'EnergyProblemImages', this.state.selectedIdx]);
+    if( !currentImg ) {
+      return null;
+    }
+    if(!chartData || currentImg.get('Content') ) {
+      return null;
+    }
+    return (<div style={{position: 'relative', overflowX: 'hidden', height: SVG_HEIGHT, width: SVG_WIDTH}}>
+            <div id={'chart_basic_component_' + id} style={{
+                flex: 1,
+                position: 'absolute',
+                width: SVG_WIDTH,
+                height: SVG_HEIGHT,
+                display: 'flex',
+                opacity: 0,
+                flexDirection: 'column',
+                marginBottom: '0px',
+                marginLeft: '9px'
+              }}>
+              <DiagnoseChart afterChartCreated={() => this._afterChartCreated(id)} data={chartData}/>
+          </div>
+        </div>);
+  }
+  _renderChart() {
+    let currentImg = this.props.energySolution.getIn(['Problem', 'EnergyProblemImages', this.state.selectedIdx]);
+    if( !currentImg ) {
+      return null;
+    }
+    let src = currentImg.get('ImageUrl');
+    if( src ) {
+      return (<img src={src} width="100%" height="332px"/>);
+    } else {
+      let content = currentImg.get('Content');
+      if( content ) {
+        return (<div style={{height: SVG_HEIGHT, width: SVG_WIDTH}} dangerouslySetInnerHTML={{__html: content}} />);
+      }
+      return (<div style={{height: SVG_HEIGHT, width: SVG_WIDTH}} className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>);
+    }
+  }
+
   _renderViewStatus(){
     var {energySolution}=this.props;
     let { selectedIdx } = this.state;
@@ -111,8 +187,8 @@ export class ProblemDetail extends Component {
   }
 
   render() {
-    let { isRequired, errorMsg, energySolution, onChange, isView,hasEnergySys} = this.props;
-    let { selectedIdx } = this.state;
+    let { isRequired, errorMsg, energySolution, onChange, isView,hasEnergySys, currentProblemId, checkedProblems, chartDatas} = this.props;
+    let { selectedIdx, anchorEl } = this.state;
 
     if(isView) return this._renderViewStatus()
 
@@ -125,15 +201,57 @@ export class ProblemDetail extends Component {
         </div>
         {hasEnergySys && <div style={{marginLeft: 20}}>
           <div className='field-title'>{'能源系统标识'}{!isRequired && <span className='subtitle'>{'(必填)'}</span>}</div>
-          <TextBox {...this._initTextBoxProps('EnergySys')} style={{width: 346}} hintText={'请选择'}/>
+          <div className='select-field-overlay' onClick={(e) => {
+            this.setState({
+              anchorEl: e.target
+            })
+          }}>
+            <TextBox {...this._initTextBoxProps('EnergySys')}
+              value={I18N.Setting.DataAnalysis.EnergyProblem.MarkEnum[energySolution.getIn(['Problem', 'EnergySys'])]}
+              style={{width: 346}} hintText={'请选择'}/>
+            <span className='icon-arrow-unfold'/>
+          </div>
+          <Popover onRequestClose={() => {
+            this.setState({
+              anchorEl: null
+            })
+          }} open={!!anchorEl} anchorEl={anchorEl}>
+            {Object.keys(ProblemMarkEnum).map(key => (
+            <MenuItem onClick={() => {
+              this.setState({
+                anchorEl: null
+              });
+              onChange(['Problem', 'EnergySys'], ProblemMarkEnum[key]);
+            }} primaryText={I18N.Setting.DataAnalysis.EnergyProblem.MarkEnum[ProblemMarkEnum[key]]} value={ProblemMarkEnum[key]}/>
+            ))}
+          </Popover>
         </div>}
       </div>
       <div className='field-wrapper'>
         <div className='field-title'>{'问题描述'}</div>
-        <TextBox {...this._initTextBoxProps('Description')} style={{width: 770}} hintText={'请输入问题描述'}/>
+        <div className='contenteditable-desc' contentEditable placeholder={'请输入问题描述'} onBlur={(e) => {
+          let str = Array.from(e.target.childNodes).map( child => {
+            if( child.nodeType === 3 ) {
+              return child.nodeValue;
+            }
+            if( child.nodeType === 1 ) {
+              if( child.childNodes && child.childNodes[0] && child.childNodes[0].nodeType === 3 ) {
+                return child.childNodes[0].nodeValue;
+              }
+            }
+            return '';
+          } ).join('\r\n');
+          onChange(['Problem', 'Description'], str);
+        }}>
+          {energySolution.getIn(['Problem', 'Description'])}
+        </div>
+        {/*<TextBox multiLine {...this._initTextBoxProps('Description')} style={{width: 770}} hintText={'请输入问题描述'}/>*/}
       </div>
       <div className='field-wrapper' style={{width: 770}}>
         <div className='field-title'>{'问题图表'}</div>
+        {energySolution.getIn(['Problem', 'EnergyProblemImages']).map( (image) => {
+          return this._renderHighChart(chartDatas[image.get('Id')], image.get('Id'));
+        } )}
         <Gallery
           names={energySolution.getIn(['Problem', 'EnergyProblemImages']).map( img => img.get('Name') ).toJS()}
           selectedIdx={selectedIdx}
@@ -154,6 +272,9 @@ export class ProblemDetail extends Component {
                 selectedIdx: energySolution.getIn(['Problem', 'EnergyProblemImages']).size - 2
               })
             }
+            this.setState({
+              dialogKey: DELETE_DIALOG
+            })
           }}
           renderContent={this._renderChart}/>
       </div>
@@ -178,8 +299,11 @@ const SOLUTION_NAMES=[I18N.Setting.ECM.SolutionName.First,I18N.Setting.ECM.Solut
                       I18N.Setting.ECM.SolutionName.Seventh,I18N.Setting.ECM.SolutionName.Eighth,I18N.Setting.ECM.SolutionName.Ninth,
                       I18N.Setting.ECM.SolutionName.Tenth]
 
-
+let _idx = null
 export class PlanDetail extends Component {
+  state = {
+    dialogKey: null
+  }
   _bindChange( paths ) {
     return e => {
       this.props.onChange( ['Solutions'].concat(paths), e.target.value );
@@ -193,11 +317,9 @@ export class PlanDetail extends Component {
       onChange: this._bindChange([idx, key]),
     }
   }
-  _bindDelete(idx) {
+  _onDelete(idx) {
     let { Solutions, errorData, onChange } = this.props;
-    return () => {
-      onChange( ['Solutions'], Solutions.delete(idx) );
-    }
+    onChange( ['Solutions'], Solutions.delete(idx) );
   }
   _renderViewStatus(){
     let { Solutions, errorData, onChange,isRequired,solutionTitle} = this.props;
@@ -261,12 +383,26 @@ export class PlanDetail extends Component {
     let { Solutions, errorData, onChange,isRequired,isView} = this.props;
     if(isView) return this._renderViewStatus()
     return (<div className='plan-detail'>
+        <Dialog open={this.state.dialogKey === DELETE_DIALOG} actionsContainerStyle={{textAlign: 'right'}} contentStyle={{margin: '8px 24px', color: '#626469'}} actions={[
+          <FlatButton primary inDialog label={'确认删除'} onClick={() => {
+            this._onDelete(_idx);
+            _idx = null;
+            this.setState({
+              dialogKey: null
+            });
+          }}/>,
+          <FlatButton label={'取消'} onClick={() => { this.setState({dialogKey: null}) }}/>
+        ]}>{'确认删除该方案吗？'}</Dialog>
       <SessionTitle title={'方案详情'} subtitle={isRequired?'(必填)':'(选填)'} style={{marginBottom: 30}}/>
       {Solutions && Solutions.map( (EnergySolution, idx) => (<div>
+
         {Solutions.size > 1 && <header style={{marginTop: idx && 32}} className='plan-detail-header'>
           <span>{SOLUTION_NAMES[idx]}</span>
           <span className='split-line'/>
-          <span className='icon-delete' onClick={this._bindDelete(idx)}/>
+          <span className='icon-delete' onClick={() => {
+            _idx = idx;
+            this.setState({dialogKey: DELETE_DIALOG})
+          }}/>
         </header>}
         <div className='field-wrapper flex-bar'>
           <div className='plan-detail-num-panel'>
@@ -307,7 +443,23 @@ export class PlanDetail extends Component {
         </div>
         <div className='field-wrapper'>
           <div className='field-title'>{'方案描述'}</div>
-          <TextBox {...this._initTextBoxProps(idx, 'SolutionDescription')} style={{width: 770}} hintText={'请输入方案描述'}/>
+          <div className='contenteditable-desc' contentEditable placeholder={'请输入方案描述'} onBlur={(e) => {
+            let str = Array.from(e.target.childNodes).map( child => {
+              if( child.nodeType === 3 ) {
+                return child.nodeValue;
+              }
+              if( child.nodeType === 1 ) {
+                if( child.childNodes && child.childNodes[0] && child.childNodes[0].nodeType === 3 ) {
+                  return child.childNodes[0].nodeValue;
+                }
+              }
+              return '';
+            } ).join('\r\n');
+            onChange(['Solutions', idx, 'SolutionDescription'], str);
+          }}>
+            {Solutions.getIn([idx, 'SolutionDescription'])}
+          </div>
+          {/*<TextBox {...this._initTextBoxProps(idx, 'SolutionDescription')} style={{width: 770}} hintText={'请输入方案描述'}/>*/}
         </div>
         <div className='field-wrapper'>
           <div className='field-title'>{'方案图片'}</div>
@@ -336,8 +488,10 @@ const testData = Immutable.fromJS({
     ],
     "HierarchyId": 0,
     "Name": "string",
-    "EnergySys": 1,
-    "Description": "string",
+    "EnergySys": 0,
+    "Description": `12
+
+    123`,
     "Status": 0,
     "IsRead": true,
     "CreateUserId": 0,
@@ -451,11 +605,14 @@ const testData = Immutable.fromJS({
   "EnergyEffectStatus": true
 });
 
+const BACK_DIALOG = 'BACK_DIALOG';
+const CANCEL_DIALOG = 'CANCEL_DIALOG';
+const DELETE_DIALOG = 'DELETE_DIALOG';
 export default class GenerateSolution extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      energySolution: testData,
+      energySolution: props.energySolution || testData,
       errorData: Immutable.fromJS({}),
     }
     this._onChange = this._onChange.bind(this);
@@ -467,25 +624,36 @@ export default class GenerateSolution extends Component {
   }
   render() {
     let { energySolution } = this.state;
+    let { onCancel, onBack, chartDatas, onCreate } = this.props;
     return (
       <div className='generate-solution'>
         <header className='generate-solution-header'>
-          <span className='icon-return'/>
+          <span className='icon-return'  onClick={() => this.setState({dialogKey: BACK_DIALOG})}/>
           {'节能方案'}
         </header>
         <session className='session-container'>
           <PlanTitle isRequired={true} energySolution={energySolution} onChange={this._onChange}/>
         </session>
         <session className='session-container'>
-          <ProblemDetail isRequired={true} energySolution={energySolution} onChange={this._onChange}/>
+          <ProblemDetail isRequired chartDatas={chartDatas} isRequired={true} energySolution={energySolution} onChange={this._onChange}/>
         </session>
         <session className='session-container'>
-          <PlanDetail isRequired={false} Solutions={energySolution.get('Solutions')} onChange={this._onChange}/>
+          <PlanDetail isRequired Solutions={energySolution.get('Solutions')} onChange={this._onChange}/>
         </session>
         <footer className='generate-solution-footer'>
-          <FlatButton label={'生成方案'}/>
-          <FlatButton style={{marginLeft: 16}} label={'取消'}/>
+          <FlatButton label={'生成方案'} onClick={() => {
+            onCreate(this.state.energySolution.toJS());
+          }}/>
+          <FlatButton style={{marginLeft: 16}} label={'取消'} onClick={() => this.setState({dialogKey: CANCEL_DIALOG})}/>
         </footer>
+        <Dialog open={this.state.dialogKey === BACK_DIALOG} actionsContainerStyle={{textAlign: 'right'}} contentStyle={{margin: '8px 24px', color: '#626469'}} actions={[
+          <FlatButton primary inDialog label={'返回上一页'} onClick={this.props.onBack}/>,
+          <FlatButton label={'取消'} onClick={() => { this.setState({dialogKey: null}) }}/>
+        ]}>{'当前页面所有操作将不会保存，确定返回上一页吗？'}</Dialog>
+        <Dialog open={this.state.dialogKey === CANCEL_DIALOG} actionsContainerStyle={{textAlign: 'right'}} contentStyle={{margin: '8px 24px', color: '#626469'}} actions={[
+          <FlatButton primary inDialog label={'离开页面'} onClick={this.props.onCancel}/>,
+          <FlatButton label={'取消'} onClick={() => { this.setState({dialogKey: null}) }}/>
+        ]}>{'当前页面所有操作将不会保存，确定离开当前页面吗？'}</Dialog>
       </div>
     );
   }

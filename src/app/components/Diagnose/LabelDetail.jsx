@@ -61,7 +61,7 @@ export default class LabelDetail extends Component {
 
 
   _renderContent(){
-		return this.props.isFromProbem?<DiagnoseProblem selectedNode={this.state.selectedNode} isBasic={this.props.isBasic} onEdit={this.props.onEdit}/>
+		return this.props.isFromProbem?<DiagnoseProblem willCreate={this.props.willCreate} selectedNode={this.state.selectedNode} isBasic={this.props.isBasic} onEdit={this.props.onEdit}/>
                                   :<DiagnoseList selectedNode={this.state.selectedNode} onEdit={this.props.onEdit}/>;
   }
 
