@@ -37,9 +37,9 @@ function SessionTitle(props) {
 
 class TextBox extends Component {
   render() {
-    let { onChange, value, hintText, style, errorMsg, multiLine } = this.props;
+    let { onChange, onBlur, value, hintText, style, errorMsg, multiLine } = this.props;
     return (<div className='solution-text-box' style={style}>
-      {multiLine ? <textarea type='text' value={value} onChange={onChange} placeholder={hintText}/> : <input type='text' value={value} onChange={onChange} placeholder={hintText}/>}
+      {multiLine ? <textarea type='text' value={value} onChange={onChange} placeholder={hintText}/> : <input type='text' value={value} onBlur={onBlur} onChange={onChange} placeholder={hintText}/>}
       {errorMsg && <span className='error-msg'>{errorMsg}</span>}
     </div>);
   }
@@ -47,11 +47,12 @@ class TextBox extends Component {
 
 export class PlanTitle extends Component {
   _initTextBoxProps(key) {
-    let { energySolution, errorData, onChange } = this.props;
+    let { energySolution, errorData, onChange, onBlur } = this.props;
     return {
       errorMsg: errorData && errorData.getIn(['Problem', key]),
       value: energySolution.getIn(['Problem', key]),
       onChange: e => onChange(['Problem', key], e.target.value),
+      onBlur: e => onBlur(['Problem', key], e.target.value),
     }
   }
   render() {
@@ -81,11 +82,12 @@ export class ProblemDetail extends Component {
     this._renderChart = this._renderChart.bind(this);
   }
   _initTextBoxProps(key) {
-    let { energySolution, errorData, onChange } = this.props;
+    let { energySolution, errorData, onChange, onBlur } = this.props;
     return {
       errorMsg: errorData && errorData.getIn(['Problem', key]),
       value: energySolution.getIn(['Problem', key]),
       onChange: e => onChange(['Problem', key], e.target.value),
+      onBlur: e => onBlur(['Problem', key], e.target.value),
     }
   }
 
@@ -192,7 +194,7 @@ export class ProblemDetail extends Component {
   }
 
   render() {
-    let { isRequired, errorMsg, energySolution, onChange, isView,hasEnergySys, currentProblemId, checkedProblems, chartDatas} = this.props;
+    let { isRequired, errorMsg, energySolution, onChange, onBlur, isView,hasEnergySys, currentProblemId, checkedProblems, chartDatas} = this.props;
     let { selectedIdx, anchorEl } = this.state;
 
     if(isView) return this._renderViewStatus()
@@ -211,12 +213,13 @@ export class ProblemDetail extends Component {
               anchorEl: e.target
             })
           }}>
-            <TextBox {...this._initTextBoxProps('EnergySys')}
+            <TextBox {...this._initTextBoxProps('EnergySys')} onBlur={() => {}}
               value={I18N.Setting.DataAnalysis.EnergyProblem.MarkEnum[energySolution.getIn(['Problem', 'EnergySys'])]}
               style={{width: 346}} hintText={'请选择'}/>
             <span className='icon-arrow-unfold'/>
           </div>
           <Popover onRequestClose={() => {
+            onBlur(['Problem', 'EnergySys'], '');
             this.setState({
               anchorEl: null
             })
@@ -226,7 +229,9 @@ export class ProblemDetail extends Component {
               this.setState({
                 anchorEl: null
               });
-              onChange(['Problem', 'EnergySys'], parseInt(ProblemMarkEnum[key]));
+              let value = parseInt(ProblemMarkEnum[key]);
+              onChange(['Problem', 'EnergySys'], value);
+              onBlur(['Problem', 'EnergySys'], value);
             }} primaryText={I18N.Setting.DataAnalysis.EnergyProblem.MarkEnum[ProblemMarkEnum[key]]} value={ProblemMarkEnum[key]}/>
             ))}
           </Popover>
@@ -315,11 +320,14 @@ export class PlanDetail extends Component {
     }
   }
   _initTextBoxProps(idx, key) {
-    let { Solutions, errorData, onChange } = this.props;
+    let { Solutions, errorData, onChange, onBlur } = this.props;
     return {
       errorMsg: errorData && errorData.getIn(['Solutions', idx, key]),
       value: Solutions.getIn([idx, key]),
       onChange: this._bindChange([idx, key]),
+      onBlur: (e) => {
+        onBlur( ['Solutions'].concat(paths), e.target.value );
+      },
     }
   }
   _onDelete(idx) {
@@ -496,14 +504,40 @@ export default class GenerateSolution extends Component {
       errorData: Immutable.fromJS({}),
     }
     this._onChange = this._onChange.bind(this);
+    this._onBlur = this._onBlur.bind(this);
   }
   _onChange( paths, value ) {
+    let errorData = this.state.errorData;
+
     this.setState({
-      energySolution: this.state.energySolution.setIn(paths, value)
+      energySolution: this.state.energySolution.setIn(paths, value),
+      // errorData,
+    });
+  }
+  _onBlur( paths, value ) {
+    let errorData = this.state.errorData;
+    if( paths.join('') === 'ProblemName' ) {
+      let problemNameError = '';
+      if( !value ) {
+        problemNameError = '请输入问题名称';
+      }
+      errorData = errorData.setIn(paths, problemNameError);
+    }
+
+    if( paths.join('') === 'ProblemEnergySys' ) {
+      let problemEnergyError = '';
+      if( !value /*!this.state.energySolution.getIn(paths)*/ ) {
+        problemEnergyError = '请选择能源系统标识';
+      }
+      errorData = errorData.setIn(paths, problemEnergyError);
+    }
+
+    this.setState({
+      errorData
     });
   }
   render() {
-    let { energySolution } = this.state;
+    let { energySolution, errorData } = this.state;
     let { onCancel, onBack, chartDatas, onCreate } = this.props;
     return (
       <div className='generate-solution'>
@@ -512,33 +546,43 @@ export default class GenerateSolution extends Component {
           {'节能方案'}
         </header>
         <session className='session-container'>
-          <PlanTitle isRequired={true} energySolution={energySolution} onChange={this._onChange}/>
+          <PlanTitle errorData={errorData} energySolution={energySolution} onChange={this._onChange} onBlur={this._onBlur}/>
         </session>
         <session className='session-container'>
-          <ProblemDetail isRequired chartDatas={chartDatas} isRequired={true} energySolution={energySolution} onChange={this._onChange}/>
+          <ProblemDetail errorData={errorData} chartDatas={chartDatas} energySolution={energySolution} onChange={this._onChange} onBlur={this._onBlur}/>
         </session>
         <session className='session-container'>
-          <PlanDetail isRequired Solutions={energySolution.get('Solutions')} onChange={this._onChange}/>
+          <PlanDetail errorData={errorData} Solutions={energySolution.get('Solutions')} onChange={this._onChange} onBlur={this._onBlur}/>
         </session>
         <footer className='generate-solution-footer'>
           <FlatButton label={'生成方案'} onClick={() => {
-            onCreate(
-              energySolution.set(
-                'Solutions',
-                energySolution
-                  .get('Solutions')
-                  .map( solution =>
-                    solution.set(
-                      'ROI',
-                      MeasuresStore.getInvestmentReturnCycle(
-                        solution.get('InvestmentAmount'),
-                        solution.get('ExpectedAnnualCostSaving')
+            if( !energySolution.getIn(['Problem', 'Name']) ) {
+              errorData = errorData.setIn(['Problem', 'Name'], '请输入问题名称');
+            }
+            if(　!energySolution.getIn(['Problem', 'EnergySys'])　) {
+              errorData = errorData.setIn(['Problem', 'EnergySys'], '请选择能源系统标识');
+            }
+            if( errorData === this.state.errorData ) {
+              onCreate(
+                energySolution.set(
+                  'Solutions',
+                  energySolution
+                    .get('Solutions')
+                    .map( solution =>
+                      solution.set(
+                        'ROI',
+                        MeasuresStore.getInvestmentReturnCycle(
+                          solution.get('InvestmentAmount'),
+                          solution.get('ExpectedAnnualCostSaving')
+                        )
                       )
                     )
-                  )
-              )
-              .toJS()
-            );
+                )
+                .toJS()
+              );
+            } else {
+              this.setState({errorData});
+            }
           }}/>
           <FlatButton style={{marginLeft: 16}} label={'取消'} onClick={() => this.setState({dialogKey: CANCEL_DIALOG})}/>
         </footer>
