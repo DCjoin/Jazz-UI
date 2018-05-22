@@ -288,6 +288,9 @@ const MeasuresStore = assign({}, PrototypeStore, {
       if(cycle===0){
         return I18N.Setting.ECM.InvestmentReturnCycle.ImmediateRecovery
       }else{
+        if( cycle === null || !this.validateNumber(cycle) ) {
+          return 0;
+        }
         return cycle
       }
   },
