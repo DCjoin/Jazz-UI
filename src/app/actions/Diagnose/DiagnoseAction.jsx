@@ -154,7 +154,6 @@ const DiagnoseAction = {
   },
   getproblemdata(diagnoseId,startTime,endTime){
     var path=util.replacePathParams(Path.Diagnose.getproblemdata, diagnoseId);
-    console.log(path);
     Ajax.get(path, {
       tag: 'getproblemdata',
       avoidDuplicate: true,
@@ -163,6 +162,19 @@ const DiagnoseAction = {
         AppDispatcher.dispatch({
           type: Action.GET_DIAGNOSE_CHART_DATA_SUCCESS,
           data: res,
+        })
+      }
+    } );
+  },
+  getSimilarProblemChart(diagnoseId){
+    var path=util.replacePathParams(Path.Diagnose.getproblemdata, diagnoseId);
+    Ajax.get(path, {
+      params:`startTime=${null}&endTime=${null}`,
+      success: (res) => {
+        AppDispatcher.dispatch({
+          type: Action.SIMILAR_PROBLEM_CHART,
+          data: res,
+          id: diagnoseId,
         })
       }
     } );
@@ -294,6 +306,13 @@ const DiagnoseAction = {
 
   },
 
+  createDiagnose(params, callback) {
+    Ajax.post(Path.Diagnose.createSolution, {
+      params,
+      success: callback
+    });
+  },
+
   getSuggestSolutions(EnergyLabelId, HierarchyId, ProblemTypeId) {
     Ajax.post(Path.Diagnose.getSuggestSolutions, {
       params: {
@@ -302,10 +321,110 @@ const DiagnoseAction = {
         ProblemTypeId,
       },
       success: res => {
-        // AppDispatcher.dispatch({
-        //   type: Action.GET_CONSULTANT,
-        //   data: res,
-        // });
+        // res = [
+        //   {
+        //     "BusinessTypes": [
+        //       1
+        //     ],
+        //     "CreateTime": "2018-05-21T06:47:11.937Z",
+        //     "CreatorUserId": 0,
+        //     "CreatorUserName": "string",
+        //     "DSIndustryNames": [
+        //       {
+        //         "Id": 0,
+        //         "Name": "string"
+        //       }
+        //     ],
+        //     "Id": "string",
+        //     "Images": [
+        //       {
+        //         "Content": "string",
+        //         "Name": "string",
+        //         "OssKey": "string",
+        //         "Url": "https://cdn4.buysellads.net/uu/1/3386/1525189943-38523.png"
+        //       }
+        //     ],
+        //     "Industries": [
+        //       0
+        //     ],
+        //     "ProblemDescription": "string",
+        //     "ProblemLabels": [
+        //       {
+        //         "DataLabels": [
+        //           0
+        //         ],
+        //         "DataLabelsName": [
+        //           {
+        //             "Id": 0,
+        //             "Name": "string"
+        //           }
+        //         ],
+        //         "ProblemTypeId": 0,
+        //         "ProblemTypeName": "string"
+        //       }
+        //     ],
+        //     "ProblemName": "string",
+        //     "ROI": 0,
+        //     "RiskDescription": "string",
+        //     "SolutionDescription": "string",
+        //     "SolutionName": "string",
+        //     "Status": 1,
+        //     "UpdateTime": "2018-05-21T06:47:11.937Z"
+        //   },
+        //   {
+        //     "BusinessTypes": [
+        //       1
+        //     ],
+        //     "CreateTime": "2018-05-21T06:47:11.937Z",
+        //     "CreatorUserId": 0,
+        //     "CreatorUserName": "string",
+        //     "DSIndustryNames": [
+        //       {
+        //         "Id": 0,
+        //         "Name": "string"
+        //       }
+        //     ],
+        //     "Id": "string1",
+        //     "Images": [
+        //       {
+        //         "Content": "string",
+        //         "Name": "string",
+        //         "OssKey": "string",
+        //         "Url": "https://cdn4.buysellads.net/uu/1/3386/1525189943-38523.png"
+        //       }
+        //     ],
+        //     "Industries": [
+        //       0
+        //     ],
+        //     "ProblemDescription": "string",
+        //     "ProblemLabels": [
+        //       {
+        //         "DataLabels": [
+        //           0
+        //         ],
+        //         "DataLabelsName": [
+        //           {
+        //             "Id": 0,
+        //             "Name": "string"
+        //           }
+        //         ],
+        //         "ProblemTypeId": 0,
+        //         "ProblemTypeName": "string"
+        //       }
+        //     ],
+        //     "ProblemName": "string",
+        //     "ROI": 0,
+        //     "RiskDescription": "string",
+        //     "SolutionDescription": "string",
+        //     "SolutionName": "string",
+        //     "Status": 1,
+        //     "UpdateTime": "2018-05-21T06:47:11.937Z"
+        //   },
+        // ];
+        AppDispatcher.dispatch({
+          type: Action.GET_SUGGEST_SOLUTIONS,
+          data: res,
+        });
       }
     });
   }

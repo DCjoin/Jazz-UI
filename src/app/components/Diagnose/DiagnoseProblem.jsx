@@ -89,7 +89,7 @@ export default class DiagnoseProblem extends Component {
 
 	_initDate(){
 		if(this.state.startDate===null){
-			let chart=DiagnoseStore.getDiagnoseChartData();
+      let chart=DiagnoseStore.getDiagnoseChartData();
 			var j2d=DataConverter.JsonToDateTime,
 					MinusStep=DateComputer.MinusStep,
 					fixedTimes=DateComputer.FixedTimes;
@@ -127,9 +127,10 @@ export default class DiagnoseProblem extends Component {
 	}
 
   _onSolutionShow(){
-    this.setState({
-      solutionShow:true
-    })
+    // this.setState({
+    //   solutionShow:true
+    // })
+    this.props.willCreate();
   }
 
 	_onChanged(){
@@ -316,7 +317,30 @@ export default class DiagnoseProblem extends Component {
       let selectedId = props.selectedNode.get('Id');
 			DiagnoseAction.getproblemdata(selectedId,start,end);
       DiagnoseAction.getSuggestSolutions( DiagnoseStore.findLabelById(selectedId).get('Id'), this.context.hierarchyId, DiagnoseStore.findProblemById(selectedId).get('Id'));
+      DiagnoseAction.getSimilarProblemChart(selectedId);
 		}
+
+    _renderHideChart() {
+      const SVG_WIDTH = 733;
+      const SVG_HEIGHT = 351;
+      let problemId = this.props.selectedNode.get('Id');
+      let chartData = this.state.chartData;
+      return (<div style={{position: 'relative', overflowX: 'hidden'}} className='similar-problem-img'>
+              <div id={'chart_basic_component_' + problemId} style={{
+                  flex: 1,
+                  position: 'absolute',
+                  width: SVG_WIDTH,
+                  height: SVG_HEIGHT,
+                  display: 'flex',
+                  opacity: 0,
+                  flexDirection: 'column',
+                  marginBottom: '0px',
+                  marginLeft: '9px'
+                }}>
+                  <DiagnoseChart data={chartData}/>
+            </div>
+          </div>);
+    }
 
 		componentDidMount(){
 			DiagnoseStore.addChangeListener(this._onChanged);
@@ -360,15 +384,16 @@ export default class DiagnoseProblem extends Component {
     		}
 
   var isFull=this.props.isBasic?isBasicFull():isSeniorFull();
+    let suggestSolutions=DiagnoseStore.getSuggestSolutions();
     return(
       <div className="detail-content-content">
         <div className="detail-content-content-head">
             <div className="name">{Name}</div>
           {isFull && <div className="side">
-            <span style={{
+            {this.state.chartData && suggestSolutions && suggestSolutions.size > 0 &&<span title='点击"生成方案"可引用标准解决方案' style={{
               color: '#32ad3d',
               marginRight: 10,
-            }}><span className='icon-glyph' tooltip='点击"生成方案"可引用标准解决方案'/>{`${6}个可用方案推荐`}</span>
+            }}><span className='icon-glyph'/>{`${suggestSolutions.size}个可用方案推荐`}</span>}
             <GenerateSolutionButton onOpen={this._onSolutionShow.bind(this)} disabled={this.state.chartData===null}/>
             {this._renderIconMenu()}
           </div>}
@@ -383,7 +408,6 @@ export default class DiagnoseProblem extends Component {
 						 _onDateSelectorChanged={this._onDateSelectorChanged}/>
 					</div>
 						}
-
 
 					 {this.state.chartData?<DiagnoseChart hiddenAssociateLabel isTypeC={DiagnoseModel === 3} data={this.state.chartData}/>
 																:<div className="flex-center">

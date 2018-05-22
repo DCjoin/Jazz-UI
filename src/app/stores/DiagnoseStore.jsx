@@ -26,7 +26,9 @@ var _diagnoseList=null,
     _calendar=null,
     _diagnoseChartData=null,
     _previewChartData=null,
-    _consultant=null;
+    _consultant=null,
+    _suggestSolutions=null,
+    _similarProblemChart={};
 
 const DiagnoseStore = assign({}, PrototypeStore, {
   initList(){
@@ -250,6 +252,12 @@ const DiagnoseStore = assign({}, PrototypeStore, {
     })
     return id
   },
+  getSuggestSolutions(){
+    return _suggestSolutions;
+  },
+  getSimilarProblemChart(){
+    return _similarProblemChart;
+  },
   mergeDiagnose(paths,value){
     let immuVal = Immutable.fromJS(value);
     if(paths instanceof Array) {
@@ -334,6 +342,8 @@ DiagnoseStore.dispatchToken = AppDispatcher.register(function(action) {
           break;
     case Action.GET_CHART_DATA:
           DiagnoseStore.setLoading(false);
+          _suggestSolutions = null;
+          _similarProblemChart = {};
           DiagnoseStore.setChartData(action.data);
           DiagnoseStore.emitChange()
           break;
@@ -383,6 +393,14 @@ DiagnoseStore.dispatchToken = AppDispatcher.register(function(action) {
           break;
     case Action.CLEAR_ALL_LIST:
           _diagnoseList=null;
+          break;
+    case Action.GET_SUGGEST_SOLUTIONS:
+          _suggestSolutions = Immutable.fromJS(action.data);
+          DiagnoseStore.emitChange();
+          break;
+    case Action.SIMILAR_PROBLEM_CHART:
+          _similarProblemChart[action.id] = Immutable.fromJS(action.data);
+          DiagnoseStore.emitChange();
           break;
   }
 })

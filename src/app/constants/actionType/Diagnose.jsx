@@ -21,7 +21,9 @@ module.exports = {
     GET_CONFIG_CALENDAR:null,
     CLEAR_DIAGNOSE_CHART_DATA:null,
     GET_CONSULTANT:null,
-    CLEAR_ALL_LIST:null
+    CLEAR_ALL_LIST:null,
+    GET_SUGGEST_SOLUTIONS:null,
+    SIMILAR_PROBLEM_CHART:null,
   }),
     EnergyLabel:{
         OfficeLighting:101,
