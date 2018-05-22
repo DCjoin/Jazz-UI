@@ -198,7 +198,7 @@ export default class PushPanel extends Component {
   _renderPersonInCharge(problem,indetail=false,index,hasSolution=false){
     return(
       <div style={{width: '220px',paddingLeft: indetail?'0':'20px', borderLeft: indetail?'':'1px dashed #e6e6e6'}}>
-             {hasSolution && <div style={{height:'40px'}}/>}
+             {hasSolution && <div style={{height:'30px'}}/>}
               <Supervisor person={problem.get('Supervisor')} supervisorList={this.state.supervisorList}
                   onSuperviorClick={(id)=>{
                     if(indetail){
@@ -266,7 +266,7 @@ export default class PushPanel extends Component {
               :I18N.Setting.ECM.PushPanel.Earlier;
     var List=[];
     this.state.solutionList.forEach((solution,index)=>{
-      var time=DataConverter.JsonToDateTime(solution.getIn(['Problem','CreateTime']));
+      var time=DataConverter.JsonToDateTime(solution.getIn(['Problem','UpdateTime']));
       if(MeasuresStore.isSolutionValid(type,time)){
         var prop={
           measure:solution,
