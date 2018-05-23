@@ -252,10 +252,13 @@ const MeasuresStore = assign({}, PrototypeStore, {
   IsSolutionDisable(measure){
     var {Solutions,Problem}=measure;
     var disabled=Problem.SolutionTitle===null || Problem.Name===null || Problem.Description===null
+                  || Problem.SolutionTitle==='' || Problem.Name==='' || Problem.Description===''
 
     Solutions.forEach(solution=>{
       disabled=disabled || solution.Name===null || solution.Description===null || solution.ExpectedAnnualEnergySaving===null
               || solution.EnergySavingUnit===null || solution.ExpectedAnnualCostSaving===null
+              || solution.Name==='' || solution.Description==='' || solution.ExpectedAnnualEnergySaving===''
+              || solution.EnergySavingUnit==='' || solution.ExpectedAnnualCostSaving===''
     })
 
     return disabled
