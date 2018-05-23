@@ -316,7 +316,7 @@ export default class DiagnoseProblem extends Component {
 		getProblem(props,start,end){
       let selectedId = props.selectedNode.get('Id');
 			DiagnoseAction.getproblemdata(selectedId,start,end);
-      DiagnoseAction.getSuggestSolutions( DiagnoseStore.findLabelById(selectedId).get('Id'), this.context.hierarchyId, DiagnoseStore.findProblemById(selectedId).get('Id'));
+      DiagnoseAction.getSuggestSolutions( DiagnoseStore.findLabelById(selectedId).get('Id'), this.context.hierarchyId, DiagnoseStore.findLabelById(selectedId).get('ProblemTypeId'));
       DiagnoseAction.getSimilarProblemChart(selectedId);
 		}
 
@@ -390,10 +390,10 @@ export default class DiagnoseProblem extends Component {
         <div className="detail-content-content-head">
             <div className="name">{Name}</div>
           {isFull && <div className="side">
-            {this.state.chartData && suggestSolutions && suggestSolutions.size > 0 &&<span title='点击"生成方案"可引用标准解决方案' style={{
+            {this.state.chartData && suggestSolutions && suggestSolutions.size > 0 &&<span title={I18N.Setting.Diagnose.StandardSolutionTip} style={{
               color: '#32ad3d',
               marginRight: 10,
-            }}><span className='icon-glyph'/>{`${suggestSolutions.size}个可用方案推荐`}</span>}
+            }}><span className='icon-glyph'/>{`${suggestSolutions.size + I18N.Setting.Diagnose.NumOfSuggestSolution}`}</span>}
             <GenerateSolutionButton onOpen={this._onSolutionShow.bind(this)} disabled={this.state.chartData===null}/>
             {this._renderIconMenu()}
           </div>}

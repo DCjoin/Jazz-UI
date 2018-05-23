@@ -279,7 +279,7 @@ export default class Diagnose extends Component {
   }
 
   _goStep1() {
-    if( (this.state.selectedId && DiagnoseStore.findLabelById( this.state.selectedId ) && DiagnoseStore.findLabelById( this.state.selectedId ).get('Children').size > 0) ) {
+    if( (this.state.selectedId && DiagnoseStore.findLabelById( this.state.selectedId ) && DiagnoseStore.findLabelById( this.state.selectedId ).get('Children').size > 1) ) {
       this.setState({createStep: 1, createRefPlans: []});
     } else {
       if( this.state.createStep > 1 ) {

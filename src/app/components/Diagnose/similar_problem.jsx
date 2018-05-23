@@ -95,10 +95,10 @@ class ProblemItem extends Component {
             this.setState({
               showDetail: !this.state.showDetail
             })
-          }}>{showDetail ? '收起详情' : '展开详情'}</span>
+          }}>{showDetail ? I18N.Setting.Diagnose.SimilarProblemHideDetail : I18N.Setting.Diagnose.SimilarProblemShowDetail}</span>
         </div>
         <div className='similar-problem-detail'>
-          <span className='similar-problem-time'>{chartData && '时间区间：' + formatChartTime(chartData, 'StartTime') + '  至  ' + formatChartTime(chartData, 'EndTime')}</span>
+          <span className='similar-problem-time'>{chartData && (I18N.Setting.Diagnose.TimeRange + '：' + formatChartTime(chartData, 'StartTime') + '  ' + I18N.EM.To2 + '  ' + formatChartTime(chartData, 'EndTime'))}</span>
           {this._renderChart(chartData)}
           {/*<img className='similar-problem-img' src='https://cdn4.buysellads.net/uu/1/3386/1525189943-38523.png'/>*/}
         </div>
@@ -120,13 +120,13 @@ export default class SimilarProblem extends Component {
         <header className='similar-problem-header'>
           <span className='icon-close' onClick={() => this.setState({dialogKey: CANCEL_DIALOG})}/>
           <span className='icon-return' onClick={() => this.setState({dialogKey: BACK_DIALOG})}/>
-          {'相似方案列表'}
+          {I18N.Setting.Diagnose.SimilarProblemList}
         </header>
         <div className='current-diagnose similar-problem-checkbox-layout'>
           <Checkbox style={{width: 'auto'}} disabled={true} checked={true}/>
           <span className='icon-diagnose'/>
           <span>{currentProblem && currentProblem.get('Name')}</span>
-          <span className='diagnose-tip'>{'当前问题'}</span>
+          <span className='diagnose-tip'>{I18N.Setting.Diagnose.CurrentProblem}</span>
         </div>
         <div className='similar-problem-checkbox-layout'>
           <Checkbox checked={ checkedProblems && (checkedProblems.length === problems.size - 1) } onCheck={(e, checked) => {
@@ -136,8 +136,8 @@ export default class SimilarProblem extends Component {
               this.props.onChange( [] );
             }
           }} style={{width: 'auto'}}/>
-          <span>{'全选'}</span>
-          <span className='diagnose-tip'>{'下列问题与当前问题类型相似，您可为它们统一生成方案。'}</span>
+          <span>{I18N.Tag.SelectAll}</span>
+          <span className='diagnose-tip'>{I18N.Setting.Diagnose.SimilarProblemTip}</span>
         </div>
         <ul className='similar-problem-list'>
           {problems.filter( problem => problem.get('Id') !== currentProblemId ).map( problem => (
@@ -152,17 +152,17 @@ export default class SimilarProblem extends Component {
           ) )}
         </ul>
         <footer className='similar-problem-footer'>
-          <FlatButton highlight label={'下一步'} onClick={onNext}/>
-          <FlatButton style={{marginRight: 16}} label={'取消'} onClick={() => this.setState({dialogKey: CANCEL_DIALOG})}/>
+          <FlatButton highlight label={I18N.Paging.Button.NextStep} onClick={onNext}/>
+          <FlatButton style={{marginRight: 16}} label={I18N.Common.Button.Cancel2} onClick={() => this.setState({dialogKey: CANCEL_DIALOG})}/>
         </footer>
         <Dialog open={this.state.dialogKey === BACK_DIALOG} actionsContainerStyle={{textAlign: 'right'}} contentStyle={{margin: '8px 24px', color: '#626469'}} actions={[
-          <FlatButton primary inDialog label={'返回上一页'} onClick={this.props.onBack}/>,
-          <FlatButton label={'取消'} onClick={() => { this.setState({dialogKey: null}) }}/>
-        ]}>{'当前页面所有操作将不会保存，确定返回上一页吗？'}</Dialog>
+          <FlatButton primary inDialog label={I18N.Setting.Diagnose.ReturnPage} onClick={this.props.onBack}/>,
+          <FlatButton label={I18N.Common.Button.Cancel2} onClick={() => { this.setState({dialogKey: null}) }}/>
+        ]}>{I18N.Setting.Diagnose.ReturnPageTip}</Dialog>
         <Dialog open={this.state.dialogKey === CANCEL_DIALOG} actionsContainerStyle={{textAlign: 'right'}} contentStyle={{margin: '8px 24px', color: '#626469'}} actions={[
-          <FlatButton primary inDialog label={'离开页面'} onClick={this.props.onCancel}/>,
-          <FlatButton label={'取消'} onClick={() => { this.setState({dialogKey: null}) }}/>
-        ]}>{'当前页面所有操作将不会保存，确定离开当前页面吗？'}</Dialog>
+          <FlatButton primary inDialog label={I18N.Setting.Diagnose.LeavePage} onClick={this.props.onCancel}/>,
+          <FlatButton label={I18N.Common.Button.Cancel2} onClick={() => { this.setState({dialogKey: null}) }}/>
+        ]}>{I18N.Setting.Diagnose.LeavePageTip}</Dialog>
       </div>
     );
   }
