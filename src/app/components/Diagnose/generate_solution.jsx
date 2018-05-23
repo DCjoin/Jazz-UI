@@ -538,14 +538,14 @@ export default class GenerateSolution extends Component {
     if( paths.join('') === 'ProblemName' ) {
       let problemNameError = '';
       if( !value ) {
-        problemNameError = I18N.Setting.Diagnose.PleaseInput + I18N.Setting.Diagnose.PleaseInput;
+        problemNameError = I18N.Setting.Diagnose.PleaseInput + I18N.Setting.Diagnose.ProblemName;
       }
       errorData = errorData.setIn(paths, problemNameError);
     }
 
     if( paths.join('') === 'ProblemEnergySys' ) {
       let problemEnergyError = '';
-      if( !value /*!this.state.energySolution.getIn(paths)*/ ) {
+      if( !value && !this.state.energySolution.getIn(paths) ) {
         problemEnergyError = I18N.Setting.Diagnose.PleaseSelect + I18N.Setting.Diagnose.EnergySys;
       }
       errorData = errorData.setIn(paths, problemEnergyError);
