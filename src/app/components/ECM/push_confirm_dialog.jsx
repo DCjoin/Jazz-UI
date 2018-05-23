@@ -131,13 +131,12 @@ export default class PushConfirmDialog extends Component {
                   <PlanTitle isRequired={true} energySolution={this.state.solution} onChange={this._onChange} hasSubTitle={false}/>
                 </session>
                 <session className='session-container'>
-                  <ProblemDetail isRequired={true} energySolution={this.state.solution} onChange={this._onChange} hasEnergySys={false}/>
+                  <ProblemDetail isRequired={true} energySolution={this.state.solution} onChange={this._onChange} hasEnergySys={true}/>
                 </session>
                 <session className='session-container'>
                   <PlanDetail hasPicTitle={false} isRequired={true} Solutions={this.state.solution.get('Solutions')} onChange={this._onChange}/>
                 </session>
-
-             </div>
+             </div> 
 
           </div>
          
