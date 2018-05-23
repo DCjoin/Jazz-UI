@@ -2457,6 +2457,7 @@ I18N.Setting.ECM.BatchPushContent ='Confirm to batch push energy saving schemes{
 I18N.Setting.ECM.DeleteContent = '该方案删除后将无法恢复，确认删除吗？';
 I18N.Setting.ECM.PushSuccess = 'Scheme successfully pushed';
 I18N.Setting.ECM.Solution = 'Energy Saving Scheme';
+I18N.Setting.ECM.SolutionAssign = '方案分配';
 I18N.Setting.ECM.ProblemDetail = 'Operation Situation';
 I18N.Setting.ECM.ProblemDetailName = 'Problem';
 I18N.Setting.ECM.SolutionDetail = 'Energy-saving solution';

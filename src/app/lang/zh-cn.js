@@ -2457,6 +2457,7 @@ I18N.Setting.ECM.BatchPushContent = '批量推送节能方案{0}吗？';
 I18N.Setting.ECM.DeleteContent = '该方案删除后将无法恢复，确认删除吗？';
 I18N.Setting.ECM.PushSuccess = '节能方案已推送';
 I18N.Setting.ECM.Solution = '节能方案';
+I18N.Setting.ECM.SolutionAssign = '方案分配';
 I18N.Setting.ECM.ProblemDetail = '运行现状';
 I18N.Setting.ECM.ProblemDetailName = '问题';
 I18N.Setting.ECM.SolutionDetail = '节能方案';

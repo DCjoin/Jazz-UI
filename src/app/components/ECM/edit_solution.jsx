@@ -276,7 +276,7 @@ export default class EditSolution extends Component {
           <div className="content-field">
             <div className="solution-head" style={{display:'flex',alignItems: 'center'}}>
               <FontIcon className="icon-pay-back-period" color="#32ad3c" iconStyle ={ICONSTYLE} style = {STYLE} />
-              {I18N.Setting.ECM.Solution}</div>
+              {I18N.Setting.ECM.SolutionAssign}</div>
 
             <IconButton iconClassName="icon-close" style={{padding:0,width:'24px',height:'26px'}} iconStyle={{fontSize:'24px',color:"#9fa0a4"}}
              onClick={this._onClose}/> 
