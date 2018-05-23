@@ -14,6 +14,7 @@ export default class PushConfirmDialog extends Component {
     this._onClose=this._onClose.bind(this);
     this._onChange=this._onChange.bind(this);
     this._onPush=this._onPush.bind(this);
+    this._onBlur=this._onBlur.bind(this);
     
     
   }
@@ -21,13 +22,63 @@ export default class PushConfirmDialog extends Component {
     state={
       solution:this.props.solution,
       snackBarOpen:false,
-      saveTipShow:false
+      saveTipShow:false,
+      errorData:Immutable.fromJS({})
+    }
+
+    _validate(paths,value,errorData){
+       var pathName=paths.slice(0);
+        var error='';
+        if(paths[0]==='Solutions'){
+          pathName=pathName.pop();
+        }else{pathName=pathName.join('')}
+
+        if(pathName==='EnergySavingUnit'){ paths=paths.slice(0,2)
+                                           paths.push('ExpectedAnnualEnergySaving')}         
+
+
+        if( paths.join('') === 'ProblemSolutionTitle' ) {
+          if( !value ) {
+            error = I18N.Setting.ECM.TitleErrorTip;
+          }
+        }else if( paths.join('') === 'ProblemEnergySys' ) {
+          if( !value && !this.state.solution.getIn(paths)) {
+            error = I18N.Setting.Diagnose.PleaseSelect+I18N.Setting.Diagnose.EnergySys;
+          }
+        }else if(value!==0 && !value && pathName!=='InvestmentAmount'){
+            if(pathName==='Name'){pathName='SolutionName'}
+            if(pathName==='EnergySavingUnit'){pathName="ExpectedAnnualEnergySaving"}
+           error=I18N.Setting.Diagnose.PleaseInput+I18N.Setting.Diagnose[pathName];     
+        }
+
+        errorData=errorData.setIn(paths,error);
+        return errorData
+    }
+
+    _validateAll(){
+      var validatePath={
+        Problem:['SolutionTitle','Name','EnergySys','Description'],
+        Solution:['ExpectedAnnualEnergySaving','EnergySavingUnit','ExpectedAnnualCostSaving','Name','SolutionDescription']
+      };
+      var errorData=this.state.errorData;
+      validatePath.Problem.forEach(key=>{
+        errorData=this._validate(['Problem',key],this.state.solution.getIn(['Problem',key]),errorData)
+      })
+      validatePath.Solution.forEach(key=>{
+        this.state.solution.get("Solutions").forEach((solution,idx)=>{
+          errorData=this._validate(['Solutions',idx,key],solution.get(key),errorData)
+        })
+
+      })
+
+      return errorData
     }
 
     _onClose(){
       if(MeasuresStore.IsSolutionDisable(this.state.solution.toJS())){
         this.setState({
-          snackBarOpen:true
+          snackBarOpen:true,
+          errorData:this._validateAll()
         })
       }else{
         if(Immutable.is(this.state.solution,this.props.solution)){
@@ -46,15 +97,42 @@ export default class PushConfirmDialog extends Component {
         });
       }
 
+      _getSaveSolution(){
+        return this.state.solution.set(
+                  'Solutions',
+                  this.state.solution
+                    .get('Solutions')
+                    .map( solution =>
+                      solution.set(
+                        'ROI',
+                        MeasuresStore.getInvestmentReturnCycle(
+                          solution.get('InvestmentAmount'),
+                          solution.get('ExpectedAnnualCostSaving')
+                        )
+                      )
+                    )
+                )
+      }
+
     _onPush(e){
        if(MeasuresStore.IsSolutionDisable(this.state.solution.toJS())){
         this.setState({
           snackBarOpen:true
         })
       }else{
-        this.props.onPush(e)
+        this.props.onPush(e,this._getSaveSolution().setIn(["Problem","Status"],2))
       }     
     }
+
+      _onBlur( paths, value ) {
+        let errorData = this.state.errorData;
+
+        errorData=this._validate(paths, value,errorData);
+
+        this.setState({
+          errorData
+        });
+  }
 
     _renderFooter(){
                 return(
@@ -89,7 +167,7 @@ export default class PushConfirmDialog extends Component {
         actions={[
             <RaisedButton
               label={I18N.Common.Button.Save}
-              onClick={()=>{this.props.onSave(this.state.solution)}} />,
+              onClick={()=>{this.props.onSave(this._getSaveSolution())}} />,
             <FlatButton
               label={I18N.Common.Button.NotSave}
               onClick={() => {this.setState({
@@ -103,6 +181,7 @@ export default class PushConfirmDialog extends Component {
     }
 
     render(){
+      var {errorData}=this.state;
       return(
         <div className="solution-edit">
           <div className="content-field">
@@ -111,16 +190,15 @@ export default class PushConfirmDialog extends Component {
              onClick={this._onClose}/>
              <div className="solution-content">
                 <session className='session-container'>
-                  <PlanTitle isRequired={true} energySolution={this.state.solution} onChange={this._onChange}/>
+                  <PlanTitle errorData={errorData} isRequired={true} energySolution={this.state.solution} onChange={this._onChange} hasSubTitle={false} onBlur={this._onBlur}/>
                 </session>
                 <session className='session-container'>
-                  <ProblemDetail isRequired={true} energySolution={this.state.solution} onChange={this._onChange} hasEnergySys={false}/>
+                  <ProblemDetail errorData={errorData} isRequired={true} energySolution={this.state.solution} onChange={this._onChange} hasEnergySys={true} onBlur={this._onBlur}/>
                 </session>
                 <session className='session-container'>
-                  <PlanDetail isRequired={true} Solutions={this.state.solution.get('Solutions')} onChange={this._onChange}/>
+                  <PlanDetail errorData={errorData} hasPicTitle={false} isRequired={true} Solutions={this.state.solution.get('Solutions')} onChange={this._onChange} onBlur={this._onBlur}/>
                 </session>
-
-             </div>
+             </div> 
 
           </div>
          

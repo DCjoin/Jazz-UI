@@ -380,11 +380,13 @@ return(
     )*/
 
     return <PushConfirmDialog solution={currentSolution}
-                               onPush={(e)=>{
+                               onPush={(e,solution)=>{
                                  e.stopPropagation();
                                 this.setState({
                                   dialogType:DIALOG_TYPE.PUSH,
                                   handleIndex:this.state.measureIndex
+                                },()=>{
+                                  this.merge([],solution)
                                 })
                                }}
                                onDelete={(e)=>{

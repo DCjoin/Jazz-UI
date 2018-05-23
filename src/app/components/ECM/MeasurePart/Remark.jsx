@@ -59,7 +59,7 @@ class AddRemark extends Component{
                             onChange={(e,value)=>{this.setState({value,errorshow:false})}}/>                                                               
               </div>
           </div>
-        <div style={{marginTop:'24px',display:'flex'}}>
+        <div style={{marginTop:'24px',display:'flex',alignItems: 'baseline'}}>
           <FlatButton
             style={{width: '86px',height: '28px',borderRadius: '2px',border: 'solid 1px #3dcd58',lineHeight:'28px',minWidth:"86px"}}
             labelStyle={{color:'#3dcd58',fontSize:'14px',padding:'0px',verticalAlign:'baseline'}}
@@ -75,7 +75,7 @@ class AddRemark extends Component{
                           })
                           }
                         }} />
-            {this.state.errorshow && <div style={{}}>{I18N.Setting.ECM.AddRemarkTip}</div>}
+            {this.state.errorshow && <div style={{color:'#dc0a0a',fontSize:'12px',marginLeft:'8px'}}>{I18N.Setting.ECM.AddRemarkTip}</div>}
           </div>
       </div>
     )

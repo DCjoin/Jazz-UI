@@ -2457,6 +2457,7 @@ I18N.Setting.ECM.BatchPushContent = '批量推送节能方案{0}吗？';
 I18N.Setting.ECM.DeleteContent = '该方案删除后将无法恢复，确认删除吗？';
 I18N.Setting.ECM.PushSuccess = '节能方案已推送';
 I18N.Setting.ECM.Solution = '节能方案';
+I18N.Setting.ECM.SolutionAssign = '方案分配';
 I18N.Setting.ECM.ProblemDetail = '运行现状';
 I18N.Setting.ECM.ProblemDetailName = '问题';
 I18N.Setting.ECM.SolutionDetail = '节能方案';
@@ -2522,6 +2523,8 @@ I18N.Setting.ECM.SaveTip='是否保存对该方案的修改？';
 I18N.Setting.ECM.UnFold='收起方案';
 I18N.Setting.ECM.Fold='展开方案';
 I18N.Setting.ECM.SaveSuccess='保存成功';
+I18N.Setting.ECM.TitleErrorTip='方案标题不能为空';
+
 
 I18N.Setting.Diagnose={};
 I18N.Setting.Diagnose.EnergyLabel='能源标签';
