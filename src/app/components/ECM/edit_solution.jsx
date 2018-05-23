@@ -95,7 +95,8 @@ export default class EditSolution extends Component {
         })
       }else{
         if(Immutable.is(currentSolution,this.state.preSolution)){
-          this.props.onClose()
+            this.props.onClose(!Immutable.is(this.state.preSolution,this.props.solution))
+          
         }else{
           this.setState({
             saveTipShow:true
