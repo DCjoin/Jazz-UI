@@ -66,6 +66,7 @@ export default class EditSolution extends Component {
                         ReactDOM.findDOMNode(this.refs.save_column).style.top=0;
                         ReactDOM.findDOMNode(this.refs.save_column).style.width=width+'px';
                         ReactDOM.findDOMNode(this.refs.save_column).style.backgroundColor='#ffffff';
+                        ReactDOM.findDOMNode(this.refs.save_column).style.zIndex=2
 
                 }else{
                        ReactDOM.findDOMNode(this.refs.save_column).style.position='relative';
