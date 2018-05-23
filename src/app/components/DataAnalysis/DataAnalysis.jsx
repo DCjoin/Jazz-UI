@@ -437,10 +437,14 @@ export default class DataAnalysis extends Component {
 				dialog = (<AnalysisGenerateSolution
 				analysis={analysis}
 					nodes={nodes}
+          hierarchyId={this.context.hierarchyId}
 					preAction={preAction}
 					onRequestClose={() => {
 						this.setState({generateSolutionDialogObj: null});
-					}}/>);
+					}}
+          router={this.props.router}
+          params={this.props.params}
+          />);
 			}
 		}
 		return dialog;

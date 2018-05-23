@@ -118,7 +118,6 @@ export default class SimilarProblem extends Component {
     return (
       <div className='similar-problem'>
         <header className='similar-problem-header'>
-          <span className='icon-close' onClick={() => this.setState({dialogKey: CANCEL_DIALOG})}/>
           <span className='icon-return' onClick={() => this.setState({dialogKey: BACK_DIALOG})}/>
           {I18N.Setting.Diagnose.SimilarProblemList}
         </header>

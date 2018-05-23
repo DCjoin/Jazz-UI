@@ -1,16 +1,29 @@
 import React, { Component, PropTypes } from 'react';
-import {GenerateSolution, getTagsByChartData} from './GenerateSolution.jsx';
-import ChartBasicComponent from './ChartBasicComponent.jsx';
+import ReactDOM from 'react-dom';
+
+import Immutable from 'immutable';
 import {flowRight, curryRight} from 'lodash-es';
+
 import CommonFuns from 'util/Util.jsx';
+import RoutePath from 'util/RoutePath.jsx';
+
+import ScatterPlotAction from 'actions/DataAnalysis/scatter_plot_action.jsx';
+import BubbleAction from 'actions/DataAnalysis/bubble_action.jsx';
 import FolderAction from 'actions/FolderAction.jsx';
+import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
+
 import FolderStore from 'stores/FolderStore.jsx';
+import MultipleTimespanStore from 'stores/Energy/MultipleTimespanStore.jsx';
+
+import ChartBasicComponent from './ChartBasicComponent.jsx';
 import HeatMap from './heat_map.jsx';
 import ScatterPlotView from './scatter_plot_generate_sulution.jsx';
 import BubbleView from './bubble_generate_solution.jsx';
-import MultipleTimespanStore from 'stores/Energy/MultipleTimespanStore.jsx';
-import ScatterPlotAction from 'actions/DataAnalysis/scatter_plot_action.jsx';
-import BubbleAction from 'actions/DataAnalysis/bubble_action.jsx';
+import GenerateSolution from '../../Diagnose/generate_solution.jsx';
+// import {GenerateSolution, getTagsByChartData} from './GenerateSolution.jsx';
+
+const SVG_WIDTH = 750;
+const SVG_HEIGHT = 360;
 
 function getFromImmu(key) {
 	return function(immuObj) {
@@ -21,6 +34,36 @@ function getFromImmu(key) {
 const getId = getFromImmu('Id');
 const getName = getFromImmu('Name');
 const TOU_NAME=[I18N.EM.Peak,I18N.EM.Plain,I18N.EM.Valley];
+
+function initSolution(hierarchyId, nodes, svgStrings) {
+  return Immutable.fromJS({
+    "Problem": {
+      "HierarchyId": hierarchyId,
+      "Name": "",
+      "EnergySys": 0,
+      "IsFocus": true,
+      "Description": "",
+      "Status": 1,
+      "IsConsultant": true,
+      "EnergyProblemImages": nodes.map( node => ({ Id: getId(node), Name: getName(node), Content: svgStrings[getId(node)] }) ),
+      "ProblemTypeId": 0,
+      "SolutionTitle": "",
+      "DataLabelId": 0,
+      "DataLabelName": ""
+    },
+    "Solutions": [
+      {
+        "Name": "",
+        "EnergySavingUnit": "",
+        "ROI": 0,
+        "SolutionDescription": "",
+        "SolutionImages": []
+      }
+    ],
+    "Remarks": [],
+    "EnergyEffectStatus": true
+  });
+}
 
 function getTagsDataByNode(props) {
 	props.nodes.map(flowRight(FolderAction.getTagsDataByNodeId, getId));
@@ -79,6 +122,7 @@ export default class AnalysisGenerateSolution extends Component {
 
     this.state = {
       tagDatas: {},
+      svgStrings: {},
     };
     this._onChange = this._onChange.bind(this);
     // this._setStateValue = this._setStateValue.bind(this);
@@ -86,6 +130,7 @@ export default class AnalysisGenerateSolution extends Component {
     // this._onDelete = this._onDelete.bind(this);
     // this._renderHighChart = this._renderHighChart.bind(this);
     this._renderChart = this._renderChart.bind(this);
+    this._bindAfterChartCreate = this._bindAfterChartCreate.bind(this);
     this._getTagsDataByNode = this._getTagsDataByNode.bind(this);
 
     if(props.preAction && typeof props.preAction.action === 'function') {
@@ -136,12 +181,32 @@ export default class AnalysisGenerateSolution extends Component {
     });
   }
 
-  _renderChart(node,afterChartCreated){
+  _bindAfterChartCreate(id) {
+    return () => {
+      let svgString,
+      parent = ReactDOM.findDOMNode(this).querySelector('#chart_basic_component_' + id);
+      if(parent && parent.querySelector('svg')) {
+        svgString = new XMLSerializer().serializeToString(parent.querySelector('svg'));
+      }
+      if( svgString ) {
+        this.setState({
+          svgStrings: {...this.state.svgStrings, ...{
+            [id]: svgString
+          }},
+        });
+      }
+    }
+  }
+
+  _renderChart(node/*,afterChartCreated*/){
     let me=this;
     let nodeId = getId(node),
 		{tagDatas, widgetStatuss, widgetSeriesArrays, contentSyntaxs} = this.state;
-    if(!tagDatas[nodeId]) return null
+    if( this.state.svgStrings[nodeId] ) return null;
+    if(!tagDatas[nodeId]) return null;
     var currentChartType=getChartTypeStr(widgetSeriesArrays[nodeId].getIn([0]));
+    let afterChartCreated = this._bindAfterChartCreate(nodeId);
+    let chartPanel;
     if(currentChartType==='heatmap'){
       var  startDate = CommonFuns.DataConverter.JsonToDateTime(tagDatas[nodeId].getIn(['TargetEnergyData',0,'Target','TimeSpan','StartTime']), true),
            endDate = CommonFuns.DataConverter.JsonToDateTime(tagDatas[nodeId].getIn(['TargetEnergyData',0,'Target','TimeSpan','EndTime']), true);
@@ -151,14 +216,9 @@ export default class AnalysisGenerateSolution extends Component {
         isFromSolution:true,
         energyData: me.props.analysis?me.props.analysis.state.energyRawData:tagDatas[nodeId].toJS(),
         startDate,endDate,
-        afterChartCreated:function() {
-          let args = arguments;
-                             setTimeout(() => {
-         return afterChartCreated.apply(this, [getTagsByChartData(tagDatas[nodeId])].concat(args));
-      }, 1000);
-        }
+        afterChartCreated,
       };
-      return(
+      chartPanel = (
         <HeatMap {...properties}></HeatMap>
       )
     }else if(currentChartType==='scatterplot'){
@@ -171,18 +231,12 @@ export default class AnalysisGenerateSolution extends Component {
         xAxisTagId=syntaxObj.tagIds[0];
         yAxisTagId=syntaxObj.tagIds[1];
         step=syntaxObj.viewOption.Step;
-        return (
+        chartPanel = (
           <ScatterPlotView xAxisTagId={xAxisTagId}
                            yAxisTagId={yAxisTagId}
                            timeRanges={timeRanges}
                            step={step}
-                           afterChartCreated={function(){
-                             let args = arguments;
-                             setTimeout(() => {                               
-         return afterChartCreated.apply(this, [getTagsByChartData(tagDatas[nodeId])].concat(args));
-      }, 1000);
-           
-        }}/> 
+                           afterChartCreated={afterChartCreated}/>
         )
       }
     }else if(currentChartType==='bubble'){
@@ -196,91 +250,102 @@ export default class AnalysisGenerateSolution extends Component {
         yAxisTagId=syntaxObj.tagIds[1];
         areaTagId=syntaxObj.tagIds[2];
         step=syntaxObj.viewOption.Step;
-        return (
+        chartPanel = (
           <BubbleView ref={xAxisTagId+'_'+yAxisTagId+"_"+areaTagId}
                            xAxisTagId={xAxisTagId}
                            yAxisTagId={yAxisTagId}
                            areaTagId={areaTagId}
                            timeRanges={timeRanges}
                            step={step}
-                           afterChartCreated={function(){
-                             let args = arguments;
-                                                   
-       setTimeout(() => {                               
-         return afterChartCreated.apply(this, [getTagsByChartData(tagDatas[nodeId])].concat(args));
-      }, 1000);
-
-           
-        }}/> 
+                           afterChartCreated={afterChartCreated}/>
         )
       }
     }else{
-    return(
-      <ChartBasicComponent
-        afterChartCreated={function() {
-          let args = arguments;
-                             setTimeout(() => {
-         return afterChartCreated.apply(this, [getTagsByChartData(tagDatas[nodeId])].concat(args));
-      }, 1000);
-        }}
-        ref='ChartBasicComponent'
-        key={nodeId}
-        node={node}
-        tagData={tagDatas[nodeId]}
-        widgetStatus={widgetStatuss[nodeId]}
-        widgetSeriesArray={widgetSeriesArrays[nodeId]}
-        contentSyntax={contentSyntaxs[nodeId]}
-        chartType={currentChartType}
-        postNewConfig={(chartCmpObj) => {
-				      let newConfig = CommonFuns.merge(true, chartCmpObj);
+      chartPanel = (
+        <ChartBasicComponent
+          afterChartCreated={afterChartCreated}
+          ref='ChartBasicComponent'
+          key={nodeId}
+          node={node}
+          tagData={tagDatas[nodeId]}
+          widgetStatus={widgetStatuss[nodeId]}
+          widgetSeriesArray={widgetSeriesArrays[nodeId]}
+          contentSyntax={contentSyntaxs[nodeId]}
+          chartType={currentChartType}
+          postNewConfig={(chartCmpObj) => {
+  		      let newConfig = CommonFuns.merge(true, chartCmpObj);
+            let wss = widgetStatuss[nodeId] && JSON.parse(widgetStatuss[nodeId]);
+            let touType=false;
 
-              let wss = widgetStatuss[nodeId] && JSON.parse(widgetStatuss[nodeId]);
-              let touType=false;
-
-              if( wss && wss.length > 0 ) {
-      
-               for (var i = 0, len = wss.length; i < len; i++) {
-                 if (wss[i].WidgetStatusKey === "TouTariff") {
-                    touType=wss[i].WidgetStatusValue==='true';
-                    break;
+            if( wss && wss.length > 0 ) {
+             for (var i = 0, len = wss.length; i < len; i++) {
+               if (wss[i].WidgetStatusKey === "TouTariff") {
+                  touType=wss[i].WidgetStatusValue==='true';
+                  break;
                 }
-               }
               }
-
+            }
             if(touType){
-
-                  if(currentChartType==='pie'){
-                    newConfig.legend.title={
-                      text:newConfig.series[0].data[0].name
-                    };
-                    newConfig.series[0].data=newConfig.series[0].data.map((item,i)=>{
-                      item.name=TOU_NAME[i];
-                      return item;
-                    })
-                  }else{
-                   newConfig.legend.title={
-                    text:newConfig.series[0].name
-                    };
-                  newConfig.series = newConfig.series.map((serie, i)=>{
-                   serie.name=TOU_NAME[i]
-                    return serie;
-                   });   
-                  }
-
-                       
+              if(currentChartType==='pie'){
+                newConfig.legend.title={
+                  text:newConfig.series[0].data[0].name
+                };
+                newConfig.series[0].data=newConfig.series[0].data.map((item,i)=>{
+                  item.name=TOU_NAME[i];
+                  return item;
+                })
+              }else{
+               newConfig.legend.title={
+                text:newConfig.series[0].name
+                };
+              newConfig.series = newConfig.series.map((serie, i)=>{
+               serie.name=TOU_NAME[i]
+                return serie;
+               });
+              }
             }
             return newConfig;
-
-          }} />
-    )
+          }
+        }
+      />
+      )
     }
+
+    return (
+      <div style={{position: 'relative', overflowX: 'hidden', height: SVG_HEIGHT, width: SVG_WIDTH}}>
+        <div id={'chart_basic_component_' + nodeId} style={{
+            flex: 1,
+            position: 'absolute',
+            width: SVG_WIDTH,
+            height: SVG_HEIGHT,
+            display: 'flex',
+            opacity: 0,
+            flexDirection: 'column',
+            marginBottom: '0px',
+            marginLeft: '9px'
+          }}>
+          {chartPanel}
+        </div>
+      </div>
+    );
 
   }
   render(){
+    let { hierarchyId, nodes, onRequestClose, router, params } = this.props;
     return(
-      <GenerateSolution {...this.props} renderChartCmp={this._renderChart}/>
+      <GenerateSolution
+        onCancel={onRequestClose}
+        onBack={onRequestClose}
+        onCreate={(data) => {
+          DiagnoseAction.createDiagnose(data, () => {
+            router.replace(RoutePath.ecm(params)+'?init_hierarchy_id='+hierarchyId);
+          });
+        }}
+        renderChart={() => nodes.map(this._renderChart)}
+        energySolution={initSolution(hierarchyId, nodes, this.state.svgStrings)}/>
     )
   }
+  /*<GenerateSolution {...this.props} renderChartCmp={this._renderChart}/>*/
 
 
 }
