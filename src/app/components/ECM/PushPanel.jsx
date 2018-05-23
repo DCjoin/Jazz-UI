@@ -488,7 +488,12 @@ export default class PushPanel extends Component {
                                                hasSysPriviledge={canEdit(createUserId)}
                                                hasStatusPriviledge={canEditStatus(createUserId,this.state.infoTabNo)}
                                                onSave={onSave}
-                                               onClose={()=>{this.setState({measureShow:false,measureIndex:null})}}
+                                               onClose={(refresh)=>{this.setState({measureShow:false,measureIndex:null},
+                                               ()=>{
+                                                 if(refresh){
+                                                   this.refresh(status[this.state.infoTabNo-1])
+                                                 }
+                                               })}}
                                                onStatusChange={this._onStatusChange}
                                                person={this._renderPersonInCharge}/>
     )

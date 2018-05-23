@@ -2457,6 +2457,7 @@ I18N.Setting.ECM.BatchPushContent ='Confirm to batch push energy saving schemes{
 I18N.Setting.ECM.DeleteContent = '该方案删除后将无法恢复，确认删除吗？';
 I18N.Setting.ECM.PushSuccess = 'Scheme successfully pushed';
 I18N.Setting.ECM.Solution = 'Energy Saving Scheme';
+I18N.Setting.ECM.SolutionAssign = '方案分配';
 I18N.Setting.ECM.ProblemDetail = 'Operation Situation';
 I18N.Setting.ECM.ProblemDetailName = 'Problem';
 I18N.Setting.ECM.SolutionDetail = 'Energy-saving solution';
@@ -2520,6 +2521,7 @@ I18N.Setting.ECM.SolutionName.Tenth='方案十';
 I18N.Setting.ECM.RequiredTip='请完整填写必填项';
 I18N.Setting.ECM.SaveTip='是否保存对该方案的修改？';
 I18N.Setting.ECM.SaveSuccess='保存成功';
+I18N.Setting.ECM.TitleErrorTip='方案标题不能为空';
 
 I18N.Setting.Diagnose={};
 I18N.Setting.Diagnose.EnergyLabel='Energy Label';

@@ -59,8 +59,9 @@ export class PlanTitle extends Component {
     let { isRequired} = this.props;
     return (<div >
       <SessionTitle title={I18N.Setting.Diagnose.SolutionTitle} subtitle={isRequired && I18N.Setting.Diagnose.Require} style={{marginBottom: 20}}/>
-      <div className='field-title'>{I18N.Setting.Diagnose.SolutionTitle}</div>
+      {this.props.hasSubTitle && <div className='field-title'>{I18N.Setting.Diagnose.SolutionTitle}</div>}
       <TextBox {...this._initTextBoxProps('SolutionTitle')} hintText={I18N.Setting.Diagnose.PleaseInput + I18N.Setting.Diagnose.SolutionTitle}/>
+
     </div>)
   }
 }
@@ -69,6 +70,11 @@ PlanTitle.propTypes = {
   errorData: PropTypes.object,
   energySolution: PropTypes.object,
   onChange: PropTypes.func,
+  hasSubTitle:PropTypes.boolean,
+}
+
+PlanTitle.defaultProps = {
+	hasSubTitle:true,
 }
 
 
@@ -194,7 +200,7 @@ export class ProblemDetail extends Component {
   }
 
   render() {
-    let { isRequired, errorMsg, energySolution, onChange, onBlur, isView,hasEnergySys, currentProblemId, checkedProblems, chartDatas} = this.props;
+    let { isRequired, errorMsg, errorData,energySolution, onChange, onBlur, isView,hasEnergySys, currentProblemId, checkedProblems, chartDatas} = this.props;
     let { selectedIdx, anchorEl } = this.state;
 
     if(isView) return this._renderViewStatus()
@@ -252,9 +258,11 @@ export class ProblemDetail extends Component {
             return '';
           } ).join('\r\n');
           onChange(['Problem', 'Description'], str);
+          onBlur && onBlur(['Problem', 'Description'], str)
         }}>
           {energySolution.getIn(['Problem', 'Description'])}
         </div>
+         {errorData && errorData.getIn(['Problem', 'Description']) && <span style={{color:'#dc0a0a',fontSize:'12px'}}>{errorData.getIn(['Problem', 'Description'])}</span>}
       </div>
       <div className='field-wrapper' style={{width: 770}}>
         <div className='field-title'>{I18N.Setting.Diagnose.ProblemImage}</div>
@@ -325,7 +333,7 @@ export class PlanDetail extends Component {
       value: Solutions.getIn([idx, key]),
       onChange: this._bindChange([idx, key]),
       onBlur: (e) => {
-        onBlur && onBlur( ['Solutions'].concat(paths), e.target.value );
+        onBlur && onBlur( ['Solutions'].concat([idx, key]), e.target.value );
       },
     }
   }
@@ -384,14 +392,15 @@ export class PlanDetail extends Component {
           <div className="field-text" style={{marginTop:'8px'}}>{Solutions.getIn([idx, 'SolutionDescription'])}</div>
         </div>
         <div className='field-wrapper'>
-          <div className='field-title'>{I18N.Setting.Diagnose.SolutionImage}</div>
+          {this.props.hasPicTitle && <div className='field-title'>{I18N.Setting.Diagnose.SolutionImage}</div>}
+
           <ImagGroupPanel diagrams={Solutions.getIn([idx,"SolutionImages"])} width={145} height={100} editable={false}/>
         </div>
       </div>) )}
     </div>)
   }
   render() {
-    let { Solutions, errorData, onChange,isRequired,isView} = this.props;
+    let { Solutions, onBlur,errorData, onChange,isRequired,isView} = this.props;
     if(isView) return this._renderViewStatus()
     return (<div className='plan-detail'>
         <Dialog open={this.state.dialogKey === DELETE_DIALOG} actionsContainerStyle={{textAlign: 'right'}} contentStyle={{margin: '8px 24px', color: '#626469'}} actions={[
@@ -467,12 +476,15 @@ export class PlanDetail extends Component {
               return '';
             } ).join('\r\n');
             onChange(['Solutions', idx, 'SolutionDescription'], str);
+            onBlur && onBlur(['Solutions', idx, 'SolutionDescription'], str)
           }}>
             {Solutions.getIn([idx, 'SolutionDescription'])}
           </div>
+           {errorData && errorData.getIn(['Solutions', idx, 'SolutionDescription']) && <span style={{color:'#dc0a0a',fontSize:'12px'}}>{errorData.getIn(['Solutions', idx, 'SolutionDescription'])}</span>}
         </div>
         <div className='field-wrapper'>
-          <div className='field-title'>{I18N.Setting.Diagnose.SolutionImage}</div>
+          {this.props.hasPicTitle && <div className='field-title'>{I18N.Setting.Diagnose.SolutionImage}</div>}
+
            <ImagGroupPanel diagrams={Solutions.getIn([idx,"SolutionImages"])} width={145} height={100} editable={false}/>
         </div>
       </div>) )}
@@ -484,9 +496,11 @@ PlanDetail.propTypes = {
   energySolution: PropTypes.object,
   onChange: PropTypes.func,
   isView: PropTypes.boolean,
+  hasPicTitle: PropTypes.boolean,
 }
 PlanDetail.defaultProps = {
 	isView:false,
+  hasPicTitle:true
 }
 
 const BACK_DIALOG = 'BACK_DIALOG';

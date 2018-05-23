@@ -45,6 +45,7 @@ export default class EditSolution extends Component {
     this._onChange=this._onChange.bind(this);
     this._onSave=this._onSave.bind(this);
     this._onScroll=this._onScroll.bind(this);
+    this._onBlur=this._onBlur.bind(this);
   }
 
     state={
@@ -53,7 +54,8 @@ export default class EditSolution extends Component {
       energySys:this.props.solution.getIn(["Problem",'EnergySys']),
       snackBarText:null,
       saveTipShow:false,
-      solutionUnfold:true
+      solutionUnfold:true,
+      errorData:Immutable.fromJS({})
     }
 
       _onScroll(e){
@@ -64,6 +66,7 @@ export default class EditSolution extends Component {
                         ReactDOM.findDOMNode(this.refs.save_column).style.top=0;
                         ReactDOM.findDOMNode(this.refs.save_column).style.width=width+'px';
                         ReactDOM.findDOMNode(this.refs.save_column).style.backgroundColor='#ffffff';
+                        ReactDOM.findDOMNode(this.refs.save_column).style.zIndex=2
 
                 }else{
                        ReactDOM.findDOMNode(this.refs.save_column).style.position='relative';
@@ -87,11 +90,13 @@ export default class EditSolution extends Component {
       }
       if(MeasuresStore.IsSolutionDisable(currentSolution.toJS())){
         this.setState({
-          snackBarText:I18N.Setting.ECM.RequiredTip
+          snackBarText:I18N.Setting.ECM.RequiredTip,
+          errorData:this._validateAll()
         })
       }else{
         if(Immutable.is(currentSolution,this.state.preSolution)){
-          this.props.onClose()
+            this.props.onClose(!Immutable.is(this.state.preSolution,this.props.solution))
+          
         }else{
           this.setState({
             saveTipShow:true
@@ -106,9 +111,68 @@ export default class EditSolution extends Component {
         });
       }
 
+    _validate(paths,value,errorData){
+       var pathName=paths.slice(0);
+        var error='';
+        if(paths[0]==='Solutions'){
+          pathName=pathName.pop();
+        }else{pathName=pathName.join('')}
+
+        if(pathName==='EnergySavingUnit'){ paths=paths.slice(0,2)
+                                           paths.push('ExpectedAnnualEnergySaving')}         
+
+
+        if( paths.join('') === 'ProblemSolutionTitle' ) {
+          if( !value ) {
+            error = I18N.Setting.ECM.TitleErrorTip;
+          }
+        }else if( paths.join('') === 'ProblemEnergySys' ) {
+          if( !value && !this.state.solution.getIn(paths)) {
+            error = I18N.Setting.Diagnose.PleaseSelect+I18N.Setting.Diagnose.EnergySys;
+          }
+        }else if(value!==0 && !value && pathName!=='InvestmentAmount'){
+            if(pathName==='Name'){pathName='SolutionName'}
+            if(pathName==='EnergySavingUnit'){pathName="ExpectedAnnualEnergySaving"}
+           error=I18N.Setting.Diagnose.PleaseInput+I18N.Setting.Diagnose[pathName];     
+        }
+
+        errorData=errorData.setIn(paths,error);
+        return errorData
+    }
+
+    _validateAll(){
+      var validatePath={
+        Problem:['SolutionTitle','Name','EnergySys','Description'],
+        Solution:['ExpectedAnnualEnergySaving','EnergySavingUnit','ExpectedAnnualCostSaving','Name','SolutionDescription']
+      };
+      var errorData=this.state.errorData;
+      validatePath.Problem.forEach(key=>{
+        errorData=this._validate(['Problem',key],this.state.solution.getIn(['Problem',key]),errorData)
+      })
+      validatePath.Solution.forEach(key=>{
+        this.state.solution.get("Solutions").forEach((solution,idx)=>{
+          errorData=this._validate(['Solutions',idx,key],solution.get(key),errorData)
+        })
+
+      })
+
+      return errorData
+    }
+
+      _onBlur( paths, value ) {
+        let errorData = this.state.errorData;
+
+        errorData=this._validate(paths, value,errorData);
+
+        this.setState({
+          errorData
+        });
+  }
+
     _renderSolution(){
       var user=this.state.solution.getIn(['Problem','CreateUserName']);
       var iconstyle={fontSize:'16px'},style={padding:'0',fontSize:'16px',height:'16px',linHeght:'16px',marginRight:'8px',marginLeft:'8px'};
+      var {errorData}=this.state;
       return(
         <div>
                 <div ref="save_column" className="push-panel-solution-header">
@@ -130,13 +194,13 @@ export default class EditSolution extends Component {
                   </div>
                 {this.state.solutionUnfold && <div className="solution-content">
                 {PushIsFull() && <session className='session-container'>
-                  <PlanTitle isRequired={true} energySolution={this.state.solution} onChange={this._onChange}/>
+                  <PlanTitle errorData={errorData} isRequired={true} energySolution={this.state.solution} onChange={this._onChange} onBlur={this._onBlur}/>
                 </session>}
                 <session className='session-container'>
-                  <PlanDetail isView={!PushIsFull()} solutionTitle={PushIsFull()?null:this.state.solution.getIn(['Problem','SolutionTitle'])} isRequired={true} Solutions={this.state.solution.get('Solutions')} onChange={this._onChange}/>
+                  <PlanDetail errorData={errorData} hasPicTitle={false} isView={!PushIsFull()} solutionTitle={PushIsFull()?null:this.state.solution.getIn(['Problem','SolutionTitle'])} isRequired={true} Solutions={this.state.solution.get('Solutions')} onChange={this._onChange} onBlur={this._onBlur}/>
                 </session>
                 <session className='session-container'>
-                  <ProblemDetail isView={!PushIsFull()} isRequired={true} energySolution={this.state.solution} onChange={this._onChange} hasEnergySys={false}/>
+                  <ProblemDetail errorData={errorData} isView={!PushIsFull()} isRequired={true} energySolution={this.state.solution} onChange={this._onChange} hasEnergySys={false} onBlur={this._onBlur}/>
                 </session>
              </div>}
         </div>
@@ -170,6 +234,8 @@ export default class EditSolution extends Component {
               label={I18N.Common.Button.NotSave}
               onClick={() => {this.setState({
                               saveTipShow:false
+                              },()=>{
+                                this.props.onClose()
                               })}} />
           ]}
       ><div className="jazz-ecm-measure-viewabletext">{content}</div></NewDialog>
@@ -212,7 +278,7 @@ export default class EditSolution extends Component {
           <div className="content-field">
             <div className="solution-head" style={{display:'flex',alignItems: 'center'}}>
               <FontIcon className="icon-pay-back-period" color="#32ad3c" iconStyle ={ICONSTYLE} style = {STYLE} />
-              {I18N.Setting.ECM.Solution}</div>
+              {I18N.Setting.ECM.SolutionAssign}</div>
 
             <IconButton iconClassName="icon-close" style={{padding:0,width:'24px',height:'26px'}} iconStyle={{fontSize:'24px',color:"#9fa0a4"}}
              onClick={this._onClose}/> 
