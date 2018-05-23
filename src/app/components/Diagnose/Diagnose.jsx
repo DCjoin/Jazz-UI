@@ -29,7 +29,6 @@ const SOLUTION_NAMES=[I18N.Setting.ECM.SolutionName.First,I18N.Setting.ECM.Solut
                       I18N.Setting.ECM.SolutionName.Tenth]
 let INIT_SOLUTION = Immutable.fromJS({
   "Problem": {
-    "Id": 0,
     "HierarchyId": 0,
     "Name": "",
     "EnergySys": 0,
@@ -256,7 +255,6 @@ export default class Diagnose extends Component {
   _getCustomSolution() {
     let currentProblem = DiagnoseStore.findDiagnoseById( this.state.selectedId );
     return INIT_SOLUTION
-            .setIn(['Problem', 'Id'], this.state.selectedId)
             .setIn(['Problem', 'HierarchyId'], this.context.hierarchyId)
             .setIn(['Problem', 'EnergyProblemImages'], Immutable.fromJS([currentProblem.toJS()].concat(this.state.createRefProblems).map( problem => Immutable.fromJS({
               Id: problem.Id,
