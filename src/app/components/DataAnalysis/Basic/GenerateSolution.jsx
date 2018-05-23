@@ -259,7 +259,7 @@ export class GenerateSolution extends Component {
 						Content: svgStrings[getId(node)]
 					}}),
 					TagIds: nodes.map(node => allTags[getId(node)])
-							.reduce((res, current) => 
+							.reduce((res, current) =>
 								res.concat(current&&current.filter( id => res.indexOf(id) === -1 )), []
 							),
 				},
@@ -359,7 +359,7 @@ export class GenerateSolution extends Component {
 							{this.props.renderChartCmp(node,(tags) => {
 
        this._afterChartCreated(nodeId, tags);
-								
+
 							})}
 					</div>
 				</div>);
@@ -475,7 +475,7 @@ export class GenerateSolution extends Component {
 				}else{
 					FolderAction.createEnergySolution(data);
 				}
-				
+
 
 				this.props.onRequestClose(true); //true:closed by submit false:closed by cancel
 			}}/>);

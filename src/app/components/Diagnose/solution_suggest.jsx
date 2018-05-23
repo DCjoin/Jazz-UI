@@ -24,10 +24,10 @@ export default class SolutionSuggest extends Component {
       <div className='solution-suggest'>
         <header className='solution-suggest-header'>
           <span className='icon-return' onClick={() => this.setState({dialogKey: BACK_DIALOG})}/>
-          {'解决方案推荐'}
+          {I18N.Setting.Diagnose.SolutionSuggest}
           <span className='icon-close' onClick={() => this.setState({dialogKey: CANCEL_DIALOG})}/>
         </header>
-        <div className='solution-suggest-tip'>{'您可以勾选一个或多个方案来生成解决方案。'}</div>
+        <div className='solution-suggest-tip'>{I18N.Setting.Diagnose.SolutionSuggestTip1}</div>
         {plans.map( (plan, idx) => (
           <div key={plan.get('Id')} className='solution-suggest-item' style={{
             marginBottom: idx < plans.size - 1 ? 16 : 70
@@ -43,14 +43,14 @@ export default class SolutionSuggest extends Component {
             </div>
             <div className='solution-suggest-item-content'>
               <div className='solution-suggest-name'>{plan.get('SolutionName')}</div>
-              <div className='solution-suggest-desc'><span className='solution-suggest-desc-title'>{'问题名称：'}</span>{plan.get('ProblemName')}</div>
-              <div className='solution-suggest-desc'><span className='solution-suggest-desc-title'>{'问题描述：'}</span>{plan.get('ProblemDescription')}</div>
-              <div className='solution-suggest-desc'><span className='solution-suggest-desc-title'>{'方案描述：'}</span>{plan.get('SolutionDescription')}</div>
+              <div className='solution-suggest-desc'><span className='solution-suggest-desc-title'>{I18N.Setting.Diagnose.ProblemName + '：'}</span>{plan.get('ProblemName')}</div>
+              <div className='solution-suggest-desc'><span className='solution-suggest-desc-title'>{I18N.Setting.Diagnose.ProblemDescription + '：'}</span>{plan.get('ProblemDescription')}</div>
+              <div className='solution-suggest-desc'><span className='solution-suggest-desc-title'>{I18N.Setting.Diagnose.SolutionDescription + '：'}</span>{plan.get('SolutionDescription')}</div>
             </div>
           </div>
         ) )}
         <footer className='solution-suggest-footer'>
-          <FlatButton primary label={'使用推荐方案'} onClick={() => {
+          <FlatButton primary label={I18N.Setting.Diagnose.UsageSuggestSolution} onClick={() => {
             if( !checkedPlan || checkedPlan.length === 0 ) {
               this.setState({
                 open: true
@@ -59,8 +59,8 @@ export default class SolutionSuggest extends Component {
               onNext();
             }
           }}/>
-          <FlatButton style={{marginRight: 16}} label={'自定义方案 >'} onClick={onCustom}/>
-          <span className='icon-no_ecm'>{'若以上方案都不符合，您可自定义方案。'}</span>
+          <FlatButton style={{marginRight: 16}} label={I18N.Setting.Diagnose.UsageCustomSolution + ' >'} onClick={onCustom}/>
+          <span className='icon-no_ecm'>{I18N.Setting.Diagnose.SolutionSuggestTip2}</span>
         </footer>
         <Snackbar style={{
           maxWidth: 'none',
@@ -72,19 +72,19 @@ export default class SolutionSuggest extends Component {
           minWidth: 0,
           padding: '0 16px',
         }}
-        message={<div className='icon-clean'>{'请至少选择一个推荐方案'}</div>} autoHideDuration={4000} open={this.state.open} onRequestClose={() => {
+        message={<div className='icon-clean'>{I18N.Setting.Diagnose.SolutionSuggestErrorTip}</div>} autoHideDuration={4000} open={this.state.open} onRequestClose={() => {
           this.setState({
             open: false,
           })
         }}/>
         <Dialog open={this.state.dialogKey === BACK_DIALOG} actionsContainerStyle={{textAlign: 'right'}} contentStyle={{margin: '8px 24px', color: '#626469'}} actions={[
-          <FlatButton primary inDialog label={'返回上一页'} onClick={this.props.onBack}/>,
-          <FlatButton label={'取消'} onClick={() => { this.setState({dialogKey: null}) }}/>
-        ]}>{'当前页面所有操作将不会保存，确定返回上一页吗？'}</Dialog>
+          <FlatButton primary inDialog label={I18N.Setting.Diagnose.ReturnPage} onClick={this.props.onBack}/>,
+          <FlatButton label={I18N.Common.Button.Cancel2} onClick={() => { this.setState({dialogKey: null}) }}/>
+        ]}>{I18N.Setting.Diagnose.ReturnPageTip}</Dialog>
         <Dialog open={this.state.dialogKey === CANCEL_DIALOG} actionsContainerStyle={{textAlign: 'right'}} contentStyle={{margin: '8px 24px', color: '#626469'}} actions={[
-          <FlatButton primary inDialog label={'离开页面'} onClick={this.props.onCancel}/>,
-          <FlatButton label={'取消'} onClick={() => { this.setState({dialogKey: null}) }}/>
-        ]}>{'当前页面所有操作将不会保存，确定离开当前页面吗？'}</Dialog>
+          <FlatButton primary inDialog label={I18N.Setting.Diagnose.LeavePage} onClick={this.props.onCancel}/>,
+          <FlatButton label={I18N.Common.Button.Cancel2} onClick={() => { this.setState({dialogKey: null}) }}/>
+        ]}>{I18N.Setting.Diagnose.LeavePageTip}</Dialog>
       </div>
     );
   }
