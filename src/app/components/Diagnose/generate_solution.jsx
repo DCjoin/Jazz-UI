@@ -23,7 +23,7 @@ function getROILabel( solution ) {
     solution.get('ExpectedAnnualCostSaving')
   )
   if( +roi === roi ) {
-    roi += '年';
+    roi += I18N.EM.Year;
   }
   return roi;
 }
@@ -52,15 +52,16 @@ export class PlanTitle extends Component {
       errorMsg: errorData && errorData.getIn(['Problem', key]),
       value: energySolution.getIn(['Problem', key]),
       onChange: e => onChange(['Problem', key], e.target.value),
-      onBlur: e => onBlur(['Problem', key], e.target.value),
+      onBlur: e => onBlur && onBlur(['Problem', key], e.target.value),
     }
   }
   render() {
     let { isRequired} = this.props;
     return (<div >
-      <SessionTitle title={'方案标题'} subtitle={isRequired && '(必填)'} style={{marginBottom: 20}}/>
-      {this.props.hasSubTitle && <div className='field-title'>{'方案标题'}</div>}
-      <TextBox {...this._initTextBoxProps('SolutionTitle')} hintText={'请输入方案标题'}/>
+      <SessionTitle title={I18N.Setting.Diagnose.SolutionTitle} subtitle={isRequired && I18N.Setting.Diagnose.Require} style={{marginBottom: 20}}/>
+      {this.props.hasSubTitle && <div className='field-title'>{I18N.Setting.Diagnose.SolutionTitle}</div>}
+      <TextBox {...this._initTextBoxProps('SolutionTitle')} hintText={I18N.Setting.Diagnose.PleaseInput + I18N.Setting.Diagnose.SolutionTitle}/>
+
     </div>)
   }
 }
@@ -92,7 +93,7 @@ export class ProblemDetail extends Component {
       errorMsg: errorData && errorData.getIn(['Problem', key]),
       value: energySolution.getIn(['Problem', key]),
       onChange: e => onChange(['Problem', key], e.target.value),
-      onBlur: e => onBlur(['Problem', key], e.target.value),
+      onBlur: e => onBlur && onBlur(['Problem', key], e.target.value),
     }
   }
 
@@ -159,19 +160,19 @@ export class ProblemDetail extends Component {
     var {energySolution}=this.props;
     let { selectedIdx } = this.state;
     return (<div >
-      <SessionTitle title={'问题详情'} style={{marginBottom: 20}}/>
+      <SessionTitle title={I18N.Setting.Diagnose.ProblemDetail} style={{marginBottom: 20}}/>
       <div className='field-wrapper flex-bar'>
         <div>
-          <div className='field-title'>{'问题名称'}</div>
+          <div className='field-title'>{I18N.Setting.Diagnose.ProblemName}</div>
           <div className="field-text" style={{marginTop:'8px'}}>{energySolution.getIn(['Problem', 'Name'])}</div>
         </div>
       </div>
       <div className='field-wrapper'>
-        <div className='field-title'>{'问题描述'}</div>
+        <div className='field-title'>{I18N.Setting.Diagnose.ProblemDescription}</div>
          <div className="field-text" style={{marginTop:'16px'}}>{energySolution.getIn(['Problem', 'Description'])}</div>
       </div>
       <div className='field-wrapper' style={{width: 770}}>
-        <div className='field-title'>{'问题图表'}</div>
+        <div className='field-title'>{I18N.Setting.Diagnose.ProblemImage}</div>
         <Gallery
           names={energySolution.getIn(['Problem', 'EnergyProblemImages']).map( img => img.get('Name') ).toJS()}
           selectedIdx={selectedIdx}
@@ -205,14 +206,14 @@ export class ProblemDetail extends Component {
     if(isView) return this._renderViewStatus()
 
     return (<div >
-      <SessionTitle title={'问题详情'} subtitle={isRequired && '(必填)'} style={{marginBottom: 20}}/>
+      <SessionTitle title={I18N.Setting.Diagnose.ProblemDetail} subtitle={isRequired && I18N.Setting.Diagnose.Require} style={{marginBottom: 20}}/>
       <div className='field-wrapper flex-bar'>
         <div>
-          <div className='field-title'>{'问题名称'}{!isRequired && <span className='subtitle'>{'(必填)'}</span>}</div>
-          <TextBox {...this._initTextBoxProps('Name')} hintText={'请输入问题名称'}/>
+          <div className='field-title'>{I18N.Setting.Diagnose.ProblemName}{!isRequired && <span className='subtitle'>{I18N.Setting.Diagnose.Require}</span>}</div>
+          <TextBox {...this._initTextBoxProps('Name')} hintText={I18N.Setting.Diagnose.PleaseInput + I18N.Setting.Diagnose.PleaseInput}/>
         </div>
         {hasEnergySys && <div style={{marginLeft: 20}}>
-          <div className='field-title'>{'能源系统标识'}{!isRequired && <span className='subtitle'>{'(必填)'}</span>}</div>
+          <div className='field-title'>{I18N.Setting.Diagnose.EnergySys}{!isRequired && <span className='subtitle'>{I18N.Setting.Diagnose.Require}</span>}</div>
           <div className='select-field-overlay' onClick={(e) => {
             this.setState({
               anchorEl: e.target
@@ -220,11 +221,11 @@ export class ProblemDetail extends Component {
           }}>
             <TextBox {...this._initTextBoxProps('EnergySys')} onBlur={() => {}}
               value={I18N.Setting.DataAnalysis.EnergyProblem.MarkEnum[energySolution.getIn(['Problem', 'EnergySys'])]}
-              style={{width: 346}} hintText={'请选择'}/>
+              style={{width: 346}} hintText={I18N.Setting.Diagnose.PleaseSelect}/>
             <span className='icon-arrow-unfold'/>
           </div>
           <Popover onRequestClose={() => {
-            onBlur(['Problem', 'EnergySys'], '');
+            onBlur && onBlur(['Problem', 'EnergySys'], '');
             this.setState({
               anchorEl: null
             })
@@ -236,15 +237,15 @@ export class ProblemDetail extends Component {
               });
               let value = parseInt(ProblemMarkEnum[key]);
               onChange(['Problem', 'EnergySys'], value);
-              onBlur(['Problem', 'EnergySys'], value);
+              onBlur && onBlur(['Problem', 'EnergySys'], value);
             }} primaryText={I18N.Setting.DataAnalysis.EnergyProblem.MarkEnum[ProblemMarkEnum[key]]} value={ProblemMarkEnum[key]}/>
             ))}
           </Popover>
         </div>}
       </div>
       <div className='field-wrapper'>
-        <div className='field-title'>{'问题描述'}</div>
-        <div className='contenteditable-desc' contentEditable placeholder={'请输入问题描述'} onBlur={(e) => {
+        <div className='field-title'>{I18N.Setting.Diagnose.ProblemDescription}</div>
+        <div className='contenteditable-desc' contentEditable placeholder={I18N.Setting.Diagnose.PleaseInput + I18N.Setting.Diagnose.ProblemDescription} onBlur={(e) => {
           let str = Array.from(e.target.childNodes).map( child => {
             if( child.nodeType === 3 ) {
               return child.nodeValue;
@@ -260,10 +261,9 @@ export class ProblemDetail extends Component {
         }}>
           {energySolution.getIn(['Problem', 'Description'])}
         </div>
-        {/*<TextBox multiLine {...this._initTextBoxProps('Description')} style={{width: 770}} hintText={'请输入问题描述'}/>*/}
       </div>
       <div className='field-wrapper' style={{width: 770}}>
-        <div className='field-title'>{'问题图表'}</div>
+        <div className='field-title'>{I18N.Setting.Diagnose.ProblemImage}</div>
         {energySolution.getIn(['Problem', 'EnergyProblemImages']).map( (image) => {
           return this._renderHighChart(chartDatas[image.get('Id')], image.get('Id'));
         } )}
@@ -331,7 +331,7 @@ export class PlanDetail extends Component {
       value: Solutions.getIn([idx, key]),
       onChange: this._bindChange([idx, key]),
       onBlur: (e) => {
-        onBlur( ['Solutions'].concat(paths), e.target.value );
+        onBlur && onBlur( ['Solutions'].concat(paths), e.target.value );
       },
     }
   }
@@ -352,7 +352,7 @@ export class PlanDetail extends Component {
           <div className='plan-detail-num-panel'>
             <span className='num-icon icon-energy_saving'/>
             <div className='plan-detail-num-title-panel'>
-              <div className='num-title'>{'预计年节能量'}</div>
+              <div className='num-title'>{I18N.Setting.Diagnose.ExpectedAnnualEnergySaving}</div>
               <span className='num-text'>{Solutions.getIn([idx, 'ExpectedAnnualEnergySaving'])}</span>
             </div>
             <span className='num-text'>{Solutions.getIn([idx, 'EnergySavingUnit'])}</span>
@@ -360,38 +360,38 @@ export class PlanDetail extends Component {
           <div className='plan-detail-num-panel'>
             <span className='num-icon icon-energy_saving'/>
             <div className='plan-detail-num-title-panel'>
-              <div className='num-title'>{'预计年节约成本'}</div>
+              <div className='num-title'>{I18N.Setting.Diagnose.ExpectedAnnualCostSaving}</div>
               <span className='num-text'>{Solutions.getIn([idx, 'ExpectedAnnualCostSaving'])}</span>
             </div>
-            <span className='num-text'>{'元'}</span>
+            <span className='num-text'>{I18N.Setting.Cost.PriceUom}</span>
           </div>
           <div className='plan-detail-num-panel'>
             <span className='num-icon icon-investment-amount'/>
             <div className='plan-detail-num-title-panel'>
-              <div className='num-title'>{'投资金额'}</div>
+              <div className='num-title'>{I18N.Setting.Diagnose.InvestmentAmount}</div>
               <span className='num-text'>{Solutions.getIn([idx, 'InvestmentAmount'])}</span>
             </div>
-            <span className='num-text'>{'元'}</span>
+            <span className='num-text'>{I18N.Setting.Cost.PriceUom}</span>
           </div>
           <div className='plan-detail-num-panel'>
             <span className='num-icon icon-pay-back-period'/>
             <div className='plan-detail-num-title-panel'>
-              <div className='num-title'>{'投资回报期'}</div>
+              <div className='num-title'>{I18N.Setting.Diagnose.ROI}</div>
               <span className='num-text' style={{alignSelf: 'flex-start' }}>{ getROILabel(Solutions.get(idx)) }</span>
             </div>
           </div>
         </div>
         <div className='field-wrapper'>
-          <div className='field-title'>{'方案名称'}</div>
+          <div className='field-title'>{I18N.Setting.Diagnose.SolutionName}</div>
           <div className="field-text" style={{marginTop:'8px'}}>{Solutions.getIn([idx, 'Name'])}</div>
         </div>
         <div className='field-wrapper'>
-          <div className='field-title'>{'方案描述'}</div>
+          <div className='field-title'>{I18N.Setting.Diagnose.SolutionDescription}</div>
           <div className="field-text" style={{marginTop:'8px'}}>{Solutions.getIn([idx, 'SolutionDescription'])}</div>
         </div>
         <div className='field-wrapper'>
-          {this.props.hasPicTitle && <div className='field-title'>{'方案图片'}</div>}
-          {/*<TextBox style={{width: 770}} value={value} hintText={'请输入问题描述'} onChange={this.onChange}/>*/}
+          {this.props.hasPicTitle && <div className='field-title'>{I18N.Setting.Diagnose.SolutionImage}</div>}
+
           <ImagGroupPanel diagrams={Solutions.getIn([idx,"SolutionImages"])} width={145} height={100} editable={false}/>
         </div>
       </div>) )}
@@ -402,16 +402,16 @@ export class PlanDetail extends Component {
     if(isView) return this._renderViewStatus()
     return (<div className='plan-detail'>
         <Dialog open={this.state.dialogKey === DELETE_DIALOG} actionsContainerStyle={{textAlign: 'right'}} contentStyle={{margin: '8px 24px', color: '#626469'}} actions={[
-          <FlatButton primary inDialog label={'确认删除'} onClick={() => {
+          <FlatButton primary inDialog label={I18N.Setting.ECM.Delete} onClick={() => {
             this._onDelete(_idx);
             _idx = null;
             this.setState({
               dialogKey: null
             });
           }}/>,
-          <FlatButton label={'取消'} onClick={() => { this.setState({dialogKey: null}) }}/>
-        ]}>{'确认删除该方案吗？'}</Dialog>
-      <SessionTitle title={'方案详情'} subtitle={isRequired?'(必填)':'(选填)'} style={{marginBottom: 30}}/>
+          <FlatButton label={I18N.Common.Button.Cancel2} onClick={() => { this.setState({dialogKey: null}) }}/>
+        ]}>{I18N.Setting.Diagnose.DeleteSolutionTip}</Dialog>
+      <SessionTitle title={I18N.Setting.Diagnose.SolutionDetail} subtitle={isRequired?I18N.Setting.Diagnose.Require:I18N.Setting.Diagnose.Option} style={{marginBottom: 30}}/>
       {Solutions && Solutions.map( (EnergySolution, idx) => (<div>
 
         {Solutions.size > 1 && <header style={{marginTop: idx && 32}} className='plan-detail-header'>
@@ -426,42 +426,42 @@ export class PlanDetail extends Component {
           <div className='plan-detail-num-panel'>
             <span className='num-icon icon-energy_saving'/>
             <div className='plan-detail-num-title-panel'>
-              <div className='num-title'>{'预计年节能量'}</div>
-              <TextBox {...this._initTextBoxProps(idx, 'ExpectedAnnualEnergySaving')} style={{marginRight: 8, borderRadius: 4, height: 26, width: 102}} hintText={'数值'}/>
+              <div className='num-title'>{I18N.Setting.Diagnose.ExpectedAnnualEnergySaving}</div>
+              <TextBox {...this._initTextBoxProps(idx, 'ExpectedAnnualEnergySaving')} style={{marginRight: 8, borderRadius: 4, height: 26, width: 102}} hintText={I18N.Setting.Diagnose.Number}/>
             </div>
             <TextBox {...this._initTextBoxProps(idx, 'EnergySavingUnit')} style={{borderRadius: 4, height: 26, width: 62}} hintText={'单位'}/>
           </div>
           <div className='plan-detail-num-panel'>
             <span className='num-icon icon-energy_saving'/>
             <div className='plan-detail-num-title-panel'>
-              <div className='num-title'>{'预计年节约成本'}</div>
-              <TextBox {...this._initTextBoxProps(idx, 'ExpectedAnnualCostSaving')} style={{marginRight: 8, borderRadius: 4, height: 26, width: 102}} hintText={'数值'}/>
+              <div className='num-title'>{I18N.Setting.Diagnose.ExpectedAnnualCostSaving}</div>
+              <TextBox {...this._initTextBoxProps(idx, 'ExpectedAnnualCostSaving')} style={{marginRight: 8, borderRadius: 4, height: 26, width: 102}} hintText={I18N.Setting.Diagnose.Number}/>
             </div>
-            <span className='num-text'>{'元'}</span>
+            <span className='num-text'>{I18N.Setting.Cost.PriceUom}</span>
           </div>
           <div className='plan-detail-num-panel'>
             <span className='num-icon icon-investment-amount'/>
             <div className='plan-detail-num-title-panel'>
-              <div className='num-title'>{'投资金额'}</div>
-              <TextBox {...this._initTextBoxProps(idx, 'InvestmentAmount')} style={{marginRight: 8, borderRadius: 4, height: 26, width: 102}} hintText={'数值'}/>
+              <div className='num-title'>{I18N.Setting.Diagnose.InvestmentAmount}</div>
+              <TextBox {...this._initTextBoxProps(idx, 'InvestmentAmount')} style={{marginRight: 8, borderRadius: 4, height: 26, width: 102}} hintText={I18N.Setting.Diagnose.Number}/>
             </div>
-            <span className='num-text'>{'元'}</span>
+            <span className='num-text'>{I18N.Setting.Cost.PriceUom}</span>
           </div>
           <div className='plan-detail-num-panel'>
             <span className='num-icon icon-pay-back-period'/>
             <div className='plan-detail-num-title-panel'>
-              <div className='num-title'>{'投资回报期'}</div>
+              <div className='num-title'>{I18N.Setting.Diagnose.ROI}</div>
               <span className='num-text' style={{alignSelf: 'flex-start' }}>{ getROILabel(Solutions.get(idx)) }</span>
             </div>
           </div>
         </div>
         <div className='field-wrapper'>
-          <div className='field-title'>{'方案名称'}</div>
-          <TextBox  {...this._initTextBoxProps(idx, 'Name')} style={{width: 404}} hintText={'请输入方案名称'}/>
+          <div className='field-title'>{I18N.Setting.Diagnose.SolutionName}</div>
+          <TextBox  {...this._initTextBoxProps(idx, 'Name')} style={{width: 404}} hintText={I18N.Setting.Diagnose.PleaseInput + I18N.Setting.Diagnose.SolutionName}/>
         </div>
         <div className='field-wrapper'>
-          <div className='field-title'>{'方案描述'}</div>
-          <div className='contenteditable-desc' contentEditable placeholder={'请输入方案描述'} onBlur={(e) => {
+          <div className='field-title'>{I18N.Setting.Diagnose.SolutionDescription}</div>
+          <div className='contenteditable-desc' contentEditable placeholder={I18N.Setting.Diagnose.PleaseInput + I18N.Setting.Diagnose.SolutionDescription} onBlur={(e) => {
             let str = Array.from(e.target.childNodes).map( child => {
               if( child.nodeType === 3 ) {
                 return child.nodeValue;
@@ -477,11 +477,10 @@ export class PlanDetail extends Component {
           }}>
             {Solutions.getIn([idx, 'SolutionDescription'])}
           </div>
-          {/*<TextBox {...this._initTextBoxProps(idx, 'SolutionDescription')} style={{width: 770}} hintText={'请输入方案描述'}/>*/}
         </div>
         <div className='field-wrapper'>
-          {this.props.hasPicTitle && <div className='field-title'>{'方案图片'}</div>}
-          {/*<TextBox style={{width: 770}} value={value} hintText={'请输入问题描述'} onChange={this.onChange}/>*/}
+          {this.props.hasPicTitle && <div className='field-title'>{I18N.Setting.Diagnose.SolutionImage}</div>}
+
            <ImagGroupPanel diagrams={Solutions.getIn([idx,"SolutionImages"])} width={145} height={100} editable={false}/>
         </div>
       </div>) )}
@@ -526,7 +525,7 @@ export default class GenerateSolution extends Component {
     if( paths.join('') === 'ProblemName' ) {
       let problemNameError = '';
       if( !value ) {
-        problemNameError = '请输入问题名称';
+        problemNameError = I18N.Setting.Diagnose.PleaseInput + I18N.Setting.Diagnose.PleaseInput;
       }
       errorData = errorData.setIn(paths, problemNameError);
     }
@@ -534,7 +533,7 @@ export default class GenerateSolution extends Component {
     if( paths.join('') === 'ProblemEnergySys' ) {
       let problemEnergyError = '';
       if( !value /*!this.state.energySolution.getIn(paths)*/ ) {
-        problemEnergyError = '请选择能源系统标识';
+        problemEnergyError = I18N.Setting.Diagnose.PleaseSelect + I18N.Setting.Diagnose.EnergySys;
       }
       errorData = errorData.setIn(paths, problemEnergyError);
     }
@@ -550,7 +549,7 @@ export default class GenerateSolution extends Component {
       <div className='generate-solution'>
         <header className='generate-solution-header'>
           <span className='icon-return'  onClick={() => this.setState({dialogKey: BACK_DIALOG})}/>
-          {'节能方案'}
+          {I18N.Setting.ECM.Solution}
         </header>
         <session className='session-container'>
           <PlanTitle errorData={errorData} energySolution={energySolution} onChange={this._onChange} onBlur={this._onBlur}/>
@@ -562,12 +561,12 @@ export default class GenerateSolution extends Component {
           <PlanDetail errorData={errorData} Solutions={energySolution.get('Solutions')} onChange={this._onChange} onBlur={this._onBlur}/>
         </session>
         <footer className='generate-solution-footer'>
-          <FlatButton label={'生成方案'} onClick={() => {
+          <FlatButton label={I18N.Setting.DataAnalysis.Scheme} onClick={() => {
             if( !energySolution.getIn(['Problem', 'Name']) ) {
-              errorData = errorData.setIn(['Problem', 'Name'], '请输入问题名称');
+              errorData = errorData.setIn(['Problem', 'Name'], I18N.Setting.Diagnose.PleaseInput + I18N.Setting.Diagnose.PleaseInput);
             }
             if(　!energySolution.getIn(['Problem', 'EnergySys'])　) {
-              errorData = errorData.setIn(['Problem', 'EnergySys'], '请选择能源系统标识');
+              errorData = errorData.setIn(['Problem', 'EnergySys'], I18N.Setting.Diagnose.PleaseSelect + I18N.Setting.Diagnose.EnergySys);
             }
             if( errorData === this.state.errorData ) {
               onCreate(
@@ -591,16 +590,16 @@ export default class GenerateSolution extends Component {
               this.setState({errorData});
             }
           }}/>
-          <FlatButton style={{marginLeft: 16}} label={'取消'} onClick={() => this.setState({dialogKey: CANCEL_DIALOG})}/>
+          <FlatButton style={{marginLeft: 16}} label={I18N.Common.Button.Cancel2} onClick={() => this.setState({dialogKey: CANCEL_DIALOG})}/>
         </footer>
         <Dialog open={this.state.dialogKey === BACK_DIALOG} actionsContainerStyle={{textAlign: 'right'}} contentStyle={{margin: '8px 24px', color: '#626469'}} actions={[
-          <FlatButton primary inDialog label={'返回上一页'} onClick={this.props.onBack}/>,
-          <FlatButton label={'取消'} onClick={() => { this.setState({dialogKey: null}) }}/>
-        ]}>{'当前页面所有操作将不会保存，确定返回上一页吗？'}</Dialog>
+          <FlatButton primary inDialog label={I18N.Setting.Diagnose.ReturnPage} onClick={this.props.onBack}/>,
+          <FlatButton label={I18N.Common.Button.Cancel2} onClick={() => { this.setState({dialogKey: null}) }}/>
+        ]}>{I18N.Setting.Diagnose.ReturnPageTip}</Dialog>
         <Dialog open={this.state.dialogKey === CANCEL_DIALOG} actionsContainerStyle={{textAlign: 'right'}} contentStyle={{margin: '8px 24px', color: '#626469'}} actions={[
-          <FlatButton primary inDialog label={'离开页面'} onClick={this.props.onCancel}/>,
-          <FlatButton label={'取消'} onClick={() => { this.setState({dialogKey: null}) }}/>
-        ]}>{'当前页面所有操作将不会保存，确定离开当前页面吗？'}</Dialog>
+          <FlatButton primary inDialog label={I18N.Setting.Diagnose.LeavePage} onClick={this.props.onCancel}/>,
+          <FlatButton label={I18N.Common.Button.Cancel2} onClick={() => { this.setState({dialogKey: null}) }}/>
+        ]}>{I18N.Setting.Diagnose.LeavePageTip}</Dialog>
       </div>
     );
   }
