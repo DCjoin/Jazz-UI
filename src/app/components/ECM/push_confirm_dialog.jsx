@@ -46,13 +46,30 @@ export default class PushConfirmDialog extends Component {
         });
       }
 
+      _getSaveSolution(){
+        return this.state.solution.set(
+                  'Solutions',
+                  this.state.solution
+                    .get('Solutions')
+                    .map( solution =>
+                      solution.set(
+                        'ROI',
+                        MeasuresStore.getInvestmentReturnCycle(
+                          solution.get('InvestmentAmount'),
+                          solution.get('ExpectedAnnualCostSaving')
+                        )
+                      )
+                    )
+                )
+      }
+
     _onPush(e){
        if(MeasuresStore.IsSolutionDisable(this.state.solution.toJS())){
         this.setState({
           snackBarOpen:true
         })
       }else{
-        this.props.onPush(e)
+        this.props.onPush(e,this._getSaveSolution().setIn(["Problem","Status"],2))
       }     
     }
 
@@ -89,7 +106,7 @@ export default class PushConfirmDialog extends Component {
         actions={[
             <RaisedButton
               label={I18N.Common.Button.Save}
-              onClick={()=>{this.props.onSave(this.state.solution)}} />,
+              onClick={()=>{this.props.onSave(this._getSaveSolution())}} />,
             <FlatButton
               label={I18N.Common.Button.NotSave}
               onClick={() => {this.setState({
@@ -111,13 +128,13 @@ export default class PushConfirmDialog extends Component {
              onClick={this._onClose}/>
              <div className="solution-content">
                 <session className='session-container'>
-                  <PlanTitle isRequired={true} energySolution={this.state.solution} onChange={this._onChange}/>
+                  <PlanTitle isRequired={true} energySolution={this.state.solution} onChange={this._onChange} hasSubTitle={false}/>
                 </session>
                 <session className='session-container'>
                   <ProblemDetail isRequired={true} energySolution={this.state.solution} onChange={this._onChange} hasEnergySys={false}/>
                 </session>
                 <session className='session-container'>
-                  <PlanDetail isRequired={true} Solutions={this.state.solution.get('Solutions')} onChange={this._onChange}/>
+                  <PlanDetail hasPicTitle={false} isRequired={true} Solutions={this.state.solution.get('Solutions')} onChange={this._onChange}/>
                 </session>
 
              </div>

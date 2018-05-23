@@ -133,7 +133,7 @@ export default class EditSolution extends Component {
                   <PlanTitle isRequired={true} energySolution={this.state.solution} onChange={this._onChange}/>
                 </session>}
                 <session className='session-container'>
-                  <PlanDetail isView={!PushIsFull()} solutionTitle={PushIsFull()?null:this.state.solution.getIn(['Problem','SolutionTitle'])} isRequired={true} Solutions={this.state.solution.get('Solutions')} onChange={this._onChange}/>
+                  <PlanDetail hasPicTitle={false} isView={!PushIsFull()} solutionTitle={PushIsFull()?null:this.state.solution.getIn(['Problem','SolutionTitle'])} isRequired={true} Solutions={this.state.solution.get('Solutions')} onChange={this._onChange}/>
                 </session>
                 <session className='session-container'>
                   <ProblemDetail isView={!PushIsFull()} isRequired={true} energySolution={this.state.solution} onChange={this._onChange} hasEnergySys={false}/>

@@ -59,7 +59,7 @@ export class PlanTitle extends Component {
     let { isRequired} = this.props;
     return (<div >
       <SessionTitle title={'方案标题'} subtitle={isRequired && '(必填)'} style={{marginBottom: 20}}/>
-      <div className='field-title'>{'方案标题'}</div>
+      {this.props.hasSubTitle && <div className='field-title'>{'方案标题'}</div>}
       <TextBox {...this._initTextBoxProps('SolutionTitle')} hintText={'请输入方案标题'}/>
     </div>)
   }
@@ -69,6 +69,11 @@ PlanTitle.propTypes = {
   errorData: PropTypes.object,
   energySolution: PropTypes.object,
   onChange: PropTypes.func,
+  hasSubTitle:PropTypes.boolean,
+}
+
+PlanTitle.defaultProps = {
+	hasSubTitle:true,
 }
 
 
@@ -385,7 +390,7 @@ export class PlanDetail extends Component {
           <div className="field-text" style={{marginTop:'8px'}}>{Solutions.getIn([idx, 'SolutionDescription'])}</div>
         </div>
         <div className='field-wrapper'>
-          <div className='field-title'>{'方案图片'}</div>
+          {this.props.hasPicTitle && <div className='field-title'>{'方案图片'}</div>}
           {/*<TextBox style={{width: 770}} value={value} hintText={'请输入问题描述'} onChange={this.onChange}/>*/}
           <ImagGroupPanel diagrams={Solutions.getIn([idx,"SolutionImages"])} width={145} height={100} editable={false}/>
         </div>
@@ -475,7 +480,7 @@ export class PlanDetail extends Component {
           {/*<TextBox {...this._initTextBoxProps(idx, 'SolutionDescription')} style={{width: 770}} hintText={'请输入方案描述'}/>*/}
         </div>
         <div className='field-wrapper'>
-          <div className='field-title'>{'方案图片'}</div>
+          {this.props.hasPicTitle && <div className='field-title'>{'方案图片'}</div>}
           {/*<TextBox style={{width: 770}} value={value} hintText={'请输入问题描述'} onChange={this.onChange}/>*/}
            <ImagGroupPanel diagrams={Solutions.getIn([idx,"SolutionImages"])} width={145} height={100} editable={false}/>
         </div>
@@ -488,9 +493,11 @@ PlanDetail.propTypes = {
   energySolution: PropTypes.object,
   onChange: PropTypes.func,
   isView: PropTypes.boolean,
+  hasPicTitle: PropTypes.boolean,
 }
 PlanDetail.defaultProps = {
 	isView:false,
+  hasPicTitle:true
 }
 
 const BACK_DIALOG = 'BACK_DIALOG';
