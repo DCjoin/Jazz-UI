@@ -99,6 +99,7 @@ module.exports = {
     energySolution:'/diagnose/{diagnoseId}/energysolution/create',
     getSuggestSolutions: '/energysolution/solutions',
     createSolution: '/energysolution/create',
+    checkTitle: '/energysolution/checkTitle',
   },
 
   SaveEffect: {

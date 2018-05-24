@@ -337,7 +337,7 @@ export default class AnalysisGenerateSolution extends Component {
         onCancel={onRequestClose}
         onBack={onRequestClose}
         onCreate={(data) => {
-          DiagnoseAction.createDiagnose(data, () => {
+          DiagnoseAction.createSolution(data, () => {
             router.replace(RoutePath.ecm(params)+'?init_hierarchy_id='+hierarchyId);
           });
         }}

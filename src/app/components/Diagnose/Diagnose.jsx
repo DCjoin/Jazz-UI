@@ -18,10 +18,15 @@ import FolderStore from 'stores/FolderStore.jsx';
 import HierarchyStore from 'stores/HierarchyStore.jsx';
 import util from 'util/Util.jsx';
 import RoutePath from 'util/RoutePath.jsx';
+import PrivilegeUtil from 'util/privilegeUtil.jsx';
 
 import SimilarProblem from './similar_problem.jsx';
 import SolutionSuggest from './solution_suggest.jsx';
 import GenerateSolution from './generate_solution.jsx';
+
+function SolutionFull() {
+  return PrivilegeUtil.isFull(PermissionCode.SOLUTION_FULL, CurrentUserStore.getCurrentPrivilege());
+}
 
 const SOLUTION_NAMES=[I18N.Setting.ECM.SolutionName.First,I18N.Setting.ECM.SolutionName.Second,I18N.Setting.ECM.SolutionName.Third,
                       I18N.Setting.ECM.SolutionName.Fourth,I18N.Setting.ECM.SolutionName.Fifth,I18N.Setting.ECM.SolutionName.Sixth,
@@ -40,7 +45,8 @@ let INIT_SOLUTION = Immutable.fromJS({
     "ProblemTypeId": 0,
     "SolutionTitle": "",
     "DataLabelId": 0,
-    "DataLabelName": ""
+    "DataLabelName": "",
+    "DiagnoseIds": [],
   },
   "Solutions": [
     {
@@ -212,7 +218,11 @@ export default class Diagnose extends Component {
         initSolution = initSolution.setIn(['Problem', 'Name'], currentProblem.get('Name'));
       } else {
         initSolution = initSolution.setIn(['Problem', 'Name'], DiagnoseStore.findLabelById(problemId).get('Name') + '-' +  DiagnoseStore.findProblemById(problemId).get('Name'));
-
+        let DiagnoseIds = initSolution.getIn(['Problem', 'DiagnoseIds']);
+        this.state.createRefProblems.map( problem => {
+          DiagnoseIds = DiagnoseIds.push( problem.Id );
+        } );
+        initSolution = initSolution.setIn(['Problem', 'DiagnoseIds'], DiagnoseIds);
       }
     }
 
@@ -245,7 +255,7 @@ export default class Diagnose extends Component {
           EnergeyLabel: ProblemLabels[0].DataLabelsName[0].Name,
           CreatorUserId,
           CreatorUserName,
-          SolutionImages: Images
+          SolutionImages: Images.map( image => ({ImageUrl: image.Url}) )
         }) )));
     }
     return initSolution;
@@ -255,13 +265,15 @@ export default class Diagnose extends Component {
   _getCustomSolution() {
     let currentProblem = DiagnoseStore.findDiagnoseById( this.state.selectedId );
     return INIT_SOLUTION
+            .setIn(['Problem', 'IsConsultant'], SolutionFull())
             .setIn(['Problem', 'HierarchyId'], this.context.hierarchyId)
             .setIn(['Problem', 'EnergyProblemImages'], Immutable.fromJS([currentProblem.toJS()].concat(this.state.createRefProblems).map( problem => Immutable.fromJS({
               Id: problem.Id,
               Name: problem.Name,
             }) ) ))
             .setIn(['Problem', 'ProblemTypeId'], DiagnoseStore.findProblemById(this.state.selectedId).get('Id'))
-            .setIn(['Problem', 'DataLabelId'], DiagnoseStore.findLabelById(this.state.selectedId).get('Id'));
+            .setIn(['Problem', 'DataLabelId'], DiagnoseStore.findLabelById(this.state.selectedId).get('Id')).
+            setIn(['Problem', 'DiagnoseIds'], [this.state.selectedId]);
   }
 
   _goStep0() {
@@ -304,7 +316,7 @@ export default class Diagnose extends Component {
   }
 
   _goCustom() {
-    this.setState({createStep: 3, energySolution: this._getCustomSolution()});
+    this.setState({createStep: 3, energySolution: this._getCustomSolution(), createRefPlans: []});
   }
 
   componentDidMount(){
@@ -370,7 +382,7 @@ render(){
         checkedProblems={this.state.createRefProblems}
         chartDatas={DiagnoseStore.getSimilarProblemChart()}
         onCreate={(data) => {
-          DiagnoseAction.createDiagnose(data, () => {
+          DiagnoseAction.createSolution(data, () => {
             this.props.router.replace(RoutePath.ecm(this.props.params)+'?init_hierarchy_id='+this.context.hierarchyId);
           });
         }}
