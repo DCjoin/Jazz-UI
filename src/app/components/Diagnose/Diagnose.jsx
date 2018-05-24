@@ -316,7 +316,7 @@ export default class Diagnose extends Component {
   }
 
   _goCustom() {
-    this.setState({createStep: 3, energySolution: this._getCustomSolution()});
+    this.setState({createStep: 3, energySolution: this._getCustomSolution(), createRefPlans: []});
   }
 
   componentDidMount(){
