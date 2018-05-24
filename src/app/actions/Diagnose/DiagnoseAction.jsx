@@ -306,7 +306,7 @@ const DiagnoseAction = {
 
   },
 
-  createDiagnose(params, callback) {
+  createSolution(params, callback) {
     Ajax.post(Path.Diagnose.createSolution, {
       params,
       success: callback

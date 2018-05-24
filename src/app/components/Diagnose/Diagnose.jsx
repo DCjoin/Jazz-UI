@@ -370,7 +370,7 @@ render(){
         checkedProblems={this.state.createRefProblems}
         chartDatas={DiagnoseStore.getSimilarProblemChart()}
         onCreate={(data) => {
-          DiagnoseAction.createDiagnose(data, () => {
+          DiagnoseAction.createSolution(data, () => {
             this.props.router.replace(RoutePath.ecm(this.props.params)+'?init_hierarchy_id='+this.context.hierarchyId);
           });
         }}
