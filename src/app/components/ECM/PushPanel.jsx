@@ -485,7 +485,7 @@ export default class PushPanel extends Component {
     )*/
     return(
       <EditSolution solution={currentSolution} hasRemarkPriviledge={PushIsFull() || PushAndNotPushIsFull()}
-                                               hasSysPriviledge={canEdit(createUserId)}
+                                               hasPriviledge={canEdit(createUserId)}
                                                hasStatusPriviledge={canEditStatus(createUserId,this.state.infoTabNo)}
                                                onSave={onSave}
                                                onClose={(refresh)=>{this.setState({measureShow:false,measureIndex:null},
