@@ -138,7 +138,7 @@ export default class EditSolution extends Component {
 
         if( paths.join('') === 'ProblemSolutionTitle' ) {
           if( !value ) {
-            error = I18N.Setting.ECM.TitleErrorTip;
+            error = I18N.Setting.Diagnose.PleaseInput+I18N.Setting.Diagnose.SolutionTitle;
           }
         }else if( paths.join('') === 'ProblemEnergySys' ) {
           if( !value && !this.state.solution.getIn(paths)) {
