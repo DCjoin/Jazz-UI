@@ -13,8 +13,12 @@ import DiagnoseChart from './DiagnoseChart.jsx';
 import { Gallery } from '../DataAnalysis/Basic/GenerateSolution.jsx';
 import ImagGroupPanel from 'controls/ImagGroupPanel.jsx';
 
+import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
+
 const SVG_WIDTH = 750;
 const SVG_HEIGHT = 360;
+
+const NUMBER_REG = /^[1-9]\d*(\.\d+)?$/;
 
 function getROILabel( solution ) {
 
@@ -509,6 +513,10 @@ const BACK_DIALOG = 'BACK_DIALOG';
 const CANCEL_DIALOG = 'CANCEL_DIALOG';
 const DELETE_DIALOG = 'DELETE_DIALOG';
 export default class GenerateSolution extends Component {
+  static contextTypes = {
+    router: React.PropTypes.object,
+    hierarchyId: PropTypes.string,
+  };
   constructor(props) {
     super(props);
     this.state = {
@@ -535,6 +543,20 @@ export default class GenerateSolution extends Component {
   }
   _onBlur( paths, value ) {
     let errorData = this.state.errorData;
+    if( paths.join('') === 'ProblemSolutionTitle' ) {
+      DiagnoseAction.checkTitle( this.context.hierarchyId, this.context.router.params.customerId, value, (dulpi) => {
+        if( dulpi ) {
+          this.setState({
+            errorData: this.state.errorData.setIn(paths, '方案标题不能重复')
+          });
+        } else {
+          this.setState({
+            errorData: this.state.errorData.setIn(paths, '')
+          });
+        }
+      } );
+    }
+
     if( paths.join('') === 'ProblemName' ) {
       let problemNameError = '';
       if( !value ) {
@@ -549,6 +571,28 @@ export default class GenerateSolution extends Component {
         problemEnergyError = I18N.Setting.Diagnose.PleaseSelect + I18N.Setting.Diagnose.EnergySys;
       }
       errorData = errorData.setIn(paths, problemEnergyError);
+    }
+
+    if( ~paths.indexOf('ExpectedAnnualEnergySaving') ) {
+      let error = '';
+      if( value && !NUMBER_REG.test(value) ) {
+        error = '请输入大于0的数字';
+      }
+      errorData = errorData.setIn(paths, error);
+    }
+    if( ~paths.indexOf('ExpectedAnnualCostSaving') ) {
+      let error = '';
+      if( value && !NUMBER_REG.test(value) ) {
+        error = '请输入大于0的数字';
+      }
+      errorData = errorData.setIn(paths, error);
+    }
+    if( ~paths.indexOf('InvestmentAmount') ) {
+      let error = '';
+      if( value && !NUMBER_REG.test(value) ) {
+        error = '请输入大于0的数字';
+      }
+      errorData = errorData.setIn(paths, error);
     }
 
     this.setState({
@@ -575,33 +619,59 @@ export default class GenerateSolution extends Component {
         </session>
         <footer className='generate-solution-footer'>
           <FlatButton label={I18N.Setting.DataAnalysis.Scheme} onClick={() => {
+            let hasError = false;
             if( !energySolution.getIn(['Problem', 'Name']) ) {
               errorData = errorData.setIn(['Problem', 'Name'], I18N.Setting.Diagnose.PleaseInput + I18N.Setting.Diagnose.PleaseInput);
+              hasError = true;
             }
             if(　!energySolution.getIn(['Problem', 'EnergySys'])　) {
               errorData = errorData.setIn(['Problem', 'EnergySys'], I18N.Setting.Diagnose.PleaseSelect + I18N.Setting.Diagnose.EnergySys);
+              hasError = true;
             }
-            if( errorData === this.state.errorData ) {
-              onCreate(
-                energySolution.set(
-                  'Solutions',
-                  energySolution
-                    .get('Solutions')
-                    .map( solution =>
-                      solution.set(
-                        'ROI',
-                        MeasuresStore.getInvestmentReturnCycle(
-                          solution.get('InvestmentAmount'),
-                          solution.get('ExpectedAnnualCostSaving')
+            energySolution.get('Solutions').map( (solution, idx) => {
+              if( solution.get('ExpectedAnnualEnergySaving') && !NUMBER_REG.test(solution.get('ExpectedAnnualEnergySaving')) ) {
+                errorData = errorData.setIn(['Solutions', idx, 'ExpectedAnnualEnergySaving'], '请输入大于0的数字');
+                hasError = true;
+              }
+              if( solution.get('ExpectedAnnualCostSaving') && !NUMBER_REG.test(solution.get('ExpectedAnnualCostSaving')) ) {
+                errorData = errorData.setIn(['Solutions', idx, 'ExpectedAnnualCostSaving'], '请输入大于0的数字');
+                hasError = true;
+              }
+              if( solution.get('InvestmentAmount') && !NUMBER_REG.test(solution.get('InvestmentAmount')) ) {
+                errorData = errorData.setIn(['Solutions', idx, 'InvestmentAmount'], '请输入大于0的数字');
+                hasError = true;
+              }
+            } );
+
+            DiagnoseAction.checkTitle( this.context.hierarchyId, this.context.router.params.customerId, energySolution.getIn(['Problem', 'SolutionTitle']), (dulpi) => {
+              if( dulpi ) {
+                errorData = errorData.setIn(['Problem', 'SolutionTitle'], '方案标题不能重复');
+                hasError = true;
+              }
+
+              if( !hasError ) {
+                onCreate(
+                  energySolution.set(
+                    'Solutions',
+                    energySolution
+                      .get('Solutions')
+                      .map( solution =>
+                        solution.set(
+                          'ROI',
+                          MeasuresStore.getInvestmentReturnCycle(
+                            solution.get('InvestmentAmount'),
+                            solution.get('ExpectedAnnualCostSaving')
+                          )
                         )
                       )
-                    )
-                )
-                .toJS()
-              );
-            } else {
-              this.setState({errorData});
-            }
+                  )
+                  .toJS()
+                );
+              } else {
+                this.setState({errorData});
+              }
+            } );
+
           }}/>
           <FlatButton style={{marginLeft: 16}} label={I18N.Common.Button.Cancel2} onClick={() => this.setState({dialogKey: CANCEL_DIALOG})}/>
         </footer>

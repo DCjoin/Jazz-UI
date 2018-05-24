@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
+import Immutable from 'immutable';
 import Checkbox from 'material-ui/Checkbox';
 import { Snackbar} from 'material-ui';
 import FlatButton from 'controls/FlatButton.jsx';
 import Dialog from 'controls/NewDialog.jsx';
+import ImagGroupPanel from 'controls/ImagGroupPanel.jsx';
 
 /*
 
@@ -13,10 +15,39 @@ import Dialog from 'controls/NewDialog.jsx';
 const BACK_DIALOG = 'BACK_DIALOG';
 const CANCEL_DIALOG = 'CANCEL_DIALOG';
 
+class SolutionDetailSidebar extends Component {
+  render() {
+    let { SolutionName, ProblemName, ProblemDescription, ROI, DSIndustryNames, SolutionDescription, Images, RiskDescription, CreatorUserName, onClose } = this.props;
+    return (
+    <div className='solution-detail-sidebar'>
+      <header className='solution-detail-sidebar-header'>{SolutionName}<span onClick={onClose} className='icon-close' /></header>
+      <div style={{marginTop: 20}}>
+        <div className="session-title">{I18N.Setting.Diagnose.SolutionDetail}</div>
+        {SolutionDescription && <div className='session-content'>{SolutionDescription}</div>}
+        {ROI !== undefined && ROI !== null && <div className='session-content'>{I18N.Setting.Diagnose.ROI + ': ' + ROI + I18N.EM.Year}</div>}
+        <div className='session-content'>{I18N.Setting.Diagnose.Industry + ': ' + DSIndustryNames.map( industry => industry.Name ).join('、')}</div>
+        {Images && Images.length > 0 && <div className='session-content'><ImagGroupPanel diagrams={Immutable.fromJS(Images.map(({Url}) => ({
+          ImageUrl: Url,
+        })))} width={145} height={100} editable={false}/></div>}
+      </div>
+      <div style={{marginTop: 30}}>
+        <div className="session-title">{I18N.Setting.Diagnose.ProblemDetail}</div>
+        <div className='session-content' style={{color: '#0f0f0f'}}>{ProblemName}</div>
+        <div className='session-content' style={{marginTop: 8}}>{ProblemDescription}</div>
+        {RiskDescription && <div className='session-content' style={{color: '#0f0f0f'}}>{I18N.Setting.Diagnose.RiskDescription}</div>}
+        {RiskDescription && <div className='session-content' style={{marginTop: 8}}>{RiskDescription}</div>}
+      </div>
+      <footer className='solution-detail-sidebar-footer'>{I18N.Setting.ECM.PushPanel.CreateUser + ': ' + CreatorUserName}</footer>
+    </div>
+    );
+  }
+}
+
 export default class SolutionSuggest extends Component {
   state = {
     dialogKey: null,
     open: false,
+    showDetailId: null,
   }
   render() {
     let { plans, checkedPlan, onChange, onNext, onCustom, onBack, onCancel } = this.props;
@@ -31,13 +62,24 @@ export default class SolutionSuggest extends Component {
         {plans.map( (plan, idx) => (
           <div key={plan.get('Id')} className='solution-suggest-item' style={{
             marginBottom: idx < plans.size - 1 ? 16 : 70
+          }} onClick={() => {
+            this.setState({
+              showDetailId: plan.get('Id')
+            })
           }}>
             <div style={{width: 84, height: 152, flex: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center'}} onClick={(e, checked) => {
               if( !~checkedPlan.map( plan => plan.Id ).indexOf(plan.get('Id')) ) {
                 onChange( checkedPlan.concat(plan.toJS()) );
               } else {
                 onChange( checkedPlan.filter( checked => checked.Id !== plan.get('Id') ) );
+
+                if( plan.get('Id') === this.state.showDetailId ) {
+                  this.setState({
+                    showDetailId: null
+                  })
+                }
               }
+              e.stopPropagation();
             }}>
               <Checkbox checked={ ~checkedPlan.map( plan => plan.Id ).indexOf(plan.get('Id')) } style={{width: 'auto'}} iconStyle={{marginRight: 0}}/>
             </div>
@@ -85,6 +127,7 @@ export default class SolutionSuggest extends Component {
           <FlatButton primary inDialog label={I18N.Setting.Diagnose.LeavePage} onClick={this.props.onCancel}/>,
           <FlatButton label={I18N.Common.Button.Cancel2} onClick={() => { this.setState({dialogKey: null}) }}/>
         ]}>{I18N.Setting.Diagnose.LeavePageTip}</Dialog>
+        { this.state.showDetailId && <SolutionDetailSidebar onClose={() => { this.setState({showDetailId: null}) }} {...plans.find(plan => plan.get('Id') === this.state.showDetailId).toJS()}/> }
       </div>
     );
   }
