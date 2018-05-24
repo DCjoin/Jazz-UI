@@ -47,10 +47,6 @@ function pushAndNotPushIsFull() {
 	return privilegeWithPushAndNotPush(privilegeUtil.isFull.bind(privilegeUtil));
 }
 
-function hasEditPrivilege(){
-  return pushAndNotPushIsFull() || PushIsFull()
-}
-
 
 export default class EditSolution extends Component {
   constructor(props) {
@@ -99,7 +95,7 @@ export default class EditSolution extends Component {
     _onClose(){
       var currentSolution=this.state.solution.setIn(["Problem",'EnergySys'],this.state.energySys);
 
-      if(!hasEditPrivilege()){
+      if(!this.props.hasPriviledge){
         this.props.onClose()
       }
       if(MeasuresStore.IsSolutionDisable(currentSolution.toJS())){
@@ -197,7 +193,7 @@ export default class EditSolution extends Component {
 
                     </div>
                     <div className="push-panel-solution-header-operation">
-                      {hasEditPrivilege() && <div onClick={this._onSave} style={{marginRight:'50px'}}> <FontIcon className="icon-save" color="#626469" iconStyle ={iconstyle} style = {style} />
+                      {this.props.hasPriviledge && <div onClick={this._onSave} style={{marginRight:'50px'}}> <FontIcon className="icon-save" color="#626469" iconStyle ={iconstyle} style = {style} />
                       {I18N.Common.Button.Save}</div>}
                       {this.state.solutionUnfold && <div onClick={()=>{this.setState({solutionUnfold:!this.state.solutionUnfold})}}> {I18N.Setting.ECM.UnFold} <FontIcon className="icon-arrow-up" color="#626469" iconStyle ={iconstyle} style = {style} />
                         </div>}
@@ -207,14 +203,14 @@ export default class EditSolution extends Component {
               
                   </div>
                 {this.state.solutionUnfold && <div className="solution-content">
-                {hasEditPrivilege() && <session className='session-container'>
+                {this.props.hasPriviledge && <session className='session-container'>
                   <PlanTitle errorData={errorData} isRequired={true} energySolution={this.state.solution} onChange={this._onChange} onBlur={this._onBlur}/>
                 </session>}
                 <session className='session-container'>
-                  <PlanDetail errorData={errorData} hasPicTitle={false} isView={!PushIsFull()} solutionTitle={PushIsFull()?null:this.state.solution.getIn(['Problem','SolutionTitle'])} isRequired={true} Solutions={this.state.solution.get('Solutions')} onChange={this._onChange} onBlur={this._onBlur}/>
+                  <PlanDetail errorData={errorData} hasPicTitle={false} isView={!this.props.hasPriviledge} solutionTitle={PushIsFull()?null:this.state.solution.getIn(['Problem','SolutionTitle'])} isRequired={true} Solutions={this.state.solution.get('Solutions')} onChange={this._onChange} onBlur={this._onBlur}/>
                 </session>
                 <session className='session-container'>
-                  <ProblemDetail errorData={errorData} isView={!PushIsFull()} isRequired={true} energySolution={this.state.solution} onChange={this._onChange} hasEnergySys={false} onBlur={this._onBlur}/>
+                  <ProblemDetail errorData={errorData} isView={!this.props.hasPriviledge} isRequired={true} energySolution={this.state.solution} onChange={this._onChange} hasEnergySys={false} onBlur={this._onBlur}/>
                 </session>
              </div>}
         </div>
@@ -263,8 +259,8 @@ export default class EditSolution extends Component {
           var prop={
             energySys:{
               measure:currentSolution,
-              canNameEdit:this.props.hasSysPriviledge,
-              canEnergySysEdit:this.props.hasSysPriviledge,
+              canNameEdit:this.props.hasPriviledge,
+              canEnergySysEdit:this.props.hasPriviledge,
               merge:(paths,value)=>{this.setState({energySys:value})},
             }
           }

@@ -45,7 +45,10 @@ export class EnergySys extends Component {
     return(
       <div style={{display:'flex',justifyContent:'cneter'}}>
         {canEnergySysEdit?this._renderEnergySys()
-                         :<div style={{fontSize:'14px',color:'#626469',marginRight:'28px'}}>{MeasuresStore.getEnergySys(Problem.EnergySys)}</div>}
+                         :<div style={{marginLeft:'30px'}}>
+                           <div className='jazz-ecm-push-operation-label'>{I18N.Setting.DataAnalysis.EnergyProblem.Mark}</div>
+                           <div style={{fontSize:'14px',color:'#666666',marginTop:'16px',width:'220px'}}>{MeasuresStore.getEnergySys(Problem.EnergySys)}</div>
+                           </div>}
       </div>
     )
   }
