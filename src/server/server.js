@@ -51,7 +51,7 @@ app.get('/:lang/spinitsso-redirect',(req, res) => {
   });
 
   const idp = IdentityProvider({
-    metadata: fs.readFileSync(__dirname + '/onelogin_metadata.xml', "utf-8").split('${GUARD_UI_HOST}').join("http://passport-test.energymost.com/Saml/SignOnService")
+    metadata: fs.readFileSync(__dirname + '/onelogin_metadata.xml', "utf-8").split('${GUARD_UI_HOST}').join("http://passport-pft.energymost.com/Saml/SignOnService")
   });
 
   const url = sp.createLoginRequest(idp, 'redirect');

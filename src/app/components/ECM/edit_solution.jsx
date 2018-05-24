@@ -38,6 +38,20 @@ function PushIsFull() {
 	return privilegeWithPush(privilegeUtil.isFull.bind(privilegeUtil));
 }
 
+function privilegeWithPushAndNotPush( privilegeCheck ) {
+  // return true
+	return privilegeCheck(PermissionCode.SOLUTION_FULL, CurrentUserStore.getCurrentPrivilege());
+}
+
+function pushAndNotPushIsFull() {
+	return privilegeWithPushAndNotPush(privilegeUtil.isFull.bind(privilegeUtil));
+}
+
+function hasEditPrivilege(){
+  return pushAndNotPushIsFull() || PushIsFull()
+}
+
+
 export default class EditSolution extends Component {
   constructor(props) {
     super(props);
@@ -85,7 +99,7 @@ export default class EditSolution extends Component {
     _onClose(){
       var currentSolution=this.state.solution.setIn(["Problem",'EnergySys'],this.state.energySys);
 
-      if(!PushIsFull()){
+      if(!hasEditPrivilege()){
         this.props.onClose()
       }
       if(MeasuresStore.IsSolutionDisable(currentSolution.toJS())){
@@ -183,7 +197,7 @@ export default class EditSolution extends Component {
 
                     </div>
                     <div className="push-panel-solution-header-operation">
-                      {PushIsFull() && <div onClick={this._onSave} style={{marginRight:'50px'}}> <FontIcon className="icon-save" color="#626469" iconStyle ={iconstyle} style = {style} />
+                      {hasEditPrivilege() && <div onClick={this._onSave} style={{marginRight:'50px'}}> <FontIcon className="icon-save" color="#626469" iconStyle ={iconstyle} style = {style} />
                       {I18N.Common.Button.Save}</div>}
                       {this.state.solutionUnfold && <div onClick={()=>{this.setState({solutionUnfold:!this.state.solutionUnfold})}}> {I18N.Setting.ECM.UnFold} <FontIcon className="icon-arrow-up" color="#626469" iconStyle ={iconstyle} style = {style} />
                         </div>}
@@ -193,7 +207,7 @@ export default class EditSolution extends Component {
               
                   </div>
                 {this.state.solutionUnfold && <div className="solution-content">
-                {PushIsFull() && <session className='session-container'>
+                {hasEditPrivilege() && <session className='session-container'>
                   <PlanTitle errorData={errorData} isRequired={true} energySolution={this.state.solution} onChange={this._onChange} onBlur={this._onBlur}/>
                 </session>}
                 <session className='session-container'>
