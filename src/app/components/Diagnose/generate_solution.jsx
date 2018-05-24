@@ -22,6 +22,9 @@ function getROILabel( solution ) {
     solution.get('InvestmentAmount'),
     solution.get('ExpectedAnnualCostSaving')
   )
+  if( !roi ) {
+    return '-';
+  }
   if( +roi === roi ) {
     roi += I18N.EM.Year;
   }
@@ -200,7 +203,7 @@ export class ProblemDetail extends Component {
   }
 
   render() {
-    let { isRequired, errorMsg, errorData,energySolution, onChange, onBlur, isView,hasEnergySys, currentProblemId, checkedProblems, chartDatas} = this.props;
+    let { isRequired, errorMsg, errorData, energySolution, onChange, onBlur, isView,hasEnergySys, currentProblemId, checkedProblems, chartDatas, renderChart} = this.props;
     let { selectedIdx, anchorEl } = this.state;
 
     if(isView) return this._renderViewStatus()
@@ -266,9 +269,8 @@ export class ProblemDetail extends Component {
       </div>
       <div className='field-wrapper' style={{width: 770}}>
         <div className='field-title'>{I18N.Setting.Diagnose.ProblemImage}</div>
-        {energySolution.getIn(['Problem', 'EnergyProblemImages']).map( (image) => {
-          return this._renderHighChart(chartDatas[image.get('Id')], image.get('Id'));
-        } )}
+        {!renderChart && energySolution.getIn(['Problem', 'EnergyProblemImages']).map( (image) => chartDatas && chartDatas[image.get('Id')] && this._renderHighChart(chartDatas[image.get('Id')], image.get('Id')) )}
+        {renderChart && renderChart()}
         <Gallery
           names={energySolution.getIn(['Problem', 'EnergyProblemImages']).map( img => img.get('Name') ).toJS()}
           selectedIdx={selectedIdx}
@@ -365,7 +367,7 @@ export class PlanDetail extends Component {
               <div className='num-title'>{I18N.Setting.Diagnose.ExpectedAnnualCostSaving}</div>
               <span className='num-text'>{Solutions.getIn([idx, 'ExpectedAnnualCostSaving'])}</span>
             </div>
-            <span className='num-text'>{I18N.Setting.Cost.PriceUom}</span>
+            <span className='num-text'>{'RMB'}</span>
           </div>
           <div className='plan-detail-num-panel'>
             <span className='num-icon icon-investment-amount'/>
@@ -373,7 +375,7 @@ export class PlanDetail extends Component {
               <div className='num-title'>{I18N.Setting.Diagnose.InvestmentAmount}</div>
               <span className='num-text'>{Solutions.getIn([idx, 'InvestmentAmount'])}</span>
             </div>
-            <span className='num-text'>{I18N.Setting.Cost.PriceUom}</span>
+            <span className='num-text'>{'RMB'}</span>
           </div>
           <div className='plan-detail-num-panel'>
             <span className='num-icon icon-pay-back-period'/>
@@ -439,7 +441,7 @@ export class PlanDetail extends Component {
               <div className='num-title'>{I18N.Setting.Diagnose.ExpectedAnnualCostSaving}</div>
               <TextBox {...this._initTextBoxProps(idx, 'ExpectedAnnualCostSaving')} style={{marginRight: 8, borderRadius: 4, height: 26, width: 102}} hintText={I18N.Setting.Diagnose.Number}/>
             </div>
-            <span className='num-text'>{I18N.Setting.Cost.PriceUom}</span>
+            <span className='num-text'>{'RMB'}</span>
           </div>
           <div className='plan-detail-num-panel'>
             <span className='num-icon icon-investment-amount'/>
@@ -447,7 +449,7 @@ export class PlanDetail extends Component {
               <div className='num-title'>{I18N.Setting.Diagnose.InvestmentAmount}</div>
               <TextBox {...this._initTextBoxProps(idx, 'InvestmentAmount')} style={{marginRight: 8, borderRadius: 4, height: 26, width: 102}} hintText={I18N.Setting.Diagnose.Number}/>
             </div>
-            <span className='num-text'>{I18N.Setting.Cost.PriceUom}</span>
+            <span className='num-text'>{'RMB'}</span>
           </div>
           <div className='plan-detail-num-panel'>
             <span className='num-icon icon-pay-back-period'/>
@@ -510,11 +512,18 @@ export default class GenerateSolution extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      energySolution: props.energySolution || testData,
+      energySolution: props.energySolution,
       errorData: Immutable.fromJS({}),
     }
     this._onChange = this._onChange.bind(this);
     this._onBlur = this._onBlur.bind(this);
+  }
+  componentWillReceiveProps(nextProps) {
+    if( this.props.renderChart ) {
+      this.setState({
+        energySolution: nextProps.energySolution
+      })
+    }
   }
   _onChange( paths, value ) {
     let errorData = this.state.errorData;
@@ -529,14 +538,14 @@ export default class GenerateSolution extends Component {
     if( paths.join('') === 'ProblemName' ) {
       let problemNameError = '';
       if( !value ) {
-        problemNameError = I18N.Setting.Diagnose.PleaseInput + I18N.Setting.Diagnose.PleaseInput;
+        problemNameError = I18N.Setting.Diagnose.PleaseInput + I18N.Setting.Diagnose.ProblemName;
       }
       errorData = errorData.setIn(paths, problemNameError);
     }
 
     if( paths.join('') === 'ProblemEnergySys' ) {
       let problemEnergyError = '';
-      if( !value /*!this.state.energySolution.getIn(paths)*/ ) {
+      if( !value && !this.state.energySolution.getIn(paths) ) {
         problemEnergyError = I18N.Setting.Diagnose.PleaseSelect + I18N.Setting.Diagnose.EnergySys;
       }
       errorData = errorData.setIn(paths, problemEnergyError);
@@ -548,7 +557,7 @@ export default class GenerateSolution extends Component {
   }
   render() {
     let { energySolution, errorData } = this.state;
-    let { onCancel, onBack, chartDatas, onCreate } = this.props;
+    let { onCancel, onBack, chartDatas, onCreate, renderChart } = this.props;
     return (
       <div className='generate-solution'>
         <header className='generate-solution-header'>
@@ -559,7 +568,7 @@ export default class GenerateSolution extends Component {
           <PlanTitle errorData={errorData} energySolution={energySolution} onChange={this._onChange} onBlur={this._onBlur}/>
         </session>
         <session className='session-container'>
-          <ProblemDetail errorData={errorData} chartDatas={chartDatas} energySolution={energySolution} onChange={this._onChange} onBlur={this._onBlur}/>
+          <ProblemDetail renderChart={renderChart} errorData={errorData} chartDatas={chartDatas} energySolution={energySolution} onChange={this._onChange} onBlur={this._onBlur}/>
         </session>
         <session className='session-container'>
           <PlanDetail errorData={errorData} Solutions={energySolution.get('Solutions')} onChange={this._onChange} onBlur={this._onBlur}/>
@@ -597,11 +606,11 @@ export default class GenerateSolution extends Component {
           <FlatButton style={{marginLeft: 16}} label={I18N.Common.Button.Cancel2} onClick={() => this.setState({dialogKey: CANCEL_DIALOG})}/>
         </footer>
         <Dialog open={this.state.dialogKey === BACK_DIALOG} actionsContainerStyle={{textAlign: 'right'}} contentStyle={{margin: '8px 24px', color: '#626469'}} actions={[
-          <FlatButton primary inDialog label={I18N.Setting.Diagnose.ReturnPage} onClick={this.props.onBack}/>,
+          <FlatButton primary inDialog label={I18N.Setting.Diagnose.ReturnPage} onClick={onBack}/>,
           <FlatButton label={I18N.Common.Button.Cancel2} onClick={() => { this.setState({dialogKey: null}) }}/>
         ]}>{I18N.Setting.Diagnose.ReturnPageTip}</Dialog>
         <Dialog open={this.state.dialogKey === CANCEL_DIALOG} actionsContainerStyle={{textAlign: 'right'}} contentStyle={{margin: '8px 24px', color: '#626469'}} actions={[
-          <FlatButton primary inDialog label={I18N.Setting.Diagnose.LeavePage} onClick={this.props.onCancel}/>,
+          <FlatButton primary inDialog label={I18N.Setting.Diagnose.LeavePage} onClick={onCancel}/>,
           <FlatButton label={I18N.Common.Button.Cancel2} onClick={() => { this.setState({dialogKey: null}) }}/>
         ]}>{I18N.Setting.Diagnose.LeavePageTip}</Dialog>
       </div>

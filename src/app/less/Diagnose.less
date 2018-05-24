@@ -952,6 +952,18 @@
   }
 }
 
+
+& .select-field-overlay {
+  position: relative;
+  cursor: pointer;
+  & .icon-arrow-unfold {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    color: #c0c0c0;
+  }
+}
+
 .generate-solution {
   position: fixed;
   background-color: #fff;
@@ -967,17 +979,6 @@
   margin-bottom: 50px;
   color: #0f0f0f;
   z-index: 2;
-
-  & .select-field-overlay {
-    position: relative;
-    cursor: pointer;
-    & .icon-arrow-unfold {
-      position: absolute;
-      right: 10px;
-      top: 10px;
-      color: #c0c0c0;
-    }
-  }
 
   &-header {
     font-size: 24px;
@@ -1065,7 +1066,7 @@
   color: #666;
   font-family: Arial;
   font-size: 14px;
-  white-space: pre;
+  white-space: pre-wrap;
   outline: none;
   &:empty:before {
     content: attr(placeholder);
@@ -1113,6 +1114,7 @@
     left: 0;
     bottom: -18px;
     font-size: 12px;
+    white-space: nowrap;
   }
 }
 
@@ -1173,7 +1175,7 @@
     display: flex;
     align-items: center;
     &:not(:last-of-type) {
-      margin-right: 46px;
+      margin-right: 34px;
     }
 
     & .num-icon {

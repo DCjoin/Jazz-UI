@@ -8,6 +8,7 @@ import FlatButton from 'controls/FlatButton.jsx';
 import Dialog from 'controls/NewDialog.jsx';
 import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
 import DiagnoseChart from './DiagnoseChart.jsx';
+import {dateAdd,DataConverter,DateComputer} from 'util/Util.jsx';
 
 const BACK_DIALOG = 'BACK_DIALOG';
 const CANCEL_DIALOG = 'CANCEL_DIALOG';
@@ -16,7 +17,23 @@ const SVG_WIDTH = 733;
 const SVG_HEIGHT = 351;
 
 function formatChartTime( data, tail ) {
-  let dateStr = moment(data.getIn(['EnergyViewData', 'TargetEnergyData', 0, 'Target', 'TimeSpan'].concat(tail))).subtract(16, 'hour').format('YYYY-MM-DD HH:mm')
+
+  let j2d=DataConverter.JsonToDateTime,
+      MinusStep=DateComputer.MinusStep,
+      fixedTimes=DateComputer.FixedTimes;
+  let timeRange=data.getIn(['EnergyViewData','TargetEnergyData',0,'Target','TimeSpan']).toJS(),
+      step=data.getIn(['EnergyViewData','TargetEnergyData',0,'Target','Step']),
+
+      timeTmp=(step===3||step===4)?j2d(timeRange[tail],false):j2d(timeRange[tail]),
+      date=MinusStep(timeTmp,step,fixedTimes);
+
+      // startTimeTmp=(step===3||step===4)?j2d(timeRange.StartTime,false):j2d(timeRange.StartTime),
+      // endTimeTmp=(step===3||step===4)?j2d(timeRange.EndTime,false):j2d(timeRange.EndTime),
+
+      // startDate=MinusStep(startTimeTmp,step,fixedTimes),
+      // endDate=MinusStep(endTimeTmp,step,fixedTimes);
+
+  let dateStr = moment(date).format('YYYY-MM-DD HH:mm')
   if( tail === 'EndTime' && ~dateStr.indexOf(' 00:00') ) {
     dateStr = moment(dateStr).subtract(1, 'day').format('YYYY-MM-DD') + ' 24:00';
   }
@@ -118,7 +135,6 @@ export default class SimilarProblem extends Component {
     return (
       <div className='similar-problem'>
         <header className='similar-problem-header'>
-          <span className='icon-close' onClick={() => this.setState({dialogKey: CANCEL_DIALOG})}/>
           <span className='icon-return' onClick={() => this.setState({dialogKey: BACK_DIALOG})}/>
           {I18N.Setting.Diagnose.SimilarProblemList}
         </header>
