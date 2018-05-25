@@ -5,6 +5,7 @@ import moment from 'moment';
 import Checkbox from 'material-ui/Checkbox';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'controls/FlatButton.jsx';
+import MuiFlatButton from 'material-ui/FlatButton';
 import Dialog from 'controls/NewDialog.jsx';
 import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
 import DiagnoseChart from './DiagnoseChart.jsx';
@@ -168,8 +169,19 @@ export default class SimilarProblem extends Component {
           ) )}
         </ul>
         <footer className='similar-problem-footer'>
-          <FlatButton highlight label={I18N.Paging.Button.NextStep} onClick={onNext}/>
-          <FlatButton style={{marginRight: 16}} label={I18N.Common.Button.Cancel2} onClick={() => this.setState({dialogKey: CANCEL_DIALOG})}/>
+          <MuiFlatButton style={{
+            borderRadius: 2,
+            border: 'solid 1px #32ad3c',
+            backgroundColor: '#32ad3c',
+            color: '#ffffff',
+            marginRight: 16,
+          }} label={I18N.Paging.Button.NextStep} onClick={onNext}/>
+          <MuiFlatButton style={{
+            borderRadius: 2,
+            border: 'solid 1px #e6e6e6',
+            color: '#666666',
+            marginRight: 16,
+          }} label={I18N.Common.Button.Cancel2} onClick={() => this.setState({dialogKey: CANCEL_DIALOG})}/>
         </footer>
         <Dialog open={this.state.dialogKey === BACK_DIALOG} actionsContainerStyle={{textAlign: 'right'}} contentStyle={{margin: '8px 24px', color: '#626469'}} actions={[
           <FlatButton primary inDialog label={I18N.Setting.Diagnose.ReturnPage} onClick={this.props.onBack}/>,

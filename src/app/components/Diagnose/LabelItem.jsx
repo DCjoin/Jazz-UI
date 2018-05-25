@@ -110,7 +110,7 @@ class Group extends Component{
                                   'canSelect':true
                                 })}
            style={{paddingLeft:'50px'}} onClick={()=>{this.props.onItemTouchTap(data)}}>
-           <FontIcon className="icon-operating-data" style={styles.icon}/>
+           <FontIcon className="icon-diagnose" style={styles.icon}/>
            {this.props.selectedNode && data.get('Id')===this.props.selectedNode.get('Id') && <em/>}
         <div className="text">{data.get('Name')}</div>
         {!this.props.isFromProbem && data.get('Status')===DiagnoseStatus.Suspend && <div className="suspend-font" style={{marginLeft:'5px'}}>{I18N.Setting.Diagnose.Suspend}</div>}
