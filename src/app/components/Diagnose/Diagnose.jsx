@@ -244,7 +244,7 @@ export default class Diagnose extends Component {
           EnergeyLabel: ProblemLabels[0].DataLabelsName[0].Name,
           CreatorUserId,
           CreatorUserName,
-          SolutionImages: Images.map( image => ({ImageUrl: image.Url}) )
+          SolutionImages: Images.map( ({OssKey, Url, Name}) => ({ImageUrl: Url, OssKey, Name}) )
         }) )));
     }
     return initSolution;
