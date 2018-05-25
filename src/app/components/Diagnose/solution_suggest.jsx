@@ -4,6 +4,7 @@ import Immutable from 'immutable';
 import Checkbox from 'material-ui/Checkbox';
 import { Snackbar} from 'material-ui';
 import FlatButton from 'controls/FlatButton.jsx';
+import MuiFlatButton from 'material-ui/FlatButton';
 import Dialog from 'controls/NewDialog.jsx';
 import ImagGroupPanel from 'controls/ImagGroupPanel.jsx';
 
@@ -92,17 +93,30 @@ export default class SolutionSuggest extends Component {
           </div>
         ) )}
         <footer className='solution-suggest-footer'>
-          <FlatButton primary label={I18N.Setting.Diagnose.UsageSuggestSolution} onClick={() => {
-            if( !checkedPlan || checkedPlan.length === 0 ) {
-              this.setState({
-                open: true
-              })
-            } else {
-              onNext();
-            }
-          }}/>
-          <FlatButton style={{marginRight: 16}} label={I18N.Setting.Diagnose.UsageCustomSolution + ' >'} onClick={onCustom}/>
-          <span className='icon-no_ecm'>{I18N.Setting.Diagnose.SolutionSuggestTip2}</span>
+          <div style={{width: 800}}>
+            <MuiFlatButton style={{
+              borderRadius: 2,
+              border: 'solid 1px #32ad3c',
+              backgroundColor: '#32ad3c',
+              color: '#ffffff',
+              marginRight: 16,
+            }} label={I18N.Setting.Diagnose.UsageSuggestSolution} onClick={() => {
+              if( !checkedPlan || checkedPlan.length === 0 ) {
+                this.setState({
+                  open: true
+                })
+              } else {
+                onNext();
+              }
+            }}/>
+            <MuiFlatButton style={{
+              borderRadius: 2,
+              border: 'solid 1px #32ad3c',
+              color: '#32ad3c',
+              marginRight: 16,
+            }} label={I18N.Setting.Diagnose.UsageCustomSolution + ' >'} onClick={onCustom}/>
+            <span className='icon-no_ecm'>{I18N.Setting.Diagnose.SolutionSuggestTip2}</span>
+          </div>
         </footer>
         <Snackbar style={{
           maxWidth: 'none',

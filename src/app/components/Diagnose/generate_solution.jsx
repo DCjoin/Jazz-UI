@@ -6,6 +6,7 @@ import Popover from 'material-ui/Popover';
 import { CircularProgress} from 'material-ui';
 // import nzh from 'nzh/cn';
 import FlatButton from 'controls/FlatButton.jsx';
+import MuiFlatButton from 'material-ui/FlatButton';
 import Dialog from 'controls/NewDialog.jsx';
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
 import { ProblemMarkEnum } from 'constants/AnalysisConstants.jsx';
@@ -618,7 +619,13 @@ export default class GenerateSolution extends Component {
           <PlanDetail errorData={errorData} Solutions={energySolution.get('Solutions')} onChange={this._onChange} onBlur={this._onBlur}/>
         </session>
         <footer className='generate-solution-footer'>
-          <FlatButton label={I18N.Setting.DataAnalysis.Scheme} onClick={() => {
+          <MuiFlatButton style={{
+            borderRadius: 2,
+            border: 'solid 1px #32ad3c',
+            backgroundColor: '#32ad3c',
+            color: '#ffffff',
+            marginRight: 16,
+          }} label={I18N.Setting.DataAnalysis.Scheme} onClick={() => {
             let hasError = false;
             if( !energySolution.getIn(['Problem', 'Name']) ) {
               errorData = errorData.setIn(['Problem', 'Name'], I18N.Setting.Diagnose.PleaseInput + I18N.Setting.Diagnose.PleaseInput);
@@ -672,7 +679,12 @@ export default class GenerateSolution extends Component {
             } );
 
           }}/>
-          <FlatButton style={{marginLeft: 16}} label={I18N.Common.Button.Cancel2} onClick={() => this.setState({dialogKey: CANCEL_DIALOG})}/>
+          <MuiFlatButton style={{
+            borderRadius: 2,
+            border: 'solid 1px #e6e6e6',
+            color: '#666666',
+            marginRight: 16,
+          }} label={I18N.Common.Button.Cancel2} onClick={() => this.setState({dialogKey: CANCEL_DIALOG})}/>
         </footer>
         <Dialog open={this.state.dialogKey === BACK_DIALOG} actionsContainerStyle={{textAlign: 'right'}} contentStyle={{margin: '8px 24px', color: '#626469'}} actions={[
           <FlatButton primary inDialog label={I18N.Setting.Diagnose.ReturnPage} onClick={onBack}/>,

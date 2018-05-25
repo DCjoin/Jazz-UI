@@ -99,8 +99,14 @@
 
       &:hover {
         color:#32ad3d !important;
+        & .icon-diagnose {
+          color:#32ad3d !important;          
+        }
         &.selected{
-          color:#ffffff !important;
+          color:#ffffff !important;          
+          & .icon-diagnose {
+            color:#626469 !important;          
+          }
         }
         .addBtn{
             display: block;
@@ -208,8 +214,7 @@
       &-problem-chart{
         flex:1;
         display: flex;
-        margin-top:20px;
-        margin-bottom: 45px;
+        margin: 20px 0;
         border-radius: 5px;
         border:1px solid @border-gray;
         flex-direction: column;
@@ -837,16 +842,16 @@
   background-color: #fff;
   top: 0;
   left: 0;
-  width: calc(~'100% - 526px');
+  width: 100%;
   height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  padding: 0 263px;
   padding-top: 0;
   color: #0f0f0f;
   z-index: 2;
+  align-items: center;
 
   & .solution-detail-sidebar {
     position: fixed;
@@ -888,6 +893,7 @@
     }
 
     & .session-content {
+      width: 800px;
       margin-top: 16px;
     }
 
@@ -901,6 +907,7 @@
   }
 
   &-header {
+    width: 800px;
     font-size: 24px;
     margin-top: 20px;
     display: flex;
@@ -932,12 +939,14 @@
     }
   }
   &-tip {
+    width: 800px;
     font-size: 14px;
     color: #9fa0a4;
     margin-top: 16px;
     margin-bottom: 8px;
   }
   &-item {
+    width: 800px;
     border-radius: 2px;
     background-color: #fff;
     border: solid 1px #e6e6e6;
@@ -978,8 +987,8 @@
     position: fixed;
     bottom: 0;
     left: 0;
-    padding-left: 263px;
     display: flex;
+    justify-content: center;
     align-items: center;
     width: 100%;
     height: 50px;

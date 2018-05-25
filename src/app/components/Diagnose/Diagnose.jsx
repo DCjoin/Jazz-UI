@@ -3,6 +3,7 @@ import classnames from "classnames";
 import {CircularProgress, Snackbar} from 'material-ui';
 import find from 'lodash-es/find';
 import LabelList from './LabelList.jsx';
+import InputDataStore from 'stores/DataAnalysis/InputDataStore.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
@@ -213,18 +214,6 @@ export default class Diagnose extends Component {
     let initSolution = this._getCustomSolution();
     let problemId = this.state.selectedId;
     let currentProblem = DiagnoseStore.findDiagnoseById( problemId );
-    if( this.state.createRefProblems ) {
-      if( this.state.createRefProblems.length === 0 ) {
-        initSolution = initSolution.setIn(['Problem', 'Name'], currentProblem.get('Name'));
-      } else {
-        initSolution = initSolution.setIn(['Problem', 'Name'], DiagnoseStore.findLabelById(problemId).get('Name') + '-' +  DiagnoseStore.findProblemById(problemId).get('Name'));
-        let DiagnoseIds = initSolution.getIn(['Problem', 'DiagnoseIds']);
-        this.state.createRefProblems.map( problem => {
-          DiagnoseIds = DiagnoseIds.push( problem.Id );
-        } );
-        initSolution = initSolution.setIn(['Problem', 'DiagnoseIds'], DiagnoseIds);
-      }
-    }
 
     if( this.state.createRefPlans && this.state.createRefPlans.length > 0 ) {
       if( this.state.createRefPlans.length === 1 ) {
@@ -263,17 +252,33 @@ export default class Diagnose extends Component {
                         // .setIn(['Problem', 'HierarchyId'], this.context.hierarchyId);
   }
   _getCustomSolution() {
-    let currentProblem = DiagnoseStore.findDiagnoseById( this.state.selectedId );
-    return INIT_SOLUTION
+    let problemId = this.state.selectedId;
+    let currentProblem = DiagnoseStore.findDiagnoseById( problemId );
+    let initSolution = INIT_SOLUTION
             .setIn(['Problem', 'IsConsultant'], SolutionFull())
             .setIn(['Problem', 'HierarchyId'], this.context.hierarchyId)
             .setIn(['Problem', 'EnergyProblemImages'], Immutable.fromJS([currentProblem.toJS()].concat(this.state.createRefProblems).map( problem => Immutable.fromJS({
               Id: problem.Id,
               Name: problem.Name,
             }) ) ))
-            .setIn(['Problem', 'ProblemTypeId'], DiagnoseStore.findLabelById(this.state.selectedId).get('ProblemTypeId'))
-            .setIn(['Problem', 'DataLabelId'], DiagnoseStore.findLabelById(this.state.selectedId).get('Id')).
-            setIn(['Problem', 'DiagnoseIds'], [this.state.selectedId]);
+            .setIn(['Problem', 'ProblemTypeId'], DiagnoseStore.findLabelById(problemId).get('ProblemTypeId'))
+            .setIn(['Problem', 'DataLabelId'], DiagnoseStore.findLabelById(problemId).get('Id'))
+            .setIn(['Problem', 'DiagnoseIds'], [problemId])
+            .setIn(['Problem', 'TagIds'], [currentProblem.get('TagId')].concat( this.state.createRefProblems.map( problem => problem.TagId ) ) );
+
+    if( this.state.createRefProblems ) {
+      if( this.state.createRefProblems.length === 0 ) {
+        initSolution = initSolution.setIn(['Problem', 'Name'], currentProblem.get('TagName') + '-' + DiagnoseStore.findProblemById(problemId).get('Name'));
+      } else {
+        initSolution = initSolution.setIn(['Problem', 'Name'], DiagnoseStore.findLabelById(problemId).get('Name') + '-' +  DiagnoseStore.findProblemById(problemId).get('Name'));
+        let DiagnoseIds = initSolution.getIn(['Problem', 'DiagnoseIds']);
+        this.state.createRefProblems.map( problem => {
+          DiagnoseIds.push( problem.Id );
+        } );
+        initSolution = initSolution.setIn(['Problem', 'DiagnoseIds'], DiagnoseIds);
+      }
+    }
+    return initSolution;
   }
 
   _goStep0() {
