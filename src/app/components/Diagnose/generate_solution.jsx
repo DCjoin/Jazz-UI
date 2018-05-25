@@ -576,21 +576,21 @@ export default class GenerateSolution extends Component {
     if( ~paths.indexOf('ExpectedAnnualEnergySaving') ) {
       let error = '';
       if( value && !NUMBER_REG.test(value) ) {
-        error = '请输入大于0的数字';
+        error = I18N.Setting.ECM.NumberrTip;
       }
       errorData = errorData.setIn(paths, error);
     }
     if( ~paths.indexOf('ExpectedAnnualCostSaving') ) {
       let error = '';
       if( value && !NUMBER_REG.test(value) ) {
-        error = '请输入大于0的数字';
+        error = I18N.Setting.ECM.NumberrTip;
       }
       errorData = errorData.setIn(paths, error);
     }
     if( ~paths.indexOf('InvestmentAmount') ) {
       let error = '';
       if( value && !NUMBER_REG.test(value) ) {
-        error = '请输入大于0的数字';
+        error = I18N.Setting.ECM.NumberrTip;
       }
       errorData = errorData.setIn(paths, error);
     }
