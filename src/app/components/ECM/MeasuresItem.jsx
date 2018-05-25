@@ -148,7 +148,7 @@ export class MeasuresItem extends Component {
     _renderContent(){
       var {Problem}=this.props.measure.toJS();
       var {Solutions}=this.props.measure.toJS();
-      var {ExpectedAnnualCostSaving,InvestmentAmount}=Solutions[this.state.displaySolutionIdx];
+      var {ExpectedAnnualCostSaving,InvestmentAmount}=Solutions[this.state.displaySolutionIdx] || [];
 			var InvestmentReturnCycle=MeasuresStore.getInvestmentReturnCycle(InvestmentAmount,ExpectedAnnualCostSaving);
 
       let iconStyle = {
