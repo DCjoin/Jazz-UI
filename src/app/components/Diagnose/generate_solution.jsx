@@ -523,6 +523,7 @@ export default class GenerateSolution extends Component {
     this.state = {
       energySolution: props.energySolution,
       errorData: Immutable.fromJS({}),
+      loading: false,
     }
     this._onChange = this._onChange.bind(this);
     this._onBlur = this._onBlur.bind(this);
@@ -601,10 +602,11 @@ export default class GenerateSolution extends Component {
     });
   }
   render() {
-    let { energySolution, errorData } = this.state;
+    let { energySolution, errorData, loading } = this.state;
     let { onCancel, onBack, chartDatas, onCreate, renderChart } = this.props;
     return (
       <div className='generate-solution'>
+        {loading && <div className='flex-center generate-solution-loading'><CircularProgress/></div> }
         <header className='generate-solution-header'>
           <span className='icon-return'  onClick={() => this.setState({dialogKey: BACK_DIALOG})}/>
           {I18N.Setting.ECM.Solution}
@@ -626,6 +628,9 @@ export default class GenerateSolution extends Component {
             color: '#ffffff',
             marginRight: 16,
           }} label={I18N.Setting.DataAnalysis.Scheme} onClick={() => {
+            this.setState({
+              loading: true
+            });
             let hasError = false;
             if( !energySolution.getIn(['Problem', 'Name']) ) {
               errorData = errorData.setIn(['Problem', 'Name'], I18N.Setting.Diagnose.PleaseInput + I18N.Setting.Diagnose.ProblemName);
@@ -674,7 +679,7 @@ export default class GenerateSolution extends Component {
                   .toJS()
                 );
               } else {
-                this.setState({errorData});
+                this.setState({errorData, loading: false});
               }
             } );
 
