@@ -26,6 +26,7 @@ import ExportView from '../folder/operationView/ExportView.jsx';
 import FolderAction from 'actions/FolderAction.jsx';
 import UserAction from 'actions/UserAction.jsx';
 
+import AlarmTagStore from 'stores/AlarmTagStore.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import FolderStore from 'stores/FolderStore.jsx';
 import WidgetStore from 'stores/Energy/WidgetStore.jsx';
@@ -435,9 +436,10 @@ export default class DataAnalysis extends Component {
 			let {open, preAction, nodes,analysis} = generateSolutionDialogObj;
 			if(open) {
 				dialog = (<AnalysisGenerateSolution
-				analysis={analysis}
+				  analysis={analysis}
 					nodes={nodes}
           hierarchyId={this.context.hierarchyId}
+          tagIds={AlarmTagStore.getSearchTagList().map( item => item.tagId )}
 					preAction={preAction}
 					onRequestClose={() => {
 						this.setState({generateSolutionDialogObj: null});
