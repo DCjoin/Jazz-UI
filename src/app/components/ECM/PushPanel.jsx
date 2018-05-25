@@ -104,6 +104,7 @@ export default class PushPanel extends Component {
     activeCounts:[],
     unRead:[],
     toBeStatus:null,
+    toBeSolution:null,
     statusDialogShow:false,
     deleteSupervisorErrorMsg:null
   }
@@ -144,10 +145,11 @@ export default class PushPanel extends Component {
     });
   }
 
-  _onStatusChange(value){
+  _onStatusChange(value,solution){
     if(value!==this.state.solutionList.getIn([this.state.measureIndex,'Problem','Status'])){
       this.setState({
         toBeStatus:value,
+        toBeSolution:solution,
         statusDialogShow:true
       })
     }
@@ -195,14 +197,14 @@ export default class PushPanel extends Component {
     )
   }
 
-  _renderPersonInCharge(problem,indetail=false,index,hasSolution=false){
+  _renderPersonInCharge(problem,indetail=false,index,hasSolution=false,solution=this.state.solutionList.getIn([this.state.measureIndex])){
     return(
       <div style={{width: '220px',paddingLeft: indetail?'0':'20px', borderLeft: indetail?'':'1px dashed #e6e6e6'}}>
              {hasSolution && <div style={{height:'30px'}}/>}
               <Supervisor person={problem.get('Supervisor')} supervisorList={this.state.supervisorList}
                   onSuperviorClick={(id)=>{
                     if(indetail){
-                      var currentSolution=this.state.solutionList.getIn([this.state.measureIndex]);
+                      var currentSolution=solution;
                       MeasuresAction.updateSolution(currentSolution.toJS(),()=>{
                           MeasuresAction.assignSupervisor(problem.get('Id'),id,problem.get('IsConsultant'));
                       })
@@ -332,7 +334,7 @@ export default class PushPanel extends Component {
         padding:'0 30px'
       }
     };
-    var name=MeasuresStore.getNamesById(this.state.measureIndex);
+    var name=this.state.toBeSolution.getIn(["Problem","SolutionTitle"]);
     var content;
     switch (this.state.toBeStatus) {
       case Status.ToBe:
@@ -357,7 +359,7 @@ export default class PushPanel extends Component {
             <RaisedButton
               label={I18N.Common.Button.Confirm}
               onClick={()=>{
-                var currentSolution=this.state.solutionList.getIn([this.state.measureIndex]);
+                var currentSolution=this.state.toBeSolution;
 
                 currentSolution=currentSolution.setIn(['Problem','Status'],this.state.toBeStatus);
                 this.setState({
@@ -374,6 +376,7 @@ export default class PushPanel extends Component {
                     this.setState({
                       measureIndex:null,
                       toBeStatus:null,
+                      toBeSolution:null,
                       solutionList:null
                     },()=>{
                       this.refresh(status[this.state.infoTabNo-1]);

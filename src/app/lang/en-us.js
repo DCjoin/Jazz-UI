@@ -2522,6 +2522,7 @@ I18N.Setting.ECM.RequiredTip='请完整填写必填项';
 I18N.Setting.ECM.SaveTip='是否保存对该方案的修改？';
 I18N.Setting.ECM.SaveSuccess='保存成功';
 I18N.Setting.ECM.TitleErrorTip='方案标题不能为空';
+I18N.Setting.ECM.NumberrTip='请填写≥0的数字';
 
 I18N.Setting.Diagnose={};
 I18N.Setting.Diagnose.EnergyLabel='Energy Label';

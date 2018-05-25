@@ -18,6 +18,8 @@ import {EnergySys} from './MeasurePart/MeasureTitle.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
 import ReactDOM from 'react-dom';
 
+const NUMBER_REG = /^[1-9]\d*(\.\d+)?$/;
+
  const ICONSTYLE = {
         fontSize: '20px'
       },
@@ -83,13 +85,27 @@ export default class EditSolution extends Component {
                 }
         }
 
+    _hasError(){
+       var errorData=this._validateAll();
+       return errorData.get("Problem").find(item=>item!=='')!==undefined || errorData.get("Solutions").map(solution=>solution.find(item=>item!=='')!==undefined)
+                                                                                    .includes(true) 
+    }
     _onSave(){
-      MeasuresAction.updateSolution(this.state.solution.toJS(),()=>{
+      var errorData=this._validateAll();
+      if(MeasuresStore.IsSolutionDisable(this.state.solution.toJS()) || this._hasError()){
         this.setState({
-          snackBarText:I18N.Setting.ECM.SaveSuccess,
-          preSolution:this.state.solution
+          snackBarText:I18N.Setting.ECM.RequiredTip,
+          errorData:this._validateAll()
         })
+      }else{
+        MeasuresAction.updateSolution(this.state.solution.toJS(),()=>{
+          this.setState({
+            snackBarText:I18N.Setting.ECM.SaveSuccess,
+            preSolution:this.state.solution
+          })
       });
+      }
+
     }
 
     _onClose(){
@@ -98,7 +114,7 @@ export default class EditSolution extends Component {
       if(!this.props.hasPriviledge){
         this.props.onClose()
       }
-      if(MeasuresStore.IsSolutionDisable(currentSolution.toJS())){
+      if(MeasuresStore.IsSolutionDisable(currentSolution.toJS()) || this._hasError()){
         this.setState({
           snackBarText:I18N.Setting.ECM.RequiredTip,
           errorData:this._validateAll()
@@ -128,9 +144,27 @@ export default class EditSolution extends Component {
           pathName=pathName.pop();
         }else{pathName=pathName.join('')}
 
-        if(pathName==='EnergySavingUnit'){ paths=paths.slice(0,2)
-                                           paths.push('ExpectedAnnualEnergySaving')}         
+       
 
+        if( ~paths.indexOf('ExpectedAnnualEnergySaving') ) {
+            if( value && !NUMBER_REG.test(value) ) {
+                error = I18N.Setting.ECM.NumberrTip;
+              }
+            }
+    
+        if( ~paths.indexOf('ExpectedAnnualCostSaving') ) {
+      
+              if( value && !NUMBER_REG.test(value) ) {
+                 error = I18N.Setting.ECM.NumberrTip;
+                }
+            }
+        if( ~paths.indexOf('InvestmentAmount') ) {
+      
+            if( value && !NUMBER_REG.test(value) ) {
+                error = I18N.Setting.ECM.NumberrTip;
+              }
+     
+            }    
 
         if( paths.join('') === 'ProblemSolutionTitle' ) {
           if( !value ) {
@@ -143,7 +177,9 @@ export default class EditSolution extends Component {
         }else if(value!==0 && !value && pathName!=='InvestmentAmount'){
             if(pathName==='Name'){pathName='SolutionName'}
             if(pathName==='EnergySavingUnit'){pathName="ExpectedAnnualEnergySaving"}
-           error=I18N.Setting.Diagnose.PleaseInput+I18N.Setting.Diagnose[pathName];     
+           error=I18N.Setting.Diagnose.PleaseInput+I18N.Setting.Diagnose[pathName];   
+            if(pathName==='EnergySavingUnit'){ paths=paths.slice(0,2)
+                                           paths.push('ExpectedAnnualEnergySaving')}    
         }
 
         errorData=errorData.setIn(paths,error);
@@ -193,7 +229,7 @@ export default class EditSolution extends Component {
 
                     </div>
                     <div className="push-panel-solution-header-operation">
-                      {this.props.hasPriviledge && <div onClick={this._onSave} style={{marginRight:'50px'}}> <FontIcon className="icon-save" color="#626469" iconStyle ={iconstyle} style = {style} />
+                      {this.props.hasPriviledge && this.state.solutionUnfold && <div onClick={this._onSave} style={{marginRight:'50px'}}> <FontIcon className="icon-save" color="#626469" iconStyle ={iconstyle} style = {style} />
                       {I18N.Common.Button.Save}</div>}
                       {this.state.solutionUnfold && <div onClick={()=>{this.setState({solutionUnfold:!this.state.solutionUnfold})}}> {I18N.Setting.ECM.UnFold} <FontIcon className="icon-arrow-up" color="#626469" iconStyle ={iconstyle} style = {style} />
                         </div>}
@@ -266,9 +302,9 @@ export default class EditSolution extends Component {
           }
           return(
             <div className="jazz-ecm-push-operation">
-              <StatusCmp status={status} canEdit={this.props.hasStatusPriviledge} onChange={this.props.onStatusChange}/>
+              <StatusCmp status={status} canEdit={this.props.hasStatusPriviledge} onChange={(value)=>{this.props.onStatusChange(value,this.state.solution)}}/>
               <EnergySys {...prop.energySys}/>
-              {this.props.person(problem,true)}        
+              {this.props.person(problem,true,0,false,this.state.solution)}        
             </div>
           )
   }
