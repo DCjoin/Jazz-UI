@@ -218,7 +218,7 @@ export class ProblemDetail extends Component {
       <div className='field-wrapper flex-bar'>
         <div>
           <div className='field-title'>{I18N.Setting.Diagnose.ProblemName}{!isRequired && <span className='subtitle'>{I18N.Setting.Diagnose.Require}</span>}</div>
-          <TextBox {...this._initTextBoxProps('Name')} hintText={I18N.Setting.Diagnose.PleaseInput + I18N.Setting.Diagnose.PleaseInput}/>
+          <TextBox {...this._initTextBoxProps('Name')} hintText={I18N.Setting.Diagnose.PleaseInput + I18N.Setting.Diagnose.ProblemName}/>
         </div>
         {hasEnergySys && <div style={{marginLeft: 20}}>
           <div className='field-title'>{I18N.Setting.Diagnose.EnergySys}{!isRequired && <span className='subtitle'>{I18N.Setting.Diagnose.Require}</span>}</div>
@@ -628,7 +628,7 @@ export default class GenerateSolution extends Component {
           }} label={I18N.Setting.DataAnalysis.Scheme} onClick={() => {
             let hasError = false;
             if( !energySolution.getIn(['Problem', 'Name']) ) {
-              errorData = errorData.setIn(['Problem', 'Name'], I18N.Setting.Diagnose.PleaseInput + I18N.Setting.Diagnose.PleaseInput);
+              errorData = errorData.setIn(['Problem', 'Name'], I18N.Setting.Diagnose.PleaseInput + I18N.Setting.Diagnose.ProblemName);
               hasError = true;
             }
             if(　!energySolution.getIn(['Problem', 'EnergySys'])　) {
