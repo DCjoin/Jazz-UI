@@ -25,7 +25,6 @@ let AlarmText=({text})=>(<div className="alarm-text">
 export class IconText extends Component{
   render(){
 		var style= assign({
-      width:"145px",
     }, this.props.style);
     return(
       <div style={style}>
