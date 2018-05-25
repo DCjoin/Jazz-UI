@@ -302,9 +302,9 @@ export default class EditSolution extends Component {
           }
           return(
             <div className="jazz-ecm-push-operation">
-              <StatusCmp status={status} canEdit={this.props.hasStatusPriviledge} onChange={this.props.onStatusChange}/>
+              <StatusCmp status={status} canEdit={this.props.hasStatusPriviledge} onChange={(value)=>{this.props.onStatusChange(value,this.state.solution)}}/>
               <EnergySys {...prop.energySys}/>
-              {this.props.person(problem,true)}        
+              {this.props.person(problem,true,0,false,this.state.solution)}        
             </div>
           )
   }
