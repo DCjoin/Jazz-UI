@@ -28,7 +28,7 @@ function getROILabel( solution ) {
     solution.get('ExpectedAnnualCostSaving')
   )
   if( !roi ) {
-    return '-';
+    return solution.get('ROI') || '-';
   }
   if( +roi === roi ) {
     roi += I18N.EM.Year;
