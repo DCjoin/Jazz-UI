@@ -2524,6 +2524,7 @@ I18N.Setting.ECM.UnFold='收起方案';
 I18N.Setting.ECM.Fold='展开方案';
 I18N.Setting.ECM.SaveSuccess='保存成功';
 I18N.Setting.ECM.TitleErrorTip='方案标题不能为空';
+I18N.Setting.ECM.NumberrTip='请填写≥0的数字';
 
 
 I18N.Setting.Diagnose={};

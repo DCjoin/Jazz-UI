@@ -8,6 +8,9 @@ import NewDialog from 'controls/NewDialog.jsx';
 import RaisedButton from 'material-ui/RaisedButton';
 import ImagGroupPanel from 'controls/ImagGroupPanel.jsx';
 import {PlanTitle,ProblemDetail,PlanDetail} from '../Diagnose/generate_solution.jsx';
+
+const NUMBER_REG = /^[1-9]\d*(\.\d+)?$/;
+
 export default class PushConfirmDialog extends Component {
   constructor(props) {
     super(props);
@@ -26,6 +29,12 @@ export default class PushConfirmDialog extends Component {
       errorData:Immutable.fromJS({})
     }
 
+    _hasError(){
+       var errorData=this._validateAll();
+       return errorData.get("Problem").find(item=>item!=='')!==undefined || errorData.get("Solutions").map(solution=>solution.find(item=>item!=='')!==undefined)
+                                                                                    .includes(true) 
+    }
+
     _validate(paths,value,errorData){
        var pathName=paths.slice(0);
         var error='';
@@ -33,9 +42,27 @@ export default class PushConfirmDialog extends Component {
           pathName=pathName.pop();
         }else{pathName=pathName.join('')}
 
-        if(pathName==='EnergySavingUnit'){ paths=paths.slice(0,2)
-                                           paths.push('ExpectedAnnualEnergySaving')}         
+       
 
+        if( ~paths.indexOf('ExpectedAnnualEnergySaving') ) {
+            if( value && !NUMBER_REG.test(value) ) {
+                error = I18N.Setting.ECM.NumberrTip;
+              }
+            }
+    
+        if( ~paths.indexOf('ExpectedAnnualCostSaving') ) {
+      
+              if( value && !NUMBER_REG.test(value) ) {
+                 error = I18N.Setting.ECM.NumberrTip;
+                }
+            }
+        if( ~paths.indexOf('InvestmentAmount') ) {
+      
+            if( value && !NUMBER_REG.test(value) ) {
+                error = I18N.Setting.ECM.NumberrTip;
+              }
+     
+            }    
 
         if( paths.join('') === 'ProblemSolutionTitle' ) {
           if( !value ) {
@@ -48,7 +75,9 @@ export default class PushConfirmDialog extends Component {
         }else if(value!==0 && !value && pathName!=='InvestmentAmount'){
             if(pathName==='Name'){pathName='SolutionName'}
             if(pathName==='EnergySavingUnit'){pathName="ExpectedAnnualEnergySaving"}
-           error=I18N.Setting.Diagnose.PleaseInput+I18N.Setting.Diagnose[pathName];     
+           error=I18N.Setting.Diagnose.PleaseInput+I18N.Setting.Diagnose[pathName];   
+            if(pathName==='EnergySavingUnit'){ paths=paths.slice(0,2)
+                                           paths.push('ExpectedAnnualEnergySaving')}    
         }
 
         errorData=errorData.setIn(paths,error);
@@ -75,7 +104,7 @@ export default class PushConfirmDialog extends Component {
     }
 
     _onClose(){
-      if(MeasuresStore.IsSolutionDisable(this.state.solution.toJS())){
+      if(MeasuresStore.IsSolutionDisable(this.state.solution.toJS()) || this._hasError()){
         this.setState({
           snackBarOpen:true,
           errorData:this._validateAll()
@@ -115,9 +144,10 @@ export default class PushConfirmDialog extends Component {
       }
 
     _onPush(e){
-       if(MeasuresStore.IsSolutionDisable(this.state.solution.toJS())){
+       if(MeasuresStore.IsSolutionDisable(this.state.solution.toJS()) || this._hasError()){
         this.setState({
-          snackBarOpen:true
+          snackBarOpen:true,
+          errorData:this._validateAll()
         })
       }else{
         this.props.onPush(e,this._getSaveSolution().setIn(["Problem","Status"],2))
