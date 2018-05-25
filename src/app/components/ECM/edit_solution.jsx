@@ -229,7 +229,7 @@ export default class EditSolution extends Component {
 
                     </div>
                     <div className="push-panel-solution-header-operation">
-                      {this.props.hasPriviledge && <div onClick={this._onSave} style={{marginRight:'50px'}}> <FontIcon className="icon-save" color="#626469" iconStyle ={iconstyle} style = {style} />
+                      {this.props.hasPriviledge && this.state.solutionUnfold && <div onClick={this._onSave} style={{marginRight:'50px'}}> <FontIcon className="icon-save" color="#626469" iconStyle ={iconstyle} style = {style} />
                       {I18N.Common.Button.Save}</div>}
                       {this.state.solutionUnfold && <div onClick={()=>{this.setState({solutionUnfold:!this.state.solutionUnfold})}}> {I18N.Setting.ECM.UnFold} <FontIcon className="icon-arrow-up" color="#626469" iconStyle ={iconstyle} style = {style} />
                         </div>}
