@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component,PropTypes } from 'react';
 import IconButton from 'material-ui/IconButton';
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
 import Snackbar from 'material-ui/Snackbar';
@@ -17,6 +17,7 @@ import StatusCmp from './MeasurePart/Status.jsx';
 import {EnergySys} from './MeasurePart/MeasureTitle.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
 import ReactDOM from 'react-dom';
+import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
 
 const NUMBER_REG = /^[1-9]\d*(\.\d+)?$/;
 
@@ -51,6 +52,12 @@ function pushAndNotPushIsFull() {
 
 
 export default class EditSolution extends Component {
+
+     static contextTypes = {
+        router: PropTypes.object,
+        hierarchyId: PropTypes.string,
+      };
+
   constructor(props) {
     super(props);
     this._onClose=this._onClose.bind(this);
@@ -114,21 +121,32 @@ export default class EditSolution extends Component {
       if(!this.props.hasPriviledge){
         this.props.onClose()
       }
-      if(MeasuresStore.IsSolutionDisable(currentSolution.toJS()) || this._hasError()){
-        this.setState({
-          snackBarText:I18N.Setting.ECM.RequiredTip,
-          errorData:this._validateAll()
-        })
-      }else{
-        if(Immutable.is(currentSolution,this.state.preSolution)){
-            this.props.onClose(!Immutable.is(this.state.preSolution,this.props.solution))
-          
-        }else{
-          this.setState({
-            saveTipShow:true
+
+      DiagnoseAction.checkTitle( this.context.hierarchyId, this.context.router.params.customerId, this.state.solution.getIn(["Problem","SolutionTitle"]), (dulpi) => {
+            if( dulpi ) {
+              this.setState({
+                errorData: this._validateAll().setIn(["problem","SolutionTitle"], I18N.Setting.ECM.NameDuplicateTip)
+              });
+            } else {
+                          if(MeasuresStore.IsSolutionDisable(currentSolution.toJS()) || this._hasError()){
+                                this.setState({
+                                  snackBarText:I18N.Setting.ECM.RequiredTip,
+                                  errorData:this._validateAll()
+                                })
+                              }else{
+                                if(Immutable.is(currentSolution,this.state.preSolution)){
+                                    this.props.onClose(!Immutable.is(this.state.preSolution,this.props.solution))
+                                  
+                                }else{
+                                  this.setState({
+                                    saveTipShow:true
+                                  })
+                                }
+                              }
+            }
           })
-        }
-      }
+
+
     }
 
       _onChange( paths, value ) {
@@ -157,19 +175,24 @@ export default class EditSolution extends Component {
               if( value && !NUMBER_REG.test(value) ) {
                  error = I18N.Setting.ECM.NumberrTip;
                 }
-            }
-        if( ~paths.indexOf('InvestmentAmount') ) {
-      
-            if( value && !NUMBER_REG.test(value) ) {
-                error = I18N.Setting.ECM.NumberrTip;
-              }
-     
-            }    
+            } 
 
         if( paths.join('') === 'ProblemSolutionTitle' ) {
           if( !value ) {
             error = I18N.Setting.Diagnose.PleaseInput+I18N.Setting.Diagnose.SolutionTitle;
-          }
+          }else{
+            DiagnoseAction.checkTitle( this.context.hierarchyId, this.context.router.params.customerId, value, (dulpi) => {
+            if( dulpi ) {
+              this.setState({
+                errorData: this.state.errorData.setIn(paths, I18N.Setting.ECM.NameDuplicateTip)
+              });
+            } else {
+              this.setState({
+                errorData: this.state.errorData.setIn(paths, '')
+              });
+            }
+          })
+        }
         }else if( paths.join('') === 'ProblemEnergySys' ) {
           if( !value && !this.state.solution.getIn(paths)) {
             error = I18N.Setting.Diagnose.PleaseSelect+I18N.Setting.Diagnose.EnergySys;
