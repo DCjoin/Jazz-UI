@@ -134,7 +134,7 @@ export class MeasuresItem extends Component {
     getName(){
       var {Problem}=this.props.measure.toJS();
       if(Problem.SolutionTitle!==null && Problem.SolutionTitle!==''){
-        return (<div style={{display:"flex",flexDirection:'row',alignItems:'center'}}>
+        return (<div style={{display:"flex",flexDirection:'row',alignItems:'center',overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'}}>
               <div className="measuresItem-title" title={I18N.format(I18N.Setting.ECM.SolutionTitle,Problem.SolutionTitle)}>{I18N.format(I18N.Setting.ECM.SolutionTitle,Problem.SolutionTitle)}</div>
               {this.props.disabled && <AlarmText text={I18N.Setting.ECM.Uncompleted}/>}</div>)
       }
@@ -165,6 +165,11 @@ export class MeasuresItem extends Component {
       var costIcon=<FontIcon className="icon-cost_saving" iconStyle ={iconStyle} color="#626469" style = {style} />,
           sumIcon=<FontIcon className="icon-investment-amount" iconStyle ={iconStyle} color="#626469" style = {style} />,
           periodIcon=<FontIcon className="icon-pay-back-period" iconStyle ={iconStyle} color="#626469" style = {style} />;
+      var valueStyle={
+        overflow: 'hidden',
+      whiteSpace: 'nowrap',
+      textOverflow: 'ellipsis'
+      }
       return(
         <div className="measuresItem-content">
           <div className="side" style={{flex:1}}>
@@ -176,9 +181,9 @@ export class MeasuresItem extends Component {
                                                        this.setState({displaySolutionIdx:index})
                                                      }}/>}
               <div style={{marginTop:'15px',display:'flex'}}>
-                <IconText icon={costIcon} style={{marginLeft:'30px',flex:1}} label={I18N.Setting.ECM.EstimatedAnnualCostSavings} value={validValue(ExpectedAnnualCostSaving)} uom="RMB"/>
-                <IconText icon={sumIcon} style={{marginLeft:'30px',flex:1}} label={I18N.Setting.ECM.InvestmentAmount} value={validValue(InvestmentAmount)} uom="RMB"/>
-                <IconText icon={periodIcon} style={{marginLeft:'30px',flex:1}} label={I18N.Setting.ECM.PaybackPeriod} value={InvestmentReturnCycle || '-'}
+                <IconText icon={costIcon} style={{marginLeft:'30px',flex:1}} valueStyle={valueStyle} label={I18N.Setting.ECM.EstimatedAnnualCostSavings} value={validValue(ExpectedAnnualCostSaving)} uom="RMB"/>
+                <IconText icon={sumIcon} style={{marginLeft:'30px',flex:1}} valueStyle={valueStyle} label={I18N.Setting.ECM.InvestmentAmount} value={validValue(InvestmentAmount)} uom="RMB"/>
+                <IconText icon={periodIcon} style={{marginLeft:'30px',flex:1}} valueStyle={valueStyle} label={I18N.Setting.ECM.PaybackPeriod} value={InvestmentReturnCycle || '-'}
 											uom={CommonFuns.isNumber(InvestmentReturnCycle)?I18N.EM.Years:''}/>
               </div>
 
@@ -215,7 +220,7 @@ export class MeasuresItem extends Component {
 																									}}/>}
             {this.getName()}
           </div>
-          <div style={{fontSize:'14px',color: '#626469', flex: 'none', marginLeft: 30}}>{MeasuresStore.getEnergySys(Problem.EnergySys)}</div>
+          <div style={{fontSize:'14px',color: '#626469', flex: 'none', marginLeft: 100}}>{MeasuresStore.getEnergySys(Problem.EnergySys)}</div>
         </div>
       )
     }
