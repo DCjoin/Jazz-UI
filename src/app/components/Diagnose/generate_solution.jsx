@@ -547,7 +547,7 @@ export default class GenerateSolution extends Component {
       DiagnoseAction.checkTitle( this.context.hierarchyId, this.context.router.params.customerId, value, (dulpi) => {
         if( dulpi ) {
           this.setState({
-            errorData: this.state.errorData.setIn(paths, '方案标题不能重复')
+            errorData: this.state.errorData.setIn(paths, I18N.Setting.ECM.NameDuplicateTip)
           });
         } else {
           this.setState({
