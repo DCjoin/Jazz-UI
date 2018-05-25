@@ -271,7 +271,7 @@ export default class Diagnose extends Component {
               Id: problem.Id,
               Name: problem.Name,
             }) ) ))
-            .setIn(['Problem', 'ProblemTypeId'], DiagnoseStore.findProblemById(this.state.selectedId).get('Id'))
+            .setIn(['Problem', 'ProblemTypeId'], DiagnoseStore.findLabelById(this.state.selectedId).get('ProblemTypeId'))
             .setIn(['Problem', 'DataLabelId'], DiagnoseStore.findLabelById(this.state.selectedId).get('Id')).
             setIn(['Problem', 'DiagnoseIds'], [this.state.selectedId]);
   }

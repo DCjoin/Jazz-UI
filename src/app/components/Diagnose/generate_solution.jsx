@@ -356,7 +356,7 @@ export class PlanDetail extends Component {
         {Solutions.size > 1 && <header style={{marginTop: idx && 32}} className='plan-detail-header'>
           <span>{SOLUTION_NAMES[idx]}</span>
         </header>}
-        <div className='field-wrapper flex-bar'>
+        <div className='field-wrapper flex-bar plan-detail-num-bar'>
           <div className='plan-detail-num-panel'>
             <span className='num-icon icon-energy_saving'/>
             <div className='plan-detail-num-title-panel'>
@@ -440,7 +440,7 @@ export class PlanDetail extends Component {
             <TextBox {...this._initTextBoxProps(idx, 'EnergySavingUnit')} style={{borderRadius: 4, height: 26, width: 62}} hintText={'单位'}/>
           </div>
           <div className='plan-detail-num-panel'>
-            <span className='num-icon icon-energy_saving'/>
+            <span className='num-icon icon-hierarchy-fold'/>
             <div className='plan-detail-num-title-panel'>
               <div className='num-title'>{I18N.Setting.Diagnose.ExpectedAnnualCostSaving}</div>
               <TextBox {...this._initTextBoxProps(idx, 'ExpectedAnnualCostSaving')} style={{marginRight: 8, borderRadius: 4, height: 26, width: 102}} hintText={I18N.Setting.Diagnose.Number}/>

@@ -393,7 +393,9 @@ export default class DiagnoseProblem extends Component {
             {this.state.chartData && suggestSolutions && suggestSolutions.size > 0 &&<span title={I18N.Setting.Diagnose.StandardSolutionTip} style={{
               color: '#32ad3d',
               marginRight: 10,
-            }}><span className='icon-glyph'/>{`${suggestSolutions.size + I18N.Setting.Diagnose.NumOfSuggestSolution}`}</span>}
+              cursor: 'pointer',
+              fontSize: '14px',
+            }}><span className='icon-information2' style={{marginRight: 4}}/>{`${suggestSolutions.size + I18N.Setting.Diagnose.NumOfSuggestSolution}`}</span>}
             <GenerateSolutionButton onOpen={this._onSolutionShow.bind(this)} disabled={this.state.chartData===null}/>
             {this._renderIconMenu()}
           </div>}
