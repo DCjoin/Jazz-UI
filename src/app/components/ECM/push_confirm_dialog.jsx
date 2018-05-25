@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import IconButton from 'material-ui/IconButton';
 import FlatButton from 'controls/FlatButton.jsx';
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
@@ -8,10 +8,18 @@ import NewDialog from 'controls/NewDialog.jsx';
 import RaisedButton from 'material-ui/RaisedButton';
 import ImagGroupPanel from 'controls/ImagGroupPanel.jsx';
 import {PlanTitle,ProblemDetail,PlanDetail} from '../Diagnose/generate_solution.jsx';
+import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
+
 
 const NUMBER_REG = /^[1-9]\d*(\.\d+)?$/;
 
 export default class PushConfirmDialog extends Component {
+
+    static contextTypes = {
+        router: PropTypes.object,
+        hierarchyId: PropTypes.string,
+      };
+
   constructor(props) {
     super(props);
     this._onClose=this._onClose.bind(this);
@@ -55,20 +63,25 @@ export default class PushConfirmDialog extends Component {
               if( value && !NUMBER_REG.test(value) ) {
                  error = I18N.Setting.ECM.NumberrTip;
                 }
-            }
-        if( ~paths.indexOf('InvestmentAmount') ) {
-      
-            if( value && !NUMBER_REG.test(value) ) {
-                error = I18N.Setting.ECM.NumberrTip;
-              }
-     
-            }    
+            } 
 
         if( paths.join('') === 'ProblemSolutionTitle' ) {
           if( !value ) {
             error = I18N.Setting.Diagnose.PleaseInput+I18N.Setting.Diagnose.SolutionTitle;
-          }
-        }else if( paths.join('') === 'ProblemEnergySys' ) {
+          }else{
+            DiagnoseAction.checkTitle( this.context.hierarchyId, this.context.router.params.customerId, value, (dulpi) => {
+            if( dulpi ) {
+              this.setState({
+                errorData: this.state.errorData.setIn(paths, I18N.Setting.ECM.NameDuplicateTip)
+              });
+            } else {
+              this.setState({
+                errorData: this.state.errorData.setIn(paths, '')
+              });
+            }
+          })
+        }
+      }else if( paths.join('') === 'ProblemEnergySys' ) {
           if( !value && !this.state.solution.getIn(paths)) {
             error = I18N.Setting.Diagnose.PleaseSelect+I18N.Setting.Diagnose.EnergySys;
           }
@@ -104,20 +117,30 @@ export default class PushConfirmDialog extends Component {
     }
 
     _onClose(){
-      if(MeasuresStore.IsSolutionDisable(this.state.solution.toJS()) || this._hasError()){
-        this.setState({
-          snackBarOpen:true,
-          errorData:this._validateAll()
-        })
-      }else{
-        if(Immutable.is(this.state.solution,this.props.solution)){
-          this.props.onClose()
-        }else{
-          this.setState({
-            saveTipShow:true
+      DiagnoseAction.checkTitle( this.context.hierarchyId, this.context.router.params.customerId, this.state.solution.getIn(["Problem","SolutionTitle"]), (dulpi) => {
+            if( dulpi ) {
+              this.setState({
+                errorData: this._validateAll().setIn(["problem","SolutionTitle"], I18N.Setting.ECM.NameDuplicateTip)
+              });
+            } else {
+                    if(MeasuresStore.IsSolutionDisable(this.state.solution.toJS()) || this._hasError()){
+                        this.setState({
+                          snackBarOpen:true,
+                          errorData:this._validateAll()
+                        })
+                      }else{
+                        if(Immutable.is(this.state.solution,this.props.solution)){
+                          this.props.onClose()
+                        }else{
+                          this.setState({
+                            saveTipShow:true
+                          })
+                        }
+                      } 
+            }
           })
-        }
-      }
+
+
     }
 
      _onChange( paths, value ) {
@@ -144,14 +167,24 @@ export default class PushConfirmDialog extends Component {
       }
 
     _onPush(e){
-       if(MeasuresStore.IsSolutionDisable(this.state.solution.toJS()) || this._hasError()){
-        this.setState({
-          snackBarOpen:true,
-          errorData:this._validateAll()
-        })
-      }else{
-        this.props.onPush(e,this._getSaveSolution().setIn(["Problem","Status"],2))
-      }     
+      DiagnoseAction.checkTitle( this.context.hierarchyId, this.context.router.params.customerId, this.state.solution.getIn(["Problem","SolutionTitle"]), (dulpi) => {
+            if( dulpi ) {
+              this.setState({
+                errorData: this._validateAll().setIn(["problem","SolutionTitle"], I18N.Setting.ECM.NameDuplicateTip)
+              });
+            } else {
+              if(MeasuresStore.IsSolutionDisable(this.state.solution.toJS()) || this._hasError()){
+                  this.setState({
+                    snackBarOpen:true,
+                    errorData:this._validateAll()
+                  })
+                }else{
+                  this.props.onPush(e,this._getSaveSolution().setIn(["Problem","Status"],2))
+                }  
+            }
+          })
+
+          
     }
 
       _onBlur( paths, value ) {
