@@ -543,7 +543,7 @@ export default class GenerateSolution extends Component {
   }
   _onBlur( paths, value ) {
     let errorData = this.state.errorData;
-    if( paths.join('') === 'ProblemSolutionTitle' ) {
+    if( value && paths.join('') === 'ProblemSolutionTitle' ) {
       DiagnoseAction.checkTitle( this.context.hierarchyId, this.context.router.params.customerId, value, (dulpi) => {
         if( dulpi ) {
           this.setState({
@@ -642,9 +642,8 @@ export default class GenerateSolution extends Component {
                 hasError = true;
               }
             } );
-
             DiagnoseAction.checkTitle( this.context.hierarchyId, this.context.router.params.customerId, energySolution.getIn(['Problem', 'SolutionTitle']), (dulpi) => {
-              if( dulpi ) {
+              if( energySolution.getIn(['Problem', 'SolutionTitle']) && dulpi ) {
                 errorData = errorData.setIn(['Problem', 'SolutionTitle'], '方案标题不能重复');
                 hasError = true;
               }

@@ -21,6 +21,13 @@ import ScatterPlotView from './scatter_plot_generate_sulution.jsx';
 import BubbleView from './bubble_generate_solution.jsx';
 import GenerateSolution from '../../Diagnose/generate_solution.jsx';
 // import {GenerateSolution, getTagsByChartData} from './GenerateSolution.jsx';
+import PrivilegeUtil from 'util/privilegeUtil.jsx';
+import PermissionCode from 'constants/PermissionCode.jsx';
+import CurrentUserStore from 'stores/CurrentUserStore.jsx';
+
+function SolutionFull() {
+  return PrivilegeUtil.isFull(PermissionCode.SOLUTION_FULL, CurrentUserStore.getCurrentPrivilege());
+}
 
 const SVG_WIDTH = 750;
 const SVG_HEIGHT = 360;
@@ -35,16 +42,17 @@ const getId = getFromImmu('Id');
 const getName = getFromImmu('Name');
 const TOU_NAME=[I18N.EM.Peak,I18N.EM.Plain,I18N.EM.Valley];
 
-function initSolution(hierarchyId, nodes, svgStrings) {
+function initSolution(hierarchyId, nodes, svgStrings, tagIds) {
   return Immutable.fromJS({
     "Problem": {
       "HierarchyId": hierarchyId,
+      "TagIds": tagIds,
       "Name": "",
       "EnergySys": 0,
       "IsFocus": true,
       "Description": "",
       "Status": 1,
-      "IsConsultant": true,
+      "IsConsultant": SolutionFull(),
       "EnergyProblemImages": nodes.map( node => ({ Id: getId(node), Name: getName(node), Content: svgStrings[getId(node)] }) ),
       "ProblemTypeId": 0,
       "SolutionTitle": "",
@@ -331,7 +339,7 @@ export default class AnalysisGenerateSolution extends Component {
 
   }
   render(){
-    let { hierarchyId, nodes, onRequestClose, router, params } = this.props;
+    let { hierarchyId, nodes, onRequestClose, router, params, tagIds } = this.props;
     return(
       <GenerateSolution
         onCancel={onRequestClose}
@@ -342,7 +350,7 @@ export default class AnalysisGenerateSolution extends Component {
           });
         }}
         renderChart={() => nodes.map(this._renderChart)}
-        energySolution={initSolution(hierarchyId, nodes, this.state.svgStrings)}/>
+        energySolution={initSolution(hierarchyId, nodes, this.state.svgStrings, tagIds)}/>
     )
   }
   /*<GenerateSolution {...this.props} renderChartCmp={this._renderChart}/>*/
