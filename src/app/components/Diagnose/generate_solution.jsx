@@ -506,7 +506,7 @@ PlanDetail.propTypes = {
 }
 PlanDetail.defaultProps = {
 	isView:false,
-  hasPicTitle:true
+  hasPicTitle:false //true 邮件已确认，千里眼产品中，方案图片直接放在方案详情下～不显示“方案图片”几个字
 }
 
 const BACK_DIALOG = 'BACK_DIALOG';
