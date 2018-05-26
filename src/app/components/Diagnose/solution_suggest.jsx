@@ -54,6 +54,7 @@ export default class SolutionSuggest extends Component {
     let { plans, checkedPlan, onChange, onNext, onCustom, onBack, onCancel } = this.props;
     return (
       <div className='solution-suggest'>
+        <div className='solution-suggest-content'>
         <header className='solution-suggest-header'>
           <span className='icon-return' onClick={() => this.setState({dialogKey: BACK_DIALOG})}/>
           {I18N.Setting.Diagnose.SolutionSuggest}
@@ -117,6 +118,7 @@ export default class SolutionSuggest extends Component {
             }} label={I18N.Setting.Diagnose.UsageCustomSolution + ' >'} onClick={onCustom}/>
             <span className='icon-no_ecm'>{I18N.Setting.Diagnose.SolutionSuggestTip2}</span>
           </div>
+        </div>
         </footer>
         <Snackbar style={{
           maxWidth: 'none',
