@@ -844,8 +844,6 @@
   left: 0;
   width: 100%;
   height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
   display: flex;
   flex-direction: column;
   padding-top: 0;
@@ -937,6 +935,16 @@
       text-align: center;
       cursor: pointer;
     }
+  }
+  &-content {
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    padding-top: 0;
+    color: #0f0f0f;
+    align-items: center;
   }
   &-tip {
     width: 800px;
