@@ -868,6 +868,8 @@
     display: flex;
     flex-direction: column;
     z-index: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
 
     &-header {
       height: 70px;
@@ -881,6 +883,7 @@
       text-overflow: ellipsis;
       display: inline-block;
       line-height: 70px;
+      position: relative;
 
       & .icon-close {
         position: absolute;
@@ -893,7 +896,6 @@
     }
 
     & .session-content {
-      width: 800px;
       margin-top: 16px;
     }
 
@@ -902,7 +904,6 @@
       margin-top: 16px;
       padding-top: 10px;
       padding-bottom: 52px;
-      z-index: 2;
     }
   }
 
@@ -993,6 +994,7 @@
     height: 50px;
     background-color: #fbfbfb;
     box-shadow: 0 -1px 4px 0 rgba(0, 0, 0, 0.1);
+    z-index: 2;
 
     & .icon-no_ecm {
       color: #9fa0a4;
