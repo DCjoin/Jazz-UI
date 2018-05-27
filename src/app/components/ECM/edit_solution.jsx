@@ -99,6 +99,13 @@ export default class EditSolution extends Component {
     }
     _onSave(){
       var errorData=this._validateAll();
+      DiagnoseAction.checkTitle( this.context.hierarchyId, this.context.router.params.customerId, this.state.solution.getIn(["Problem","SolutionTitle"]), (dulpi) => {
+            if( dulpi ) {
+              this.setState({
+                snackBarText:I18N.Setting.ECM.RequiredTip,
+                errorData: this._validateAll().setIn(["problem","SolutionTitle"], I18N.Setting.ECM.NameDuplicateTip)
+              });
+            } else {
       if(MeasuresStore.IsSolutionDisable(this.state.solution.toJS()) || this._hasError()){
         this.setState({
           snackBarText:I18N.Setting.ECM.RequiredTip,
@@ -111,7 +118,9 @@ export default class EditSolution extends Component {
             preSolution:this.state.solution
           })
       });
-      }
+    }
+            }
+      })
 
     }
 
@@ -125,6 +134,7 @@ export default class EditSolution extends Component {
       DiagnoseAction.checkTitle( this.context.hierarchyId, this.context.router.params.customerId, this.state.solution.getIn(["Problem","SolutionTitle"]), (dulpi) => {
             if( dulpi ) {
               this.setState({
+                snackBarText:I18N.Setting.ECM.RequiredTip,
                 errorData: this._validateAll().setIn(["problem","SolutionTitle"], I18N.Setting.ECM.NameDuplicateTip)
               });
             } else {
@@ -266,7 +276,7 @@ export default class EditSolution extends Component {
                   <PlanTitle errorData={errorData} isRequired={true} energySolution={this.state.solution} onChange={this._onChange} onBlur={this._onBlur}/>
                 </session>}
                 <session className='session-container'>
-                  <PlanDetail errorData={errorData} hasPicTitle={false} isView={!this.props.hasPriviledge} solutionTitle={PushIsFull()?null:this.state.solution.getIn(['Problem','SolutionTitle'])} isRequired={true} Solutions={this.state.solution.get('Solutions')} onChange={this._onChange} onBlur={this._onBlur}/>
+                  <PlanDetail errorData={errorData} hasPicTitle={false} isView={!this.props.hasPriviledge} solutionTitle={this.state.solution.getIn(['Problem','SolutionTitle'])} isRequired={true} Solutions={this.state.solution.get('Solutions')} onChange={this._onChange} onBlur={this._onBlur}/>
                 </session>
                 <session className='session-container'>
                   <ProblemDetail errorData={errorData} isView={!this.props.hasPriviledge} isRequired={true} energySolution={this.state.solution} onChange={this._onChange} hasEnergySys={false} onBlur={this._onBlur}/>
