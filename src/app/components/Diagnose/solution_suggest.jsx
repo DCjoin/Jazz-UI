@@ -118,8 +118,8 @@ export default class SolutionSuggest extends Component {
             }} label={I18N.Setting.Diagnose.UsageCustomSolution + ' >'} onClick={onCustom}/>
             <span className='icon-no_ecm'>{I18N.Setting.Diagnose.SolutionSuggestTip2}</span>
           </div>
-        </div>
         </footer>
+        </div>
         <Snackbar style={{
           maxWidth: 'none',
           borderRadius: 2,
