@@ -304,7 +304,7 @@ export default class EditSolution extends Component {
               onClick={() => {this.setState({
                               saveTipShow:false
                               },()=>{
-                                this.props.onClose(this.props.isUnread)
+                                this.props.onClose(!Immutable.is(this.state.preSolution,this.props.solution) || this.props.isUnread)
                               })}} />
           ]}
       ><div className="jazz-ecm-measure-viewabletext">{content}</div></NewDialog>
