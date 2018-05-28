@@ -844,8 +844,6 @@
   left: 0;
   width: 100%;
   height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
   display: flex;
   flex-direction: column;
   padding-top: 0;
@@ -868,6 +866,8 @@
     display: flex;
     flex-direction: column;
     z-index: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
 
     &-header {
       height: 70px;
@@ -881,6 +881,7 @@
       text-overflow: ellipsis;
       display: inline-block;
       line-height: 70px;
+      position: relative;
 
       & .icon-close {
         position: absolute;
@@ -893,7 +894,6 @@
     }
 
     & .session-content {
-      width: 800px;
       margin-top: 16px;
     }
 
@@ -902,7 +902,6 @@
       margin-top: 16px;
       padding-top: 10px;
       padding-bottom: 52px;
-      z-index: 2;
     }
   }
 
@@ -916,7 +915,6 @@
     line-height: 24px;
     border-bottom: 1px solid #e6e6e6;
     padding-bottom: 16px;
-    position: relative;
 
     & .icon-close {
       position: absolute;
@@ -937,6 +935,16 @@
       text-align: center;
       cursor: pointer;
     }
+  }
+  &-content {
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    padding-top: 0;
+    color: #0f0f0f;
+    align-items: center;
   }
   &-tip {
     width: 800px;
@@ -994,6 +1002,7 @@
     height: 50px;
     background-color: #fbfbfb;
     box-shadow: 0 -1px 4px 0 rgba(0, 0, 0, 0.1);
+    z-index: 2;
 
     & .icon-no_ecm {
       color: #9fa0a4;
@@ -1149,6 +1158,7 @@
   font-family: Arial;
   font-size: 14px;
   white-space: pre-wrap;
+  word-break: break-all;
   outline: none;
   &:empty:before {
     content: attr(placeholder);

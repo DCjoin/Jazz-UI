@@ -111,18 +111,18 @@ export class Gallery extends Component {
 		let {names, selectedIdx, onLeft, onRight, onDelete, renderContent, isView} = this.props;
 		return (
 			<div className='jazz-scheme-gallery'>
-				<div className='jazz-scheme-gallery-action' style={{position:'absolute',left:'6px',zIndex:'1000'}}>
-					{selectedIdx > 0 && <IconButton iconClassName="icon-left-switch" iconStyle={{fontSize:"32px",opacity:0.85}} style={{width:32,height:32,lineHeight:'32px',padding:'0'}} onTouchTap={onLeft}/>}
+				<div className='jazz-scheme-gallery-action' style={{position:'absolute',left:'1px',zIndex:'1000'}}>
+					{selectedIdx > 0 && <IconButton iconClassName="icon-arrow-left" iconStyle={{fontSize:"32px",opacity:0.85}} style={{width:32,height:32,lineHeight:'32px',padding:'0'}} onTouchTap={onLeft}/>}
 				</div>
 				<div className='jazz-scheme-gallery-content'>
 					<div className='jazz-scheme-gallery-content-header'>
 						{`(${selectedIdx+1}/${names.length})${names[selectedIdx]}`}
-						{names.length > 1 && !isView && <LinkButton className='jazz-scheme-gallery-content-header-delete' label={I18N.Common.Button.Delete} onClick={onDelete}/>}
+						{names.length > 1 && !isView && <span className='jazz-scheme-gallery-content-header-delete icon-delete' onClick={onDelete}/>}
 					</div>
 					{renderContent()}
 				</div>
-				<div className='jazz-scheme-gallery-action' style={{position:'absolute',right:'6px',zIndex:'1000'}}>
-					{selectedIdx < names.length - 1 && <IconButton iconClassName="icon-right-switch" iconStyle={{fontSize:"32px",opacity:0.85}} style={{width:32,height:32,lineHeight:'32px',padding:'0'}} onTouchTap={onRight}/>}
+				<div className='jazz-scheme-gallery-action' style={{position:'absolute',right:'9px',zIndex:'1000'}}>
+					{selectedIdx < names.length - 1 && <IconButton iconClassName="icon-arrow-right" iconStyle={{fontSize:"32px",opacity:0.85}} style={{width:32,height:32,lineHeight:'32px',padding:'0'}} onTouchTap={onRight}/>}
 				</div>
 			</div>
 		);
