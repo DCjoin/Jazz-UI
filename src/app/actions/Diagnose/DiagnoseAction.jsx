@@ -329,12 +329,13 @@ const DiagnoseAction = {
     });
   },
 
-  checkTitle(HierarchyId, CustomerId, SolutionTitle, cb) {
+  checkTitle(HierarchyId, CustomerId, SolutionTitle, cb,ProblemId) {
     Ajax.post(Path.Diagnose.checkTitle, {
       params: {
         HierarchyId,
         CustomerId,
         SolutionTitle,
+        ProblemId
       },
       success: res => {
         if( cb && typeof cb === 'function' ) {
