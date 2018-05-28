@@ -18,7 +18,6 @@ export class EnergySys extends Component {
                       iconButton={<IconButton iconClassName="icon-arrow-unfold" iconStyle={{fontSize:"10px"}} style={{width:14,height:14}}/>}
                       iconStyle={{marginTop:'-12px',padding:'0',right:'15',width:'24px',top:'8px'}}
                       underlineStyle={{border:'none'}}
-                      menuItemStyle={{width:'220px'}}
                       menuStyle={{width:'220px'}}
                       listStyle={{width:'220px'}}
                     value={EnergySys}

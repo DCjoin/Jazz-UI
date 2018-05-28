@@ -79,7 +79,7 @@ export default class PushConfirmDialog extends Component {
                 errorData: this.state.errorData.setIn(paths, '')
               });
             }
-          })
+          }, this.state.solution.getIn(["Problem","Id"]))
         }
       }else if( paths.join('') === 'ProblemEnergySys' ) {
           if( !value && !this.state.solution.getIn(paths)) {
@@ -138,7 +138,7 @@ export default class PushConfirmDialog extends Component {
                         }
                       } 
             }
-          })
+          }, this.state.solution.getIn(["Problem","Id"]))
 
 
     }
@@ -182,7 +182,7 @@ export default class PushConfirmDialog extends Component {
                   this.props.onPush(e,this._getSaveSolution().setIn(["Problem","Status"],2))
                 }  
             }
-          })
+          }, this.state.solution.getIn(["Problem","Id"]))
 
           
     }

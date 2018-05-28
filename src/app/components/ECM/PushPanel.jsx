@@ -487,7 +487,9 @@ export default class PushPanel extends Component {
       </NewDialog>
     )*/
     return(
-      <EditSolution solution={currentSolution} hasRemarkPriviledge={PushIsFull() || PushAndNotPushIsFull()}
+      <EditSolution solution={currentSolution} 
+                    isUnread={displayUnread(this.state.infoTabNo) && !currentSolution.getIn(['Problem','IsRead'])}
+                    hasRemarkPriviledge={PushIsFull() || PushAndNotPushIsFull()}
                                                hasPriviledge={canEdit(createUserId)}
                                                hasStatusPriviledge={canEditStatus(createUserId,this.state.infoTabNo)}
                                                onSave={onSave}

@@ -134,7 +134,7 @@ export class MeasuresItem extends Component {
       var {Problem}=this.props.measure.toJS();
       if(Problem.SolutionTitle!==null && Problem.SolutionTitle!==''){
         return (<div style={{display:"flex",flexDirection:'row',alignItems:'center',overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'}}>
-              <div className="measuresItem-title" title={I18N.format(I18N.Setting.ECM.SolutionTitle,Problem.SolutionTitle)}>{I18N.format(I18N.Setting.ECM.SolutionTitle,Problem.SolutionTitle)}</div>
+              <div className="measuresItem-title" style={{marginRight:'10px'}} title={I18N.format(I18N.Setting.ECM.SolutionTitle,Problem.SolutionTitle)}>{I18N.format(I18N.Setting.ECM.SolutionTitle,Problem.SolutionTitle)}</div>
               {this.props.disabled && <AlarmText text={I18N.Setting.ECM.Uncompleted}/>}</div>)
       }
       else {
@@ -201,10 +201,9 @@ export class MeasuresItem extends Component {
       var {Problem}=this.props.measure.toJS();
 			var styles={
 				box:{
-					width: '18px',
-  				height: '18px',
-					color: '#626469',
-					marginRight:'10px'
+					width: '24px',
+  				height: '24px',
+					color: '#666666',
 				}
 			}
       return(
@@ -212,7 +211,7 @@ export class MeasuresItem extends Component {
           <div className="side">
             {this.props.hasCheckBox && <Checkbox disabled={this.props.disabled} checked={this.props.isChecked}
 																									onCheck={this.props.onChecked}
-																									style={{width:'16px'}}
+																									style={{width:'24px',marginRight:'16px'}}
 																									iconStyle={styles.box}
 																									onClick={(e)=>{
 																										e.stopPropagation();

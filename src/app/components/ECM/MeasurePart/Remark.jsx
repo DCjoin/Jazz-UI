@@ -47,7 +47,7 @@ class AddRemark extends Component{
     // };
     return(
       <div className="add_remark_item">
-        <div className="text-field">
+        <div className="text-field" style={{height:'100px'}}>
               <div className="text">
                   <TextField hintText={I18N.Setting.ECM.AddRemark}
                              hintStyle={{bottom:'15px'}}
@@ -58,6 +58,7 @@ class AddRemark extends Component{
                             underlineShow={false}
                             onChange={(e,value)=>{this.setState({value,errorshow:false})}}/>                                                               
               </div>
+              {this.state.errorshow && <div style={{color:'#dc0a0a',fontSize:'12px',marginTop:'8px'}}>{I18N.Setting.ECM.AddRemarkTip}</div>}
           </div>
         <div style={{marginTop:'24px',display:'flex',alignItems: "baseline"}}>
           <FlatButton
@@ -75,7 +76,7 @@ class AddRemark extends Component{
                           })
                           }
                         }} />
-            {this.state.errorshow && <div style={{color:'#dc0a0a',fontSize:'12px',marginLeft:'8px'}}>{I18N.Setting.ECM.AddRemarkTip}</div>}
+            
           </div>
       </div>
     )
@@ -226,7 +227,7 @@ export default class Remark extends Component {
           <div className="measure-remark">
                       <div className="push-panel-solution-header">
                         <div className="push-panel-solution-header-title">
-                              <FontIcon className="icon-pay-back-period" color="#32ad3c" iconStyle ={ICONSTYLE} style = {STYLE} />
+                              <FontIcon className="icon-note" color="#32ad3c" iconStyle ={ICONSTYLE} style = {STYLE} />
                               <div className="font">{I18N.Remark.Label}</div>
                         </div>
                     </div>
