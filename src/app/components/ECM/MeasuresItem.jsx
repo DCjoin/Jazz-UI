@@ -159,7 +159,6 @@ export class MeasuresItem extends Component {
           height: '18px',
           width: '18px',
           fontSize: '18px',
-          marginTop:'-5px'
         };
       var costIcon=<FontIcon className="icon-cost_saving" iconStyle ={iconStyle} color="#626469" style = {style} />,
           sumIcon=<FontIcon className="icon-investment-amount" iconStyle ={iconStyle} color="#626469" style = {style} />,
