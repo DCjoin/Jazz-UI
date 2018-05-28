@@ -56,7 +56,8 @@ class AddRemark extends Component{
                              value={this.state.value}
                             style={MULTISTYLE}
                             underlineShow={false}
-                            onChange={(e,value)=>{this.setState({value,errorshow:false})}}/>                                                               
+                            onChange={(e,value)=>{this.setState({value,errorshow:false})}}
+                            textareaStyle={{overflowY:'hidden'}}/>                                                               
               </div>
               {this.state.errorshow && <div style={{color:'#dc0a0a',fontSize:'12px',marginTop:'8px'}}>{I18N.Setting.ECM.AddRemarkTip}</div>}
           </div>
