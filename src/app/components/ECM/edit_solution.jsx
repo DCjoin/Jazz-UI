@@ -85,7 +85,7 @@ export default class EditSolution extends Component {
                         ReactDOM.findDOMNode(this.refs.save_column).style.top=0;
                         ReactDOM.findDOMNode(this.refs.save_column).style.width=width+'px';
                         ReactDOM.findDOMNode(this.refs.save_column).style.backgroundColor='#ffffff';
-                        ReactDOM.findDOMNode(this.refs.save_column).style.zIndex=2
+                        ReactDOM.findDOMNode(this.refs.save_column).style.zIndex=1001
 
                 }else{
                        ReactDOM.findDOMNode(this.refs.save_column).style.position='relative';
@@ -99,7 +99,10 @@ export default class EditSolution extends Component {
     }
     _onSave(){
       var errorData=this._validateAll();
-      DiagnoseAction.checkTitle( this.context.hierarchyId, this.context.router.params.customerId, this.state.solution.getIn(["Problem","SolutionTitle"]), (dulpi) => {
+      DiagnoseAction.checkTitle( this.context.hierarchyId, 
+                                 this.context.router.params.customerId, 
+                                 this.state.solution.getIn(["Problem","SolutionTitle"]), 
+                                 (dulpi) => {
             if( dulpi ) {
               this.setState({
                 snackBarText:I18N.Setting.ECM.RequiredTip,
@@ -120,7 +123,8 @@ export default class EditSolution extends Component {
       });
     }
             }
-      })
+      },
+      this.state.solution.getIn(["Problem","Id"]))
 
     }
 
@@ -131,7 +135,10 @@ export default class EditSolution extends Component {
         this.props.onClose()
       }
 
-      DiagnoseAction.checkTitle( this.context.hierarchyId, this.context.router.params.customerId, this.state.solution.getIn(["Problem","SolutionTitle"]), (dulpi) => {
+      DiagnoseAction.checkTitle( this.context.hierarchyId, 
+                                 this.context.router.params.customerId, 
+                                 this.state.solution.getIn(["Problem","SolutionTitle"]), 
+                                 (dulpi) => {
             if( dulpi ) {
               this.setState({
                 snackBarText:I18N.Setting.ECM.RequiredTip,
@@ -154,7 +161,8 @@ export default class EditSolution extends Component {
                                 }
                               }
             }
-          })
+          },
+          this.state.solution.getIn(["Problem","Id"]))
 
 
     }
@@ -191,7 +199,8 @@ export default class EditSolution extends Component {
           if( !value ) {
             error = I18N.Setting.Diagnose.PleaseInput+I18N.Setting.Diagnose.SolutionTitle;
           }else{
-            DiagnoseAction.checkTitle( this.context.hierarchyId, this.context.router.params.customerId, value, (dulpi) => {
+            DiagnoseAction.checkTitle( this.context.hierarchyId, this.context.router.params.customerId, value, 
+                                         (dulpi) => {
             if( dulpi ) {
               this.setState({
                 errorData: this.state.errorData.setIn(paths, I18N.Setting.ECM.NameDuplicateTip)
@@ -201,7 +210,8 @@ export default class EditSolution extends Component {
                 errorData: this.state.errorData.setIn(paths, '')
               });
             }
-          })
+          },
+          this.state.solution.getIn(["Problem","Id"]))
         }
         }else if( paths.join('') === 'ProblemEnergySys' ) {
           if( !value && !this.state.solution.getIn(paths)) {
@@ -256,7 +266,7 @@ export default class EditSolution extends Component {
         <div>
                 <div ref="save_column" className="push-panel-solution-header">
                     <div className="push-panel-solution-header-title">
-                      <FontIcon className="icon-pay-back-period" color="#32ad3c" iconStyle ={ICONSTYLE} style = {STYLE} />
+                      <FontIcon className="icon-savingstatus" color="#32ad3c" iconStyle ={ICONSTYLE} style = {STYLE} />
                       <div className="font">{I18N.Setting.ECM.Solution}</div>
                       <div className="create-user">{I18N.Setting.ECM.PushPanel.CreateUser+'：'+user}</div>
 
@@ -356,7 +366,7 @@ export default class EditSolution extends Component {
         <div className="solution-edit" onScroll={this._onScroll}>
           <div className="content-field">
             <div className="solution-head" style={{display:'flex',alignItems: 'center'}}>
-              <FontIcon className="icon-pay-back-period" color="#32ad3c" iconStyle ={ICONSTYLE} style = {STYLE} />
+              <FontIcon className="icon-distribution" color="#32ad3c" iconStyle ={ICONSTYLE} style = {STYLE} />
               {I18N.Setting.ECM.SolutionAssign}</div>
 
             <IconButton iconClassName="icon-close" style={{padding:0,width:'24px',height:'26px'}} iconStyle={{fontSize:'24px',color:"#9fa0a4"}}

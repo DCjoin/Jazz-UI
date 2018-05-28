@@ -9,21 +9,21 @@ function getItems(status){
   switch (status) {
     case Status.ToBe:
         return[
-          <MenuItem style={{fontSize:'12px',width:'220px'}} primaryText={MeasuresStore.getStatusText(Status.ToBe)} value={Status.ToBe}/>,
-          <MenuItem style={{fontSize:'12px',width:'220px'}} primaryText={MeasuresStore.getStatusText(Status.Canceled)} value={Status.Canceled}/>
+          <MenuItem style={{fontSize:'12px'}} primaryText={MeasuresStore.getStatusText(Status.ToBe)} value={Status.ToBe}/>,
+          <MenuItem style={{fontSize:'12px'}} primaryText={MeasuresStore.getStatusText(Status.Canceled)} value={Status.Canceled}/>
                 ]
       break;
     case Status.Being:
           return[
-            <MenuItem style={{fontSize:'12px',width:'220px'}} primaryText={MeasuresStore.getStatusText(Status.Being)} value={Status.Being}/>,
-            <MenuItem style={{fontSize:'12px',width:'220px'}} primaryText={MeasuresStore.getStatusText(Status.Done)} value={Status.Done}/>,
-            <MenuItem style={{fontSize:'12px',width:'220px'}} primaryText={MeasuresStore.getStatusText(Status.Canceled)} value={Status.Canceled}/>
+            <MenuItem style={{fontSize:'12px'}} primaryText={MeasuresStore.getStatusText(Status.Being)} value={Status.Being}/>,
+            <MenuItem style={{fontSize:'12px'}} primaryText={MeasuresStore.getStatusText(Status.Done)} value={Status.Done}/>,
+            <MenuItem style={{fontSize:'12px'}} primaryText={MeasuresStore.getStatusText(Status.Canceled)} value={Status.Canceled}/>
                   ]
       break;
     case Status.Canceled:
             return[
-              <MenuItem style={{fontSize:'12px',width:'220px'}} primaryText={MeasuresStore.getStatusText(Status.Canceled)} value={Status.Canceled}/>,
-              <MenuItem style={{fontSize:'12px',width:'220px'}} primaryText={MeasuresStore.getStatusText(Status.ToBe)} value={Status.ToBe}/>
+              <MenuItem style={{fontSize:'12px'}} primaryText={MeasuresStore.getStatusText(Status.Canceled)} value={Status.Canceled}/>,
+              <MenuItem style={{fontSize:'12px'}} primaryText={MeasuresStore.getStatusText(Status.ToBe)} value={Status.ToBe}/>
                     ]
       break;
     default:
@@ -44,7 +44,6 @@ export default class StatusCmp extends Component {
                       iconButton={<IconButton iconClassName="icon-arrow-unfold" iconStyle={{fontSize:"10px"}} style={{width:14,height:14}}/>}
                       iconStyle={{marginTop:'-12px',padding:'0',right:'15',width:'24px',top:'8px'}}
                       underlineStyle={{border:'none'}}
-                      menuItemStyle={{width:'220px'}}
                       menuStyle={{width:'220px'}}
                       listStyle={{width:'220px'}}
                       value={this.props.status}

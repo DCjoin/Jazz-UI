@@ -96,22 +96,18 @@ export default class NotPushPanel extends Component {
     }else {
       var styles={
         icon:{
-          width: '18px',
-          height: '18px',
-          color:'#9fa0a4',
-          marginRight:'10px',
-          marginTop:'1px'
+
+          color:'#666666',
+          marginRight:'16px',
+
         },
         label:{
           fontSize: '14px',
-          lineHeight: '1.5',
-          textAlign: 'left',
           color: '#0f0f0f',
           // width:'28px'
         },
         box:{
-          marginRight:'15px',
-          // width:'54px'
+          width:'90px'
         },
         btn:{
           width: '130px',
