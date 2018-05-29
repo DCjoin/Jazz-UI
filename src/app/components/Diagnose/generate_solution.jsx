@@ -362,25 +362,33 @@ export class PlanDetail extends Component {
             <span className='num-icon icon-energy_saving'/>
             <div className='plan-detail-num-title-panel'>
               <div className='num-title'>{I18N.Setting.Diagnose.ExpectedAnnualEnergySaving}</div>
-              <span className='num-text'>{Solutions.getIn([idx, 'ExpectedAnnualEnergySaving'])}</span>
+              <div style={{display:'flex'}}><span className='num-text'>{Solutions.getIn([idx, 'ExpectedAnnualEnergySaving'])}</span>
+              <span className='num-text' style={{fontSize: '12px'}}>{Solutions.getIn([idx, 'EnergySavingUnit'])}</span></div>
+              
             </div>
-            <span className='num-text'>{Solutions.getIn([idx, 'EnergySavingUnit'])}</span>
+            
           </div>
           <div className='plan-detail-num-panel'>
             <span className='num-icon icon-cost_saving'/>
             <div className='plan-detail-num-title-panel'>
               <div className='num-title'>{I18N.Setting.Diagnose.ExpectedAnnualCostSaving}</div>
-              <span className='num-text'>{Solutions.getIn([idx, 'ExpectedAnnualCostSaving'])}</span>
+              <div style={{display:'flex'}}>
+                <span className='num-text'>{Solutions.getIn([idx, 'ExpectedAnnualCostSaving'])}</span>
+              <span className='num-text' style={{fontSize: '12px'}}>{'RMB'}</span>
+              </div>
+              
             </div>
-            <span style={{fontSize: '12px'}} className='num-text'>{'RMB'}</span>
+
           </div>
           <div className='plan-detail-num-panel'>
             <span className='num-icon icon-investment-amount'/>
             <div className='plan-detail-num-title-panel'>
               <div className='num-title'>{I18N.Setting.Diagnose.InvestmentAmount}</div>
-              <span className='num-text'>{Solutions.getIn([idx, 'InvestmentAmount'])}</span>
+              <div style={{display:'flex'}}><span className='num-text'>{Solutions.getIn([idx, 'InvestmentAmount'])}</span>
+              <span className='num-text' style={{fontSize: '12px'}}>{'RMB'}</span></div>
+              
             </div>
-            <span style={{fontSize: '12px'}} className='num-text'>{'RMB'}</span>
+
           </div>
           <div className='plan-detail-num-panel'>
             <span className='num-icon icon-pay-back-period'/>

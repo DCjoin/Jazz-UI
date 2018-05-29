@@ -89,6 +89,7 @@ export default class EditSolution extends Component {
 
                 }else{
                        ReactDOM.findDOMNode(this.refs.save_column).style.position='relative';
+                       ReactDOM.findDOMNode(this.refs.save_column).style.zIndex=1;
                 }
         }
 
@@ -267,7 +268,7 @@ export default class EditSolution extends Component {
                 <div ref="save_column" className="push-panel-solution-header">
                     <div className="push-panel-solution-header-title">
                       <FontIcon className="icon-savingstatus" color="#32ad3c" iconStyle ={ICONSTYLE} style = {STYLE} />
-                      <div className="font">{I18N.Setting.ECM.Solution}</div>
+                      <div className="font" style={{marginLeft:'0'}}>{I18N.Setting.ECM.Solution}</div>
                       <div className="create-user">{I18N.Setting.ECM.PushPanel.CreateUser+'：'+user}</div>
 
                     </div>
