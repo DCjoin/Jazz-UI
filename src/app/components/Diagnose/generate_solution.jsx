@@ -363,32 +363,32 @@ export class PlanDetail extends Component {
             <div className='plan-detail-num-title-panel'>
               <div className='num-title'>{I18N.Setting.Diagnose.ExpectedAnnualEnergySaving}</div>
               <div style={{display:'flex'}}><span className='num-text'>{Solutions.getIn([idx, 'ExpectedAnnualEnergySaving'])}</span>
-              <span className='num-text'>{Solutions.getIn([idx, 'EnergySavingUnit'])}</span></div>
+              <span className='num-text' style={{fontSize: '12px'}}>{Solutions.getIn([idx, 'EnergySavingUnit'])}</span></div>
               
             </div>
             
           </div>
           <div className='plan-detail-num-panel'>
-            <span className='num-icon icon-energy_saving'/>
+            <span className='num-icon icon-cost_saving'/>
             <div className='plan-detail-num-title-panel'>
               <div className='num-title'>{I18N.Setting.Diagnose.ExpectedAnnualCostSaving}</div>
               <div style={{display:'flex'}}>
                 <span className='num-text'>{Solutions.getIn([idx, 'ExpectedAnnualCostSaving'])}</span>
-              <span className='num-text'>{'RMB'}</span>
+              <span className='num-text' style={{fontSize: '12px'}}>{'RMB'}</span>
               </div>
               
             </div>
-            
+
           </div>
           <div className='plan-detail-num-panel'>
             <span className='num-icon icon-investment-amount'/>
             <div className='plan-detail-num-title-panel'>
               <div className='num-title'>{I18N.Setting.Diagnose.InvestmentAmount}</div>
               <div style={{display:'flex'}}><span className='num-text'>{Solutions.getIn([idx, 'InvestmentAmount'])}</span>
-              <span className='num-text'>{'RMB'}</span></div>
+              <span className='num-text' style={{fontSize: '12px'}}>{'RMB'}</span></div>
               
             </div>
-            
+
           </div>
           <div className='plan-detail-num-panel'>
             <span className='num-icon icon-pay-back-period'/>
@@ -449,12 +449,12 @@ export class PlanDetail extends Component {
             <TextBox {...this._initTextBoxProps(idx, 'EnergySavingUnit')} style={{borderRadius: 4, height: 26, width: 62}} hintText={'单位'}/>
           </div>
           <div className='plan-detail-num-panel'>
-            <span className='num-icon icon-hierarchy-fold'/>
+            <span className='num-icon icon-cost_saving'/>
             <div className='plan-detail-num-title-panel'>
               <div className='num-title'>{I18N.Setting.Diagnose.ExpectedAnnualCostSaving}</div>
               <TextBox {...this._initTextBoxProps(idx, 'ExpectedAnnualCostSaving')} style={{marginRight: 8, borderRadius: 4, height: 26, width: 102}} hintText={I18N.Setting.Diagnose.Number}/>
             </div>
-            <span className='num-text'>{'RMB'}</span>
+            <span style={{fontSize: '12px'}} className='num-text'>{'RMB'}</span>
           </div>
           <div className='plan-detail-num-panel'>
             <span className='num-icon icon-investment-amount'/>
@@ -462,7 +462,7 @@ export class PlanDetail extends Component {
               <div className='num-title'>{I18N.Setting.Diagnose.InvestmentAmount}</div>
               <TextBox {...this._initTextBoxProps(idx, 'InvestmentAmount')} style={{marginRight: 8, borderRadius: 4, height: 26, width: 102}} hintText={I18N.Setting.Diagnose.Number}/>
             </div>
-            <span className='num-text'>{'RMB'}</span>
+            <span style={{fontSize: '12px'}} className='num-text'>{'RMB'}</span>
           </div>
           <div className='plan-detail-num-panel'>
             <span className='num-icon icon-pay-back-period'/>

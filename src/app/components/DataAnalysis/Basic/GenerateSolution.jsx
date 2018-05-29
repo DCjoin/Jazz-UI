@@ -111,7 +111,7 @@ export class Gallery extends Component {
 		let {names, selectedIdx, onLeft, onRight, onDelete, renderContent, isView} = this.props;
 		return (
 			<div className='jazz-scheme-gallery'>
-				<div className='jazz-scheme-gallery-action' style={{position:'absolute',left:'1px',zIndex:'1000'}}>
+				<div className='jazz-scheme-gallery-action' style={{position:'absolute',left: 1,zIndex: 1}}>
 					{selectedIdx > 0 && <IconButton iconClassName="icon-arrow-left" iconStyle={{fontSize:"32px",opacity:0.85}} style={{width:32,height:32,lineHeight:'32px',padding:'0'}} onTouchTap={onLeft}/>}
 				</div>
 				<div className='jazz-scheme-gallery-content'>
@@ -121,7 +121,7 @@ export class Gallery extends Component {
 					</div>
 					{renderContent()}
 				</div>
-				<div className='jazz-scheme-gallery-action' style={{position:'absolute',right:'9px',zIndex:'1000'}}>
+				<div className='jazz-scheme-gallery-action' style={{position:'absolute',right: 9,zIndex: 1}}>
 					{selectedIdx < names.length - 1 && <IconButton iconClassName="icon-arrow-right" iconStyle={{fontSize:"32px",opacity:0.85}} style={{width:32,height:32,lineHeight:'32px',padding:'0'}} onTouchTap={onRight}/>}
 				</div>
 			</div>
