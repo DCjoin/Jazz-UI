@@ -47,7 +47,7 @@ class AddRemark extends Component{
     // };
     return(
       <div className="add_remark_item">
-        <div className="text-field" style={{height:'100px'}}>
+        <div className="text-field">
               <div className="text">
                   <TextField hintText={I18N.Setting.ECM.AddRemark}
                              hintStyle={{bottom:'15px'}}
@@ -229,7 +229,7 @@ export default class Remark extends Component {
                       <div className="push-panel-solution-header">
                         <div className="push-panel-solution-header-title">
                               <FontIcon className="icon-note" color="#32ad3c" iconStyle ={ICONSTYLE} style = {STYLE} />
-                              <div className="font">{I18N.Remark.Label}</div>
+                              <div className="font" style={{marginLeft:'0'}}>{I18N.Remark.Label}</div>
                         </div>
                     </div>
                     {this.props.canEdit && <AddRemark onSave={this._onSave.bind(this)} onCancel={this._onCancel.bind(this)}/>}
