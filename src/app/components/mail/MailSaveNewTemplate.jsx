@@ -1,13 +1,13 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Checkbox, TextField } from 'material-ui';
 import MailAction from '../../actions/MailAction.jsx';
 import MailStore from '../../stores/MailStore.jsx';
-
-let MailSaveNewTemplate = React.createClass({
+var createReactClass = require('create-react-class');
+let MailSaveNewTemplate = createReactClass({
   propTypes: {
-    errorText: React.PropTypes.string,
+    errorText: PropTypes.string,
   },
   _onCheck: function() {
     var checked = this.refs.checkbox.isChecked();

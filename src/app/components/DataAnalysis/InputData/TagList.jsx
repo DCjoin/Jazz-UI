@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
+import PropTypes from 'prop-types';
 import InputDataStore from 'stores/DataAnalysis/InputDataStore.jsx';
 import {CircularProgress,FontIcon,FlatButton,TextField} from 'material-ui';
 import classNames from 'classnames';
@@ -134,9 +135,9 @@ export default class TagList extends Component {
   }
 }
 
-TagList.propTypes = {
-  selectedTag:React.PropTypes.object,
-  hierarchyId:React.PropTypes.number,
-	customerId:React.PropTypes.number,
-  onSelectedTagChange:React.PropTypes.func,
+TagList.propTypes= {
+  selectedTag:PropTypes.object,
+  hierarchyId:PropTypes.number,
+	customerId:PropTypes.number,
+  onSelectedTagChange:PropTypes.func,
 };

@@ -2,8 +2,8 @@
 
 var React = require('react');
 import { DropDownMenu } from 'material-ui';
-
-var MutableDropMenu = React.createClass({
+var createReactClass = require('create-react-class');
+var MutableDropMenu = createReactClass({
 
  	componentWillReceiveProps:function(){
         this.setState({rendered:false},function(){

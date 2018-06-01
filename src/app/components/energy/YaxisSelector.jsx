@@ -3,14 +3,14 @@ import React from "react";
 import {Dialog, DropDownMenu, TextField, FontIcon, IconButton} from 'material-ui';
 import NewDialog from '../../controls/NewDialog.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
-
+var createReactClass = require('create-react-class');
 import CommonFuns from '../../util/Util.jsx';
 
 let {isNumeric} = CommonFuns;
 
 var _currentChartObj = null,
   _storedConfig = null;
-let YaxisSelector = React.createClass({
+let YaxisSelector = createReactClass({
   getInitialState() {
     return {};
   },
@@ -132,7 +132,7 @@ let YaxisSelector = React.createClass({
 
 });
 
-var YaxisDialog = React.createClass({
+var YaxisDialog = createReactClass({
   getInitialState(){
     return{
       show:false
@@ -376,7 +376,7 @@ var YaxisDialog = React.createClass({
   }
 });
 
-var MaxMinPair = React.createClass({
+var MaxMinPair = createReactClass({
   getInitialState() {
     let maxValue = null,
       minValue = null;

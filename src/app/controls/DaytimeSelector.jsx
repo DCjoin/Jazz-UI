@@ -3,17 +3,18 @@ import {DropDownMenu} from 'material-ui';
 import MenuItem from 'material-ui/MenuItem';
 import classSet from 'classnames';
 import CommonFuns from '../util/Util.jsx';
-
-var DaytimeSelector = React.createClass({
+var createReactClass = require('create-react-class');
+import PropTypes from 'prop-types';
+var DaytimeSelector = createReactClass({
   propTypes: {
-    from: React.PropTypes.number,
-    step: React.PropTypes.number,
-    to: React.PropTypes.number,
-    minute: React.PropTypes.number,
-    style: React.PropTypes.object,
+    from: PropTypes.number,
+    step: PropTypes.number,
+    to: PropTypes.number,
+    minute: PropTypes.number,
+    style: PropTypes.object,
 
-    isViewStatus: React.PropTypes.bool,
-    onChange:React.PropTypes.func
+    isViewStatus: PropTypes.bool,
+    onChange:PropTypes.func
   },
   getDefaultProps: function() {
     return {

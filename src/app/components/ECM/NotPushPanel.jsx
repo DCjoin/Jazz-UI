@@ -464,8 +464,8 @@ return(
 
   }
 }
-
-  NotPushPanel.propTypes = {
-    hierarchyId:React.PropTypes.number,
-    generatePositon:React.PropTypes.Object,
+import PropTypes from 'prop-types';
+  NotPushPanel.propTypes= {
+    hierarchyId:PropTypes.number,
+    generatePositon:PropTypes.Object,
   };

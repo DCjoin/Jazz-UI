@@ -1,6 +1,7 @@
 'use strict';
 
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from 'prop-types';
 import classnames from "classnames";
 import { Toggle } from 'material-ui';
 import isFunction from 'lodash-es/isFunction';
@@ -27,7 +28,7 @@ import {isNumeric} from 'util/Util.jsx';
 
 
 class ScanDialog extends Component {
-  static propTypes = {
+  static propTypes= {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     onScan: PropTypes.func.isRequired,
@@ -123,22 +124,22 @@ class ScanDialog extends Component {
   }
 }
 
-
-var VEEDetail = React.createClass({
+var createReactClass = require('create-react-class');
+var VEEDetail = createReactClass({
 
   propTypes: {
-    formStatus: React.PropTypes.string,
-    infoTab: React.PropTypes.bool,
-    rule: React.PropTypes.object,
-    setEditStatus: React.PropTypes.func,
-    handlerCancel: React.PropTypes.func,
-    handleSaveRule: React.PropTypes.func,
-    handleDeleteRule: React.PropTypes.func,
-    handlerSwitchTab: React.PropTypes.func,
-    toggleList: React.PropTypes.func,
-    closedList: React.PropTypes.bool,
-    merge: React.PropTypes.func,
-    onManualScan: React.PropTypes.func.isRequired,
+    formStatus: PropTypes.string,
+    infoTab: PropTypes.bool,
+    rule: PropTypes.object,
+    setEditStatus: PropTypes.func,
+    handlerCancel: PropTypes.func,
+    handleSaveRule: PropTypes.func,
+    handleDeleteRule: PropTypes.func,
+    handlerSwitchTab: PropTypes.func,
+    toggleList: PropTypes.func,
+    closedList: PropTypes.bool,
+    merge: PropTypes.func,
+    onManualScan: PropTypes.func.isRequired,
   },
   getInitialState: function() {
     return {

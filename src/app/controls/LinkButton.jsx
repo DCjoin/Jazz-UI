@@ -1,8 +1,8 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from 'react';
 import _ from 'lodash-es';
-
+var createReactClass = require('create-react-class');
 const DEFAULT_STYLE = {
   labelStyle: {
     color: "#32ad3c",
@@ -13,16 +13,16 @@ const DEFAULT_STYLE = {
   disableColor: "#cbcbcb"
 };
 
-var LinkButton = React.createClass({
+var LinkButton = createReactClass({
 
   propTypes: {
-    className: React.PropTypes.string,
-    iconName: React.PropTypes.string,
-    disabled: React.PropTypes.bool,
-    hoverColor: React.PropTypes.string,
-    disableColor: React.PropTypes.string,
-    label: React.PropTypes.string.isRequired,
-    labelStyle: React.PropTypes.object,
+    className: PropTypes.string,
+    iconName: PropTypes.string,
+    disabled: PropTypes.bool,
+    hoverColor: PropTypes.string,
+    disableColor: PropTypes.string,
+    label: PropTypes.string.isRequired,
+    labelStyle: PropTypes.object,
   },
 
   getInitialState: function() {

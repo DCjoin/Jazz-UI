@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
+import PropTypes from 'prop-types';
 import NewFlatButton from 'controls/NewFlatButton.jsx';
 import FontIcon from 'material-ui/FontIcon';
 import InputDataAction from 'actions/DataAnalysis/InputDataAction.jsx';
@@ -111,10 +112,10 @@ class DateTimeItem extends Component {
 	}
 }
 
-DateTimeItem.propTypes = {
-  data:React.PropTypes.object,
-	onValueChange:React.PropTypes.func,
-	CalculationStep:React.PropTypes.number,
+DateTimeItem.propTypes= {
+  data:PropTypes.object,
+	onValueChange:PropTypes.func,
+	CalculationStep:PropTypes.number,
 };
 
 export default class DataPanel extends Component {
@@ -479,6 +480,6 @@ export default class DataPanel extends Component {
 }
 
 
-DataPanel.propTypes = {
-  selectedTag:React.PropTypes.object,
+DataPanel.propTypes= {
+  selectedTag:PropTypes.object,
 };

@@ -1,22 +1,23 @@
 'use strict';
 import React from "react";
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import CommonFuns from '../util/Util.jsx';
 import ViewableDatePicker from '../controls/ViewableDatePicker.jsx';
 import CalendarTime from '../controls/CalendarTime.jsx';
-
+var createReactClass = require('create-react-class');
 let {hourPickerData, dateAdd} = CommonFuns;
 
 let _isStart = null;
 
-let DateTimeSelector = React.createClass({
+let DateTimeSelector = createReactClass({
   propTypes: {
-    startDate: React.PropTypes.object,
-    endDate: React.PropTypes.object,
-    startTime: React.PropTypes.number,
-    endTime: React.PropTypes.number,
-    showTime: React.PropTypes.bool,
-    isTimeFixed:React.PropTypes.bool,
+    startDate: PropTypes.object,
+    endDate: PropTypes.object,
+    startTime: PropTypes.number,
+    endTime: PropTypes.number,
+    showTime: PropTypes.bool,
+    isTimeFixed:PropTypes.bool,
   },
   getDefaultProps(){
     return {

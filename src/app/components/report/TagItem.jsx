@@ -4,9 +4,9 @@ import React from 'react';
 import { Checkbox, FontIcon } from 'material-ui';
 import CommonFuns from '../../util/Util.jsx';
 import classNames from 'classnames';
+var createReactClass = require('create-react-class');
 
-
-let TagItem = React.createClass({
+let TagItem = createReactClass({
   getInitialState: function() {
     return {
 

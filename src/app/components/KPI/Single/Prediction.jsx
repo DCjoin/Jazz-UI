@@ -1,5 +1,5 @@
 'use strict';
-import React, {Component,PropTypes} from 'react';
+import React, {Component} from 'react';
 import classnames from 'classnames';
 import Immutable from 'immutable';
 import FontIcon from 'material-ui/FontIcon';
@@ -16,7 +16,7 @@ import TagSelect from './TagSelect.jsx';
 import {DataConverter} from 'util/Util.jsx';
 import CommonFuns from 'util/Util.jsx';
 import MonthKPIStore from 'stores/KPI/MonthKPIStore.jsx';
-
+import PropTypes from 'prop-types';
 function getUom(uomId){
   if(uomId){
     let uom=CommonFuns.getUomById(uomId).Code;
@@ -29,7 +29,7 @@ function getUom(uomId){
 export default class Prediction extends Component {
 
   static contextTypes = {
-		router: React.PropTypes.object,
+		router: PropTypes.object,
 	};
 
   constructor(props) {
@@ -319,8 +319,8 @@ Prediction.propTypes={
     Year:PropTypes.number,
     uomId:PropTypes.number || any,
     tag:PropTypes.object,
-    hierarchyId:React.PropTypes.number,
-    hierarchyName:React.PropTypes.string,
-    isViewStatus:React.PropTypes.bool,
-    buildingInfo:React.PropTypes.object,
+    hierarchyId:PropTypes.number,
+    hierarchyName:PropTypes.string,
+    isViewStatus:PropTypes.bool,
+    buildingInfo:PropTypes.object,
 };

@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import ReactDom from 'react-dom';
 import classNames from 'classnames';
 import { CircularProgress } from 'material-ui';
@@ -12,29 +13,29 @@ import Dialog from 'controls/NewDialog.jsx';
 import UploadForm from 'controls/UploadForm.jsx';
 import TagAction from 'actions/customerSetting/TagAction.jsx';
 import downloadFile from 'actions/download_file.js';
-
-let TagList = React.createClass({
+var createReactClass = require('create-react-class');
+let TagList = createReactClass({
   propTypes: {
-    onAddBtnClick: React.PropTypes.func,
-    onImportBtnClick: React.PropTypes.func,
-    onExportBtnClick: React.PropTypes.func,
-    onPrePage: React.PropTypes.func,
-    onNextPage: React.PropTypes.func,
-    onJumpToPage: React.PropTypes.func,
-    curPageNum: React.PropTypes.number,
-    totalPageNum: React.PropTypes.number,
-    hasJumpBtn: React.PropTypes.bool,
-    onSearch: React.PropTypes.func,
-    onFilter: React.PropTypes.func,
-    onSearchCleanButtonClick: React.PropTypes.func,
-    isFilter: React.PropTypes.bool,
-    filterObj: React.PropTypes.object,
-    contentItems: React.PropTypes.object,
-    isAddStatus: React.PropTypes.bool,
-    tagType: React.PropTypes.number
+    onAddBtnClick: PropTypes.func,
+    onImportBtnClick: PropTypes.func,
+    onExportBtnClick: PropTypes.func,
+    onPrePage: PropTypes.func,
+    onNextPage: PropTypes.func,
+    onJumpToPage: PropTypes.func,
+    curPageNum: PropTypes.number,
+    totalPageNum: PropTypes.number,
+    hasJumpBtn: PropTypes.bool,
+    onSearch: PropTypes.func,
+    onFilter: PropTypes.func,
+    onSearchCleanButtonClick: PropTypes.func,
+    isFilter: PropTypes.bool,
+    filterObj: PropTypes.object,
+    contentItems: PropTypes.object,
+    isAddStatus: PropTypes.bool,
+    tagType: PropTypes.number
   },
   contextTypes:{
-      currentRoute: React.PropTypes.object
+      currentRoute: PropTypes.object
   },
   getInitialState: function() {
     return {

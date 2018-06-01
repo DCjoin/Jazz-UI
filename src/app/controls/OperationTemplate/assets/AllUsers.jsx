@@ -5,13 +5,14 @@ import { Checkbox, FlatButton, TextField, Paper } from 'material-ui';
 import UserAction from '../../../actions/UserAction.jsx';
 import UserStore from '../../../stores/UserStore.jsx';
 import Immutable from 'immutable';
-
-var UserItem = React.createClass({
+import PropTypes from 'prop-types';
+var createReactClass = require('create-react-class');
+var UserItem = createReactClass({
   propTypes: {
-    user: React.PropTypes.object,
-    status: React.PropTypes.bool,
-    titleStyle: React.PropTypes.object,
-    boxStyle: React.PropTypes.object,
+    user: PropTypes.object,
+    status: PropTypes.bool,
+    titleStyle: PropTypes.object,
+    boxStyle: PropTypes.object,
   },
   _onClick: function() {
     UserAction.setUserStatus(this.props.user, !this.props.status);
@@ -60,9 +61,9 @@ var UserItem = React.createClass({
       )
   }
 });
-var AllUsers = React.createClass({
+var AllUsers = createReactClass({
   propTypes: {
-    users: React.PropTypes.object,
+    users: PropTypes.object,
   },
   getInitialState: function() {
     return {

@@ -10,7 +10,7 @@ import TagAction from 'actions/TagAction.jsx';
 import TagMenu from '../../tag/TagMenu.jsx';
 import Pagination from 'controls/paging/Pagination.jsx';
 import CommodityStore from 'stores/CommodityStore.jsx';
-
+import PropTypes from 'prop-types';
 var filters = null;
 var timeoutID = null;
 var customerId=null;
@@ -20,7 +20,7 @@ var total=0;
 export default class TagDrawer extends Component {
 
   contextTypes:{
-    router: React.PropTypes.object,
+    router: PropTypes.object,
   }
 
   constructor(props) {
@@ -305,8 +305,8 @@ export default class TagDrawer extends Component {
   }
 }
 
-TagDrawer.propTypes = {
-	hierarchyId:React.PropTypes.number,
-  isBuilding:React.PropTypes.bool,
-  customerId:React.PropTypes.number,
+TagDrawer.propTypes= {
+	hierarchyId:PropTypes.number,
+  isBuilding:PropTypes.bool,
+  customerId:PropTypes.number,
 };

@@ -1,4 +1,5 @@
 'use strict';
+import PropTypes from 'prop-types';
 import React from "react";
 import moment from 'moment';
 import classNames from 'classnames';
@@ -8,11 +9,11 @@ import CommonFuns from '../../util/Util.jsx';
 import MapAction from '../../actions/MapAction.jsx';
 import MapStore from '../../stores/MapStore.jsx';
 import ClickAway from "../../controls/ClickAwayListener.jsx";
-
-let DatePicker = React.createClass({
+var createReactClass = require('create-react-class');
+let DatePicker = createReactClass({
   //mixins: [Navigation, State, Mixins.ClickAwayable],
   propTypes: {
-    onMenuItemClick: React.PropTypes.func
+    onMenuItemClick: PropTypes.func
   },
   getInitialState: function() {
     MapStore.setSelectedDate(5);

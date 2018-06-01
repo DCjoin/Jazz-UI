@@ -1,5 +1,5 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from "react";
 import classnames from "classnames";
 import { formStatus } from '../../../constants/FormStatus.jsx';
@@ -7,14 +7,14 @@ import { dataStatus } from '../../../constants/DataStatus.jsx';
 import ViewableTextField from '../../../controls/ViewableTextField.jsx';
 import ViewableTextFieldUtil from '../../../controls/ViewableTextFieldUtil.jsx';
 import Regex from '../../../constants/Regex.jsx';
+var createReactClass = require('create-react-class');
 
-
-var DimBasic = React.createClass({
+var DimBasic = createReactClass({
 
   propTypes: {
-    selectedNode: React.PropTypes.object,
-    merge: React.PropTypes.func,
-    formStatus: React.PropTypes.string,
+    selectedNode: PropTypes.object,
+    merge: PropTypes.func,
+    formStatus: PropTypes.string,
   },
   //mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
   _renderDetail: function() {

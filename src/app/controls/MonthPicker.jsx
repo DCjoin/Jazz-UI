@@ -1,5 +1,5 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from 'react';
 import TextField from 'material-ui/TextField';
 import moment from 'moment';
@@ -15,10 +15,10 @@ const pattern3 = /^\d{4}\d{2}$/;
 const format3 = "YYYYMM";
 
 class DatePicker extends React.Component {
-  static propTypes = {
-    onChange: React.PropTypes.func.isRequired,
-    value: React.PropTypes.string,
-    locale:React.PropTypes.string,
+  static propTypes= {
+    onChange: PropTypes.func.isRequired,
+    value: PropTypes.string,
+    locale:PropTypes.string,
   };
 
   constructor(props) {
@@ -80,17 +80,17 @@ class DatePicker extends React.Component {
 }
 @ClickAway
 export default class MonthPicker extends React.Component {
-  static propTypes = {
-    onChange: React.PropTypes.func.isRequired,
-    value: React.PropTypes.string,
-    title: React.PropTypes.string,
-    name: React.PropTypes.string,
-    minDate: React.PropTypes.object,
-    minDateError: React.PropTypes.string,
-    maxDate: React.PropTypes.object,
-    maxDateError: React.PropTypes.string,
-    errorText:React.PropTypes.string,
-    width: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
+  static propTypes= {
+    onChange: PropTypes.func.isRequired,
+    value: PropTypes.string,
+    title: PropTypes.string,
+    name: PropTypes.string,
+    minDate: PropTypes.object,
+    minDateError: PropTypes.string,
+    maxDate: PropTypes.object,
+    maxDateError: PropTypes.string,
+    errorText:PropTypes.string,
+    width: PropTypes.oneOfType([PropTypes.number.string]),
   };
 
   constructor(props) {

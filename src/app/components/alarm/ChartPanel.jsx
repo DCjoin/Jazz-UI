@@ -1,5 +1,6 @@
 'use strict';
 import React from "react";
+import PropTypes from 'prop-types';
 import Immutable from 'immutable';
 import ChartMixins from '../energy/ChartMixins.jsx';
 import { FontIcon, IconButton, DropDownMenu, Dialog, RaisedButton, CircularProgress } from 'material-ui';
@@ -21,6 +22,7 @@ import ErrorStepDialog from './ErrorStepDialog.jsx';
 import BaselineCfg from '../setting/BaselineCfg.jsx';
 import ButtonMenu from 'controls/ButtonMenu.jsx';
 import ExtendableMenuItem from 'controls/ExtendableMenuItem.jsx';
+var createReactClass = require('create-react-class');
 
 let Menu = require('material-ui/Menu');
 let MenuItem = require('material-ui/MenuItem');
@@ -68,10 +70,10 @@ const searchDate = [{
     text: '去年'
   }];
 
-let ChartPanel = React.createClass({
+let ChartPanel = createReactClass({
   //mixins: [ChartMixins],
   propTypes: {
-    isSettingChart: React.PropTypes.bool
+    isSettingChart: PropTypes.bool
   },
   _onLoadingStatusChange() {
     let isSettingChart = this.props.isSettingChart,

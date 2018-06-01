@@ -11,7 +11,7 @@ import TBSettingAction from '../../actions/TBSettingAction.jsx';
 import TBSettingStore from '../../stores/TBSettingStore.jsx';
 import TagStore from '../../stores/TagStore.jsx';
 import ViewableDatePicker from '../../controls/ViewableDatePicker.jsx';
-
+import PropTypes from 'prop-types';
 var formatDate = function(date) {
   var m = (date.getMonth() + 1),
     d = date.getDate();
@@ -65,18 +65,19 @@ var datetimeTojson = function(date, time) {
   var d = mergeDateTime(date, time);
   return CommonFuns.DataConverter.DatetimeToJson(d);
 };
-var SpecialItem = React.createClass({
+var createReactClass = require('create-react-class');
+var SpecialItem = createReactClass({
   propTypes: {
-    tag: React.PropTypes.object,
-    year: React.PropTypes.number,
-    index: React.PropTypes.number,
-    settingId: React.PropTypes.number,
-    start: React.PropTypes.string,
-    end: React.PropTypes.string,
-    value: React.PropTypes.number,
-    isViewStatus: React.PropTypes.bool,
-    onRemove: React.PropTypes.func,
-    onDateTimeChange: React.PropTypes.func,
+    tag: PropTypes.object,
+    year: PropTypes.number,
+    index: PropTypes.number,
+    settingId: PropTypes.number,
+    start: PropTypes.string,
+    end: PropTypes.string,
+    value: PropTypes.number,
+    isViewStatus: PropTypes.bool,
+    onRemove: PropTypes.func,
+    onDateTimeChange: PropTypes.func,
   },
 
   getInitialState: function() {

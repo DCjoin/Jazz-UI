@@ -106,12 +106,12 @@ export default class LabelDetail extends Component {
     )
   }
 }
-
+import PropTypes from 'prop-types';
 LabelDetail.propTypes={
-  isFromProbem:React.PropTypes.bool,
-  selectedNode:React.PropTypes.object,
-	isBasic:React.PropTypes.bool,
-	addLabel:React.PropTypes.object,
-	formStatus:React.PropTypes.any,
-  onEdit:React.PropTypes.func
+  isFromProbem:PropTypes.bool,
+  selectedNode:PropTypes.object,
+	isBasic:PropTypes.bool,
+	addLabel:PropTypes.object,
+	formStatus:PropTypes.any,
+  onEdit:PropTypes.func
 }

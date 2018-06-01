@@ -10,15 +10,16 @@ import OrigamiPanel from '../../controls/OrigamiPanel.jsx';
 import CurrentUserStore from '../../stores/CurrentUserStore.jsx';
 import { getCookie } from '../../util/Util.jsx';
 import PermissionCode from '../../constants/PermissionCode.jsx';
-
+var createReactClass = require('create-react-class');
+import PropTypes from 'prop-types';
 function currentUser() {
   return CurrentUserStore.getCurrentUser();
 }
 
-var FolderItem = React.createClass({
+var FolderItem = createReactClass({
   propTypes: {
-    nodeData: React.PropTypes.object,
-    onOperationSelect: React.PropTypes.func,
+    nodeData: PropTypes.object,
+    onOperationSelect: PropTypes.func,
   },
   _onMenuSelect: function(e, item) {
     let menuIndex = parseInt(item.key);
@@ -155,12 +156,12 @@ var FolderItem = React.createClass({
     )
   }
 });
-var FolderDetailPanel = React.createClass({
+var FolderDetailPanel = createReactClass({
 
   propTypes: {
-    onToggle: React.PropTypes.func,
-    nodeData: React.PropTypes.object,
-    onOperationSelect: React.PropTypes.func,
+    onToggle: PropTypes.func,
+    nodeData: PropTypes.object,
+    onOperationSelect: PropTypes.func,
   },
   _onTitleMenuClick: function() {
     this.setState({

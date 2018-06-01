@@ -1,5 +1,5 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from "react";
 import classnames from "classnames";
 import Panel from '../../../controls/MainContentPanel.jsx';
@@ -11,21 +11,21 @@ import Dialog from '../../../controls/NewDialog.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
 import Basic from './DimBasic.jsx';
 import MonitorTag from '../MonitorTag.jsx';
-
-var Dim = React.createClass({
+var createReactClass = require('create-react-class');
+var Dim = createReactClass({
 
   propTypes: {
-    formStatus: React.PropTypes.string,
-    infoTabNo: React.PropTypes.number,
-    selectedNode: React.PropTypes.object,
-    setEditStatus: React.PropTypes.func,
-    handlerCancel: React.PropTypes.func,
-    handleSave: React.PropTypes.func,
-    handleDelete: React.PropTypes.func,
-    handlerSwitchTab: React.PropTypes.func,
-    toggleList: React.PropTypes.func,
-    closedList: React.PropTypes.bool,
-    merge: React.PropTypes.func,
+    formStatus: PropTypes.string,
+    infoTabNo: PropTypes.number,
+    selectedNode: PropTypes.object,
+    setEditStatus: PropTypes.func,
+    handlerCancel: PropTypes.func,
+    handleSave: PropTypes.func,
+    handleDelete: PropTypes.func,
+    handlerSwitchTab: PropTypes.func,
+    toggleList: PropTypes.func,
+    closedList: PropTypes.bool,
+    merge: PropTypes.func,
   },
   //mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
   getInitialState: function() {

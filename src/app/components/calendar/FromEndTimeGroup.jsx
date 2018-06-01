@@ -4,9 +4,9 @@ import React from "react";
 import FromEndTime from '../../controls/FromEndTime.jsx';
 import CalendarAction from '../../actions/CalendarAction.jsx';
 import CalendarStore from '../../stores/CalendarStore.jsx';
+var createReactClass = require('create-react-class');
 
-
-var FromEndTimeGroup = React.createClass({
+var FromEndTimeGroup = createReactClass({
   getInitialState: function() {
     return {
       errorTextArr: CalendarStore.getCalendarErrorText()

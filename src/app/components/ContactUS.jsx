@@ -1,11 +1,12 @@
 'use strict';
 
 import React from 'react';
+import PropTypes from 'prop-types';
+var createReactClass = require('create-react-class');
 
-
-var ContactUS = React.createClass({
+var ContactUS = createReactClass({
   contextTypes: {
-    router: React.PropTypes.func
+    router: PropTypes.func
   },
 
   render() {

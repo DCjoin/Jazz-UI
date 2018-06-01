@@ -4,8 +4,8 @@ import React from "react";
 import FromEndDateItem from '../../controls/FromEndDateItem.jsx';
 import CalendarAction from '../../actions/CalendarAction.jsx';
 import CalendarStore from '../../stores/CalendarStore.jsx';
-
-var FromEndDateGroup = React.createClass({
+var createReactClass = require('create-react-class');
+var FromEndDateGroup = createReactClass({
   getInitialState: function() {
     return {
       errorTextArr: CalendarStore.getCalendarErrorText()

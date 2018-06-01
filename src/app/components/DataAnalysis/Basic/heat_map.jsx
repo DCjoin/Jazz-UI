@@ -4,7 +4,7 @@ import Highcharts from '../../highcharts/Highcharts.jsx';
 import moment from'moment';
 import Immutable from 'immutable';
 import AlarmTagStore from 'stores/AlarmTagStore.jsx';
-
+import PropTypes from 'prop-types';
 require("../../../lib/map.src.js");
 require("../../../lib/heatmap.src.js");
 
@@ -165,10 +165,10 @@ export default class HeatMap extends Component {
 
 }
 
-HeatMap.propTypes = {
-  // AnalysisPanel:React.PropTypes.object,
-  startDate:React.PropTypes.number,
-  endDate:React.PropTypes.number,
-	energyData:React.PropTypes.object,
-  isFromSolution:React.PropTypes.bool
+HeatMap.propTypes= {
+  // AnalysisPanel:PropTypes.object,
+  startDate:PropTypes.number,
+  endDate:PropTypes.number,
+	energyData:PropTypes.object,
+  isFromSolution:PropTypes.bool
 };

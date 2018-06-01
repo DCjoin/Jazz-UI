@@ -1,6 +1,7 @@
 'use strict';
 
 import React from "react";
+import PropTypes from 'prop-types';
 import ReactDom from 'react-dom';
 import CircularProgress from 'material-ui/CircularProgress';
 import TextField from 'material-ui/TextField';
@@ -10,7 +11,7 @@ import TagAction from '../../../actions/customerSetting/TagAction.jsx';
 import classnames from "classnames";
 import { List} from 'immutable';
 import Regex from '../../../constants/Regex.jsx';
-
+var createReactClass = require('create-react-class');
 function isValid(number){
   if(number===null || number==="") return true;
   //非数字
@@ -25,14 +26,14 @@ function isValid(number){
 let j2d = CommonFuns.DataConverter.JsonToDateTime;
 let dateItem = [],
   indexItem = [];
-let ListItem = React.createClass({
+let ListItem = createReactClass({
   propTypes: {
-    isRawData:React.PropTypes.bool,
-    time: React.PropTypes.string,
-    data: React.PropTypes.object,
-    onClick: React.PropTypes.func,
-    isSelected: React.PropTypes.bool,
-    onDataChange:React.PropTypes.func,
+    isRawData:PropTypes.bool,
+    time: PropTypes.string,
+    data: PropTypes.object,
+    onClick: PropTypes.func,
+    isSelected: PropTypes.bool,
+    onDataChange:PropTypes.func,
   },
   getInitialState(){
     return{
@@ -119,11 +120,11 @@ let ListItem = React.createClass({
   },
 });
 
-let RawDataList = React.createClass({
+let RawDataList = createReactClass({
   propTypes: {
-    isRawData: React.PropTypes.bool,
-    step: React.PropTypes.number,
-    onRawDataChange:React.PropTypes.func,
+    isRawData: PropTypes.bool,
+    step: PropTypes.number,
+    onRawDataChange:PropTypes.func,
   },
   getInitialState: function() {
     return {

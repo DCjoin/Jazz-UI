@@ -14,7 +14,7 @@ import Prediction from './GroupPrediction.jsx';
 import ViewableTextField from 'controls/ViewableTextField.jsx';
 import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx';
 import {Type} from 'constants/actionType/KPI.jsx';
-
+import PropTypes from 'prop-types';
 export default class DosageMonthConfig extends Component {
 
   constructor(props) {
@@ -226,11 +226,11 @@ export default class DosageMonthConfig extends Component {
 				ref="actionBar" status={formStatus.EDIT} onSave={this._onSave} onCancel={this.props.onCancel}
 				cancelBtnProps={{label:I18N.Common.Button.Cancel2}}/>*/
 
-DosageMonthConfig.propTypes = {
-	kpiInfo:React.PropTypes.object,
-  index:React.PropTypes.number,
-	isCreate:React.PropTypes.bool,
-	onSave:React.PropTypes.func,
-	onCancel:React.PropTypes.func,
-	isViewStatus:React.PropTypes.bool,
+DosageMonthConfig.propTypes= {
+	kpiInfo:PropTypes.object,
+  index:PropTypes.number,
+	isCreate:PropTypes.bool,
+	onSave:PropTypes.func,
+	onCancel:PropTypes.func,
+	isViewStatus:PropTypes.bool,
 };

@@ -13,12 +13,12 @@ import TemplateList from './TemplateList.jsx';
 import ReportStore from 'stores/ReportStore.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import PermissionCode from 'constants/PermissionCode.jsx';
-
-
-var Template = React.createClass({
+var createReactClass = require('create-react-class');
+import PropTypes from 'prop-types';
+var Template = createReactClass({
 
   contextTypes:{
-      currentRoute: React.PropTypes.object
+      currentRoute: PropTypes.object
   },
   getInitialState: function() {
     var rivilege = CurrentUserStore.getCurrentPrivilege();

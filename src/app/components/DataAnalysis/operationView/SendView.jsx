@@ -1,5 +1,6 @@
 'use strict';
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from 'prop-types';
 import {Dialog, CircularProgress} from 'material-ui';
 
 import {nodeType} from 'constants/TreeConstants.jsx';
@@ -12,7 +13,7 @@ import FolderAction from 'actions/FolderAction.jsx';
 import UserStore from 'stores/UserStore.jsx';
 
 export default class SendView extends Component {
-  static propTypes = {
+  static propTypes= {
     userId: PropTypes.number,
     type: PropTypes.string, //文件夹 or 图表
     onSendItem: PropTypes.func,
@@ -164,11 +165,11 @@ export default class SendView extends Component {
 }
 
 /*
-var SendView = React.createClass({
+var SendView = createReactClass({
   propTypes: {
-    onDismiss: React.PropTypes.func,
-    sendNode:React.PropTypes.object,
-    isNew:React.PropTypes.bool,
+    onDismiss: PropTypes.func,
+    sendNode:PropTypes.object,
+    isNew:PropTypes.bool,
   },
   _onSendItem:function(){
     this.props.onDismiss();

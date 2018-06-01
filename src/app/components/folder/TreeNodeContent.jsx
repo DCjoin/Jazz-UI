@@ -1,5 +1,6 @@
 'use strict';
 import React from "react";
+import PropTypes from 'prop-types';
 import { Navigation, State } from 'react-router';
 import TextField from 'material-ui/TextField';
 import TreeConstants from 'constants/TreeConstants.jsx';
@@ -8,14 +9,14 @@ let {nodeType} = TreeConstants;
 import FolderAction from 'actions/FolderAction.jsx';
 import FolderStore from 'stores/FolderStore.jsx';
 import ClickAway from "controls/ClickAwayListener.jsx";
-
-var TreeNodeContent = React.createClass({
+var createReactClass = require('create-react-class');
+var TreeNodeContent = createReactClass({
   //mixins: [Mixins.ClickAwayable],
 
   propTypes: {
-    nodeData: React.PropTypes.object,
-    selectedNode: React.PropTypes.object,
-    panel: React.PropTypes.object,
+    nodeData: PropTypes.object,
+    selectedNode: PropTypes.object,
+    panel: PropTypes.object,
   },
   _onClick: function() {
     if (this.state.isSelect === null) {

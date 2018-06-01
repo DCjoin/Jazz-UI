@@ -2,17 +2,17 @@
 import React from "react";
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
 import {IconButton,DropDownMenu,DatePicker,FlatButton,FontIcon,Classable} from 'material-ui';
-
+import PropTypes from 'prop-types';
 import DataSelectMainPanel from './DataSelectMainPanel.jsx';
-
-let DataSelectPanel=React.createClass({
+var createReactClass = require('create-react-class');
+let DataSelectPanel=createReactClass({
     //mixins:[Classable,Navigation,State],
 
     propTypes: {
-      onButtonClick:React.PropTypes.func,
-      linkFrom: React.PropTypes.string,
-      defaultStatus:React.PropTypes.bool,
-      widgetType:React.PropTypes.string, //Energy,Unit,Ratio,Label
+      onButtonClick:PropTypes.func,
+      linkFrom: PropTypes.string,
+      defaultStatus:PropTypes.bool,
+      widgetType:PropTypes.string, //Energy,Unit,Ratio,Label
     },
     _onToggle:function(){
 

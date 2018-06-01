@@ -6,7 +6,7 @@ import classSet from 'classnames';
 import keyMirror from 'keymirror';
 import NewDialog from "controls/NewDialog.jsx";
 import FlatButton from "controls/FlatButton.jsx";
-
+var createReactClass = require('create-react-class');
 var viewState = keyMirror({
   EMPTY: null,
   LOADING: null,
@@ -14,7 +14,7 @@ var viewState = keyMirror({
 });
 
 
-var AjaxDialog = React.createClass({
+var AjaxDialog = createReactClass({
 
   // _show:function(argument) {
   //     this.setState({viewState:viewState.LOADING},function(argument) {

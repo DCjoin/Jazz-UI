@@ -1,17 +1,17 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from 'react';
 import ViewableDropDownMenu from './ViewableDropDownMenu.jsx';
 import moment from "moment";
 import CommonFuns from '../util/Util.jsx';
-
-var YearMonthItem = React.createClass({
+var createReactClass = require('create-react-class');
+var YearMonthItem = createReactClass({
   propTypes: {
-    isViewStatus: React.PropTypes.bool,
+    isViewStatus: PropTypes.bool,
     //date:"/Date(XX)/"
-    date: React.PropTypes.string,
-    onDateChange: React.PropTypes.func,
-    errorMsg: React.PropTypes.string,
+    date: PropTypes.string,
+    onDateChange: PropTypes.func,
+    errorMsg: PropTypes.string,
   },
   getDefaultProps() {
     return {

@@ -1,6 +1,6 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
 import ReactDom from 'react-dom';
-
+import PropTypes from 'prop-types';
 import Immutable from 'immutable';
 import moment from 'moment';
 
@@ -1031,7 +1031,7 @@ export default class Create extends Component {
 		);
 	}
 }
-Create.PropTypes = {
+Create.propTypes= {
 	onClose: PropTypes.func.isRequired,
 	onSubmitDone: PropTypes.func,
 	ConfigStep: PropTypes.number,

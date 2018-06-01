@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
+import PropTypes from 'prop-types';
 import TagList from './TagList.jsx';
 import InputDataStore from 'stores/DataAnalysis/InputDataStore.jsx';
 import RoutePath from 'util/RoutePath.jsx';

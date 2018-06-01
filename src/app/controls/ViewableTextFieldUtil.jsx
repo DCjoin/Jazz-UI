@@ -1,11 +1,11 @@
 import React from 'react';
 import _forEach from 'lodash-es/forEach';
-
+import PropTypes from 'prop-types';
 var _ = {forEach:_forEach};
 var ViewableTextFieldUtil = {
 
 	childContextTypes: {
-         generatorBatchViewbaleTextFiled: React.PropTypes.func
+         generatorBatchViewbaleTextFiled: PropTypes.func
     },
 
     getChildContext: function() {

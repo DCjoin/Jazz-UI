@@ -1,17 +1,18 @@
 'use strict';
 import React from "react";
+import PropTypes from 'prop-types';
 import { Navigation, State } from 'react-router';
 import { Dialog, FlatButton } from 'material-ui';
 import Copy from '../../../controls/OperationTemplate/Copy.jsx';
 import FolderStore from '../../../stores/FolderStore.jsx';
 import FolderAction from '../../../actions/FolderAction.jsx';
 import { nodeType } from '../../../constants/TreeConstants.jsx';
-
-var SaveAsView = React.createClass({
+var createReactClass = require('create-react-class');
+var SaveAsView = createReactClass({
   propTypes: {
-    onDismiss: React.PropTypes.func,
-    saveAsNode: React.PropTypes.object,
-    widgetDto: React.PropTypes.object,
+    onDismiss: PropTypes.func,
+    saveAsNode: PropTypes.object,
+    widgetDto: PropTypes.object,
   },
   _onCopyItem: function(destNode, newName) {
     FolderAction.SaveAsItem(this.props.saveAsNode.toJS(), destNode, newName, this.props.widgetDto, this.props.isNew);

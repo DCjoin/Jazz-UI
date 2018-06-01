@@ -13,8 +13,8 @@ import Popover from 'material-ui/Popover';
 import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
 import ClickAwayListener from './ClickAwayListener.jsx';
-
-var NewDropdownButton = React.createClass({
+var createReactClass = require('create-react-class');
+var NewDropdownButton = createReactClass({
   getDefaultProps: function() {
     return {
       labelPosition:'before'

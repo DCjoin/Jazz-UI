@@ -10,9 +10,9 @@ import { formStatus } from '../../../constants/FormStatus.jsx';
 import { CircularProgress } from 'material-ui';
 import CarbonAction from '../../../actions/energyConversion/CarbonAction.jsx';
 import CarbonStore from '../../../stores/energyConversion/CarbonStore.jsx';
-
+var createReactClass = require('create-react-class');
 import Dialog from '../../../controls/NewDialog.jsx';
-var Carbon = React.createClass({
+var Carbon = createReactClass({
   getInitialState: function() {
     return {
       formStatus: formStatus.VIEW,

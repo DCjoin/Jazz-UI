@@ -4,7 +4,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import BubbleAction from 'actions/DataAnalysis/bubble_action.jsx';
 import BubbleStore from 'stores/DataAnalysis/bubble_store.jsx';
 import Bubble from './bubble.jsx';
-
+import PropTypes from 'prop-types';
 export default class BubbleView extends Component {
 
   constructor(props) {
@@ -50,11 +50,11 @@ export default class BubbleView extends Component {
 
 }
 
-BubbleView.propTypes = {
-	xAxisTagId:React.PropTypes.number,
-  yAxisTagId:React.PropTypes.number,
-  areaTagId:React.PropTypes.number,
-  step:React.PropTypes.number,
-  timeRanges:React.PropTypes.number,
-  afterChartCreated:React.PropTypes.func,
+BubbleView.propTypes= {
+	xAxisTagId:PropTypes.number,
+  yAxisTagId:PropTypes.number,
+  areaTagId:PropTypes.number,
+  step:PropTypes.number,
+  timeRanges:PropTypes.number,
+  afterChartCreated:PropTypes.func,
 };

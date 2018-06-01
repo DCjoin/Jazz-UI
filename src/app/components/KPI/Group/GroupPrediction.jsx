@@ -1,12 +1,12 @@
 'use strict';
-import React, {Component,PropTypes} from 'react';
+import React, {Component} from 'react';
 import {Type,DataStatus} from 'constants/actionType/KPI.jsx';
 import Immutable from 'immutable';
 import Prediction from '../Single/Prediction.jsx';
 import MonthKPIAction from 'actions/KPI/MonthKPIAction.jsx';
 import MonthKPIStore from 'stores/KPI/MonthKPIStore.jsx';
 import TitleComponent from 'controls/TitleComponent.jsx';
-
+import PropTypes from 'prop-types';
 export default class GroupPrediction extends Component {
 
   _onRatesSave(tag){
@@ -68,7 +68,7 @@ GroupPrediction.propTypes={
     Year:PropTypes.number,
     uom:PropTypes.string,
     tag:PropTypes.object,
-    hierarchyId:React.PropTypes.number,
-    hierarchyName:React.PropTypes.string,
-    isViewStatus:React.PropTypes.bool,
+    hierarchyId:PropTypes.number,
+    hierarchyName:PropTypes.string,
+    isViewStatus:PropTypes.bool,
 };

@@ -5,16 +5,17 @@ import { Checkbox } from 'material-ui';
 import classnames from 'classnames';
 import TagAction from '../../actions/TagAction.jsx';
 import LabelMenuAction from '../../actions/LabelMenuAction.jsx';
-
-var TagItem = React.createClass({
+var createReactClass = require('create-react-class');
+import PropTypes from 'prop-types';
+var TagItem = createReactClass({
   //mixins: [Navigation, State],
   propTypes: {
-    title: React.PropTypes.string.isRequired,
-    label: React.PropTypes.number,
-    nodeData: React.PropTypes.object,
-    status: React.PropTypes.bool,
-    disable: React.PropTypes.bool,
-    widgetType: React.PropTypes.string
+    title: PropTypes.string.isRequired,
+    label: PropTypes.number,
+    nodeData: PropTypes.object,
+    status: PropTypes.bool,
+    disable: PropTypes.bool,
+    widgetType: PropTypes.string
   },
   _onClick: function(disabled) {
     if(!disabled){

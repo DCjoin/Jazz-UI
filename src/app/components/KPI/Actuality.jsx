@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import CircularProgress from 'material-ui/CircularProgress';
 import IconButton from 'material-ui/IconButton';
 import {find} from 'lodash-es';
-
+import PropTypes from 'prop-types';
 import DropdownButton from 'controls/NewDropdownButton.jsx';
 
 import ReduxDecorator from 'decorator/ReduxDecorator.jsx';
@@ -105,7 +105,7 @@ export default class Actuality extends Component {
 	};
 
 	static contextTypes = {
-		hierarchyId: React.PropTypes.string
+		hierarchyId: PropTypes.string
 	};
 
 	componentWillMount() {

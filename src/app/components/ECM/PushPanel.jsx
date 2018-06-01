@@ -612,7 +612,7 @@ export default class PushPanel extends Component {
     )
   }
 }
-
-PushPanel.propTypes = {
-  hierarchyId:React.PropTypes.number,
+import PropTypes from 'prop-types';
+PushPanel.propTypes= {
+  hierarchyId:PropTypes.number,
 };

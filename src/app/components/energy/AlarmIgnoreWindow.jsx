@@ -2,11 +2,12 @@
 import React from "react";
 import { Checkbox, FlatButton, RaisedButton } from 'material-ui';
 import Dialog from '../../controls/NewDialog.jsx';
-
-let AlarmIgnoreWindow = React.createClass({
+var createReactClass = require('create-react-class');
+import PropTypes from 'prop-types';
+let AlarmIgnoreWindow = createReactClass({
   propTypes: {
-    _onIgnoreDialogSubmit: React.PropTypes.func,
-    _onIgnoreDialogCancel: React.PropTypes.func
+    _onIgnoreDialogSubmit: PropTypes.func,
+    _onIgnoreDialogCancel: PropTypes.func
   },
   getInitialState(){
     return{

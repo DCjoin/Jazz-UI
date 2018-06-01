@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
 import ReactDOM from 'react-dom';
 import Immutable from 'immutable';
 import MenuItem from 'material-ui/MenuItem';
@@ -13,7 +13,7 @@ import { ProblemMarkEnum } from 'constants/AnalysisConstants.jsx';
 import DiagnoseChart from './DiagnoseChart.jsx';
 import { Gallery } from '../DataAnalysis/Basic/GenerateSolution.jsx';
 import ImagGroupPanel from 'controls/ImagGroupPanel.jsx';
-
+import PropTypes from 'prop-types';
 import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
 
 const SVG_WIDTH = 750;
@@ -73,7 +73,7 @@ export class PlanTitle extends Component {
     </div>)
   }
 }
-PlanTitle.propTypes = {
+PlanTitle.propTypes= {
   isRequired: PropTypes.boolean,
   errorData: PropTypes.object,
   energySolution: PropTypes.object,
@@ -305,7 +305,7 @@ export class ProblemDetail extends Component {
     </div>)
   }
 }
-ProblemDetail.propTypes = {
+ProblemDetail.propTypes= {
   isRequired: PropTypes.boolean,
   errorData: PropTypes.object,
   energySolution: PropTypes.object,
@@ -506,7 +506,7 @@ export class PlanDetail extends Component {
     </div>)
   }
 }
-PlanDetail.propTypes = {
+PlanDetail.propTypes= {
   errorData: PropTypes.object,
   energySolution: PropTypes.object,
   onChange: PropTypes.func,
@@ -523,7 +523,7 @@ const CANCEL_DIALOG = 'CANCEL_DIALOG';
 const DELETE_DIALOG = 'DELETE_DIALOG';
 export default class GenerateSolution extends Component {
   static contextTypes = {
-    router: React.PropTypes.object,
+    router: PropTypes.object,
     hierarchyId: PropTypes.string,
   };
   constructor(props) {

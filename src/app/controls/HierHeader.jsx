@@ -1,15 +1,16 @@
 'use strict';
 import React from "react";
+import PropTypes from 'prop-types';
 import { Navigation, State } from 'react-router';
 import HierarchyButton from '../components/Hierarchy/HierarchyButton.jsx';
 import HierarchyStore from '../stores/HierarchyStore.jsx';
 import DimButton from '../components/Dim/DimButton.jsx';
 import assign from 'object-assign';
-
-let HierHeader = React.createClass({
+var createReactClass = require('create-react-class');
+let HierHeader = createReactClass({
   propTypes: {
-    onHierachyTreeClick: React.PropTypes.func,
-    onDimTreeClick: React.PropTypes.func, //node.Id==0 为‘全部维度’
+    onHierachyTreeClick: PropTypes.func,
+    onDimTreeClick: PropTypes.func, //node.Id==0 为‘全部维度’
   },
   //mixins: [Navigation, State],
   _onHierachyTreeClick: function(node) {

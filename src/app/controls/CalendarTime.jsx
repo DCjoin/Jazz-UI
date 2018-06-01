@@ -1,18 +1,18 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from 'react';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import Immutable from 'immutable';
 //import {Mixins,Styles,ClearFix,FlatButton} from 'material-ui';
-
-var CalendarTime = React.createClass({
+var createReactClass = require('create-react-class');
+var CalendarTime = createReactClass({
   propTypes: {
-    selectedTime: React.PropTypes.number.isRequired,
-    onTimeChange: React.PropTypes.func,
-    timeType: React.PropTypes.number,
-    height: React.PropTypes.number,
-    isView:React.PropTypes.bool,
+    selectedTime: PropTypes.number.isRequired,
+    onTimeChange: PropTypes.func,
+    timeType: PropTypes.number,
+    height: PropTypes.number,
+    isView:PropTypes.bool,
   },
 
   _renderTime(){

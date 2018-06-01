@@ -1,11 +1,11 @@
 'use strict';
-import React, {Component,PropTypes} from 'react';
+import React, {Component} from 'react';
 import moment from 'moment';
 import DateTextField from 'controls/DateTextField.jsx';
 import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx';
 import CommonFuns from 'util/Util.jsx';
 import {Type} from 'constants/actionType/KPI.jsx';
-
+import PropTypes from 'prop-types';
 function getDisplayData(value){
   // console.log(value);
   return value===null?'－':CommonFuns.getLabelData(parseFloat(value))
@@ -57,7 +57,7 @@ MonthValueGroup.propTypes={
   onChange:PropTypes.func,
   IndicatorType:PropTypes.number,
   onClickAway:PropTypes.func,
-  isViewStatus:React.PropTypes.bool,
+  isViewStatus:PropTypes.bool,
 }
 MonthValueGroup.defaultProps = {
   value:[]

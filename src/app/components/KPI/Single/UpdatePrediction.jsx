@@ -7,20 +7,20 @@ import CommonFuns from 'util/Util.jsx';
 import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx';
 import SingleKPIAction from 'actions/KPI/SingleKPIAction.jsx';
 import Prediction from './PredictionView.jsx';
-
+import PropTypes from 'prop-types';
 export default class UpdatePrediction extends Component {
 
-	static propTypes = {
-		kpiId:React.PropTypes.number,
-		year:React.PropTypes.number,
-		onSave:React.PropTypes.func,
-		onCancel:React.PropTypes.func,
-    hierarchyId:React.PropTypes.number,
-    hierarchyName:React.PropTypes.string,
+	static propTypes= {
+		kpiId:PropTypes.number,
+		year:PropTypes.number,
+		onSave:PropTypes.func,
+		onCancel:PropTypes.func,
+    hierarchyId:PropTypes.number,
+    hierarchyName:PropTypes.string,
 	};
 
 	static contextTypes = {
-		router: React.PropTypes.object,
+		router: PropTypes.object,
 	};
 
   constructor(props) {

@@ -1,24 +1,25 @@
 'use strict';
 import React from "react";
+import PropTypes from 'prop-types';
 import { Navigation, State } from 'react-router';
 import classNames from 'classnames';
 import { FlatButton, TextField, Paper, CircularProgress } from 'material-ui';
 import Dialog from '../NewDialog.jsx';
 import Tree from './assets/CopyDestTree.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
-
-var Copy = React.createClass({
+var createReactClass = require('create-react-class');
+var Copy = createReactClass({
   propTypes: {
-    title: React.PropTypes.string, //复制文件夹 or 图表另存为
-    label: React.PropTypes.string, //文件夹名称 or 图表名称
-    labelName: React.PropTypes.string,
-    firstActionLabel: React.PropTypes.string, //复制 or 保存
-    onFirstActionTouchTap: React.PropTypes.func,
-    onSecondActionTouchTap: React.PropTypes.func,
-    onDismiss: React.PropTypes.func,
-    errorText: React.PropTypes.string,
-    treeNode: React.PropTypes.object,
-    loading: React.PropTypes.bool,
+    title: PropTypes.string, //复制文件夹 or 图表另存为
+    label: PropTypes.string, //文件夹名称 or 图表名称
+    labelName: PropTypes.string,
+    firstActionLabel: PropTypes.string, //复制 or 保存
+    onFirstActionTouchTap: PropTypes.func,
+    onSecondActionTouchTap: PropTypes.func,
+    onDismiss: PropTypes.func,
+    errorText: PropTypes.string,
+    treeNode: PropTypes.object,
+    loading: PropTypes.bool,
   },
   _dismiss(){
     this.setState({

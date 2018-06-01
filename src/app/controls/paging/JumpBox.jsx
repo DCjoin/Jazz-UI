@@ -1,18 +1,18 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from 'react';
 import {FlatButton, TextField, Mixins} from 'material-ui';
 import assign from 'object-assign';
 import classNames from 'classnames';
 import { Regex } from '../../util/Util.jsx';
-
-var JumpBox = React.createClass({
+var createReactClass = require('create-react-class');
+var JumpBox = createReactClass({
   //mixins: [Mixins.ClickAwayable, React.addons.PureRenderMixin],
 
-  PropTypes: {
-    handleClickAway: React.PropTypes.func.isRequired,
-    jumpToPage: React.PropTypes.func.isRequired,
-    totalPageNum: React.PropTypes.number.isRequired
+  propTypes: {
+    handleClickAway: PropTypes.func.isRequired,
+    jumpToPage: PropTypes.func.isRequired,
+    totalPageNum: PropTypes.number.isRequired
   },
 
   getInitialState: function() {

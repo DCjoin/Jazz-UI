@@ -1,13 +1,13 @@
 'use strict';
 import React from "react";
 import assign from "object-assign";
-
+import PropTypes from 'prop-types';
 let ChartMixins = {
   childContextTypes: {
-    muiTheme: React.PropTypes.object.isRequired
+    muiTheme: PropTypes.object.isRequired
   },
   contextTypes: {
-    muiTheme: React.PropTypes.object
+    muiTheme: PropTypes.object
   },
   getChildContext() {
     let childContext = assign({}, this.context.muiTheme);

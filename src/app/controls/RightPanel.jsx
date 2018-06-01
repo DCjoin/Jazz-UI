@@ -1,16 +1,17 @@
 'use strict';
 import React from "react";
+import PropTypes from 'prop-types';
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
 import { IconButton, DropDownMenu, DatePicker, FlatButton, FontIcon, Classable } from 'material-ui';
 
-
-let RightPanel = React.createClass({
+var createReactClass = require('create-react-class');
+let RightPanel = createReactClass({
   //mixins: [Classable, Navigation, State],
 
   propTypes: {
-    onButtonClick: React.PropTypes.func,
-    defaultStatus: React.PropTypes.bool,
-    container: React.PropTypes.object
+    onButtonClick: PropTypes.func,
+    defaultStatus: PropTypes.bool,
+    container: PropTypes.object
   },
   _onToggle: function() {
 

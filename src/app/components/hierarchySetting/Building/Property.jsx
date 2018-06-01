@@ -1,5 +1,5 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from "react";
 import moment from "moment";
 import { formStatus } from '../../../constants/FormStatus.jsx';
@@ -13,17 +13,17 @@ import FlatButton from 'controls/FlatButton.jsx';
 import YearMonthItem from '../../../controls/YearMonthItem.jsx';
 import CommonFuns from '../../../util/Util.jsx';
 import Regex from '../../../constants/Regex.jsx';
-
+var createReactClass = require('create-react-class');
 var d2j = CommonFuns.DataConverter.DatetimeToJson;
-let PropertyItem = React.createClass({
+let PropertyItem = createReactClass({
   propTypes: {
-    code: React.PropTypes.string,
-    index: React.PropTypes.number,
-    merge: React.PropTypes.func,
-    data: React.PropTypes.object,
-    isViewStatus: React.PropTypes.bool,
-    deletePropertyItem: React.PropTypes.func,
-    errorText: React.PropTypes.string
+    code: PropTypes.string,
+    index: PropTypes.number,
+    merge: PropTypes.func,
+    data: PropTypes.object,
+    isViewStatus: PropTypes.bool,
+    deletePropertyItem: PropTypes.func,
+    errorText: PropTypes.string
   },
   _deletePropertyItem: function() {
     this.props.deletePropertyItem(this.props.code, this.props.index);
@@ -113,11 +113,11 @@ let PropertyItem = React.createClass({
   }
 });
 
-var Property = React.createClass({
+var Property = createReactClass({
   propTypes: {
-    hierarchyId: React.PropTypes.number,
-    formStatus: React.PropTypes.string,
-    setEditBtnStatus: React.PropTypes.func
+    hierarchyId: PropTypes.number,
+    formStatus: PropTypes.string,
+    setEditBtnStatus: PropTypes.func
   },
   getInitialState: function() {
     return ({

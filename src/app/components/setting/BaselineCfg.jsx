@@ -9,13 +9,14 @@ import BaselineModify from './BaselineModify.jsx';
 import Dialog from "../../controls/Dialog.jsx";
 import TBStore from "../../stores/TBStore.jsx";
 import TBAction from "../../actions/TBAction.jsx";
+import PropTypes from 'prop-types';
 var lastTab = null;
-
-let BaselineCfg = React.createClass({
+var createReactClass = require('create-react-class');
+let BaselineCfg = createReactClass({
   //mixins: [Navigation, State, mui.Mixins.StylePropable],
 
   propTypes: {
-    tag: React.PropTypes.object
+    tag: PropTypes.object
   },
 
   getInitialState: function() {

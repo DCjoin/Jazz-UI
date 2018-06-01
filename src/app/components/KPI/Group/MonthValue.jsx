@@ -1,5 +1,5 @@
 'use strict';
-import React, {Component,PropTypes} from 'react';
+import React, {Component} from 'react';
 import classnames from 'classnames';
 import TitleComponent from 'controls/TitleComponent.jsx';
 // import ViewableTextField from 'controls/ViewableTextField.jsx';
@@ -11,7 +11,7 @@ import CommonFuns from 'util/Util.jsx';
 import MonthValueGroup from '../Single/MonthValueGroup.jsx';
 import MonthKPIAction from 'actions/KPI/MonthKPIAction.jsx';
 import MonthKPIStore from 'stores/KPI/MonthKPIStore.jsx';
-
+import PropTypes from 'prop-types';
 var customerId=null;
 
 function getDisplayData(value){
@@ -21,7 +21,7 @@ function getDisplayData(value){
 export default class MonthValue extends Component {
 
   static contextTypes = {
-    router: React.PropTypes.object,
+    router: PropTypes.object,
   };
 
   constructor(props) {
@@ -306,7 +306,7 @@ export default class MonthValue extends Component {
 }
 
 MonthValue.propTypes={
-  kpiInfo:React.PropTypes.object,
-  buildingInfo:React.PropTypes.object,
-  isViewStatus:React.PropTypes.bool,
+  kpiInfo:PropTypes.object,
+  buildingInfo:PropTypes.object,
+  isViewStatus:PropTypes.bool,
 };

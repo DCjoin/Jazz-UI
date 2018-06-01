@@ -1,26 +1,27 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from 'react';
 import {SelectField} from 'material-ui';
 import MenuItem from 'material-ui/MenuItem';
 import assign from 'object-assign';
 import CommonFuns from '../util/Util.jsx';
 import Immutable from 'immutable';
-var ViewableDropDownMenu = React.createClass({
+var createReactClass = require('create-react-class');
+var ViewableDropDownMenu = createReactClass({
   propTypes: {
-    isViewStatus: React.PropTypes.bool,
-    selectedIndex: React.PropTypes.number,
-    title: React.PropTypes.string,
-    defaultValue: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
-    afterValue: React.PropTypes.string,
-    textField: React.PropTypes.string,
-    valueField: React.PropTypes.string,
-    didChanged: React.PropTypes.func,
-    dataItems: React.PropTypes.array.isRequired,
-    style: React.PropTypes.object,
-    disabled: React.PropTypes.bool,
-    errorText: React.PropTypes.string,
-    titleStyle:React.PropTypes.object,
+    isViewStatus: PropTypes.bool,
+    selectedIndex: PropTypes.number,
+    title: PropTypes.string,
+    defaultValue: PropTypes.oneOfType([PropTypes.number.string]),
+    afterValue: PropTypes.string,
+    textField: PropTypes.string,
+    valueField: PropTypes.string,
+    didChanged: PropTypes.func,
+    dataItems: PropTypes.array.isRequired,
+    style: PropTypes.object,
+    disabled: PropTypes.bool,
+    errorText: PropTypes.string,
+    titleStyle:PropTypes.object,
   },
   getDefaultProps() {
     return {

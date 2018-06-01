@@ -11,12 +11,12 @@ import util from 'util/Util.jsx';
 import UploadConfirmDialog from './UploadConfirmDialog.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import UploadForm from 'controls/UploadForm.jsx';
-
+var createReactClass = require('create-react-class');
 function currentUser() {
   return CurrentUserStore.getCurrentUser();
 }
 
-let TemplateList = React.createClass({
+let TemplateList = createReactClass({
   getInitialState: function() {
     return {
       showDeleteDialog: false,

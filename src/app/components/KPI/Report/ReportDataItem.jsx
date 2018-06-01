@@ -17,7 +17,7 @@ import NewDialog from 'controls/NewDialog.jsx';
 import Immutable from 'immutable';
 import LinkButton from 'controls/LinkButton.jsx';
 import NewFlatButton from 'controls/NewFlatButton.jsx';
-
+var createReactClass = require('create-react-class');
 var dateTypeChanged = false;
 var d2j = CommonFuns.DataConverter.DatetimeToJson;
 
@@ -30,7 +30,7 @@ function formatDate(time,settingYear){
   return date._d
 }
 
-let ReportDataItem = React.createClass({
+let ReportDataItem = createReactClass({
   getInitialState: function() {
     var stepItems = [{
       payload: 0,

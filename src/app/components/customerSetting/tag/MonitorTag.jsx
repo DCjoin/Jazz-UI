@@ -1,6 +1,7 @@
 'use strict';
 
 import React from "react";
+import PropTypes from 'prop-types';
 import classnames from "classnames";
 import { CircularProgress } from 'material-ui';
 import TagFilter from './TagFilter.jsx';
@@ -9,15 +10,15 @@ import CommonFuns from '../../../util/Util.jsx';
 import TagAction from '../../../actions/customerSetting/TagAction.jsx';
 import TagStore from '../../../stores/customerSetting/TagStore.jsx';
 import Pagination from '../../../controls/paging/Pagination.jsx';
-
+var createReactClass = require('create-react-class');
 var timeoutID = null;
-var MonitorTag = React.createClass({
+var MonitorTag = createReactClass({
   propTypes: {
-    tagId: React.PropTypes.number,
-    onRowClick: React.PropTypes.func
+    tagId: PropTypes.number,
+    onRowClick: PropTypes.func
   },
   contextTypes: {
-    router: React.PropTypes.object,
+    router: PropTypes.object,
   },
   getInitialState: function() {
     var filterObj = this._getInitFilterObj();
@@ -151,7 +152,7 @@ var MonitorTag = React.createClass({
   },
   _renderDisplayTag: function() {
     var me = this;
-    var pagingPropTypes = {
+    var pagingPropTypes= {
       curPageNum: this.state.page,
       totalPageNum: parseInt((this.state.total + 19) / 20),
       previousPage: this._previousPage,

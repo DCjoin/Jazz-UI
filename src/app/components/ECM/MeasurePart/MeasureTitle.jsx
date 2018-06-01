@@ -4,7 +4,7 @@ import MenuItem from 'material-ui/MenuItem';
 import TextField from 'controls/CustomTextField.jsx';
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
 import IconButton from 'material-ui/IconButton';
-
+import PropTypes from 'prop-types';
 export class EnergySys extends Component {
 
   _renderEnergySys(){
@@ -53,11 +53,11 @@ export class EnergySys extends Component {
   }
 }
 
-EnergySys.propTypes = {
-  measure:React.PropTypes.object,
-  canNameEdit:React.PropTypes.bool,
-  canEnergySysEdit:React.PropTypes.bool,
-  merge:React.PropTypes.func,
+EnergySys.propTypes= {
+  measure:PropTypes.object,
+  canNameEdit:PropTypes.bool,
+  canEnergySysEdit:PropTypes.bool,
+  merge:PropTypes.func,
 };
 
 export class MeasureTitle extends Component {
@@ -100,9 +100,9 @@ export class MeasureTitle extends Component {
 
   }
 
-  MeasureTitle.propTypes = {
-    measure:React.PropTypes.object,
-    canNameEdit:React.PropTypes.bool,
-    canEnergySysEdit:React.PropTypes.bool,
-    merge:React.PropTypes.func,
+  MeasureTitle.propTypes= {
+    measure:PropTypes.object,
+    canNameEdit:PropTypes.bool,
+    canEnergySysEdit:PropTypes.bool,
+    merge:PropTypes.func,
   };

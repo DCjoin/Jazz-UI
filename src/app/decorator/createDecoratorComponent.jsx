@@ -1,6 +1,6 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
 import keymirror from 'keymirror';
-
+import PropTypes from 'prop-types';
 const RESERVED_STATIC_KEYS = keymirror({
   displayName: null,
   childContextTypes: null,

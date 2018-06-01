@@ -9,8 +9,8 @@ import TemplateItem from './TemplateItem.jsx';
 import ReportAction from '../../actions/ReportAction.jsx';
 import ReportStore from '../../stores/ReportStore.jsx';
 import util from 'util/Util.jsx'
-
-let TemplateList = React.createClass({
+var createReactClass = require('create-react-class');
+let TemplateList = createReactClass({
   getInitialState: function() {
     return {
       showDeleteDialog: false,

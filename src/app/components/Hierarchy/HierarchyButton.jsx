@@ -1,24 +1,25 @@
 'use strict';
 import React from "react";
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { FlatButton, FontIcon, Menu, Paper, CircularProgress, Mixins } from 'material-ui';
 import HierarchyTree from './HierarchyTree.jsx';
 import HierarchyAction from "../../actions/HierarchyAction.jsx";
 import HierarchyStore from "../../stores/HierarchyStore.jsx";
 import ClickAway from "../../controls/ClickAwayListener.jsx";
-
-let HierarchyButton = React.createClass({
+var createReactClass = require('create-react-class');
+let HierarchyButton = createReactClass({
   //mixins: [Mixins.ClickAwayable],
   propTypes: {
-    onTreeClick: React.PropTypes.func.isRequired,
-    onButtonClick: React.PropTypes.func.isRequired,
-    show: React.PropTypes.bool,
-    hierId: React.PropTypes.number,
-    handleClickAway: React.PropTypes.func,
-    isDimTreeShow: React.PropTypes.bool,
+    onTreeClick: PropTypes.func.isRequired,
+    onButtonClick: PropTypes.func.isRequired,
+    show: PropTypes.bool,
+    hierId: PropTypes.number,
+    handleClickAway: PropTypes.func,
+    isDimTreeShow: PropTypes.bool,
   },
   contextTypes:{
-      currentRoute: React.PropTypes.object
+      currentRoute: PropTypes.object
   },
   getDefaultProps: function() {
     return {

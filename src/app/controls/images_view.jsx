@@ -31,7 +31,7 @@ export default class ImagesView extends Component {
 		            },
 	  };
 
-        static propTypes = {
+        static propTypes= {
 		            idx: PropTypes.number,
 		            editable: PropTypes.bool,
 		            data: PropTypes.object.isRequired,

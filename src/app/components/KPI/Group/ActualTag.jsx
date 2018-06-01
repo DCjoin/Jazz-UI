@@ -1,5 +1,5 @@
 'use strict';
-import React, {Component,PropTypes} from 'react';
+import React, {Component} from 'react';
 import Immutable from 'immutable';
 import TagSelect from '../Single/TagSelect.jsx';
 import MonthKPIAction from 'actions/KPI/MonthKPIAction.jsx';
@@ -8,12 +8,12 @@ import FontIcon from 'material-ui/FontIcon';
 import MonthKPIStore from 'stores/KPI/MonthKPIStore.jsx';
 import {Type} from 'constants/actionType/KPI.jsx';
 import SingleKPIAction from 'actions/KPI/SingleKPIAction.jsx';
-
+import PropTypes from 'prop-types';
 var customerId;
 export default class ActualTag extends Component {
 
   static contextTypes = {
-    router: React.PropTypes.object,
+    router: PropTypes.object,
   };
 
   constructor(props) {
@@ -162,8 +162,8 @@ export default class ActualTag extends Component {
 }
 
 ActualTag.propTypes={
-  	kpiInfo:React.PropTypes.object,
-    buildingInfo:React.PropTypes.object,
+  	kpiInfo:PropTypes.object,
+    buildingInfo:PropTypes.object,
     isCreate:PropTypes.bool,
     isViewStatus:PropTypes.bool,
 }

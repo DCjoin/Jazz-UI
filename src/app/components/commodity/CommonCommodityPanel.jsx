@@ -7,11 +7,12 @@ import CommonCommodityList from './CommonCommodityList.jsx';
 import HierarchyButton from '../Hierarchy/HierarchyButton.jsx';
 import DimButton from '../Dim/DimButton.jsx';
 import TagAction from '../../actions/TagAction.jsx';
-
-var CommonCommodityPanel = React.createClass({
+import PropTypes from 'prop-types';
+var createReactClass = require('create-react-class');
+var CommonCommodityPanel = createReactClass({
   //mixins: [Navigation, State],
   propTypes: {
-    ecType: React.PropTypes.string,
+    ecType: PropTypes.string,
   },
   _onHierachyTreeClick: function(node) {
     if (node != this.state.dimParentNode) {

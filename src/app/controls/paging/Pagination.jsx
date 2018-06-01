@@ -1,21 +1,21 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from 'react';
 import {Checkbox, FlatButton, TextField, Mixins} from 'material-ui';
 import assign from 'object-assign';
 import classNames from 'classnames';
 import JumpBox from './JumpBox.jsx';
-
-var Pagination = React.createClass({
+var createReactClass = require('create-react-class');
+var Pagination = createReactClass({
   //mixins: [React.addons.PureRenderMixin],
 
   propTypes: {
-    curPageNum: React.PropTypes.number,
-    totalPageNum: React.PropTypes.number,
-    previousPage: React.PropTypes.func,
-    nextPage: React.PropTypes.func,
-    jumpToPage: React.PropTypes.func,
-    hasJumpBtn: React.PropTypes.bool,
+    curPageNum: PropTypes.number,
+    totalPageNum: PropTypes.number,
+    previousPage: PropTypes.func,
+    nextPage: PropTypes.func,
+    jumpToPage: PropTypes.func,
+    hasJumpBtn: PropTypes.bool,
   },
 
   getDefaultProps: function() {

@@ -1,5 +1,6 @@
 'use strict';
 import React from "react";
+import PropTypes from 'prop-types';
 import ReactDom from 'react-dom';
 import classNames from 'classnames';
 import { Paper, FontIcon, TextField } from 'material-ui';
@@ -9,15 +10,15 @@ import HierarchyStore from "../../stores/HierarchyStore.jsx";
 import { nodeType } from '../../constants/TreeConstants.jsx';
 import Search from './HierarchySearch.jsx';
 import ClickAway from "../../controls/ClickAwayListener.jsx";
-
-var TreeNode = React.createClass({
+var createReactClass = require('create-react-class');
+var TreeNode = createReactClass({
 
   //mixins: [Navigation, State],
 
   propTypes: {
-    selected: React.PropTypes.bool,
-    collapsed: React.PropTypes.bool,
-    hasChild: React.PropTypes.bool
+    selected: PropTypes.bool,
+    collapsed: PropTypes.bool,
+    hasChild: PropTypes.bool
   },
 
   getDefaultProps: function() {
@@ -227,12 +228,12 @@ var TreeNode = React.createClass({
 
 });
 
-var TreeView = React.createClass({
+var TreeView = createReactClass({
   //mixins: [Navigation, State],
   propTypes: {
-    allNode: React.PropTypes.object.isRequired,
-    onTreeClick: React.PropTypes.func.isRequired,
-    selectedNode: React.PropTypes.object
+    allNode: PropTypes.object.isRequired,
+    onTreeClick: PropTypes.func.isRequired,
+    selectedNode: PropTypes.object
   },
   _onSelectNode(node) {
     this.setState({
@@ -316,12 +317,12 @@ var TreeView = React.createClass({
 
 });
 
-let HierarchyTree = React.createClass({
+let HierarchyTree = createReactClass({
   //mixins: [Navigation, State],
   propTypes: {
-    allNode: React.PropTypes.object.isRequired,
-    onTreeClick: React.PropTypes.func.isRequired,
-    selectedNode: React.PropTypes.object
+    allNode: PropTypes.object.isRequired,
+    onTreeClick: PropTypes.func.isRequired,
+    selectedNode: PropTypes.object
   },
   getInitialState: function() {
     return {

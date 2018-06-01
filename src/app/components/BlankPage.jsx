@@ -1,8 +1,9 @@
 'use strict';
 import React from "react";
+var createReactClass = require('create-react-class');
 
 
-let BlankPage = React.createClass({
+let BlankPage = createReactClass({
   render() {
 
     return (

@@ -1,6 +1,7 @@
 'use strict';
 
 import React from "react";
+import PropTypes from 'prop-types';
 import classnames from "classnames";
 import Item from '../../controls/SelectableItem.jsx';
 import SelectablePanel from '../../controls/SelectablePanel.jsx';
@@ -8,16 +9,16 @@ import CustomerAction from '../../actions/CustomerAction.jsx';
 import { formStatus } from '../../constants/FormStatus.jsx';
 import { DataConverter } from '../../util/Util.jsx';
 import moment from 'moment';
-
-var CustomerList = React.createClass({
+var createReactClass = require('create-react-class');
+var CustomerList = createReactClass({
   propTypes: {
-    formStatus: React.PropTypes.bool,
-    onCustomerClick: React.PropTypes.func,
-    onAddBtnClick: React.PropTypes.func,
-    customers: React.PropTypes.object,
-    selectedId: React.PropTypes.number,
-    changeSortBy: React.PropTypes.func,
-    sortBy: React.PropTypes.string,
+    formStatus: PropTypes.bool,
+    onCustomerClick: PropTypes.func,
+    onAddBtnClick: PropTypes.func,
+    customers: PropTypes.object,
+    selectedId: PropTypes.number,
+    changeSortBy: PropTypes.func,
+    sortBy: PropTypes.string,
   },
   // getInitialState: function() {
   //   return {

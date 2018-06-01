@@ -6,31 +6,31 @@ import { formStatus } from '../constants/FormStatus.jsx';
 //import { FlatButton } from 'material-ui';
 import FlatButton from 'controls/FlatButton.jsx';
 import _assign from 'lodash-es/assign';
-
-
+var createReactClass = require('create-react-class');
+import PropTypes from 'prop-types';
 
 var _ = {
   assign: _assign
 };
 
-var FormBottomBar = React.createClass({
+var FormBottomBar = createReactClass({
 
   propTypes: {
-    transition: React.PropTypes.bool,
-    onEdit: React.PropTypes.func,
-    onSave: React.PropTypes.func,
-    onDelete: React.PropTypes.func,
-    onCancel: React.PropTypes.func,
-    status: React.PropTypes.string,
-    customButton: React.PropTypes.object,
-    allowDelete: React.PropTypes.bool,
-    enableSave: React.PropTypes.bool,
+    transition: PropTypes.bool,
+    onEdit: PropTypes.func,
+    onSave: PropTypes.func,
+    onDelete: PropTypes.func,
+    onCancel: PropTypes.func,
+    status: PropTypes.string,
+    customButton: PropTypes.object,
+    allowDelete: PropTypes.bool,
+    enableSave: PropTypes.bool,
 
-    editBtnProps: React.PropTypes.object,
-    saveBtnProps: React.PropTypes.object,
-    deleteBtnProps: React.PropTypes.object,
-    cancelBtnProps: React.PropTypes.object,
-    isShow: React.PropTypes.bool
+    editBtnProps: PropTypes.object,
+    saveBtnProps: PropTypes.object,
+    deleteBtnProps: PropTypes.object,
+    cancelBtnProps: PropTypes.object,
+    isShow: PropTypes.bool
   },
 
 

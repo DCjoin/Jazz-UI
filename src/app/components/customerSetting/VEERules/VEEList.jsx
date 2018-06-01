@@ -1,17 +1,18 @@
 'use strict';
 
 import React from "react";
+import PropTypes from 'prop-types';
 import Item from '../../../controls/SelectableItem.jsx';
 import SelectablePanel from '../../../controls/SelectablePanel.jsx';
 import { formStatus } from '../../../constants/FormStatus.jsx';
-
-var VEEList = React.createClass({
+var createReactClass = require('create-react-class');
+var VEEList = createReactClass({
   propTypes: {
-    formStatus: React.PropTypes.string,
-    onRuleClick: React.PropTypes.func,
-    onAddBtnClick: React.PropTypes.func,
-    rules: React.PropTypes.object,
-    selectedId: React.PropTypes.number
+    formStatus: PropTypes.string,
+    onRuleClick: PropTypes.func,
+    onAddBtnClick: PropTypes.func,
+    rules: PropTypes.object,
+    selectedId: PropTypes.number
   },
   _renderRuleItems: function() {
     var items = [],

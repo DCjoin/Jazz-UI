@@ -21,7 +21,7 @@ import LoginActionCreator from 'actions/LoginActionCreator.jsx';
 import GlobalErrorMessageStore from 'stores/GlobalErrorMessageStore.jsx';
 import LoginStore from 'stores/LoginStore.jsx';
 import AjaxStore from 'stores/AjaxStore.jsx';
-
+var createReactClass = require('create-react-class');
 function replaceWith(router, name, params, query) {
   router.replace( RoutePath[name]( assign({}, getParams(router), params) ), query );
 }
@@ -37,15 +37,15 @@ function getRoutes(router) {
 function getCurrentPath(router) {
   return router.location.pathname;
 }
-
-let JazzApp = React.createClass({
+import PropTypes from 'prop-types';
+let JazzApp = createReactClass({
   contextTypes: {
-    router: React.PropTypes.object
+    router: PropTypes.object
   },
   childContextTypes: {
-    getLessVar: React.PropTypes.func,
-    muiTheme: React.PropTypes.object.isRequired,
-    currentRoute: React.PropTypes.object,
+    getLessVar: PropTypes.func,
+    muiTheme: PropTypes.object.isRequired,
+    currentRoute: PropTypes.object,
   },
   getChildContext() {
     return {

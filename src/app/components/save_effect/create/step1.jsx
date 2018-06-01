@@ -1,5 +1,5 @@
-import React, { Component, PropTypes } from 'react';
-
+import React, { Component} from 'react';
+import PropTypes from 'prop-types';
 import find from 'lodash-es/find';
 
 import { RadioButton } from 'material-ui/RadioButton';

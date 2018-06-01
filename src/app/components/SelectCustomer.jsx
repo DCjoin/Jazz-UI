@@ -6,7 +6,7 @@ import assign from 'object-assign';
 import {find} from 'lodash-es';
 import { CircularProgress } from 'material-ui';
 import remove from 'lodash-es/remove';
-
+import PropTypes from 'prop-types';
 import PermissionCode from 'constants/PermissionCode.jsx';
 
 import RoutePath from 'util/RoutePath.jsx';
@@ -50,14 +50,14 @@ function getFirstMenuPathFunc(menu) {
 }
 
 let selectCustomerId = null;
-
-const SelectCustomer = React.createClass({
+var createReactClass = require('create-react-class');
+const SelectCustomer = createReactClass({
   propTypes: {
-    onClose: React.PropTypes.func,
+    onClose: PropTypes.func,
   },
   contextTypes: {
-    router: React.PropTypes.object,
-    currentRoute: React.PropTypes.object,
+    router: PropTypes.object,
+    currentRoute: PropTypes.object,
   },
   componentWillMount() {
     HierarchyStore.addBuildingListListener(this._onChange);

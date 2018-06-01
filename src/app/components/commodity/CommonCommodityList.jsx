@@ -5,12 +5,13 @@ import {CircularProgress,Checkbox} from 'material-ui';
 import CommodityStore from '../../stores/CommodityStore.jsx';
 import CommodityAction from '../../actions/CommodityAction.jsx';
 import Immutable from 'immutable';
-
-var CommonCommodityList = React.createClass({
+import PropTypes from 'prop-types';
+var createReactClass = require('create-react-class');
+var CommonCommodityList = createReactClass({
 
   //mixins:[Navigation,State],
   propTypes: {
-    checkedCommodityList: React.PropTypes.object,
+    checkedCommodityList: PropTypes.object,
   },
   _onCommodityListChange:function(){
     this.setState({

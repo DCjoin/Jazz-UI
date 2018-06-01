@@ -1,5 +1,5 @@
 'use strict';
-
+var createReactClass = require('create-react-class');
 
 let React = require('react');
 let ReactDOM = require('react-dom');
@@ -10,12 +10,12 @@ let Highcharts = window.Highcharts;
 
 let _paper = null;
 
-let Highstock = React.createClass({
+let Highstock = createReactClass({
 
     _paper: null,
 
     propTypes: {
-        // options: React.PropTypes.object
+        // options: PropTypes.object
     },
 
     getDefaultProps() {

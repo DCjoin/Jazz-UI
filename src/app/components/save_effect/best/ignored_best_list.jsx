@@ -1,4 +1,4 @@
-import React, { Component ,PropTypes} from 'react';
+import React, { Component } from 'react';
 import {getBestSolution} from 'actions/save_effect_action.js';
 import BestStore from 'stores/save_effect/bestStore.jsx';
 import {LessInvest,HighCost,Easy,HighReturn} from './icon.jsx';
@@ -6,7 +6,7 @@ import {openTab} from 'util/Util.jsx';
 import RoutePath from 'util/RoutePath.jsx';
 import { CircularProgress} from 'material-ui';
 import Detail from '../list/save_effect_detail.jsx';
-
+import PropTypes from 'prop-types';
 const characterType={
 			"HighCost":1,
 			"LessInvest":2,

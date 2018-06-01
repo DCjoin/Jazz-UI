@@ -10,7 +10,7 @@ import PermissionCode from 'constants/PermissionCode.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import Create from '../create';
 import util from 'util/Util.jsx';
-
+import PropTypes from 'prop-types';
 function privilegeWithSaveEffect( privilegeCheck ) {
   //  return true
 	return privilegeCheck(PermissionCode.Save_Effect, CurrentUserStore.getCurrentPrivilege());
@@ -22,7 +22,7 @@ function isFull() {
 export default class Draft extends Component {
 
   static contextTypes = {
-        hierarchyId: React.PropTypes.string
+        hierarchyId: PropTypes.string
       };
 
   constructor(props, ctx) {

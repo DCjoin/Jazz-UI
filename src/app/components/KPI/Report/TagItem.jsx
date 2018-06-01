@@ -4,9 +4,9 @@ import React from 'react';
 import { Checkbox, FontIcon } from 'material-ui';
 import classNames from 'classnames';
 import ReportStore from 'stores/KPI/ReportStore.jsx';
+var createReactClass = require('create-react-class');
 
-
-let TagItem = React.createClass({
+let TagItem = createReactClass({
   getInitialState: function() {
     return {
 

@@ -7,10 +7,11 @@ import CommonFuns from '../../../util/Util.jsx';
 import EnergyStore from '../../../stores/Energy/EnergyStore.jsx';
 import Immutable from 'immutable';
 let {dateAdd} = CommonFuns;
-
-let SumWindow = React.createClass({
+var createReactClass = require('create-react-class');
+import PropTypes from 'prop-types';
+let SumWindow = createReactClass({
   propTypes: {
-    analysisPanel: React.PropTypes.object
+    analysisPanel: PropTypes.object
   },
   getInitialState() {
     return {

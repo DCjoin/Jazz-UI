@@ -1,6 +1,7 @@
 'use strict';
-import React, {Component,PropTypes} from 'react';
+import React, {Component} from 'react';
 import {TextField} from 'material-ui';
+import PropTypes from 'prop-types';
 export default class DateTextField extends Component {
 
   getError(value){
@@ -42,9 +43,9 @@ DateTextField.propTypes={
   disabled:PropTypes.bool,
   underlineShow:PropTypes.bool,
   onChange:PropTypes.func,
-  regexFn: React.PropTypes.func,
-  onBlur:React.PropTypes.func,
-  isViewStatus:React.PropTypes.bool,
+  regexFn: PropTypes.func,
+  onBlur:PropTypes.func,
+  isViewStatus:PropTypes.bool,
 }
 DateTextField.defaultProps = {
 	disabled: false,

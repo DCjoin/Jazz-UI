@@ -2,22 +2,22 @@
 
 import React from 'react';
 import SelectField from 'material-ui/SelectField';
-
-
+import PropTypes from 'prop-types';
+var createReactClass = require('create-react-class');
 import _assign from "lodash-es/assign";
 import _get from 'lodash-es/get';
 import _find from 'lodash-es/find';
 
 var _ = {get:_get,find:_find,assign:_assign};
 
-var ViewableSelectField = React.createClass({
+var ViewableSelectField = createReactClass({
     propTypes: {
-        isViewStatus: React.PropTypes.bool,
-        selectedIndex:React.PropTypes.number,
-        textField:React.PropTypes.string,
-        didChanged:React.PropTypes.func,
-        maxHeight:React.PropTypes.number,
-        dataItems: React.PropTypes.array.isRequired
+        isViewStatus: PropTypes.bool,
+        selectedIndex:PropTypes.number,
+        textField:PropTypes.string,
+        didChanged:PropTypes.func,
+        maxHeight:PropTypes.number,
+        dataItems: PropTypes.array.isRequired
     },
 
     getInitialState: function() {

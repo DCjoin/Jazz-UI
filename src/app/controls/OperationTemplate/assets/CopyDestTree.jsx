@@ -1,20 +1,21 @@
 'use strict';
 import React from "react";
+import PropTypes from 'prop-types';
 import { Navigation, State } from 'react-router';
 import classNames from 'classnames';
 import { Paper, Mixins } from 'material-ui';
 import Tree from '../../tree/Tree.jsx';
 import { treeSource } from '../../../constants/TreeSource.jsx';
 import ClickAway from '../../ClickAwayListener.jsx';
-
-var CopyDestTree = React.createClass({
+var createReactClass = require('create-react-class');
+var CopyDestTree = createReactClass({
   //mixins: [Mixins.ClickAwayable],
   propTypes: {
-    show: React.PropTypes.bool,
-    onTreeClickAway: React.PropTypes.func,
-    allNode: React.PropTypes.object,
-    onSelectNode: React.PropTypes.func,
-    selectedNode: React.PropTypes.object,
+    show: PropTypes.bool,
+    onTreeClickAway: PropTypes.func,
+    allNode: PropTypes.object,
+    onSelectNode: PropTypes.func,
+    selectedNode: PropTypes.object,
   },
   onClickAway: function() {
     if (this.props.show) {

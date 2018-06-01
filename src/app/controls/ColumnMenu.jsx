@@ -1,15 +1,15 @@
 'use strict';
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
 import Link from 'react-router/lib/Link';
 import classnames from "classnames";
-
+import PropTypes from 'prop-types';
 
 export default class ColumnMenu extends Component {
 
   static contextTypes = {
-        router: React.PropTypes.object,
-		    currentRoute: React.PropTypes.object
+        router: PropTypes.object,
+		    currentRoute: PropTypes.object
 	};
 
   _checkItemIsActive(item){
@@ -44,7 +44,7 @@ export default class ColumnMenu extends Component {
   }
 }
 
-ColumnMenu.propTypes = {
-  items:React.PropTypes.array,
-  title:React.PropTypes.string,
+ColumnMenu.propTypes= {
+  items:PropTypes.array,
+  title:PropTypes.string,
 };

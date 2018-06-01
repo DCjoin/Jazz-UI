@@ -9,8 +9,9 @@ import MailStore from '../../stores/MailStore.jsx';
 import ReceiverItem from './MailReceiverItem.jsx';
 import TemplateField from './MailTemplateField.jsx';
 import SaveNewTemplate from './MailSaveNewTemplate.jsx';
+var createReactClass = require('create-react-class');
 let initRow;
-let MailField = React.createClass({
+let MailField = createReactClass({
   _onMailViewChanged: function() {
     initRow = 0;
     var mailView = MailStore.getMailView();

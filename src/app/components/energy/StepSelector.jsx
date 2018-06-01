@@ -3,8 +3,8 @@ import React from "react";
 import assign from "object-assign";
 import CommonFuns from '../../util/Util.jsx';
 import { FontIcon, IconButton, DropDownMenu, Dialog, RaisedButton, CircularProgress } from 'material-ui';
-
-let StepItem = React.createClass({
+var createReactClass = require('create-react-class');
+let StepItem = createReactClass({
   _onStepClick() {
     if (this.props.onStepChange && !this.props.disabled) {
       this.props.onStepChange(this.props.step);
@@ -63,7 +63,7 @@ function getStepItems() {
   return ALLSTEPITEMS;
 }
 
-let StepSelector = React.createClass({
+let StepSelector = createReactClass({
   _onStepChange(step) {
     if (this.props.onStepChange) {
       this.props.onStepChange(step);
