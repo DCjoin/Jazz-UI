@@ -1,4 +1,4 @@
-import React, { Component,PropTypes } from 'react';
+import React, { Component} from 'react';
 import IconButton from 'material-ui/IconButton';
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
 import Snackbar from 'material-ui/Snackbar';
@@ -18,7 +18,7 @@ import {EnergySys} from './MeasurePart/MeasureTitle.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
 import ReactDOM from 'react-dom';
 import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
-
+import PropTypes from 'prop-types';
 const NUMBER_REG = /^[1-9]\d*(\.\d+)?$/;
 
  const ICONSTYLE = {

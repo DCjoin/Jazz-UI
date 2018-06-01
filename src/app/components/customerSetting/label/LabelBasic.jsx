@@ -1,15 +1,16 @@
 'use strict';
 
 import React from "react";
+import PropTypes from 'prop-types';
 import ViewableTextField from '../../../controls/ViewableTextField.jsx';
 import ViewableDropDownMenu from '../../../controls/ViewableDropDownMenu.jsx';
 import ComAndUom from '../ComAndUom.jsx';
-
-var LabelBasic = React.createClass({
+var createReactClass = require('create-react-class');
+var LabelBasic = createReactClass({
   propTypes: {
-    selectedLabel: React.PropTypes.object,
-    mergeLabel: React.PropTypes.func,
-    isViewStatus: React.PropTypes.bool
+    selectedLabel: PropTypes.object,
+    mergeLabel: PropTypes.func,
+    isViewStatus: PropTypes.bool
   },
   getInitialState: function() {
     return {

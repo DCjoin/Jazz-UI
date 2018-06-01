@@ -1,17 +1,17 @@
 import React, { Component, Children } from 'react';
 import {Menu} from 'material-ui/Menu';
 import {Popover, PopoverAnimationVertical} from 'material-ui/Popover';
-
+import PropTypes from 'prop-types';
 
 export default class CustomDropDownMenu extends Component {
-  static propTypes = {
-    value: React.PropTypes.any,
-    children: React.PropTypes.node,
-    onChange: React.PropTypes.func,
-    height: React.PropTypes.stringOrNumber,
-    backgroundColor: React.PropTypes.string,
-    color: React.PropTypes.string,
-    selfTarget: React.PropTypes.bool,
+  static propTypes= {
+    value: PropTypes.any,
+    children: PropTypes.node,
+    onChange: PropTypes.func,
+    height: PropTypes.stringOrNumber,
+    backgroundColor: PropTypes.string,
+    color: PropTypes.string,
+    selfTarget: PropTypes.bool,
   };
   static defaultProps = {
     height: 40,

@@ -1,10 +1,11 @@
 import React from 'react';
 import classnames from "classnames";
-
-var DeletableItem = React.createClass({
+var createReactClass = require('create-react-class');
+import PropTypes from 'prop-types';
+var DeletableItem = createReactClass({
   propTypes: {
-    isDelete: React.PropTypes.bool,
-    onDelete: React.PropTypes.func
+    isDelete: PropTypes.bool,
+    onDelete: PropTypes.func
   },
   render: function() {
     return (

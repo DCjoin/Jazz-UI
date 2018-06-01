@@ -1,5 +1,5 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from 'react';
 import mui from 'material-ui';
 import { Mixins, TextField } from 'material-ui';
@@ -56,8 +56,8 @@ var version = 0;
 //   revertOnSpill: false, // spilling will put the element back where it was dragged from, if this is true
 //   removeOnSpill: false, // spilling will `.remove` the element, if this is true
 // });
-
-var Tree = React.createClass({
+var createReactClass = require('create-react-class');
+var Tree = createReactClass({
   //mixins: [React.addons.PureRenderMixin, Mixins.ClickAwayable],
   // compatibleJSON data transfer json to a immutableJS
   compatibleJSON: function(data) {
@@ -71,44 +71,44 @@ var Tree = React.createClass({
   propTypes: {
     // feature
     // there is a checkbox, when value is true
-    allHasCheckBox: React.PropTypes.bool,
+    allHasCheckBox: PropTypes.bool,
     // there is alarm bubble for every node
-    hasBubble: React.PropTypes.bool,
+    hasBubble: PropTypes.bool,
 
     // root node origin left padding
-    nodeOriginPaddingLeft: React.PropTypes.number,
+    nodeOriginPaddingLeft: PropTypes.number,
     // tree container style
-    treeClass: React.PropTypes.string,
+    treeClass: PropTypes.string,
     // node style
-    treeNodeClass: React.PropTypes.string,
+    treeNodeClass: PropTypes.string,
 
     // enabled to change "HasDataPrivilege" attr when "HasDataPrivilege" is false
-    enabledChangeDataPrivilege: React.PropTypes.bool,
+    enabledChangeDataPrivilege: PropTypes.bool,
     // disabled selectNode method, when disable is true
-    allDisabled: React.PropTypes.bool,
+    allDisabled: PropTypes.bool,
     // collapsed level, begin with "0"
-    collapsedLevel: React.PropTypes.number,
+    collapsedLevel: PropTypes.number,
 
     // necessary properties
     // must have "Id" parameter for every nodeData
-    selectedNode: React.PropTypes.object,
+    selectedNode: PropTypes.object,
     // must have "Id" parameter for every nodeData
-    checkedNodes: React.PropTypes.object,
+    checkedNodes: PropTypes.object,
     // must have "Id" parameter for every nodeData
-    allNode: React.PropTypes.object.isRequired,
+    allNode: PropTypes.object.isRequired,
 
     // interface
-    onSelectNode: React.PropTypes.func.isRequired,
-    generateNodeConent: React.PropTypes.func,
+    onSelectNode: PropTypes.func.isRequired,
+    generateNodeConent: PropTypes.func,
     //for copy operation
-    isFolderOperationTree: React.PropTypes.bool,
-    onGragulaNode: React.PropTypes.func,
+    isFolderOperationTree: PropTypes.bool,
+    onGragulaNode: PropTypes.func,
     // arrow style
-    arrowClass: React.PropTypes.string,
-    arrowIconExpandClass: React.PropTypes.string,
-    arrowIconCollapsedClass: React.PropTypes.string,
-    ifGragulaInvalid: React.PropTypes.func,
-    treeSource: React.PropTypes.number,
+    arrowClass: PropTypes.string,
+    arrowIconExpandClass: PropTypes.string,
+    arrowIconCollapsedClass: PropTypes.string,
+    ifGragulaInvalid: PropTypes.func,
+    treeSource: PropTypes.number,
   },
   getInitialState: function() {
     return {

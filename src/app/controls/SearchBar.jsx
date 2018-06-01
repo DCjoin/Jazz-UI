@@ -1,16 +1,17 @@
 'use strict';
 import React from "react";
+import PropTypes from 'prop-types';
 import ReactDom from 'react-dom';
 import { Navigation, State } from 'react-router';
 import { FontIcon, TextField } from 'material-ui';
-
-let SearchBar = React.createClass({
+var createReactClass = require('create-react-class');
+let SearchBar = createReactClass({
 
   propTypes: {
-    onSearch: React.PropTypes.func,
-    onSearchCleanButtonClick: React.PropTypes.func,
-    hintText: React.PropTypes.string,
-    value: React.PropTypes.string
+    onSearch: PropTypes.func,
+    onSearchCleanButtonClick: PropTypes.func,
+    hintText: PropTypes.string,
+    value: PropTypes.string
   },
   //mixins: [Navigation, State],
   _onSearchBlur: function(e) {

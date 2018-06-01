@@ -10,7 +10,7 @@ import Immutable from 'immutable';
 import CommonFuns from 'util/Util.jsx';
 import moment from 'moment';
 import classNames from 'classnames';
-
+import PropTypes from 'prop-types';
 var getXaxisUom=(data,id)=>CommonFuns.getUomById(data.Tags[0].Id===id?data.Tags[0].UomId:data.Tags[1].UomId).Code
 
 var getYaxisUom=(data,id)=>CommonFuns.getUomById(data.Tags[1].Id===id?data.Tags[1].UomId:data.Tags[0].UomId).Code
@@ -190,9 +190,9 @@ class DropDownMenu extends Component{
 }
 
 DropDownMenu.propTypes={
-  value:React.PropTypes.number,
-  onItemClick:React.PropTypes.func,
-  menuitems:React.PropTypes.array
+  value:PropTypes.number,
+  onItemClick:PropTypes.func,
+  menuitems:PropTypes.array
 }
 
 
@@ -518,9 +518,9 @@ export default class ScatterPlot extends Component {
   }
 }
 
-ScatterPlot.propTypes = {
-  energyData:React.PropTypes.object,
-  getYaxisConfig:React.PropTypes.func,
-  step:React.PropTypes.number,
-  isFromSolution:React.PropTypes.bool
+ScatterPlot.propTypes= {
+  energyData:PropTypes.object,
+  getYaxisConfig:PropTypes.func,
+  step:PropTypes.number,
+  isFromSolution:PropTypes.bool
 };

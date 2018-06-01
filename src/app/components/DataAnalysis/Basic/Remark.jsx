@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import TextField from 'material-ui/TextField';
-
+import PropTypes from 'prop-types';
 export default class Remark extends Component {
 
     constructor(props) {
@@ -34,7 +34,7 @@ export default class Remark extends Component {
 
 }
 
-Remark.propTypes = {
-  remarkText:React.PropTypes.string,
-  onChange:React.PropTypes.func,
+Remark.propTypes= {
+  remarkText:PropTypes.string,
+  onChange:PropTypes.func,
 };

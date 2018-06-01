@@ -1,7 +1,7 @@
 'use strict';
-
+var createReactClass = require('create-react-class');
 import React from "react";
-var Factor09Detail = React.createClass({
+var Factor09Detail = createReactClass({
   render: function() {
     if (window.currentLanguage === 0) {
       return (

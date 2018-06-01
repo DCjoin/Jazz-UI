@@ -1,19 +1,19 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Mixins, Styles, ClearFix, FontIcon } from 'material-ui';
 import ViewableDropDownMenu from './ViewableDropDownMenu.jsx';
 import FlatButton from './FlatButton.jsx';
-
-var FromEndTime = React.createClass({
+var createReactClass = require('create-react-class');
+var FromEndTime = createReactClass({
   propTypes: {
-    index: React.PropTypes.number.isRequired,
-    isViewStatus: React.PropTypes.bool,
-    hasDeleteButton: React.PropTypes.bool,
-    errorText: React.PropTypes.string,
-    startTime: React.PropTypes.number,
-    endTime: React.PropTypes.number,
-    style:React.PropTypes.object,
+    index: PropTypes.number.isRequired,
+    isViewStatus: PropTypes.bool,
+    hasDeleteButton: PropTypes.bool,
+    errorText: PropTypes.string,
+    startTime: PropTypes.number,
+    endTime: PropTypes.number,
+    style:PropTypes.object,
   },
   getDefaultProps() {
     return {

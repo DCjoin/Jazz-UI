@@ -277,8 +277,8 @@ export default class EditDiagnose extends Component {
 
 
 }
-
+import PropTypes from 'prop-types';
 EditDiagnose.propTypes={
-  selectedNode:React.PropTypes.object,
-  onClose:React.PropTypes.func,
+  selectedNode:PropTypes.object,
+  onClose:PropTypes.func,
 }

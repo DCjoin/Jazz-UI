@@ -1,5 +1,5 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from 'react';
 import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
@@ -76,11 +76,12 @@ function getRoutes(router) {
 function getCurrentPath(router) {
   return router.location.pathname;
 }
-var MainAppBar = React.createClass({
+var createReactClass = require('create-react-class');
+var MainAppBar = createReactClass({
   //mixins: [Navigation, State],
   contextTypes: {
-    router: React.PropTypes.object,
-    loading:React.PropTypes.object
+    router: PropTypes.object,
+    loading:PropTypes.object
   },
   _onChange: function() {},
   _onError: function() {

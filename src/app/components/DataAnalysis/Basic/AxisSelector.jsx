@@ -10,12 +10,12 @@ import _ from 'lodash-es';
 import ScatterPlotStore from 'stores/DataAnalysis/scatter_plot_store.jsx';
 import BubbleStore from 'stores/DataAnalysis/bubble_store.jsx';
 import AlarmTagStore from 'stores/AlarmTagStore.jsx';
-
+var createReactClass = require('create-react-class');
 let {isNumeric} = CommonFuns;
 
 var _currentChartObj = null,
   _storedConfig = null;
-let AxisSelector = React.createClass({
+let AxisSelector = createReactClass({
   getInitialState() {
     return {
       yaxisConfig:[],
@@ -93,7 +93,7 @@ let AxisSelector = React.createClass({
 
 });
 
-var YaxisDialog = React.createClass({
+var YaxisDialog = createReactClass({
   getInitialState(){
     return{
       show:false
@@ -342,7 +342,7 @@ var YaxisDialog = React.createClass({
   }
 });
 
-var MaxMinPair = React.createClass({
+var MaxMinPair = createReactClass({
   getInitialState() {
     let maxValue = '',
       minValue = '';

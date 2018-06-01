@@ -8,21 +8,21 @@ import NewFlatButton from 'controls/NewFlatButton.jsx';
 import Tree from 'controls/tree/Tree.jsx';
 import CommonFuns from 'util/Util.jsx';
 import {nodeType} from 'constants/TreeConstants.jsx';
-
+import PropTypes from 'prop-types';
 export default class TagSelect extends Component {
 
-	static propTypes = {
-		hierarchyId:React.PropTypes.number,
-		hierarchyName:React.PropTypes.String,
-		onSave:React.PropTypes.func,
-		onCancel:React.PropTypes.func,
-		tag:React.PropTypes.object,
-		title:React.PropTypes.String,
-		filterTagIds:React.PropTypes.array,
+	static propTypes= {
+		hierarchyId:PropTypes.number,
+		hierarchyName:PropTypes.String,
+		onSave:PropTypes.func,
+		onCancel:PropTypes.func,
+		tag:PropTypes.object,
+		title:PropTypes.String,
+		filterTagIds:PropTypes.array,
 	};
 
 	static contextTypes = {
-		router: React.PropTypes.object,
+		router: PropTypes.object,
 	};
 
 	constructor(props) {

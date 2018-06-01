@@ -10,7 +10,7 @@ import CommonFuns from '../../util/Util.jsx';
 import TBSettingAction from '../../actions/TBSettingAction.jsx';
 import TBSettingStore from '../../stores/TBSettingStore.jsx';
 import TagStore from '../../stores/TagStore.jsx';
-
+import PropTypes from 'prop-types';
 var extractNumber = function(str) {
   var value = str.replace(/[^\d\.]/g, '');
   var dotIndex = value.indexOf('.');
@@ -23,16 +23,16 @@ var extractNumber = function(str) {
   }
   return value;
 };
-
-var CalcItem = React.createClass({
+var createReactClass = require('create-react-class');
+var CalcItem = createReactClass({
   propTypes: {
-    tag: React.PropTypes.object,
-    time: React.PropTypes.number,
-    val1: React.PropTypes.string,
-    val2: React.PropTypes.string,
-    val1Mod: React.PropTypes.bool,
-    val2Mod: React.PropTypes.bool,
-    isViewStatus: React.PropTypes.bool
+    tag: PropTypes.object,
+    time: PropTypes.number,
+    val1: PropTypes.string,
+    val2: PropTypes.string,
+    val1Mod: PropTypes.bool,
+    val2Mod: PropTypes.bool,
+    isViewStatus: PropTypes.bool
   },
 
   getInitialState: function() {

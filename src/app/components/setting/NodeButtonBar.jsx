@@ -1,22 +1,22 @@
 'use strict'
-
+import PropTypes from 'prop-types';
 import React from 'react';
 import { TextField, Dialog, RaisedButton, FlatButton } from 'material-ui';
 import { formStatus } from '../../constants/FormStatus.jsx';
+var createReactClass = require('create-react-class');
 
 
 
-
-var NodeButtonBar = React.createClass({
+var NodeButtonBar = createReactClass({
 
 
   propTypes: {
-    onEdit: React.PropTypes.func,
-    onSave: React.PropTypes.func,
-    onDelete: React.PropTypes.func,
-    onCancel: React.PropTypes.func,
-    status: React.PropTypes.string,
-    customButton: React.PropTypes.object
+    onEdit: PropTypes.func,
+    onSave: PropTypes.func,
+    onDelete: PropTypes.func,
+    onCancel: PropTypes.func,
+    status: PropTypes.string,
+    customButton: PropTypes.object
   },
 
   getInitialState: function() {

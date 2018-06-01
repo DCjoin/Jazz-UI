@@ -1,8 +1,8 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
 import Dialog from 'controls/NewDialog.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
 import {Gallery} from 'components/DataAnalysis/Basic/GenerateSolution.jsx';
-
+import PropTypes from 'prop-types';
 export default class SolutionGallery extends Component {
 	constructor(props) {
 		super(props);
@@ -75,7 +75,7 @@ export default class SolutionGallery extends Component {
 	}
 }
 
-SolutionGallery.propTypes = {
+SolutionGallery.propTypes= {
 	measure: PropTypes.object.isRequired,
 	onDelete: PropTypes.func.isRequired,
 }

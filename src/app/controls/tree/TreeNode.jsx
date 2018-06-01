@@ -12,59 +12,59 @@ import { List, includes } from 'immutable';
 import FolderAction from '../../actions/FolderAction.jsx';
 import dragula from 'react-dragula';
 import { treeSource } from '../../constants/TreeSource.jsx';
-
+import PropTypes from 'prop-types';
 //import AlarmStore from '../../stores/AlarmStore.jsx';
 //import BubbleIcon from '../../components/BubbleIcon.jsx';
 let {nodeType} = TreeConstants;
-
-var TreeNode = React.createClass({
+var createReactClass = require('create-react-class');
+var TreeNode = createReactClass({
   //mixins: [React.addons.PureRenderMixin],
 
   propTypes: {
     // feature
-    hasCheckBox: React.PropTypes.bool,
-    allHasCheckBox: React.PropTypes.bool,
+    hasCheckBox: PropTypes.bool,
+    allHasCheckBox: PropTypes.bool,
     // there is alarm bubble for every node
-    hasBubble: React.PropTypes.bool,
+    hasBubble: PropTypes.bool,
 
     // node style
-    treeNodeClass: React.PropTypes.string,
+    treeNodeClass: PropTypes.string,
 
     // self style
-    indent: React.PropTypes.number,
-    indentUnit: React.PropTypes.number,
-    nodeOriginPaddingLeft: React.PropTypes.number,
+    indent: PropTypes.number,
+    indentUnit: PropTypes.number,
+    nodeOriginPaddingLeft: PropTypes.number,
 
     // self attributes
     // enabled to change "HasDataPrivilege" attr when "HasDataPrivilege" is false
-    enabledChangeDataPrivilege: React.PropTypes.bool,
+    enabledChangeDataPrivilege: PropTypes.bool,
     // disabled selectNode method, when disable is true
-    allDisabled: React.PropTypes.bool,
-    disabled: React.PropTypes.bool,
-    hasChild: React.PropTypes.bool,
-    level: React.PropTypes.number,
-    collapsed: React.PropTypes.bool,
-    collapsedLevel: React.PropTypes.number,
+    allDisabled: PropTypes.bool,
+    disabled: PropTypes.bool,
+    hasChild: PropTypes.bool,
+    level: PropTypes.number,
+    collapsed: PropTypes.bool,
+    collapsedLevel: PropTypes.number,
 
     // interface
-    onSelectNode: React.PropTypes.func,
-    generateNodeConent: React.PropTypes.func,
+    onSelectNode: PropTypes.func,
+    generateNodeConent: PropTypes.func,
 
     // dataSource
-    nodeData: React.PropTypes.object,
+    nodeData: PropTypes.object,
     // selected node when nodeData.Id == a node.Id in selectedNode
-    selectedNode: React.PropTypes.object,
+    selectedNode: PropTypes.object,
     // checked node when nodeData.Id == a node.Id in checkedNodes
-    checkedNodes: React.PropTypes.object,
+    checkedNodes: PropTypes.object,
 
     //for copy opertation
-    isFolderOperationTree: React.PropTypes.bool,
+    isFolderOperationTree: PropTypes.bool,
 
-    putGragulaContainer: React.PropTypes.func,
-    collapsedNodeId: React.PropTypes.number,
+    putGragulaContainer: PropTypes.func,
+    collapsedNodeId: PropTypes.number,
     // arrow style
-    arrowClass: React.PropTypes.string,
-    treeSource: React.PropTypes.number,
+    arrowClass: PropTypes.string,
+    treeSource: PropTypes.number,
   },
 
   getDefaultProps: function() {

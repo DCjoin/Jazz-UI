@@ -1,15 +1,15 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from 'react';
 import { DataConverter } from '../../util/Util.jsx';
 import classNames from 'classnames';
 import moment from 'moment';
 import PlatformAction from '../../actions/PlatformAction.jsx';
-
-let ProviderItem = React.createClass({
+var createReactClass = require('create-react-class');
+let ProviderItem = createReactClass({
   propTypes: {
-    provider: React.PropTypes.object,
-    selectItem: React.PropTypes.object,
+    provider: PropTypes.object,
+    selectItem: PropTypes.object,
   },
   _onClick: function() {
     PlatformAction.setSelectedProvider(this.props.provider);

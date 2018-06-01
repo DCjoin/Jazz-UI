@@ -1,13 +1,14 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from 'react';
 import _capitalize from 'lodash-es/capitalize';
 var _ = {capitalize:_capitalize};
-var Loading = React.createClass({
+var createReactClass = require('create-react-class');
+var Loading = createReactClass({
 
 	propTypes: {
-		showImmediately: React.PropTypes.bool,
-		loadingType: React.PropTypes.string
+		showImmediately: PropTypes.bool,
+		loadingType: PropTypes.string
 	},
 
 	getDefaultProps() {

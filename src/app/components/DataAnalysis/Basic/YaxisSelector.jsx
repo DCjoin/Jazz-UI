@@ -7,12 +7,12 @@ import NewFlatButton from 'controls/NewFlatButton.jsx';
 import MenuItem from 'material-ui/MenuItem';
 import CommonFuns from 'util/Util.jsx';
 import _ from 'lodash-es';
-
+var createReactClass = require('create-react-class');
 let {isNumeric} = CommonFuns;
 
 var _currentChartObj = null,
   _storedConfig = null;
-let YaxisSelector = React.createClass({
+let YaxisSelector = createReactClass({
   getInitialState() {
     return {};
   },
@@ -123,7 +123,7 @@ let YaxisSelector = React.createClass({
 
 });
 
-var YaxisDialog = React.createClass({
+var YaxisDialog = createReactClass({
   getInitialState(){
     return{
       show:false
@@ -376,7 +376,7 @@ var YaxisDialog = React.createClass({
   }
 });
 
-var MaxMinPair = React.createClass({
+var MaxMinPair = createReactClass({
   getInitialState() {
     let maxValue = '',
       minValue = '';

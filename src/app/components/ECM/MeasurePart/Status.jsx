@@ -1,10 +1,10 @@
-import React, { Component,PropTypes } from 'react';
+import React, { Component} from 'react';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
 import {Status} from 'constants/actionType/Measures.jsx';
 import IconButton from 'material-ui/IconButton';
-
+import PropTypes from 'prop-types';
 function getItems(status){
   switch (status) {
     case Status.ToBe:

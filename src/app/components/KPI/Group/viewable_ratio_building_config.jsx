@@ -9,7 +9,7 @@ import {Type} from 'constants/actionType/KPI.jsx';
 import classNames from 'classnames';
 import FontIcon from 'material-ui/FontIcon';
 import MonthKPIStore from 'stores/KPI/MonthKPIStore.jsx'
-
+import PropTypes from 'prop-types';
 export default class ViewableRatioBuildingConfig extends Component {
     constructor(props) {
       super(props);
@@ -142,13 +142,13 @@ export default class ViewableRatioBuildingConfig extends Component {
 
 }
 
-ViewableRatioBuildingConfig.propTypes = {
-	isViewStatus:React.PropTypes.bool,
-  disableEdit:React.PropTypes.bool,
-	index:React.PropTypes.number,
-  kpiInfo:React.PropTypes.object,
-  indicatorType:React.PropTypes.number,
-  onEdit:React.PropTypes.func,
-  onCancel:React.PropTypes.func,
-  onSave:React.PropTypes.func,
+ViewableRatioBuildingConfig.propTypes= {
+	isViewStatus:PropTypes.bool,
+  disableEdit:PropTypes.bool,
+	index:PropTypes.number,
+  kpiInfo:PropTypes.object,
+  indicatorType:PropTypes.number,
+  onEdit:PropTypes.func,
+  onCancel:PropTypes.func,
+  onSave:PropTypes.func,
 };

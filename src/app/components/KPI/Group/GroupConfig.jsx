@@ -10,7 +10,7 @@ import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx';
 import StepComponent from './stepComponent.jsx';
 import FlatButton from "controls/NewFlatButton.jsx";
 import CurrentUserCustomerStore from 'stores/CurrentUserCustomerStore.jsx';
-
+import PropTypes from 'prop-types';
 function getCustomerById(customerId) {
   return find(CurrentUserCustomerStore.getAll(), customer => customer.Id === customerId * 1 );
 }
@@ -18,7 +18,7 @@ function getCustomerById(customerId) {
 export default class GroupConfig extends Component {
 
 	static contextTypes = {
-		router: React.PropTypes.object,
+		router: PropTypes.object,
 	};
 
   state={
@@ -126,11 +126,11 @@ export default class GroupConfig extends Component {
   }
 }
 
-GroupConfig.propTypes = {
-	configStep:React.PropTypes.number || null,
-	kpiInfo:React.PropTypes.object,
-  onEdit:React.PropTypes.func,
-  onCancel:React.PropTypes.func,
-  onSave:React.PropTypes.func,
-  isNew:React.PropTypes.bool,
+GroupConfig.propTypes= {
+	configStep:PropTypes.number || null,
+	kpiInfo:PropTypes.object,
+  onEdit:PropTypes.func,
+  onCancel:PropTypes.func,
+  onSave:PropTypes.func,
+  isNew:PropTypes.bool,
 };

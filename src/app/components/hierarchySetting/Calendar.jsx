@@ -1,5 +1,5 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from "react";
 import classnames from "classnames";
 import { formStatus } from '../../constants/FormStatus.jsx';
@@ -13,13 +13,13 @@ import FlatButton from 'controls/FlatButton.jsx';
 import YearPicker from '../../controls/YearPicker.jsx';
 import SideNav from '../../controls/SideNav.jsx';
 import Dialog from '../../controls/NewDialog.jsx';
-
-let CalendarDetail = React.createClass({
+var createReactClass = require('create-react-class');
+let CalendarDetail = createReactClass({
   propTypes: {
-    calendar: React.PropTypes.object,
-    type: React.PropTypes.number,
-    onClose: React.PropTypes.func,
-    side: React.PropTypes.string
+    calendar: PropTypes.object,
+    type: PropTypes.number,
+    onClose: PropTypes.func,
+    side: PropTypes.string
   },
   getDefaultProps() {
     return {
@@ -198,17 +198,17 @@ let CalendarDetail = React.createClass({
   }
 });
 
-let CalendarItem = React.createClass({
+let CalendarItem = createReactClass({
   propTypes: {
-    index: React.PropTypes.number,
-    type: React.PropTypes.number,
-    merge: React.PropTypes.func,
-    calendarItem: React.PropTypes.object,
-    isViewStatus: React.PropTypes.bool,
-    allCalendar: React.PropTypes.object,
-    deleteCalendarItem: React.PropTypes.func,
-    checkWorktime: React.PropTypes.func,
-    errorText: React.PropTypes.string
+    index: PropTypes.number,
+    type: PropTypes.number,
+    merge: PropTypes.func,
+    calendarItem: PropTypes.object,
+    isViewStatus: PropTypes.bool,
+    allCalendar: PropTypes.object,
+    deleteCalendarItem: PropTypes.func,
+    checkWorktime: PropTypes.func,
+    errorText: PropTypes.string
   },
   getInitialState: function() {
     return {
@@ -352,16 +352,16 @@ let CalendarItem = React.createClass({
   }
 });
 
-let CalendarItems = React.createClass({
+let CalendarItems = createReactClass({
   propTypes: {
-    type: React.PropTypes.number,
-    merge: React.PropTypes.func,
-    calendarItems: React.PropTypes.object,
-    isViewStatus: React.PropTypes.bool,
-    allCalendar: React.PropTypes.object,
-    addCalendarItem: React.PropTypes.func,
-    deleteCalendarItem: React.PropTypes.func,
-    checkWorktime: React.PropTypes.func
+    type: PropTypes.number,
+    merge: PropTypes.func,
+    calendarItems: PropTypes.object,
+    isViewStatus: PropTypes.bool,
+    allCalendar: PropTypes.object,
+    addCalendarItem: PropTypes.func,
+    deleteCalendarItem: PropTypes.func,
+    checkWorktime: PropTypes.func
   },
   getInitialState: function() {
     var errorTextArr = this._getInitError();
@@ -472,11 +472,11 @@ let CalendarItems = React.createClass({
   }
 });
 
-var Calendar = React.createClass({
+var Calendar = createReactClass({
   propTypes: {
-    hierarchyId: React.PropTypes.number,
-    formStatus: React.PropTypes.string,
-    setEditBtnStatus: React.PropTypes.func
+    hierarchyId: PropTypes.number,
+    formStatus: PropTypes.string,
+    setEditBtnStatus: PropTypes.func
   },
   getInitialState: function() {
     return ({

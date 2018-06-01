@@ -1,14 +1,14 @@
 import React from 'react';
 import {Motion, spring} from 'react-motion';
 import assign from 'object-assign';
-
+var createReactClass = require('create-react-class');
 const MEASURE_ITEM_HEIGHT=193,
       TOP_PADDING=21,
       LEFT_PADDING=25,
       RIGHT_PADDING=15,
       LEAVING_GAP=30;
 
-const BlankItem=React.createClass({
+const BlankItem=createReactClass({
   render(){
     var styles={
       height:`${MEASURE_ITEM_HEIGHT}px`,
@@ -23,7 +23,7 @@ const BlankItem=React.createClass({
   }
 })
 var isOver=false;
-const FadeOut = React.createClass({
+const FadeOut = createReactClass({
   componentWillUnmount(){
     if(!isOver){this.props.onEnd()}
   },

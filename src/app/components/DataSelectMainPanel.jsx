@@ -19,7 +19,7 @@ import LabelMenuAction from '../actions/LabelMenuAction.jsx';
 import CommodityAction from '../actions/CommodityAction.jsx';
 import CommodityStore from '../stores/CommodityStore.jsx';
 import FolderAction from '../actions/FolderAction.jsx';
-
+var createReactClass = require('create-react-class');
 
 var alarmType = null; //alarmType:0:neither 1:baseline 2:both null:all
 var filters = null;
@@ -30,15 +30,15 @@ var alarmTagOption = null;
 var timeoutID = null;
 var customerId=null;
 
-
-let DataSelectMainPanel = React.createClass({
+import PropTypes from 'prop-types';
+let DataSelectMainPanel = createReactClass({
   //mixins: [Navigation, State],
   propTypes: {
-    linkFrom: React.PropTypes.string,
-    widgetType: React.PropTypes.string, //energy,unit,ratio,labelling
+    linkFrom: PropTypes.string,
+    widgetType: PropTypes.string, //energy,unit,ratio,labelling
   },
   contextTypes:{
-      currentRoute: React.PropTypes.object
+      currentRoute: PropTypes.object
   },
   _onHierachyTreeClick: function(node) {
     if (node != this.state.dimParentNode) {

@@ -12,7 +12,7 @@ import NewDialog from 'controls/NewDialog.jsx';
 import NewFlatButton from 'controls/NewFlatButton.jsx';
 import MonthKPIStore from 'stores/KPI/MonthKPIStore.jsx';
 import Immutable from 'immutable';
-
+import PropTypes from 'prop-types';
 
 function getDisplayData(total,type){
   return total===null?'－':type===Type.Quota?CommonFuns.getLabelData(parseFloat(total)):parseFloat(parseFloat(total).toFixed(1))
@@ -26,7 +26,7 @@ function isView(building){
 export default class BuildingConfig extends Component {
 
   static contextTypes = {
-		router: React.PropTypes.object,
+		router: PropTypes.object,
 	};
 
 
@@ -220,12 +220,12 @@ export default class BuildingConfig extends Component {
   }
 }
 
-BuildingConfig.propTypes = {
-	configStep:React.PropTypes.number || null,
-  isNew:React.PropTypes.bool,
-	kpiInfo:React.PropTypes.object,
-  onEdit:React.PropTypes.func,
-  onCancel:React.PropTypes.func,
-  onSave:React.PropTypes.func,
-  year:React.PropTypes.number,
+BuildingConfig.propTypes= {
+	configStep:PropTypes.number || null,
+  isNew:PropTypes.bool,
+	kpiInfo:PropTypes.object,
+  onEdit:PropTypes.func,
+  onCancel:PropTypes.func,
+  onSave:PropTypes.func,
+  year:PropTypes.number,
 };

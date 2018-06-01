@@ -1,25 +1,25 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Mixins, Styles, ClearFix, FontIcon } from 'material-ui';
 import ViewableDropDownMenu from './ViewableDropDownMenu.jsx';
 import CommonFuns from '../util/Util.jsx';
 import FromEndDate from './FromEndDate.jsx';
 import FlatButton from './FlatButton.jsx';
-
-var FromEndDateItem = React.createClass({
+var createReactClass = require('create-react-class');
+var FromEndDateItem = createReactClass({
   propTypes: {
-    index: React.PropTypes.number.isRequired,
-    isViewStatus: React.PropTypes.bool,
-    hasDeleteButton: React.PropTypes.bool,
-    errorText: React.PropTypes.string,
-    typeValue: React.PropTypes.number,
-    typeItems: React.PropTypes.array,
-    typeText: React.PropTypes.string,
-    startMonth: React.PropTypes.number,
-    startDay: React.PropTypes.number,
-    endMonth: React.PropTypes.number,
-    endDay: React.PropTypes.number
+    index: PropTypes.number.isRequired,
+    isViewStatus: PropTypes.bool,
+    hasDeleteButton: PropTypes.bool,
+    errorText: PropTypes.string,
+    typeValue: PropTypes.number,
+    typeItems: PropTypes.array,
+    typeText: PropTypes.string,
+    startMonth: PropTypes.number,
+    startDay: PropTypes.number,
+    endMonth: PropTypes.number,
+    endDay: PropTypes.number
   },
   getDefaultProps() {
     return {

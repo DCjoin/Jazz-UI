@@ -1,14 +1,14 @@
 import React from 'react';
 import CalendarI18N from './CalendarI18N.jsx';
 import classnames from 'classnames';
-
+import PropTypes from 'prop-types';
 export default class CalendarToolbar extends React.Component {
-  static propTypes = {
-    currentDate: React.PropTypes.object,
-    onChange: React.PropTypes.func,
-    displayActionButton: React.PropTypes.bool,
-    displaySelectButton: React.PropTypes.bool,
-    locale: React.PropTypes.string.isRequired
+  static propTypes= {
+    currentDate: PropTypes.object,
+    onChange: PropTypes.func,
+    displayActionButton: PropTypes.bool,
+    displaySelectButton: PropTypes.bool,
+    locale: PropTypes.string.isRequired
   };
 
   static defaultProps = {

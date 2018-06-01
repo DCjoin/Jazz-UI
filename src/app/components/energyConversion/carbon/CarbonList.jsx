@@ -6,14 +6,15 @@ import Item from '../../../controls/SelectableItem.jsx';
 import SelectablePanel from '../../../controls/SelectablePanel.jsx';
 import CarbonStore from '../../../stores/energyConversion/CarbonStore.jsx';
 import { formStatus } from '../../../constants/FormStatus.jsx';
-
-var CarbonList = React.createClass({
+var createReactClass = require('create-react-class');
+import PropTypes from 'prop-types';
+var CarbonList = createReactClass({
   propTypes: {
-    formStatus: React.PropTypes.bool,
-    onCarbonClick: React.PropTypes.func,
-    onAddBtnClick: React.PropTypes.func,
-    carbons: React.PropTypes.object,
-    selectedId: React.PropTypes.number
+    formStatus: PropTypes.bool,
+    onCarbonClick: PropTypes.func,
+    onAddBtnClick: PropTypes.func,
+    carbons: PropTypes.object,
+    selectedId: PropTypes.number
   },
   _renderCarbonItems: function() {
     var items = [],

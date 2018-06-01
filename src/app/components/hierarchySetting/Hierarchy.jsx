@@ -1,5 +1,5 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from "react";
 import Immutable from 'immutable';
 import HierarchyStore from 'stores/hierarchySetting/HierarchyStore.jsx';
@@ -17,7 +17,7 @@ import Organization from './Organization/Organization.jsx';
 import Building from './Building/Building.jsx';
 import Dim from './Dim/Dim.jsx';
 import RoutePath from 'util/RoutePath.jsx';
-
+var createReactClass = require('create-react-class');
 function emptyMap() {
   return new Map();
 }
@@ -29,9 +29,9 @@ function getNodeId(props) {
 }
 var customerId=null;
 var _currentConsultantsHierarchyId = null;
-var Hierarchy = React.createClass({
+var Hierarchy = createReactClass({
   contextTypes:{
-      currentRoute: React.PropTypes.object
+      currentRoute: PropTypes.object
   },
   getInitialState: function() {
     return {

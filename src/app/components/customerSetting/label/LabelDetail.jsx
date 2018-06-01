@@ -1,6 +1,7 @@
 'use strict';
 
 import React from "react";
+import PropTypes from 'prop-types';
 import classnames from "classnames";
 import Panel from '../../../controls/MainContentPanel.jsx';
 import ViewableTextField from '../../../controls/ViewableTextField.jsx';
@@ -13,22 +14,22 @@ import GradeContainer from './GradeContainer.jsx';
 import ChartComponent from './ChartComponent.jsx';
 import CommonFuns from '../../../util/Util.jsx';
 import UOMStore from '../../../stores/UOMStore.jsx';
-
-var LabelDetail = React.createClass({
+var createReactClass = require('create-react-class');
+var LabelDetail = createReactClass({
   propTypes: {
-    formStatus: React.PropTypes.string,
-    showLeft: React.PropTypes.bool,
-    showDeleteDialog: React.PropTypes.bool,
-    selectedLabel: React.PropTypes.object,
-    onCancel: React.PropTypes.func,
-    onSave: React.PropTypes.func,
-    onEdit: React.PropTypes.func,
-    onDelete: React.PropTypes.func,
-    onDeleteLabel: React.PropTypes.func,
-    onCloseDialog: React.PropTypes.func,
-    onToggle: React.PropTypes.func,
-    mergeLabel: React.PropTypes.func,
-    enableSave: React.PropTypes.bool
+    formStatus: PropTypes.string,
+    showLeft: PropTypes.bool,
+    showDeleteDialog: PropTypes.bool,
+    selectedLabel: PropTypes.object,
+    onCancel: PropTypes.func,
+    onSave: PropTypes.func,
+    onEdit: PropTypes.func,
+    onDelete: PropTypes.func,
+    onDeleteLabel: PropTypes.func,
+    onCloseDialog: PropTypes.func,
+    onToggle: PropTypes.func,
+    mergeLabel: PropTypes.func,
+    enableSave: PropTypes.bool
   },
   getInitialState: function() {
     var selectedLabel = this.props.selectedLabel;

@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
+import PropTypes from 'prop-types';
 import {
   Step,
   Stepper,
@@ -1215,7 +1216,7 @@ class CreateDiagnose extends Component {
 	};
 
 	static contextTypes = {
-		hierarchyId: React.PropTypes.string
+		hierarchyId: PropTypes.string
 	};
 
 	constructor(props, ctx) {
@@ -1738,7 +1739,7 @@ class CreateDiagnose extends Component {
 		);
 	}
 }
-CreateDiagnose.propTypes = {
+CreateDiagnose.propTypes= {
 	isBasic: PropTypes.bool,
 	EnergyLabel: PropTypes.object,
 	DiagnoseItem: PropTypes.object,

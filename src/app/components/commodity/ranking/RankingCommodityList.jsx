@@ -1,16 +1,17 @@
 'use strict';
 import React from "react";
+import PropTypes from 'prop-types';
 import { Navigation, State } from 'react-router';
 import { RadioButton, RadioButtonGroup } from 'material-ui';
 import CommodityStore from '../../../stores/CommodityStore.jsx';
 import CommodityAction from '../../../actions/CommodityAction.jsx';
-
-var RankingCommodityList = React.createClass({
+var createReactClass = require('create-react-class');
+var RankingCommodityList = createReactClass({
 
   propTypes: {
-    ecType: React.PropTypes.string,
-    checkedCommodity: React.PropTypes.object,
-    commdityList: React.PropTypes.array,
+    ecType: PropTypes.string,
+    checkedCommodity: PropTypes.object,
+    commdityList: PropTypes.array,
   },
 
   getNamebyId: function(id) {

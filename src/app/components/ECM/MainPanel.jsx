@@ -35,11 +35,11 @@ function privilegeWithPushAndNotPush( privilegeCheck ) {
 function isFull() {
 	return privilegeWithPushAndNotPush(privilegeUtil.isFull.bind(privilegeUtil));
 }
-
+import PropTypes from 'prop-types';
 export default class MainPanel extends Component {
 
   static contextTypes = {
-      hierarchyId: React.PropTypes.string
+      hierarchyId: PropTypes.string
     };
 
   constructor(props, ctx) {
@@ -143,5 +143,5 @@ export default class MainPanel extends Component {
   }
 }
 
-MainPanel.propTypes = {
+MainPanel.propTypes= {
 };

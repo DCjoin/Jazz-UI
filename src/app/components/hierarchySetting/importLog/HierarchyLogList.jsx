@@ -2,9 +2,9 @@
 
 import React from 'react';
 import HierarchyLogItem from './HierarchyLogItem.jsx';
+var createReactClass = require('create-react-class');
 
-
-let HierarchyLogList = React.createClass({
+let HierarchyLogList = createReactClass({
   getInitialState: function() {
     return {
     };

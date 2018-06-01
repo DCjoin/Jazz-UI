@@ -1,14 +1,15 @@
 'use strict';
 
 import React from "react";
+import PropTypes from 'prop-types';
 import ViewableTextField from '../../../controls/ViewableTextField.jsx';
 import MonitorTag from './MonitorTag.jsx';
-
-var TagFormula = React.createClass({
+var createReactClass = require('create-react-class');
+var TagFormula = createReactClass({
   propTypes: {
-    selectedTag: React.PropTypes.object,
-    mergeTag: React.PropTypes.func,
-    isViewStatus: React.PropTypes.bool
+    selectedTag: PropTypes.object,
+    mergeTag: PropTypes.func,
+    isViewStatus: PropTypes.bool
   },
   getInitialState: function() {
     return {

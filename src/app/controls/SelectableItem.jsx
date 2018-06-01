@@ -1,17 +1,18 @@
 'use strict';
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
-
-let SelectableItem = React.createClass({
+var createReactClass = require('create-react-class');
+let SelectableItem = createReactClass({
   propTypes: {
-    index: React.PropTypes.number,
+    index: PropTypes.number,
     //the first line
-    label: React.PropTypes.string,
+    label: PropTypes.string,
     //the second line
-    text: React.PropTypes.string,
-    selectedIndex: React.PropTypes.number,
-    onItemClick: React.PropTypes.func,
+    text: PropTypes.string,
+    selectedIndex: PropTypes.number,
+    onItemClick: PropTypes.func,
   },
   onClick: function() {
     this.props.onItemClick(this.props.index);

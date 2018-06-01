@@ -8,17 +8,18 @@ import DateTimeSelector from '../../../controls/DateTimeSelector.jsx';
 import LinkButton from '../../../controls/LinkButton.jsx';
 import MultiTimespanAction from '../../../actions/MultiTimespanAction.jsx';
 import Immutable from 'immutable';
-
-let TimespanItem = React.createClass({
+var createReactClass = require('create-react-class');
+import PropTypes from 'prop-types';
+let TimespanItem = createReactClass({
   propTypes: {
-    title: React.PropTypes.string,
-    isOriginalDate: React.PropTypes.bool,
-    relativeType: React.PropTypes.oneOf(MultipleTimespanStore.getRelativeTypes()),
-    relativeValue: React.PropTypes.number,
-    compareIndex: React.PropTypes.number, //对比时间编号，原始时间没有此参数
-    startDate: React.PropTypes.object,
-    endDate: React.PropTypes.object,
-    dateDescription: React.PropTypes.string //对比时间段的文字时间
+    title: PropTypes.string,
+    isOriginalDate: PropTypes.bool,
+    relativeType: PropTypes.oneOf(MultipleTimespanStore.getRelativeTypes()),
+    relativeValue: PropTypes.number,
+    compareIndex: PropTypes.number, //对比时间编号，原始时间没有此参数
+    startDate: PropTypes.object,
+    endDate: PropTypes.object,
+    dateDescription: PropTypes.string //对比时间段的文字时间
   },
   getDefaultProps() {
     return {
@@ -154,7 +155,7 @@ let TimespanItem = React.createClass({
   },
 });
 
-let AddIntervalWindow = React.createClass({
+let AddIntervalWindow = createReactClass({
   _onAction(action) {
     let analysisPanel = this.props.analysisPanel;
     if (action === 'draw') {

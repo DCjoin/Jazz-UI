@@ -14,24 +14,25 @@ import ViewableDatePicker from '../../controls/ViewableDatePicker.jsx';
 import TBSettingItems from './TBSettingItems.jsx';
 import CalDetail from './CalDetail.jsx';
 import CommodityStore from '../../stores/CommodityStore.jsx';
-
-var BaselineBasic = React.createClass({
+var createReactClass = require('create-react-class');
+import PropTypes from 'prop-types';
+var BaselineBasic = createReactClass({
   //mixins: [Navigation, State],
 
   propTypes: {
-    tag: React.PropTypes.object,
-    dateRange: React.PropTypes.object,
-    tbId: React.PropTypes.number,
+    tag: PropTypes.object,
+    dateRange: PropTypes.object,
+    tbId: PropTypes.number,
 
-    name: React.PropTypes.string,
-    year: React.PropTypes.number,
-    items: React.PropTypes.array,
+    name: PropTypes.string,
+    year: PropTypes.number,
+    items: PropTypes.array,
 
-    isViewStatus: React.PropTypes.bool,
-    onNameChanged: React.PropTypes.func,
-    onDataLoaded: React.PropTypes.func,
-    onRequestShowMask: React.PropTypes.func,
-    onRequestHideMask: React.PropTypes.func,
+    isViewStatus: PropTypes.bool,
+    onNameChanged: PropTypes.func,
+    onDataLoaded: PropTypes.func,
+    onRequestShowMask: PropTypes.func,
+    onRequestHideMask: PropTypes.func,
   },
 
   getDefaultProps: function() {

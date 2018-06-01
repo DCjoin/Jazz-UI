@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import {find, partial} from 'lodash-es';
 import FontIcon from 'material-ui/FontIcon';
 import Toggle from 'material-ui/Toggle';
-
+import PropTypes from 'prop-types';
 import PermissionCode from 'constants/PermissionCode.jsx';
 
 import LinkButton from 'controls/LinkButton.jsx';
@@ -304,7 +304,7 @@ function getValueWithUnit(value, unit, RatioUomId) {
 
 export default class KPIReport extends Component {
 	static contextTypes = {
-		router: React.PropTypes.object
+		router: PropTypes.object
 	};
 	/*指标值*/
 	getValueSummaryItem() {

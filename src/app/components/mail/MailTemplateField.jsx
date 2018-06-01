@@ -1,12 +1,13 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from 'react';
 import { FontIcon, Mixins, Paper } from 'material-ui';
 import MailStore from '../../stores/MailStore.jsx';
 import MailAction from '../../actions/MailAction.jsx';
-let TemplateItem = React.createClass({
+var createReactClass = require('create-react-class');
+let TemplateItem = createReactClass({
   propTypes: {
-    value: React.PropTypes.object,
+    value: PropTypes.object,
   },
   _onCleanButtonClick: function(e) {
     e.stopPropagation();
@@ -58,7 +59,7 @@ let TemplateItem = React.createClass({
 
   }
 });
-let TemplateList = React.createClass({
+let TemplateList = createReactClass({
   //mixins: [Mixins.ClickAwayable],
   _onTemplateListChanged: function() {
     this.setState({
@@ -110,7 +111,7 @@ let TemplateList = React.createClass({
       )
   }
 });
-let MailTemplateField = React.createClass({
+let MailTemplateField = createReactClass({
 
   _onClick: function() {
     this.setState({

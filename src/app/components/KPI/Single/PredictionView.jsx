@@ -1,15 +1,15 @@
 'use strict';
-import React, {Component,PropTypes} from 'react';
+import React, {Component} from 'react';
 import {Type,DataStatus} from 'constants/actionType/KPI.jsx';
 import Immutable from 'immutable';
 import Prediction from './Prediction.jsx';
 import SingleKPIAction from 'actions/KPI/SingleKPIAction.jsx';
 import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx';
-
+import PropTypes from 'prop-types';
 export default class PredictionView extends Component {
 
   static contextTypes = {
-		router: React.PropTypes.object,
+		router: PropTypes.object,
 	};
 
   _onRatesSave(tag){
@@ -87,6 +87,6 @@ PredictionView.propTypes={
     Year:PropTypes.number,
     uom:PropTypes.string,
     tag:PropTypes.object,
-    hierarchyId:React.PropTypes.number,
-    hierarchyName:React.PropTypes.string,
+    hierarchyId:PropTypes.number,
+    hierarchyName:PropTypes.string,
 };

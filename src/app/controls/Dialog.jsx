@@ -1,6 +1,6 @@
 import React from 'react';
 import {Paper, Overlay, WindowListenable, StylePropable} from 'material-ui';
-
+import PropTypes from 'prop-types';
 // http://stackoverflow.com/questions/1187518/javascript-array-difference
 Array.prototype.diff = function(a) {
     return this.filter(function(i) {return a.indexOf(i) < 0;});
@@ -34,8 +34,8 @@ var extend = function(object, overrides) {
 
   return mergeObject;
 };
-
-let Dialog = React.createClass({
+var createReactClass = require('create-react-class');
+let Dialog = createReactClass({
 
   closeable: false,
 
@@ -61,10 +61,10 @@ let Dialog = React.createClass({
   },
 
   propTypes: {
-    title: React.PropTypes.node,
-    width: React.PropTypes.number,
-    onDismiss: React.PropTypes.func,
-    onShow: React.PropTypes.func
+    title: PropTypes.node,
+    width: PropTypes.number,
+    onDismiss: PropTypes.func,
+    onShow: PropTypes.func
   },
 
   getDefaultProps: function() {

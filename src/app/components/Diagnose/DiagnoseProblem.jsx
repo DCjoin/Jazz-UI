@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
 import Immutable from 'immutable';
 import FlatButton from 'controls/FlatButton.jsx';
 import NewDialog from 'controls/NewDialog.jsx';
@@ -15,7 +15,7 @@ import DiagnoseChart from './DiagnoseChart.jsx';
 import {DiagnoseStatus,DIAGNOSE_MODEL} from 'constants/actionType/Diagnose.jsx';
 import {GenerateSolutionButton,GenerateSolution, getTagsByChartData} from '../DataAnalysis/Basic/GenerateSolution.jsx';
 import FolderAction from 'actions/FolderAction.jsx';
-
+import PropTypes from 'prop-types';
 import TimeGranularity from 'constants/TimeGranularity.jsx';
 
 function getFromImmu(key) {
@@ -439,7 +439,7 @@ export default class DiagnoseProblem extends Component {
 }
 
 DiagnoseProblem.propTypes={
-  selectedNode:React.PropTypes.object,
-  isBasic:React.PropTypes.bool,
-  onEdit:React.PropTypes.func,
+  selectedNode:PropTypes.object,
+  isBasic:PropTypes.bool,
+  onEdit:PropTypes.func,
 }

@@ -14,15 +14,16 @@ import Immutable from 'immutable';
 import RawDataList from './RawDataList.jsx';
 import CommonFuns from 'util/Util.jsx';
 import moment from 'moment';
-
+import PropTypes from 'prop-types';
+var createReactClass = require('create-react-class');
 var timeoutID = null;
 var customerId=null;
-let Tag = React.createClass({
+let Tag = createReactClass({
   propTypes: {
-    tagType: React.PropTypes.number.isRequired
+    tagType: PropTypes.number.isRequired
   },
   contextTypes:{
-      currentRoute: React.PropTypes.object
+      currentRoute: PropTypes.object
   },
   getInitialState: function() {
     var filterObj = this._getInitFilterObj();

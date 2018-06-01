@@ -64,7 +64,7 @@ function getTransform({ x = null, y = null, zoom = null }) {
 
 
 export default class SingleImageView extends Component{
-  static propTypes = {
+  static propTypes= {
     imageId: PropTypes.string,
     link: PropTypes.string,
     url: PropTypes.string,

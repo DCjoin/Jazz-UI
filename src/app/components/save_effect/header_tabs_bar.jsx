@@ -1,7 +1,7 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import classNames from 'classnames';
-
+import PropTypes from 'prop-types';
 import RoutePath from 'util/RoutePath.jsx';
 import NewFlatButton from 'controls/NewFlatButton.jsx';
 
@@ -41,8 +41,8 @@ function HeaderTabs({isCustomer, isOverview, onActive,context,param}) {
 export default class HeaderTabsBar extends Component {
 
 	static contextTypes = {
-    router: React.PropTypes.object,
-    currentRoute: React.PropTypes.object,
+    router: PropTypes.object,
+    currentRoute: PropTypes.object,
   };
 
 	render() {
@@ -54,7 +54,7 @@ export default class HeaderTabsBar extends Component {
 	}
 }
 
-HeaderTabsBar.PropTypes = {
+HeaderTabsBar.propTypes= {
 	isCustomer: PropTypes.bool.isRequired,
 	isOverview: PropTypes.bool.isRequired,
 	onActive: PropTypes.func.isRequired,

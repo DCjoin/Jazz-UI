@@ -2,13 +2,13 @@
 
 import React from "react";
 import classnames from "classnames";
-
+import PropTypes from 'prop-types';
 import { formStatus } from '../../../constants/FormStatus.jsx';
 import UserStore from '../../../stores/UserStore.jsx';
-
-var UserItem = React.createClass({
+var createReactClass = require('create-react-class');
+var UserItem = createReactClass({
   propTypes: {
-    handlerTouchTap: React.PropTypes.func
+    handlerTouchTap: PropTypes.func
   },
 
   getDefaultProps() {
@@ -71,11 +71,11 @@ var UserItem = React.createClass({
   }
 });
 
-module.exports = React.createClass({
+module.exports = createReactClass({
 
   propTypes: {
-    users: React.PropTypes.object,
-    handlerTouchTap: React.PropTypes.func,
+    users: PropTypes.object,
+    handlerTouchTap: PropTypes.func,
   },
 
   getDefaultProps() {

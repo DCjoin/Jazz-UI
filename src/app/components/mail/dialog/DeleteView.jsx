@@ -6,10 +6,10 @@ import Delete from '../../../controls/OperationTemplate/Delete.jsx';
 import { nodeType } from '../../../constants/TreeConstants.jsx';
 import MailAction from '../../../actions/MailAction.jsx';
 import MailStore from '../../../stores/MailStore.jsx';
-
-var DeleteView = React.createClass({
+var createReactClass = require('create-react-class');
+var DeleteView = createReactClass({
   propTypes: {
-    onDismiss: React.PropTypes.func,
+    onDismiss: PropTypes.func,
   },
   _onDeleteItem: function() {
     MailAction.deleteNotificationTemplate(MailStore.getDialogInfo());

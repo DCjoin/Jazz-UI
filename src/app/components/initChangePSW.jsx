@@ -17,7 +17,7 @@ import get from 'lodash-es/get';
 import set from 'lodash-es/set';
 import isObject from 'lodash-es/isObject';
 import lang from '../lang/lang.jsx';
-
+var createReactClass = require('create-react-class');
 import Dialog from 'controls/NewDialog.jsx';
 import RoutePath from 'util/RoutePath.jsx';
 import ResetPasswordAction from '../actions/ResetPasswordAction.jsx';
@@ -27,7 +27,7 @@ import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'reac
 
 const MAX_LENGTH = 200;
 
-var initChangePSW = React.createClass({
+var initChangePSW = createReactClass({
     _bindMergeTemp: function(path) {
         return this._mergeTemp.bind(this, path);
     },

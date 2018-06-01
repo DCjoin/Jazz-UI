@@ -1,14 +1,15 @@
 'use strict';
 import React from "react";
+import PropTypes from 'prop-types';
 import { CircularProgress } from 'material-ui';
 import HierarchyAction from '../../../actions/hierarchySetting/HierarchyAction.jsx';
 import HierarchyLogList from './HierarchyLogList.jsx';
 import HierarchyStore from '../../../stores/hierarchySetting/HierarchyStore.jsx';
+var createReactClass = require('create-react-class');
 
-
-var HierarchyLog = React.createClass({
+var HierarchyLog = createReactClass({
   contextTypes:{
-      currentRoute: React.PropTypes.object
+      currentRoute: PropTypes.object
   },
   getInitialState: function() {
     return {

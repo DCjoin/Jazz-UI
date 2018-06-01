@@ -1,8 +1,8 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
 import classNames from 'classnames';
 import BubbleIcon from 'components/BubbleIcon.jsx';
 import FontIcon from 'material-ui/FontIcon';
-
+import PropTypes from 'prop-types';
 export default class StepComponent extends Component {
 
   render(){
@@ -53,11 +53,11 @@ export default class StepComponent extends Component {
   }
 }
 
-StepComponent.propTypes = {
-  step:React.PropTypes.number,
-  title:React.PropTypes.string,
-  editDisabled:React.PropTypes.boolean,
-  isView:React.PropTypes.boolean,
-  onEdit:React.PropTypes.func,
-  isfolded:React.PropTypes.boolean,
+StepComponent.propTypes= {
+  step:PropTypes.number,
+  title:PropTypes.string,
+  editDisabled:PropTypes.boolean,
+  isView:PropTypes.boolean,
+  onEdit:PropTypes.func,
+  isfolded:PropTypes.boolean,
 };

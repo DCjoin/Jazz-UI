@@ -9,9 +9,9 @@ import RightPanel from './ReportRightPanel.jsx';
 import ReportStore from '../../stores/ReportStore.jsx';
 import ReportAction from '../../actions/ReportAction.jsx';
 import CurrentUserStore from '../../stores/CurrentUserStore.jsx';
+var createReactClass = require('create-react-class');
 
-
-let Report = React.createClass({
+let Report = createReactClass({
   //mixins: [Navigation, State],
   getInitialState: function() {
     var rivilege = CurrentUserStore.getCurrentPrivilege();

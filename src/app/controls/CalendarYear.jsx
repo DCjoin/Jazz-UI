@@ -1,17 +1,17 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from 'react';
 import {Mixins,Styles,ClearFix,Toolbar,ToolbarGroup,IconButton} from 'material-ui';
 // import NavigationChevronLeft from '../../../node_modules/material-ui/lib/svg-icons/navigation/chevron-left';
 // import NavigationChevronRight from '../../../node_modules/material-ui/lib/svg-icons/navigation/chevron-right';
 // import SlideInTransitionGroup from '../../../node_modules/material-ui/lib/transition-groups/slide-in.js';
-
-var CalendarYear = React.createClass({
+var createReactClass = require('create-react-class');
+var CalendarYear = createReactClass({
   propTypes: {
-    selectedYear: React.PropTypes.number.isRequired,
-    onYearChange: React.PropTypes.func,
-    prevYear: React.PropTypes.bool,
-    nextYear: React.PropTypes.bool
+    selectedYear: PropTypes.number.isRequired,
+    onYearChange: PropTypes.func,
+    prevYear: PropTypes.bool,
+    nextYear: PropTypes.bool
   },
   getDefaultProps() {
     return {

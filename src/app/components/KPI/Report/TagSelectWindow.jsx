@@ -1,4 +1,5 @@
 'use strict';
+import PropTypes from 'prop-types';
 import React from "react";
 import ReactDom from 'react-dom';
 import classNames from 'classnames';
@@ -14,6 +15,7 @@ import DimAction from 'actions/DimAction.jsx';
 import ProjectSelect from '../../DataAnalysis/Basic/ProjectSelect.jsx';
 import Tree from 'controls/tree/Tree.jsx';
 import DataAnalysisStore from 'stores/DataAnalysis/DataAnalysisStore.jsx';
+var createReactClass = require('create-react-class');
 var filters = null;
 
 var customerId;
@@ -21,10 +23,10 @@ var customerId;
 var getTouHierarchys=()=>{
 
 }
-let TagSelectWindow = React.createClass({
+let TagSelectWindow = createReactClass({
   //mixins: [Navigation, State],
   contextTypes:{
-        currentRoute: React.PropTypes.object
+        currentRoute: PropTypes.object
     },
   getInitialState: function() {
     return {

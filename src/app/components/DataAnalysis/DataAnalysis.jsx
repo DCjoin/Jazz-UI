@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
+import PropTypes from 'prop-types';
 import {Snackbar, CircularProgress} from 'material-ui';
 import Immutable from 'immutable';
 import {find} from 'lodash-es';

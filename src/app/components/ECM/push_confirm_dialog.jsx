@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
 import IconButton from 'material-ui/IconButton';
 import FlatButton from 'controls/FlatButton.jsx';
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
@@ -9,7 +9,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import ImagGroupPanel from 'controls/ImagGroupPanel.jsx';
 import {PlanTitle,ProblemDetail,PlanDetail} from '../Diagnose/generate_solution.jsx';
 import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
-
+import PropTypes from 'prop-types';
 
 const NUMBER_REG = /^[1-9]\d*(\.\d+)?$/;
 

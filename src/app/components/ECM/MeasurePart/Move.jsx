@@ -1,9 +1,9 @@
 import React from 'react';
 import {Motion, spring} from 'react-motion';
 import FontIcon from 'material-ui/FontIcon';
-
+var createReactClass = require('create-react-class');
 const leavingSpringConfig = {stiffness: 90, damping: 15};
-const Move = React.createClass({
+const Move = createReactClass({
   render() {
     var {destX,destY,originX,originY}=this.props;
     const defaultStyle={

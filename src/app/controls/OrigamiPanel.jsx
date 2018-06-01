@@ -1,8 +1,8 @@
 'use strict';
 
 import React from 'react';
-
-var OrigamiPanel = React.createClass({
+var createReactClass = require('create-react-class');
+var OrigamiPanel = createReactClass({
 
 	_getStyles: function() {
 		return {

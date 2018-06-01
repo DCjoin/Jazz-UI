@@ -1,17 +1,18 @@
 'use strict';
 
 import React from "react";
+import PropTypes from 'prop-types';
 import Regex from '../../../constants/Regex.jsx';
 import ViewableTextField from '../../../controls/ViewableTextField.jsx';
 import ViewableDropDownMenu from '../../../controls/ViewableDropDownMenu.jsx';
 import ComAndUom from '../ComAndUom.jsx';
 import ViewableEnergyLabel from './ViewableEnergyLabel.jsx';
-
-var VTagBasic = React.createClass({
+var createReactClass = require('create-react-class');
+var VTagBasic = createReactClass({
   propTypes: {
-    selectedTag: React.PropTypes.object,
-    mergeTag: React.PropTypes.func,
-    isViewStatus: React.PropTypes.bool
+    selectedTag: PropTypes.object,
+    mergeTag: PropTypes.func,
+    isViewStatus: PropTypes.bool
   },
   getInitialState: function() {
     return {

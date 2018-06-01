@@ -10,7 +10,7 @@ import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
 import DiagnoseStore from 'stores/DiagnoseStore.jsx';
 import DiagnoseChart from './DiagnoseChart.jsx';
-
+import PropTypes from 'prop-types';
 function privilegeWithSmartDiagnoseList( privilegeCheck ) {
   //  return false
 	return (privilegeCheck(PermissionCode.BASIC_SMART_DIACRISIS_LIST, CurrentUserStore.getCurrentPrivilege())
@@ -230,6 +230,6 @@ export default class DiagnoseList extends Component {
 }
 
 DiagnoseList.propTypes={
-  selectedNode:React.PropTypes.object,
-  onEdit:React.PropTypes.func,
+  selectedNode:PropTypes.object,
+  onEdit:PropTypes.func,
 }

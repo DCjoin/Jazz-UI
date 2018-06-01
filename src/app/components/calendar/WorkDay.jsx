@@ -16,9 +16,10 @@ import { formStatus } from '../../constants/FormStatus.jsx';
 import NewDialog from '../../controls/NewDialog.jsx';
 import Immutable from 'immutable';
 import Checkbox from 'material-ui/Checkbox';
+var createReactClass = require('create-react-class');
 
 var calendarType = 0;
-var WorkDay = React.createClass({
+var WorkDay = createReactClass({
   getInitialState: function() {
     return {
       isLoading: true,

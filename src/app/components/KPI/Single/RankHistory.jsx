@@ -6,11 +6,11 @@ import RankingKPIStore from 'stores/KPI/RankingKPIStore.jsx';
 import RankingKPIAction from 'actions/KPI/RankingKPIAction.jsx';
 import Dialog from 'controls/NewDialog.jsx';
 import CommonFuns from 'util/Util.jsx';
-
+import PropTypes from 'prop-types';
 export default class RankHistory extends Component {
 
   static contextTypes = {
-    router: React.PropTypes.object,
+    router: PropTypes.object,
   };
 
   constructor(props) {
@@ -132,14 +132,14 @@ export default class RankHistory extends Component {
 }
 
 RankHistory.propTypes={
-  name:React.PropTypes.string,
-  rankType:React.PropTypes.number,
-  groupKpiId:React.PropTypes.number,
-  buildingId:React.PropTypes.number,
-  onClose:React.PropTypes.func,
-  uomLabel:React.PropTypes.string,
-  year:React.PropTypes.number,
-  renderTitle:React.PropTypes.func,
+  name:PropTypes.string,
+  rankType:PropTypes.number,
+  groupKpiId:PropTypes.number,
+  buildingId:PropTypes.number,
+  onClose:PropTypes.func,
+  uomLabel:PropTypes.string,
+  year:PropTypes.number,
+  renderTitle:PropTypes.func,
 }
 
 // RankHistory.defaultProps = {

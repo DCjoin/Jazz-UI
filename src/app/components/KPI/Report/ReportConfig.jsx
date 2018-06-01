@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDom from 'react-dom';
-
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 import CircularProgress from 'material-ui/CircularProgress';
@@ -145,8 +145,8 @@ class CustomDropDownMenu extends Component {
 export default class ReportConfig extends Component {
 
 	static contextTypes = {
-		router: React.PropTypes.object,
-    currentRoute:React.PropTypes.object,
+		router: PropTypes.object,
+    currentRoute:PropTypes.object,
 	};
 
 	constructor(props) {
@@ -979,12 +979,12 @@ export default class ReportConfig extends Component {
 		}
 	}
 }
-ReportConfig.propTypes = {
-  hierarchyId:React.PropTypes.number,
-  hierarchyName:React.PropTypes.string,
-  report:React.PropTypes.object,
-	onSave:React.PropTypes.object,
-	onCancel:React.PropTypes.object,
+ReportConfig.propTypes= {
+  hierarchyId:PropTypes.number,
+  hierarchyName:PropTypes.string,
+  report:PropTypes.object,
+	onSave:PropTypes.object,
+	onCancel:PropTypes.object,
 };
 
 ReportConfig.defaultProps = {

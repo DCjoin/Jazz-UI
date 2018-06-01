@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import assign from 'object-assign';
 import _ from 'lodash-es';
 import Highstock from '../../highcharts/Highstock.jsx';
@@ -306,18 +307,18 @@ let defaultConfig = {
     }
   }
 };
-
-let RawDataChartPanel = React.createClass({
+var createReactClass = require('create-react-class');
+let RawDataChartPanel = createReactClass({
   propTypes: {
-    //onDeleteButtonClick: React.PropTypes.func,
-    //onDeleteAllButtonClick: React.PropTypes.func,
-    afterChartCreated: React.PropTypes.func,
-    energyData: React.PropTypes.object,
-    energyRawData: React.PropTypes.object,
-    step: React.PropTypes.number,
-    startTime: React.PropTypes.string,
-    endTime: React.PropTypes.string,
-    refresh: React.PropTypes.bool,
+    //onDeleteButtonClick: PropTypes.func,
+    //onDeleteAllButtonClick: PropTypes.func,
+    afterChartCreated: PropTypes.func,
+    energyData: PropTypes.object,
+    energyRawData: PropTypes.object,
+    step: PropTypes.number,
+    startTime: PropTypes.string,
+    endTime: PropTypes.string,
+    refresh: PropTypes.bool,
   },
   getDefaultProps() {
     return {

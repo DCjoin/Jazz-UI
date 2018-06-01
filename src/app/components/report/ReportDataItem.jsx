@@ -13,9 +13,9 @@ import { FontIcon, SelectField, TextField, RadioButton, RadioButtonGroup, Checkb
 import FlatButton from 'controls/FlatButton.jsx';
 import NewDialog from '../../controls/NewDialog.jsx';
 import Immutable from 'immutable';
-
+var createReactClass = require('create-react-class');
 var dateTypeChanged = false;
-let ReportDataItem = React.createClass({
+let ReportDataItem = createReactClass({
   getInitialState: function() {
     var stepItems = [{
       payload: 0,

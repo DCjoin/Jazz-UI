@@ -7,8 +7,8 @@ import assign from 'object-assign';
 import NetworkChecker from '../../controls/NetworkChecker.jsx';
 import PlatformAction from '../../actions/PlatformAction.jsx';
 
-
-let PlatformApp = React.createClass({
+var createReactClass = require('create-react-class');
+let PlatformApp = createReactClass({
   //mixins: [Navigation, State],
 
   // _redirectRouter : function(target, params) {

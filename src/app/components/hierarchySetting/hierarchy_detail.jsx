@@ -1,11 +1,11 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
 import { CircularProgress } from 'material-ui';
 import HierarchyStore from 'stores/hierarchySetting/HierarchyStore.jsx';
 import Customer from './CustomerForHierarchy.jsx';
 import Organization from './Organization/Organization.jsx';
 import Building from './Building/Building.jsx';
 import Dim from './Dim/Dim.jsx';
-
+import PropTypes from 'prop-types';
 export default class HierarchyDetail extends Component {
 
   render(){
@@ -55,6 +55,6 @@ export default class HierarchyDetail extends Component {
   }
 }
 
-HierarchyDetail.propTypes = {
-  detailProps:React.PropTypes.object,
+HierarchyDetail.propTypes= {
+  detailProps:PropTypes.object,
 };

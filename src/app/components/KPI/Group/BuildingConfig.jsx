@@ -8,7 +8,7 @@ import GroupKPIAction from 'actions/KPI/GroupKPIAction.jsx';
 import NewDialog from 'controls/NewDialog.jsx';
 import FlatButton from 'controls/NewFlatButton.jsx';
 import CommonFuns from 'util/Util.jsx';
-
+import PropTypes from 'prop-types';
 export default class BuildingConfig extends Component {
 
   constructor(props) {
@@ -165,8 +165,8 @@ export default class BuildingConfig extends Component {
 
   }
 }
-BuildingConfig.propTypes = {
-	status:React.PropTypes.string,
-	kpiInfo:React.PropTypes.object,
-  onMonthConfig:React.PropTypes.func
+BuildingConfig.propTypes= {
+	status:PropTypes.string,
+	kpiInfo:PropTypes.object,
+  onMonthConfig:PropTypes.func
 };

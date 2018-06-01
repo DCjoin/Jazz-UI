@@ -43,8 +43,8 @@ class RoleRadio extends Component{
     }
 
 }
-
-var UserFilter = React.createClass({
+var createReactClass = require('create-react-class');
+var UserFilter = createReactClass({
 
   _bindChangeFilter: function(paths, isClear) {
     if (isClear) {

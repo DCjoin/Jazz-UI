@@ -15,16 +15,17 @@ import FormBottomBar from '../../../controls/FormBottomBar.jsx';
 import DeletableItem from '../../../controls/DeletableItem.jsx';
 import NewDialog from '../../../controls/NewDialog.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
-
-var CarbonDetail = React.createClass({
+var createReactClass = require('create-react-class');
+import PropTypes from 'prop-types';
+var CarbonDetail = createReactClass({
   propTypes: {
-    formStatus: React.PropTypes.bool,
-    carbon: React.PropTypes.object,
-    setEditStatus: React.PropTypes.func,
-    handlerCancel: React.PropTypes.func,
-    handleSaveCarbon: React.PropTypes.func,
-    handleDeleteCarbon: React.PropTypes.func,
-    toggleList: React.PropTypes.func,
+    formStatus: PropTypes.bool,
+    carbon: PropTypes.object,
+    setEditStatus: PropTypes.func,
+    handlerCancel: PropTypes.func,
+    handleSaveCarbon: PropTypes.func,
+    handleDeleteCarbon: PropTypes.func,
+    toggleList: PropTypes.func,
   },
   getInitialState: function() {
     return {

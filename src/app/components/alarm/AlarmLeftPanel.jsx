@@ -1,5 +1,6 @@
 'use strict';
 import React from "react";
+import PropTypes from 'prop-types';
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
 import MenuItem from 'material-ui/MenuItem';
 import assign from "object-assign";
@@ -14,22 +15,22 @@ import AlarmList from './AlarmList.jsx';
 import { dateType } from '../../constants/AlarmConstants.jsx';
 import AlarmStore from '../../stores/AlarmStore.jsx';
 import HierarchyStore from '../../stores/HierarchyStore.jsx';
-
+var createReactClass = require('create-react-class');
 
 const MONTHSTEP = 3,
   DAYSTEP = 2,
   HOURSTEP = 1;
 
-var AlarmLeftPanel = React.createClass({
+var AlarmLeftPanel = createReactClass({
   propTypes: {
-    onItemClick: React.PropTypes.func,
+    onItemClick: PropTypes.func,
   },
   childContextTypes: {
-    muiTheme: React.PropTypes.object.isRequired,
+    muiTheme: PropTypes.object.isRequired,
   },
   contextTypes: {
-    muiTheme: React.PropTypes.object,
-    router: React.PropTypes.object,
+    muiTheme: PropTypes.object,
+    router: PropTypes.object,
   },
   getChildContext() {
     let childContext = assign({}, this.context.muiTheme);

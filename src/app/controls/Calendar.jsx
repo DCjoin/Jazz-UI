@@ -214,26 +214,27 @@ DateTime.getFullMonth = function(d) {
       return I18N.Common.Glossary.MonthName.December;
   }
 };
-
-var Calendar = React.createClass({
+var createReactClass = require('create-react-class');
+import PropTypes from 'prop-types';
+var Calendar = createReactClass({
 
   //mixins: [StylePropable],
 
   propTypes: {
-    initialDate: React.PropTypes.object,
-    initialTime: React.PropTypes.number,
-    minDate: React.PropTypes.object,
-    maxDate: React.PropTypes.object,
-    shouldDisableDate: React.PropTypes.func,
-    hideToolbarYearChange: React.PropTypes.bool,
-    shouldShowMonthDayPickerFirst: React.PropTypes.bool,
-    shouldShowYearPickerFirst: React.PropTypes.bool,
-    showYearSelector: React.PropTypes.bool,
-    onSelectedDate: React.PropTypes.func,
-    onSelectedTime: React.PropTypes.func,
-    showTime: React.PropTypes.bool,
-    timeType: React.PropTypes.number, //0:start,1:end
-    dateFormatStr: React.PropTypes.string
+    initialDate: PropTypes.object,
+    initialTime: PropTypes.number,
+    minDate: PropTypes.object,
+    maxDate: PropTypes.object,
+    shouldDisableDate: PropTypes.func,
+    hideToolbarYearChange: PropTypes.bool,
+    shouldShowMonthDayPickerFirst: PropTypes.bool,
+    shouldShowYearPickerFirst: PropTypes.bool,
+    showYearSelector: PropTypes.bool,
+    onSelectedDate: PropTypes.func,
+    onSelectedTime: PropTypes.func,
+    showTime: PropTypes.bool,
+    timeType: PropTypes.number, //0:start,1:end
+    dateFormatStr: PropTypes.string
   },
 
 

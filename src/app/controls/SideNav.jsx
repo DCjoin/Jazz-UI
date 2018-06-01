@@ -1,17 +1,18 @@
 'use strict';
 
 import React from "react";
+import PropTypes from 'prop-types';
 import assign from 'object-assign';
 import classNames from 'classnames';
 
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-
-let SideNav = React.createClass({
+import { TransitionGroup } from 'react-transition-group';
+var createReactClass = require('create-react-class');
+let SideNav = createReactClass({
 
 	propTypes: {
-		side: React.PropTypes.string,
-		onClose:React.PropTypes.func,
-		width: React.PropTypes.number
+		side: PropTypes.string,
+		onClose:PropTypes.func,
+		width: PropTypes.number
 	},
 
 	closeNav() {
@@ -89,9 +90,9 @@ let SideNav = React.createClass({
 				<div className={cClass}>
 					<div className={overlayClass}  onClick={this.closeNav} />
 
-					<ReactCSSTransitionGroup transitionName="pop-side-left" transitionAppear={true}>
+					<TransitionGroup timeout={300}>
 						{animChild}
-					</ReactCSSTransitionGroup>
+					</TransitionGroup>
 				</div>
 
 			);
@@ -115,9 +116,9 @@ let SideNav = React.createClass({
 			return (
 				<div className={cClass}>
 					<div className={overlayClass}   onClick={this.closeNav} />
-					<ReactCSSTransitionGroup transitionName="pop-side-right" transitionAppear={true}>
+					<TransitionGroup timeout={300}>
 						{animChild}
-					</ReactCSSTransitionGroup>
+					</TransitionGroup>
 
 				</div>
 				);

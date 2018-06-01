@@ -1,5 +1,6 @@
 'use strict';
 import React from "react";
+import PropTypes from 'prop-types';
 import ReactDom from 'react-dom';
 import CommonFuns from 'util/Util.jsx';
 import { CircularProgress, RaisedButton} from 'material-ui';
@@ -13,12 +14,12 @@ import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import PermissionCode from 'constants/PermissionCode.jsx';
 import UploadConfirmDialog from './UploadConfirmDialog.jsx';
 import {ReportStatus} from '../../../constants/actionType/KPI.jsx';
+var createReactClass = require('create-react-class');
 
-
-var Template = React.createClass({
+var Template = createReactClass({
 
   contextTypes:{
-      currentRoute: React.PropTypes.object
+      currentRoute: PropTypes.object
   },
   getInitialState: function() {
     var rivilege = CurrentUserStore.getCurrentPrivilege();

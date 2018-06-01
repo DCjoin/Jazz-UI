@@ -1,21 +1,22 @@
 'use strict';
 
 import React from "react";
+import PropTypes from 'prop-types';
 import ViewableTextField from '../../../controls/ViewableTextField.jsx';
 import Regex from '../../../constants/Regex.jsx';
 import classnames from "classnames";
-
-var GradeContainer = React.createClass({
+var createReactClass = require('create-react-class');
+var GradeContainer = createReactClass({
   propTypes: {
-    labelValue: React.PropTypes.object,
-    mergeLabelItem: React.PropTypes.func,
-    onFocus: React.PropTypes.func,
-    onBlur: React.PropTypes.func,
-    isViewStatus: React.PropTypes.bool,
-    gradeLevel: React.PropTypes.number,
-    gradeLabel: React.PropTypes.string,
-    uom: React.PropTypes.string,
-    order: React.PropTypes.number
+    labelValue: PropTypes.object,
+    mergeLabelItem: PropTypes.func,
+    onFocus: PropTypes.func,
+    onBlur: PropTypes.func,
+    isViewStatus: PropTypes.bool,
+    gradeLevel: PropTypes.number,
+    gradeLabel: PropTypes.string,
+    uom: PropTypes.string,
+    order: PropTypes.number
   },
   getInitialState: function() {
     return {

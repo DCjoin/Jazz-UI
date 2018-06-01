@@ -4,9 +4,9 @@ import React from 'react';
 import ReportItem from './ReportItem.jsx';
 import ReportAction from '../../actions/ReportAction.jsx';
 import ReportStore from '../../stores/ReportStore.jsx';
+var createReactClass = require('create-react-class');
 
-
-let ReportList = React.createClass({
+let ReportList = createReactClass({
   getInitialState: function() {
     return {
       reportItem: ReportStore.getSelectedReportItem()
