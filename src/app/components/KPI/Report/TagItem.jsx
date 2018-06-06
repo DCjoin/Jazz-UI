@@ -28,6 +28,14 @@ let TagItem = createReactClass({
       this.props.onTagItemUnselected(this.props.id);
     }
   },
+  //   shouldComponentUpdate: function(nextProps, nextState) {
+
+  //   if (this.props.status === nextProps.status && this.props.admins === nextProps.admins && this.state.state === nextState) {
+  //     return false;
+  //   }
+  //   return true;
+  // },
+
 
   render() {
     var me = this;
