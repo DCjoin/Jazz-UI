@@ -72,7 +72,8 @@ let EnergyAction = {
       tagIds: tagIds,
       viewOption: {
         DataUsageType: dataUsageType,
-        IncludeNavigatorData: true,
+        // IncludeNavigatorData: true,
+        IncludeNavigatorData: false,
         Step: step,
         TimeRanges: timeRange
       }
@@ -121,7 +122,8 @@ let EnergyAction = {
     var submitParams = {
       tagIds: tagIds,
       viewOption: {
-        IncludeNavigatorData: true,
+        // IncludeNavigatorData: true,
+        IncludeNavigatorData: false,
         Step: step,
         TimeRanges: timeRange
       }
@@ -168,7 +170,8 @@ let EnergyAction = {
     var submitParams = {
       tagIds: tagIds,
       viewOption: {
-        IncludeNavigatorData: true,
+        // IncludeNavigatorData: true,
+        IncludeNavigatorData: false,
         Step: step,
         TimeRanges: timeRange
       }
@@ -318,7 +321,8 @@ let EnergyAction = {
       viewAssociation: viewAssociation,
       viewOption: {
         DataUsageType: 1,
-        IncludeNavigatorData: true,
+        // IncludeNavigatorData: true,
+        IncludeNavigatorData: false,
         Step: step,
         TimeRanges: timeRange
       }
@@ -409,7 +413,8 @@ let EnergyAction = {
       viewAssociation: viewAssociation,
       viewOption: {
         DataUsageType: 3,
-        IncludeNavigatorData: true,
+        // IncludeNavigatorData: true,
+        IncludeNavigatorData: false,
         Step: step,
         TimeRanges: timeRange
       }
@@ -499,7 +504,8 @@ let EnergyAction = {
       benchmarkOption: benchmarkOption || null,
       viewOption: {
         DataUsageType: 1,
-        IncludeNavigatorData: true,
+        // IncludeNavigatorData: true,
+        IncludeNavigatorData: false,
         Step: step,
         TimeRanges: timeRange,
         DataOption: {
@@ -541,7 +547,8 @@ let EnergyAction = {
       benchmarkOption: benchmarkOption || null,
       viewOption: {
         DataUsageType: 1,
-        IncludeNavigatorData: true,
+        // IncludeNavigatorData: true,
+        IncludeNavigatorData: false,
         Step: step,
         TimeRanges: timeRange,
         DataOption: {
@@ -589,7 +596,8 @@ let EnergyAction = {
       benchmarkOption: benchmarkOption || null,
       viewOption: {
         DataUsageType: 1,
-        IncludeNavigatorData: true,
+        // IncludeNavigatorData: true,
+        IncludeNavigatorData: false,
         Step: step,
         TimeRanges: timeRange,
         DataOption: {
