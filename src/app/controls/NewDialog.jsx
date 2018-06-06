@@ -130,8 +130,10 @@ class NewDialog extends Component {
 		return (
 			<div>
 		<Transition in={open} timeout={animatinsTime}>
-			{(state)=>(
-				open && <div className= {getOverlayClassName(overlayClassName)}
+			{(state)=>{
+				console.log(state);
+				if(open){return(
+				 <div className= {getOverlayClassName(overlayClassName)}
 				     style= {{
 					...defaultStyle,
 					...transitionStyles[state],
@@ -141,13 +143,13 @@ class NewDialog extends Component {
 							<HighOrderDialogInline {...dialogInlineProps}>{children}</HighOrderDialogInline>
 						</div>
 					</div>
-			)
+			)}else{return null}}
 				
 			}
 		
 		</Transition>
 		</div>
-		);
+		)
 	}
 }
 
