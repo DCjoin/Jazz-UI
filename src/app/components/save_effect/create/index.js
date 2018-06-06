@@ -901,7 +901,7 @@ export default class Create extends Component {
 	      <div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>
 	     </NewDialog>)
 	  }
-		let problem = currentSolution.get('EnergyProblem');
+		let problem = currentSolution.get('Problem');
 	 var props={
 	   title:{
 	     measure:currentSolution,

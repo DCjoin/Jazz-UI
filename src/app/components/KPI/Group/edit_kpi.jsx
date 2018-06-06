@@ -65,7 +65,8 @@ export default class EditConfig extends Component {
 		// kpiInfo:this.props.kpiInfo,
 		configStep:null,
 		isNew:!this.props.kpiInfo.get("AnnualQuota") && !this.props.kpiInfo.get("AnnualSavingRate"),
-		configBuildingIndex:null
+		configBuildingIndex:null,
+		closeDlgShow:false
 	};
 
 	_onSave(){		
