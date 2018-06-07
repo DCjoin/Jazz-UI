@@ -122,6 +122,7 @@ class DatePicker extends React.Component {
     if (this.state.popup){
       if( this.props.isPopover ) {
         return (<Popover
+          style={{width:'100px'}}
           open={true}
           anchorEl={ReactDOM.findDOMNode(this)}
           anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
