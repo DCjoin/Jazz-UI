@@ -87,7 +87,7 @@ export default class CustomButtonMenu extends Component {
           onRequestClose={this.handleRequestClose}
           animation={PopoverAnimationVertical}
         >
-          <Menu desktop={true} value={this.props.value} width={this.state.width} onItemTouchTap={this.handleItemTouchTap}>
+          <Menu desktop={true} value={this.props.value} width={this.state.width} onItemClick={this.handleItemTouchTap}>
             {this.props.children}
           </Menu>
         </Popover>
