@@ -93,7 +93,7 @@ export default class FolderPanel extends Component {
 				iconButtonElement: (<IconButton disabled={!isFullBasicAnalysis()} iconClassName='icon-more' style={{fontSize: '18px'}}/>),
 				anchorOrigin:{horizontal: 'left', vertical: 'top'},
 				targetOrigin:{horizontal: 'left', vertical: 'top'},
-				onItemTouchTap: this._onMenuSelect(node),
+				onItemClick: this._onMenuSelect(node),
 		    };
 			action = (<div>
 				{this.props.isBuilding && <GenerateSolutionButton onOpen={(data)=>{this.props.onOpenGenerateSolution(null,data)}} nodes={flat(node)} disabled={flat(node).length===0 || !isFullBasicAnalysis()}/>}
@@ -174,7 +174,7 @@ export default class FolderPanel extends Component {
 			// iconButtonElement: (<IconButton disabled={!isFullBasicAnalysis()} iconClassName='icon-more' style={{fontSize: '18px'}}/>),
 			anchorOrigin:{horizontal: 'left', vertical: 'top'},
 			targetOrigin:{horizontal: 'left', vertical: 'top'},
-			onItemTouchTap: this._onMenuSelect(child)
+			onItemClick: this._onMenuSelect(child)
 	    };
 		return (<li className='jazz-folder-detail-item'>
 	        <div className='title' title={child.get('Name')} style={{
