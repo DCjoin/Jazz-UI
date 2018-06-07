@@ -122,10 +122,10 @@ class SupervisorDialog extends Component{
           <FlatButton
             label={saveButtonTitle}
             disabled={disabled}
-            onTouchTap = {this.handleClickFinish} />,
+            onClick = {this.handleClickFinish} />,
           <FlatButton
             label={I18N.Common.Button.Cancel2}
-            onTouchTap={
+            onClick={
               this.handleClickCancel
             }/>]}
             dismissOnClickAway={false}
