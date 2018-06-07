@@ -179,9 +179,11 @@ export default class ReportConfig extends Component {
     willDeleteIndex: null,
 	};
 
-	_onChange(){
+	_onChange(templateId){
+    var reportItem=this.state.reportItem;
 		this.setState({
       templateList:ReportStore.getTemplateList(),
+      reportItem:templateId?reportItem.set('templateId', templateId):reportItem,
       sheetNames:ReportStore.getSheetNamesByTemplateId(this.state.reportItem.get('templateId'))
 		})
 	}
@@ -210,7 +212,6 @@ export default class ReportConfig extends Component {
                       .map((report,id)=>(sheetNames.findIndex(item=>item===report.get('TargetSheet'))>-1))
 											.has(false);
 		this.setState({
-			reportItem: reportItem,
 			sheetNames: sheetNames,
 			saveDisabled:saveDisabled?saveDisabled:this.state.saveDisabled
 		})
@@ -263,10 +264,9 @@ export default class ReportConfig extends Component {
   _onUploadDone(obj) {
 	var reportItem = this.state.reportItem;
 	if (obj) {
-		reportItem = reportItem.set('templateId', obj.TemplateId);
-		ReportAction.getTemplateListByCustomerId(this.context.currentRoute.params.customerId, 'Name', 'asc');
+		// reportItem = reportItem.set('templateId', obj.TemplateId);
+		ReportAction.getTemplateListByCustomerId(this.context.currentRoute.params.customerId, 'Name', 'asc',obj.TemplateId);
 		this.setState({
-      reportItem: reportItem,
 			saveDisabled: !this._isValid(),
 			showUploadDialog: false
 		},()=>{
