@@ -97,7 +97,7 @@ export default class DiagnoseList extends Component {
 			desktop: true
 		};
 		return(
-			<IconMenu {...iconMenuProps} onItemTouchTap={this._onTitleMenuSelect}>
+			<IconMenu {...iconMenuProps} onItemClick={this._onTitleMenuSelect}>
 															{Status===DiagnoseStatus.Suspend && <MenuItem key="Resume" primaryText={I18N.Setting.Diagnose.Resume}/>}
 															<MenuItem key="Edit" primaryText={I18N.Common.Button.Edit}/>
 															<MenuItem key="Delete" primaryText={I18N.Common.Button.Delete}/>
