@@ -196,7 +196,7 @@ export default class Remark extends Component {
     }
 
     componentDidUpdate(prevProps,prevState){
-      if( (!prevProps.remarkList || prevState.remarkList===null) && prevState.remarkList && prevState.remarkList.size<this.state.remarkList.size){
+      if( (!prevProps.remarkList || prevState.remarkList===null) && prevState.remarkList && this.state.remarkList && prevState.remarkList.size<this.state.remarkList.size){
         this.props.onScroll(getNewRemarkHeight(ReactDom.findDOMNode(this)))
       }
     }
