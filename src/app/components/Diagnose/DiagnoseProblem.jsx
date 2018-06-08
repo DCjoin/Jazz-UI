@@ -225,7 +225,7 @@ export default class DiagnoseProblem extends Component {
 			desktop: true
 		};
 		return(
-			<IconMenu {...iconMenuProps} onItemTouchTap={this._onTitleMenuSelect}>
+			<IconMenu {...iconMenuProps} onItemClick={this._onTitleMenuSelect}>
 															<MenuItem key="Ignore" primaryText={I18N.Setting.Diagnose.Ignore}/>
 															{isListFull() && <MenuItem key="Suspend" primaryText={I18N.Setting.Diagnose.Suspend}/>}
 															{isListFull() && <MenuItem key="Edit" primaryText={I18N.Setting.Diagnose.Edit}/>}

@@ -33,7 +33,10 @@ var CalendarTime = createReactClass({
         height: '30px',
         fontSize:'14px',
         color:'#626469'
-        },
+      },
+      menuStyle:{
+        width:'100px'
+      },
         labelStyle:{
         lineHeight:'30px',
         textOverflow:'clip',

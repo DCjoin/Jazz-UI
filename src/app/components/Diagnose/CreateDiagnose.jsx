@@ -386,6 +386,9 @@ export function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChange
 				borderRadius: 2,
 				border: 'solid 1px #e3e3e3'
 			}}
+			menuStyle={{
+        width:'100px'
+      }}
 			labelStyle={{lineHeight: '30px', textOverflow:'clip'}}
 			iconStyle={{display: 'none'}}
 			underlineStyle={{display: 'none'}}
@@ -422,6 +425,9 @@ export function ChartDateFilter({StartTime, EndTime, onChangeStartTime, onChange
 				borderRadius: 2,
 				border: 'solid 1px #e3e3e3'
 			}}
+			menuStyle={{
+        width:'100px'
+      }}
 			labelStyle={{lineHeight: '30px', textOverflow:'clip'}}
 			iconStyle={{display: 'none'}}
 			underlineStyle={{display: 'none'}}
@@ -636,6 +642,9 @@ function RuntimeComp({
 					iconStyle={{display: 'none'}}
 					labelStyle={{textOverflow: 'clip'}}
 					itemLabelStyle={{textOverflow: 'clip'}}
+					menuStyle={{
+       			 width:'100px'
+      		}}
 					style={{width: 50, marginLeft: 10, marginTop: -6}}
 					defaultValue={data.StartTime}
 					dataItems={getDateTimeItemsByStepForVal(60).slice(0, 24)}
@@ -652,6 +661,9 @@ function RuntimeComp({
 					labelStyle={{textOverflow: 'clip'}}
 					itemLabelStyle={{textOverflow: 'clip'}}
 					style={{width: 50, marginLeft: 10, marginTop: -6}}
+					menuStyle={{
+       			 width:'100px'
+      		}}
 					defaultValue={data.EndTime || 60 * 24}
 					dataItems={getDateTimeItemsByStepForVal(60).slice(1)}
 					didChanged={(val) => {

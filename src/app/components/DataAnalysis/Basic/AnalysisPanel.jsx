@@ -1001,7 +1001,7 @@ _onBubbleAxisChanged(){
           targetOrigin={{horizontal: 'left', vertical: 'top'}}
           onRequestClose={handleRequestClose}
         >
-      <Menu onItemTouchTap={handleMenuItemClick}>
+      <Menu onItemClick={handleMenuItemClick}>
         <MenuItem key={MenuAction.SaveAs} primaryText={I18N.Folder.Detail.WidgetMenu.Menu1} style={styles.label} disabled={buttonDisabled}/>
         <MenuItem key={MenuAction.Export} primaryText={I18N.Folder.Detail.WidgetMenu.Menu4} style={styles.label} disabled={buttonDisabled}/>
         <MenuItem key={MenuAction.Share} primaryText={I18N.Folder.Detail.WidgetMenu.Menu6} style={styles.label} disabled={buttonDisabled}/>

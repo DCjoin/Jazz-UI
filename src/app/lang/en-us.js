@@ -2522,6 +2522,8 @@ I18N.Setting.ECM.RequiredTip='Please complete all the mandatory fields';
 I18N.Setting.ECM.SaveTip='Save the changes of the solution?';
 I18N.Setting.ECM.SaveSuccess='Save successfully';
 I18N.Setting.ECM.TitleErrorTip='Solution title cannot be empty';
+I18N.Setting.ECM.NumberrTip='请填写≥0的数字';
+I18N.Setting.ECM.NameDuplicateTip='方案标题不能重复';
 
 I18N.Setting.Diagnose={};
 I18N.Setting.Diagnose.EnergyLabel='Energy Label';
@@ -2866,4 +2868,4 @@ I18N.SaveEffect.Description = 'Description';
 I18N.NetworkChecker = {};
 I18N.NetworkChecker.Msg1 = 'Abnormal network connection, ';
 I18N.NetworkChecker.Msg2 = 'your actions may not be saved';
-I18N.NetworkChecker.Msg3 = 'Network connection resumes;
+I18N.NetworkChecker.Msg3 = 'Network connection resumes';

@@ -22,6 +22,8 @@ var CHANGE_SAVE_SUCCESS_EVENT = 'changesavesuccess';
 var CHANGE_SAVE_ERROR_EVENT = 'changesaveerror';
 var CHANGE_TEMPLATE_REFERENCE_EVENT = 'changetemplatereference';
 
+let CHANGE_EVENT = 'change';
+
 const ReportStore = assign({}, PrototypeStore, {
   getDefalutReport(report){
     var reportItem = {
@@ -167,13 +169,16 @@ const ReportStore = assign({}, PrototypeStore, {
   removeTemplateReferenceChangeListener: function(callback) {
     this.removeListener(CHANGE_TEMPLATE_REFERENCE_EVENT, callback);
   },
+    emitChange(args) {
+    this.emit(CHANGE_EVENT, args);
+  },
 });
 
 ReportStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
     case Action.GET_KPI_REPORT_TEMPLATE_LIST_SUCCESS:
       ReportStore.setTemplateList(action.templateList);
-      ReportStore.emitChange();
+      ReportStore.emitChange(action.templateId);
       break;
     case Action.GET_KPI_REPORT_TEMPLATE_LIST_ERROR:
       ReportStore.setTemplateList([]);

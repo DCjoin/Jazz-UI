@@ -138,7 +138,14 @@ class NewDialog extends Component {
 					...defaultStyle,
 					...transitionStyles[state],
 					...overlayStyle
-					}}>
+					}} onClick= {(e) => {
+		 		if( !modal ) {
+		 			this.props.onRequestClose();
+		 		}else{
+					e.stopPropagation();
+					e.preventDefault();
+				 }
+		 	}}>
 						<div className="dialog-wrapper" {...dialogWrapperProps}>
 							<HighOrderDialogInline {...dialogInlineProps}>{children}</HighOrderDialogInline>
 						</div>
