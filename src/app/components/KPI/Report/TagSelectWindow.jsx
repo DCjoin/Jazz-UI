@@ -30,7 +30,7 @@ let TagSelectWindow = createReactClass({
     },
   getInitialState: function() {
     return {
-      isLeftLoading: true,
+      isLeftLoading: false,
       isRightLoading: true,
       checkAll: false,
       checkAllDisabled: true,
