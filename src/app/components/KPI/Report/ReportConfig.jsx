@@ -213,6 +213,7 @@ export default class ReportConfig extends Component {
 											.has(false);
 		this.setState({
 			sheetNames: sheetNames,
+      reportItem:reportItem,
 			saveDisabled:saveDisabled?saveDisabled:this.state.saveDisabled
 		})
 	}
@@ -607,7 +608,7 @@ export default class ReportConfig extends Component {
               }>
               <div style={{color: '#9fa0a4', fontSize: '14px', height: 48, lineHeight: '48px', padding: '0 16px'}}>{I18N.Common.Label.CommoEmptyText}</div>
               {ReportStore.getTemplateItems(templateList).map(item =>
-              <MenuItem onTouchTap={() => {
+              <MenuItem onClick={() => {
                 this._onExistTemplateChange(item.payload)
               }} >
                 <div title={item.text} style={{
