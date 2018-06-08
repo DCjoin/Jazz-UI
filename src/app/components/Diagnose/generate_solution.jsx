@@ -240,6 +240,19 @@ export class ProblemDetail extends Component {
             ))}
           </Popover>*/
 
+
+          /*<SelectField width={231}
+                       hintText={I18N.Setting.Diagnose.PleaseSelect}
+                       menuItems={menuitems.concat(Object.keys(ProblemMarkEnum).map(key => (
+            {text:I18N.Setting.DataAnalysis.EnergyProblem.MarkEnum[ProblemMarkEnum[key]],
+              id:ProblemMarkEnum[key]}
+            )))}
+                                                     menuClassName={"field-select-menu"}
+                                                     value={energySolution.getIn(['Problem', 'EnergySys'])}
+                                                     onChange={(value)=>{
+                                                             onChange(['Problem', 'EnergySys'], value);
+                                                            onBlur && onBlur(['Problem', 'EnergySys'], value);
+                                                     }}/>*/
     if(isView) return this._renderViewStatus()
 
     var menuitems=[{
@@ -256,18 +269,7 @@ export class ProblemDetail extends Component {
         </div>
         {hasEnergySys && <div style={{marginLeft: 20}}>
           <div className='field-title'>{I18N.Setting.Diagnose.EnergySys}{!isRequired && <span className='subtitle'>{I18N.Setting.Diagnose.Require}</span>}</div>
-          <SelectField width={231}
-                       hintText={I18N.Setting.Diagnose.PleaseSelect}
-                       menuItems={menuitems.concat(Object.keys(ProblemMarkEnum).map(key => (
-            {text:I18N.Setting.DataAnalysis.EnergyProblem.MarkEnum[ProblemMarkEnum[key]],
-              id:ProblemMarkEnum[key]}
-            )))}
-                                                     menuClassName={"field-select-menu"}
-                                                     value={energySolution.getIn(['Problem', 'EnergySys'])}
-                                                     onChange={(value)=>{
-                                                             onChange(['Problem', 'EnergySys'], value);
-                                                            onBlur && onBlur(['Problem', 'EnergySys'], value);
-                                                     }}/>
+
         </div>}
       </div>
       <div className='field-wrapper'>
