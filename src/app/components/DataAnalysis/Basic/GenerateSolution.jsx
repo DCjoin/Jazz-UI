@@ -117,7 +117,7 @@ export class Gallery extends Component {
 				</div>
 				<div className='jazz-scheme-gallery-content'>
 					<div className='jazz-scheme-gallery-content-header'>
-						{`(${selectedIdx+1}/${names.length})${names[selectedIdx]}`}
+						<div className="hiddenEllipsis" title={names[selectedIdx]} style={{marginLeft:'10px',marginRight:'30px'}}>{`(${selectedIdx+1}/${names.length})${names[selectedIdx]}`}</div>
 						{names.length > 1 && !isView && <span className='jazz-scheme-gallery-content-header-delete icon-delete' onClick={onDelete}/>}
 					</div>
 					{renderContent()}
