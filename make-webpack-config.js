@@ -130,7 +130,13 @@ module.exports = function(options) {
   ];
   if (options.publish) {
     plugins.push(
-      new webpack.optimize.UglifyJsPlugin(),
+      // new webpack.optimize.UglifyJsPlugin(),
+      new webpack.optimize.UglifyJsPlugin({
+        sourceMap: true,
+        compress: {
+          warnings: true
+        }
+      }),
       new webpack.DefinePlugin({
         "process.env": {
           NODE_ENV: JSON.stringify("production")
@@ -154,30 +160,47 @@ module.exports = function(options) {
           test: /\.jsx?$/,
           use: [ "babel-loader"],
           exclude: [
-            /node_modules/,
+            // /node_modules/,
             path.join(__dirname, "src", "app", "lang", "*.js")
           ]
         },
-        {
-          test: /\.less$/,
-          loaders: ExtractTextPlugin.extract({
-            fallback: "style-loader",
-            // use: 'css-loader?less-loader'
-            use: [
-              {
-                loader: "css-loader"
-              },
-              {
-                loader: "less-loader",
-                options: {
-                  plugins: [
-                    extractLessModule.getLessPlugin()
-                  ]
-                }
-              }],
-          }),
-          // loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader")
-        },
+            {
+      test: /\.less$/,
+      use: ExtractTextPlugin.extract({
+        fallback: "style-loader",
+        use: [{
+            loader: "css-loader",
+            options: {
+              // sourceMap: true,
+              // modules: true,
+              importLoaders: 1
+            }
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: () => [
+                require("postcss-import")({
+                  addDependencyTo: webpack
+                }),
+                require("postcss-url")(),
+                require("postcss-cssnext")(),
+                require("postcss-browser-reporter")(),
+                require("postcss-reporter")()
+              ]
+            }
+          },
+          {
+            loader: "less-loader",
+            options: {
+              plugins: [
+                extractLessModule.getLessPlugin()
+              ]
+            }
+          },
+        ],
+      }),
+    },
         {
           test: /\.css$/,
           loader: ExtractTextPlugin.extract({

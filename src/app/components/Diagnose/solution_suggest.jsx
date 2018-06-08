@@ -7,12 +7,8 @@ import FlatButton from 'controls/FlatButton.jsx';
 import MuiFlatButton from 'material-ui/FlatButton';
 import Dialog from 'controls/NewDialog.jsx';
 import ImagGroupPanel from 'controls/ImagGroupPanel.jsx';
-// import Toast from '@emop-ui/piano/toast';
-/*
+import Toast from '@emop-ui/piano/toast';
 
- inputStyle={{width: 42, height: 76}} iconStyle={{padding: '67px 33px'}}
-
-*/
 const BACK_DIALOG = 'BACK_DIALOG';
 const CANCEL_DIALOG = 'CANCEL_DIALOG';
 
@@ -53,17 +49,6 @@ export default class SolutionSuggest extends Component {
   render() {
     let { plans, checkedPlan, onChange, onNext, onCustom, onBack, onCancel } = this.props;
 
-        /*<Toast autoHideDuration={4000} style={{
-          maxWidth: 'none',
-          borderRadius: 2,
-          boxShadow: '0 2px 8px 0 rgba(0, 0, 0, 0.2)',
-          height: 40,
-          top:'40px'
-        }} open={this.state.open} onRequestClose={() => {
-          this.setState({
-            open: false,
-          })
-        }}>呵呵</Toast>*/
     return (
       <div className='solution-suggest'>
         <div className='solution-suggest-content'>
@@ -132,21 +117,11 @@ export default class SolutionSuggest extends Component {
           </div>
         </footer>
         </div>
-        <Snackbar style={{
-          maxWidth: 'none',
-          borderRadius: 2,
-          boxShadow: '0 2px 8px 0 rgba(0, 0, 0, 0.2)',
-          height: 40,
-        }} bodyStyle={{
-          backgroundColor: '#fff',
-          minWidth: 0,
-          padding: '0 16px',
-        }}
-        message={<div className='icon-clean'>{I18N.Setting.Diagnose.SolutionSuggestErrorTip}</div>} autoHideDuration={4000} open={this.state.open} onRequestClose={() => {
+        <Toast autoHideDuration={4000} className="toast-tip" open={this.state.open} onRequestClose={() => {
           this.setState({
             open: false,
           })
-        }}/>
+        }}><div className='icon-clean'>{I18N.Setting.Diagnose.SolutionSuggestErrorTip}</div></Toast>
         <Dialog open={this.state.dialogKey === BACK_DIALOG} actionsContainerStyle={{textAlign: 'right'}} contentStyle={{margin: '8px 24px', color: '#626469'}} actions={[
           <FlatButton primary inDialog label={I18N.Setting.Diagnose.ReturnPage} onClick={this.props.onBack}/>,
           <FlatButton label={I18N.Common.Button.Cancel2} onClick={() => { this.setState({dialogKey: null}) }}/>
