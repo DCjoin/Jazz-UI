@@ -15,7 +15,7 @@ import { Gallery } from '../DataAnalysis/Basic/GenerateSolution.jsx';
 import ImagGroupPanel from 'controls/ImagGroupPanel.jsx';
 import PropTypes from 'prop-types';
 import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
-
+import SelectField from '@emop-ui/piano/select-field';
 const SVG_WIDTH = 750;
 const SVG_HEIGHT = 360;
 
@@ -211,18 +211,8 @@ export class ProblemDetail extends Component {
     let { isRequired, errorMsg, errorData, energySolution, onChange, onBlur, isView,hasEnergySys, currentProblemId, checkedProblems, chartDatas, renderChart} = this.props;
     let { selectedIdx, anchorEl } = this.state;
 
-    if(isView) return this._renderViewStatus()
-
-    return (<div >
-      <SessionTitle title={I18N.Setting.Diagnose.ProblemDetail} subtitle={isRequired && I18N.Setting.Diagnose.Require} style={{marginBottom: 20}}/>
-      <div className='field-wrapper flex-bar'>
-        <div>
-          <div className='field-title'>{I18N.Setting.Diagnose.ProblemName}{!isRequired && <span className='subtitle'>{I18N.Setting.Diagnose.Require}</span>}</div>
-          <TextBox {...this._initTextBoxProps('Name')} hintText={I18N.Setting.Diagnose.PleaseInput + I18N.Setting.Diagnose.ProblemName}/>
-        </div>
-        {hasEnergySys && <div style={{marginLeft: 20}}>
-          <div className='field-title'>{I18N.Setting.Diagnose.EnergySys}{!isRequired && <span className='subtitle'>{I18N.Setting.Diagnose.Require}</span>}</div>
-          <div className='select-field-overlay' onClick={(e) => {
+/*
+              <div className='select-field-overlay' onClick={(e) => {
             this.setState({
               anchorEl: e.target
             })
@@ -248,7 +238,36 @@ export class ProblemDetail extends Component {
               onBlur && onBlur(['Problem', 'EnergySys'], value);
             }} primaryText={I18N.Setting.DataAnalysis.EnergyProblem.MarkEnum[ProblemMarkEnum[key]]} value={ProblemMarkEnum[key]}/>
             ))}
-          </Popover>
+          </Popover>*/
+
+    if(isView) return this._renderViewStatus()
+
+    var menuitems=[{
+              text:I18N.Common.Label.CommoEmptyText,
+              id:0,
+              disabled:true
+            }]
+    return (<div >
+      <SessionTitle title={I18N.Setting.Diagnose.ProblemDetail} subtitle={isRequired && I18N.Setting.Diagnose.Require} style={{marginBottom: 20}}/>
+      <div className='field-wrapper flex-bar'>
+        <div>
+          <div className='field-title'>{I18N.Setting.Diagnose.ProblemName}{!isRequired && <span className='subtitle'>{I18N.Setting.Diagnose.Require}</span>}</div>
+          <TextBox {...this._initTextBoxProps('Name')} hintText={I18N.Setting.Diagnose.PleaseInput + I18N.Setting.Diagnose.ProblemName}/>
+        </div>
+        {hasEnergySys && <div style={{marginLeft: 20}}>
+          <div className='field-title'>{I18N.Setting.Diagnose.EnergySys}{!isRequired && <span className='subtitle'>{I18N.Setting.Diagnose.Require}</span>}</div>
+          <SelectField width={231}
+                       hintText={I18N.Setting.Diagnose.PleaseSelect}
+                       menuItems={menuitems.concat(Object.keys(ProblemMarkEnum).map(key => (
+            {text:I18N.Setting.DataAnalysis.EnergyProblem.MarkEnum[ProblemMarkEnum[key]],
+              id:ProblemMarkEnum[key]}
+            )))}
+                                                     menuClassName={"field-select-menu"}
+                                                     value={energySolution.getIn(['Problem', 'EnergySys'])}
+                                                     onChange={(value)=>{
+                                                             onChange(['Problem', 'EnergySys'], value);
+                                                            onBlur && onBlur(['Problem', 'EnergySys'], value);
+                                                     }}/>
         </div>}
       </div>
       <div className='field-wrapper'>
