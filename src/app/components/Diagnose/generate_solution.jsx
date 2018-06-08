@@ -210,49 +210,7 @@ export class ProblemDetail extends Component {
   render() {
     let { isRequired, errorMsg, errorData, energySolution, onChange, onBlur, isView,hasEnergySys, currentProblemId, checkedProblems, chartDatas, renderChart} = this.props;
     let { selectedIdx, anchorEl } = this.state;
-
-/*
-              <div className='select-field-overlay' onClick={(e) => {
-            this.setState({
-              anchorEl: e.target
-            })
-          }}>
-            <TextBox {...this._initTextBoxProps('EnergySys')} onBlur={() => {}}
-              value={I18N.Setting.DataAnalysis.EnergyProblem.MarkEnum[energySolution.getIn(['Problem', 'EnergySys'])]}
-              style={{width: 346}} hintText={I18N.Setting.Diagnose.PleaseSelect}/>
-            <span className='icon-arrow-unfold'/>
-          </div>
-          <Popover onRequestClose={() => {
-            onBlur && onBlur(['Problem', 'EnergySys'], '');
-            this.setState({
-              anchorEl: null
-            })
-          }} open={!!anchorEl} anchorEl={anchorEl}>
-            {Object.keys(ProblemMarkEnum).map(key => (
-            <MenuItem onClick={() => {
-              this.setState({
-                anchorEl: null
-              });
-              let value = parseInt(ProblemMarkEnum[key]);
-              onChange(['Problem', 'EnergySys'], value);
-              onBlur && onBlur(['Problem', 'EnergySys'], value);
-            }} primaryText={I18N.Setting.DataAnalysis.EnergyProblem.MarkEnum[ProblemMarkEnum[key]]} value={ProblemMarkEnum[key]}/>
-            ))}
-          </Popover>*/
-
-
-          /*<SelectField width={231}
-                       hintText={I18N.Setting.Diagnose.PleaseSelect}
-                       menuItems={menuitems.concat(Object.keys(ProblemMarkEnum).map(key => (
-            {text:I18N.Setting.DataAnalysis.EnergyProblem.MarkEnum[ProblemMarkEnum[key]],
-              id:ProblemMarkEnum[key]}
-            )))}
-                                                     menuClassName={"field-select-menu"}
-                                                     value={energySolution.getIn(['Problem', 'EnergySys'])}
-                                                     onChange={(value)=>{
-                                                             onChange(['Problem', 'EnergySys'], value);
-                                                            onBlur && onBlur(['Problem', 'EnergySys'], value);
-                                                     }}/>*/
+          
     if(isView) return this._renderViewStatus()
 
     var menuitems=[{
@@ -267,9 +225,20 @@ export class ProblemDetail extends Component {
           <div className='field-title'>{I18N.Setting.Diagnose.ProblemName}{!isRequired && <span className='subtitle'>{I18N.Setting.Diagnose.Require}</span>}</div>
           <TextBox {...this._initTextBoxProps('Name')} hintText={I18N.Setting.Diagnose.PleaseInput + I18N.Setting.Diagnose.ProblemName}/>
         </div>
-        {hasEnergySys && <div style={{marginLeft: 20}}>
+        {hasEnergySys && <div style={{marginLeft: 20,zIndex:'3'}}>
           <div className='field-title'>{I18N.Setting.Diagnose.EnergySys}{!isRequired && <span className='subtitle'>{I18N.Setting.Diagnose.Require}</span>}</div>
-
+          <SelectField width={346}
+                       hintText={I18N.Setting.Diagnose.PleaseSelect}
+                       menuItems={menuitems.concat(Object.keys(ProblemMarkEnum).map(key => (
+            {text:I18N.Setting.DataAnalysis.EnergyProblem.MarkEnum[ProblemMarkEnum[key]],
+              id:ProblemMarkEnum[key]}
+            )))}
+                                                     menuClassName={"field-select-menu"}
+                                                     value={energySolution.getIn(['Problem', 'EnergySys'])}
+                                                     onChange={(value)=>{
+                                                             onChange(['Problem', 'EnergySys'], value);
+                                                            onBlur && onBlur(['Problem', 'EnergySys'], value);
+                                                     }}/>
         </div>}
       </div>
       <div className='field-wrapper'>
