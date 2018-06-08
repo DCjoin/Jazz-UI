@@ -25,6 +25,7 @@ import NewFlatButton from 'controls/NewFlatButton.jsx';
 import Remark from './MeasurePart/Remark.jsx';
 import DisappareItem from './MeasurePart/DisappareItem.jsx';
 import EditSolution from './edit_solution.jsx';
+import Button from '@emop-ui/piano/button';
 
 function privilegeWithPush( privilegeCheck ) {
   // return true
@@ -350,14 +351,15 @@ export default class PushPanel extends Component {
 
     }
     return(
-      <NewDialog
-        open={true}
-        overlayStyle={{zIndex:'1000'}}
-        actionsContainerStyle={styles.action}
-        contentStyle={styles.content}
-        actions={[
-            <RaisedButton
-              label={I18N.Common.Button.Confirm}
+
+      <NewDialog open={true}
+        contentStyle={{overflowY:'hidden',padding:'24px 0'}}
+        actionsContainerStyle={{display:'flex',flexDirection:'row',justifyContent: 'flex-end'}}
+        onRequestClose={() => {
+          this.setState({saveTipShow:false})
+        }}
+        actions={ [<Button key='pause' style={{marginRight:'16px'}} flat secondary labelStyle={{color:'#32ad3c'}} 
+          label={I18N.Common.Button.Confirm}
               onClick={()=>{
                 var currentSolution=this.state.toBeSolution;
 
@@ -384,16 +386,16 @@ export default class PushPanel extends Component {
                   }
                 })
 
-              }} />,
-
-            <FlatButton
-              label={I18N.Common.Button.Cancel2}
+              }}
+        />,
+        <Button key='cancel' style={{marginRight:'16px'}} flat secondary  label={I18N.Common.Button.Cancel2}
               onClick={() => {this.setState({
                               toBeStatus: null,
                               statusDialogShow:false
-                              })}} />
-          ]}
-      ><div className="jazz-ecm-measure-viewabletext">{content}</div></NewDialog>
+                              })}}/>          
+        ]}>
+        <div style={{fontSize:'16px',color:'#666666'}}>{content}</div>
+      </NewDialog>
     )
   }
 
