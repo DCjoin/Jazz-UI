@@ -311,6 +311,9 @@ let MainApp = createReactClass({
             listStyle={{
               width: 200,
             }}
+            menuStyle={{
+              width: 200,
+            }}
             underlineStyle={{
               display: 'none',
             }}
