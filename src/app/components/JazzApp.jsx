@@ -22,6 +22,7 @@ import GlobalErrorMessageStore from 'stores/GlobalErrorMessageStore.jsx';
 import LoginStore from 'stores/LoginStore.jsx';
 import AjaxStore from 'stores/AjaxStore.jsx';
 var createReactClass = require('create-react-class');
+import getLessVar from 'util/GetLessVar.jsx';
 function replaceWith(router, name, params, query) {
   router.replace( RoutePath[name]( assign({}, getParams(router), params) ), query );
 }
@@ -45,11 +46,13 @@ let JazzApp = createReactClass({
   childContextTypes: {
     getLessVar: PropTypes.func,
     muiTheme: PropTypes.object.isRequired,
+    pianoTheme: PropTypes.object,
     currentRoute: PropTypes.object,
   },
   getChildContext() {
     return {
       muiTheme: getMuiTheme(AppTheme),
+      pianoTheme:{primaryColor : getLessVar('medium-green'),errorColor: getLessVar('normal-red'),borderColor:getLessVar('border-gray')},
       getLessVar: this.props.getLessVar,
       currentRoute: {
           params: this.props.params,
