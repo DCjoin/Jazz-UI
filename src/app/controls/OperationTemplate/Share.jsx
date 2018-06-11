@@ -1,18 +1,19 @@
 'use strict';
 import React from "react";
+import PropTypes from 'prop-types';
 import { Navigation, State } from 'react-router';
 import classNames from 'classnames';
 import { Dialog, FlatButton, TextField, Paper, CircularProgress } from 'material-ui';
 import UserAction from '../../actions/UserAction.jsx';
 import UserStore from '../../stores/UserStore.jsx';
 import UsersOperation from './assets/UsersOperation.jsx';
-
-var Share = React.createClass({
+var createReactClass = require('create-react-class');
+var Share = createReactClass({
   propTypes: {
-    userId: React.PropTypes.number,
-    onFirstActionTouchTap: React.PropTypes.func,
-    onSecondActionTouchTap: React.PropTypes.func,
-    onDismiss: React.PropTypes.func,
+    userId: PropTypes.number,
+    onFirstActionTouchTap: PropTypes.func,
+    onSecondActionTouchTap: PropTypes.func,
+    onDismiss: PropTypes.func,
   },
   getInitialState: function() {
     return {

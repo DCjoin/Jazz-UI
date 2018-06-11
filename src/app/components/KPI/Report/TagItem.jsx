@@ -4,9 +4,10 @@ import React from 'react';
 import { Checkbox, FontIcon } from 'material-ui';
 import classNames from 'classnames';
 import ReportStore from 'stores/KPI/ReportStore.jsx';
+var createReactClass = require('create-react-class');
+import Immutable from 'immutable';
 
-
-let TagItem = React.createClass({
+let TagItem = createReactClass({
   getInitialState: function() {
     return {
 
@@ -28,6 +29,17 @@ let TagItem = React.createClass({
       this.props.onTagItemUnselected(this.props.id);
     }
   },
+    shouldComponentUpdate: function(nextProps, nextState) {
+    if (this.props.leftPanel === nextProps.leftPanel && this.props.id === nextProps.id && this.props.checked === nextProps.checked
+    && this.props.disabled === nextProps.disabled && this.props.index === nextProps.index && this.props.name === nextProps.name
+    && Immutable.is(this.props.tag,nextProps.tag)) {
+      console.log('false')
+      return false;
+    }
+    console.log('true')
+    return true;
+  },
+
 
   render() {
     var me = this;

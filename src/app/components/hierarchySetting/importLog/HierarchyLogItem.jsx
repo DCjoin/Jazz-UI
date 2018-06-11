@@ -1,13 +1,13 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from 'react';
 import CommonFuns from 'util/Util.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
 import downloadFile from 'actions/download_file.js';
-
-let HierarchyLogItem = React.createClass({
+var createReactClass = require('create-react-class');
+let HierarchyLogItem = createReactClass({
   contextTypes:{
-      currentRoute: React.PropTypes.object
+      currentRoute: PropTypes.object
   },
   getInitialState: function() {
     return {

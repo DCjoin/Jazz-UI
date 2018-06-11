@@ -1,19 +1,20 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from 'react';
 import {TextField, Mixins} from 'material-ui';
 import assign from 'object-assign';
 import moment from 'moment';
 //import Calendar from '../../../node_modules/material-ui/lib/date-picker/calendar.js';
 import Calendar from '../controls/calendar/Calendar.jsx';
-var ViewableDatePicker = React.createClass({
+var createReactClass = require('create-react-class');
+var ViewableDatePicker = createReactClass({
   //mixins: [ClickAwayable],
   propTypes: {
-    isViewStatus: React.PropTypes.bool,
-    defaultValue: React.PropTypes.string,
-    minDate: React.PropTypes.object,
-    maxDate: React.PropTypes.object,
-    style: React.PropTypes.object
+    isViewStatus: PropTypes.bool,
+    defaultValue: PropTypes.string,
+    minDate: PropTypes.object,
+    maxDate: PropTypes.object,
+    style: PropTypes.object
   },
 
   getInitialState: function() {

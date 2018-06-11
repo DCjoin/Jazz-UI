@@ -1,7 +1,7 @@
 'use strict';
 import React from "react";
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
-
+import PropTypes from 'prop-types';
 import assign from "object-assign";
 import Immutable from 'immutable';
 
@@ -19,11 +19,12 @@ import FolderAction from '../../actions/FolderAction.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
 import OrigamiPanel from '../../controls/OrigamiPanel.jsx';
 import ChartAction from '../../actions/ChartAction.jsx';
+var createReactClass = require('create-react-class');
 
-let Alarm = React.createClass({
+let Alarm = createReactClass({
   //mixins: [Navigation, State],
   contextTypes:{
-      currentRoute: React.PropTypes.object
+      currentRoute: PropTypes.object
   },
   _onLeftSwitchButtonClick() {
     var leftShow, rightShow;

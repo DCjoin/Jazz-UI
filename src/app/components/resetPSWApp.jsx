@@ -25,10 +25,10 @@ import CusFlatButton from 'controls/FlatButton.jsx';
 import Dialog from 'controls/NewDialog.jsx';
 import RoutePath from 'util/RoutePath.jsx';
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
-
+var createReactClass = require('create-react-class');
 const MAX_LENGTH = 200;
 
-var resetPSW = React.createClass({
+var resetPSW = createReactClass({
     _bindMergeTemp: function(path) {
         return this._mergeTemp.bind(this, path);
     },

@@ -4,13 +4,13 @@ import classNames from 'classnames';
 import { Paper, Menu, Mixins } from 'material-ui';
 import { nodeType } from '../../constants/TreeConstants.jsx';
 import ClickAway from "../../controls/ClickAwayListener.jsx";
-
+var createReactClass = require('create-react-class');
 let treeMap = new Array();
-
-let SearchItem = React.createClass({
+import PropTypes from 'prop-types';
+let SearchItem = createReactClass({
   propTypes: {
-    nodeData: React.PropTypes.object.isRequired,
-    onClick: React.PropTypes.func.isRequired
+    nodeData: PropTypes.object.isRequired,
+    onClick: PropTypes.func.isRequired
   },
   _onClick: function() {
     this.props.onClick(this.props.nodeData);
@@ -38,13 +38,13 @@ let SearchItem = React.createClass({
       )
   }
 });
-let FolderSearch = React.createClass({
+let FolderSearch = createReactClass({
   //mixins: [Mixins.ClickAwayable],
   propTypes: {
-    allNode: React.PropTypes.object.isRequired,
-    onSearchNodeClick: React.PropTypes.func.isRequired,
-    searchValue: React.PropTypes.string,
-    handleClickAway: React.PropTypes.func
+    allNode: PropTypes.object.isRequired,
+    onSearchNodeClick: PropTypes.func.isRequired,
+    searchValue: PropTypes.string,
+    handleClickAway: PropTypes.func
   },
   drawNodeType: function() {
     let that = this;

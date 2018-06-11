@@ -4,13 +4,14 @@ import { Table, TableHeader, TableBody, TableRow, TableHeaderColumn, TableRowCol
 import EnergyStore from '../../stores/Energy/EnergyStore.jsx';
 import { getUomById, getCommodityById } from '../../util/Util.jsx';
 import Pagination from '../../controls/paging/Pagination.jsx';
-
-let GridComponent = React.createClass({
+var createReactClass = require('create-react-class');
+import PropTypes from 'prop-types';
+let GridComponent = createReactClass({
 
   propTypes: {
-    energyData: React.PropTypes.object,
-    energyRawData: React.PropTypes.object,
-    chartStrategy: React.PropTypes.object
+    energyData: PropTypes.object,
+    energyRawData: PropTypes.object,
+    chartStrategy: PropTypes.object
   },
   getInitialState() {
     return {
@@ -181,7 +182,7 @@ let GridComponent = React.createClass({
     // let colOrder = this.getColOrder(energyData);
     let pageObj = this.getPageObj(this.props.energyRawData);
 
-    let pagingPropTypes = {
+    let pagingPropTypes= {
       curPageNum: pageObj.pageIdx,
       totalPageNum: pageObj.pageSize,
       previousPage: me._previousPage,

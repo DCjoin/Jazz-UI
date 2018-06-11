@@ -6,7 +6,7 @@ import util from 'util/Util.jsx';
 
 
 const ReportAction = {
-  getTemplateListByCustomerId(customerId, sortBy, order) {
+  getTemplateListByCustomerId(customerId, sortBy, order,templateId) {
     Ajax.post('/DataReport/GetExportTemplateByCustomerId', {
       params: {
         customerId: customerId,
@@ -14,7 +14,8 @@ const ReportAction = {
       success: function(templateList) {
         AppDispatcher.dispatch({
           type: Action.GET_KPI_REPORT_TEMPLATE_LIST_SUCCESS,
-          templateList: templateList
+          templateList: templateList,
+          templateId
         });
       },
       error: function(err, res) {

@@ -15,9 +15,9 @@ import FromEndTimeGroup from './FromEndTimeGroup.jsx';
 import { formStatus } from '../../constants/FormStatus.jsx';
 import NewDialog from '../../controls/NewDialog.jsx';
 import Immutable from 'immutable';
-
+var createReactClass = require('create-react-class');
 var calendarType = 3;
-var Daynight = React.createClass({
+var Daynight = createReactClass({
   getInitialState: function() {
     return {
       isLoading: true,

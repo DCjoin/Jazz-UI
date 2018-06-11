@@ -7,11 +7,11 @@ import classNames from 'classnames';
 import CommonFuns from '../../../util/Util.jsx';
 import TagSelect from '../../KPI/Single/TagSelect.jsx';
 import FlatButton from "controls/NewFlatButton.jsx";
-
+import PropTypes from 'prop-types';
 export default class ConfigRate extends Component {
 
   contextTypes:{
-      currentRoute: React.PropTypes.object,
+      currentRoute: PropTypes.object,
   }
 
   constructor(props, ctx) {
@@ -187,9 +187,9 @@ export default class ConfigRate extends Component {
   }
 }
 
-ConfigRate.propTypes = {
-  hierarchyName:React.PropTypes.string,
-  hierarchyId:React.PropTypes.number,
-  onClose:React.PropTypes.func,
-  onSave:React.PropTypes.func,
+ConfigRate.propTypes= {
+  hierarchyName:PropTypes.string,
+  hierarchyId:PropTypes.number,
+  onClose:PropTypes.func,
+  onSave:PropTypes.func,
 };

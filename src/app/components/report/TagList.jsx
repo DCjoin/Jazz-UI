@@ -5,9 +5,9 @@ import { CircularProgress, Checkbox } from 'material-ui';
 import TagItem from './TagItem.jsx';
 import ReportAction from '../../actions/ReportAction.jsx';
 import ReportStore from '../../stores/ReportStore.jsx';
+var createReactClass = require('create-react-class');
 
-
-let TagList = React.createClass({
+let TagList = createReactClass({
   getInitialState: function() {
     return {
     };

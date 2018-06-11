@@ -1,5 +1,6 @@
 'use strict';
 import React, { Component }  from "react";
+import PropTypes from 'prop-types';
 import ReactDom from 'react-dom';
 import classNames from 'classnames';
 import Drawer from 'material-ui/Drawer';
@@ -482,8 +483,8 @@ export default class TagDrawer extends Component {
   }
 }
 
-TagDrawer.propTypes = {
-	hierarchyId:React.PropTypes.number,
-  isBuilding:React.PropTypes.bool,
-  customerId:React.PropTypes.number,
+TagDrawer.propTypes= {
+	hierarchyId:PropTypes.number,
+  isBuilding:PropTypes.bool,
+  customerId:PropTypes.number,
 };

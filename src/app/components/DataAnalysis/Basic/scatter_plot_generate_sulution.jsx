@@ -4,7 +4,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import ScatterPlotAction from 'actions/DataAnalysis/scatter_plot_action.jsx';
 import ScatterPlotStore from 'stores/DataAnalysis/scatter_plot_store.jsx';
 import ScatterPlot from './scatter_plot.jsx';
-
+import PropTypes from 'prop-types';
 export default class ScatterPlotView extends Component {
 
   constructor(props) {
@@ -50,10 +50,10 @@ export default class ScatterPlotView extends Component {
 
 }
 
-ScatterPlotView.propTypes = {
-	xAxisTagId:React.PropTypes.number,
-  yAxisTagId:React.PropTypes.number,
-  step:React.PropTypes.number,
-  timeRanges:React.PropTypes.number,
-  afterChartCreated:React.PropTypes.func,
+ScatterPlotView.propTypes= {
+	xAxisTagId:PropTypes.number,
+  yAxisTagId:PropTypes.number,
+  step:PropTypes.number,
+  timeRanges:PropTypes.number,
+  afterChartCreated:PropTypes.func,
 };

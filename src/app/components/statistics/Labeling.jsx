@@ -16,9 +16,9 @@ import LabelingStore from '../../stores/LabelingStore.jsx';
 import { formStatus } from '../../constants/FormStatus.jsx';
 import NewDialog from '../../controls/NewDialog.jsx';
 import Immutable from 'immutable';
-
+var createReactClass = require('create-react-class');
 var map = {};
-var Labeling = React.createClass({
+var Labeling = createReactClass({
   getInitialState: function() {
     var zoneItems = [{
       payload: -1,

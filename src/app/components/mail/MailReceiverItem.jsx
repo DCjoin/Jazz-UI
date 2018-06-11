@@ -1,13 +1,13 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from 'react';
 import { FlatButton, CircularProgress, Tabs, Tab, FontIcon } from 'material-ui';
 import MailAction from '../../actions/MailAction.jsx';
 import MailStore from '../../stores/MailStore.jsx';
-
-let MailReceiverItem = React.createClass({
+var createReactClass = require('create-react-class');
+let MailReceiverItem = createReactClass({
   propTypes: {
-    nodeData: React.PropTypes.object,
+    nodeData: PropTypes.object,
   },
   _onCleanButtonClick: function() {
     MailAction.removeReceiver(this.props.nodeData);

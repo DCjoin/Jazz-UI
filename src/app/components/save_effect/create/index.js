@@ -1,6 +1,6 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
 import ReactDom from 'react-dom';
-
+import PropTypes from 'prop-types';
 import Immutable from 'immutable';
 import moment from 'moment';
 
@@ -901,7 +901,7 @@ export default class Create extends Component {
 	      <div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>
 	     </NewDialog>)
 	  }
-		let problem = currentSolution.get('EnergyProblem');
+		let problem = currentSolution.get('Problem');
 	 var props={
 	   title:{
 	     measure:currentSolution,
@@ -1031,7 +1031,7 @@ export default class Create extends Component {
 		);
 	}
 }
-Create.PropTypes = {
+Create.propTypes= {
 	onClose: PropTypes.func.isRequired,
 	onSubmitDone: PropTypes.func,
 	ConfigStep: PropTypes.number,

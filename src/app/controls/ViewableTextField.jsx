@@ -1,5 +1,5 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {TextField} from 'material-ui';
@@ -9,31 +9,31 @@ import util from '../util/Util.jsx';
 var _ = {
   isString: _isString
 };
-
-var ViewableTextField = React.createClass({
+var createReactClass = require('create-react-class');
+var ViewableTextField = createReactClass({
 
   propTypes: {
-    isViewStatus: React.PropTypes.bool,
-    regex: React.PropTypes.object,
-    regexFn: React.PropTypes.func,
-    maxLen: React.PropTypes.number,
-    autoFocus: React.PropTypes.bool,
-    isRequired: React.PropTypes.bool,
-    didChanged: React.PropTypes.func,
-    style: React.PropTypes.object,
-    didBlur: React.PropTypes.func,
-    multiLine: React.PropTypes.bool,
-    didFocus: React.PropTypes.func,
-    defaultValue: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
-    errorMessage: React.PropTypes.string,
-    errorText: React.PropTypes.string,
-    hintText: React.PropTypes.string,
-    title: React.PropTypes.string,
-    afterValue: React.PropTypes.object,
+    isViewStatus: PropTypes.bool,
+    regex: PropTypes.object,
+    regexFn: PropTypes.func,
+    maxLen: PropTypes.number,
+    autoFocus: PropTypes.bool,
+    isRequired: PropTypes.bool,
+    didChanged: PropTypes.func,
+    style: PropTypes.object,
+    didBlur: PropTypes.func,
+    multiLine: PropTypes.bool,
+    didFocus: PropTypes.func,
+    defaultValue: PropTypes.oneOfType([PropTypes.number.string]),
+    errorMessage: PropTypes.string,
+    errorText: PropTypes.string,
+    hintText: PropTypes.string,
+    title: PropTypes.string,
+    afterValue: PropTypes.object,
   },
 
   contextTypes: {
-    generatorBatchViewbaleTextFiled: React.PropTypes.func
+    generatorBatchViewbaleTextFiled: PropTypes.func
   },
 
   getDefaultProps: function() {

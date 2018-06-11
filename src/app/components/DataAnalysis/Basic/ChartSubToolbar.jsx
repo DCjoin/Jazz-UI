@@ -4,7 +4,7 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import StepSelector from '../../energy/StepSelector.jsx';
 import ConstStore from 'stores/ConstStore.jsx';
 import DateTimeSelector from 'controls/DateTimeSelector.jsx';
-
+import PropTypes from 'prop-types';
 export default class ChartSubToolbar extends Component {
 
   constructor(props) {
@@ -57,17 +57,17 @@ export default class ChartSubToolbar extends Component {
   }
 }
 
-ChartSubToolbar.propTypes = {
-  selectedChartType:React.PropTypes.string,
-  onSearchBtnItemTouchTap:React.PropTypes.object,
-  hasTagData:React.PropTypes.bool,
-  timeRanges:React.PropTypes.object,
-  step:React.PropTypes.number,
-  onStepChange:React.PropTypes.object,
-  initYaxisDialog:React.PropTypes.func,
-  onYaxisSelectorDialogSubmit:React.PropTypes.func,
-  handleCalendarChange:React.PropTypes.func,
-  relativeDate:React.PropTypes.string,
-  onRelativeDateChange:React.PropTypes.func,
-  onDateSelectorChanged:React.PropTypes.func,
+ChartSubToolbar.propTypes= {
+  selectedChartType:PropTypes.string,
+  onSearchBtnItemTouchTap:PropTypes.object,
+  hasTagData:PropTypes.bool,
+  timeRanges:PropTypes.object,
+  step:PropTypes.number,
+  onStepChange:PropTypes.object,
+  initYaxisDialog:PropTypes.func,
+  onYaxisSelectorDialogSubmit:PropTypes.func,
+  handleCalendarChange:PropTypes.func,
+  relativeDate:PropTypes.string,
+  onRelativeDateChange:PropTypes.func,
+  onDateSelectorChanged:PropTypes.func,
 };

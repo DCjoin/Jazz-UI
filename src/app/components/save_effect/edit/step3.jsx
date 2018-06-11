@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
 import EditStep3 from '../create/step3.jsx';
 import StepComponent from './stepComponent.jsx';
 import FlatButton from "controls/NewFlatButton.jsx";
@@ -7,7 +7,7 @@ import moment from 'moment';
 import ViewableTextField from 'controls/ViewableTextField.jsx';
 import {Model,CalendarItemType} from 'constants/actionType/Effect.jsx';
 import TimeGranularity from 'constants/TimeGranularity.jsx';
-
+import PropTypes from 'prop-types';
 function formatDate(date){
   return moment(util.DataConverter.JsonToDateTime(date)).format("YYYY-MM-DD")
 }
@@ -142,10 +142,10 @@ export default class Step3 extends Component {
 
 }
 
-Step3.propTypes = {
-  configStep:React.PropTypes.number || null,
-  isView:React.PropTypes.boolean,
-  onSave:React.PropTypes.func,
-  onCancel:React.PropTypes.func,
-  onEdit:React.PropTypes.func,
+Step3.propTypes= {
+  configStep:PropTypes.number || null,
+  isView:PropTypes.boolean,
+  onSave:PropTypes.func,
+  onCancel:PropTypes.func,
+  onEdit:PropTypes.func,
 };

@@ -1,8 +1,8 @@
 'use strict';
-import React, { Component, PropTypes }  from "react";
+import React, { Component}  from "react";
 import Immutable from 'immutable';
 import Util from 'util/Util.jsx';
-
+import PropTypes from 'prop-types';
 import ChartComponentBox from 'components/energy/ChartComponentBox.jsx';
 import CalendarManager from 'components/energy/CalendarManager.jsx';
 
@@ -136,7 +136,7 @@ function getStrategyByChartType(chartType) {
 }
 
 export default class ChartBasicComponent extends Component {
-  static propTypes = {
+  static propTypes= {
     tagData: PropTypes.object,
     chartType: PropTypes.string,
     widgetSeriesArray: PropTypes.object,

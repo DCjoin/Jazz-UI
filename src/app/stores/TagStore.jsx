@@ -132,10 +132,10 @@ var TagStore = assign({}, PrototypeStore, {
       let index=_totalTagStatus.findIndex(item=>item.get("Id")===tag.Id);
       if(add){
         if(index===-1){
-          _totalTagStatus=_totalTagStatus.push({
+          _totalTagStatus=_totalTagStatus.push(Immutable.fromJS({
             hierId: tag.AreaDimensionId!==null?tag.AreaDimensionId:tag.HierarchyId,
             Id: tag.Id,
-          })
+          }))
         }
       }else{
         _totalTagStatus=_totalTagStatus.delete(index)

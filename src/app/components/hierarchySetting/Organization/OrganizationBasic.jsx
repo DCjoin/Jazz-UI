@@ -1,5 +1,5 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from "react";
 import classnames from "classnames";
 import { formStatus } from '../../../constants/FormStatus.jsx';
@@ -8,15 +8,15 @@ import ViewableTextField from '../../../controls/ViewableTextField.jsx';
 import ViewableTextFieldUtil from '../../../controls/ViewableTextFieldUtil.jsx';
 import Regex from '../../../constants/Regex.jsx';
 import AdminList from '../../customer/AdminList.jsx';
+var createReactClass = require('create-react-class');
 
-
-var OrganizationBasic = React.createClass({
+var OrganizationBasic = createReactClass({
 
   propTypes: {
-    selectedNode: React.PropTypes.object,
-    merge: React.PropTypes.func,
-    formStatus: React.PropTypes.string,
-    setEditBtnStatus: React.PropTypes.func
+    selectedNode: PropTypes.object,
+    merge: PropTypes.func,
+    formStatus: PropTypes.string,
+    setEditBtnStatus: PropTypes.func
   },
   //mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
   _renderDetail: function() {

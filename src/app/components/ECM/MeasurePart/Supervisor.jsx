@@ -1,5 +1,5 @@
 'use strict';
-import React, {Component,PropTypes} from 'react';
+import React, {Component} from 'react';
 import classNames from 'classnames';
 import FontIcon from 'material-ui/FontIcon';
 import Popover from 'material-ui/Popover';
@@ -16,7 +16,7 @@ import MeasuresAction from 'actions/ECM/MeasuresAction.jsx';
 import RaisedButton from 'material-ui/RaisedButton';
 import IconButton from 'material-ui/IconButton';
 import {IconText} from '../MeasuresItem.jsx';
-
+import PropTypes from 'prop-types';
 class SupervisorDialog extends Component{
 
   constructor(props, ctx) {
@@ -122,10 +122,10 @@ class SupervisorDialog extends Component{
           <FlatButton
             label={saveButtonTitle}
             disabled={disabled}
-            onTouchTap = {this.handleClickFinish} />,
+            onClick = {this.handleClickFinish} />,
           <FlatButton
             label={I18N.Common.Button.Cancel2}
-            onTouchTap={
+            onClick={
               this.handleClickCancel
             }/>]}
             dismissOnClickAway={false}
@@ -150,7 +150,7 @@ class SupervisorDialog extends Component{
 class SupervisorDropDownMenu extends Component{
 
   static contextTypes = {
-      hierarchyId: React.PropTypes.string
+      hierarchyId: PropTypes.string
     };
 
   constructor(props, ctx) {

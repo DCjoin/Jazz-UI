@@ -1,11 +1,11 @@
 import React from "react";
 import classnames from 'classnames';
 import ReactDOM from 'react-dom';
-
+import PropTypes from 'prop-types';
 export default class CalendarYearView extends React.Component {
-  static propTypes = {
-    currentDate: React.PropTypes.object,
-    onChange: React.PropTypes.func
+  static propTypes= {
+    currentDate: PropTypes.object,
+    onChange: PropTypes.func
   };
 
   constructor(props) {

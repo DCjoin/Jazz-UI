@@ -1,14 +1,15 @@
 'use strict';
 import React from "react";
+import PropTypes from 'prop-types';
 import _ from 'lodash-es';
 import HierarchyButton from '../components/Hierarchy/HierarchyButton.jsx';
 import DimButton from '../components/Dim/DimButton.jsx';
 import {nodeType} from 'constants/TreeConstants.jsx';
-
-let HierAndDimHeader = React.createClass({
+var createReactClass = require('create-react-class');
+let HierAndDimHeader = createReactClass({
   propTypes: {
-    isBuilding:React.PropTypes.bool,
-    onHierachyTreeClick: React.PropTypes.func,
+    isBuilding:PropTypes.bool,
+    onHierachyTreeClick: PropTypes.func,
   },
   //mixins: [Navigation, State],
   _onHierachyTreeClick: function(node) {

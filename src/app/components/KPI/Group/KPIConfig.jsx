@@ -13,12 +13,12 @@ import { formStatus } from 'constants/FormStatus.jsx';
 import Dialog from 'controls/NewDialog.jsx';
 import DosageMonthConfig from './DosageMonthConfig.jsx';
 import RatioMonthConfig from './RatioMonthConfig.jsx';
-
+import PropTypes from 'prop-types';
 var customerId=null;
 export default class KPIConfig extends Component {
 
 	static contextTypes = {
-		router: React.PropTypes.object,
+		router: PropTypes.object,
 	};
 
 	constructor(props) {
@@ -247,14 +247,14 @@ export default class KPIConfig extends Component {
 		}
 	}
 }
-KPIConfig.propTypes = {
-	status:React.PropTypes.string,
+KPIConfig.propTypes= {
+	status:PropTypes.string,
 	//编辑时 id=kpiSettingsId;延用时 id=KpiId
-	id:React.PropTypes.number,
-	year:React.PropTypes.number,
+	id:PropTypes.number,
+	year:PropTypes.number,
 	//编辑时，需要name
-	name:React.PropTypes.string,
-	onSave:React.PropTypes.func,
-	onCancel:React.PropTypes.func,
-	// onPending:React.PropTypes.func,
+	name:PropTypes.string,
+	onSave:PropTypes.func,
+	onCancel:PropTypes.func,
+	// onPending:PropTypes.func,
 };

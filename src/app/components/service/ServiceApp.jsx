@@ -8,10 +8,10 @@ import NetworkChecker from '../../controls/NetworkChecker.jsx';
 import CookieUtil from '../../util/cookieUtil.jsx';
 import { getCookie } from '../../util/Util.jsx';
 import RoutePath from '../../util/RoutePath.jsx';
-
+var createReactClass = require('create-react-class');
 const service = RoutePath.service;
 
-let ServiceApp = React.createClass({
+let ServiceApp = createReactClass({
   //mixins: [Navigation, State],
 
   _redirectRouter : function(target, params) {

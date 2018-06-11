@@ -21,7 +21,7 @@ store.subscribe(()=>{
 })
 
 class Counter extends Component {
-  static propTypes = {
+  static propTypes= {
     value: PropTypes.number.isRequired,
     onIncrement: PropTypes.func.isRequired,
     onDecrement: PropTypes.func.isRequired

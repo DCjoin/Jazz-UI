@@ -1,8 +1,8 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
 import find from 'lodash-es/find';
 import CircularProgress from 'material-ui/CircularProgress';
 import FontIcon from 'material-ui/FontIcon';
-
+import PropTypes from 'prop-types';
 import ReduxDecorator from 'decorator/ReduxDecorator.jsx';
 
 import {

@@ -38,7 +38,7 @@ import CalendarManager from './CalendarManager.jsx';
 import ChartStrategyFactor from './ChartStrategyFactor.jsx';
 import ChartMixins from './ChartMixins.jsx';
 import ErrorStepDialog from '../alarm/ErrorStepDialog.jsx';
-
+var createReactClass = require('create-react-class');
 function currentUser() {
   return CurrentUserStore.getCurrentUser();
 }
@@ -49,16 +49,16 @@ const DIALOG_TYPE = {
 };
 
 let lastRelativeDate = 'Customerize';
-
-let AnalysisPanel = React.createClass({
+import PropTypes from 'prop-types';
+let AnalysisPanel = createReactClass({
   //mixins: [ChartMixins],
   propTypes: {
-    chartTitle: React.PropTypes.string,
-    bizType: React.PropTypes.oneOf(['Energy', 'Unit', 'Ratio', 'Label', 'Rank']),
-    onOperationSelect: React.PropTypes.func,
+    chartTitle: PropTypes.string,
+    bizType: PropTypes.oneOf(['Energy', 'Unit', 'Ratio', 'Label', 'Rank']),
+    onOperationSelect: PropTypes.func,
   },
   contextTypes: {
-    router: React.PropTypes.func
+    router: PropTypes.func
   },
   getDefaultProps() {
     return {

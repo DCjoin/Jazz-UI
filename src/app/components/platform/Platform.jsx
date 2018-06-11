@@ -9,8 +9,9 @@ import PlatformAction from '../../actions/PlatformAction.jsx';
 import PlatformStore from '../../stores/PlatformStore.jsx';
 import Content from './PlatformContent.jsx';
 import { formStatus } from '../../constants/FormStatus.jsx';
+var createReactClass = require('create-react-class');
 //test
-let Platform = React.createClass({
+let Platform = createReactClass({
   _onChangeSortBy: function(type) {
     if (type == 'customername@asc') {
       PlatformAction.getServiceProviders('Name', 0);

@@ -9,7 +9,7 @@ import ImagesView from './images_view.jsx';
 import Immutable from 'immutable';
 
 class ImageItemContainer extends Component{
-	static propTypes = {
+	static propTypes= {
 		width: PropTypes.number,
 		height: PropTypes.number,
     //diagram: Immutable.Map({ImageUrl:xxx})
@@ -90,7 +90,7 @@ class ImageItemContainer extends Component{
 
 export default class ImageFroupPanel extends Component{
 
-        static propTypes = {
+        static propTypes= {
           width: PropTypes.number,
           height: PropTypes.number,
           //diagrams: Immutable.List({ImageUrl:xxx})

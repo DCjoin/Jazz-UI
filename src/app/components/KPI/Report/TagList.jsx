@@ -33,8 +33,8 @@ let handleWheel = function (e) {
     }
   }
 }
-
-let TagList = React.createClass({
+var createReactClass = require('create-react-class');
+let TagList = createReactClass({
   getInitialState: function() {
     return {
     };

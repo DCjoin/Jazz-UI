@@ -5,7 +5,7 @@ import GroupKPIAction from 'actions/KPI/GroupKPIAction.jsx';
 import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx';
 import {TextField} from 'material-ui';
 import CommonFuns from 'util/Util.jsx';
-
+import PropTypes from 'prop-types';
 export default class BuildingItem extends Component {
 
     constructor(props) {
@@ -91,11 +91,11 @@ export default class BuildingItem extends Component {
 
   }
 }
-BuildingItem.propTypes = {
-  index:React.PropTypes.number,
-	buildingInfo:React.PropTypes.object,
-  onMonthConfigShow:React.PropTypes.func,
-  IndicatorType:React.PropTypes.number,
-  IndicatorClass:React.PropTypes.number,
-  // onCalcSum:React.PropTypes.func,
+BuildingItem.propTypes= {
+  index:PropTypes.number,
+	buildingInfo:PropTypes.object,
+  onMonthConfigShow:PropTypes.func,
+  IndicatorType:PropTypes.number,
+  IndicatorClass:PropTypes.number,
+  // onCalcSum:PropTypes.func,
 };

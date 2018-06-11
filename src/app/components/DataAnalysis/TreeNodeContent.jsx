@@ -1,5 +1,6 @@
 'use strict';
 import React from "react";
+import PropTypes from 'prop-types';
 import { Navigation, State } from 'react-router';
 import TextField from 'material-ui/TextField';
 import TreeConstants from 'constants/TreeConstants.jsx';
@@ -82,7 +83,7 @@ AudioCtx.prototype.play = function(frequency) {
   oscillator.stop(audioCtx.currentTime + 1);
 }*/
 
-
+var createReactClass = require('create-react-class');
 const normalStyle = {
   backgroundColor: '#ffffff',
   color: '#626469'
@@ -102,12 +103,12 @@ import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 function isFullBasicAnalysis() {
   return privilegeUtil.isFull(PermissionCode.BASIC_DATA_ANALYSE, CurrentUserStore.getCurrentPrivilege());
 }
-var TreeNodeContent = React.createClass({
+var TreeNodeContent = createReactClass({
 
   propTypes: {
-    nodeData: React.PropTypes.object,
-    selectedNode: React.PropTypes.object,
-    panel: React.PropTypes.object,
+    nodeData: PropTypes.object,
+    selectedNode: PropTypes.object,
+    panel: PropTypes.object,
   },
   _onClick: function() {
     if (this.state.isSelect === null && isFullBasicAnalysis()) {

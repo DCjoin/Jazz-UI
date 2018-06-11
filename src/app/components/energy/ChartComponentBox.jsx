@@ -313,19 +313,20 @@ let defaultConfig = {
     }
   }
 };
-
-let ChartComponentBox = React.createClass({
+var createReactClass = require('create-react-class');
+import PropTypes from 'prop-types';
+let ChartComponentBox = createReactClass({
   propTypes: {
-    onDeleteButtonClick: React.PropTypes.func,
-    onDeleteAllButtonClick: React.PropTypes.func,
-    afterChartCreated: React.PropTypes.func,
-    energyData: React.PropTypes.object,
-    energyRawData: React.PropTypes.object,
-    step: React.PropTypes.number,
-    startTime: React.PropTypes.string,
-    endTime: React.PropTypes.string,
-    chartType: React.PropTypes.string,
-    chartTooltipHasTotal: React.PropTypes.bool
+    onDeleteButtonClick: PropTypes.func,
+    onDeleteAllButtonClick: PropTypes.func,
+    afterChartCreated: PropTypes.func,
+    energyData: PropTypes.object,
+    energyRawData: PropTypes.object,
+    step: PropTypes.number,
+    startTime: PropTypes.string,
+    endTime: PropTypes.string,
+    chartType: PropTypes.string,
+    chartTooltipHasTotal: PropTypes.bool
   },
   getDefaultProps() {
     return {

@@ -1,5 +1,5 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from "react";
 import classnames from "classnames";
 import moment from "moment";
@@ -21,20 +21,20 @@ import MonitorTag from './MonitorTag.jsx';
 import Dialog from 'controls/NewDialog.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
 import Calendar from './Calendar.jsx';
-
-var CustomerForHierarchy = React.createClass({
+var createReactClass = require('create-react-class');
+var CustomerForHierarchy = createReactClass({
   propTypes: {
-    formStatus: React.PropTypes.string,
-    closedList: React.PropTypes.bool,
-    toggleList: React.PropTypes.func,
-    selectedNode: React.PropTypes.object,
-    handlerCancel: React.PropTypes.func,
-    handleSave: React.PropTypes.func,
-    handleDelete: React.PropTypes.func,
-    handlerSwitchTab: React.PropTypes.func,
-    merge: React.PropTypes.func,
-    infoTabNo: React.PropTypes.number,
-    consultants: React.PropTypes.array,
+    formStatus: PropTypes.string,
+    closedList: PropTypes.bool,
+    toggleList: PropTypes.func,
+    selectedNode: PropTypes.object,
+    handlerCancel: PropTypes.func,
+    handleSave: PropTypes.func,
+    handleDelete: PropTypes.func,
+    handlerSwitchTab: PropTypes.func,
+    merge: PropTypes.func,
+    infoTabNo: PropTypes.number,
+    consultants: PropTypes.array,
   },
   getInitialState: function() {
     return {

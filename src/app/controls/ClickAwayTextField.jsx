@@ -3,7 +3,7 @@
 import React,{ Component } from 'react';
 import {TextField} from 'material-ui';
 import ClickAway from './ClickAwayListener.jsx';
-
+import PropTypes from 'prop-types';
 @ClickAway
 export default class ClickAwayTextField extends Component {
 
@@ -19,5 +19,5 @@ export default class ClickAwayTextField extends Component {
 }
 
 ClickAwayTextField.propTypes={
-  onClickAway:React.PropTypes.func
+  onClickAway:PropTypes.func
 }

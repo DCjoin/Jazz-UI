@@ -2,13 +2,15 @@
 
 import React from 'react';
 import assign from 'object-assign';
+import PropTypes from 'prop-types';
+var createReactClass = require('create-react-class');
 
-var BubbleIcon = React.createClass({
+var BubbleIcon = createReactClass({
 
     propTypes: {
-        number:React.PropTypes.number,
-        style:React.PropTypes.object,
-        numberStyle:React.PropTypes.object,
+        number:PropTypes.number,
+        style:PropTypes.object,
+        numberStyle:PropTypes.object,
     },
 
     getDefaultProps: function() {

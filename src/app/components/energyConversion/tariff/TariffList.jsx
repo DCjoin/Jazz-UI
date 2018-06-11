@@ -1,19 +1,19 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from "react";
 import classnames from "classnames";
 import Item from '../../../controls/SelectableItem.jsx';
 import SelectablePanel from '../../../controls/SelectablePanel.jsx';
 import TariffStore from '../../../stores/energyConversion/TariffStore.jsx';
 import { formStatus } from '../../../constants/FormStatus.jsx';
-
-var TariffList = React.createClass({
+var createReactClass = require('create-react-class');
+var TariffList = createReactClass({
   propTypes: {
-    formStatus: React.PropTypes.bool,
-    onTariffClick: React.PropTypes.func,
-    onAddBtnClick: React.PropTypes.func,
-    tariffs: React.PropTypes.object,
-    selectedId: React.PropTypes.number
+    formStatus: PropTypes.bool,
+    onTariffClick: PropTypes.func,
+    onAddBtnClick: PropTypes.func,
+    tariffs: PropTypes.object,
+    selectedId: PropTypes.number
   },
   _renderTariffItems: function() {
     var items = [],

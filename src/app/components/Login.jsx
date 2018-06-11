@@ -319,10 +319,10 @@ function Container(props) {
 		</div>
 	)
 }
-
+import PropTypes from 'prop-types';
 export default class NewLogin extends Component {
 	static contextTypes = {
-    router: React.PropTypes.func
+    router: PropTypes.func
   }
 	constructor(props) {
 		super(props);
@@ -621,8 +621,8 @@ export default class NewLogin extends Component {
 		);
 	}
 }
-
-var ForgetPSWDialog = React.createClass({
+var createReactClass = require('create-react-class');
+var ForgetPSWDialog = createReactClass({
   getInitialState() {
     return {
       username: "",

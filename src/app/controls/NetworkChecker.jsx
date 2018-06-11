@@ -1,10 +1,10 @@
 'use strict';
 
 import React from "react";
-var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
+import { Transition } from 'react-transition-group';
 
-
-var NetworkChecker = React.createClass({
+var createReactClass = require('create-react-class');
+var NetworkChecker = createReactClass({
 
     statics:{
         twinkle(){
@@ -71,9 +71,9 @@ var NetworkChecker = React.createClass({
 
 
 
-        return (<ReactCSSTransitionGroup transitionName="networkchecker-animation" transitionEnterTimeout={300} transitionLeaveTimeout={300}>
+        return (<Transition timeout={300}>
             {content}
-        </ReactCSSTransitionGroup>);
+        </Transition>);
 
     }
 });

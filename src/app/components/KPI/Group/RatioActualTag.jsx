@@ -1,5 +1,5 @@
 'use strict';
-import React, {Component,PropTypes} from 'react';
+import React, {Component} from 'react';
 import Immutable from 'immutable';
 import TagSelect from '../Single/TagSelect.jsx';
 import MonthKPIAction from 'actions/KPI/MonthKPIAction.jsx';
@@ -7,12 +7,12 @@ import NewFlatButton from 'controls/NewFlatButton.jsx';
 import FontIcon from 'material-ui/FontIcon';
 import SingleKPIAction from 'actions/KPI/SingleKPIAction.jsx';
 import MonthKPIStore from 'stores/KPI/MonthKPIStore.jsx';
-
+import PropTypes from 'prop-types';
 var customerId;
 export default class RatioActualTag extends Component {
 
   static contextTypes = {
-    router: React.PropTypes.object,
+    router: PropTypes.object,
   };
 
   constructor(props) {
@@ -277,8 +277,8 @@ export default class RatioActualTag extends Component {
 }
 
 RatioActualTag.propTypes={
-  	kpiInfo:React.PropTypes.object,
-    buildingInfo:React.PropTypes.object,
+  	kpiInfo:PropTypes.object,
+    buildingInfo:PropTypes.object,
     isCreate:PropTypes.bool,
     isViewStatus:PropTypes.bool,
 }

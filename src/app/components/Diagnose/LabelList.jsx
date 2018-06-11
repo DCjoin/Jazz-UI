@@ -40,11 +40,11 @@ function noPrivilege(isFromProbem){
   else return !isListFull()
 }
 
-
+import PropTypes from 'prop-types';
 export default class LabelList extends Component {
 
   static contextTypes = {
-        hierarchyId: React.PropTypes.string
+        hierarchyId: PropTypes.string
       };
 
   constructor(props, ctx) {
@@ -225,9 +225,9 @@ export default class LabelList extends Component {
 }
 
 LabelList.propTypes={
-  isFromProbem:React.PropTypes.bool,
-  selectedNode:React.PropTypes.object,
-  onItemTouchTap:React.PropTypes.func,
-	onTabSwitch:React.PropTypes.func,
-	onAdd:React.PropTypes.func,
+  isFromProbem:PropTypes.bool,
+  selectedNode:PropTypes.object,
+  onItemTouchTap:PropTypes.func,
+	onTabSwitch:PropTypes.func,
+	onAdd:PropTypes.func,
 }

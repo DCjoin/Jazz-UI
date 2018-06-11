@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
+import PropTypes from 'prop-types';
 import WeatherStore from 'stores/DataAnalysis/weather_store.jsx';
 import ButtonMenu from 'controls/CustomButtonMenu.jsx';
 import Checkbox from 'material-ui/Checkbox';
@@ -21,8 +22,8 @@ export default class WeatherButton extends Component {
 
 	static contextTypes = {
 		hierarchyId: PropTypes.string,
-    currentRoute:React.PropTypes.object,
-    router:React.PropTypes.object,
+    currentRoute:PropTypes.object,
+    router:PropTypes.object,
 	};
 
  constructor(props) {
@@ -123,8 +124,8 @@ export default class WeatherButton extends Component {
   }
 }
 
-WeatherButton.propTypes = {
-  disabled:React.PropTypes.bool,
-  taglist:React.PropTypes.array,
-  step:React.PropTypes.number
+WeatherButton.propTypes= {
+  disabled:PropTypes.bool,
+  taglist:PropTypes.array,
+  step:PropTypes.number
 };

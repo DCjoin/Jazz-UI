@@ -1,16 +1,17 @@
 'use strict';
 import React from "react";
+import PropTypes from 'prop-types';
 import { TextField, Paper } from 'material-ui';
 import NewDialog from '../NewDialog.jsx';
 import FlatButton from '../FlatButton.jsx';
-
-var Delete = React.createClass({
+var createReactClass = require('create-react-class');
+var Delete = createReactClass({
   propTypes: {
-    type: React.PropTypes.string, //文件夹 or 图表
-    name: React.PropTypes.string,
-    onFirstActionTouchTap: React.PropTypes.func,
-    onSecondActionTouchTap: React.PropTypes.func,
-    onDismiss: React.PropTypes.func,
+    type: PropTypes.string, //文件夹 or 图表
+    name: PropTypes.string,
+    onFirstActionTouchTap: PropTypes.func,
+    onSecondActionTouchTap: PropTypes.func,
+    onDismiss: PropTypes.func,
   },
 
   _onFirstActionTouchTap: function() {

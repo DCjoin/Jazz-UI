@@ -77,12 +77,13 @@ var _setSelectedChildren = function(children, selectedId, isRoot = true) {
   });
   return children;
 };
-
-let UserCustomerPermission = React.createClass({
+var createReactClass = require('create-react-class');
+import PropTypes from 'prop-types';
+let UserCustomerPermission = createReactClass({
 
   getDefaultProps: function() {
     return {
-      isView: React.PropTypes.bool
+      isView: PropTypes.bool
     };
   },
 

@@ -8,7 +8,7 @@ import DateTimeSelector from 'controls/DateTimeSelector.jsx';
 import LinkButton from 'controls/LinkButton.jsx';
 import MultiTimespanAction from 'actions/MultiTimespanAction.jsx';
 import DataAnalysisStore from 'stores/DataAnalysis/DataAnalysisStore.jsx';
-
+import PropTypes from 'prop-types';
 class TimespanItem extends Component{
 
   constructor(props) {
@@ -161,15 +161,15 @@ class TimespanItem extends Component{
     }
   }
 
-  TimespanItem.propTypes = {
-    title: React.PropTypes.string,
-    isOriginalDate: React.PropTypes.bool,
-    relativeType: React.PropTypes.oneOf(MultipleTimespanStore.getRelativeTypes()),
-    relativeValue: React.PropTypes.number,
-    compareIndex: React.PropTypes.number, //对比时间编号，原始时间没有此参数
-    startDate: React.PropTypes.object,
-    endDate: React.PropTypes.object,
-    dateDescription: React.PropTypes.string //对比时间段的文字时间
+  TimespanItem.propTypes= {
+    title: PropTypes.string,
+    isOriginalDate: PropTypes.bool,
+    relativeType: PropTypes.oneOf(MultipleTimespanStore.getRelativeTypes()),
+    relativeValue: PropTypes.number,
+    compareIndex: PropTypes.number, //对比时间编号，原始时间没有此参数
+    startDate: PropTypes.object,
+    endDate: PropTypes.object,
+    dateDescription: PropTypes.string //对比时间段的文字时间
   };
 
   TimespanItem.defaultProps={

@@ -15,8 +15,8 @@ import BenchmarkStore from '../../stores/BenchmarkStore.jsx';
 import { formStatus } from '../../constants/FormStatus.jsx';
 import NewDialog from '../../controls/NewDialog.jsx';
 import Immutable from 'immutable';
-
-var Benchmark = React.createClass({
+var createReactClass = require('create-react-class');
+var Benchmark = createReactClass({
   getInitialState: function() {
     return {
       isLoading: true,

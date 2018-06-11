@@ -1,14 +1,15 @@
 'use strict';
 import React from "react";
+import PropTypes from 'prop-types';
 import { CircularProgress } from 'material-ui';
 import TagAction from '../../../actions/customerSetting/TagAction.jsx';
 import TagLogList from './TagLogList.jsx';
 import TagStore from '../../../stores/customerSetting/TagStore.jsx';
+var createReactClass = require('create-react-class');
 
-
-var TagLog = React.createClass({
+var TagLog = createReactClass({
   contextTypes:{
-      currentRoute: React.PropTypes.object
+      currentRoute: PropTypes.object
   },
   getInitialState: function() {
     return {

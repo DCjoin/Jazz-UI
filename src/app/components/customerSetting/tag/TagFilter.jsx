@@ -1,11 +1,11 @@
 'use strict';
 import React from 'react';
-
+import PropTypes from 'prop-types';
 import SideNav from '../../../controls/SideNav.jsx';
 import ViewableDropDownMenu from '../../../controls/ViewableDropDownMenu.jsx';
 import LinkButton from '../../../controls/LinkButton.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
-
+var createReactClass = require('create-react-class');
 
 import _isObject from "lodash-es/isObject";
 import _get from 'lodash-es/get';
@@ -15,13 +15,13 @@ var _ = {
   get: _get
 };
 
-var TagFilter = React.createClass({
+var TagFilter = createReactClass({
   propTypes: {
-    handleFilter: React.PropTypes.func,
-    onClose: React.PropTypes.func,
-    mergeFilterObj: React.PropTypes.func,
-    filterObj: React.PropTypes.object,
-    side: React.PropTypes.string
+    handleFilter: PropTypes.func,
+    onClose: PropTypes.func,
+    mergeFilterObj: PropTypes.func,
+    filterObj: PropTypes.object,
+    side: PropTypes.string
   },
   getDefaultProps() {
     return {

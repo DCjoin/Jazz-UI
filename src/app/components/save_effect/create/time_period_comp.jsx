@@ -1,8 +1,8 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
 import IconButton from 'material-ui/IconButton';
 import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
 import {getDateTimeItemsByStepForVal} from 'util/Util.jsx';
-
+import PropTypes from 'prop-types';
 function AddIcon(props) {
 	let otherProps = {
 		onClick: (e) => {
@@ -108,9 +108,9 @@ export default class TimePeriodComp extends Component {
 }
 
 TimePeriodComp.propTypes={
-  workRuningTimes:React.PropTypes.array,
-	onChangeWorkTime:React.PropTypes.func,
-	onAddWorkTime:React.PropTypes.func,
-	onDeleteWorkTime:React.PropTypes.func,
-	title:React.PropTypes.string,
+  workRuningTimes:PropTypes.array,
+	onChangeWorkTime:PropTypes.func,
+	onAddWorkTime:PropTypes.func,
+	onDeleteWorkTime:PropTypes.func,
+	title:PropTypes.string,
 }

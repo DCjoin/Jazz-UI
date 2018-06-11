@@ -18,7 +18,8 @@ import { formStatus } from '../../constants/FormStatus.jsx';
 import Delete from '../../controls/OperationTemplate/Delete.jsx';
 import Dialog from '../../controls/OperationTemplate/BlankDialog.jsx';
 import assign from 'object-assign';
-
+import PropTypes from 'prop-types';
+var createReactClass = require('create-react-class');
 const DIALOG_TYPE = {
   DELETE: "cancel",
   SEND_EMAIL: "send_email",
@@ -26,10 +27,10 @@ const DIALOG_TYPE = {
   RESET: 'reset'
 };
 
-let PlatformContent = React.createClass({
+let PlatformContent = createReactClass({
   propTypes: {
-    provider: React.PropTypes.object,
-    infoTabNo: React.PropTypes.number,
+    provider: PropTypes.object,
+    infoTabNo: PropTypes.number,
   },
   _onError: function() {
     var error = PlatformStore.getError();

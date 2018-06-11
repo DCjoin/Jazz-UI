@@ -1,6 +1,6 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
 import ReactDOM from 'react-dom';
-
+import PropTypes from 'prop-types';
 import Ajax from '../ajax/Ajax.jsx';
 import util from 'util/Util.jsx';
 
@@ -59,7 +59,7 @@ export default class UploadForm extends Component {
 	}
 }
 
-UploadForm.propTypes = {
+UploadForm.propTypes= {
 	action: PropTypes.string.isRequired,
 	fileName: PropTypes.string.isRequired,
 	enctype: PropTypes.string.isRequired,

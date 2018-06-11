@@ -1,8 +1,8 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
 import EditStep1 from '../create/step1.jsx';
 import StepComponent from './stepComponent.jsx';
 import FlatButton from "controls/NewFlatButton.jsx";
-
+import PropTypes from 'prop-types';
 export default class Step1 extends Component {
 
   state={
@@ -74,17 +74,17 @@ export default class Step1 extends Component {
 
 }
 
-Step1.propTypes = {
-  tags:React.PropTypes.object,
-  tagName:React.PropTypes.string,
-  selectedId:React.PropTypes.number,
-  onClickItem:React.PropTypes.func,
-  onDeleteItem:React.PropTypes.func,
-  onAddItem:React.PropTypes.func,
-  isView:React.PropTypes.boolean,
-  // editDisabled:React.PropTypes.boolean,
-  onSave:React.PropTypes.func,
-  onCancel:React.PropTypes.func,
-  onEdit:React.PropTypes.func,
-  configStep:React.PropTypes.number || null
+Step1.propTypes= {
+  tags:PropTypes.object,
+  tagName:PropTypes.string,
+  selectedId:PropTypes.number,
+  onClickItem:PropTypes.func,
+  onDeleteItem:PropTypes.func,
+  onAddItem:PropTypes.func,
+  isView:PropTypes.boolean,
+  // editDisabled:PropTypes.boolean,
+  onSave:PropTypes.func,
+  onCancel:PropTypes.func,
+  onEdit:PropTypes.func,
+  configStep:PropTypes.number || null
 };

@@ -1,6 +1,7 @@
 'use strict';
 
 import React from "react";
+import PropTypes from 'prop-types';
 import classnames from "classnames";
 import moment from "moment";
 import { CircularProgress, Checkbox } from 'material-ui';
@@ -19,21 +20,21 @@ import FlatButton from 'controls/FlatButton.jsx';
 import ImageUpload from 'controls/ImageUpload.jsx';
 import AdminList from './AdminList.jsx';
 import CommonFuns from 'util/Util.jsx';
-
-var CustomerDetail = React.createClass({
+var createReactClass = require('create-react-class');
+var CustomerDetail = createReactClass({
 
   propTypes: {
-    formStatus: React.PropTypes.bool,
-    infoTab: React.PropTypes.bool,
-    customer: React.PropTypes.object,
-    setEditStatus: React.PropTypes.func,
-    handlerCancel: React.PropTypes.func,
-    handleSaveCustomer: React.PropTypes.func,
-    handleDeleteCustomer: React.PropTypes.func,
-    handlerSwitchTab: React.PropTypes.func,
-    toggleList: React.PropTypes.func,
-    isFromHierarchy: React.PropTypes.bool,
-    handleEnergyInfoChanged: React.PropTypes.func,
+    formStatus: PropTypes.bool,
+    infoTab: PropTypes.bool,
+    customer: PropTypes.object,
+    setEditStatus: PropTypes.func,
+    handlerCancel: PropTypes.func,
+    handleSaveCustomer: PropTypes.func,
+    handleDeleteCustomer: PropTypes.func,
+    handlerSwitchTab: PropTypes.func,
+    toggleList: PropTypes.func,
+    isFromHierarchy: PropTypes.bool,
+    handleEnergyInfoChanged: PropTypes.func,
   },
   getInitialState: function() {
     return {

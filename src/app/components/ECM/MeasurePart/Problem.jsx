@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import TextField from 'material-ui/TextField';
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
-
+import PropTypes from 'prop-types';
 export default class Problem extends Component {
 
     constructor(props) {
@@ -105,8 +105,8 @@ export default class Problem extends Component {
 
 }
 
-Problem.propTypes = {
-  measure:React.PropTypes.object,
-  canEdit:React.PropTypes.bool,
-  merge:React.PropTypes.func
+Problem.propTypes= {
+  measure:PropTypes.object,
+  canEdit:PropTypes.bool,
+  merge:PropTypes.func
 };

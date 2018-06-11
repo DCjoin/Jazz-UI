@@ -2,8 +2,8 @@ import React from 'react';
 import {FlatButton} from 'material-ui';
 import Dialog from '../../controls/NewDialog.jsx';
 import classSet from 'classnames';
-
-let ErrorStepDialog = React.createClass({
+var createReactClass = require('create-react-class');
+let ErrorStepDialog = createReactClass({
   getDefaultProps() {
     return {
       stepBtnList: [],

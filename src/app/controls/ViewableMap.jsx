@@ -3,21 +3,21 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import ViewableTextField from "./ViewableTextField.jsx";
 import GetLessVar from '../util/GetLessVar.jsx';
-
+import PropTypes from 'prop-types';
 const ZOOM_LEVEL = 15;
-
-var ViewableMap = React.createClass({
+var createReactClass = require('create-react-class');
+var ViewableMap = createReactClass({
 
   propTypes: {
-    isView: React.PropTypes.bool.isRequired,
-    isAdd: React.PropTypes.bool,
-    lng: React.PropTypes.number,
-    lat: React.PropTypes.number,
-    address: React.PropTypes.string,
-    width: React.PropTypes.number,
-    height: React.PropTypes.number,
-    title: React.PropTypes.string,
-    didChanged: React.PropTypes.func
+    isView: PropTypes.bool.isRequired,
+    isAdd: PropTypes.bool,
+    lng: PropTypes.number,
+    lat: PropTypes.number,
+    address: PropTypes.string,
+    width: PropTypes.number,
+    height: PropTypes.number,
+    title: PropTypes.string,
+    didChanged: PropTypes.func
   },
 
   getDefaultProps() {

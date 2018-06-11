@@ -1,6 +1,7 @@
 'use strict';
 
 import React from "react";
+import PropTypes from 'prop-types';
 import { CircularProgress, Checkbox, FontIcon,FlatButton} from 'material-ui';
 import TagAction from '../../../actions/customerSetting/TagAction.jsx';
 import TagStore from '../../../stores/customerSetting/TagStore.jsx';
@@ -12,14 +13,15 @@ import ChartPanel from './RawDataChartPanel.jsx';
 // import FlatButton from 'controls/FlatButton.jsx';
 import Immutable from 'immutable';
 import moment from 'moment';
+var createReactClass = require('create-react-class');
 let {dateAdd} = CommonFuns;
-let PTagRawData = React.createClass({
+let PTagRawData = createReactClass({
   propTypes: {
-    selectedTag: React.PropTypes.object,
-    onSwitchRawDataListView: React.PropTypes.func,
-    showLeft: React.PropTypes.bool,
-    showRawDataList: React.PropTypes.bool,
-    rollBack:React.PropTypes.func,
+    selectedTag: PropTypes.object,
+    onSwitchRawDataListView: PropTypes.func,
+    showLeft: PropTypes.bool,
+    showRawDataList: PropTypes.bool,
+    rollBack:PropTypes.func,
   },
   getInitialState: function() {
     return ({

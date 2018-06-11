@@ -5,7 +5,7 @@ import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
 import IconLabelField from 'controls/IconLabelField.jsx';
 import CommonFuns from 'util/Util.jsx';
 import TextField from 'material-ui/TextField';
-
+import PropTypes from 'prop-types';
 export class NativeTextField extends Component{
 
   constructor(props) {
@@ -159,10 +159,10 @@ export class SolutionLabel extends Component {
 }
 
 
-SolutionLabel.propTypes = {
-  measure:React.PropTypes.object,
-  canEdit:React.PropTypes.bool,
-  merge:React.PropTypes.func
+SolutionLabel.propTypes= {
+  measure:PropTypes.object,
+  canEdit:PropTypes.bool,
+  merge:PropTypes.func
 };
 
 export class Solution extends Component {
@@ -267,8 +267,8 @@ export class Solution extends Component {
 
 }
 
-Solution.propTypes = {
-  measure:React.PropTypes.object,
-  canEdit:React.PropTypes.bool,
-  merge:React.PropTypes.func
+Solution.propTypes= {
+  measure:PropTypes.object,
+  canEdit:PropTypes.bool,
+  merge:PropTypes.func
 };

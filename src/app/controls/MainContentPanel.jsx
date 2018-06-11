@@ -1,13 +1,13 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import { FlatButton, FontIcon } from 'material-ui';
 import OrigamiPanel from './OrigamiPanel.jsx';
-
-let MainContentPanel = React.createClass({
+var createReactClass = require('create-react-class');
+let MainContentPanel = createReactClass({
   propTypes: {
-    onToggle: React.PropTypes.func,
+    onToggle: PropTypes.func,
   },
   render: function() {
     var collapseButton = (

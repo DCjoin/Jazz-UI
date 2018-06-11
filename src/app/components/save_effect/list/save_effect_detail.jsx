@@ -32,7 +32,7 @@ import Supervisor from 'components/ECM/MeasurePart/Supervisor.jsx';
 import StatusCmp from 'components/ECM/MeasurePart/Status.jsx'
 import {EnergySys} from 'components/ECM/MeasurePart/MeasureTitle.jsx';
 import Remark from 'components/ECM/MeasurePart/Remark.jsx';
-
+import PropTypes from 'prop-types';
 const type={
 	"Saving":0,
 	"Contrast":1
@@ -1046,13 +1046,13 @@ export default class EffectDetail extends Component {
   }
 }
 
-EffectDetail.propTypes = {
-	customerId:React.PropTypes.number,
-	hierarchyId:React.PropTypes.number,
-  effect:React.PropTypes.object,
-  onBack:React.PropTypes.func,
-	canEdit:React.PropTypes.boolean,
-	isFromBestList:React.PropTypes.boolean,
+EffectDetail.propTypes= {
+	customerId:PropTypes.number,
+	hierarchyId:PropTypes.number,
+  effect:PropTypes.object,
+  onBack:PropTypes.func,
+	canEdit:PropTypes.boolean,
+	isFromBestList:PropTypes.boolean,
 };
 
 EffectDetail.defaultProps={

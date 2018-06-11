@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
 import CircularProgress from 'material-ui/CircularProgress';
 import {find} from 'lodash-es';
 
@@ -9,7 +9,7 @@ import ReportPreview from './ReportPreview.jsx';
 import ReportConfig from './Report/ReportConfig.jsx';
 
 import HierarchyAction from 'actions/HierarchyAction.jsx';
-
+import PropTypes from 'prop-types';
 import CurrentUserCustomerStore from 'stores/CurrentUserCustomerStore.jsx';
 import HierarchyStore from 'stores/HierarchyStore.jsx';
 

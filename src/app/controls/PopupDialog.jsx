@@ -3,9 +3,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Dialog } from 'material-ui';
-
+import PropTypes from 'prop-types';
 import util from '../util/Util.jsx';
-
+var createReactClass = require('create-react-class');
 import FlatButton from './FlatButton.jsx';
 import _assign from "lodash-es/assign";
 var _ = {
@@ -14,10 +14,10 @@ var _ = {
 
 var timeoutHandler = null;
 
-var CustomDialog = React.createClass({
+var CustomDialog = createReactClass({
 
   propTypes: {
-    rightActions: React.PropTypes.bool
+    rightActions: PropTypes.bool
   },
 
   getInitialState: function() {

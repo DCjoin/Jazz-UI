@@ -4,8 +4,8 @@ import React from 'react';
 import CommonFuns from 'util/Util.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
 import downloadFile from 'actions/download_file.js';
-
-let TagLogItem = React.createClass({
+var createReactClass = require('create-react-class');
+let TagLogItem = createReactClass({
   getInitialState: function() {
     return {
       showDownloadButton: false

@@ -6,15 +6,16 @@ import { Dialog, FlatButton, CircularProgress } from 'material-ui';
 import Copy from '../../controls/OperationTemplate/Copy.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
 import FolderAction from '../../actions/FolderAction.jsx';
-
-var WidgetSaveWindow = React.createClass({
+var createReactClass = require('create-react-class');
+import PropTypes from 'prop-types';
+var WidgetSaveWindow = createReactClass({
   propTypes: {
-    onDismiss: React.PropTypes.func,
-    chartTitle: React.PropTypes.string,
-    onSave: React.PropTypes.func,
+    onDismiss: PropTypes.func,
+    chartTitle: PropTypes.string,
+    onSave: PropTypes.func,
   },
   contextTypes:{
-      currentRoute: React.PropTypes.object
+      currentRoute: PropTypes.object
   },
   _onWidgetSave: function(destNode, newName) {
     this.props.onSave(destNode, newName);

@@ -1,11 +1,10 @@
 'use strict';
 
-import React, {Component, PropTypes} from "react";
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+import React, {Component} from "react";
 import classnames from "classnames";
 import Immutable from 'immutable';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
-
+import PropTypes from 'prop-types';
 import { formStatus } from 'constants/FormStatus.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
 
@@ -75,24 +74,24 @@ class PrivilegeList extends Component {
   }
 }
 
-PrivilegeList.PropTypes = {
+PrivilegeList.propTypes= {
   title: PropTypes.string.isRequired,
   privilegeList: PropTypes.array.isRequired,
   currentPrivilegeCodes: PropTypes.array.isRequired,
   isView: PropTypes.bool.isRequired,
   handleChange: PropTypes.func.isRequired,
 };
+var createReactClass = require('create-react-class');
 
-
-var RoleDetail = React.createClass({
+var RoleDetail = createReactClass({
   propTypes: {
-    formStatus: React.PropTypes.bool,
-    role: React.PropTypes.object,
-    setEditStatus: React.PropTypes.func,
-    handlerCancel: React.PropTypes.func,
-    handleSaveRole: React.PropTypes.func,
-    handleDeleteRole: React.PropTypes.func,
-    toggleList: React.PropTypes.func,
+    formStatus: PropTypes.bool,
+    role: PropTypes.object,
+    setEditStatus: PropTypes.func,
+    handlerCancel: PropTypes.func,
+    handleSaveRole: PropTypes.func,
+    handleDeleteRole: PropTypes.func,
+    toggleList: PropTypes.func,
   },
   getInitialState: function() {
     return {
