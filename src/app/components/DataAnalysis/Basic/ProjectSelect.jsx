@@ -71,6 +71,9 @@ export default class ProjectSelect extends Component {
             listStyle={{
               width: this.props.width,
             }}
+            menuStyle={{
+              width: this.props.width,
+            }}
             underlineStyle={{
               display: 'none',
             }}

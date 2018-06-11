@@ -325,7 +325,7 @@ var Hierarchy = createReactClass({
 	},
   _renderContent: function() {
 
-    if(this.state.selectedNode && this.state.selectedNode.size>0){
+    if(this.state.selectedNode && this.state.selectedNode.size>0 && this.props.children){
           var detailProps = {
       selectedNode: this.state.selectedNode,
       key: this.state.selectedNode.get('Id') === null ? Math.random() : this.state.selectedNode.get('Id'),
@@ -427,6 +427,15 @@ var Hierarchy = createReactClass({
     this.setState({
       isLoading: true
     });
+  },
+  componentWillReceiveProps(nextProps, nextContext) {
+    	if(!nextProps.params.nodeId){
+		     HierarchyAction.getAllIndustries(customerId);
+    //HierarchyAction.GetHierarchys();
+         this.setState({
+            isLoading: true
+        });
+	}
   },
   componentDidMount: function() {
     HierarchyStore.addChangeListener(this._onChange);

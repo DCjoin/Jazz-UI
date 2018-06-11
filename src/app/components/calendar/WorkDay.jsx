@@ -63,7 +63,7 @@ var WorkDay = createReactClass({
       formStatus: formStatus.EDIT
     }, () => {
       this.setState({
-        enableSave: this._isValid()
+        enableSave: true
       });
     });
   },
