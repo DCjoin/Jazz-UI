@@ -317,6 +317,9 @@ export default class ChartComponent extends Component {
                 postNewConfig:(chartCmpObj) => {
 
 				        let newConfig = CommonFuns.merge(true, chartCmpObj);
+                newConfig.navigator.enabled=false;
+                newConfig.scrollbar.enabled=false;
+
 
                 if(analysisPanel.state.touType){
                   if(analysisPanel.state.selectedChartType==='pie'){
