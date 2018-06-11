@@ -53,7 +53,6 @@ export default class InputDataPanel extends Component {
 		this._changeNodeId(this.state.preSelectedTag.get('Id'));
 		this.setState({
 			selectedTag:this.state.preSelectedTag,
-			preSelectedTag:null
 		})
 	}
 
@@ -105,6 +104,7 @@ export default class InputDataPanel extends Component {
 				nextProps.router.push(RoutePath.inputData(nextProps.params));
 			}
 		}
+
 	}
 
 	componentWillUnmount(){
