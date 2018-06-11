@@ -216,13 +216,42 @@
 				<img id="img" src="__JAZZ_STATIC_CDN__/app-store.png"/>
 			</div>
 		</div>
-		<script>
+				<script>
+			// default setting
+
 			document.getElementById("version").innerHTML = window.__options.Version;
 			document.getElementById("size").innerHTML = window.__options.Size;
-			document.getElementById("local-url").href = window.__options.LoacalURL;
+			document.getElementById("ocal-url").href = window.__options.LoacalURL;
 			document.getElementById("qq-url").href = window.__options.QQURL;
 			document.getElementById("wdj-url").href = window.__options.WDJURL;
 			document.getElementById("baidu-url").href = window.__options.BaiduURL;
+			// get app url
+			var xmlhttp;
+			if(window.XMLHttpRequest){
+					xmlhttp = new XMLHttpRequest();
+			} else {
+					xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			xmlhttp.onreadystatechange = function() {
+				if(xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+					if(typeof xmlhttp.responseText !== "undefined") {
+						var data = JSON.parse(xmlhttp.responseText);
+						if(typeof data !== "undefined" && data.Error === "0" && typeof data.Result !== "undefined") {
+										document.getElementById("version").innerHTML = data.Result.JAZZ_UI_APP_VERSION;
+										document.getElementById("size").innerHTML = data.Result.JAZZ_UI_APP_SIZE;
+										document.getElementById("local-url").href = wdata.Result.JAZZ_UI_APP_DOWNLOAD_LOCAL;
+										document.getElementById("qq-url").href = data.Result.JAZZ_UI_APP_DOWNLOAD_QQ;
+										document.getElementById("wdj-url").href = data.Result.JAZZ_UI_APP_DOWNLOAD_WDJ;
+										document.getElementById("baidu-url").href = data.Result.JAZZ_UI_APP_DOWNLOAD_BAIDU;
+						}
+					}
+				}
+			}
+			xmlhttp.open("GET",window.__options.APIBasePath+"/common/mobileconfig",true);
+			xmlhttp.send();
+		</script>
+		<script>
+
 			function iOS() {
 				var iDevices = [
 					'iPad Simulator',

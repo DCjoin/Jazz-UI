@@ -394,6 +394,7 @@ export default class DiagnoseProblem extends Component {
               color: '#32ad3d',
               marginRight: 10,
               fontSize: '14px',
+							cursor:'default'
             }}><span className='icon-information2' style={{marginRight: 4}}/>{`${suggestSolutions.size + I18N.Setting.Diagnose.NumOfSuggestSolution}`}</span>}
             <GenerateSolutionButton onOpen={this._onSolutionShow.bind(this)} disabled={this.state.chartData===null}/>
             {this._renderIconMenu()}
