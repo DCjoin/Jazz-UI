@@ -1,5 +1,6 @@
 'use strict';
 import React, { Component }  from "react";
+import PropTypes from 'prop-types';
 import assign from "object-assign";
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
@@ -51,8 +52,8 @@ class ItemComponent extends Component{
 }
 
 ItemComponent.propTypes={
-  title:React.PropTypes.string,
-  style:React.PropTypes.object,
+  title:PropTypes.string,
+  style:PropTypes.object,
 }
 
 class TableHeader extends Component{
@@ -76,10 +77,10 @@ class TableHeader extends Component{
 }
 
 TableHeader.propTypes={
-  column1Name:React.PropTypes.string,
-  column2Name:React.PropTypes.string,
-  column3Name:React.PropTypes.string,
-  style:React.PropTypes.object,
+  column1Name:PropTypes.string,
+  column2Name:PropTypes.string,
+  column3Name:PropTypes.string,
+  style:PropTypes.object,
 }
 
 class TableRow extends Component{
@@ -108,10 +109,10 @@ class TableRow extends Component{
 }
 
 TableRow.propTypes={
-  column2Value:React.PropTypes.string,
-  column3Value:React.PropTypes.string,
-  time:React.PropTypes.string,
-  style:React.PropTypes.string,
+  column2Value:PropTypes.string,
+  column3Value:PropTypes.string,
+  time:PropTypes.string,
+  style:PropTypes.string,
 }
 
 function formatSplit(split){
@@ -461,8 +462,8 @@ export default class IntervalDialog extends Component {
   }
 }
 
-IntervalDialog.propTypes = {
-  onCloseDialog:React.PropTypes.func,
-  timeRanges:React.PropTypes.object,
-  widgetId:React.PropTypes.number
+IntervalDialog.propTypes= {
+  onCloseDialog:PropTypes.func,
+  timeRanges:PropTypes.object,
+  widgetId:PropTypes.number
 };

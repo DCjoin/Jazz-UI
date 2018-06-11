@@ -23,8 +23,8 @@ var extractNumber = function(str) {
 const YEARSTEP = 3,
   MONTHSTEP = 2,
   DAYSTEP = 1;
-
-let AlarmSetting = React.createClass({
+var createReactClass = require('create-react-class');
+let AlarmSetting = createReactClass({
   //mixins: [Navigation, State, React.addons.LinkedStateMixin],
 
   _onChange: function() {
@@ -180,7 +180,7 @@ let AlarmSetting = React.createClass({
   }
 });
 
-var Checkboxes = React.createClass({
+var Checkboxes = createReactClass({
   getValue: function() {
     var alarmSteps = [];
     if (this.refs.year.isChecked()) {

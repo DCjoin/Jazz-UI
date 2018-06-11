@@ -13,7 +13,7 @@ import AlarmIgnoreWindow from './AlarmIgnoreWindow.jsx';
 import EnergyCommentFactory from './EnergyCommentFactory.jsx';
 import AlarmAction from '../../actions/AlarmAction.jsx';
 import { dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon } from '../../util/Util.jsx';
-
+import PropTypes from 'prop-types';
 var labelConfig = {
     3: {
       colors: ['#33963f', '#ffd92a', '#eb4040'],
@@ -131,17 +131,17 @@ var labelConfig = {
 
   arrowSpace = 15; // the space between the arrow and the labels
 
-
-let LabelChartComponent = React.createClass({
+var createReactClass = require('create-react-class');
+let LabelChartComponent = createReactClass({
   chartRenderer: null,
   propTypes: {
-    onDeleteButtonClick: React.PropTypes.func,
-    onDeleteAllButtonClick: React.PropTypes.func,
-    afterChartCreated: React.PropTypes.func,
-    energyData: React.PropTypes.object,
-    energyRawData: React.PropTypes.object,
-    startTime: React.PropTypes.string,
-    endTime: React.PropTypes.string
+    onDeleteButtonClick: PropTypes.func,
+    onDeleteAllButtonClick: PropTypes.func,
+    afterChartCreated: PropTypes.func,
+    energyData: PropTypes.object,
+    energyRawData: PropTypes.object,
+    startTime: PropTypes.string,
+    endTime: PropTypes.string
   },
   getDefaultProps() {
     return {

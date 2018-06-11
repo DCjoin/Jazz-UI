@@ -1,5 +1,5 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from "react";
 import classnames from "classnames";
 import { Checkbox } from 'material-ui';
@@ -16,15 +16,15 @@ import ImageUpload from 'controls/ImageUpload.jsx';
 //import Path from 'constants/Path.jsx';
 import ViewableMap from 'controls/ViewableMap.jsx';
 import Config from 'config';
+var createReactClass = require('create-react-class');
 
-
-var BuildingBasic = React.createClass({
+var BuildingBasic = createReactClass({
 
   propTypes: {
-    selectedNode: React.PropTypes.object,
-    merge: React.PropTypes.func,
-    formStatus: React.PropTypes.string,
-    setEditBtnStatus: React.PropTypes.func
+    selectedNode: PropTypes.object,
+    merge: PropTypes.func,
+    formStatus: PropTypes.string,
+    setEditBtnStatus: PropTypes.func
   },
   //mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
   _locationChanged(lng, lat, address,city) {

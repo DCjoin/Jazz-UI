@@ -1,22 +1,23 @@
 'use strict';
 import React from "react";
+import PropTypes from 'prop-types';
 import { Navigation, State } from 'react-router';
 import { CircularProgress, Mixins } from 'material-ui';
 import HierarchyStore from '../../../stores/HierarchyStore.jsx';
 import HierarchyAction from '../../../actions/HierarchyAction.jsx';
 import HierView from './RankingHierView.jsx';
 import Immutable from 'immutable';
-
-var RankingHierTreeButton = React.createClass({
+var createReactClass = require('create-react-class');
+var RankingHierTreeButton = createReactClass({
 
   //mixins: [Mixins.ClickAwayable],
   propTypes: {
-    checkedTreeNodes: React.PropTypes.object,
-    onConfirm: React.PropTypes.func,
-    onLoad: React.PropTypes.func,
+    checkedTreeNodes: PropTypes.object,
+    onConfirm: PropTypes.func,
+    onLoad: PropTypes.func,
   },
   contextTypes:{
-      currentRoute: React.PropTypes.object
+      currentRoute: PropTypes.object
   },
   _onChange() {
     var data = HierarchyStore.getData();

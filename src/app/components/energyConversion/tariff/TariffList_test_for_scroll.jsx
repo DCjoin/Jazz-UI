@@ -7,15 +7,16 @@ import Item from '../../../controls/SelectableItem.jsx';
 import SelectablePanel from '../../../controls/SelectablePanel.jsx';
 import TariffStore from '../../../stores/EnergyConversion/TariffStore.jsx';
 import { formStatus } from '../../../constants/FormStatus.jsx';
-
+var createReactClass = require('create-react-class');
+import PropTypes from 'prop-types';
 var tem_items = [];
-var TariffList = React.createClass({
+var TariffList = createReactClass({
   propTypes: {
-    formStatus: React.PropTypes.bool,
-    onTariffClick: React.PropTypes.func,
-    onAddBtnClick: React.PropTypes.func,
-    tariffs: React.PropTypes.object,
-    selectedId: React.PropTypes.number
+    formStatus: PropTypes.bool,
+    onTariffClick: PropTypes.func,
+    onAddBtnClick: PropTypes.func,
+    tariffs: PropTypes.object,
+    selectedId: PropTypes.number
   },
   _renderTariffItems: function() {
     var items = [],

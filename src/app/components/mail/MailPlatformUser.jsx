@@ -1,15 +1,16 @@
 'use strict';
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { FlatButton, CircularProgress, Tabs, Tab } from 'material-ui';
 import MailAction from '../../actions/MailAction.jsx';
 import MailStore from '../../stores/MailStore.jsx';
 import Tree from '../../controls/tree/Tree.jsx';
-
-let GropNodeContent = React.createClass({
+var createReactClass = require('create-react-class');
+let GropNodeContent = createReactClass({
   propTypes: {
-    nodeData: React.PropTypes.object,
+    nodeData: PropTypes.object,
   },
   _onClick: function(e) {
     e.stopPropagation();
@@ -38,9 +39,9 @@ let GropNodeContent = React.createClass({
       )
   }
 });
-let NodeContent = React.createClass({
+let NodeContent = createReactClass({
   propTypes: {
-    nodeData: React.PropTypes.object,
+    nodeData: PropTypes.object,
   },
   _onClick: function() {
     MailAction.addReceiver(this.props.nodeData);
@@ -74,11 +75,11 @@ let NodeContent = React.createClass({
 
   }
 });
-let PlatformUser = React.createClass({
+let PlatformUser = createReactClass({
 
   propTypes: {
-    users: React.PropTypes.object,
-    isLoading: React.PropTypes.bool,
+    users: PropTypes.object,
+    isLoading: PropTypes.bool,
   },
   _onSelectNode: function(nodeData) {
     this.setState({

@@ -1,5 +1,6 @@
 'use strict';
 import React from "react";
+import PropTypes from 'prop-types';
 import ReactDOM from "react-dom";
 import classNames from 'classnames';
 import Popover from 'material-ui/Popover';
@@ -7,15 +8,15 @@ import DimTree from './DimTree.jsx';
 import DimAction from "../../actions/DimAction.jsx";
 import DimStore from "../../stores/DimStore.jsx";
 import ClickAway from "../../controls/ClickAwayListener.jsx";
-
-let DimButton = React.createClass({
+var createReactClass = require('create-react-class');
+let DimButton = createReactClass({
   propTypes: {
-    active: React.PropTypes.bool,
-    parentNode: React.PropTypes.object,
-    onButtonClick: React.PropTypes.func.isRequired,
-    show: React.PropTypes.bool,
-    onTreeClick: React.PropTypes.func.isRequired,
-    handleClickAway: React.PropTypes.func
+    active: PropTypes.bool,
+    parentNode: PropTypes.object,
+    onButtonClick: PropTypes.func.isRequired,
+    show: PropTypes.bool,
+    onTreeClick: PropTypes.func.isRequired,
+    handleClickAway: PropTypes.func
   },
   _onShowPaper: function() {
     this.setState({

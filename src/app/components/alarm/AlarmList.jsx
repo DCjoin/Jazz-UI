@@ -2,13 +2,14 @@
 
 import React from 'react';
 import { CircularProgress } from 'material-ui';
-
+import PropTypes from 'prop-types';
 import AlarmHierarchyItem from './AlarmHierarchyItem.jsx';
 import AlarmStore from '../../stores/AlarmStore.jsx';
 import AlarmAction from '../../actions/AlarmAction.jsx';
 import AlarmTagAction from '../../actions/AlarmTagAction.jsx';
+var createReactClass = require('create-react-class');
 
-let AlarmList = React.createClass({
+let AlarmList = createReactClass({
   getInitialState() {
     return {
       hierarchies: null,
@@ -18,7 +19,7 @@ let AlarmList = React.createClass({
     };
   },
   propTypes: {
-    onItemClick: React.PropTypes.func,
+    onItemClick: PropTypes.func,
   },
   _onChange() {
     this.setState({

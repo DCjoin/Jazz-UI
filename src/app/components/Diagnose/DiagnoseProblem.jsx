@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
 import Immutable from 'immutable';
 import FlatButton from 'controls/FlatButton.jsx';
 import NewDialog from 'controls/NewDialog.jsx';
@@ -15,7 +15,7 @@ import DiagnoseChart from './DiagnoseChart.jsx';
 import {DiagnoseStatus,DIAGNOSE_MODEL} from 'constants/actionType/Diagnose.jsx';
 import {GenerateSolutionButton,GenerateSolution, getTagsByChartData} from '../DataAnalysis/Basic/GenerateSolution.jsx';
 import FolderAction from 'actions/FolderAction.jsx';
-
+import PropTypes from 'prop-types';
 import TimeGranularity from 'constants/TimeGranularity.jsx';
 
 function getFromImmu(key) {
@@ -225,7 +225,7 @@ export default class DiagnoseProblem extends Component {
 			desktop: true
 		};
 		return(
-			<IconMenu {...iconMenuProps} onItemTouchTap={this._onTitleMenuSelect}>
+			<IconMenu {...iconMenuProps} onItemClick={this._onTitleMenuSelect}>
 															<MenuItem key="Ignore" primaryText={I18N.Setting.Diagnose.Ignore}/>
 															{isListFull() && <MenuItem key="Suspend" primaryText={I18N.Setting.Diagnose.Suspend}/>}
 															{isListFull() && <MenuItem key="Edit" primaryText={I18N.Setting.Diagnose.Edit}/>}
@@ -393,7 +393,6 @@ export default class DiagnoseProblem extends Component {
             {this.state.chartData && suggestSolutions && suggestSolutions.size > 0 &&<span title={I18N.Setting.Diagnose.StandardSolutionTip} style={{
               color: '#32ad3d',
               marginRight: 10,
-              cursor: 'pointer',
               fontSize: '14px',
             }}><span className='icon-information2' style={{marginRight: 4}}/>{`${suggestSolutions.size + I18N.Setting.Diagnose.NumOfSuggestSolution}`}</span>}
             <GenerateSolutionButton onOpen={this._onSolutionShow.bind(this)} disabled={this.state.chartData===null}/>
@@ -439,7 +438,7 @@ export default class DiagnoseProblem extends Component {
 }
 
 DiagnoseProblem.propTypes={
-  selectedNode:React.PropTypes.object,
-  isBasic:React.PropTypes.bool,
-  onEdit:React.PropTypes.func,
+  selectedNode:PropTypes.object,
+  isBasic:PropTypes.bool,
+  onEdit:PropTypes.func,
 }

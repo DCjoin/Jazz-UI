@@ -9,8 +9,8 @@ import { CircularProgress } from 'material-ui';
 import TariffAction from '../../../actions/energyConversion/TariffAction.jsx';
 import TariffStore from '../../../stores/energyConversion/TariffStore.jsx';
 import NewDialog from '../../../controls/NewDialog.jsx';
-
-var Tariff = React.createClass({
+var createReactClass = require('create-react-class');
+var Tariff = createReactClass({
   getInitialState: function() {
     return {
       formStatus: formStatus.VIEW,

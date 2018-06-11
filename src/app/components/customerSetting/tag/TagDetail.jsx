@@ -12,28 +12,29 @@ import PTagBasic from './PTagBasic.jsx';
 import VTagBasic from './VTagBasic.jsx';
 import TagFormula from './TagFormula.jsx';
 import PTagRawData from './PTagRawData.jsx';
-
-var TagDetail = React.createClass({
+import PropTypes from 'prop-types';
+var createReactClass = require('create-react-class');
+var TagDetail = createReactClass({
   propTypes: {
-    tagType: React.PropTypes.number,
-    formStatus: React.PropTypes.string,
-    showLeft: React.PropTypes.bool,
-    showBasic: React.PropTypes.bool,
-    showDeleteDialog: React.PropTypes.bool,
-    selectedTag: React.PropTypes.object,
-    onCancel: React.PropTypes.func,
-    onSave: React.PropTypes.func,
-    onEdit: React.PropTypes.func,
-    onDelete: React.PropTypes.func,
-    onDeleteTag: React.PropTypes.func,
-    onCloseDialog: React.PropTypes.func,
-    onToggle: React.PropTypes.func,
-    onSwitchTab: React.PropTypes.func,
-    mergeTag: React.PropTypes.func,
-    enableSave: React.PropTypes.bool,
-    onSwitchRawDataListView: React.PropTypes.func,
-    showRawDataList: React.PropTypes.bool,
-    onRawDataRollBack:React.PropTypes.func,
+    tagType: PropTypes.number,
+    formStatus: PropTypes.string,
+    showLeft: PropTypes.bool,
+    showBasic: PropTypes.bool,
+    showDeleteDialog: PropTypes.bool,
+    selectedTag: PropTypes.object,
+    onCancel: PropTypes.func,
+    onSave: PropTypes.func,
+    onEdit: PropTypes.func,
+    onDelete: PropTypes.func,
+    onDeleteTag: PropTypes.func,
+    onCloseDialog: PropTypes.func,
+    onToggle: PropTypes.func,
+    onSwitchTab: PropTypes.func,
+    mergeTag: PropTypes.func,
+    enableSave: PropTypes.bool,
+    onSwitchRawDataListView: PropTypes.func,
+    showRawDataList: PropTypes.bool,
+    onRawDataRollBack:PropTypes.func,
   },
   getInitialState: function() {
     return {

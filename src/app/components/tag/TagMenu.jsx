@@ -6,13 +6,13 @@ import classnames from 'classnames';
 import TagItem from './TagItem.jsx';
 import TagStore from '../../stores/TagStore.jsx';
 import TagAction from '../../actions/TagAction.jsx';
-
-
-var TagMenu = React.createClass({
+var createReactClass = require('create-react-class');
+import PropTypes from 'prop-types';
+var TagMenu = createReactClass({
 
   propTypes: {
-    tagList: React.PropTypes.array,
-    widgetType: React.PropTypes.string,
+    tagList: PropTypes.array,
+    widgetType: PropTypes.string,
   },
   _onTagStatusChange: function() {
     this.setState({

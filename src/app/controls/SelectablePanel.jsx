@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
@@ -8,21 +9,21 @@ import CircularProgress from 'material-ui/CircularProgress';
 import MenuItem from 'material-ui/MenuItem';
 import _isBoolean from 'lodash-es/isBoolean';
 import CustomDropDownMenu from './CustomDropDownMenu.jsx';
+var createReactClass = require('create-react-class');
 
-
-let SelectablePanel = React.createClass({
+let SelectablePanel = createReactClass({
   propTypes: {
-    addBtnLabel: React.PropTypes.string,
-    onAddBtnClick: React.PropTypes.func,
-    // filterBtnLabel: React.PropTypes.string,
-    // onFilterBtnClick: React.PropTypes.object,
-    sortItems: React.PropTypes.array,
-    sortBy: React.PropTypes.string,
-    changeSortBy: React.PropTypes.func,
-    contentItems: React.PropTypes.array,
-    isAddStatus: React.PropTypes.bool,
-    isViewStatus: React.PropTypes.bool,
-    isLoading: React.PropTypes.bool,
+    addBtnLabel: PropTypes.string,
+    onAddBtnClick: PropTypes.func,
+    // filterBtnLabel: PropTypes.string,
+    // onFilterBtnClick: PropTypes.object,
+    sortItems: PropTypes.array,
+    sortBy: PropTypes.string,
+    changeSortBy: PropTypes.func,
+    contentItems: PropTypes.array,
+    isAddStatus: PropTypes.bool,
+    isViewStatus: PropTypes.bool,
+    isLoading: PropTypes.bool,
   },
   render: function() {
     var filter, sort,

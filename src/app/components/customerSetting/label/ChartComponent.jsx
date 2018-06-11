@@ -1,11 +1,12 @@
 'use strict';
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import ReactDom from 'react-dom';
 let Highcharts = window.Highcharts;
 import CommonFuns from '../../../util/Util.jsx';
 import { JazzCommon } from '../../../util/Util.jsx';
-
+var createReactClass = require('create-react-class');
 var labelConfig = {
     3: {
       colors: ['#33963f', '#ffd92a', '#eb4040'],
@@ -121,10 +122,10 @@ var labelConfig = {
   arrowSpace = 15; // the space between the arrow and the labels
 
 
-let ChartComponent = React.createClass({
+let ChartComponent = createReactClass({
   chartRenderer: null,
   propTypes: {
-    levelCount: React.PropTypes.number
+    levelCount: PropTypes.number
   },
   getDefaultProps() {
     return {

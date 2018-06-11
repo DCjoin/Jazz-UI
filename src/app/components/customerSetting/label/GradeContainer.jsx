@@ -1,15 +1,16 @@
 'use strict';
 
 import React from "react";
+import PropTypes from 'prop-types';
 import GradeItem from './GradeItem.jsx';
-
-var GradeContainer = React.createClass({
+var createReactClass = require('create-react-class');
+var GradeContainer = createReactClass({
   propTypes: {
-    labelGradeList: React.PropTypes.object,
-    mergeLabel: React.PropTypes.func,
-    isViewStatus: React.PropTypes.bool,
-    uom: React.PropTypes.string,
-    order: React.PropTypes.number
+    labelGradeList: PropTypes.object,
+    mergeLabel: PropTypes.func,
+    isViewStatus: PropTypes.bool,
+    uom: PropTypes.string,
+    order: PropTypes.number
   },
   getInitialState: function() {
     return {

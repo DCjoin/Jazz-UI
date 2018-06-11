@@ -1,24 +1,24 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from 'react';
 import Link from 'react-router/lib/Link';
 import { Mixins, DropDownMenu, Paper, Menu, MenuItem } from 'material-ui';
 import classnames from "classnames";
-
+var createReactClass = require('create-react-class');
 import RoutePath from '../util/RoutePath.jsx';
 import BubbleIcon from '../components/BubbleIcon.jsx';
 import ClickAway from "../controls/ClickAwayListener.jsx";
 
 
-var ListMenu = React.createClass({
+var ListMenu = createReactClass({
   propTypes: function() {
     return {
-      title: React.PropTypes.string
+      title: PropTypes.string
     };
   },
   contextTypes: {
-    router: React.PropTypes.object,
-    currentRoute: React.PropTypes.object,
+    router: PropTypes.object,
+    currentRoute: PropTypes.object,
   },
   render: function() {
     let {params} = this.context.currentRoute;
@@ -62,7 +62,7 @@ var ListMenu = React.createClass({
   }
 });
 
-var SubMainMenu = React.createClass({
+var SubMainMenu = createReactClass({
   // mixins: [State, Mixins.ClickAwayable, Navigation],
 
   getInitialState: function() {
@@ -71,13 +71,13 @@ var SubMainMenu = React.createClass({
     };
   },
   contextTypes: {
-    router: React.PropTypes.object,
-    currentRoute: React.PropTypes.object,
+    router: PropTypes.object,
+    currentRoute: PropTypes.object,
   },
   propTypes: function() {
     return {
-      node: React.PropTypes.object,
-      params: React.PropTypes.object
+      node: PropTypes.object,
+      params: PropTypes.object
     };
   },
 
@@ -175,15 +175,15 @@ var SubMainMenu = React.createClass({
 
 SubMainMenu=ClickAway(SubMainMenu);
 
-var MainMenu = React.createClass({
+var MainMenu = createReactClass({
 
   propTypes: {
-    items: React.PropTypes.array.isRequired,
-    params: React.PropTypes.object.isRequired
+    items: PropTypes.array.isRequired,
+    params: PropTypes.object.isRequired
   },
   contextTypes: {
-  router: React.PropTypes.object,
-  currentRoute: React.PropTypes.object
+  router: PropTypes.object,
+  currentRoute: PropTypes.object
 },
   _onChange: function() {
     this.setState({});

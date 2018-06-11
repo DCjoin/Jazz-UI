@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
 import ReactDOM from 'react-dom';
 import classnames from 'classnames';
 import assign from 'object-assign';
@@ -6,7 +6,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import Popover from 'material-ui/Popover';
 import {Menu, MenuItem} from 'material-ui/Menu';
 import {find} from 'lodash-es';
-
+import PropTypes from 'prop-types';
 import util from 'util/Util.jsx';
 
 import {SettingStatus, Type} from 'constants/actionType/KPI.jsx';

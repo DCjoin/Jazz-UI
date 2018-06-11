@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
 import ReactDOM from 'react-dom';
 import Immutable from 'immutable';
 import MenuItem from 'material-ui/MenuItem';
@@ -13,9 +13,9 @@ import { ProblemMarkEnum } from 'constants/AnalysisConstants.jsx';
 import DiagnoseChart from './DiagnoseChart.jsx';
 import { Gallery } from '../DataAnalysis/Basic/GenerateSolution.jsx';
 import ImagGroupPanel from 'controls/ImagGroupPanel.jsx';
-
+import PropTypes from 'prop-types';
 import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
-
+import SelectField from '@emop-ui/piano/select-field';
 const SVG_WIDTH = 750;
 const SVG_HEIGHT = 360;
 
@@ -73,7 +73,7 @@ export class PlanTitle extends Component {
     </div>)
   }
 }
-PlanTitle.propTypes = {
+PlanTitle.propTypes= {
   isRequired: PropTypes.boolean,
   errorData: PropTypes.object,
   energySolution: PropTypes.object,
@@ -210,9 +210,14 @@ export class ProblemDetail extends Component {
   render() {
     let { isRequired, errorMsg, errorData, energySolution, onChange, onBlur, isView,hasEnergySys, currentProblemId, checkedProblems, chartDatas, renderChart} = this.props;
     let { selectedIdx, anchorEl } = this.state;
-
+          
     if(isView) return this._renderViewStatus()
 
+    var menuitems=[{
+              text:I18N.Common.Label.CommoEmptyText,
+              id:0,
+              disabled:true
+            }]
     return (<div >
       <SessionTitle title={I18N.Setting.Diagnose.ProblemDetail} subtitle={isRequired && I18N.Setting.Diagnose.Require} style={{marginBottom: 20}}/>
       <div className='field-wrapper flex-bar'>
@@ -220,35 +225,20 @@ export class ProblemDetail extends Component {
           <div className='field-title'>{I18N.Setting.Diagnose.ProblemName}{!isRequired && <span className='subtitle'>{I18N.Setting.Diagnose.Require}</span>}</div>
           <TextBox {...this._initTextBoxProps('Name')} hintText={I18N.Setting.Diagnose.PleaseInput + I18N.Setting.Diagnose.ProblemName}/>
         </div>
-        {hasEnergySys && <div style={{marginLeft: 20}}>
+        {hasEnergySys && <div style={{marginLeft: 20,zIndex:'3'}}>
           <div className='field-title'>{I18N.Setting.Diagnose.EnergySys}{!isRequired && <span className='subtitle'>{I18N.Setting.Diagnose.Require}</span>}</div>
-          <div className='select-field-overlay' onClick={(e) => {
-            this.setState({
-              anchorEl: e.target
-            })
-          }}>
-            <TextBox {...this._initTextBoxProps('EnergySys')} onBlur={() => {}}
-              value={I18N.Setting.DataAnalysis.EnergyProblem.MarkEnum[energySolution.getIn(['Problem', 'EnergySys'])]}
-              style={{width: 346}} hintText={I18N.Setting.Diagnose.PleaseSelect}/>
-            <span className='icon-arrow-unfold'/>
-          </div>
-          <Popover onRequestClose={() => {
-            onBlur && onBlur(['Problem', 'EnergySys'], '');
-            this.setState({
-              anchorEl: null
-            })
-          }} open={!!anchorEl} anchorEl={anchorEl}>
-            {Object.keys(ProblemMarkEnum).map(key => (
-            <MenuItem onClick={() => {
-              this.setState({
-                anchorEl: null
-              });
-              let value = parseInt(ProblemMarkEnum[key]);
-              onChange(['Problem', 'EnergySys'], value);
-              onBlur && onBlur(['Problem', 'EnergySys'], value);
-            }} primaryText={I18N.Setting.DataAnalysis.EnergyProblem.MarkEnum[ProblemMarkEnum[key]]} value={ProblemMarkEnum[key]}/>
-            ))}
-          </Popover>
+          <SelectField width={346}
+                       hintText={I18N.Setting.Diagnose.PleaseSelect}
+                       menuItems={menuitems.concat(Object.keys(ProblemMarkEnum).map(key => (
+            {text:I18N.Setting.DataAnalysis.EnergyProblem.MarkEnum[ProblemMarkEnum[key]],
+              id:ProblemMarkEnum[key]}
+            )))}
+                                                     menuClassName={"field-select-menu"}
+                                                     value={energySolution.getIn(['Problem', 'EnergySys'])}
+                                                     onChange={(value)=>{
+                                                             onChange(['Problem', 'EnergySys'], value);
+                                                            onBlur && onBlur(['Problem', 'EnergySys'], value);
+                                                     }}/>
         </div>}
       </div>
       <div className='field-wrapper'>
@@ -305,7 +295,7 @@ export class ProblemDetail extends Component {
     </div>)
   }
 }
-ProblemDetail.propTypes = {
+ProblemDetail.propTypes= {
   isRequired: PropTypes.boolean,
   errorData: PropTypes.object,
   energySolution: PropTypes.object,
@@ -506,7 +496,7 @@ export class PlanDetail extends Component {
     </div>)
   }
 }
-PlanDetail.propTypes = {
+PlanDetail.propTypes= {
   errorData: PropTypes.object,
   energySolution: PropTypes.object,
   onChange: PropTypes.func,
@@ -523,7 +513,7 @@ const CANCEL_DIALOG = 'CANCEL_DIALOG';
 const DELETE_DIALOG = 'DELETE_DIALOG';
 export default class GenerateSolution extends Component {
   static contextTypes = {
-    router: React.PropTypes.object,
+    router: PropTypes.object,
     hierarchyId: PropTypes.string,
   };
   constructor(props) {

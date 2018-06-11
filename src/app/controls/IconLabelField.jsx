@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import PropTypes from 'prop-types';
 const style={
   label:{
     fontSize:'12px',
@@ -24,7 +24,7 @@ export default class IconLabelField extends Component {
   }
 }
 
-IconLabelField.propTypes = {
-  icon:React.PropTypes.object,
-  label:React.PropTypes.string,
+IconLabelField.propTypes= {
+  icon:PropTypes.object,
+  label:PropTypes.string,
 };

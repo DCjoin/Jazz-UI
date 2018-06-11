@@ -4,12 +4,12 @@ import ReactDOM from 'react-dom';
 import { FontIcon, TextField } from 'material-ui';
 import Search from './FolderSearchPaper.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
-
+import PropTypes from 'prop-types';
 import Immutable from 'immutable';
-
-var FolderSearchBox = React.createClass({
+var createReactClass = require('create-react-class');
+var FolderSearchBox = createReactClass({
   propTypes: {
-    onSearchClick: React.PropTypes.func.isRequired,
+    onSearchClick: PropTypes.func.isRequired,
   },
   _onSearchClick: function() {
     ReactDOM.findDOMNode(this.refs.searchIcon).style.display = 'none';

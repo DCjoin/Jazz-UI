@@ -12,7 +12,7 @@ import TBSettingAction from '../../actions/TBSettingAction.jsx';
 import TBSettingStore from '../../stores/TBSettingStore.jsx';
 import TagStore from '../../stores/TagStore.jsx';
 import ViewableDatePicker from '../../controls/ViewableDatePicker.jsx';
-
+import PropTypes from 'prop-types';
 
 import NormalSetting from './NormalSetting.jsx';
 import SpecialSetting from './SpecialSetting.jsx';
@@ -60,23 +60,24 @@ var datetimeTojson = function(date, time) {
   var d = mergeDateTime(date, time);
   return CommonFuns.DataConverter.DatetimeToJson(d);
 };
-var TBSettingItem = React.createClass({
+var createReactClass = require('create-react-class');
+var TBSettingItem = createReactClass({
   propTypes: {
-    index: React.PropTypes.number,
-    tag: React.PropTypes.object,
-    year: React.PropTypes.number,
-    start: React.PropTypes.string,
-    end: React.PropTypes.string,
+    index: PropTypes.number,
+    tag: PropTypes.object,
+    year: PropTypes.number,
+    start: PropTypes.string,
+    end: PropTypes.string,
 
-    normals: React.PropTypes.array,
-    specials: React.PropTypes.array,
-    avgs: React.PropTypes.array,
+    normals: PropTypes.array,
+    specials: PropTypes.array,
+    avgs: PropTypes.array,
 
-    isViewStatus: React.PropTypes.bool,
-    onRemove: React.PropTypes.func,
-    onSettingItemDateChange: React.PropTypes.func,
+    isViewStatus: PropTypes.bool,
+    onRemove: PropTypes.func,
+    onSettingItemDateChange: PropTypes.func,
 
-    dateRange: React.PropTypes.object,
+    dateRange: PropTypes.object,
   },
 
   getDefaultProps: function() {

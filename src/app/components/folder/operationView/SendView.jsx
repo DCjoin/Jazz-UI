@@ -1,17 +1,18 @@
 'use strict';
 import React from "react";
+import PropTypes from 'prop-types';
 import {Navigation, State } from 'react-router';
 import {Dialog,FlatButton} from 'material-ui';
 import Send from '../../../controls/OperationTemplate/Send.jsx';
 import UserStore from '../../../stores/UserStore.jsx';
 import FolderAction from '../../../actions/FolderAction.jsx';
 import {nodeType} from '../../../constants/TreeConstants.jsx';
-
-var SendView = React.createClass({
+var createReactClass = require('create-react-class');
+var SendView = createReactClass({
   propTypes: {
-    onDismiss: React.PropTypes.func,
-    sendNode:React.PropTypes.object,
-    isNew:React.PropTypes.bool,
+    onDismiss: PropTypes.func,
+    sendNode:PropTypes.object,
+    isNew:PropTypes.bool,
   },
   _onSendItem:function(){
     this.props.onDismiss();

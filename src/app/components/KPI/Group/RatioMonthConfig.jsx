@@ -200,12 +200,12 @@ export default class RatioMonthConfig extends Component {
     )
   }
 }
-
-RatioMonthConfig.propTypes = {
-  kpiInfo:React.PropTypes.object,
-  index:React.PropTypes.number,
-	isCreate:React.PropTypes.bool,
-	onSave:React.PropTypes.func,
-	onCancel:React.PropTypes.func,
-	isViewStatus:React.PropTypes.bool,
+import PropTypes from 'prop-types';
+RatioMonthConfig.propTypes= {
+  kpiInfo:PropTypes.object,
+  index:PropTypes.number,
+	isCreate:PropTypes.bool,
+	onSave:PropTypes.func,
+	onCancel:PropTypes.func,
+	isViewStatus:PropTypes.bool,
 };

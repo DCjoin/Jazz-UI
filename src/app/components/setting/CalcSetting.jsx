@@ -12,17 +12,18 @@ import TBSettingStore from '../../stores/TBSettingStore.jsx';
 import TagStore from '../../stores/TagStore.jsx';
 import ViewableDatePicker from '../../controls/ViewableDatePicker.jsx';
 import CalcItem from './CalcItem.jsx';
-
-var CalcSetting = React.createClass({
+var createReactClass = require('create-react-class');
+import PropTypes from 'prop-types';
+var CalcSetting = createReactClass({
   propTypes: {
-    tag: React.PropTypes.object,
-    start: React.PropTypes.object,
-    end: React.PropTypes.object,
-    items: React.PropTypes.array,
-    onCalc: React.PropTypes.func,
-    isViewStatus: React.PropTypes.bool,
-    isDisplay: React.PropTypes.bool,
-    dateRange: React.PropTypes.object,
+    tag: PropTypes.object,
+    start: PropTypes.object,
+    end: PropTypes.object,
+    items: PropTypes.array,
+    onCalc: PropTypes.func,
+    isViewStatus: PropTypes.bool,
+    isDisplay: PropTypes.bool,
+    dateRange: PropTypes.object,
   },
 
   getDefaultProps: function() {

@@ -4,7 +4,7 @@ import React from "react";
 import ReactDom from 'react-dom';
 import classNames from 'classnames';
 import { CircularProgress, MenuItem } from 'material-ui';
-
+import PropTypes from 'prop-types';
 import { formStatus } from 'constants/FormStatus.jsx';
 import { treeSource } from 'constants/TreeSource.jsx';
 import TreeConstants from 'constants/TreeConstants.jsx';
@@ -14,26 +14,26 @@ import FlatButton from 'controls/FlatButton.jsx';
 import Dialog from 'controls/NewDialog.jsx';
 import DropdownButton from 'controls/DropdownButton.jsx';
 import UploadForm from 'controls/UploadForm.jsx';
-
+var createReactClass = require('create-react-class');
 import HierarchyStore from 'stores/hierarchySetting/HierarchyStore.jsx';
 import HierarchyAction from 'actions/hierarchySetting/HierarchyAction.jsx';
 import downloadFile from 'actions/download_file.js';
 
 let {nodeType} = TreeConstants;
 
-var HierarchyList = React.createClass({
+var HierarchyList = createReactClass({
   propTypes: {
-    formStatus: React.PropTypes.string,
-    onHierarchyClick: React.PropTypes.func,
-    onAddBtnClick: React.PropTypes.func,
-    hierarchys: React.PropTypes.object,
-    selectedNode: React.PropTypes.object,
-    onExportBtnClick: React.PropTypes.func,
-    onReloadHierachyTree: React.PropTypes.func,
-    onGragulaNode: React.PropTypes.func
+    formStatus: PropTypes.string,
+    onHierarchyClick: PropTypes.func,
+    onAddBtnClick: PropTypes.func,
+    hierarchys: PropTypes.object,
+    selectedNode: PropTypes.object,
+    onExportBtnClick: PropTypes.func,
+    onReloadHierachyTree: PropTypes.func,
+    onGragulaNode: PropTypes.func
   },
   contextTypes:{
-      currentRoute: React.PropTypes.object
+      currentRoute: PropTypes.object
   },
   getInitialState: function() {
     return {

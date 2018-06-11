@@ -11,7 +11,7 @@ import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 // import ViewableTextField from 'controls/ViewableTextField.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
 import TextField from 'material-ui/TextField';
-
+import PropTypes from 'prop-types';
 function canDelete(canEdit,userId){
   return canEdit && userId===CurrentUserStore.getCurrentUser().Id
 }
@@ -84,9 +84,9 @@ class AddRemark extends Component{
   }
 }
 
-AddRemark.propTypes = {
-  onCancel:React.PropTypes.func,
-  onSave:React.PropTypes.func,
+AddRemark.propTypes= {
+  onCancel:PropTypes.func,
+  onSave:PropTypes.func,
 };
 
 class RemarkItem extends Component{
@@ -129,10 +129,10 @@ class RemarkItem extends Component{
   }
 }
 
-RemarkItem.propTypes = {
-  remark:React.PropTypes.object,
-  canEdit:React.PropTypes.bool,
-  onDelete:React.PropTypes.func,
+RemarkItem.propTypes= {
+  remark:PropTypes.object,
+  canEdit:PropTypes.bool,
+  onDelete:PropTypes.func,
 };
 
  const ICONSTYLE = {
@@ -196,7 +196,7 @@ export default class Remark extends Component {
     }
 
     componentDidUpdate(prevProps,prevState){
-      if( (!prevProps.remarkList || prevState.remarkList===null) && prevState.remarkList && prevState.remarkList.size<this.state.remarkList.size){
+      if( (!prevProps.remarkList || prevState.remarkList===null) && prevState.remarkList && this.state.remarkList && prevState.remarkList.size<this.state.remarkList.size){
         this.props.onScroll(getNewRemarkHeight(ReactDom.findDOMNode(this)))
       }
     }
@@ -244,8 +244,8 @@ export default class Remark extends Component {
     }
   }
 
-  Remark.propTypes = {
-    problemId:React.PropTypes.number,
-    canEdit:React.PropTypes.bool,
-    onScroll:React.PropTypes.func,
+  Remark.propTypes= {
+    problemId:PropTypes.number,
+    canEdit:PropTypes.bool,
+    onScroll:PropTypes.func,
   };

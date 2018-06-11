@@ -1,16 +1,17 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
 import IconButton from 'material-ui/IconButton';
 import FlatButton from 'controls/FlatButton.jsx';
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
-import Snackbar from 'material-ui/Snackbar';
+// import Snackbar from 'material-ui/Snackbar';
 import Immutable from 'immutable';
 import NewDialog from 'controls/NewDialog.jsx';
 import RaisedButton from 'material-ui/RaisedButton';
 import ImagGroupPanel from 'controls/ImagGroupPanel.jsx';
 import {PlanTitle,ProblemDetail,PlanDetail} from '../Diagnose/generate_solution.jsx';
 import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
-
-
+import PropTypes from 'prop-types';
+import Toast from '@emop-ui/piano/toast';
+import Button from '@emop-ui/piano/button';
 const NUMBER_REG = /^[1-9]\d*(\.\d+)?$/;
 
 export default class PushConfirmDialog extends Component {
@@ -201,9 +202,8 @@ export default class PushConfirmDialog extends Component {
                 return(
                         <div className="solution-footer">
                                 <div className="action">
-                                     <FlatButton flat primary label={I18N.Setting.ECM.PushBtn}
-                                             onClick={this._onPush}/>
-                                     <FlatButton outline secondary label={I18N.Common.Button.Delete} onClick={this.props.onDelete}/>
+                                     <Button flat primary label={I18N.Setting.ECM.PushBtn} onClick={this._onPush}/>
+                                     <Button outline secondary label={I18N.Common.Button.Delete} onClick={this.props.onDelete} style={{marginLeft:'16px'}}/>
                                 </div>
                         </div>
                 )
@@ -222,24 +222,24 @@ export default class PushConfirmDialog extends Component {
     };
     var content=I18N.format(I18N.Setting.ECM.SaveTip);
     return(
-      <NewDialog
-        open={true}
-        actionsContainerStyle={styles.action}
-        overlayStyle={{zIndex:'1000'}}
-        contentStyle={styles.content}
-        actions={[
-            <RaisedButton
-              label={I18N.Common.Button.Save}
-              onClick={()=>{this.props.onSave(this._getSaveSolution())}} />,
-            <FlatButton
-              label={I18N.Common.Button.NotSave}
-              onClick={() => {this.setState({
+      <NewDialog open={true}
+        contentStyle={{overflowY:'hidden',padding:'24px 0'}}
+        actionsContainerStyle={{display:'flex',flexDirection:'row',justifyContent: 'flex-end'}}
+        onRequestClose={() => {
+          this.setState({saveTipShow:false})
+        }}
+        actions={ [<Button key='pause' style={{marginRight:'16px'}} flat secondary label={I18N.Common.Button.Save} labelStyle={{color:'#32ad3c'}} 
+          onClick={()=>{this.props.onSave(this._getSaveSolution())}}
+        />,
+        <Button key='cancel' style={{marginRight:'16px'}} flat secondary  label={I18N.Common.Button.NotSave} 
+                              onClick={() => {this.setState({
                               saveTipShow:false
                               },()=>{
                                 this.props.onClose()
-                              })}} />
-          ]}
-      ><div className="jazz-ecm-measure-viewabletext">{content}</div></NewDialog>
+                              })}}/>          
+        ]}>
+        <div style={{fontSize:'16px',color:'#666666'}}>{content}</div>
+      </NewDialog>
     )
     }
 
@@ -266,7 +266,12 @@ export default class PushConfirmDialog extends Component {
           </div>
          
           {this._renderFooter()}
-         <Snackbar ref='snackbar' autoHideDuration={1500} open={!!this.state.snackBarOpen} onRequestClose={()=>{this.setState({snackBarOpen:false})}} message={I18N.Setting.ECM.RequiredTip}/>
+    
+         <Toast autoHideDuration={1500} className="toast-tip" open={this.state.snackBarOpen} onRequestClose={() => {
+          this.setState({
+            snackBarOpen: false,
+          })
+        }}><div className='icon-clean'>{I18N.Setting.ECM.RequiredTip}</div></Toast>
          {this.state.saveTipShow && this._renderSaveTip()}
         </div>
       )

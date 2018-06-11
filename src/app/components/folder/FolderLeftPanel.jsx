@@ -14,13 +14,13 @@ import DeleteView from './operationView/DeleteView.jsx';
 import ShareView from './operationView/ShareView.jsx';
 import SendView from './operationView/SendView.jsx';
 import DropdownButton from '../../controls/DropdownButton.jsx';
-
+import PropTypes from 'prop-types';
 import HierarchyStore from '../../stores/HierarchyStore.jsx';
 import HierarchyAction from '../../actions/HierarchyAction.jsx';
 import Dialog from '../../controls/OperationTemplate/BlankDialog.jsx';
 import { treeSource } from '../../constants/TreeSource.jsx';
 import CurrentUserStore from '../../stores/CurrentUserStore.jsx';
-
+var createReactClass = require('create-react-class');
 import Immutable from 'immutable';
 
 function currentUser() {
@@ -37,10 +37,10 @@ var targetNode, isPre,
   parentNode,
   collapsedId;
 
-var FolderLeftPanel = React.createClass({
+var FolderLeftPanel = createReactClass({
 
   contextTypes:{
-      currentRoute: React.PropTypes.object
+      currentRoute: PropTypes.object
   },
   _onFolderTreeChange: function() {
     this.setState({

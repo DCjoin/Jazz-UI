@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
 import Immutable from 'immutable';
 import moment from 'moment';
 import ReactDom from 'react-dom';
@@ -12,7 +12,7 @@ import Step3 from './step3.jsx';
 import Step4 from './step4.jsx';
 import {Model,CalendarItemType,TriggerType,TriggerConditionType} from 'constants/actionType/Effect.jsx';
 import {find} from 'lodash-es';
-
+import PropTypes from 'prop-types';
 import IconButton from 'material-ui/IconButton';
 import CircularProgress from 'material-ui/CircularProgress';
 import {Solution,SolutionLabel} from 'components/ECM/MeasurePart/Solution.jsx';
@@ -1080,8 +1080,8 @@ export default class Edit extends Component {
 
 }
 
-Edit.propTypes = {
-  effect:React.PropTypes.object,
-  editTagName:React.PropTypes.string,
-  onClose:React.PropTypes.func,
+Edit.propTypes= {
+  effect:PropTypes.object,
+  editTagName:PropTypes.string,
+  onClose:PropTypes.func,
 };

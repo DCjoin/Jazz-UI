@@ -6,16 +6,16 @@ import SamlStore from '../stores/SamlStore.jsx';
 import 'whatwg-fetch';
 import CookieUtil from '../util/cookieUtil.jsx';
 import Config from 'config';
-
+import PropTypes from 'prop-types';
 export default class Saml extends Component {
-	static propTypes = {
-		query: React.PropTypes.any,
-		params: React.PropTypes.any,
+	static propTypes= {
+		query: PropTypes.any,
+		params: PropTypes.any,
 	}
 
 	static contextTypes = {
-		router: React.PropTypes.object,
-		currentRoute: React.PropTypes.object,
+		router: PropTypes.object,
+		currentRoute: PropTypes.object,
   }
   
 	constructor(props) {

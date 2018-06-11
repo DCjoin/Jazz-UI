@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-
+import PropTypes from 'prop-types';
 //import Dialog from '../../../controls/PopupDialog.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
 import SectionPanel from '../../../controls/SectionPanel.jsx';
@@ -15,18 +15,19 @@ import Dialog from '../../../controls/NewDialog.jsx';
 import VEEStore from '../../../stores/customerSetting/VEEStore.jsx';
 import VEEAction from '../../../actions/customerSetting/VEEAction.jsx';
 import { List } from 'immutable';
+var createReactClass = require('create-react-class');
 function emptyList() {
   return new List();
 }
 // let {
 //   FlatButton
 // } = mui;
-var ReceiversList = React.createClass({
+var ReceiversList = createReactClass({
   propTypes: {
-    status: React.PropTypes.string,
-    receivers: React.PropTypes.array,
-    ruleId: React.PropTypes.number,
-    dataDidChanged: React.PropTypes.func
+    status: PropTypes.string,
+    receivers: PropTypes.array,
+    ruleId: PropTypes.number,
+    dataDidChanged: PropTypes.func
   },
 
   getInitialState: function() {
@@ -128,13 +129,13 @@ var ReceiversList = React.createClass({
   }
 });
 
-var Receiver = React.createClass({
+var Receiver = createReactClass({
   propTypes: {
-    status: React.PropTypes.string,
-    receiver: React.PropTypes.object,
-    index: React.PropTypes.number,
-    deleteReceiver: React.PropTypes.func,
-    lang: React.PropTypes.string,
+    status: PropTypes.string,
+    receiver: PropTypes.object,
+    index: PropTypes.number,
+    deleteReceiver: PropTypes.func,
+    lang: PropTypes.string,
   },
 
   shouldComponentUpdate: function(nextProps, nextState) {
@@ -178,15 +179,15 @@ var Receiver = React.createClass({
   }
 });
 
-var ReceiversDialog = React.createClass({
+var ReceiversDialog = createReactClass({
   propTypes: {
-    didChanged: React.PropTypes.func,
-    receivers: React.PropTypes.object,
-    ruleId: React.PropTypes.number,
-    onDismiss: React.PropTypes.func,
+    didChanged: PropTypes.func,
+    receivers: PropTypes.object,
+    ruleId: PropTypes.number,
+    onDismiss: PropTypes.func,
   },
   contextTypes:{
-      currentRoute: React.PropTypes.object
+      currentRoute: PropTypes.object
   },
   getInitialState: function() {
     return ({

@@ -1,11 +1,11 @@
 'use strict';
-import React, {Component,PropTypes} from 'react';
+import React, {Component} from 'react';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import TitleComponent from 'controls/TitleComponent.jsx';
 import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
 import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx';
 import {Type} from 'constants/actionType/KPI.jsx';
-
+import PropTypes from 'prop-types';
 
 export default class YearAndTypeConfig extends Component {
 

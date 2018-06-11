@@ -11,7 +11,7 @@ import TBSettingAction from '../../actions/TBSettingAction.jsx';
 import TBSettingStore from '../../stores/TBSettingStore.jsx';
 import TagStore from '../../stores/TagStore.jsx';
 import ViewableDatePicker from '../../controls/ViewableDatePicker.jsx';
-
+import PropTypes from 'prop-types';
 import SpecialItem from './SpecialItem.jsx';
 
 var mergeDateTime = function(date, time) {
@@ -27,13 +27,13 @@ var datetimeTojson = function(date, time) {
   var d = mergeDateTime(date, time);
   return CommonFuns.DataConverter.DatetimeToJson(d);
 };
-
-var SpecialSetting = React.createClass({
+var createReactClass = require('create-react-class');
+var SpecialSetting = createReactClass({
   propTypes: {
-    tag: React.PropTypes.object,
-    year: React.PropTypes.number,
-    items: React.PropTypes.array,
-    isViewStatus: React.PropTypes.bool,
+    tag: PropTypes.object,
+    year: PropTypes.number,
+    items: PropTypes.array,
+    isViewStatus: PropTypes.bool,
   },
 
   getDefaultProps: function() {

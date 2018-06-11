@@ -1,18 +1,19 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {Dialog, DropDownMenu, FlatButton, TextField, Mixins} from 'material-ui';
 import classSet from 'classnames';
 import CalendarYear from '../controls/CalendarYear.jsx';
 import CalendarMonth from '../controls/CalendarMonth.jsx';
-
+var createReactClass = require('create-react-class');
 // let {ClickAwayable} = Mixins;
 
-let MonthPicker = React.createClass({
+let MonthPicker = createReactClass({
   //mixins: [ClickAwayable],
   propTypes: {
-    defaultYear: React.PropTypes.number,
-    defaultMonth: React.PropTypes.number,
-    minYear: React.PropTypes.string,
-    maxYear: React.PropTypes.string
+    defaultYear: PropTypes.number,
+    defaultMonth: PropTypes.number,
+    minYear: PropTypes.string,
+    maxYear: PropTypes.string
   },
   getDefaultProps() {
     let date = new Date();

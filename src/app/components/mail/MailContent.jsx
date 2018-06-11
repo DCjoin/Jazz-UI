@@ -6,9 +6,9 @@ import MailField from './MailField.jsx';
 import Users from './MailUsers.jsx';
 import MailAction from '../../actions/MailAction.jsx';
 import MailStore from '../../stores/MailStore.jsx';
+var createReactClass = require('create-react-class');
 
-
-let MailContent = React.createClass({
+let MailContent = createReactClass({
   _onSendBtnClick: function() {
     var _errorCode = MailStore.GetSendError();
     if (_errorCode.receiver === null && _errorCode.template === null && _errorCode.newtemplate === null) {

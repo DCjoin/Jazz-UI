@@ -1,31 +1,32 @@
 'use strict';
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import _assign from "lodash-es/assign";
 import _isFunction from "lodash-es/isFunction";
-
+var createReactClass = require('create-react-class');
 var _ = {
   assign: _assign,
   isFunction: _isFunction
 };
 
 
-var SectionPanel = React.createClass({
+var SectionPanel = createReactClass({
 
   propTypes: {
-    actionLabel: React.PropTypes.string,
-    actionComponent: React.PropTypes.object,
-    onAction: React.PropTypes.func,
-    hasAction: React.PropTypes.bool,
+    actionLabel: PropTypes.string,
+    actionComponent: PropTypes.object,
+    onAction: PropTypes.func,
+    hasAction: PropTypes.bool,
 
-    title: React.PropTypes.string,
+    title: PropTypes.string,
 
-    className: React.PropTypes.string,
-    style: React.PropTypes.object,
-    hasBorder: React.PropTypes.bool,
+    className: PropTypes.string,
+    style: PropTypes.object,
+    hasBorder: PropTypes.bool,
 
-    titleClassName: React.PropTypes.string,
-    titleStyle: React.PropTypes.object
+    titleClassName: PropTypes.string,
+    titleStyle: PropTypes.object
   },
 
   getDefaultProps: function() {

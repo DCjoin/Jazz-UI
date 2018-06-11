@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import classnames from "classnames";
 import {CircularProgress, Snackbar} from 'material-ui';
 import find from 'lodash-es/find';
@@ -112,7 +113,7 @@ function SolutionFull() {
 export default class Diagnose extends Component {
 
   static contextTypes = {
-        hierarchyId: React.PropTypes.string
+        hierarchyId: PropTypes.string
       };
 
   constructor(props, ctx) {

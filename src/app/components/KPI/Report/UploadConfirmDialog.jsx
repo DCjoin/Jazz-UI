@@ -4,11 +4,11 @@ import ReportStore from 'stores/KPI/ReportStore.jsx';
 import {ReportStatus} from '../../../constants/actionType/KPI.jsx';
 import NewDialog from 'controls/NewDialog.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
-
+import PropTypes from 'prop-types';
 export default class UploadConfirmDialog extends Component {
 
   static contextTypes = {
-    router: React.PropTypes.object,
+    router: PropTypes.object,
   };
 
     constructor(props) {
@@ -138,9 +138,9 @@ export default class UploadConfirmDialog extends Component {
     }
   }
 
-  UploadConfirmDialog.propTypes = {
-    name:React.PropTypes.object,
-    replaceName:React.PropTypes.object,
-    onConfirm:React.PropTypes.func,
-    onCancel:React.PropTypes.func
+  UploadConfirmDialog.propTypes= {
+    name:PropTypes.object,
+    replaceName:PropTypes.object,
+    onConfirm:PropTypes.func,
+    onCancel:PropTypes.func
   };

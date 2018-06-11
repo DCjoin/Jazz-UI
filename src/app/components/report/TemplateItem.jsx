@@ -7,9 +7,9 @@ import downloadFile from 'actions/download_file.js';
 import { CircularProgress, FontIcon, SelectField, TextField, RadioButton, Dialog, LinkButton } from 'material-ui';
 import FlatButton from 'controls/FlatButton.jsx';
 import classNames from 'classnames';
+var createReactClass = require('create-react-class');
 
-
-let TemplateItem = React.createClass({
+let TemplateItem = createReactClass({
   getInitialState: function() {
     return {
       showDeleteButton: false

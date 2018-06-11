@@ -3,17 +3,17 @@ import {Menu} from 'material-ui/Menu';
 import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
 import {Popover, PopoverAnimationVertical} from 'material-ui/Popover';
-
+import PropTypes from 'prop-types';
 
 export default class CustomButtonMenu extends Component {
-  static propTypes = {
-    label: React.PropTypes.string,
-    children: React.PropTypes.node,
-    onItemTouchTap: React.PropTypes.func,
-    height: React.PropTypes.stringOrNumber,
-    backgroundColor: React.PropTypes.string,
-    color: React.PropTypes.string,
-    disabled:React.PropTypes.string,
+  static propTypes= {
+    label: PropTypes.string,
+    children: PropTypes.node,
+    onItemTouchTap: PropTypes.func,
+    height: PropTypes.stringOrNumber,
+    backgroundColor: PropTypes.string,
+    color: PropTypes.string,
+    disabled:PropTypes.string,
   };
   static defaultProps = {
     height: 36,
@@ -87,7 +87,7 @@ export default class CustomButtonMenu extends Component {
           onRequestClose={this.handleRequestClose}
           animation={PopoverAnimationVertical}
         >
-          <Menu desktop={true} value={this.props.value} width={this.state.width} onItemTouchTap={this.handleItemTouchTap}>
+          <Menu desktop={true} value={this.props.value} width={this.state.width} onItemClick={this.handleItemTouchTap}>
             {this.props.children}
           </Menu>
         </Popover>

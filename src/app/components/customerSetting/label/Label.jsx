@@ -1,6 +1,7 @@
 'use strict';
 
 import React from "react";
+import PropTypes from 'prop-types';
 import { CircularProgress } from 'material-ui';
 import Item from '../../../controls/SelectableItem.jsx';
 import SelectablePanel from '../../../controls/SelectablePanel.jsx';
@@ -9,10 +10,10 @@ import LabelStore from '../../../stores/customerSetting/labelStore.jsx';
 import { formStatus } from '../../../constants/FormStatus.jsx';
 import LabelDetail from './LabelDetail.jsx';
 import Immutable from 'immutable';
-
-var Label = React.createClass({
+var createReactClass = require('create-react-class');
+var Label = createReactClass({
   contextTypes:{
-      currentRoute: React.PropTypes.object
+      currentRoute: PropTypes.object
   },
   getInitialState: function() {
     return {

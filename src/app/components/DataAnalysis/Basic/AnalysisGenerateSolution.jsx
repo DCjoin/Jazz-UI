@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
 import Immutable from 'immutable';
@@ -121,7 +122,7 @@ function getChartTypeStr(data) {
 }
 
 export default class AnalysisGenerateSolution extends Component {
-	static propTypes = {
+	static propTypes= {
 		nodes: PropTypes.arrayOf(PropTypes.object),
 		onRequestClose: PropTypes.func,
 	};

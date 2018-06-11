@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
 import EditStep2 from '../create/step2.jsx';
 import StepComponent from './stepComponent.jsx';
 import FlatButton from "controls/NewFlatButton.jsx";
@@ -6,7 +6,7 @@ import CreateStore from 'stores/save_effect/create_store';
 import util from 'util/Util.jsx';
 import moment from 'moment';
 import {Model,CalendarItemType,TriggerConditionType} from 'constants/actionType/Effect.jsx';
-
+import PropTypes from 'prop-types';
 function formatDate(date){
   return moment(util.DataConverter.JsonToDateTime(date)).format("YYYY-MM-DD")
 }
@@ -180,10 +180,10 @@ export default class Step2 extends Component {
 
 }
 
-Step2.propTypes = {
-  configStep:React.PropTypes.number || null,
-  isView:React.PropTypes.boolean,
-  onSave:React.PropTypes.func,
-  onCancel:React.PropTypes.func,
-  onEdit:React.PropTypes.func,
+Step2.propTypes= {
+  configStep:PropTypes.number || null,
+  isView:PropTypes.boolean,
+  onSave:PropTypes.func,
+  onCancel:PropTypes.func,
+  onEdit:PropTypes.func,
 };

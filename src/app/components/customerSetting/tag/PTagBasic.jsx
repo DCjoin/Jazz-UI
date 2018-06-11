@@ -1,6 +1,7 @@
 'use strict';
 
 import React from "react";
+import PropTypes from 'prop-types';
 import { Checkbox } from 'material-ui';
 import Regex from '../../../constants/Regex.jsx';
 import ViewableTextField from '../../../controls/ViewableTextField.jsx';
@@ -10,12 +11,12 @@ import ViewableEnergyLabel from './ViewableEnergyLabel.jsx';
 import moment from 'moment';
 import CommonFuns from 'util/Util.jsx';
 import ViewableDatePicker from 'controls/ViewableDatePicker.jsx';
-
-var PTagBasic = React.createClass({
+var createReactClass = require('create-react-class');
+var PTagBasic = createReactClass({
   propTypes: {
-    selectedTag: React.PropTypes.object,
-    mergeTag: React.PropTypes.func,
-    isViewStatus: React.PropTypes.bool
+    selectedTag: PropTypes.object,
+    mergeTag: PropTypes.func,
+    isViewStatus: PropTypes.bool
   },
   getInitialState: function() {
     return {

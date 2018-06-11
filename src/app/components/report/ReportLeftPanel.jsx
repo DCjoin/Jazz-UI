@@ -1,17 +1,18 @@
 'use strict';
 import React from "react";
+import PropTypes from 'prop-types';
 import { CircularProgress, FlatButton, FontIcon, DropDownMenu } from 'material-ui';
 import MenuItem from 'material-ui/MenuItem';
 import classSet from 'classnames';
 import ReportAction from '../../actions/ReportAction.jsx';
 import ReportList from './ReportList.jsx';
 import ReportStore from '../../stores/ReportStore.jsx';
+var createReactClass = require('create-react-class');
 
-
-var ReportLeftPanel = React.createClass({
+var ReportLeftPanel = createReactClass({
 
   contextTypes:{
-      currentRoute: React.PropTypes.object
+      currentRoute: PropTypes.object
   },
   getInitialState: function() {
     return {

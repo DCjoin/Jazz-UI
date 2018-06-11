@@ -1,14 +1,15 @@
 'use strict';
 import React from "react";
+import PropTypes from 'prop-types';
 import { Navigation, State } from 'react-router';
 import ExportChartStore from '../../../stores/Energy/ExportChartStore.jsx';
 import ExportChartAction from '../../../actions/ExportChartAction.jsx';
-
-var ExportView = React.createClass({
+var createReactClass = require('create-react-class');
+var ExportView = createReactClass({
   propTypes: {
-    onDismiss: React.PropTypes.func,
-    params: React.PropTypes.object,
-    path: React.PropTypes.string,
+    onDismiss: PropTypes.func,
+    params: PropTypes.object,
+    path: PropTypes.string,
   },
   _onExportWidgetSuccess: function() {
     this.props.onDismiss();

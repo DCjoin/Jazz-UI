@@ -1,11 +1,11 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
 import Regex from 'constants/Regex.jsx';
 import ActionVisibility from 'material-ui/svg-icons/action/visibility';
 import CircularProgress from 'material-ui/CircularProgress';
 import find from 'lodash-es/find';
 import _ from 'lodash-es';
 import moment from 'moment';
-
+import PropTypes from 'prop-types';
 import TimeGranularity from 'constants/TimeGranularity.jsx';
 import {Model,CalendarItemType,TriggerType,TriggerConditionType} from 'constants/actionType/Effect.jsx';
 
@@ -77,7 +77,7 @@ let timeoutID = null;
 export default class Step2 extends Component {
 	static contextTypes = {
 		hierarchyId: PropTypes.string,
-		currentRoute:React.PropTypes.object,
+		currentRoute:PropTypes.object,
 	};
 	constructor(props) {
 		super(props);

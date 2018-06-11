@@ -2,18 +2,22 @@ import React from 'react';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import classNames from 'classnames';
 import ViewableDropDownMenu from './ViewableDropDownMenu.jsx';
+var createReactClass = require('create-react-class');
+import PropTypes from 'prop-types';
 
-let YearPicker = React.createClass({
+
+
+let YearPicker = createReactClass({
 
   propTypes: {
-    selectedIndex: React.PropTypes.number,
-    selectedYear: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
-    isViewStatus: React.PropTypes.bool,
-    onYearPickerSelected: React.PropTypes.func,
-    menuItemStyle: React.PropTypes.object,
-    underlineStyle: React.PropTypes.object,
-    iconStyle: React.PropTypes.object,
-    labelStyle: React.PropTypes.object,
+    selectedIndex: PropTypes.number,
+    selectedYear: PropTypes.oneOfType([PropTypes.number.string]),
+    isViewStatus: PropTypes.bool,
+    onYearPickerSelected: PropTypes.func,
+    menuItemStyle: PropTypes.object,
+    underlineStyle: PropTypes.object,
+    iconStyle: PropTypes.object,
+    labelStyle: PropTypes.object,
   },
   getDefaultProps() {
     return {

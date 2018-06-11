@@ -22,7 +22,8 @@ var extractNumber = function(str) {
   return value;
 };
 const monthItemNum = 6;
-let BaselineModify = React.createClass({
+var createReactClass = require('create-react-class');
+let BaselineModify = createReactClass({
   //mixins: [Navigation, State],
 
   setValue: function(data) {
@@ -309,7 +310,7 @@ let BaselineModify = React.createClass({
   }
 });
 
-let MonthItem = React.createClass({
+let MonthItem = createReactClass({
   setValue: function(data) {
     var index = this.props.index;
     // this.refs.leftValue.setValue(data.getIn(["MonthlyValues", index * 2, "DataValue"]));

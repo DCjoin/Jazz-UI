@@ -13,8 +13,8 @@ import UserFilter from './UserFilter.jsx';
 import UserDetail from './UserDetail.jsx';
 import NewDialog from '../../../controls/NewDialog.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
-
-var User = React.createClass({
+var createReactClass = require('create-react-class');
+var User = createReactClass({
   getInitialState: function() {
     return {
       formStatus: formStatus.VIEW,

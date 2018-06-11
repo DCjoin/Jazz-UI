@@ -1,6 +1,7 @@
 'use strict';
 
 import React from "react";
+import PropTypes from 'prop-types';
 import RuleList from './VEEList.jsx';
 import isFunction from 'lodash-es/isFunction';
 import Immutable from 'immutable';
@@ -12,14 +13,14 @@ import VEEStore from '../../../stores/customerSetting/VEEStore.jsx';
 import Dialog from '../../../controls/NewDialog.jsx';
 import { List, Map } from 'immutable';
 import { dataStatus } from '../../../constants/DataStatus.jsx';
-
+var createReactClass = require('create-react-class');
 function emptyMap() {
   return new Map();
 }
 function emptyList() {
   return new List();
 }
-var VEERules = React.createClass({
+var VEERules = createReactClass({
   getInitialState: function() {
     return {
       formStatus: formStatus.VIEW,
@@ -35,7 +36,7 @@ var VEERules = React.createClass({
     };
   },
   contextTypes:{
-      currentRoute: React.PropTypes.object
+      currentRoute: PropTypes.object
   },
   _handlerTouchTap: function(selectedId) {
     this._setViewStatus(selectedId);

@@ -5,19 +5,19 @@ import classNames from 'classnames';
 import { Paper, FontIcon, TextField } from 'material-ui';
 import { Link, Navigation, State, RouteHandler } from 'react-router';
 import assign from 'object-assign';
-
+var createReactClass = require('create-react-class');
 import { nodeType } from '../../constants/TreeConstants.jsx';
 import Search from './DimSearch.jsx'
+import PropTypes from 'prop-types';
 
-
-var TreeNode = React.createClass({
+var TreeNode = createReactClass({
 
   //mixins: [Navigation, State],
 
   propTypes: {
-    selected: React.PropTypes.bool,
-    collapsed: React.PropTypes.bool,
-    hasChild: React.PropTypes.bool
+    selected: PropTypes.bool,
+    collapsed: PropTypes.bool,
+    hasChild: PropTypes.bool
   },
 
   getDefaultProps: function() {
@@ -209,12 +209,12 @@ var TreeNode = React.createClass({
 
 });
 
-var TreeView = React.createClass({
+var TreeView = createReactClass({
   //mixins: [Navigation, State],
   propTypes: {
-    allNode: React.PropTypes.object.isRequired,
-    onTreeClick: React.PropTypes.func.isRequired,
-    selectedNode: React.PropTypes.object
+    allNode: PropTypes.object.isRequired,
+    onTreeClick: PropTypes.func.isRequired,
+    selectedNode: PropTypes.object
   },
   _onSelectNode(node) {
     this.setState({
@@ -300,12 +300,12 @@ var TreeView = React.createClass({
 
 });
 
-let DimTree = React.createClass({
+let DimTree = createReactClass({
   //mixins: [Navigation, State],
   propTypes: {
-    allNode: React.PropTypes.object.isRequired,
-    onTreeClick: React.PropTypes.func.isRequired,
-    selectedNode: React.PropTypes.object
+    allNode: PropTypes.object.isRequired,
+    onTreeClick: PropTypes.func.isRequired,
+    selectedNode: PropTypes.object
   },
   getInitialState: function() {
     return {

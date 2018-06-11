@@ -2524,6 +2524,8 @@ I18N.Setting.ECM.UnFold='Fold';
 I18N.Setting.ECM.Fold='UnFold';
 I18N.Setting.ECM.SaveSuccess='Save successfully';
 I18N.Setting.ECM.TitleErrorTip='Solution title cannot be empty';
+I18N.Setting.ECM.NumberrTip='请填写≥0的数字';
+I18N.Setting.ECM.NameDuplicateTip='方案标题不能重复';
 
 I18N.Setting.Diagnose={};
 I18N.Setting.Diagnose.EnergyLabel='Energy Label';

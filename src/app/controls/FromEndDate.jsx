@@ -1,18 +1,18 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Mixins, Styles, ClearFix, FontIcon } from 'material-ui';
 import MonthDayItem from './MonthDayItem.jsx';
 import FlatButton from './FlatButton.jsx';
-
-var FromEndDate = React.createClass({
+var createReactClass = require('create-react-class');
+var FromEndDate = createReactClass({
   propTypes: {
-    index: React.PropTypes.number.isRequired,
-    isViewStatus: React.PropTypes.bool,
-    startMonth: React.PropTypes.number,
-    startDay: React.PropTypes.number,
-    endMonth: React.PropTypes.number,
-    endDay: React.PropTypes.number
+    index: PropTypes.number.isRequired,
+    isViewStatus: PropTypes.bool,
+    startMonth: PropTypes.number,
+    startDay: PropTypes.number,
+    endMonth: PropTypes.number,
+    endDay: PropTypes.number
   },
   getDefaultProps() {
     return {

@@ -45,11 +45,11 @@ function Header({name, indicatorClass, indicatorType,onClose}) {
 		</header>
 	);
 }
-
+import PropTypes from 'prop-types';
 export default class EditConfig extends Component {
 
 	static contextTypes = {
-		router: React.PropTypes.object,
+		router: PropTypes.object,
 	};
 
 	constructor(props) {
@@ -65,7 +65,8 @@ export default class EditConfig extends Component {
 		// kpiInfo:this.props.kpiInfo,
 		configStep:null,
 		isNew:!this.props.kpiInfo.get("AnnualQuota") && !this.props.kpiInfo.get("AnnualSavingRate"),
-		configBuildingIndex:null
+		configBuildingIndex:null,
+		closeDlgShow:false
 	};
 
 	_onSave(){		
@@ -186,12 +187,12 @@ export default class EditConfig extends Component {
     )
 	}
 }
-EditConfig.propTypes = {
-	kpiInfo:React.PropTypes.object,
-	year:React.PropTypes.number,
+EditConfig.propTypes= {
+	kpiInfo:PropTypes.object,
+	year:PropTypes.number,
 	//编辑时，需要name
-	name:React.PropTypes.string,
-	onSave:React.PropTypes.func,
-	onCancel:React.PropTypes.func,
-	// onPending:React.PropTypes.func,
+	name:PropTypes.string,
+	onSave:PropTypes.func,
+	onCancel:PropTypes.func,
+	// onPending:PropTypes.func,
 };

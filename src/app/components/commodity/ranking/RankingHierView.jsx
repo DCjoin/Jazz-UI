@@ -1,16 +1,17 @@
 'use strict';
 import React from "react";
+import PropTypes from 'prop-types';
 import { Navigation, State } from 'react-router';
 import { Paper, RaisedButton, CircularProgress } from 'material-ui';
 import Immutable from 'immutable';
 import Tree from '../../../controls/tree/Tree.jsx';
 import CommodityAction from '../../../actions/CommodityAction.jsx';
-
-var RankingHierView = React.createClass({
+var createReactClass = require('create-react-class');
+var RankingHierView = createReactClass({
   propTypes: {
-    allNode: React.PropTypes.object,
-    checkedTreeNodes: React.PropTypes.object,
-    onConfirm: React.PropTypes.func,
+    allNode: PropTypes.object,
+    checkedTreeNodes: PropTypes.object,
+    onConfirm: PropTypes.func,
   },
   _onConfirm: function() {
     this.props.onConfirm(this.state.checkedNodes);

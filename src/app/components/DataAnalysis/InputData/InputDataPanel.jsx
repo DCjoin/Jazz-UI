@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
+import PropTypes from 'prop-types';
 import TagList from './TagList.jsx';
 import InputDataStore from 'stores/DataAnalysis/InputDataStore.jsx';
 import RoutePath from 'util/RoutePath.jsx';
@@ -52,7 +53,6 @@ export default class InputDataPanel extends Component {
 		this._changeNodeId(this.state.preSelectedTag.get('Id'));
 		this.setState({
 			selectedTag:this.state.preSelectedTag,
-			preSelectedTag:null
 		})
 	}
 
@@ -104,6 +104,7 @@ export default class InputDataPanel extends Component {
 				nextProps.router.push(RoutePath.inputData(nextProps.params));
 			}
 		}
+
 	}
 
 	componentWillUnmount(){

@@ -1,14 +1,14 @@
 import React from 'react';
 import CalendarView from './CalendarView.jsx';
 import CalendarInlineToolbar from './CalendarInlineToolbar.jsx';
-
+import PropTypes from 'prop-types';
 export default class CalendarInline extends React.Component {
-  static propTypes = {
-    value: React.PropTypes.object,
-    onChange: React.PropTypes.func.isRequired,
-    onRangeChange: React.PropTypes.func,
-    locale: React.PropTypes.string,
-    events: React.PropTypes.array
+  static propTypes= {
+    value: PropTypes.object,
+    onChange: PropTypes.func.isRequired,
+    onRangeChange: PropTypes.func,
+    locale: PropTypes.string,
+    events: PropTypes.array
   };
 
   static defaultProps = {

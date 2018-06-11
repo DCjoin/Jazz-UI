@@ -1,14 +1,15 @@
 'use strict';
 import React from "react";
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Paper, Menu } from 'material-ui';
-
+var createReactClass = require('create-react-class');
 let treeMap = new Array();
 
-let SearchItem = React.createClass({
+let SearchItem = createReactClass({
   propTypes: {
-    nodeData: React.PropTypes.object.isRequired,
-    onClick: React.PropTypes.func.isRequired
+    nodeData: PropTypes.object.isRequired,
+    onClick: PropTypes.func.isRequired
   },
   _onClick: function() {
     this.props.onClick(this.props.nodeData)
@@ -31,11 +32,11 @@ let SearchItem = React.createClass({
       )
   }
 });
-let DimSearch = React.createClass({
+let DimSearch = createReactClass({
   propTypes: {
-    allNode: React.PropTypes.object.isRequired,
-    onSearchNodeClick: React.PropTypes.func.isRequired,
-    searchValue: React.PropTypes.string,
+    allNode: PropTypes.object.isRequired,
+    onSearchNodeClick: PropTypes.func.isRequired,
+    searchValue: PropTypes.string,
 
   },
   drawNodeType: function() {

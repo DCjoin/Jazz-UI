@@ -1,29 +1,29 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from 'react';
 // import DefaultRawTheme from '../../../node_modules/material-ui/lib/styles/raw-themes/light-raw-theme.js';
 // import ThemeManager from '../../../node_modules/material-ui/lib/styles/theme-manager.js';
 // import Transition from '../../../node_modules/material-ui/lib/styles/transitions.js';
 import { Mixins, Styles, ClearFix, StylePropable, EnhancedButton, FlatButton } from 'material-ui';
-
-let ItemButton = React.createClass({
+var createReactClass = require('create-react-class');
+let ItemButton = createReactClass({
 
   //mixins: [StylePropable],
 
   contextTypes: {
-    muiTheme: React.PropTypes.object,
+    muiTheme: PropTypes.object,
   },
 
   propTypes: {
-    item: React.PropTypes.object,
-    height: React.PropTypes.number,
-    onTouchTap: React.PropTypes.func,
-    selected: React.PropTypes.bool
+    item: PropTypes.object,
+    height: PropTypes.number,
+    onTouchTap: PropTypes.func,
+    selected: PropTypes.bool
   },
 
   //for passing default theme context to children
   childContextTypes: {
-    muiTheme: React.PropTypes.object,
+    muiTheme: PropTypes.object,
   },
 
   getChildContext() {

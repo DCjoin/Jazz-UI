@@ -15,8 +15,8 @@ const blueColor = "#32ad3c";
 const blueColorBackgroundColor = "#e1fcff";
 const redColor = "#f46a58";
 const redColorBackgroundColor = "#fcd2cd";
-
-var CustomFlatButton = React.createClass({
+var createReactClass = require('create-react-class');
+var CustomFlatButton = createReactClass({
 
   getInitialState: function() {
     return {

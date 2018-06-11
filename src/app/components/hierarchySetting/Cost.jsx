@@ -1,5 +1,5 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from "react";
 import classnames from "classnames";
 import Immutable from 'immutable';
@@ -22,7 +22,7 @@ import SideNav from '../../controls/SideNav.jsx';
 import Dialog from '../../controls/NewDialog.jsx';
 import Factor09Detail from './Factor09Detail.jsx';
 import Factor085Detail from './Factor085Detail.jsx';
-
+var createReactClass = require('create-react-class');
 var d2j = CommonFuns.DataConverter.DatetimeToJson;
 function emptyMap() {
   return new Map();
@@ -30,14 +30,14 @@ function emptyMap() {
 function emptyList() {
   return new List();
 }
-var Cost = React.createClass({
+var Cost = createReactClass({
   propTypes: {
-    formStatus: React.PropTypes.string,
-    name: React.PropTypes.string,
-    hierarchyId: React.PropTypes.number,
-    onUpdate: React.PropTypes.func,
-    setEditBtnStatus: React.PropTypes.func,
-    onShowFooter: React.PropTypes.func,
+    formStatus: PropTypes.string,
+    name: PropTypes.string,
+    hierarchyId: PropTypes.number,
+    onUpdate: PropTypes.func,
+    setEditBtnStatus: PropTypes.func,
+    onShowFooter: PropTypes.func,
   },
   //mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
   getInitialState: function() {

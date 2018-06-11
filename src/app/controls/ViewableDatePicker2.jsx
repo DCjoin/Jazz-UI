@@ -1,5 +1,5 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from 'react';
 import {DatePicker, TextField, Mixins} from 'material-ui';
 import assign from 'object-assign';
@@ -11,17 +11,18 @@ import Calendar from '../controls/calendar/Calendar.jsx';
 import ClickAway from "../controls/ClickAwayListener.jsx";
 // let {DatePicker, TextField, Mixins} = mui;
 // let {ClickAwayable} = Mixins;
-var ViewableDatePicker = React.createClass({
+var createReactClass = require('create-react-class');
+var ViewableDatePicker = createReactClass({
   //mixins: [ClickAwayable],
   propTypes: {
-    isViewStatus: React.PropTypes.bool,
-    defaultValue: React.PropTypes.object, //date
-    defaultTime: React.PropTypes.number,
-    minDate: React.PropTypes.object,
-    maxDate: React.PropTypes.object,
-    dateFormatStr: React.PropTypes.string,
-    showTime: React.PropTypes.bool,
-    timeType: React.PropTypes.number
+    isViewStatus: PropTypes.bool,
+    defaultValue: PropTypes.object, //date
+    defaultTime: PropTypes.number,
+    minDate: PropTypes.object,
+    maxDate: PropTypes.object,
+    dateFormatStr: PropTypes.string,
+    showTime: PropTypes.bool,
+    timeType: PropTypes.number
   },
 
   getDefaultProps: function() {

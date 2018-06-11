@@ -17,12 +17,12 @@ import Dialog from '../../controls/OperationTemplate/BlankDialog.jsx';
 import ImageUpload from '../../controls/ImageUpload.jsx';
 import assign from 'object-assign';
 import Config from 'config';
-
-
-let CustomerIdentity = React.createClass({
+var createReactClass = require('create-react-class');
+import PropTypes from 'prop-types';
+let CustomerIdentity = createReactClass({
   propTypes: {
-    provider: React.PropTypes.object,
-    customer: React.PropTypes.object
+    provider: PropTypes.object,
+    customer: PropTypes.object
   },
   _renderContent: function(isView) {
     var {SpId, FullName, Abbreviation, AboutLink, Logo, HomeBackground, LogoContent, HomeBackgroundContent} = this.props.customer;

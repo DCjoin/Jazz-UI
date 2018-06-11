@@ -135,13 +135,13 @@ class Group extends Component{
     )
   }
 }
-
-Group.propTypes = {
-  nodeData: React.PropTypes.object,
-  selectedNode: React.PropTypes.object,
-  isFromProbem:React.PropTypes.bool,
-  onAdd:React.PropTypes.func,
-  onItemTouchTap:React.PropTypes.func,
+import PropTypes from 'prop-types';
+Group.propTypes= {
+  nodeData: PropTypes.object,
+  selectedNode: PropTypes.object,
+  isFromProbem:PropTypes.bool,
+  onAdd:PropTypes.func,
+  onItemTouchTap:PropTypes.func,
 };
 
 export default class LabelItem extends Component {
@@ -180,10 +180,10 @@ export default class LabelItem extends Component {
   }
 }
 
-LabelItem.propTypes = {
-  nodeData: React.PropTypes.object,
-  selectedNode: React.PropTypes.object,
-  isFromProbem:React.PropTypes.bool,
-  onAdd:React.PropTypes.func,
-  onItemTouchTap:React.PropTypes.func,
+LabelItem.propTypes= {
+  nodeData: PropTypes.object,
+  selectedNode: PropTypes.object,
+  isFromProbem:PropTypes.bool,
+  onAdd:PropTypes.func,
+  onItemTouchTap:PropTypes.func,
 };

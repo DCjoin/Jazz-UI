@@ -1,19 +1,19 @@
 'use strict';
 import React from "react";
 import { TextField, Paper, CircularProgress } from 'material-ui';
-
+import PropTypes from 'prop-types';
 import NewDialog from '../NewDialog.jsx';
 import FlatButton from '../FlatButton.jsx';
-
-var BlankDialog = React.createClass({
+var createReactClass = require('create-react-class');
+var BlankDialog = createReactClass({
   propTypes: {
-    title: React.PropTypes.string,
-    firstActionLabel: React.PropTypes.string,
-    secondActionLabel: React.PropTypes.string,
-    onFirstActionTouchTap: React.PropTypes.func,
-    onSecondActionTouchTap: React.PropTypes.func,
-    content: React.PropTypes.string,
-    onDismiss: React.PropTypes.func,
+    title: PropTypes.string,
+    firstActionLabel: PropTypes.string,
+    secondActionLabel: PropTypes.string,
+    onFirstActionTouchTap: PropTypes.func,
+    onSecondActionTouchTap: PropTypes.func,
+    content: PropTypes.string,
+    onDismiss: PropTypes.func,
   },
 
   _onFirstActionTouchTap: function() {

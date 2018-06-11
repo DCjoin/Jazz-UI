@@ -20,6 +20,7 @@ let ChartXAxisSetter = {
       }
       if (!series)
         series = serieses[0];
+      if(series.xData.length===0) return null;
       var step = series.options.option.step;
       ret.info = {
         higherRanks: {}

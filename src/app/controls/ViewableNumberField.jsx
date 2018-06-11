@@ -5,17 +5,18 @@ import assign from 'object-assign';
 import classNames from 'classnames';
 import Util from '../util/Util.jsx';
 import numeral from 'numeral';
-
-var ViewableNumberField = React.createClass({
+import PropTypes from 'prop-types';
+var createReactClass = require('create-react-class');
+var ViewableNumberField = createReactClass({
   propTypes: {
-    isViewStatus: React.PropTypes.bool,
-    title: React.PropTypes.string,
-    style: React.PropTypes.object,
-    validate: React.PropTypes.func,
-    didChanged: React.PropTypes.func,
-    defaultValue: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
-    format: React.PropTypes.oneOfType([React.PropTypes.func, React.PropTypes.string]), //function or format string(http://numeraljs.com/)
-    unit: React.PropTypes.string
+    isViewStatus: PropTypes.bool,
+    title: PropTypes.string,
+    style: PropTypes.object,
+    validate: PropTypes.func,
+    didChanged: PropTypes.func,
+    defaultValue: PropTypes.oneOfType([PropTypes.number.string]),
+    format: PropTypes.oneOfType([PropTypes.func.string]), //function or format string(http://numeraljs.com/)
+    unit: PropTypes.string
   },
 
   _focus: false,

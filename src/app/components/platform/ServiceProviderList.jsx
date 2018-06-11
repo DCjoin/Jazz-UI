@@ -7,8 +7,8 @@ import CustomDropDownMenu from '../../controls/CustomDropDownMenu.jsx';
 import classSet from 'classnames';
 import { FlatButton, FontIcon, MenuItem, DropDownMenu } from 'material-ui';
 import ProviderItem from './ProviderItem.jsx';
-
-let ServiceProviderList = React.createClass({
+var createReactClass = require('create-react-class');
+let ServiceProviderList = createReactClass({
   getDefaultProps: function() {
     return {
       sortBy: "customername@asc",

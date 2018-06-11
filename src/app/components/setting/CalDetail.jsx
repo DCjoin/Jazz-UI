@@ -11,8 +11,8 @@ import TBSettingAction from '../../actions/TBSettingAction.jsx';
 import TBSettingStore from '../../stores/TBSettingStore.jsx';
 import TagStore from '../../stores/TagStore.jsx';
 import ViewableDatePicker from '../../controls/ViewableDatePicker.jsx';
-
-var CalDetail = React.createClass({
+var createReactClass = require('create-react-class');
+var CalDetail = createReactClass({
 
   getInitialState: function() {
     return {

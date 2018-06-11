@@ -12,14 +12,15 @@ import Pagination from '../../controls/paging/Pagination.jsx';
 import ReportStore from '../../stores/ReportStore.jsx';
 import ReportAction from '../../actions/ReportAction.jsx';
 import Immutable from 'immutable';
-
+import PropTypes from 'prop-types';
+var createReactClass = require('create-react-class');
 var filters = null;
 var page = 0;
 var customerId;
-let TagSelectWindow = React.createClass({
+let TagSelectWindow = createReactClass({
   //mixins: [Navigation, State],
   contextTypes:{
-        currentRoute: React.PropTypes.object
+        currentRoute: PropTypes.object
     },
   getInitialState: function() {
     return {

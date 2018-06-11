@@ -3,12 +3,12 @@ import CalendarView from './CalendarView.jsx';
 import CalendarToolbar from './CalendarToolbar.jsx';
 import CalendarMonthView from './CalendarMonthView.jsx';
 import CalendarYearView from './CalendarYearView.jsx';
-
+import PropTypes from 'prop-types';
 export default class Calendar extends React.Component {
-  static propTypes = {
-    value: React.PropTypes.object,
-    onChange: React.PropTypes.func.isRequired,
-    locale: React.PropTypes.string
+  static propTypes= {
+    value: PropTypes.object,
+    onChange: PropTypes.func.isRequired,
+    locale: PropTypes.string
   };
 
   static defaultProps = {

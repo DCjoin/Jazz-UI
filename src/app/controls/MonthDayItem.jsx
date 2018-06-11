@@ -1,16 +1,16 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Mixins, Styles, ClearFix, FontIcon } from 'material-ui';
 import ViewableDropDownMenu from './ViewableDropDownMenu.jsx';
 import FlatButton from './FlatButton.jsx';
-
-var MonthDayItem = React.createClass({
+var createReactClass = require('create-react-class');
+var MonthDayItem = createReactClass({
   propTypes: {
-    isViewStatus: React.PropTypes.bool,
-    month: React.PropTypes.number,
-    day: React.PropTypes.number,
-    type: React.PropTypes.number //0-start, 1-end
+    isViewStatus: PropTypes.bool,
+    month: PropTypes.number,
+    day: PropTypes.number,
+    type: PropTypes.number //0-start, 1-end
   },
   getDefaultProps() {
     return {
