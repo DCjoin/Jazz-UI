@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const fs = require("fs");
 const path=require("path");
 const useragent = require('useragent');
+var APIBasePath = require('./APIBasePath.js');
 var acsObj = {};
 
 // var request = require("request");
@@ -150,7 +151,8 @@ function returnDownloadHtml(req, res){
                 .replace('${APP_DOWNLOAD_LOCAL}', APP_DOWNLOAD_LOCAL)
                 .replace('${APP_DOWNLOAD_QQ}', APP_DOWNLOAD_QQ)
                 .replace('${APP_DOWNLOAD_WDJ}', APP_DOWNLOAD_WDJ)
-                .replace('${APP_DOWNLOAD_BAIDU}', APP_DOWNLOAD_BAIDU);
+                .replace('${APP_DOWNLOAD_BAIDU}', APP_DOWNLOAD_BAIDU)
+                .replace('${JAZZ_UI_API_BASE_PATH}',JAZZ_WEBAPI_HOST+APIBasePath);
   return res.status(200).type('.html').end(html);
 }
 
