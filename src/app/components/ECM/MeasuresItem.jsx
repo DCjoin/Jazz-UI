@@ -134,7 +134,7 @@ export class MeasuresItem extends Component {
       var {Problem}=this.props.measure.toJS();
       if(Problem.SolutionTitle!==null && Problem.SolutionTitle!==''){
         return (<div style={{display:"flex",flexDirection:'row',alignItems:'center',overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'}}>
-              <div className="measuresItem-title" style={{marginRight:'10px'}} title={I18N.format(I18N.Setting.ECM.SolutionTitle,Problem.SolutionTitle)}>{I18N.format(I18N.Setting.ECM.SolutionTitle,Problem.SolutionTitle)}</div>
+              <div className="measuresItem-title" style={{marginRight:'10px'}} title={Problem.SolutionTitle}>{Problem.SolutionTitle}</div>
               {this.props.disabled && <AlarmText text={I18N.Setting.ECM.Uncompleted}/>}</div>)
       }
       else {

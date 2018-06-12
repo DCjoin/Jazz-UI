@@ -131,7 +131,6 @@ class NewDialog extends Component {
 			<div>
 		<Transition in={open} timeout={animatinsTime}>
 			{(state)=>{
-				console.log(state);
 				if(open){return(
 				 <div className= {getOverlayClassName(overlayClassName)}
 				     style= {{
