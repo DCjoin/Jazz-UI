@@ -241,7 +241,7 @@
 						if(typeof data !== "undefined" && data.error.Code === "0" && typeof data.Result !== "undefined") {
 										document.getElementById("version").innerHTML = data.Result.JAZZ_UI_APP_VERSION;
 										document.getElementById("size").innerHTML = data.Result.JAZZ_UI_APP_SIZE;
-										document.getElementById("local-url").href = wdata.Result.JAZZ_UI_APP_DOWNLOAD_LOCAL;
+										document.getElementById("local-url").href = data.Result.JAZZ_UI_APP_DOWNLOAD_LOCAL;
 										document.getElementById("qq-url").href = data.Result.JAZZ_UI_APP_DOWNLOAD_QQ;
 										document.getElementById("wdj-url").href = data.Result.JAZZ_UI_APP_DOWNLOAD_WDJ;
 										document.getElementById("baidu-url").href = data.Result.JAZZ_UI_APP_DOWNLOAD_BAIDU;
