@@ -190,7 +190,8 @@ export default class TagSelect extends Component {
 		        ref: 'tag_dialog',
 		        title: this.props.title?this.props.title:I18N.Setting.KPI.Tag.Title,
 						titleStyle:{margin:'0 22px',height:'19px',lineHeight:'19px',padding:"15px 0",fontSize:'14px', fontWeight: 600,borderBottom:'1px solid #e6e6e6'},
-		        actions: actions,
+		        contentStyle:{margin:'0 22px',padding:'0'},
+						actions: actions,
 		        modal: true,
 		        open: true,
 						wrapperStyle:{
