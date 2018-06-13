@@ -88,10 +88,14 @@ export default class PushConfirmDialog extends Component {
           }
         }else if(value!==0 && !value && pathName!=='InvestmentAmount'){
             if(pathName==='Name'){pathName='SolutionName'}
-            if(pathName==='EnergySavingUnit'){pathName="ExpectedAnnualEnergySaving"}
-           error=I18N.Setting.Diagnose.PleaseInput+I18N.Setting.Diagnose[pathName];   
-            if(pathName==='EnergySavingUnit'){ paths=paths.slice(0,2)
-                                           paths.push('ExpectedAnnualEnergySaving')}    
+            if(pathName==='EnergySavingUnit'){
+              error=I18N.Setting.Diagnose.PleaseInput+I18N.Setting.Diagnose['ExpectedAnnualEnergySaving'];
+              paths=paths.slice(0,2);
+              paths.push('ExpectedAnnualEnergySaving')}
+              else{
+                error=I18N.Setting.Diagnose.PleaseInput+I18N.Setting.Diagnose[pathName];   
+              }
+
         }
 
         errorData=errorData.setIn(paths,error);

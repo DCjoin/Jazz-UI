@@ -44,12 +44,10 @@ export default class ReportChart extends Component {
 		return (
 			<div className='jazz-report-chart-table-wrapper'>
 				<div className='jazz-report-chart-table-header'>
-					<ul className='jazz-report-chart-table-header-action' style={{
-						width: url ? false : 100
-					}}>
+					<ul className='jazz-report-chart-table-header-action'>
 						{isFull() && <li><LinkButton iconName='icon-edit' onClick={() => onEdit(id)} label={I18N.Common.Button.Edit}/></li>}
 						{isFull() && <li><LinkButton iconName='icon-delete' onClick={() => onDelete(id)} label={I18N.Common.Button.Delete}/></li>}
-						<li>{url && <LinkButton iconName='icon-check-circle' onClick={() => onSetFirst(id)} label={I18N.Kpi.SetAsTheFirstReport}/>}</li>
+						{url &&<li><LinkButton iconName='icon-check-circle' onClick={() => onSetFirst(id)} label={I18N.Kpi.SetAsTheFirstReport}/></li>}
 					</ul>
 					<li>{url && <LinkButton iconName='icon-download' onClick={() => onDownload(id)} label={I18N.Kpi.Download}/>}</li>
 				</div>

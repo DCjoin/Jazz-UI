@@ -436,17 +436,25 @@ export class PlanDetail extends Component {
             <span className='num-icon icon-energy_saving'/>
             <div className='plan-detail-num-title-panel'>
               <div className='num-title'>{I18N.Setting.Diagnose.ExpectedAnnualEnergySaving}</div>
-              <TextBox {...this._initTextBoxProps(idx, 'ExpectedAnnualEnergySaving')} style={{marginRight: 8, borderRadius: 4, height: 26, width: 102}} hintText={I18N.Setting.Diagnose.Number}/>
+              <div style={{display:'flex'}}>
+                 <TextBox {...this._initTextBoxProps(idx, 'ExpectedAnnualEnergySaving')} style={{marginRight: 8, borderRadius: 4, height: 26, width: 102}} hintText={I18N.Setting.Diagnose.Number}/>
+                 <TextBox {...this._initTextBoxProps(idx, 'EnergySavingUnit')} style={{borderRadius: 4, height: 26, width: 62}} hintText={'单位'}/>
+              </div>
+             
             </div>
-            <TextBox {...this._initTextBoxProps(idx, 'EnergySavingUnit')} style={{borderRadius: 4, height: 26, width: 62}} hintText={'单位'}/>
+
           </div>
           <div className='plan-detail-num-panel'>
             <span className='num-icon icon-cost_saving'/>
             <div className='plan-detail-num-title-panel'>
               <div className='num-title'>{I18N.Setting.Diagnose.ExpectedAnnualCostSaving}</div>
-              <TextBox {...this._initTextBoxProps(idx, 'ExpectedAnnualCostSaving')} style={{marginRight: 8, borderRadius: 4, height: 26, width: 102}} hintText={I18N.Setting.Diagnose.Number}/>
+              <div style={{display:'flex'}}>
+                <TextBox {...this._initTextBoxProps(idx, 'ExpectedAnnualCostSaving')} style={{marginRight: 8, borderRadius: 4, height: 26, width: 102}} hintText={I18N.Setting.Diagnose.Number}/>
+                <span style={{fontSize: '12px'}} className='num-text'>{'RMB'}</span>
+              </div>
+              
             </div>
-            <span style={{fontSize: '12px'}} className='num-text'>{'RMB'}</span>
+            
           </div>
           <div className='plan-detail-num-panel'>
             <span className='num-icon icon-investment-amount'/>
