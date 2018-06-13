@@ -689,7 +689,7 @@ let ReportDataItem = createReactClass({
 
     return (
 
-    <NewDialog open>
+    <NewDialog open style={{overflow:'visible'}}>
       <header className='kpi-report-edit-data-header'>
         <div>{I18N.Setting.KPI.Config.NewTableData}</div>
         <FontIcon className='icon-close' style={{fontSize: '16px'}} onClick={this.props.onClose}/>
