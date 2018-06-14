@@ -66,11 +66,11 @@ class CalculatedIcon extends Component{
 export class ItemForConsultant extends Component {
 
   getTitle(){
-    var {CalcState,EnergySolutionName,IsBestSolution}=this.props.effect.toJS();
+    var {CalcState,EnergySolutionName,SolutionTitle,IsBestSolution}=this.props.effect.toJS();
     return(
       <div className="jazz-effect-item-info-title">
         <span className="isPreferred">{IsBestSolution && BestIsFullOrIsView() && <FontIcon className="icon-medal" style={{fontSize:'12px'}} color="#ff9000"/>}</span>
-        <span className="name" title={EnergySolutionName}>{EnergySolutionName}</span>
+        <span className="name" title={SolutionTitle}>{SolutionTitle}</span>
         {CalcState!==null && (CalcState===calcState.Being?<CalculatingIcon/>:<CalculatedIcon/>)}
       </div>
     )
@@ -138,11 +138,11 @@ ItemForConsultant.propTypes = {
 export class ItemForManager extends Component {
 
   getTitle(){
-    var {CalcState,EnergySolutionName,IsBestSolution}=this.props.effect.toJS();
+    var {CalcState,EnergySolutionName,SolutionTitle,IsBestSolution}=this.props.effect.toJS();
     return(
       <div className="jazz-effect-item-info-title">
         <span className="isPreferred">{IsBestSolution && BestIsFullOrIsView() && <FontIcon className="icon-medal" style={{fontSize:'12px'}} color="#ff9000"/>}</span>
-        <span className="name" title={EnergySolutionName}>{EnergySolutionName}</span>
+        <span className="name" title={SolutionTitle}>{SolutionTitle}</span>
         {CalcState!==null && (CalcState===calcState.Being?<CalculatingIcon/>:<CalculatedIcon/>)}
       </div>
     )
@@ -200,11 +200,11 @@ ItemForManager.propTypes = {
 export class ItemForDraft extends Component {
 
   getTitle(){
-    var {TagName,EnergySolutionName}=this.props.effect.toJS();
+    var {TagName,EnergySolutionName,SolutionTitle}=this.props.effect.toJS();
     return(
       <span className="jazz-effect-item-draft-title">
         <div className="jazz-effect-item-draft-title-tag" title={`${I18N.Setting.Effect.TagName}${TagName}`}>{`${I18N.Setting.Effect.TagName}${TagName}`}</div>
-        <div className="jazz-effect-item-draft-title-problem" title={`${I18N.Setting.Effect.Problem}${EnergySolutionName}`}>{`${I18N.Setting.Effect.Problem}${EnergySolutionName}`}</div>
+        <div className="jazz-effect-item-draft-title-problem" title={`${I18N.Setting.Effect.Problem}${SolutionTitle}`}>{`${I18N.Setting.Effect.Problem}${SolutionTitle}`}</div>
       </span>
     )
   }

@@ -253,6 +253,7 @@ export default class EffectList extends Component {
               {this.state.createShow && true && <Create
                 filterObj={{
                   EnergySolutionName: configEffect.get('EnergySolutionName'),
+                  SolutionTitle:configEffect.get('SolutionTitle'),
                   EnergyProblemId: configEffect.get('EnergyProblemId'),
                   EnergyEffectId: configEffect.get('EnergyEffectId'),
                   EnergySystem: configEffect.get('EnergySystem'),
