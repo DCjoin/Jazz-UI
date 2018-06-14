@@ -141,7 +141,10 @@ var FromEndTime = createReactClass({
       title: '',
       textField: 'text',
       style: {
-        width: '100px'
+        width: '110px'
+      },
+      menuStyle:{
+        width:'110px'
       },
       labelStyle:{
         paddingRight:0
