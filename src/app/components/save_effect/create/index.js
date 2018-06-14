@@ -978,7 +978,7 @@ export default class Create extends Component {
 	}
 	render() {
 		let { onClose, filterObj } = this.props,
-		{EnergyProblemId, EnergySolutionName, SolutionTitle,ExecutedTime, EnergySystem, ConfigStep, UomId, TagId, TagName} = this.state.filterObj.toJS(),
+		{EnergyProblemId,  SolutionTitle,ExecutedTime, EnergySystem, ConfigStep, UomId, TagId, TagName} = this.state.filterObj.toJS(),
 		uom=UomId ? UOMStore.getUomById(UomId) :
 							(this.state.chartData2 ? getUomByChartData(this.state.chartData2) : '');
 		if( !EnergySystem ) {

@@ -901,7 +901,7 @@ export default class EffectDetail extends Component {
 			)
 		}else {
 			var tags=this.state.detailInfo.get('EffectItems');
-		 var {EnergySolutionName,SolutionTitle,EnergyProblemId,EnergyEffectId,ExecutedTime,EnergySystem}=this.props.effect.toJS();
+		 var {SolutionTitle,EnergyProblemId,EnergyEffectId,ExecutedTime,EnergySystem}=this.props.effect.toJS();
 			return(
 				<div className="jazz-effect-detail">
 					{this._renderTitle()}
@@ -924,7 +924,6 @@ export default class EffectDetail extends Component {
 						}}/>}
 					{this.state.createShow && <Create
 						filterObj ={{
-							EnergySolutionName,
 							SolutionTitle,
 							EnergyProblemId,
 							EnergyEffectId,

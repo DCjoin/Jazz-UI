@@ -66,7 +66,7 @@ class CalculatedIcon extends Component{
 export class ItemForConsultant extends Component {
 
   getTitle(){
-    var {CalcState,EnergySolutionName,SolutionTitle,IsBestSolution}=this.props.effect.toJS();
+    var {CalcState,SolutionTitle,IsBestSolution}=this.props.effect.toJS();
     return(
       <div className="jazz-effect-item-info-title">
         <span className="isPreferred">{IsBestSolution && BestIsFullOrIsView() && <FontIcon className="icon-medal" style={{fontSize:'12px'}} color="#ff9000"/>}</span>
@@ -138,7 +138,7 @@ ItemForConsultant.propTypes = {
 export class ItemForManager extends Component {
 
   getTitle(){
-    var {CalcState,EnergySolutionName,SolutionTitle,IsBestSolution}=this.props.effect.toJS();
+    var {CalcState,SolutionTitle,IsBestSolution}=this.props.effect.toJS();
     return(
       <div className="jazz-effect-item-info-title">
         <span className="isPreferred">{IsBestSolution && BestIsFullOrIsView() && <FontIcon className="icon-medal" style={{fontSize:'12px'}} color="#ff9000"/>}</span>
@@ -200,7 +200,7 @@ ItemForManager.propTypes = {
 export class ItemForDraft extends Component {
 
   getTitle(){
-    var {TagName,EnergySolutionName,SolutionTitle}=this.props.effect.toJS();
+    var {TagName,SolutionTitle}=this.props.effect.toJS();
     return(
       <span className="jazz-effect-item-draft-title">
         <div className="jazz-effect-item-draft-title-tag" title={`${I18N.Setting.Effect.TagName}${TagName}`}>{`${I18N.Setting.Effect.TagName}${TagName}`}</div>

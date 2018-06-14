@@ -935,7 +935,7 @@ export default class Edit extends Component {
 
 
     if(this.state.filterObj===null){
-      let {EnergyProblemId, EnergySolutionName, SolutionTitle,ExecutedTime} = this.props.effect.toJS();
+      let {EnergyProblemId, SolutionTitle,ExecutedTime} = this.props.effect.toJS();
       return(
       <div className='jazz-save-effect-create'>
       	<Header name={
@@ -966,7 +966,7 @@ export default class Edit extends Component {
       )
     }
     else{
-       let {EnergyProblemId, EnergySolutionName, SolutionTitle,ExecutedTime, EnergySystem, ConfigStep, UomId, TagId, TagName} = this.state.filterObj.toJS();
+       let {EnergyProblemId, SolutionTitle,ExecutedTime, EnergySystem, ConfigStep, UomId, TagId, TagName} = this.state.filterObj.toJS();
 			 var uom=UomId ? UOMStore.getUomById(UomId) :
 							(this.state.chartData2 ? getUomByChartData(this.state.chartData2) : '');
     return(
