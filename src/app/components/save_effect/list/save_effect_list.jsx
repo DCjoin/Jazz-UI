@@ -252,7 +252,7 @@ export default class EffectList extends Component {
               <Snackbar ref="snackbar" autoHideDuration={4000} open={!!this.state.saveSuccessText} onRequestClose={()=>{this.setState({saveSuccessText:null})}} message={this.state.saveSuccessText}/>
               {this.state.createShow && true && <Create
                 filterObj={{
-                  EnergySolutionName: configEffect.get('EnergySolutionName'),
+                  SolutionTitle:configEffect.get('SolutionTitle'),
                   EnergyProblemId: configEffect.get('EnergyProblemId'),
                   EnergyEffectId: configEffect.get('EnergyEffectId'),
                   EnergySystem: configEffect.get('EnergySystem'),

@@ -50,7 +50,7 @@ class Item extends Component {
 						<div className="font">{`${I18N.SaveEffect.HierarchyFrom}${solution.get("HierarchyName")}`}</div>
 					</div>
 					<div className="jazz-effect-best-list-item-info-side-middle">
-						<div className="name">{solution.getIn(["SolutionInfo","EnergySolutionName"])}</div>
+						<div className="name">{solution.getIn(["SolutionInfo","SolutionTitle"])}</div>
 										<div className="jazz-effect-best-list-item-info-side-middle-operation"
 						 onClick={(e)=>{e.stopPropagation();
 													  onIgnore();
