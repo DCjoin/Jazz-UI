@@ -94,7 +94,8 @@ export default class EditSolution extends Component {
         }
 
     _hasError(){
-       var errorData=this._validateAll();
+       var errorData=this._validateAll(),
+       IsConsultant= this.state.solution.getIn(["Problem","IsConsultant"]);
        return errorData.get("Problem").find(item=>item!=='')!==undefined || errorData.get("Solutions").map(solution=>solution.find(item=>item!=='')!==undefined)
                                                                                     .includes(true) 
     }
@@ -346,9 +347,29 @@ export default class EditSolution extends Component {
           }
           return(
             <div className="jazz-ecm-push-operation">
-              <StatusCmp status={status} canEdit={this.props.hasStatusPriviledge} onChange={(value)=>{this.props.onStatusChange(value,this.state.solution)}}/>
+              <StatusCmp status={status} canEdit={this.props.hasStatusPriviledge} onChange={(value)=>{
+                    if(MeasuresStore.IsSolutionDisable(this.state.solution.toJS()) || this._hasError()){
+                            this.setState({
+                                snackBarText:I18N.Setting.ECM.RequiredTip,
+                                errorData:this._validateAll()
+                            })}
+                        else{
+                          this.props.onStatusChange(value,this.state.solution)
+                          }}
+                        }
+               />
               <EnergySys {...prop.energySys}/>
-              {this.props.person(problem,true,0,false,this.state.solution)}        
+              {this.props.person(problem,true,0,false,this.state.solution,()=>{
+                if(MeasuresStore.IsSolutionDisable(this.state.solution.toJS()) || this._hasError()){
+                            this.setState({
+                                snackBarText:I18N.Setting.ECM.RequiredTip,
+                                errorData:this._validateAll()
+                            })
+                            return false}
+                        else{
+                          return true
+                          }
+              })}        
             </div>
           )
   }
