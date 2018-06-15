@@ -197,12 +197,15 @@ export default class PushPanel extends Component {
     )
   }
 
-  _renderPersonInCharge(problem,indetail=false,index,hasSolution=false,solution=this.state.solutionList.getIn([this.state.measureIndex])){
+  _renderPersonInCharge(problem,indetail=false,index,hasSolution=false,solution=this.state.solutionList.getIn([this.state.measureIndex]),validateFx){
     return(
       <div style={{width: '220px',paddingLeft: indetail?'0':'20px', borderLeft: indetail?'':'1px dashed #e6e6e6'}}>
              {hasSolution && <div style={{height:'30px'}}/>}
               <Supervisor person={problem.get('Supervisor')} supervisorList={this.state.supervisorList}
                   onSuperviorClick={(id)=>{
+                    if(validateFx && !validateFx()){
+                      return
+                    }
                     if(indetail){
                       var currentSolution=solution;
                       MeasuresAction.updateSolution(currentSolution.toJS(),()=>{
