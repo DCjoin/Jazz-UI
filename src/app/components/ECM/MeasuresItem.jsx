@@ -130,19 +130,36 @@ export class MeasuresItem extends Component {
       }
     }
 
+    getAlarmName(){
+      var {Problem}=this.props.measure.toJS();
+      var Name=null;
+      if(Problem.SolutionTitle!==null && Problem.SolutionTitle!==''){
+        Name=Problem.SolutionTitle
+      }else{
+        if(Problem.Name!==null && Problem.Name!==''){
+          Name=`(${I18N.Setting.ECM.EnergyProblemName}:${Problem.Name})`
+        }
+      }
+
+      return (<div style={{display:"flex",flexDirection:'row',alignItems:'center',overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'}}>
+              <div className="measuresItem-title" style={{marginRight:'10px'}} title={Name}>{Name}</div>
+              {this.props.disabled && <AlarmText text={I18N.Setting.ECM.Uncompleted}/>}</div>)
+    }
+
     getName(){
       var {Problem}=this.props.measure.toJS();
+      var Name=null;
       if(Problem.SolutionTitle!==null && Problem.SolutionTitle!==''){
-        return (<div style={{display:"flex",flexDirection:'row',alignItems:'center',overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'}}>
-              <div className="measuresItem-title" style={{marginRight:'10px'}} title={I18N.format(I18N.Setting.ECM.SolutionTitle,Problem.SolutionTitle)}>{I18N.format(I18N.Setting.ECM.SolutionTitle,Problem.SolutionTitle)}</div>
-              {this.props.disabled && <AlarmText text={I18N.Setting.ECM.Uncompleted}/>}</div>)
+        Name=Problem.SolutionTitle
+      }else{
+        if(Problem.Name!==null && Problem.Name!==''){
+          Name=`(${I18N.Setting.ECM.EnergyProblemName}:${Problem.Name})`
+        }
       }
-      else {
-        return <div style={{display:"flex",flexDirection:'row',alignItems:'center'}}>
-                <AlarmText text={I18N.Setting.ECM.NoECMName}/>
-                <div style={{color:'#4f5156',marginLeft:'10px',fontSize:'10px'}}>{`(${I18N.Setting.ECM.EnergyProblemName}:${Problem.Name})`}</div>
-              </div>
-      }
+
+      return (<div style={{display:"flex",flexDirection:'row',alignItems:'center',overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'}}>
+              <div className="measuresItem-title" style={{marginRight:'10px'}} title={Name}>{Name}</div>
+              </div>)
     }
 
     _renderContent(){
@@ -215,7 +232,7 @@ export class MeasuresItem extends Component {
 																									onClick={(e)=>{
 																										e.stopPropagation();
 																									}}/>}
-            {this.getName()}
+            {this.props.isFromNotPush?this.getAlarmName():this.getName()}
           </div>
           <div style={{fontSize:'14px',color: '#626469', flex: 'none', marginLeft: 100}}>{MeasuresStore.getEnergySys(Problem.EnergySys)}</div>
         </div>
@@ -245,7 +262,8 @@ MeasuresItem.propTypes = {
   personInCharge:React.PropTypes.object,
   action:React.PropTypes.any,
 	onClick:React.PropTypes.func,
-	displayUnread:React.PropTypes.bool
+	displayUnread:React.PropTypes.bool,
+  isFromNotPush:React.PropTypes.bool,
 };
 
 MeasuresItem.defaultProps = {
