@@ -425,14 +425,20 @@ export default class PushPanel extends Component {
   _renderMeasureDialog(){
     var currentSolution=this.state.solutionList.getIn([this.state.measureIndex]);
     var createUserId=this.state.solutionList.getIn([this.state.measureIndex,'Problem','CreateUserId']);
-    var onSave=(solution)=>{
-      this.setState({
+    var onSave=(solution,needClose=true)=>{
+      if(needClose){
+        this.setState({
         measureShow:false,
         measureIndex:null
       },()=>{
-        //currentSolution=MeasuresStore.getValidParams(currentSolution);
         MeasuresAction.updateSolution(solution.toJS(),()=>{this.refresh(status[this.state.infoTabNo-1])});
       })
+      }else{
+        MeasuresAction.updateSolution(solution.toJS(),()=>{MeasuresAction.getGroupSettingsList(this.props.hierarchyId,status[this.state.infoTabNo-1])})
+      }
+
+        //currentSolution=MeasuresStore.getValidParams(currentSolution);
+  
     };
     var problem=this.state.solutionList.getIn([this.state.measureIndex,'Problem']),
         user=problem.get('CreateUserName');

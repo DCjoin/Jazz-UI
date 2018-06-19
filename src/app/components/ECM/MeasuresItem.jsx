@@ -147,7 +147,19 @@ export class MeasuresItem extends Component {
     }
 
     getName(){
+      var {Problem}=this.props.measure.toJS();
+      var Name=null;
+      if(Problem.SolutionTitle!==null && Problem.SolutionTitle!==''){
+        Name=Problem.SolutionTitle
+      }else{
+        if(Problem.Name!==null && Problem.Name!==''){
+          Name=`(${I18N.Setting.ECM.EnergyProblemName}:${Problem.Name})`
+        }
+      }
 
+      return (<div style={{display:"flex",flexDirection:'row',alignItems:'center',overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'}}>
+              <div className="measuresItem-title" style={{marginRight:'10px'}} title={Name}>{Name}</div>
+              </div>)
     }
 
     _renderContent(){
