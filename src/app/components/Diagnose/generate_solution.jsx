@@ -47,7 +47,7 @@ class TextBox extends Component {
   render() {
     let { onChange, onBlur, value, hintText, style, errorMsg, multiLine } = this.props;
     return (<div className='solution-text-box' style={style}>
-      {multiLine ? <textarea type='text' value={value} onChange={onChange} placeholder={hintText}/> : <input type='text' value={value} onBlur={onBlur} onChange={onChange} placeholder={hintText}/>}
+      {multiLine ? <textarea type='text' value={value} onChange={onChange} placeholder={hintText}/> : <input type='text' value={value || ''} onBlur={onBlur} onChange={onChange} placeholder={hintText}/>}
       {errorMsg && <span className='error-msg'>{errorMsg}</span>}
     </div>);
   }
