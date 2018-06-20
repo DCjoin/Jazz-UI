@@ -293,8 +293,30 @@ export default class EditSolution extends Component {
 
       _onBlur( paths, value ) {
         let errorData = this.state.errorData;
+        let IsConsultant=this.state.solution.getIn(["Problem","IsConsultant"]);
+        if(IsConsultant){
+          errorData=this._validate(paths, value,errorData);
+        }else{
+          var error=null;
+          if(paths.join('') === 'ProblemName' && (value===null || value==='')){
+            error=I18N.Setting.Diagnose.PleaseInput+I18N.Setting.Diagnose.ProblemName
+          }
+          if( ~paths.indexOf('ExpectedAnnualEnergySaving') ) {
+            if( value && !NUMBER_REG.test(value) ) {
+                error = I18N.Setting.ECM.NumberrTip;
+              }
+            }
+    
+        if( ~paths.indexOf('ExpectedAnnualCostSaving') ) {
+      
+              if( value && !NUMBER_REG.test(value) ) {
+                 error = I18N.Setting.ECM.NumberrTip;
+                }
+            } 
+            errorData=errorData.setIn(paths,error)
+        }
 
-        errorData=this._validate(paths, value,errorData);
+        
 
         this.setState({
           errorData
@@ -333,7 +355,7 @@ export default class EditSolution extends Component {
                   <PlanDetail errorData={errorData} hasPicTitle={false} isView={!this.props.hasPriviledge} solutionTitle={this.state.solution.getIn(['Problem','SolutionTitle'])} isRequired={IsConsultant} Solutions={this.state.solution.get('Solutions')} onChange={this._onChange} onBlur={this._onBlur}/>
                 </session>
                 <session className='session-container'>
-                  <ProblemDetail errorData={errorData} iisView={!this.props.hasPriviledge} isRequired={IsConsultant} energySolution={this.state.solution} onChange={this._onChange} hasEnergySys={false} onBlur={this._onBlur}/>
+                  <ProblemDetail errorData={errorData} isView={!this.props.hasPriviledge} isRequired={IsConsultant} energySolution={this.state.solution} onChange={this._onChange} hasEnergySys={false} onBlur={this._onBlur}/>
                 </session>
              </div>}
         </div>
