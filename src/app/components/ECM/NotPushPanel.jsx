@@ -303,7 +303,7 @@ return(
         contentStyle={styles.content}
         actions={[
             <RaisedButton
-              label={I18N.Common.Button.Delete}
+              label={I18N.Setting.ECM.Delete}
               onClick={this._onDelete} />,
             <FlatButton
               label={I18N.Common.Button.Cancel2}
