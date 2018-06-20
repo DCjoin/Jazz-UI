@@ -293,8 +293,30 @@ export default class EditSolution extends Component {
 
       _onBlur( paths, value ) {
         let errorData = this.state.errorData;
+        let IsConsultant=this.state.solution.getIn(["Problem","IsConsultant"]);
+        if(IsConsultant){
+          errorData=this._validate(paths, value,errorData);
+        }else{
+          var error=null;
+          if(paths.join('') === 'ProblemName' && (value===null || value==='')){
+            error=I18N.Setting.Diagnose.PleaseInput+I18N.Setting.Diagnose.ProblemName
+          }
+          if( ~paths.indexOf('ExpectedAnnualEnergySaving') ) {
+            if( value && !NUMBER_REG.test(value) ) {
+                error = I18N.Setting.ECM.NumberrTip;
+              }
+            }
+    
+        if( ~paths.indexOf('ExpectedAnnualCostSaving') ) {
+      
+              if( value && !NUMBER_REG.test(value) ) {
+                 error = I18N.Setting.ECM.NumberrTip;
+                }
+            } 
+            errorData=errorData.setIn(paths,error)
+        }
 
-        errorData=this._validate(paths, value,errorData);
+        
 
         this.setState({
           errorData
