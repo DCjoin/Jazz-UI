@@ -333,7 +333,7 @@ export default class EditSolution extends Component {
                   <PlanDetail errorData={errorData} hasPicTitle={false} isView={!this.props.hasPriviledge} solutionTitle={this.state.solution.getIn(['Problem','SolutionTitle'])} isRequired={IsConsultant} Solutions={this.state.solution.get('Solutions')} onChange={this._onChange} onBlur={this._onBlur}/>
                 </session>
                 <session className='session-container'>
-                  <ProblemDetail errorData={errorData} iisView={!this.props.hasPriviledge} isRequired={IsConsultant} energySolution={this.state.solution} onChange={this._onChange} hasEnergySys={false} onBlur={this._onBlur}/>
+                  <ProblemDetail errorData={errorData} isView={!this.props.hasPriviledge} isRequired={IsConsultant} energySolution={this.state.solution} onChange={this._onChange} hasEnergySys={false} onBlur={this._onBlur}/>
                 </session>
              </div>}
         </div>
