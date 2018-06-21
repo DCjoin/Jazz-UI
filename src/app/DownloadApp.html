@@ -188,13 +188,13 @@
 					<div id="mms_text" class="mms-text">请选择用其他浏览器打开本页，然后点击本地下载</div>
 				</div>
 				<div class="down-other-title center">其他下载方式</div>
-				<div class="down-other-links center">
+				<div class="down-other-links center" style="display:flex">
 					<div class="down-other-link">
-						<!-- 在应用宝中的下载地址 -->
+						<!-- 在应用宝中的下载地址 
 						<a id="qq-url" class="link-icon" href="http://app.qq.com/#id=detail&appid=1106196772">
 							<div class="icon-tencent download-icon"></div>
 							<div class="link-text">应用宝</div>
-						</a>
+						</a>-->
 					</div>
 					<div class="down-other-link">
 						<!-- 在豌豆荚中的下载地址 -->
@@ -204,11 +204,11 @@
 						</a>
 					</div>
 					<div class="down-other-link">
-						<!-- 在百度应用中的下载地址 -->
+						<!-- 在百度应用中的下载地址 
 						<a id="baidu-url" class="link-icon" href="http://shouji.baidu.com/software/11792743.html">
 							<div class="icon-baidu download-icon"></div>
 							<div class="link-text">百度助手</div>
-						</a>
+						</a>-->
 					</div>
 					<div style="clear:both;"></div>
 				</div>
@@ -219,13 +219,12 @@
 		</div>
 				<script>
 			// default setting
-			console.log("in");
 			document.getElementById("version").innerHTML = window.__options.Version;
 			document.getElementById("size").innerHTML = window.__options.Size;
 			document.getElementById("local-url").href = window.__options.LoacalURL;
-			document.getElementById("qq-url").href = window.__options.QQURL;
+			// document.getElementById("qq-url").href = window.__options.QQURL;
 			document.getElementById("wdj-url").href = window.__options.WDJURL;
-			document.getElementById("baidu-url").href = window.__options.BaiduURL;
+			// document.getElementById("baidu-url").href = window.__options.BaiduURL;
 			// get app url
 			var xmlhttp;
 			if(window.XMLHttpRequest){
@@ -242,9 +241,9 @@
 										document.getElementById("version").innerHTML = data.Result.JAZZ_UI_APP_VERSION;
 										document.getElementById("size").innerHTML = data.Result.JAZZ_UI_APP_SIZE;
 										document.getElementById("local-url").href = data.Result.JAZZ_UI_APP_DOWNLOAD_LOCAL;
-										document.getElementById("qq-url").href = data.Result.JAZZ_UI_APP_DOWNLOAD_QQ;
+										// document.getElementById("qq-url").href = data.Result.JAZZ_UI_APP_DOWNLOAD_QQ;
 										document.getElementById("wdj-url").href = data.Result.JAZZ_UI_APP_DOWNLOAD_WDJ;
-										document.getElementById("baidu-url").href = data.Result.JAZZ_UI_APP_DOWNLOAD_BAIDU;
+										// document.getElementById("baidu-url").href = data.Result.JAZZ_UI_APP_DOWNLOAD_BAIDU;
 						}
 					}
 				}
