@@ -476,6 +476,7 @@ export default class EditSolution extends Component {
     if(!Immutable.is(this.state.solution,nextProps.solution)){
       this.setState({
         solution:nextProps.solution,
+        preSolution:nextProps.solution,
         errorData:Immutable.fromJS({})
       })
     }
