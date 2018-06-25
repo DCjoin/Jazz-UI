@@ -50,6 +50,10 @@ function pushAndNotPushIsFull() {
 	return privilegeWithPushAndNotPush(privilegeUtil.isFull.bind(privilegeUtil));
 }
 
+function isConsultant() {
+   return pushAndNotPushIsFull()
+}
+
 
 export default class EditSolution extends Component {
 
@@ -101,7 +105,7 @@ export default class EditSolution extends Component {
     }
     _onSave(){
       var errorData=this._validateAll();
-      var IsConsultant=this.state.solution.getIn(["Problem","IsConsultant"]);
+      var IsConsultant=isConsultant();
 
       if(IsConsultant){
           DiagnoseAction.checkTitle( this.context.hierarchyId, 
@@ -152,7 +156,7 @@ export default class EditSolution extends Component {
 
     _onClose(){
       var currentSolution=this.state.solution.setIn(["Problem",'EnergySys'],this.state.energySys);
-      var IsConsultant=this.state.solution.getIn(["Problem","IsConsultant"]);
+      var IsConsultant=isConsultant();
 
       if(!this.props.hasPriviledge){
         this.props.onClose()
@@ -293,7 +297,7 @@ export default class EditSolution extends Component {
 
       _onBlur( paths, value ) {
         let errorData = this.state.errorData;
-        let IsConsultant=this.state.solution.getIn(["Problem","IsConsultant"]);
+        let IsConsultant=isConsultant();
         if(IsConsultant){
           errorData=this._validate(paths, value,errorData);
         }else{
@@ -327,7 +331,7 @@ export default class EditSolution extends Component {
       var user=this.state.solution.getIn(['Problem','CreateUserName']);
       var iconstyle={fontSize:'16px'},style={padding:'0',fontSize:'16px',height:'16px',linHeght:'16px',marginRight:'8px',marginLeft:'8px'};
       var {errorData}=this.state;
-      var IsConsultant=this.state.solution.getIn(["Problem",'IsConsultant'])
+      var IsConsultant=isConsultant()
       return(
         <div>
                 <div ref="save_column" className="push-panel-solution-header">
@@ -412,7 +416,7 @@ export default class EditSolution extends Component {
           return(
             <div className="jazz-ecm-push-operation">
               <StatusCmp status={status} canEdit={this.props.hasStatusPriviledge} onChange={(value)=>{
-                if(this.state.solution.getIn(["Problem",'IsConsultant'])){
+                if(isConsultant()){
                   if(MeasuresStore.IsSolutionDisable(this.state.solution.toJS()) || this._hasError()){
                             this.setState({
                                 snackBarText:I18N.Setting.ECM.RequiredTip,
@@ -436,7 +440,7 @@ export default class EditSolution extends Component {
                />
               <EnergySys {...prop.energySys}/>
               {this.props.person(problem,true,0,false,this.state.solution,()=>{
-                if(this.state.solution.getIn(["Problem",'IsConsultant'])){
+                if(isConsultant()){
                   if(MeasuresStore.IsSolutionDisable(this.state.solution.toJS()) || this._hasError()){
                             this.setState({
                                 snackBarText:I18N.Setting.ECM.RequiredTip,
