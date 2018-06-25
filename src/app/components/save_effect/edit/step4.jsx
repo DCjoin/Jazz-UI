@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
 import find from 'lodash-es/find';
 import EditStep4 from '../create/step4.jsx';
 import StepComponent from './stepComponent.jsx';
@@ -6,7 +6,7 @@ import FlatButton from "controls/NewFlatButton.jsx";
 import TimeGranularity from 'constants/TimeGranularity.jsx';
 import moment from 'moment';
 import ViewableTextField from 'controls/ViewableTextField.jsx';
-
+import PropTypes from 'prop-types';
 let getStepDataItems = () => [
 	{ id: TimeGranularity.Minite, label: I18N.EM.Raw },
 	{ id: TimeGranularity.Hourly, label: I18N.EM.Hour },
@@ -93,10 +93,10 @@ export default class Step4 extends Component {
 
 }
 
-Step4.propTypes = {
-  configStep:React.PropTypes.number || null,
-  isView:React.PropTypes.boolean,
-  onSave:React.PropTypes.func,
-  onCancel:React.PropTypes.func,
-  onEdit:React.PropTypes.func,
+Step4.propTypes= {
+  configStep:PropTypes.number || null,
+  isView:PropTypes.boolean,
+  onSave:PropTypes.func,
+  onCancel:PropTypes.func,
+  onEdit:PropTypes.func,
 };

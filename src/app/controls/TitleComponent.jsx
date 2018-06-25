@@ -1,8 +1,8 @@
 'use strict';
-import React, {Component,PropTypes} from 'react';
+import React, {Component} from 'react';
 import classNames from 'classnames';
 import assign from 'object-assign';
-
+import PropTypes from 'prop-types';
 const Style={
   group:{
     marginTop:'30px'
@@ -52,7 +52,7 @@ export default class TitleComponent extends Component {
 }
 };
 
-TitleComponent.propTypes = {
+TitleComponent.propTypes= {
 	title: PropTypes.node,
 	titleClassName: PropTypes.string,
 	titleStyle: PropTypes.object,

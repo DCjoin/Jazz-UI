@@ -15,19 +15,20 @@ import NewDialog from '../../../controls/NewDialog.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
 import FromEndTime from '../../../controls/FromEndTime.jsx';
 import FromEndDate from '../../../controls/FromEndDate.jsx';
-
-var TariffDetail = React.createClass({
+var createReactClass = require('create-react-class');
+import PropTypes from 'prop-types';
+var TariffDetail = createReactClass({
 
   propTypes: {
-    formStatus: React.PropTypes.bool,
-    infoTab: React.PropTypes.bool,
-    tariff: React.PropTypes.object,
-    setEditStatus: React.PropTypes.func,
-    handlerCancel: React.PropTypes.func,
-    handleSaveTariff: React.PropTypes.func,
-    handleDeleteTariff: React.PropTypes.func,
-    handlerSwitchTab: React.PropTypes.func,
-    toggleList: React.PropTypes.func,
+    formStatus: PropTypes.bool,
+    infoTab: PropTypes.bool,
+    tariff: PropTypes.object,
+    setEditStatus: PropTypes.func,
+    handlerCancel: PropTypes.func,
+    handleSaveTariff: PropTypes.func,
+    handleDeleteTariff: PropTypes.func,
+    handlerSwitchTab: PropTypes.func,
+    toggleList: PropTypes.func,
   },
   getInitialState: function() {
     return {

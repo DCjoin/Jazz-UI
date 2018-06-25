@@ -1,16 +1,17 @@
 'use strict';
 
 import React from "react";
+import PropTypes from 'prop-types';
 import Immutable from 'immutable';
 import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
 import AllCommodityStore from '../../stores/AllCommodityStore.jsx';
-
-var ComAndUom = React.createClass({
+var createReactClass = require('create-react-class');
+var ComAndUom = createReactClass({
   propTypes: {
-    isFirst: React.PropTypes.bool,
-    selectedItem: React.PropTypes.object,
-    mergeItem: React.PropTypes.func,
-    isViewStatus: React.PropTypes.bool
+    isFirst: PropTypes.bool,
+    selectedItem: PropTypes.object,
+    mergeItem: PropTypes.func,
+    isViewStatus: PropTypes.bool
   },
   getInitialState: function() {
     return {

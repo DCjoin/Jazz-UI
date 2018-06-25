@@ -674,14 +674,14 @@ let ChartStrategyFactor = {
       if (!analysisPanel.props.isFromAlarm) {
         //  CurrentUserStore.getCurrentPrivilege().indexOf('1205') > -1
         if (CurrentUserStore.permit(PermissionCode.ENERGY_EXPORT.FULL)) {
-          widgetOptMenu = <IconMenu {...iconMenuProps} onItemTouchTap={analysisPanel._onTitleMenuSelect}>
+          widgetOptMenu = <IconMenu {...iconMenuProps} onItemClick={analysisPanel._onTitleMenuSelect}>
                                   <MenuItem key={1} primaryText={I18N.Folder.Detail.WidgetMenu.Menu1} disabled={buttonDisabled}/>
                                   <MenuItem key={2} primaryText={I18N.Folder.Detail.WidgetMenu.Menu2} disabled={buttonDisabled}/>
                                   <MenuItem key={4} primaryText={I18N.Folder.Detail.WidgetMenu.Menu4} disabled={buttonDisabled}/>
                                   <MenuItem key={5} primaryText={I18N.Folder.Detail.WidgetMenu.Menu5} />
                                </IconMenu>;
         } else {
-          widgetOptMenu = <IconMenu {...iconMenuProps} onItemTouchTap={analysisPanel._onTitleMenuSelect}>
+          widgetOptMenu = <IconMenu {...iconMenuProps} onItemClick={analysisPanel._onTitleMenuSelect}>
                                   <MenuItem key={1} primaryText={I18N.Folder.Detail.WidgetMenu.Menu1} disabled={buttonDisabled}/>
                                   <MenuItem key={2} primaryText={I18N.Folder.Detail.WidgetMenu.Menu2} disabled={buttonDisabled}/>
                                   <MenuItem key={5} primaryText={I18N.Folder.Detail.WidgetMenu.Menu5} />
@@ -714,7 +714,7 @@ let ChartStrategyFactor = {
       };
       let selectedWidget = FolderStore.getSelectedNode();
       let buttonDisabled = (!analysisPanel.state.energyData || !selectedWidget.get('ChartType'));
-      widgetOptMenu = analysisPanel.props.isFromAlarm ? null : <IconMenu {...iconMenuProps} onItemTouchTap={analysisPanel._onTitleMenuSelect}>
+      widgetOptMenu = analysisPanel.props.isFromAlarm ? null : <IconMenu {...iconMenuProps} onItemClick={analysisPanel._onTitleMenuSelect}>
                               <MenuItem key={1} primaryText={I18N.Folder.Detail.WidgetMenu.Menu1} disabled={buttonDisabled}/>
                               <MenuItem key={2} primaryText={I18N.Folder.Detail.WidgetMenu.Menu2} disabled={buttonDisabled}/>
                               <MenuItem key={5} primaryText={I18N.Folder.Detail.WidgetMenu.Menu5} />

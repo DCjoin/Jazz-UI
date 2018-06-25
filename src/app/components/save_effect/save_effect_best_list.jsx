@@ -1,4 +1,4 @@
-import React, { Component ,PropTypes} from 'react';
+import React, { Component } from 'react';
 import {getBestSolution,ignoreBestForList} from 'actions/save_effect_action.js';
 import BestStore from 'stores/save_effect/bestStore.jsx';
 import FontIcon from 'material-ui/FontIcon';
@@ -10,7 +10,7 @@ import Detail from './list/save_effect_detail.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
 import PermissionCode from 'constants/PermissionCode.jsx';
-
+import PropTypes from 'prop-types';
 const characterType={
 			"HighCost":1,
 			"LessInvest":2,

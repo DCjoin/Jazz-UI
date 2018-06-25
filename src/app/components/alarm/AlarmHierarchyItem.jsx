@@ -5,9 +5,9 @@ import classNames from 'classnames';
 import AlarmTagItem from './AlarmTagItem.jsx';
 import AlarmAction from '../../actions/AlarmAction.jsx';
 import { nodeType } from '../../constants/TreeConstants.jsx';
+var createReactClass = require('create-react-class');
 
-
-let AlarmHierarchyItem = React.createClass({
+let AlarmHierarchyItem = createReactClass({
   _onHierarchyItemSelected() {
     this.setState({
       extended: !this.state.extended

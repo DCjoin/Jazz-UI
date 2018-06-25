@@ -17,7 +17,7 @@ import SolutionGallery from './MeasurePart/SolutionGallery.jsx';
 import DisappareItem from './MeasurePart/DisappareItem.jsx';
 import {EnergySys} from './MeasurePart/MeasureTitle.jsx';
 import Immutable from 'immutable';
-
+import Button from '@emop-ui/piano/button';
 import PushConfirmDialog from'./push_confirm_dialog.jsx';
 
 export default class NotPushPanel extends Component {
@@ -249,14 +249,14 @@ export default class NotPushPanel extends Component {
                 ?I18N.format(I18N.Setting.ECM.BatchPushContent,MeasuresStore.getNamesById('Batch'))
                 :I18N.format(I18N.Setting.ECM.PushContent);
 return(
-     <NewDialog
-        open={true}
-        overlayStyle={{zIndex:'1000'}}
-        actionsContainerStyle={styles.action}
-        contentStyle={styles.content}
-        actions={[
-            <RaisedButton
-              label={I18N.Setting.ECM.Push}
+      <NewDialog open={true}
+        contentStyle={{overflowY:'hidden',padding:'24px 0'}}
+        actionsContainerStyle={{display:'flex',flexDirection:'row',justifyContent: 'flex-end'}}
+        onRequestClose={() => {
+          this.setState({saveTipShow:false})
+        }}
+        actions={ [<Button key='pause' style={{marginRight:'16px'}} flat secondary labelStyle={{color:'#32ad3c'}} 
+          label={I18N.Setting.ECM.Push}
               onClick={()=>{
                 this.setState({
                   dialogType:null,
@@ -267,15 +267,16 @@ return(
                     this._onPush()
                   }
                 })
-              }} />,
-            <FlatButton
-              label={I18N.Common.Button.Cancel2}
+              }}
+        />,
+        <Button key='cancel' style={{marginRight:'16px'}} flat secondary  label={I18N.Common.Button.Cancel2}
               onClick={() => {this.setState({
                               dialogType: null,
                               handleIndex:null
-                              })}} />
-          ]}
-      ><div className="jazz-ecm-measure-viewabletext">{content}</div></NewDialog>
+                              })}}/>          
+        ]}>
+        <div style={{fontSize:'16px',color:'#666666'}}>{content}</div>
+      </NewDialog>
 
    
 
@@ -295,23 +296,24 @@ return(
     };
     var content=I18N.format(I18N.Setting.ECM.DeleteContent);
     return(
-      <NewDialog
-        open={true}
-        actionsContainerStyle={styles.action}
-        overlayStyle={{zIndex:'1000'}}
-        contentStyle={styles.content}
-        actions={[
-            <RaisedButton
-              label={I18N.Common.Button.Delete}
-              onClick={this._onDelete} />,
-            <FlatButton
-              label={I18N.Common.Button.Cancel2}
+       <NewDialog open={true}
+        contentStyle={{overflowY:'hidden',padding:'24px 0'}}
+        actionsContainerStyle={{display:'flex',flexDirection:'row',justifyContent: 'flex-end'}}
+        onRequestClose={() => {
+          this.setState({saveTipShow:false})
+        }}
+        actions={ [<Button key='pause' style={{marginRight:'16px'}} flat secondary labelStyle={{color:'#dc0a0a'}} 
+          label={I18N.Common.Button.Delete}
+              onClick={this._onDelete}
+        />,
+        <Button key='cancel' style={{marginRight:'16px'}} flat secondary  label={I18N.Common.Button.Cancel2}
               onClick={() => {this.setState({
                               dialogType: null,
                               handleIndex:null
-                              })}} />
-          ]}
-      ><div className="jazz-ecm-measure-viewabletext">{content}</div></NewDialog>
+                              })}}/>          
+        ]}>
+        <div style={{fontSize:'16px',color:'#666666'}}>{content}</div>
+      </NewDialog>
     )
   }
 
@@ -464,8 +466,8 @@ return(
 
   }
 }
-
-  NotPushPanel.propTypes = {
-    hierarchyId:React.PropTypes.number,
-    generatePositon:React.PropTypes.Object,
+import PropTypes from 'prop-types';
+  NotPushPanel.propTypes= {
+    hierarchyId:PropTypes.number,
+    generatePositon:PropTypes.Object,
   };

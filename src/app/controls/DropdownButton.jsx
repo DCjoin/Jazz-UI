@@ -5,7 +5,7 @@ import mui from 'material-ui';
 import Add from './icons/Add.jsx';
 import classSet from 'classnames';
 import assign from 'lodash-es/assign';
-
+var createReactClass = require('create-react-class');
 // import PopoverAnimationFromTop from '../../../node_modules/material-ui/lib/popover/popover-animation-from-top';
 
 import Menu from 'material-ui/Menu';
@@ -14,7 +14,7 @@ import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
 import ClickAwayListener from './ClickAwayListener.jsx';
 
-var DropdownButton = React.createClass({
+var DropdownButton = createReactClass({
   getInitialState: function () {
     return {
       open: false,

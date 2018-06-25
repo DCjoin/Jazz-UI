@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import {flowRight, curryRight} from 'lodash-es';
 import FontIcon from 'material-ui/FontIcon';
@@ -101,9 +102,9 @@ export class EnergySys extends Component {
   }
 }
 
-EnergySys.propTypes = {
-  problemMark:React.PropTypes.object,
-  didChanged:React.PropTypes.func,
+EnergySys.propTypes= {
+  problemMark:PropTypes.object,
+  didChanged:PropTypes.func,
 };
 
 export class Gallery extends Component {
@@ -116,7 +117,7 @@ export class Gallery extends Component {
 				</div>
 				<div className='jazz-scheme-gallery-content'>
 					<div className='jazz-scheme-gallery-content-header'>
-						{`(${selectedIdx+1}/${names.length})${names[selectedIdx]}`}
+						<div className="hiddenEllipsis" title={names[selectedIdx]} style={{marginLeft:'10px',marginRight:'30px'}}>{`(${selectedIdx+1}/${names.length})${names[selectedIdx]}`}</div>
 						{names.length > 1 && !isView && <span className='jazz-scheme-gallery-content-header-delete icon-delete' onClick={onDelete}/>}
 					</div>
 					{renderContent()}
@@ -147,7 +148,7 @@ class OnceHidePanel extends Component {
 
 
 export class GenerateSolution extends Component {
-	static propTypes = {
+	static propTypes= {
 		nodes: PropTypes.arrayOf(PropTypes.object),
 		onRequestClose: PropTypes.func,
 		renderChartCmp: PropTypes.func,
@@ -555,7 +556,7 @@ export class GenerateSolution extends Component {
 
 
 export class GenerateSolutionButton extends Component {
-	static propTypes = {
+	static propTypes= {
 		nodes: PropTypes.arrayOf(PropTypes.object),
 		preAction: PropTypes.object,
 	};

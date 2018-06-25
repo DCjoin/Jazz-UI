@@ -3,8 +3,8 @@ import React from "react";
 
 import { Snackbar, FlatButton } from 'material-ui';
 import NewDialog from '../controls/NewDialog.jsx';
-
-let GlobalErrorMessageDialog = React.createClass({
+var createReactClass = require('create-react-class');
+let GlobalErrorMessageDialog = createReactClass({
   getInitialState() {
     return {
       isShowed: false,

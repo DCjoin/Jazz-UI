@@ -1,15 +1,16 @@
 'use strict';
 import React from "react";
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { FontIcon, TextField } from 'material-ui';
 // import Search from './FolderSearchPaper.jsx';
 import FolderStore from 'stores/FolderStore.jsx';
 
 import Immutable from 'immutable';
-
-const TreeSearchBox = React.createClass({
+var createReactClass = require('create-react-class');
+const TreeSearchBox = createReactClass({
   propTypes: {
-    onSearchClick: React.PropTypes.func.isRequired,
+    onSearchClick: PropTypes.func.isRequired,
   },
   _onSearchClick: function() {
     // ReactDOM.findDOMNode(this.refs.searchIcon).style.display = 'none';

@@ -1,5 +1,6 @@
 'use strict';
 import React, { Component }  from "react";
+import PropTypes from 'prop-types';
 import Immutable from 'immutable';
 import { withRouter } from 'react-router';
 import assign from "object-assign";
@@ -85,8 +86,8 @@ function isTouSupportedChartType(type){
 class AnalysisPanel extends Component {
 
   static contextTypes = {
-    router: React.PropTypes.object,
-    hierarchyId: React.PropTypes.string,
+    router: PropTypes.object,
+    hierarchyId: PropTypes.string,
   };
 
   isInitial=false;
@@ -1000,7 +1001,7 @@ _onBubbleAxisChanged(){
           targetOrigin={{horizontal: 'left', vertical: 'top'}}
           onRequestClose={handleRequestClose}
         >
-      <Menu onItemTouchTap={handleMenuItemClick}>
+      <Menu onItemClick={handleMenuItemClick}>
         <MenuItem key={MenuAction.SaveAs} primaryText={I18N.Folder.Detail.WidgetMenu.Menu1} style={styles.label} disabled={buttonDisabled}/>
         <MenuItem key={MenuAction.Export} primaryText={I18N.Folder.Detail.WidgetMenu.Menu4} style={styles.label} disabled={buttonDisabled}/>
         <MenuItem key={MenuAction.Share} primaryText={I18N.Folder.Detail.WidgetMenu.Menu6} style={styles.label} disabled={buttonDisabled}/>
@@ -1909,15 +1910,15 @@ _onBubbleAxisChanged(){
   }
 }
 
-AnalysisPanel.propTypes = {
-  selectedNode:React.PropTypes.object,
-	hierarchyId:React.PropTypes.number,
-  isBuilding:React.PropTypes.bool,
-  chartTitle:React.PropTypes.string,
-  sourceUserName:React.PropTypes.string,
-  widgetDto:React.PropTypes.object,
-  onOperationSelect:React.PropTypes.func,
-  isNew:React.PropTypes.bool,
+AnalysisPanel.propTypes= {
+  selectedNode:PropTypes.object,
+	hierarchyId:PropTypes.number,
+  isBuilding:PropTypes.bool,
+  chartTitle:PropTypes.string,
+  sourceUserName:PropTypes.string,
+  widgetDto:PropTypes.object,
+  onOperationSelect:PropTypes.func,
+  isNew:PropTypes.bool,
 };
 
 // AnalysisPanel.defaultProps={

@@ -12,7 +12,8 @@ import UserAction from '../../../actions/UserAction.jsx';
 import RoleStore from '../../../stores/RoleStore.jsx';
 import RoleAction from '../../../actions/RoleAction.jsx';
 import Dialog from '../../../controls/NewDialog.jsx';
-var Role = React.createClass({
+var createReactClass = require('create-react-class');
+var Role = createReactClass({
   getInitialState: function() {
     return {
       formStatus: formStatus.VIEW,

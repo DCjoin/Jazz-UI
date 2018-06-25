@@ -4,7 +4,7 @@ import FlatButton from 'material-ui/FlatButton';
 import TitleComponent from 'controls/TitleComponent.jsx';
 import {Type,SettingStatus} from 'constants/actionType/KPI.jsx';
 import assign from 'object-assign';
-
+import PropTypes from 'prop-types';
 export default class ViewableKPIType extends Component {
 	render() {
     var {status,type,onTypeChange,onClassChange,indicatorClass}=this.props;
@@ -127,10 +127,10 @@ export default class ViewableKPIType extends Component {
 		);
 	}
 }
-ViewableKPIType.propTypes = {
-	status:React.PropTypes.string,
-	type:React.PropTypes.number,
-	indicatorClass:React.PropTypes.number,
-	onTypeChange:React.PropTypes.func,
-	onClassChange:React.PropTypes.func,
+ViewableKPIType.propTypes= {
+	status:PropTypes.string,
+	type:PropTypes.number,
+	indicatorClass:PropTypes.number,
+	onTypeChange:PropTypes.func,
+	onClassChange:PropTypes.func,
 };

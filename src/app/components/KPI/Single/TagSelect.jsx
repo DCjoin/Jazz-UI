@@ -8,21 +8,21 @@ import NewFlatButton from 'controls/NewFlatButton.jsx';
 import Tree from 'controls/tree/Tree.jsx';
 import CommonFuns from 'util/Util.jsx';
 import {nodeType} from 'constants/TreeConstants.jsx';
-
+import PropTypes from 'prop-types';
 export default class TagSelect extends Component {
 
-	static propTypes = {
-		hierarchyId:React.PropTypes.number,
-		hierarchyName:React.PropTypes.String,
-		onSave:React.PropTypes.func,
-		onCancel:React.PropTypes.func,
-		tag:React.PropTypes.object,
-		title:React.PropTypes.String,
-		filterTagIds:React.PropTypes.array,
+	static propTypes= {
+		hierarchyId:PropTypes.number,
+		hierarchyName:PropTypes.String,
+		onSave:PropTypes.func,
+		onCancel:PropTypes.func,
+		tag:PropTypes.object,
+		title:PropTypes.String,
+		filterTagIds:PropTypes.array,
 	};
 
 	static contextTypes = {
-		router: React.PropTypes.object,
+		router: PropTypes.object,
 	};
 
 	constructor(props) {
@@ -190,7 +190,8 @@ export default class TagSelect extends Component {
 		        ref: 'tag_dialog',
 		        title: this.props.title?this.props.title:I18N.Setting.KPI.Tag.Title,
 						titleStyle:{margin:'0 22px',height:'19px',lineHeight:'19px',padding:"15px 0",fontSize:'14px', fontWeight: 600,borderBottom:'1px solid #e6e6e6'},
-		        actions: actions,
+		        contentStyle:{margin:'0 22px',padding:'0'},
+						actions: actions,
 		        modal: true,
 		        open: true,
 						wrapperStyle:{

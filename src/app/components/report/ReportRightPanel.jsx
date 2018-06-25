@@ -15,12 +15,12 @@ import ReportStore from '../../stores/ReportStore.jsx';
 import GlobalErrorMessageAction from '../../actions/GlobalErrorMessageAction.jsx';
 import Immutable from 'immutable';
 import Dialog from '../../controls/NewDialog.jsx';
-
-
-var ReportRightPanel = React.createClass({
+import PropTypes from 'prop-types';
+var createReactClass = require('create-react-class');
+var ReportRightPanel = createReactClass({
 
   contextTypes:{
-      currentRoute: React.PropTypes.object
+      currentRoute: PropTypes.object
   },
   getInitialState: function() {
     return {

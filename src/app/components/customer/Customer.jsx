@@ -8,7 +8,7 @@ import { CircularProgress } from 'material-ui';
 
 import { formStatus } from 'constants/FormStatus.jsx';
 import Dialog from 'controls/PopupDialog.jsx';
-
+var createReactClass = require('create-react-class');
 import CustomerList from './CustomerList.jsx';
 import CustomerDetail from './CustomerDetail.jsx';
 
@@ -18,7 +18,7 @@ import CustomerStore from 'stores/CustomerStore.jsx';
 import HierarchyAction from 'actions/hierarchySetting/HierarchyAction.jsx';
 import HierarchyStore from 'stores/hierarchySetting/HierarchyStore.jsx';
 
-var Customer = React.createClass({
+var Customer = createReactClass({
   getInitialState: function() {
     return {
       formStatus: formStatus.VIEW,

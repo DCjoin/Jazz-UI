@@ -1,6 +1,6 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
 import FlatButton from 'material-ui/FlatButton';
-
+import PropTypes from 'prop-types';
 const PrimaryStyleNormal = {
 	backgroundColor: '#32ad3d',
 	color: '#ffffff',
@@ -77,7 +77,7 @@ export default class NewFlatButton extends Component {
 	}
 }
 
-NewFlatButton.propTypes = {
+NewFlatButton.propTypes= {
 	primary: PropTypes.bool,
 	secondary: PropTypes.bool,
 };

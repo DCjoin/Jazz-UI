@@ -2,9 +2,9 @@
 
 import React from 'react';
 import classNames from 'classnames';
+var createReactClass = require('create-react-class');
 
-
-let ReportItem = React.createClass({
+let ReportItem = createReactClass({
   _onItemSelected() {
     if (this.props.onItemClick) {
       var reportItem = {

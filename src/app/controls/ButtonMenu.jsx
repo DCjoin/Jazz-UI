@@ -24,7 +24,6 @@ function _objectWithoutProperties(obj, keys) {
 
 import React from "react";
 import { Mixins, RaisedButton, FontIcon } from 'material-ui';
-import ReactTransitionGroup from 'react-addons-transition-group';
 let Events = {
 
   once(el, type, callback) {
@@ -70,30 +69,31 @@ let Events = {
   },
 };
 import  Menu from 'material-ui/Menu';
-
-var ButtonMenu = React.createClass({
+import PropTypes from 'prop-types';
+var createReactClass = require('create-react-class');
+var ButtonMenu = createReactClass({
   //displayName: 'IconMenu',
 
   // //mixins: [Mixins.StylePropable, Mixins.ClickAwayable],
 
   contextTypes: {
-    muiTheme: React.PropTypes.object
+    muiTheme: PropTypes.object
   },
 
   propTypes: {
-    iconButtonElement: React.PropTypes.element.isRequired,
-    onItemKeyboardActivate: React.PropTypes.func,
-    onItemTouchTap: React.PropTypes.func,
-    onKeyboardFocus: React.PropTypes.func,
-    onMouseDown: React.PropTypes.func,
-    onMouseOut: React.PropTypes.func,
-    onMouseOver: React.PropTypes.func,
-    onMouseUp: React.PropTypes.func,
-    onTouchTap: React.PropTypes.func,
-    menuStyle: React.PropTypes.object,
-    touchTapCloseDelay: React.PropTypes.number,
-    closeOnItemTouchTap: React.PropTypes.bool,
-    disabled: React.PropTypes.bool
+    iconButtonElement: PropTypes.element.isRequired,
+    onItemKeyboardActivate: PropTypes.func,
+    onItemTouchTap: PropTypes.func,
+    onKeyboardFocus: PropTypes.func,
+    onMouseDown: PropTypes.func,
+    onMouseOut: PropTypes.func,
+    onMouseOver: PropTypes.func,
+    onMouseUp: PropTypes.func,
+    onTouchTap: PropTypes.func,
+    menuStyle: PropTypes.object,
+    touchTapCloseDelay: PropTypes.number,
+    closeOnItemTouchTap: PropTypes.bool,
+    disabled: PropTypes.bool
   },
 
   getDefaultProps: function getDefaultProps() {

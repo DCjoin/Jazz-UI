@@ -1,17 +1,18 @@
 'use strict';
 import React from "react";
+import PropTypes from 'prop-types';
 import {Navigation, State } from 'react-router';
 import {Dialog,FlatButton,TextField,Paper} from 'material-ui';
 import AllUser from './AllUsers.jsx';
 import SelectedUsers from './SelectedUsers.jsx';
-
-var UsersOperation = React.createClass({
+var createReactClass = require('create-react-class');
+var UsersOperation = createReactClass({
   propTypes: {
-    type:React.PropTypes.string,//共享 or 发送
-    users:React.PropTypes.object,
-    titleStyle:React.PropTypes.object,
-    contentStyle:React.PropTypes.object,
-    boxStyle:React.PropTypes.object,
+    type:PropTypes.string,//共享 or 发送
+    users:PropTypes.object,
+    titleStyle:PropTypes.object,
+    contentStyle:PropTypes.object,
+    boxStyle:PropTypes.object,
   },
   render:function(){
 

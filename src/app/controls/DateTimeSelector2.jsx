@@ -1,19 +1,20 @@
 'use strict';
 import React from "react";
+import PropTypes from 'prop-types';
 import { DropDownMenu, DatePicker } from 'material-ui';
 import CommonFuns from '../util/Util.jsx';
 import ViewableDatePicker from '../controls/ViewableDatePicker.jsx';
-
+var createReactClass = require('create-react-class');
 let {hourPickerData, dateAdd} = CommonFuns;
 
 let _isStart = null;
-let DateTimeSelector = React.createClass({
+let DateTimeSelector = createReactClass({
   propTypes: {
-    startDate: React.PropTypes.object,
-    endDate: React.PropTypes.object,
-    startTime: React.PropTypes.number,
-    endTime: React.PropTypes.number,
-    showTime: React.PropTypes.bool
+    startDate: PropTypes.object,
+    endDate: PropTypes.object,
+    startTime: PropTypes.number,
+    endTime: PropTypes.number,
+    showTime: PropTypes.bool
   },
   setDateField(startDate, endDate, callback) {
     let startField = this.refs.startDate,

@@ -1,15 +1,15 @@
 'use strict';
 
 import React from 'react';
-
+import PropTypes from 'prop-types';
 import MainAppBar from '../MainAppBar.jsx';
 import NetworkChecker from '../../controls/NetworkChecker.jsx';
 import Content from './MailContent.jsx';
 import Dialog from './MailDialog.jsx';
-
-let Mail = React.createClass({
+var createReactClass = require('create-react-class');
+let Mail = createReactClass({
   contextTypes:{
-      currentRoute: React.PropTypes.object
+      currentRoute: PropTypes.object
   },
   render: function() {
     return (

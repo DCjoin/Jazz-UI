@@ -1,5 +1,6 @@
 'use strict';
 import React, { Component }  from "react";
+import PropTypes from 'prop-types';
 import AlarmTagStore from 'stores/AlarmTagStore.jsx';
 import EnergyStore from 'stores/Energy/EnergyStore.jsx';
 import MultiTimespanAction from 'actions/MultiTimespanAction.jsx';
@@ -317,6 +318,9 @@ export default class ChartComponent extends Component {
                 postNewConfig:(chartCmpObj) => {
 
 				        let newConfig = CommonFuns.merge(true, chartCmpObj);
+                newConfig.navigator.enabled=false;
+                newConfig.scrollbar.enabled=false;
+
 
                 if(analysisPanel.state.touType){
                   if(analysisPanel.state.selectedChartType==='pie'){
@@ -370,6 +374,6 @@ export default class ChartComponent extends Component {
   }
 }
 
-ChartComponent.propTypes = {
-  AnalysisPanel:React.PropTypes.object,
+ChartComponent.propTypes= {
+  AnalysisPanel:PropTypes.object,
 };

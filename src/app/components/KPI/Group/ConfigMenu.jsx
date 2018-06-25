@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
 import CircularProgress from 'material-ui/CircularProgress';
 import ColumnMenu from 'controls/ColumnMenu.jsx';
 import GroupKPIStore from 'stores/KPI/GroupKPIStore.jsx';
@@ -8,7 +8,7 @@ import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import UserAction from 'actions/UserAction.jsx';
 import UserStore from 'stores/UserStore.jsx';
 import RoutePath from 'util/RoutePath.jsx';
-
+import PropTypes from 'prop-types';
 function getCustomerPrivilageById(customerId) {
 	return UserStore.getUserCustomers().find(customer => customer.get('CustomerId') === customerId * 1 );
 }
@@ -16,7 +16,7 @@ function getCustomerPrivilageById(customerId) {
 export default class ConfigMenu extends Component {
 
   static contextTypes = {
-    hierarchyId: React.PropTypes.string
+    hierarchyId: PropTypes.string
   };
 
   constructor(props) {

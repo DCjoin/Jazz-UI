@@ -1,5 +1,5 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from "react";
 import Immutable from 'immutable';
 import HierarchyStore from 'stores/hierarchySetting/HierarchyStore.jsx';
@@ -17,7 +17,7 @@ import Organization from './Organization/Organization.jsx';
 import Building from './Building/Building.jsx';
 import Dim from './Dim/Dim.jsx';
 import RoutePath from 'util/RoutePath.jsx';
-
+var createReactClass = require('create-react-class');
 function emptyMap() {
   return new Map();
 }
@@ -29,9 +29,9 @@ function getNodeId(props) {
 }
 var customerId=null;
 var _currentConsultantsHierarchyId = null;
-var Hierarchy = React.createClass({
+var Hierarchy = createReactClass({
   contextTypes:{
-      currentRoute: React.PropTypes.object
+      currentRoute: PropTypes.object
   },
   getInitialState: function() {
     return {
@@ -325,7 +325,7 @@ var Hierarchy = React.createClass({
 	},
   _renderContent: function() {
 
-    if(this.state.selectedNode && this.state.selectedNode.size>0){
+    if(this.state.selectedNode && this.state.selectedNode.size>0 && this.props.children){
           var detailProps = {
       selectedNode: this.state.selectedNode,
       key: this.state.selectedNode.get('Id') === null ? Math.random() : this.state.selectedNode.get('Id'),
@@ -427,6 +427,15 @@ var Hierarchy = React.createClass({
     this.setState({
       isLoading: true
     });
+  },
+  componentWillReceiveProps(nextProps, nextContext) {
+    	if(!nextProps.params.nodeId){
+		     HierarchyAction.getAllIndustries(customerId);
+    //HierarchyAction.GetHierarchys();
+         this.setState({
+            isLoading: true
+        });
+	}
   },
   componentDidMount: function() {
     HierarchyStore.addChangeListener(this._onChange);

@@ -93,6 +93,7 @@ var APP_DOWNLOAD_WDJ = process.env.APP_DOWNLOAD_WDJ;
 var APP_DOWNLOAD_BAIDU = process.env.APP_DOWNLOAD_BAIDU;
 var JAZZ_WEB_HOST = process.env.JAZZ_WEB_HOST;
 var GUARD_UI_HOST = process.env.GUARD_UI_HOST;
+var APIBasePath='/api';
 
 let version = fs.readFileSync(path.resolve(__dirname, "./version.txt"), "utf-8");
 console.log("version:" + version);
@@ -150,7 +151,8 @@ function returnDownloadHtml(req, res){
                 .replace('${APP_DOWNLOAD_LOCAL}', APP_DOWNLOAD_LOCAL)
                 .replace('${APP_DOWNLOAD_QQ}', APP_DOWNLOAD_QQ)
                 .replace('${APP_DOWNLOAD_WDJ}', APP_DOWNLOAD_WDJ)
-                .replace('${APP_DOWNLOAD_BAIDU}', APP_DOWNLOAD_BAIDU);
+                .replace('${APP_DOWNLOAD_BAIDU}', APP_DOWNLOAD_BAIDU)
+                .replace('${JAZZ_UI_API_BASE_PATH}',JAZZ_WEBAPI_HOST+APIBasePath);
   return res.status(200).type('.html').end(html);
 }
 

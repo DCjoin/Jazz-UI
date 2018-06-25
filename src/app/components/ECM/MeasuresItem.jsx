@@ -43,14 +43,14 @@ export class IconText extends Component{
     )
   }
 }
-
-IconText.propTypes = {
-  icon:React.PropTypes.string,
-  label:React.PropTypes.bool,
-  value:React.PropTypes.string,
-	uom:React.PropTypes.string,
-	style:React.PropTypes.object,
-  valueStyle:React.PropTypes.object
+import PropTypes from 'prop-types';
+IconText.propTypes= {
+  icon:PropTypes.string,
+  label:PropTypes.bool,
+  value:PropTypes.string,
+	uom:PropTypes.string,
+	style:PropTypes.object,
+  valueStyle:PropTypes.object
 };
 
 const SOLUTION_NAMES=[I18N.Setting.ECM.SolutionName.First,I18N.Setting.ECM.SolutionName.Second,I18N.Setting.ECM.SolutionName.Third,
@@ -134,7 +134,7 @@ export class MeasuresItem extends Component {
       var {Problem}=this.props.measure.toJS();
       if(Problem.SolutionTitle!==null && Problem.SolutionTitle!==''){
         return (<div style={{display:"flex",flexDirection:'row',alignItems:'center',overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'}}>
-              <div className="measuresItem-title" style={{marginRight:'10px'}} title={I18N.format(I18N.Setting.ECM.SolutionTitle,Problem.SolutionTitle)}>{I18N.format(I18N.Setting.ECM.SolutionTitle,Problem.SolutionTitle)}</div>
+              <div className="measuresItem-title" style={{marginRight:'10px'}} title={Problem.SolutionTitle}>{Problem.SolutionTitle}</div>
               {this.props.disabled && <AlarmText text={I18N.Setting.ECM.Uncompleted}/>}</div>)
       }
       else {
@@ -236,16 +236,16 @@ export class MeasuresItem extends Component {
 
   }
 }
-MeasuresItem.propTypes = {
-  measure:React.PropTypes.object,
-  hasCheckBox:React.PropTypes.bool,
-  isChecked:React.PropTypes.bool,
-  onChecked:React.PropTypes.func,
-	disabled:React.PropTypes.bool,
-  personInCharge:React.PropTypes.object,
-  action:React.PropTypes.any,
-	onClick:React.PropTypes.func,
-	displayUnread:React.PropTypes.bool
+MeasuresItem.propTypes= {
+  measure:PropTypes.object,
+  hasCheckBox:PropTypes.bool,
+  isChecked:PropTypes.bool,
+  onChecked:PropTypes.func,
+	disabled:PropTypes.bool,
+  personInCharge:PropTypes.object,
+  action:PropTypes.any,
+	onClick:PropTypes.func,
+	displayUnread:PropTypes.bool
 };
 
 MeasuresItem.defaultProps = {

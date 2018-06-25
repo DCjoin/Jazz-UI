@@ -1,8 +1,8 @@
-import React, { Component, PropTypes } from 'react';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import React, { Component} from 'react';
+import { TransitionGroup,CSSTransition,Transition} from 'react-transition-group';
 import classnames from 'classnames';
 import assign from 'object-assign';
-
+import PropTypes from 'prop-types';
 import ClickAwayListener from './ClickAwayListener.jsx';
 
 function getMixClassName(staticClass) {
@@ -21,6 +21,14 @@ let getOverlayClassName = getMixClassName('dialog-overlay');
 
 const animatinsTime = 450;
 
+const defaultStyle = {
+  transition: `all ${animatinsTime}ms cubic-bezier(0.23, 1, 0.32, 1) 0ms`,
+  opacity: 0,
+}
+const transitionStyles = {
+  entering: { opacity: 0 },
+  entered: { opacity: 1 },
+};
 class DialogInline extends Component {
 	onClickAway() {
 		this.props.onRequestClose();
@@ -103,15 +111,15 @@ class NewDialog extends Component {
 			className: getTitleClassName(titleClassName),
 			style: titleStyle,
 		},
-		overlayProps = {
-			className: getOverlayClassName(overlayClassName),
-			style: overlayStyle,
-			onClick: () => {
-				if( !modal ) {
-					this.props.onRequestClose();
-				}
-			}
-		},
+		// overlayProps = {
+		// 	className: getOverlayClassName(overlayClassName),
+		// 	style: overlayStyle,
+		// 	onClick: () => {
+		// 		if( !modal ) {
+		// 			this.props.onRequestClose();
+		// 		}
+		// 	}
+		// },
 		dialogInlineProps = { dialogProps, contentProps, titleProps, actionsContainerProps, title, actions,modal, onRequestClose,isOutsideClose, hasClose,closeIconStyle};
 
 		let HighOrderDialogInline = DialogInline;
@@ -120,18 +128,38 @@ class NewDialog extends Component {
 		// }
 
 		return (
-		<ReactCSSTransitionGroup transitionName="dialog-transition-group" transitionEnterTimeout={animatinsTime} transitionLeaveTimeout={animatinsTime}>
-			{open && <div {...overlayProps}>
+			<div>
+		<Transition in={open} timeout={animatinsTime}>
+			{(state)=>{
+				if(open){return(
+				 <div className= {getOverlayClassName(overlayClassName)}
+				     style= {{
+					...defaultStyle,
+					...transitionStyles[state],
+					...overlayStyle
+					}} onClick= {(e) => {
+		 		if( !modal ) {
+		 			this.props.onRequestClose();
+		 		}else{
+					e.stopPropagation();
+					e.preventDefault();
+				 }
+		 	}}>
 						<div className="dialog-wrapper" {...dialogWrapperProps}>
 							<HighOrderDialogInline {...dialogInlineProps}>{children}</HighOrderDialogInline>
 						</div>
-					</div>}
-		</ReactCSSTransitionGroup>
-		);
+					</div>
+			)}else{return null}}
+				
+			}
+		
+		</Transition>
+		</div>
+		)
 	}
 }
 
-NewDialog.propTypes = {
+NewDialog.propTypes= {
 	actions: PropTypes.node,
 	actionsContainerClassName: PropTypes.string,
 	actionsContainerStyle: PropTypes.object,

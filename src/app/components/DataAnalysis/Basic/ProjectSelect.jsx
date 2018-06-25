@@ -5,7 +5,7 @@ import HierarchyStore from 'stores/HierarchyStore.jsx';
 import CurrentUserCustomerStore from 'stores/CurrentUserCustomerStore.jsx';
 import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
 import UserStore from 'stores/UserStore.jsx';
-
+import PropTypes from 'prop-types';
 function getCustomerPrivilageById(customerId) {
   return UserStore.getUserCustomers().find(customer => customer.get('CustomerId') === customerId * 1 );
 }
@@ -71,6 +71,9 @@ export default class ProjectSelect extends Component {
             listStyle={{
               width: this.props.width,
             }}
+            menuStyle={{
+              width: this.props.width,
+            }}
             underlineStyle={{
               display: 'none',
             }}
@@ -82,11 +85,11 @@ export default class ProjectSelect extends Component {
   }
 }
 
-ProjectSelect.propTypes = {
-	hierarchyId:React.PropTypes.number,
-  onProjectSelected:React.PropTypes.func,
-  customerId:React.PropTypes.number,
-  width:React.PropTypes.number,
+ProjectSelect.propTypes= {
+	hierarchyId:PropTypes.number,
+  onProjectSelected:PropTypes.func,
+  customerId:PropTypes.number,
+  width:PropTypes.number,
 };
 
 ProjectSelect.defaultProps={

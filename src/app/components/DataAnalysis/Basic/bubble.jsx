@@ -10,7 +10,7 @@ import Immutable from 'immutable';
 import CommonFuns from 'util/Util.jsx';
 import moment from 'moment';
 import classNames from 'classnames';
-
+import PropTypes from 'prop-types';
 var getUom=(data,id)=>{
   let uom=Immutable.fromJS(data.Tags).find(item=>item.get("Id")===id);
   return uom?CommonFuns.getUomById(uom.get("UomId")).Code:null;
@@ -197,9 +197,9 @@ class DropDownMenu extends Component{
 }
 
 DropDownMenu.propTypes={
-  value:React.PropTypes.number,
-  onItemClick:React.PropTypes.func,
-  menuitems:React.PropTypes.array
+  value:PropTypes.number,
+  onItemClick:PropTypes.func,
+  menuitems:PropTypes.array
 }
 
 
@@ -486,9 +486,9 @@ export default class Bubble extends Component {
   }
 }
 
-Bubble.propTypes = {
-  energyData:React.PropTypes.object,
-  getYaxisConfig:React.PropTypes.func,
-  step:React.PropTypes.number,
-  isFromSolution:React.PropTypes.bool
+Bubble.propTypes= {
+  energyData:PropTypes.object,
+  getYaxisConfig:PropTypes.func,
+  step:PropTypes.number,
+  isFromSolution:PropTypes.bool
 };

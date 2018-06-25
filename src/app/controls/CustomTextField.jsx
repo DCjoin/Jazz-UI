@@ -3,7 +3,7 @@ import assign from "object-assign";
 import {TextField} from 'material-ui';
 import CommonFuns from 'util/Util.jsx';
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
-
+import PropTypes from 'prop-types';
 const defaultStyle={
   style:{
     fontSize:'16px',
@@ -77,16 +77,16 @@ export default class CustomTextField extends Component {
   }
 }
 
-CustomTextField.propTypes = {
-  width:React.PropTypes.any,
-  isNumber:React.PropTypes.bool,
-  regexFn:React.PropTypes.func,
-  onChange:React.PropTypes.func,
-  value:React.PropTypes.any,
-  style:React.PropTypes.object,
-  multiLine:React.PropTypes.bool,
-  displayFn:React.PropTypes.func,
-  displayStyle:React.PropTypes.object,
+CustomTextField.propTypes= {
+  width:PropTypes.any,
+  isNumber:PropTypes.bool,
+  regexFn:PropTypes.func,
+  onChange:PropTypes.func,
+  value:PropTypes.any,
+  style:PropTypes.object,
+  multiLine:PropTypes.bool,
+  displayFn:PropTypes.func,
+  displayStyle:PropTypes.object,
 };
 
 CustomTextField.defaultProps={

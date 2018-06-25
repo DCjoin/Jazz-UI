@@ -1,11 +1,11 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
 import Immutable from 'immutable';
 import moment from 'moment';
 import classnames from 'classnames';
 import {first, last} from 'lodash-es';
 import {find} from 'lodash-es';
 import {isNull, isUndefined} from 'lodash-es';
-
+import PropTypes from 'prop-types';
 import KPIType from 'constants/actionType/KPI.jsx';
 import util from 'util/Util.jsx';
 
@@ -109,7 +109,7 @@ function getRanlLabelDate(year) {
 
 export default class BuildingChartPanel extends Component {
 	static contextTypes = {
-		router: React.PropTypes.object
+		router: PropTypes.object
 	};
 	constructor(props) {
 		super(props);

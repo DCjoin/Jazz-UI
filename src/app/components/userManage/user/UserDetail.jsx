@@ -43,17 +43,18 @@ var _ = {
   isNumber: _isNumber,
   trim: _trim
 };
-
-var UserDetail = React.createClass({
+var createReactClass = require('create-react-class');
+import PropTypes from 'prop-types';
+var UserDetail = createReactClass({
 
 
   propTypes: {
-    user: React.PropTypes.object,
-    userRoleList: React.PropTypes.array,
-    _handleWillEditUser: React.PropTypes.func,
-    _handleEditUser: React.PropTypes.func,
-    handleCancel: React.PropTypes.func,
-    _handleDeleteUser: React.PropTypes.func
+    user: PropTypes.object,
+    userRoleList: PropTypes.array,
+    _handleWillEditUser: PropTypes.func,
+    _handleEditUser: PropTypes.func,
+    handleCancel: PropTypes.func,
+    _handleDeleteUser: PropTypes.func
   },
 
   _handleSaveUser: function() {

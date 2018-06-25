@@ -4,15 +4,16 @@ import CircularProgress from 'material-ui/CircularProgress';
 import MailAction from '../../../actions/MailAction.jsx';
 import NewDialog from '../../../controls/NewDialog.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
-
-var Send = React.createClass({
+import PropTypes from 'prop-types';
+var createReactClass = require('create-react-class');
+var Send = createReactClass({
   propTypes: {
-    firstActionLabel: React.PropTypes.string,
-    secondActionLabel: React.PropTypes.string,
-    onFirstActionTouchTap: React.PropTypes.func,
-    onSecondActionTouchTap: React.PropTypes.func,
-    content: React.PropTypes.string,
-    onDismiss: React.PropTypes.func,
+    firstActionLabel: PropTypes.string,
+    secondActionLabel: PropTypes.string,
+    onFirstActionTouchTap: PropTypes.func,
+    onSecondActionTouchTap: PropTypes.func,
+    content: PropTypes.string,
+    onDismiss: PropTypes.func,
   },
 
   _onFirstActionTouchTap: function() {
@@ -79,10 +80,10 @@ var Send = React.createClass({
       )
   }
 });
-var SendView = React.createClass({
+var SendView = createReactClass({
   propTypes: {
-    type: React.PropTypes.string,
-    onDismiss: React.PropTypes.func,
+    type: PropTypes.string,
+    onDismiss: PropTypes.func,
   },
   _onSendAgain: function() {
     MailAction.sendEamilOrMessage(true);

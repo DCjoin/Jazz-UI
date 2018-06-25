@@ -2,9 +2,9 @@
 
 import React from 'react';
 import TagLogItem from './TagLogItem.jsx';
+var createReactClass = require('create-react-class');
 
-
-let TagLogList = React.createClass({
+let TagLogList = createReactClass({
   getInitialState: function() {
     return {
     };

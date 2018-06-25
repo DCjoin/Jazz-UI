@@ -1,9 +1,9 @@
 'use strict';
-import React, {Component,PropTypes} from 'react';
+import React, {Component} from 'react';
 import TitleComponent from 'controls/TitleComponent.jsx';
 import ViewableTextField from 'controls/ViewableTextField.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
-
+import PropTypes from 'prop-types';
 export default class BasicConfig extends Component {
 
   _renderConfig(){

@@ -1,16 +1,16 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from 'react';
 import {Mixins,Styles,ClearFix,FlatButton} from 'material-ui';
 import ItemButton from '../controls/ItemButton.jsx';
-
-var CalendarTime = React.createClass({
+var createReactClass = require('create-react-class');
+var CalendarTime = createReactClass({
   propTypes: {
-    selectedTime: React.PropTypes.number.isRequired,
-    onTimeChange: React.PropTypes.func,
-    timeType: React.PropTypes.number,
-    height: React.PropTypes.number,
-    dateFormatStr: React.PropTypes.string
+    selectedTime: PropTypes.number.isRequired,
+    onTimeChange: PropTypes.func,
+    timeType: PropTypes.number,
+    height: PropTypes.number,
+    dateFormatStr: PropTypes.string
   },
 
   getDefaultProps: function(){

@@ -10,8 +10,8 @@ import Tree from '../../controls/tree/Tree.jsx';
 import PlatformUser from './MailPlatformUser.jsx';
 import Providers from './MailProviders.jsx';
 import getLessVar from '../../util/GetLessVar.jsx';
-
-let MailUsers = React.createClass({
+var createReactClass = require('create-react-class');
+let MailUsers = createReactClass({
 
   _handleContactorTabActive: function() {
     this.refs.providers.reset();

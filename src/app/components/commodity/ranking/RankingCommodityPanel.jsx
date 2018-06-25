@@ -1,5 +1,6 @@
 'use strict';
 import React from "react";
+import PropTypes from 'prop-types';
 import { Navigation, State } from 'react-router';
 import { CircularProgress } from 'material-ui';
 import HierTreeButton from './RankingHierTreeButton.jsx';
@@ -7,11 +8,11 @@ import CommodityList from './RankingCommodityList.jsx';
 import CommodityAction from '../../../actions/CommodityAction.jsx';
 import CommodityStore from '../../../stores/CommodityStore.jsx';
 import Immutable from 'immutable';
-
-var RankingCommodityPanel = React.createClass({
+var createReactClass = require('create-react-class');
+var RankingCommodityPanel = createReactClass({
 
   propTypes: {
-    ecType: React.PropTypes.string,
+    ecType: PropTypes.string,
     //checkedCommodity:{commodityId:XX,commodityName:XX}
 
   },

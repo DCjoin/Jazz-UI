@@ -1,5 +1,5 @@
 'use strict';
-import React, {Component,PropTypes} from 'react';
+import React, {Component} from 'react';
 import TitleComponent from 'controls/TitleComponent.jsx';
 import ViewableTextField from 'controls/ViewableTextField.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
@@ -9,11 +9,11 @@ import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx';
 import CommonFuns from 'util/Util.jsx';
 import MonthValueGroup from './MonthValueGroup.jsx';
 import Prediction from './Prediction.jsx';
-
+import PropTypes from 'prop-types';
 export default class ParameterConfig extends Component {
 
   static contextTypes = {
-    router: React.PropTypes.object,
+    router: PropTypes.object,
   };
 
   constructor(props) {
@@ -140,8 +140,8 @@ ParameterConfig.propTypes={
     PredictionSetting:PropTypes.object,
     Year:PropTypes.number,
     hasHistory:PropTypes.bool,
-    hierarchyId:React.PropTypes.number,
-    hierarchyName:React.PropTypes.string,
+    hierarchyId:PropTypes.number,
+    hierarchyName:PropTypes.string,
 };
 ParameterConfig.defaultProps = {
   value:''

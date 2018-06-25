@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDom from 'react-dom';
-
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 import CircularProgress from 'material-ui/CircularProgress';
@@ -145,8 +145,8 @@ class CustomDropDownMenu extends Component {
 export default class ReportConfig extends Component {
 
 	static contextTypes = {
-		router: React.PropTypes.object,
-    currentRoute:React.PropTypes.object,
+		router: PropTypes.object,
+    currentRoute:PropTypes.object,
 	};
 
 	constructor(props) {
@@ -179,9 +179,11 @@ export default class ReportConfig extends Component {
     willDeleteIndex: null,
 	};
 
-	_onChange(){
+	_onChange(templateId){
+    var reportItem=this.state.reportItem;
 		this.setState({
       templateList:ReportStore.getTemplateList(),
+      reportItem:templateId?reportItem.set('templateId', templateId):reportItem,
       sheetNames:ReportStore.getSheetNamesByTemplateId(this.state.reportItem.get('templateId'))
 		})
 	}
@@ -210,8 +212,8 @@ export default class ReportConfig extends Component {
                       .map((report,id)=>(sheetNames.findIndex(item=>item===report.get('TargetSheet'))>-1))
 											.has(false);
 		this.setState({
-			reportItem: reportItem,
 			sheetNames: sheetNames,
+      reportItem:reportItem,
 			saveDisabled:saveDisabled?saveDisabled:this.state.saveDisabled
 		})
 	}
@@ -263,10 +265,9 @@ export default class ReportConfig extends Component {
   _onUploadDone(obj) {
 	var reportItem = this.state.reportItem;
 	if (obj) {
-		reportItem = reportItem.set('templateId', obj.TemplateId);
-		ReportAction.getTemplateListByCustomerId(this.context.currentRoute.params.customerId, 'Name', 'asc');
+		// reportItem = reportItem.set('templateId', obj.TemplateId);
+		ReportAction.getTemplateListByCustomerId(this.context.currentRoute.params.customerId, 'Name', 'asc',obj.TemplateId);
 		this.setState({
-      reportItem: reportItem,
 			saveDisabled: !this._isValid(),
 			showUploadDialog: false
 		},()=>{
@@ -607,7 +608,7 @@ export default class ReportConfig extends Component {
               }>
               <div style={{color: '#9fa0a4', fontSize: '14px', height: 48, lineHeight: '48px', padding: '0 16px'}}>{I18N.Common.Label.CommoEmptyText}</div>
               {ReportStore.getTemplateItems(templateList).map(item =>
-              <MenuItem onTouchTap={() => {
+              <MenuItem onClick={() => {
                 this._onExistTemplateChange(item.payload)
               }} >
                 <div title={item.text} style={{
@@ -979,12 +980,12 @@ export default class ReportConfig extends Component {
 		}
 	}
 }
-ReportConfig.propTypes = {
-  hierarchyId:React.PropTypes.number,
-  hierarchyName:React.PropTypes.string,
-  report:React.PropTypes.object,
-	onSave:React.PropTypes.object,
-	onCancel:React.PropTypes.object,
+ReportConfig.propTypes= {
+  hierarchyId:PropTypes.number,
+  hierarchyName:PropTypes.string,
+  report:PropTypes.object,
+	onSave:PropTypes.object,
+	onCancel:PropTypes.object,
 };
 
 ReportConfig.defaultProps = {

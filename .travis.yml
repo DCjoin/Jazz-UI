@@ -19,6 +19,11 @@ env:
   - PACKAGE_VERSION="v5.9.0.${TRAVIS_BUILD_NUMBER}"
   - DOCKER_NS="se-rem-test"
 
+before_install:
+  - env
+  - yarn config set registry https://registry.npmjs.org
+  - rm yarn.lock
+
 before_script:
   - export ARTIFACT_NAME="${PROJECT}-${ROLE}-${TRAVIS_BRANCH}-${PACKAGE_VERSION}.zip"
   - export TAG=`echo "$PROJECT-$ROLE:$TRAVIS_BRANCH-$PACKAGE_VERSION" | tr '[:upper:]' '[:lower:]'`
@@ -34,7 +39,7 @@ script:
 before_deploy:
   - cp compose-template.yml build/
   - cd build && zip -r ../${ARTIFACT_NAME} ./ && cd ..
-  - docker build -t $TAG .
+  - docker build --build-arg NPM_TOKEN=${NPM_TOKEN} -t $TAG .
 #  - echo -n "${PACKAGE_VERSION}" > version.txt
 #  - zip -r --exclude=*node_modules* /tmp/${ARTIFACT_NAME} ./
   - 'curl -o upload.sh -H "Authorization: token ${GITHUB_TOKEN}" ${GITHUB_UPLOAD_SCRIPT}'

@@ -13,8 +13,8 @@ import Dialog from 'controls/NewDialog.jsx';
 import RoutePath from 'util/RoutePath.jsx';
 import ViewableTextField from '../controls/ViewableTextField.jsx';
 import CurrentUserAction from '../actions/CurrentUserAction.jsx';
-
-var DemoLogin = React.createClass({
+var createReactClass = require('create-react-class');
+var DemoLogin = createReactClass({
   getInitialState() {
     return {
       showApplyDlg: false,
@@ -116,7 +116,7 @@ var DemoLogin = React.createClass({
   }
 });
 
-var DemoApplyDialog = React.createClass({
+var DemoApplyDialog = createReactClass({
   getInitialState() {
     return {
       email: "",

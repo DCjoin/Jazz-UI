@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
+import PropTypes from 'prop-types';
 import CircularProgress from 'material-ui/CircularProgress';
 import assign from 'object-assign';
 
@@ -100,7 +101,7 @@ class KPICycleDetail extends Component {
 	}
 }
 
-KPICycleDetail.PropTypes ={
+KPICycleDetail.propTypes={
 	status: PropTypes.string.isRequired,
 	data: PropTypes.object.isRequired,
 	onChange: PropTypes.func.isRequired,

@@ -1,5 +1,6 @@
 'use strict';
 import React, { Component }  from "react";
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import assign from "object-assign";
 import Dialog from 'controls/NewDialog.jsx';
@@ -55,8 +56,8 @@ class ItemComponent extends Component{
 }
 
 ItemComponent.propTypes={
-  title:React.PropTypes.string,
-  style:React.PropTypes.object,
+  title:PropTypes.string,
+  style:PropTypes.object,
 }
 
 class TableHeader extends Component{
@@ -80,11 +81,11 @@ class TableHeader extends Component{
 }
 
 TableHeader.propTypes={
-  columnName:React.PropTypes.string,
-  typeName:React.PropTypes.string,
-  hasTime:React.PropTypes.bool,
-  style:React.PropTypes.object,
-  additionColumnName:React.PropTypes.string,
+  columnName:PropTypes.string,
+  typeName:PropTypes.string,
+  hasTime:PropTypes.bool,
+  style:PropTypes.object,
+  additionColumnName:PropTypes.string,
 }
 
 class TableRow extends Component{
@@ -113,10 +114,10 @@ class TableRow extends Component{
 }
 
 TableRow.propTypes={
-  columnValue:React.PropTypes.string,
-  typeValue:React.PropTypes.string,
-  time:React.PropTypes.string,
-  style:React.PropTypes.string,
+  columnValue:PropTypes.string,
+  typeValue:PropTypes.string,
+  time:PropTypes.string,
+  style:PropTypes.string,
 }
 
 
@@ -154,12 +155,12 @@ class SumTableRow extends Component{
 }
 
 SumTableRow.propTypes={
-  tagName:React.PropTypes.string,
-  otherName:React.PropTypes.string,
-  avg:React.PropTypes.string,
-  max:React.PropTypes.string,
-  min:React.PropTypes.string,
-  total:React.PropTypes.string,
+  tagName:PropTypes.string,
+  otherName:PropTypes.string,
+  avg:PropTypes.string,
+  max:PropTypes.string,
+  min:PropTypes.string,
+  total:PropTypes.string,
 }
 
 class SumTableHeader extends Component{
@@ -183,8 +184,8 @@ class SumTableHeader extends Component{
 }
 
 SumTableHeader.propTypes={
-  name:React.PropTypes.string,
-  needTotal:React.PropTypes.bool,
+  name:PropTypes.string,
+  needTotal:PropTypes.bool,
 }
 
 const Model={
@@ -909,9 +910,9 @@ export default class StatisticsDialog extends Component {
   }
 }
 
-StatisticsDialog.propTypes = {
-  onCloseDialog:React.PropTypes.func,
-  timeRanges:React.PropTypes.object,
-  analysisPanel:React.PropTypes.object,
-  step:React.PropTypes.number
+StatisticsDialog.propTypes= {
+  onCloseDialog:PropTypes.func,
+  timeRanges:PropTypes.object,
+  analysisPanel:PropTypes.object,
+  step:PropTypes.number
 };

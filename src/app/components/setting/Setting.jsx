@@ -48,8 +48,8 @@ const DIALOG_TYPE = {
   ERROR_NOTICE: 'errornotice'
 };
 
-
-let Setting = React.createClass({
+var createReactClass = require('create-react-class');
+let Setting = createReactClass({
 
   //mixins: [Navigation, State],
   getInitialState: function() {

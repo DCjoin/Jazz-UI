@@ -4,7 +4,7 @@ import MenuItem from 'material-ui/MenuItem';
 import TextField from 'controls/CustomTextField.jsx';
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
 import IconButton from 'material-ui/IconButton';
-
+import PropTypes from 'prop-types';
 export class EnergySys extends Component {
 
   _renderEnergySys(){
@@ -16,7 +16,7 @@ export class EnergySys extends Component {
                     style={{height: '36px',width:'220px',marginTop:'8px'}}
                     labelStyle={{fontSize:'14px',color:"#626469",border:"1px solid #e6e6e6",borderRadius: "4px",lineHeight:'36px',height:'36px',paddingLeft:'11px',paddingRight:'28px'}}
                       iconButton={<IconButton iconClassName="icon-arrow-unfold" iconStyle={{fontSize:"10px"}} style={{width:14,height:14}}/>}
-                      iconStyle={{marginTop:'-12px',padding:'0',right:'15',width:'24px',top:'8px'}}
+                      iconStyle={{marginTop:'-12px',padding:'0',right:'15px',width:'24px',top:'8px'}}
                       underlineStyle={{border:'none'}}
                       menuStyle={{width:'220px'}}
                       listStyle={{width:'220px'}}
@@ -53,11 +53,11 @@ export class EnergySys extends Component {
   }
 }
 
-EnergySys.propTypes = {
-  measure:React.PropTypes.object,
-  canNameEdit:React.PropTypes.bool,
-  canEnergySysEdit:React.PropTypes.bool,
-  merge:React.PropTypes.func,
+EnergySys.propTypes= {
+  measure:PropTypes.object,
+  canNameEdit:PropTypes.bool,
+  canEnergySysEdit:PropTypes.bool,
+  merge:PropTypes.func,
 };
 
 export class MeasureTitle extends Component {
@@ -100,9 +100,9 @@ export class MeasureTitle extends Component {
 
   }
 
-  MeasureTitle.propTypes = {
-    measure:React.PropTypes.object,
-    canNameEdit:React.PropTypes.bool,
-    canEnergySysEdit:React.PropTypes.bool,
-    merge:React.PropTypes.func,
+  MeasureTitle.propTypes= {
+    measure:PropTypes.object,
+    canNameEdit:PropTypes.bool,
+    canEnergySysEdit:PropTypes.bool,
+    merge:PropTypes.func,
   };

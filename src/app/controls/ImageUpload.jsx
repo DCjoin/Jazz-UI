@@ -2,7 +2,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 import util from 'util/Util.jsx';
@@ -10,32 +10,32 @@ import BackgroundImage from 'controls/BackgroundImage.jsx';
 import AjaxDialog from 'controls/AjaxDialog.jsx';
 import UploadForm from 'controls/UploadForm.jsx';
 
-
+var createReactClass = require('create-react-class');
 const FILE_TYPE_IMAGE_REG = /(image\/png|image\/jpe?g|image\/bmp|image\/gif)/;
 const DEFAULT_IMAGE_SIZE_MAX = 1024 * 1000 * 2;
 const DEFAULT_WRAPPER_WIDTH = 480;
 const DEFAULT_WRAPPER_HEIGHT = 320;
 const ENABLE_FILE_LIMIT = false;
 
-let ImageUpload = React.createClass({
+let ImageUpload = createReactClass({
 
 
 
   propTypes: {
-    tips: React.PropTypes.string,
-    updateTips: React.PropTypes.string,
-    isViewState: React.PropTypes.bool,
-    clip: React.PropTypes.bool,
-    clipRatioWidth: React.PropTypes.number,
-    clipRatioHeight: React.PropTypes.number,
-    background: React.PropTypes.string,
-    imageSource: React.PropTypes.string,
-    imageUrl: React.PropTypes.string,
-    imageSizeMax: React.PropTypes.number,
-    wrapperWidth: React.PropTypes.number,
-    wrapperHeight: React.PropTypes.number,
-    clipMode: React.PropTypes.string,
-    uploadAction: React.PropTypes.string,
+    tips: PropTypes.string,
+    updateTips: PropTypes.string,
+    isViewState: PropTypes.bool,
+    clip: PropTypes.bool,
+    clipRatioWidth: PropTypes.number,
+    clipRatioHeight: PropTypes.number,
+    background: PropTypes.string,
+    imageSource: PropTypes.string,
+    imageUrl: PropTypes.string,
+    imageSizeMax: PropTypes.number,
+    wrapperWidth: PropTypes.number,
+    wrapperHeight: PropTypes.number,
+    clipMode: PropTypes.string,
+    uploadAction: PropTypes.string,
   },
 
   _handleClick() {

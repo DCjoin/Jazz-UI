@@ -1,5 +1,5 @@
-import React, { Component, PropTypes } from 'react';
-
+import React, { Component} from 'react';
+import PropTypes from 'prop-types';
 import FontIcon from 'material-ui/FontIcon';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 
@@ -55,7 +55,7 @@ export default class PreCreate extends Component {
 	}
 }
 
-PreCreate.PropTypes = {
+PreCreate.propTypes= {
 	onClose: PropTypes.func.isRequired,
 	onSubmit: PropTypes.func.isRequired,
 	isEdit: PropTypes.boolean,

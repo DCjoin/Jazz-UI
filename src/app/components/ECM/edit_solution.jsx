@@ -1,4 +1,4 @@
-import React, { Component,PropTypes } from 'react';
+import React, { Component} from 'react';
 import IconButton from 'material-ui/IconButton';
 import MeasuresStore from 'stores/ECM/MeasuresStore.jsx';
 import Snackbar from 'material-ui/Snackbar';
@@ -18,7 +18,9 @@ import {EnergySys} from './MeasurePart/MeasureTitle.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
 import ReactDOM from 'react-dom';
 import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
-
+import PropTypes from 'prop-types';
+import Toast from '@emop-ui/piano/toast';
+import Button from '@emop-ui/piano/button';
 const NUMBER_REG = /^[1-9]\d*(\.\d+)?$/;
 
  const ICONSTYLE = {
@@ -220,10 +222,13 @@ export default class EditSolution extends Component {
           }
         }else if(value!==0 && !value && pathName!=='InvestmentAmount'){
             if(pathName==='Name'){pathName='SolutionName'}
-            if(pathName==='EnergySavingUnit'){pathName="ExpectedAnnualEnergySaving"}
-           error=I18N.Setting.Diagnose.PleaseInput+I18N.Setting.Diagnose[pathName];   
-            if(pathName==='EnergySavingUnit'){ paths=paths.slice(0,2)
-                                           paths.push('ExpectedAnnualEnergySaving')}    
+            if(pathName==='EnergySavingUnit'){
+              error=I18N.Setting.Diagnose.PleaseInput+I18N.Setting.Diagnose['ExpectedAnnualEnergySaving'];
+              paths=paths.slice(0,2);
+              paths.push('ExpectedAnnualEnergySaving')}
+              else{
+                error=I18N.Setting.Diagnose.PleaseInput+I18N.Setting.Diagnose[pathName];   
+              } 
         }
 
         errorData=errorData.setIn(paths,error);
@@ -311,24 +316,25 @@ export default class EditSolution extends Component {
     };
     var content=I18N.format(I18N.Setting.ECM.SaveTip);
     return(
-      <NewDialog
-        open={true}
-        actionsContainerStyle={styles.action}
-        overlayStyle={{zIndex:'1000'}}
-        contentStyle={styles.content}
-        actions={[
-            <RaisedButton
-              label={I18N.Common.Button.Save}
-              onClick={()=>{this.props.onSave(this.state.solution.setIn(["Problem",'EnergySys'],this.state.energySys))}} />,
-            <FlatButton
-              label={I18N.Common.Button.NotSave}
-              onClick={() => {this.setState({
+
+      <NewDialog open={true}
+        contentStyle={{overflowY:'hidden',padding:'24px 0'}}
+        actionsContainerStyle={{display:'flex',flexDirection:'row',justifyContent: 'flex-end'}}
+        onRequestClose={() => {
+          this.setState({saveTipShow:false})
+        }}
+        actions={ [<Button key='pause' style={{marginRight:'16px'}} flat secondary label={I18N.Common.Button.Save} labelStyle={{color:'#32ad3c'}} 
+          onClick={()=>{this.props.onSave(this.state.solution.setIn(["Problem",'EnergySys'],this.state.energySys))}}
+        />,
+        <Button key='cancel' style={{marginRight:'16px'}} flat secondary  label={I18N.Common.Button.NotSave} 
+                              onClick={() => {this.setState({
                               saveTipShow:false
                               },()=>{
                                 this.props.onClose(!Immutable.is(this.state.preSolution,this.props.solution) || this.props.isUnread)
-                              })}} />
-          ]}
-      ><div className="jazz-ecm-measure-viewabletext">{content}</div></NewDialog>
+                              })}}/>          
+        ]}>
+        <div style={{fontSize:'16px',color:'#666666'}}>{content}</div>
+      </NewDialog>
     )
     }
 
@@ -378,7 +384,12 @@ export default class EditSolution extends Component {
              {this._renderRemark()}
 
           </div>
-         <Snackbar ref='snackbar' autoHideDuration={1500} open={this.state.snackBarText!==null} onRequestClose={()=>{this.setState({snackBarText:null})}} message={this.state.snackBarText}/>
+      
+          <Toast autoHideDuration={1500} className="toast-tip" open={this.state.snackBarText!==null} onRequestClose={() => {
+          this.setState({
+            snackBarText:null
+          })
+        }}><div className='icon-clean'>{this.state.snackBarText}</div></Toast>
          {this.state.saveTipShow && this._renderSaveTip()}
         </div>
       )

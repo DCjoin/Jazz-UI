@@ -19,7 +19,7 @@ import Detail from './save_effect_detail.jsx';
 import Create from '../create';
 import PreCreate from '../create/pre_create.jsx';
 import util from 'util/Util.jsx';
-
+import PropTypes from 'prop-types';
 function privilegeWithSaveEffect( privilegeCheck ) {
   //  return true
 	return privilegeCheck(PermissionCode.Save_Effect, CurrentUserStore.getCurrentPrivilege());
@@ -39,9 +39,9 @@ function getProblemId(props) {
 export default class EffectList extends Component {
 
   static contextTypes = {
-        router: React.PropTypes.object,
-        hierarchyId: React.PropTypes.string,
-        currentRoute: React.PropTypes.object
+        router: PropTypes.object,
+        hierarchyId: PropTypes.string,
+        currentRoute: PropTypes.object
       };
 
   constructor(props, ctx) {
@@ -291,6 +291,6 @@ export default class EffectList extends Component {
   }
 }
 
-EffectList.propTypes = {
-  list:React.PropTypes.object,
+EffectList.propTypes= {
+  list:PropTypes.object,
 };

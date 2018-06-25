@@ -9,7 +9,7 @@ import {stepLabelProps} from '../../Diagnose/CreateDiagnose.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
 import PermissionCode from 'constants/PermissionCode.jsx';
-
+import PropTypes from 'prop-types';
 import {
   Step,
   Stepper,
@@ -126,12 +126,12 @@ export class ItemForConsultant extends Component {
   }
 }
 
-ItemForConsultant.propTypes = {
-  effect:React.PropTypes.object,
-  onClick:React.PropTypes.func,
-  canEdit:React.PropTypes.boolean,
-  onConfig:React.PropTypes.func,
-  configEnergyProblemId:React.PropTypes.number,
+ItemForConsultant.propTypes= {
+  effect:PropTypes.object,
+  onClick:PropTypes.func,
+  canEdit:PropTypes.boolean,
+  onConfig:PropTypes.func,
+  configEnergyProblemId:PropTypes.number,
 }
 
 
@@ -191,10 +191,10 @@ export class ItemForManager extends Component {
   }
 }
 
-ItemForManager.propTypes = {
-  effect:React.PropTypes.object,
-  onClick:React.PropTypes.func,
-  canEdit:React.PropTypes.boolean,
+ItemForManager.propTypes= {
+  effect:PropTypes.object,
+  onClick:PropTypes.func,
+  canEdit:PropTypes.boolean,
 };
 
 export class ItemForDraft extends Component {
@@ -251,9 +251,9 @@ export class ItemForDraft extends Component {
   }
 }
 
-ItemForDraft.propTypes = {
-  effect:React.PropTypes.object,
-  onContinue:React.PropTypes.func,
-  onDelete:React.PropTypes.func,
-  canEdit:React.PropTypes.boolean,
+ItemForDraft.propTypes= {
+  effect:PropTypes.object,
+  onContinue:PropTypes.func,
+  onDelete:PropTypes.func,
+  canEdit:PropTypes.boolean,
 };

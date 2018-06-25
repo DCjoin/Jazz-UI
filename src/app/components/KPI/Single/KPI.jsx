@@ -14,13 +14,13 @@ import FormBottomBar from 'controls/FormBottomBar.jsx';
 import { formStatus } from 'constants/FormStatus.jsx';
 import Dialog from 'controls/NewDialog.jsx';
 import {DataConverter} from 'util/Util.jsx';
-
+import PropTypes from 'prop-types';
 var customerId=null;
 
 export default class KPI extends Component {
 
 	static contextTypes = {
-		router: React.PropTypes.object,
+		router: PropTypes.object,
 	};
 
   constructor(props) {
@@ -334,12 +334,12 @@ export default class KPI extends Component {
     )
   }
 }
-KPI.propTypes = {
-	hierarchyId:React.PropTypes.number,
-	hierarchyName:React.PropTypes.string,
-	kpiId:React.PropTypes.number,
-	isCreate:React.PropTypes.bool,
-	onSave:React.PropTypes.func,
-	onCancel:React.PropTypes.func,
-	year:React.PropTypes.number,
+KPI.propTypes= {
+	hierarchyId:PropTypes.number,
+	hierarchyName:PropTypes.string,
+	kpiId:PropTypes.number,
+	isCreate:PropTypes.bool,
+	onSave:PropTypes.func,
+	onCancel:PropTypes.func,
+	year:PropTypes.number,
 };

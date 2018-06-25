@@ -1,7 +1,7 @@
 import React from 'react';
 import SvgIcon from 'material-ui/SvgIcon';
-
-var Add = React.createClass({
+var createReactClass = require('create-react-class');
+var Add = createReactClass({
     render: function() {
         return (
             <SvgIcon {...this.props}>

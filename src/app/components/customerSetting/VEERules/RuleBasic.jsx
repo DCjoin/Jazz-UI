@@ -1,6 +1,7 @@
 'use strict';
 
 import React from "react";
+import PropTypes from 'prop-types';
 import classnames from "classnames";
 import moment from "moment";
 import { formStatus } from '../../../constants/FormStatus.jsx';
@@ -16,13 +17,13 @@ import VEEStore from '../../../stores/customerSetting/VEEStore.jsx';
 import Regex from '../../../constants/Regex.jsx';
 import ReceiversList from './ReceiversList.jsx';
 import {isNumeric} from 'util/Util.jsx';
-
-var RuleBasic = React.createClass({
+var createReactClass = require('create-react-class');
+var RuleBasic = createReactClass({
 
   propTypes: {
-    rule: React.PropTypes.object,
-    merge: React.PropTypes.func,
-    formStatus: React.PropTypes.string,
+    rule: PropTypes.object,
+    merge: PropTypes.func,
+    formStatus: PropTypes.string,
   },
   //mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
   _handleRuleDetailClick: function(values) {

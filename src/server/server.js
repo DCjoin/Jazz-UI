@@ -9,6 +9,7 @@ var util = require('./util.js');
 // Api Mock need
 var http = require('http');
 var useragent = require('useragent');
+var APIBasePath = require('./APIBasePath.js');
 var acsObj = {};
 
 var publicPath = 'http://localhost:3000/build/';
@@ -31,7 +32,7 @@ app.listen(PORT, () => {
   console.log('http server running on:%d' + PORT);
 });
 app.use(cookieParser());
-app.get('/download-app', returnDownloadHtml);
+app.get('/:lang/download-app', returnDownloadHtml);
 
 // Release the metadata publicly
 app.get('/sso/metadata', (req, res) => res.header('Content-Type','text/xml').send(sp.getMetadata()));
@@ -152,7 +153,7 @@ var SUPPORT_BROWSERS = [
 ];
 
 var JAZZ_UI_UMENG_CNZZ_SDK_URL = process.env.JAZZ_UI_UMENG_CNZZ_SDK_URL;
-var JAZZ_WEBAPI_HOST = process.env.JAZZ_WEBAPI_HOST;
+// var JAZZ_WEBAPI_HOST = process.env.JAZZ_WEBAPI_HOST;
 var JAZZ_STATIC_CDN = process.env.JAZZ_STATIC_CDN;
 var APP_VERSION = process.env.APP_VERSION;
 var APP_SIZE = process.env.APP_SIZE;
@@ -161,7 +162,7 @@ var APP_DOWNLOAD_QQ = process.env.APP_DOWNLOAD_QQ;
 var APP_DOWNLOAD_WDJ = process.env.APP_DOWNLOAD_WDJ;
 var APP_DOWNLOAD_BAIDU = process.env.APP_DOWNLOAD_BAIDU;
 var GUARD_UI_HOST = process.env.GUARD_UI_HOST;
-
+var JAZZ_WEBAPI_HOST = 'http://web-api-test.energymost.com';
 function getLang(req) {
   var lang = req.params.lang;
   if( !lang || !SUPPORT_LANGUAGES[lang] ) {
@@ -216,13 +217,15 @@ function returnIndexHtml(req,res){
 }
 
 function returnDownloadHtml(req, res){
-  var html = fs.readFileSync(path.resolve(__dirname, "./DownloadApp.html"), "utf-8")
+  console.log("returnDownloadHtml");
+  var html = fs.readFileSync(path.resolve(__dirname, "../app/DownloadApp.html"), "utf-8")
                 .replace(/__JAZZ_STATIC_CDN__/g, JAZZ_STATIC_CDN)
                 .replace('${APP_VERSION}', APP_VERSION)
                 .replace('${APP_SIZE}', APP_SIZE)
                 .replace('${APP_DOWNLOAD_LOCAL}', APP_DOWNLOAD_LOCAL)
                 .replace('${APP_DOWNLOAD_QQ}', APP_DOWNLOAD_QQ)
                 .replace('${APP_DOWNLOAD_WDJ}', APP_DOWNLOAD_WDJ)
-                .replace('${APP_DOWNLOAD_BAIDU}', APP_DOWNLOAD_BAIDU);
+                .replace('${APP_DOWNLOAD_BAIDU}', APP_DOWNLOAD_BAIDU)
+                .replace('${JAZZ_UI_API_BASE_PATH}',JAZZ_WEBAPI_HOST + APIBasePath);
   return res.status(200).type('.html').end(html);
 }

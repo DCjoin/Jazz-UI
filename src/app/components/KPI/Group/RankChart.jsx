@@ -165,10 +165,10 @@ class Chart extends Component {
 	}
 }
 
-
+import PropTypes from 'prop-types';
 export default class RankChart extends Component {
 	static contextTypes = {
-		router: React.PropTypes.object
+		router: PropTypes.object
 	};
 	constructor(props) {
 		super(props);

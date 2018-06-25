@@ -1,5 +1,5 @@
 'use strict';
-
+import PropTypes from 'prop-types';
 import React from "react";
 import classnames from "classnames";
 import { CircularProgress, Checkbox, FontIcon } from 'material-ui';
@@ -10,14 +10,15 @@ import Pagination from '../../controls/paging/Pagination.jsx';
 import { List } from 'immutable';
 import SearchAndFilterBar from '../../controls/SearchAndFilterBar.jsx';
 import TagFilter from '../customerSetting/tag/TagFilter.jsx';
+var createReactClass = require('create-react-class');
 function emptyList() {
   return new List();
 }
 var customerId=null;
-let AddTagItem = React.createClass({
+let AddTagItem = createReactClass({
   propTypes: {
-    tag: React.PropTypes.object,
-    removeTag: React.PropTypes.func
+    tag: PropTypes.object,
+    removeTag: PropTypes.func
   },
   _onCleanButtonClick: function() {
     this.props.removeTag(this.props.tag);
@@ -45,16 +46,16 @@ let AddTagItem = React.createClass({
   }
 });
 
-var MonitorTag = React.createClass({
+var MonitorTag = createReactClass({
   propTypes: {
-    formStatus: React.PropTypes.string,
-    hierarchyId: React.PropTypes.number,
-    onUpdate: React.PropTypes.func,
-    setEditBtnStatus: React.PropTypes.func,
-    isDim: React.PropTypes.bool
+    formStatus: PropTypes.string,
+    hierarchyId: PropTypes.number,
+    onUpdate: PropTypes.func,
+    setEditBtnStatus: PropTypes.func,
+    isDim: PropTypes.bool
   },
   contextTypes:{
-      currentRoute: React.PropTypes.object
+      currentRoute: PropTypes.object
   },
   getInitialState: function() {
     return ({
@@ -245,7 +246,7 @@ var MonitorTag = React.createClass({
   _renderDisplayTag: function() {
     var that = this,
       total = HierarchyStore.getTotal();
-    var pagingPropTypes = {
+    var pagingPropTypes= {
       curPageNum: this.state.page,
       totalPageNum: total === 0 ? 1 : parseInt((total + 19) / 20),
       previousPage: this._previousPage,
@@ -338,7 +339,7 @@ var MonitorTag = React.createClass({
         color: '#abafae'
       };
     var total = HierarchyStore.getTotal();
-    var pagingPropTypes = {
+    var pagingPropTypes= {
       curPageNum: this.state.page,
       totalPageNum: total === 0 ? 1 : parseInt((total + 19) / 20),
       previousPage: this._previousPage,

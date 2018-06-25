@@ -11,7 +11,7 @@ import TBSettingAction from '../../actions/TBSettingAction.jsx';
 import TBSettingStore from '../../stores/TBSettingStore.jsx';
 import TagStore from '../../stores/TagStore.jsx';
 import ViewableDatePicker from '../../controls/ViewableDatePicker.jsx';
-
+import PropTypes from 'prop-types';
 var extractNumber = function(str) {
   var value = str.replace(/[^\d\.]/g, '');
   var dotIndex = value.indexOf('.');
@@ -24,21 +24,21 @@ var extractNumber = function(str) {
   }
   return value;
 };
-
-var DaytimeRangeValue = React.createClass({
+var createReactClass = require('create-react-class');
+var DaytimeRangeValue = createReactClass({
   //mixins: [Navigation, State],
   propTypes: {
-    index: React.PropTypes.number,
-    start: React.PropTypes.number,
-    end: React.PropTypes.number,
-    step: React.PropTypes.number,
-    tag: React.PropTypes.object,
+    index: PropTypes.number,
+    start: PropTypes.number,
+    end: PropTypes.number,
+    step: PropTypes.number,
+    tag: PropTypes.object,
 
-    value: React.PropTypes.number,
-    isViewStatus: React.PropTypes.bool,
+    value: PropTypes.number,
+    isViewStatus: PropTypes.bool,
 
-    onDaytimeChange: React.PropTypes.func,
-    onValueChange: React.PropTypes.func,
+    onDaytimeChange: PropTypes.func,
+    onValueChange: PropTypes.func,
   },
 
   getDefaultProps: function() {

@@ -1,6 +1,6 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
 import ReactDOM from 'react-dom';
-
+import PropTypes from 'prop-types';
 import createDecoratorComponent from '../decorator/createDecoratorComponent.jsx';
 
 const isDescendant = (el, target) => {
@@ -31,7 +31,7 @@ const unbind = (callback) => clickAwayEvents.forEach((event) => {
 
 function clickAway(Comp) {
   return class extends createDecoratorComponent(Comp) {
-    static propTypes = {
+    static propTypes= {
       children: PropTypes.node
     };
 

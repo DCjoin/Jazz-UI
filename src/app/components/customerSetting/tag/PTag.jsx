@@ -2,8 +2,8 @@
 
 import React from "react";
 import Tag from './Tag.jsx';
-
-var PTag = React.createClass({
+var createReactClass = require('create-react-class');
+var PTag = createReactClass({
   componentWillMount: function() {
     document.title = I18N.MainMenu.CustomerSetting;
   },

@@ -1,12 +1,13 @@
 'use strict';
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import ReactDom from 'react-dom';
 import ExportChartStore from '../../stores/Energy/ExportChartStore.jsx';
-
-let ExportChart = React.createClass({
+var createReactClass = require('create-react-class');
+let ExportChart = createReactClass({
   propTypes:{
-    url:React.PropTypes.string
+    url:PropTypes.string
   },
   render(){
 

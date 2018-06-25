@@ -1,7 +1,8 @@
 'use strict';
 
 import React from 'react';
-
+import PropTypes from 'prop-types';
+var createReactClass = require('create-react-class');
 import assign from 'object-assign';
 import ViewableTextField from '../../controls/ViewableTextField.jsx';
 import NewDialog from '../../controls/NewDialog.jsx';
@@ -23,11 +24,11 @@ var _ = {
   isEmpty: _isEmpty,
   trim: _trim
 };
-var AdminList = React.createClass({
+var AdminList = createReactClass({
   propTypes: {
-    status: React.PropTypes.string,
-    admins: React.PropTypes.array,
-    dataDidChanged: React.PropTypes.func
+    status: PropTypes.string,
+    admins: PropTypes.array,
+    dataDidChanged: PropTypes.func
   },
 
   getInitialState: function() {
@@ -145,13 +146,13 @@ var AdminList = React.createClass({
   }
 });
 
-var Admin = React.createClass({
+var Admin = createReactClass({
   propTypes: {
-    status: React.PropTypes.string,
-    admin: React.PropTypes.object,
-    index: React.PropTypes.number,
-    deleteAdmin: React.PropTypes.func,
-    showDialog: React.PropTypes.func
+    status: PropTypes.string,
+    admin: PropTypes.object,
+    index: PropTypes.number,
+    deleteAdmin: PropTypes.func,
+    showDialog: PropTypes.func
   },
 
   shouldComponentUpdate: function(nextProps, nextState) {
@@ -205,13 +206,13 @@ var Admin = React.createClass({
   }
 });
 
-var AdminDialog = React.createClass({
+var AdminDialog = createReactClass({
   propTypes: {
-    showDialog: React.PropTypes.func,
-    dismissDialog: React.PropTypes.func,
-    didChanged: React.PropTypes.func,
-    admin: React.PropTypes.object,
-    index: React.PropTypes.number
+    showDialog: PropTypes.func,
+    dismissDialog: PropTypes.func,
+    didChanged: PropTypes.func,
+    admin: PropTypes.object,
+    index: PropTypes.number
   },
 
   getInitialState: function() {

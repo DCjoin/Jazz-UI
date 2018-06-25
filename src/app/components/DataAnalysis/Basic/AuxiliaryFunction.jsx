@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import FlatButton from 'controls/FlatButton.jsx';
 import FontIcon from 'material-ui/FontIcon';
 import MenuItem from 'material-ui/MenuItem';
@@ -259,12 +260,12 @@ export default class AuxiliaryFunction extends Component {
   }
 }
 
-AuxiliaryFunction.propTypes = {
-  selectedChartType:React.PropTypes.string,
-  hasTagData:React.PropTypes.bool,
-  handleCalendarChange:React.PropTypes.func,
-  initYaxisDialog:React.PropTypes.func,
-  onYaxisSelectorDialogSubmit:React.PropTypes.func,
-  timeRanges:React.PropTypes.object,
-  weatherTag:React.PropTypes.array || null,
+AuxiliaryFunction.propTypes= {
+  selectedChartType:PropTypes.string,
+  hasTagData:PropTypes.bool,
+  handleCalendarChange:PropTypes.func,
+  initYaxisDialog:PropTypes.func,
+  onYaxisSelectorDialogSubmit:PropTypes.func,
+  timeRanges:PropTypes.object,
+  weatherTag:PropTypes.array || null,
 };

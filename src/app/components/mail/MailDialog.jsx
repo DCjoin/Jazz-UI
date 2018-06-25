@@ -5,9 +5,9 @@ import { FlatButton, CircularProgress } from 'material-ui';
 import MailStore from '../../stores/MailStore.jsx';
 import Delete from './dialog/DeleteView.jsx';
 import Send from './dialog/SendView.jsx';
+var createReactClass = require('create-react-class');
 
-
-let MailDialog = React.createClass({
+let MailDialog = createReactClass({
   _onDismiss: function() {
     this.setState({
       dialogType: 0,

@@ -11,15 +11,15 @@ import TBSettingAction from '../../actions/TBSettingAction.jsx';
 import TBSettingStore from '../../stores/TBSettingStore.jsx';
 import TagStore from '../../stores/TagStore.jsx';
 import ViewableDatePicker from '../../controls/ViewableDatePicker.jsx';
-
+var createReactClass = require('create-react-class');
 import DaytimeRangeValues from './DaytimeRangeValues.jsx';
-
-var NormalSetting = React.createClass({
+import PropTypes from 'prop-types';
+var NormalSetting = createReactClass({
   propTypes: {
-    tag: React.PropTypes.object,
-    items: React.PropTypes.array,
-    isViewStatus: React.PropTypes.bool,
-    isDisplay: React.PropTypes.bool
+    tag: PropTypes.object,
+    items: PropTypes.array,
+    isViewStatus: PropTypes.bool,
+    isDisplay: PropTypes.bool
   },
 
   getInitialState: function() {

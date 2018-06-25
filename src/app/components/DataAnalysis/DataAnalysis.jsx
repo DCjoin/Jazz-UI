@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component} from 'react';
+import PropTypes from 'prop-types';
 import {Snackbar, CircularProgress} from 'material-ui';
 import Immutable from 'immutable';
 import {find} from 'lodash-es';
@@ -120,7 +121,7 @@ export default class DataAnalysis extends Component {
 	}
 
 	componentWillReceiveProps(nextProps, nextContext) {
-		if( !util.shallowEqual(nextContext.hierarchyId, this.context.hierarchyId) ) {
+		if( !util.shallowEqual(nextContext.hierarchyId, this.context.hierarchyId)) {
 			this.setState(this._getInitialState(nextProps));
 			this._loadInitData(nextProps, nextContext);
 			// WeatherAction.getCityWeatherTag(2)
@@ -135,6 +136,10 @@ export default class DataAnalysis extends Component {
       }
 
 		}
+	if(!nextProps.params.nodeId){
+		this.setState(this._getInitialState(nextProps));
+			this._loadInitData(nextProps, nextContext);
+	}
 	}
 	componentWillUnmount() {
 		FolderStore.removeFolderTreeListener(this._onFolderTreeLoad);
@@ -370,7 +375,7 @@ export default class DataAnalysis extends Component {
 				</div>);
 		if( selectedNode ) {
 			if( isWidget(selectedNode) ) {
-				if( widgetLoaded(selectedNode) && this.state.widgetDto ) {
+				if( widgetLoaded(selectedNode) && this.state.widgetDto && this.props.children) {
           content = React.cloneElement(this.props.children, {
           	selectedNode,
             hierarchyId: this._getHierarchyId(this.context),

@@ -3,11 +3,12 @@
 import React from 'react';
 import { Mixins, Styles, ClearFix, FlatButton } from 'material-ui';
 import ItemButton from '../controls/ItemButton.jsx';
-
-var CalendarMonth = React.createClass({
+var createReactClass = require('create-react-class');
+import PropTypes from 'prop-types';
+var CalendarMonth = createReactClass({
   propTypes: {
-    selectedMonth: React.PropTypes.number.isRequired,
-    onMonthChange: React.PropTypes.func
+    selectedMonth: PropTypes.number.isRequired,
+    onMonthChange: PropTypes.func
   },
 
   render() {

@@ -17,7 +17,7 @@ import NewDialog from 'controls/NewDialog.jsx';
 import Immutable from 'immutable';
 import LinkButton from 'controls/LinkButton.jsx';
 import NewFlatButton from 'controls/NewFlatButton.jsx';
-
+var createReactClass = require('create-react-class');
 var dateTypeChanged = false;
 var d2j = CommonFuns.DataConverter.DatetimeToJson;
 
@@ -30,7 +30,7 @@ function formatDate(time,settingYear){
   return date._d
 }
 
-let ReportDataItem = React.createClass({
+let ReportDataItem = createReactClass({
   getInitialState: function() {
     var stepItems = [{
       payload: 0,
@@ -689,7 +689,7 @@ let ReportDataItem = React.createClass({
 
     return (
 
-    <NewDialog open>
+    <NewDialog open style={{overflow:'visible'}}>
       <header className='kpi-report-edit-data-header'>
         <div>{I18N.Setting.KPI.Config.NewTableData}</div>
         <FontIcon className='icon-close' style={{fontSize: '16px'}} onClick={this.props.onClose}/>

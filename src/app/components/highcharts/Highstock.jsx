@@ -5,7 +5,7 @@ import EnergyChartStore from '../../stores/EnergyChartStore.jsx';
 
 //let React = require('react');
 let assign = require('object-assign');
-
+var createReactClass = require('create-react-class');
 let Highcharts = window.Highcharts;
 
 // Add null symbol
@@ -17,16 +17,16 @@ if (Highcharts.VMLRenderer) {
 }
 
 let _paper = null;
-
-let Highstock = React.createClass({
+import PropTypes from 'prop-types';
+let Highstock = createReactClass({
 
   _paper: null,
 
   propTypes: {
-    options: React.PropTypes.object,
-    onDeleteButtonClick: React.PropTypes.func,
-    onDeleteAllButtonClick: React.PropTypes.func,
-    onSwitchChartTypeButtonClick: React.PropTypes.func
+    options: PropTypes.object,
+    onDeleteButtonClick: PropTypes.func,
+    onDeleteAllButtonClick: PropTypes.func,
+    onSwitchChartTypeButtonClick: PropTypes.func
   },
 
   getDefaultProps() {

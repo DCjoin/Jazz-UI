@@ -8,7 +8,7 @@ import Immutable from 'immutable';
 import DatePicker from './DatePicker.jsx';
 import MapAction from '../../actions/MapAction.jsx';
 import MapStore from '../../stores/MapStore.jsx';
-
+import PropTypes from 'prop-types';
 const ZOOM_LEVEL = 17;
 
 const POPUP_POSITION_RIGHT_TOP_X = 130;
@@ -24,8 +24,8 @@ const POPUP_POSITION_LEFT_BOTTOM_X = -135;
 const POPUP_POSITION_LEFT_BOTTOM_Y = 225;
 
 var buildingId=null;
-
-let MapPanel = React.createClass({
+var createReactClass = require('create-react-class');
+let MapPanel = createReactClass({
   //mixins: [Navigation, State],
   getInitialState: function() {
     return {
@@ -39,7 +39,7 @@ let MapPanel = React.createClass({
     };
   },
   contextTypes: {
-    router: React.PropTypes.func
+    router: PropTypes.func
   },
   _map: null,
   _poiEventHandler: [],

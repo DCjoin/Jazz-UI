@@ -3,9 +3,9 @@
 import React from 'react';
 import classNames from 'classnames';
 import ChartStatusAction from '../../actions/ChartStatusAction.jsx';
+var createReactClass = require('create-react-class');
 
-
-let AlarmTagItem = React.createClass({
+let AlarmTagItem = createReactClass({
   _onTagItemSelected() {
     ChartStatusAction.clearStatus();
     if (this.props.onTagItemClick) {

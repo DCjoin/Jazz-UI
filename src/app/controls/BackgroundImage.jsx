@@ -5,26 +5,26 @@ import React from 'react';
 import _assign from 'lodash-es/assign';
 
 import Config from 'config';
-
+import PropTypes from 'prop-types';
 import Path from 'constants/Path.jsx';
 import {getOssPath} from 'actions/download_file.js';
 var _ = {
   assign: _assign
 };
 
+var createReactClass = require('create-react-class');
 
-
-var BackgroudImage = React.createClass({
+var BackgroudImage = createReactClass({
 
   //mixins: [React.addons.PureRenderMixin],
   propTypes: {
-    imageId: React.PropTypes.string,
-    url: React.PropTypes.string,
-    imageContent: React.PropTypes.string,
-    background: React.PropTypes.string,
-    mode: React.PropTypes.string, //contain,cover
-    width: React.PropTypes.number,
-    height: React.PropTypes.number
+    imageId: PropTypes.string,
+    url: PropTypes.string,
+    imageContent: PropTypes.string,
+    background: PropTypes.string,
+    mode: PropTypes.string, //contain,cover
+    width: PropTypes.number,
+    height: PropTypes.number
   },
   componentWillMount() {
     if( !this.props.url || this.props.url.indexOf('url(') !== 0 ) {

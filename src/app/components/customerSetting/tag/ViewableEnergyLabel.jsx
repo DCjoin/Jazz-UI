@@ -3,12 +3,12 @@ import FlatButton from 'controls/FlatButton.jsx';
 import FontIcon from 'material-ui/FontIcon';
 import {Popover, PopoverAnimationVertical} from 'material-ui/Popover';
 import DiagnoseStore from '../../../stores/DiagnoseStore.jsx';
-
+import PropTypes from 'prop-types';
 export default class ViewableEnergyLabel extends Component {
 
-  static propTypes = {
-    isViewStatus: React.PropTypes.bool,
-    value: React.PropTypes.number,
+  static propTypes= {
+    isViewStatus: PropTypes.bool,
+    value: PropTypes.number,
   };
 
   static defaultProps = {

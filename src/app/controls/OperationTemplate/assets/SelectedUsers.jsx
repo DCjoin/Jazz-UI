@@ -1,5 +1,6 @@
 'use strict';
 import React from "react";
+import PropTypes from 'prop-types';
 import ReactDom from 'react-dom';
 import { Navigation, State } from 'react-router';
 import { FontIcon } from 'material-ui';
@@ -8,11 +9,11 @@ import classNames from 'classnames';
 import Immutable from 'immutable';
 import UserStore from '../../../stores/UserStore.jsx';
 import UserAction from '../../../actions/UserAction.jsx';
-
-var UserItem = React.createClass({
+var createReactClass = require('create-react-class');
+var UserItem = createReactClass({
   propTypes: {
-    user: React.PropTypes.object,
-    titleStyle: React.PropTypes.object,
+    user: PropTypes.object,
+    titleStyle: PropTypes.object,
   },
   _onCleanButtonClick: function() {
     UserAction.setUserStatus(this.props.user, false);
@@ -69,9 +70,9 @@ var UserItem = React.createClass({
 
   }
 });
-var SelectedUsers = React.createClass({
+var SelectedUsers = createReactClass({
   propTypes: {
-    type: React.PropTypes.string,
+    type: PropTypes.string,
   },
   getInitialState: function() {
     return {

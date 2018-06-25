@@ -3,10 +3,10 @@ import React from "react";
 import { DropDownMenu, DatePicker } from 'material-ui';
 import CommonFuns from '../util/Util.jsx';
 import ViewableDatePicker from '../controls/ViewableDatePicker.jsx';
-
+var createReactClass = require('create-react-class');
 let {hourPickerData, dateAdd} = CommonFuns;
 
-let DateTimeSelector = React.createClass({
+let DateTimeSelector = createReactClass({
 
   setDateField(startDate, endDate) {
     let startField = this.refs.startDate,

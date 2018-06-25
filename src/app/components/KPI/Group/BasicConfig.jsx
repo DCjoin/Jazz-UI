@@ -5,7 +5,7 @@ import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
 import ViewableTextField from 'controls/ViewableTextField.jsx';
 import GroupKPIStore from "stores/KPI/GroupKPIStore.jsx";
 import GroupKPIAction from 'actions/KPI/GroupKPIAction.jsx';
-
+import PropTypes from 'prop-types';
 export default class BasicConfig extends Component {
 
   	constructor(props) {
@@ -142,8 +142,8 @@ export default class BasicConfig extends Component {
     )
   }
 }
-BasicConfig.propTypes = {
-	status:React.PropTypes.string,
-	kpiInfo:React.PropTypes.object,
-  year:React.PropTypes.number
+BasicConfig.propTypes= {
+	status:PropTypes.string,
+	kpiInfo:PropTypes.object,
+  year:PropTypes.number
 };

@@ -8,7 +8,7 @@ import assign from 'object-assign';
 import {remove} from 'lodash-es';
 import {find} from 'lodash-es';
 import querystring from 'querystring';
-
+import PropTypes from 'prop-types';
 import { viewState } from 'constants/MainAppStatus.jsx';
 import PermissionCode from 'constants/PermissionCode.jsx';
 
@@ -106,8 +106,8 @@ function privilegeWithECM(){
   //       CurrentUserStore.permit(PermissionCode.PUSH_SOLUTION.READONLY)
   return CurrentUserStore.permit(PermissionCode.PUSH_SOLUTION.READONLY)
 }
-
-let MainApp = React.createClass({
+var createReactClass = require('create-react-class');
+let MainApp = createReactClass({
   statics: {
     prepareShow: (customerId) => {
       return UOMStore.getUoms() &&
@@ -147,7 +147,7 @@ let MainApp = React.createClass({
     },
   },
   childContextTypes: {
-    hierarchyId: React.PropTypes.string,
+    hierarchyId: PropTypes.string,
   },
   getChildContext() {
     return {
@@ -311,6 +311,9 @@ let MainApp = React.createClass({
             listStyle={{
               width: 200,
             }}
+            menuStyle={{
+              width: 200,
+            }}
             underlineStyle={{
               display: 'none',
             }}
@@ -429,7 +432,7 @@ let MainApp = React.createClass({
   }
 });
 
-var MessageDialog = React.createClass({
+var MessageDialog = createReactClass({
   _cancelApply: function() {
     this.props.onCancel();
   },

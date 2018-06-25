@@ -7,7 +7,7 @@ import Popover from 'material-ui/Popover';
 import moment from 'moment';
 import Calendar from './calendar/Calendar.jsx';
 import ClickAway from './ClickAwayListener.jsx';
-
+import PropTypes from 'prop-types';
 const pattern1 = /^\d{4}-\d{2}-\d{2}$/;
 const format1 = "YYYY-MM-DD";
 const pattern2 = /^\d{4}\/\d{2}\/\d{2}$/;
@@ -72,19 +72,19 @@ function parseDateStr(dateStr){
 
 @ClickAway
 class DatePicker extends React.Component {
-  static propTypes = {
-    onChange: React.PropTypes.func.isRequired,
-    value: React.PropTypes.string,
-    title: React.PropTypes.string,
-    name: React.PropTypes.string,
-    minDate: React.PropTypes.object,
-    minDateError: React.PropTypes.string,
-    maxDate: React.PropTypes.object,
-    maxDateError: React.PropTypes.string,
-    errorText:React.PropTypes.string,
-    width: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
-    datePickerClassName:React.PropTypes.string,
-    isPopover: React.PropTypes.bool,
+  static propTypes= {
+    onChange: PropTypes.func.isRequired,
+    value: PropTypes.string,
+    title: PropTypes.string,
+    name: PropTypes.string,
+    minDate: PropTypes.object,
+    minDateError: PropTypes.string,
+    maxDate: PropTypes.object,
+    maxDateError: PropTypes.string,
+    errorText:PropTypes.string,
+    width: PropTypes.oneOfType([PropTypes.number.string]),
+    datePickerClassName:PropTypes.string,
+    isPopover: PropTypes.bool,
   };
 
   constructor(props) {
@@ -122,6 +122,7 @@ class DatePicker extends React.Component {
     if (this.state.popup){
       if( this.props.isPopover ) {
         return (<Popover
+          style={{width:'100px'}}
           open={true}
           anchorEl={ReactDOM.findDOMNode(this)}
           anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
@@ -203,19 +204,19 @@ class DatePicker extends React.Component {
 }
 
 export default class ViewableDatePicker extends React.Component {
-  static propTypes = {
-    onChange: React.PropTypes.func.isRequired,
-    value: React.PropTypes.string,
-    title: React.PropTypes.string,
-    minDate: React.PropTypes.object,
-    minDateError: React.PropTypes.string,
-    maxDate: React.PropTypes.object,
-    maxDateError: React.PropTypes.string,
-    width: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
-    isViewStatus: React.PropTypes.bool,
-    name: React.PropTypes.string,
-    errorText: React.PropTypes.string,
-    dateFormatStr:React.PropTypes.string
+  static propTypes= {
+    onChange: PropTypes.func.isRequired,
+    value: PropTypes.string,
+    title: PropTypes.string,
+    minDate: PropTypes.object,
+    minDateError: PropTypes.string,
+    maxDate: PropTypes.object,
+    maxDateError: PropTypes.string,
+    width: PropTypes.oneOfType([PropTypes.number.string]),
+    isViewStatus: PropTypes.bool,
+    name: PropTypes.string,
+    errorText: PropTypes.string,
+    dateFormatStr:PropTypes.string
   };
 
   static isValid = (dateStr, minDate, maxDate) => {

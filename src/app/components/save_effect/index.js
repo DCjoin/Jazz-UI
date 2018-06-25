@@ -1,5 +1,5 @@
-import React, { Component, PropTypes } from 'react';
-
+import React, { Component} from 'react';
+import PropTypes from 'prop-types';
 import RoutePath from 'util/RoutePath.jsx';
 
 import Header from './header_tabs_bar.jsx';

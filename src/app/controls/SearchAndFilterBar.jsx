@@ -1,15 +1,16 @@
 'use strict';
 import React from "react";
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import SearchBar from '../controls/SearchBar.jsx';
-
-let SearchAndFilterBar = React.createClass({
+var createReactClass = require('create-react-class');
+let SearchAndFilterBar = createReactClass({
   propTypes: {
-    onFilter: React.PropTypes.func,
-    isFilter: React.PropTypes.bool,
-    onSearch: React.PropTypes.func,
-    onSearchCleanButtonClick: React.PropTypes.func,
-    value: React.PropTypes.string
+    onFilter: PropTypes.func,
+    isFilter: PropTypes.bool,
+    onSearch: PropTypes.func,
+    onSearchCleanButtonClick: PropTypes.func,
+    value: PropTypes.string
   },
   render: function() {
     var filterIconClasses = {

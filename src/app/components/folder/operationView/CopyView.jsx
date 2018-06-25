@@ -1,16 +1,17 @@
 'use strict';
 import React from "react";
+import PropTypes from 'prop-types';
 import { Navigation, State } from 'react-router';
 import { Dialog, FlatButton } from 'material-ui';
 import Copy from '../../../controls/OperationTemplate/Copy.jsx';
 import FolderStore from '../../../stores/FolderStore.jsx';
 import FolderAction from '../../../actions/FolderAction.jsx';
 import { nodeType } from '../../../constants/TreeConstants.jsx';
-
-var CopyView = React.createClass({
+var createReactClass = require('create-react-class');
+var CopyView = createReactClass({
   propTypes: {
-    onDismiss: React.PropTypes.func,
-    copyNode: React.PropTypes.object,
+    onDismiss: PropTypes.func,
+    copyNode: PropTypes.object,
   },
   _onCopyItem: function(destNode, newName) {
     FolderAction.copyItem(this.props.copyNode, destNode, newName, this.props.isNew);
