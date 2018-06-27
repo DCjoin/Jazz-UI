@@ -9,6 +9,7 @@ import BubbleIcon from '../BubbleIcon.jsx';
 import Popover, {PopoverAnimationVertical} from 'material-ui/Popover';
 import classnames from "classnames";
 
+
 function getUrl(url) {
 	return "url(" + url+")";
 	//return "url(" + Config.ServeAddress + url+")";
@@ -256,16 +257,16 @@ export class MeasuresItem extends Component {
 }
 
 MeasuresItem.propTypes = {
-  measure:React.PropTypes.object,
-  hasCheckBox:React.PropTypes.bool,
-  isChecked:React.PropTypes.bool,
-  onChecked:React.PropTypes.func,
-	disabled:React.PropTypes.bool,
-  personInCharge:React.PropTypes.object,
-  action:React.PropTypes.any,
-	onClick:React.PropTypes.func,
-	displayUnread:React.PropTypes.bool,
-  isFromNotPush:React.PropTypes.bool,
+  measure:PropTypes.object,
+  hasCheckBox:PropTypes.bool,
+  isChecked:PropTypes.bool,
+  onChecked:PropTypes.func,
+	disabled:PropTypes.bool,
+  personInCharge:PropTypes.object,
+  action:PropTypes.any,
+	onClick:PropTypes.func,
+	displayUnread:PropTypes.bool,
+  isFromNotPush:PropTypes.bool,
 };
 
 MeasuresItem.defaultProps = {
