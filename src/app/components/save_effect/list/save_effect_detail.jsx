@@ -33,6 +33,8 @@ import StatusCmp from 'components/ECM/MeasurePart/Status.jsx'
 import {EnergySys} from 'components/ECM/MeasurePart/MeasureTitle.jsx';
 import Remark from 'components/ECM/MeasurePart/Remark.jsx';
 import PropTypes from 'prop-types';
+import EditSolution from 'components/ECM/edit_solution.jsx';
+
 const type={
 	"Saving":0,
 	"Contrast":1
@@ -123,6 +125,7 @@ export default class EffectDetail extends Component {
 				this._handleEditTagChange = this._handleEditTagChange.bind(this);
 				this._handleDeleteTagChange = this._handleDeleteTagChange.bind(this);
 				this._onSolutionChanged = this._onSolutionChanged.bind(this);
+				this._renderPersonInCharge=this._renderPersonInCharge.bind(this);
 
   }
 
@@ -275,7 +278,7 @@ export default class EffectDetail extends Component {
 							cleanDetail();
 							this.props.onBack();
 							}} iconStyle={{fontSize:'17px'}} style={{width:'17px',height:'19px',padding:'0'}}/>
-						<div className="jazz-effect-detail-header-title">{this.props.effect.get('EnergySolutionName')}</div>
+						<div className="jazz-effect-detail-header-title">{this.props.effect.get('SolutionTitle')}</div>
 					</span>
 					<span>
 						<FlatButton label={I18N.SaveEffect.SolutionDetail} onTouchTap={()=>{
@@ -865,66 +868,16 @@ export default class EffectDetail extends Component {
 	      <div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>
 	     </NewDialog>)
 	  }
-		let problem = currentSolution.get('EnergyProblem');
-	 var props={
-	   title:{
-	     measure:currentSolution,
-	     canNameEdit:false,
-	     canEnergySysEdit:false,
-	   },
-	   problem:{
-	     measure:currentSolution,
-	     canEdit:false,
-	   },
-	   solution:{
-	     measure:currentSolution,
-	     canEdit:false,
-	   },
-	   gallery: {
-	    measure:currentSolution,
-	    isView: true,
-	   },
-	   remark:{
-	   	remarkList: currentSolution.get('Remarks'),
-	     problemId:problem.get('Id'),
-	     canEdit:false,
-	     onScroll:(height)=>{ReactDom.findDOMNode(this).querySelector(".dialog-content").scrollTop+=height+15}
-	   },
-	   energySys:{
-	     measure:currentSolution,
-	     canNameEdit:false,
-	     canEnergySysEdit:false,
-	   }
-	 }
-	  return(
-	    <NewDialog
-	      open={this.state.measureShow}
-	      hasClose
-	      isOutsideClose={false}
-	      onRequestClose={onClose}
-	      overlayStyle={{overflowY:"auto"}}
-	      style={{overflow:"visible"}}
-	      wrapperStyle={{overflow:"visible"}}
-	      titleStyle={{margin:'0 7px',paddingTop:"7px"}}
-	      contentStyle={{overflowY:"auto",display:'block',padding:"6px 28px 14px 32px",margin:0}}>
-	      <div style={{paddingLeft:'9px',borderBottom:"1px solid #e6e6e6",paddingRight:'19px'}}>
-		      <div className="jazz-ecm-push-operation">
-		        <StatusCmp status={problem.get('Status')} canEdit={false}/>
-		        {this._renderPersonInCharge(problem,true)}
-		        <EnergySys {...props.energySys}/>
-		      </div>
-	      </div>
-	      <SolutionLabel {...props.solution}/>
-	      <Solution {...props.solution}/>
-	      <Problem {...props.problem}/>
-	      <div style={{margin:"46px 20px 0 16px"}}><SolutionGallery {...props.gallery}/></div>
-	      <div style={{display:"flex",alignItems:"flex-end",marginTop:'36px'}}>
-	        <div className="jazz-ecm-push-operation-label">{`${I18N.Setting.ECM.PushPanel.CreateUser}：`}</div>
-	        <div style={{fontSize:'12px',color:'#9fa0a4',marginLeft:'5px'}}>{problem.get('CreateUserName') || '-'}</div>
-	      </div>
-	      <Remark {...props.remark}/>
-	    </NewDialog>
-	  )
+		return(
+			      <EditSolution solution={currentSolution} 
+                    isUnread={false}
+                    hasRemarkPriviledge={false}
+                    hasPriviledge={false}
+                    hasStatusPriviledge={false}
+                    onClose={onClose}
+                    onStatusChange={this._onStatusChange}
+                    person={this._renderPersonInCharge}/>
+		)
 	}
 
   componentDidMount(){
@@ -949,7 +902,7 @@ export default class EffectDetail extends Component {
 			)
 		}else {
 			var tags=this.state.detailInfo.get('EffectItems');
-		 var {EnergySolutionName,EnergyProblemId,EnergyEffectId,ExecutedTime,EnergySystem}=this.props.effect.toJS();
+		 var {SolutionTitle,EnergyProblemId,EnergyEffectId,ExecutedTime,EnergySystem}=this.props.effect.toJS();
 			return(
 				<div className="jazz-effect-detail">
 					{this._renderTitle()}
@@ -960,7 +913,7 @@ export default class EffectDetail extends Component {
 					{this.state.deleteConfirmShow && this._renderDeleteDialog()}
 					{this.state.configBestShow && this._renderConfigBestDialog()}
 					{this.state.IgnoreBestShow && this._renderIgnoreBestDialog()}
-					{this._renderMeasureDialog()}
+					{this.state.measureShow && this._renderMeasureDialog()}
 					{this.state.energySystemDialogShow &&
 					<PreCreate isEdit
 						EnergySystem={EnergySystem}
@@ -972,7 +925,7 @@ export default class EffectDetail extends Component {
 						}}/>}
 					{this.state.createShow && <Create
 						filterObj ={{
-							EnergySolutionName,
+							SolutionTitle,
 							EnergyProblemId,
 							EnergyEffectId,
 							ExecutedTime,

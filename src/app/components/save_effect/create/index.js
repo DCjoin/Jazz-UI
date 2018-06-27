@@ -39,6 +39,8 @@ import StatusCmp from 'components/ECM/MeasurePart/Status.jsx'
 import {EnergySys} from 'components/ECM/MeasurePart/MeasureTitle.jsx';
 import Remark from 'components/ECM/MeasurePart/Remark.jsx';
 
+import EditSolution from 'components/ECM/edit_solution.jsx';
+
 import {
 	getTagsByPlan,
 	updateTags,
@@ -327,6 +329,7 @@ export default class Create extends Component {
 		this._onSaveAndClose = this._onSaveAndClose.bind(this);
 		this._getInitData = this._getInitData.bind(this);
 		this._checkCalendar = this._checkCalendar.bind(this);
+		this._renderPersonInCharge=this._renderPersonInCharge.bind(this);
 		
 	}
 	_setFilterObj(filterObj) {
@@ -902,69 +905,21 @@ export default class Create extends Component {
 	     </NewDialog>)
 	  }
 		let problem = currentSolution.get('Problem');
-	 var props={
-	   title:{
-	     measure:currentSolution,
-	     canNameEdit:false,
-	     canEnergySysEdit:false,
-	   },
-	   problem:{
-	     measure:currentSolution,
-	     canEdit:false,
-	   },
-	   solution:{
-	     measure:currentSolution,
-	     canEdit:false,
-	   },
-	   gallery: {
-	    measure:currentSolution,
-	    isView: true,
-	   },
-	   remark:{
-	   	remarkList: currentSolution.get('Remarks'),
-	     problemId:problem.get('Id'),
-	     canEdit:false,
-	     onScroll:(height)=>{ReactDom.findDOMNode(this).querySelector(".dialog-content").scrollTop+=height+15}
-	   },
-	   energySys:{
-	     measure:currentSolution,
-	     canNameEdit:false,
-	     canEnergySysEdit:false,
-	   }
-	 }
-	  return(
-	    <NewDialog
-	      open={this.state.measureShow}
-	      hasClose
-	      isOutsideClose={false}
-	      onRequestClose={onClose}
-	      overlayStyle={{overflowY:"auto"}}
-	      style={{overflow:"visible"}}
-	      wrapperStyle={{overflow:"visible"}}
-	      titleStyle={{margin:'0 7px',paddingTop:"7px"}}
-	      contentStyle={{overflowY:"auto",display:'block',padding:"6px 28px 14px 32px",margin:0}}>
-	      <div style={{paddingLeft:'9px',borderBottom:"1px solid #e6e6e6",paddingRight:'19px'}}>
-		      <div className="jazz-ecm-push-operation">
-		        <StatusCmp status={problem.get('Status')} canEdit={false}/>
-		        {this._renderPersonInCharge(problem,true)}
-		        <EnergySys {...props.energySys}/>
-		      </div>
-	      </div>
-	      <SolutionLabel {...props.solution}/>
-	      <Solution {...props.solution}/>
-	      <Problem {...props.problem}/>
-	      <div style={{margin:"46px 20px 0 16px"}}><SolutionGallery {...props.gallery}/></div>
-	      <div style={{display:"flex",alignItems:"flex-end",marginTop:'36px'}}>
-	        <div className="jazz-ecm-push-operation-label">{`${I18N.Setting.ECM.PushPanel.CreateUser}：`}</div>
-	        <div style={{fontSize:'12px',color:'#9fa0a4',marginLeft:'5px'}}>{problem.get('CreateUserName') || '-'}</div>
-	      </div>
-	      <Remark {...props.remark}/>
-	    </NewDialog>
-	  )
+
+		return(
+			      <EditSolution solution={currentSolution} 
+                    isUnread={false}
+                    hasRemarkPriviledge={false}
+                    hasPriviledge={false}
+                    hasStatusPriviledge={false}
+                    onClose={onClose}
+                    onStatusChange={this._onStatusChange}
+                    person={this._renderPersonInCharge}/>
+		)
 	}
 	render() {
 		let { onClose, filterObj } = this.props,
-		{EnergyProblemId, EnergySolutionName, ExecutedTime, EnergySystem, ConfigStep, UomId, TagId, TagName} = this.state.filterObj.toJS(),
+		{EnergyProblemId,  SolutionTitle,ExecutedTime, EnergySystem, ConfigStep, UomId, TagId, TagName} = this.state.filterObj.toJS(),
 		uom=UomId ? UOMStore.getUomById(UomId) :
 							(this.state.chartData2 ? getUomByChartData(this.state.chartData2) : '');
 		if( !EnergySystem ) {
@@ -980,7 +935,7 @@ export default class Create extends Component {
 					this._getInitData(this.state.filterObj.get('ConfigStep'));
 				}}/>
 				<Header name={
-					EnergySolutionName + (
+					SolutionTitle + (
 						ConfigStep > 1 ?
 						' - '
 						 + (
@@ -1009,7 +964,7 @@ export default class Create extends Component {
 				<Nav step={this.state.filterObj.get('ConfigStep') - 1}/>
 				{this.renderContent()}
 				{this.renderFooter()}
-				{this._renderMeasureDialog()}
+				{this.state.measureShow && this._renderMeasureDialog()}
 				<NewDialog open={this.state.closeDlgShow} actionsContainerStyle={{textAlign: 'right'}} actions={[
 					<NewFlatButton primary label={I18N.Common.Button.Save} onClick={this._onSaveAndClose}/>,
 					<NewFlatButton style={{marginLeft: 24}} secondary label={I18N.Common.Button.Cancel2} onClick={() =>{

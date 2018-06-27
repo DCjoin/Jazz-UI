@@ -12,6 +12,7 @@ import DiagnoseAction from 'actions/Diagnose/DiagnoseAction.jsx';
 import PropTypes from 'prop-types';
 import Toast from '@emop-ui/piano/toast';
 import Button from '@emop-ui/piano/button';
+
 const NUMBER_REG = /^[1-9]\d*(\.\d+)?$/;
 
 export default class PushConfirmDialog extends Component {
@@ -33,7 +34,7 @@ export default class PushConfirmDialog extends Component {
 
     state={
       solution:this.props.solution,
-      snackBarOpen:false,
+      snackBarText:null,
       saveTipShow:false,
       errorData:Immutable.fromJS({})
     }
@@ -122,28 +123,15 @@ export default class PushConfirmDialog extends Component {
     }
 
     _onClose(){
-      DiagnoseAction.checkTitle( this.context.hierarchyId, this.context.router.params.customerId, this.state.solution.getIn(["Problem","SolutionTitle"]), (dulpi) => {
-            if( dulpi ) {
-              this.setState({
-                errorData: this._validateAll().setIn(["problem","SolutionTitle"], I18N.Setting.ECM.NameDuplicateTip)
-              });
-            } else {
-                    if(MeasuresStore.IsSolutionDisable(this.state.solution.toJS()) || this._hasError()){
-                        this.setState({
-                          snackBarOpen:true,
-                          errorData:this._validateAll()
-                        })
-                      }else{
-                        if(Immutable.is(this.state.solution,this.props.solution)){
+
+          if(Immutable.is(this.state.solution,this.props.solution)){
                           this.props.onClose()
                         }else{
                           this.setState({
                             saveTipShow:true
                           })
                         }
-                      } 
-            }
-          }, this.state.solution.getIn(["Problem","Id"]))
+     
 
 
     }
@@ -180,7 +168,7 @@ export default class PushConfirmDialog extends Component {
             } else {
               if(MeasuresStore.IsSolutionDisable(this.state.solution.toJS()) || this._hasError()){
                   this.setState({
-                    snackBarOpen:true,
+                    snackBarText:I18N.Setting.ECM.RequiredTip,
                     errorData:this._validateAll()
                   })
                 }else{
@@ -207,7 +195,15 @@ export default class PushConfirmDialog extends Component {
                         <div className="solution-footer">
                                 <div className="action">
                                      <Button flat primary label={I18N.Setting.ECM.PushBtn} onClick={this._onPush}/>
-                                     <Button outline secondary label={I18N.Common.Button.Delete} onClick={this.props.onDelete} style={{marginLeft:'16px'}}/>
+                                     <Button outline secondary label={I18N.Common.Button.Save} 
+                                      onClick={()=>{
+                                       this.setState({
+                                         snackBarText:I18N.Setting.ECM.SaveSuccess
+                                       },()=>{
+                                        this.props.onSave(this._getSaveSolution(),false);
+                                       })
+                                       }}
+                                      style={{marginLeft:'16px'}}/>
                                 </div>
                         </div>
                 )
@@ -245,7 +241,16 @@ export default class PushConfirmDialog extends Component {
         <div style={{fontSize:'16px',color:'#666666'}}>{content}</div>
       </NewDialog>
     )
+  }
+  
+   componentWillReceiveProps(nextProps) {
+    if(!Immutable.is(this.state.solution,nextProps.solution)){
+      this.setState({
+        solution:nextProps.solution,
+        errorData:Immutable.fromJS({})
+      })
     }
+  }
 
     render(){
       var {errorData}=this.state;
@@ -271,11 +276,12 @@ export default class PushConfirmDialog extends Component {
          
           {this._renderFooter()}
     
-         <Toast autoHideDuration={1500} className="toast-tip" open={this.state.snackBarOpen} onRequestClose={() => {
+         <Toast autoHideDuration={1500} className="toast-tip" open={this.state.snackBarText!==null} onRequestClose={() => {
           this.setState({
-            snackBarOpen: false,
+            snackBarText:null
           })
-        }}><div className='icon-clean'>{I18N.Setting.ECM.RequiredTip}</div></Toast>
+        }}><div className='icon-clean'>{this.state.snackBarText}</div></Toast>
+
          {this.state.saveTipShow && this._renderSaveTip()}
         </div>
       )

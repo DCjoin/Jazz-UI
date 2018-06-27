@@ -463,7 +463,6 @@ MeasuresStore.dispatchToken = AppDispatcher.register(function(action) {
     case Action.GET_CONTAINS_UNREAD:
         MeasuresStore.setUnread(action.data);
           break;
-      default:
     case Action.GET_REMARK_LIST_SUCCESS:
         MeasuresStore.setRemarkList(action.data);
         MeasuresStore.emitChange()
@@ -479,6 +478,7 @@ MeasuresStore.dispatchToken = AppDispatcher.register(function(action) {
     case Action.DELETE_SUPERVISOR_ERROR:
         MeasuresStore.emitChange(Msg.DELETE_SUPERVISOR_ERROR,MeasuresStore.getErrorMsg(action.err,action.supervisorId));
         break;
+          default:
     }
   });
 

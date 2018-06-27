@@ -28,7 +28,7 @@ class Item extends Component {
 
 		return(
 			<div className="jazz-effect-best-list-ignored-item" onClick={onItemClick}>
-      <div className="column1" title={solution.getIn(["SolutionInfo","EnergySolutionName"])}>{solution.getIn(["SolutionInfo","EnergySolutionName"])}</div>
+      <div className="column1" title={solution.getIn(["SolutionInfo","SolutionTitle"])}>{solution.getIn(["SolutionInfo","SolutionTitle"])}</div>
 			<div className="column2">
 						{lessInvest && <LessInvest/>}
 						{highReturn && <HighReturn/>}
