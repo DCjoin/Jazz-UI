@@ -218,7 +218,8 @@ export default class NotPushPanel extends Component {
               disabled:MeasuresStore.IsSolutionDisable(solution.toJS()),
               personInCharge:null,
               action:this._renderOperation(index),
-              onClick:()=>{this._onMeasureItemClick(index)}
+              onClick:()=>{this._onMeasureItemClick(index)},
+              isFromNotPush:true
             };
             if(this.state.dialogType===null && this.state.handleIndex!==null && index===this.state.handleIndex){
               return <DisappareItem {...this.getProps()} onEnd={this._onPush}><MeasuresItem {...prop}/></DisappareItem>
@@ -303,7 +304,7 @@ return(
           this.setState({saveTipShow:false})
         }}
         actions={ [<Button key='pause' style={{marginRight:'16px'}} flat secondary labelStyle={{color:'#dc0a0a'}} 
-          label={I18N.Common.Button.Delete}
+          label={I18N.Setting.ECM.Delete}
               onClick={this._onDelete}
         />,
         <Button key='cancel' style={{marginRight:'16px'}} flat secondary  label={I18N.Common.Button.Cancel2}
@@ -319,16 +320,20 @@ return(
 
   _renderMeasureDialog(){
     var currentSolution=this.state.solutionList.getIn([this.state.measureIndex]);
-    var onSave=(solution)=>{
-      this.setState({
+    var onSave=(solution,needClose=true)=>{
+      if(needClose){
+        this.setState({
         measureShow:false,
-        measureIndex:null
-    },()=>{
+        measureIndex:null,
+        snackbarText:I18N.Setting.ECM.SaveSuccess
+      })
+      }
+
+
       // currentSolution=MeasuresStore.getValidParams(currentSolution);
       MeasuresAction.updateSolution(solution.toJS(),()=>{
         MeasuresAction.getGroupSettingsList(this.props.hierarchyId,Status.NotPush)
       });
-    })
     };
    var props={
      title:{

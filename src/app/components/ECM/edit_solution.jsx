@@ -52,6 +52,10 @@ function pushAndNotPushIsFull() {
 	return privilegeWithPushAndNotPush(privilegeUtil.isFull.bind(privilegeUtil));
 }
 
+function isConsultant() {
+   return pushAndNotPushIsFull()
+}
+
 
 export default class EditSolution extends Component {
 
@@ -97,12 +101,16 @@ export default class EditSolution extends Component {
 
     _hasError(){
        var errorData=this._validateAll();
-       return errorData.get("Problem").find(item=>item!=='')!==undefined || errorData.get("Solutions").map(solution=>solution.find(item=>item!=='')!==undefined)
+        return errorData.get("Problem").find(item=>item!=='')!==undefined || errorData.get("Solutions").map(solution=>solution.find(item=>item!=='')!==undefined)
                                                                                     .includes(true) 
+       
     }
     _onSave(){
       var errorData=this._validateAll();
-      DiagnoseAction.checkTitle( this.context.hierarchyId, 
+      var IsConsultant=isConsultant();
+
+      if(IsConsultant){
+          DiagnoseAction.checkTitle( this.context.hierarchyId, 
                                  this.context.router.params.customerId, 
                                  this.state.solution.getIn(["Problem","SolutionTitle"]), 
                                  (dulpi) => {
@@ -118,27 +126,46 @@ export default class EditSolution extends Component {
           errorData:this._validateAll()
         })
       }else{
-        MeasuresAction.updateSolution(this.state.solution.toJS(),()=>{
           this.setState({
             snackBarText:I18N.Setting.ECM.SaveSuccess,
             preSolution:this.state.solution
+          },()=>{
+            this.props.onSave(this.state.solution,false)
           })
-      });
+
     }
             }
       },
       this.state.solution.getIn(["Problem","Id"]))
+      }else{
+        if(this.state.solution.getIn(["Problem","Name"])===null || this.state.solution.getIn(["Problem","Name"])===''){
+          this.setState({
+          snackBarText:I18N.Setting.ECM.RequiredTip,
+          errorData:this.state.errorData.setIn(["Problem","Name"],I18N.Setting.Diagnose.PleaseInput+I18N.Setting.Diagnose.ProblemName)
+        })
+      }else{
+        this.setState({
+            snackBarText:I18N.Setting.ECM.SaveSuccess,
+            preSolution:this.state.solution
+          },()=>{
+            this.props.onSave(this.state.solution,false)
+          })
+    }
+      }
+
 
     }
 
     _onClose(){
       var currentSolution=this.state.solution.setIn(["Problem",'EnergySys'],this.state.energySys);
+      var IsConsultant=isConsultant();
 
       if(!this.props.hasPriviledge){
         this.props.onClose()
       }
 
-      DiagnoseAction.checkTitle( this.context.hierarchyId, 
+      if(IsConsultant){
+              DiagnoseAction.checkTitle( this.context.hierarchyId, 
                                  this.context.router.params.customerId, 
                                  this.state.solution.getIn(["Problem","SolutionTitle"]), 
                                  (dulpi) => {
@@ -166,6 +193,25 @@ export default class EditSolution extends Component {
             }
           },
           this.state.solution.getIn(["Problem","Id"]))
+      }else{
+        if(this.state.solution.getIn(["Problem","Name"])===null || this.state.solution.getIn(["Problem","Name"])===''){
+          this.setState({
+          snackBarText:I18N.Setting.ECM.RequiredTip,
+          errorData:this.state.errorData.setIn(["Problem","Name"],I18N.Setting.Diagnose.PleaseInput+I18N.Setting.Diagnose.ProblemName)
+        })
+        }else{
+        if(Immutable.is(currentSolution,this.state.preSolution)){
+                                    this.props.onClose(!Immutable.is(this.state.preSolution,this.props.solution) || this.props.isUnread)
+                                  
+                                }else{
+                                  this.setState({
+                                    saveTipShow:true
+                                  })
+                                }
+    }
+      }
+
+
 
 
     }
@@ -256,8 +302,30 @@ export default class EditSolution extends Component {
 
       _onBlur( paths, value ) {
         let errorData = this.state.errorData;
+        let IsConsultant=isConsultant();
+        if(IsConsultant){
+          errorData=this._validate(paths, value,errorData);
+        }else{
+          var error=null;
+          if(paths.join('') === 'ProblemName' && (value===null || value==='')){
+            error=I18N.Setting.Diagnose.PleaseInput+I18N.Setting.Diagnose.ProblemName
+          }
+          if( ~paths.indexOf('ExpectedAnnualEnergySaving') ) {
+            if( value && !NUMBER_REG.test(value) ) {
+                error = I18N.Setting.ECM.NumberrTip;
+              }
+            }
+    
+        if( ~paths.indexOf('ExpectedAnnualCostSaving') ) {
+      
+              if( value && !NUMBER_REG.test(value) ) {
+                 error = I18N.Setting.ECM.NumberrTip;
+                }
+            } 
+            errorData=errorData.setIn(paths,error)
+        }
 
-        errorData=this._validate(paths, value,errorData);
+        
 
         this.setState({
           errorData
@@ -268,6 +336,7 @@ export default class EditSolution extends Component {
       var user=this.state.solution.getIn(['Problem','CreateUserName']);
       var iconstyle={fontSize:'16px'},style={padding:'0',fontSize:'16px',height:'16px',linHeght:'16px',marginRight:'8px',marginLeft:'8px'};
       var {errorData}=this.state;
+      var IsConsultant=isConsultant()
       return(
         <div>
                 <div ref="save_column" className="push-panel-solution-header">
@@ -289,13 +358,13 @@ export default class EditSolution extends Component {
                   </div>
                 {this.state.solutionUnfold && <div className="solution-content">
                 {this.props.hasPriviledge && <session className='session-container'>
-                  <PlanTitle errorData={errorData} isRequired={true} energySolution={this.state.solution} onChange={this._onChange} onBlur={this._onBlur}/>
+                  <PlanTitle errorData={errorData} isRequired={IsConsultant} energySolution={this.state.solution} onChange={this._onChange} onBlur={this._onBlur}/>
                 </session>}
                 <session className='session-container'>
-                  <PlanDetail errorData={errorData} hasPicTitle={false} isView={!this.props.hasPriviledge} solutionTitle={this.state.solution.getIn(['Problem','SolutionTitle'])} isRequired={true} Solutions={this.state.solution.get('Solutions')} onChange={this._onChange} onBlur={this._onBlur}/>
+                  <PlanDetail errorData={errorData} hasPicTitle={false} isView={!this.props.hasPriviledge} solutionTitle={this.state.solution.getIn(['Problem','SolutionTitle'])} isRequired={IsConsultant} Solutions={this.state.solution.get('Solutions')} onChange={this._onChange} onBlur={this._onBlur}/>
                 </session>
                 <session className='session-container'>
-                  <ProblemDetail errorData={errorData} isView={!this.props.hasPriviledge} isRequired={true} energySolution={this.state.solution} onChange={this._onChange} hasEnergySys={false} onBlur={this._onBlur}/>
+                  <ProblemDetail errorData={errorData} isView={!this.props.hasPriviledge} isRequired={IsConsultant} energySolution={this.state.solution} onChange={this._onChange} hasEnergySys={false} onBlur={this._onBlur}/>
                 </session>
              </div>}
         </div>
@@ -352,9 +421,54 @@ export default class EditSolution extends Component {
           }
           return(
             <div className="jazz-ecm-push-operation">
-              <StatusCmp status={status} canEdit={this.props.hasStatusPriviledge} onChange={(value)=>{this.props.onStatusChange(value,this.state.solution)}}/>
+              <StatusCmp status={status} canEdit={this.props.hasStatusPriviledge} onChange={(value)=>{
+                if(isConsultant()){
+                  if(MeasuresStore.IsSolutionDisable(this.state.solution.toJS()) || this._hasError()){
+                            this.setState({
+                                snackBarText:I18N.Setting.ECM.RequiredTip,
+                                errorData:this._validateAll()
+                            })}
+                        else{
+                          this.props.onStatusChange(value,this.state.solution)
+                          }
+                }else{
+                  if(this.state.solution.getIn(["Problem",'Name'])===null || this.state.solution.getIn(["Problem",'Name'])===''){
+                            this.setState({
+                                snackBarText:I18N.Setting.ECM.RequiredTip,
+                                errorData:this.state.errorData.setIn(["Problem","Name"],I18N.Setting.Diagnose.PleaseInput+I18N.Setting.Diagnose.ProblemName)
+                            })}
+                        else{
+                          this.props.onStatusChange(value,this.state.solution)
+                          }
+                }
+                    }
+                        }
+               />
               <EnergySys {...prop.energySys}/>
-              {this.props.person(problem,true,0,false,this.state.solution)}        
+              {this.props.person(problem,true,0,false,this.state.solution,()=>{
+                if(isConsultant()){
+                  if(MeasuresStore.IsSolutionDisable(this.state.solution.toJS()) || this._hasError()){
+                            this.setState({
+                                snackBarText:I18N.Setting.ECM.RequiredTip,
+                                errorData:this._validateAll()
+                            })
+                            return false}
+                        else{
+                          return true
+                          }
+                }else{
+                  if(this.state.solution.getIn(["Problem","Name"])===null || this.state.solution.getIn(["Problem","Name"])===''){
+                            this.setState({
+                                snackBarText:I18N.Setting.ECM.RequiredTip,
+                                eerrorData:this.state.errorData.setIn(["Problem","Name"],I18N.Setting.Diagnose.PleaseInput+I18N.Setting.Diagnose.ProblemName)
+                            })
+                            return false}
+                        else{
+                          return true
+                          }
+                }
+                
+              })}        
             </div>
           )
   }
@@ -367,6 +481,16 @@ export default class EditSolution extends Component {
      }
      return<Remark {...prop}/>
     }
+
+  componentWillReceiveProps(nextProps) {
+    if(!Immutable.is(this.state.solution,nextProps.solution)){
+      this.setState({
+        solution:nextProps.solution,
+        preSolution:nextProps.solution,
+        errorData:Immutable.fromJS({})
+      })
+    }
+  }
 
     render(){
       return(

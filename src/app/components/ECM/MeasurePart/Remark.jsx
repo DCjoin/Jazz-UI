@@ -113,6 +113,7 @@ class RemarkItem extends Component{
     var date=moment(j2d(CreateTime)).format('YYYY-MM-DD'),
         time=moment(j2d(CreateTime)).format('HH:mm')
     var info=`${moment(j2d(CreateTime)).format('YYYY-MM-DD HH:mm')} ${CreateUserName}`;
+    console.log(this.props.remark.toJS());
     return(
       <div className="remarkItem">
         <div className="text">{this.displayText(Remark)}</div>

@@ -36,14 +36,16 @@ let LoginStore = assign({}, EventEmitter.prototype, {
     if (success) {
       _lastError = null;
       CookieUtil.set('UserId', data.Id, {
-        expires: expiresDate || 365
+        expires: expiresDate || 1
       });
       if( data.Token ) {
         CookieUtil.set('AuthLoginToken', data.Token, {
-          expires: expiresDate || 365
+          expires: expiresDate || 1
         });
       }
-      CookieUtil.set('SkipLogin', 'true');
+      CookieUtil.set('SkipLogin', 'true',{
+        expires: expiresDate || 1
+      });
 
       window.currentUserId = data.Id;
       window.currentUser = data;

@@ -99,6 +99,7 @@ export default class PushPanel extends Component {
     solutionList:null,
     infoTabNo:1,
     measureIndex:null,
+    measureId:null,
     measureShow:false,
     supervisorList:null,
     snackbarText:null,
@@ -131,6 +132,7 @@ export default class PushPanel extends Component {
     this.setState({
       measureShow:true,
       measureIndex:index,
+      measureId:measure.getIn(['Problem','Id'])
     })
   }
 
@@ -198,12 +200,15 @@ export default class PushPanel extends Component {
     )
   }
 
-  _renderPersonInCharge(problem,indetail=false,index,hasSolution=false,solution=this.state.solutionList.getIn([this.state.measureIndex])){
+  _renderPersonInCharge(problem,indetail=false,index,hasSolution=false,solution=this.state.solutionList.getIn([this.state.measureIndex]),validateFx){
     return(
       <div style={{width: '220px',paddingLeft: indetail?'0':'20px', borderLeft: indetail?'':'1px dashed #e6e6e6'}}>
              {hasSolution && <div style={{height:'30px'}}/>}
               <Supervisor person={problem.get('Supervisor')} supervisorList={this.state.supervisorList}
                   onSuperviorClick={(id)=>{
+                    if(validateFx && !validateFx()){
+                      return
+                    }
                     if(indetail){
                       var currentSolution=solution;
                       MeasuresAction.updateSolution(currentSolution.toJS(),()=>{
@@ -421,72 +426,24 @@ export default class PushPanel extends Component {
   }
 
   _renderMeasureDialog(){
-    var currentSolution=this.state.solutionList.getIn([this.state.measureIndex]);
-    var createUserId=this.state.solutionList.getIn([this.state.measureIndex,'Problem','CreateUserId']);
-    var onSave=(solution)=>{
-      this.setState({
+    var currentSolution=this.state.solutionList.find(item=>item.getIn(["Problem","Id"])===this.state.measureId);
+    var createUserId=currentSolution.getIn(['Problem','CreateUserId']);
+    var onSave=(solution,needClose=true)=>{
+      if(needClose){
+        this.setState({
         measureShow:false,
         measureIndex:null
       },()=>{
-        //currentSolution=MeasuresStore.getValidParams(currentSolution);
         MeasuresAction.updateSolution(solution.toJS(),()=>{this.refresh(status[this.state.infoTabNo-1])});
       })
-    };
-    var problem=this.state.solutionList.getIn([this.state.measureIndex,'Problem']),
-        user=problem.get('CreateUserName');
-   var props={
-     title:{
-       measure:currentSolution,
-       canNameEdit:canEdit(createUserId),
-       canEnergySysEdit:canEdit(createUserId),
-       merge:this.merge,
-     },
-     problem:{
-       measure:currentSolution,
-       canEdit:canEdit(createUserId),
-       merge:this.merge,
-     },
-     solution:{
-       measure:currentSolution,
-       canEdit:canEdit(createUserId),
-       merge:this.merge,
-     },
-     gallery: {
-      measure:currentSolution,
-      onDelete: (idx) => {
-        let imagesPath = ['Problem','EnergyProblemImages'];
-        this.merge(imagesPath, currentSolution.getIn(imagesPath).delete(idx));
+      }else{
+        MeasuresAction.updateSolution(solution.toJS(),()=>{MeasuresAction.getGroupSettingsList(this.props.hierarchyId,status[this.state.infoTabNo-1])})
       }
-     },
-     remark:{
-       problemId:currentSolution.getIn(['Problem','Id']),
-       canEdit:PushIsFull() || PushAndNotPushIsFull(),
-       onScroll:(height)=>{ReactDom.findDOMNode(this).querySelector(".dialog-content").scrollTop+=height+15}
-     }
-   }
-    /*return(
-      <NewDialog
-        open={this.state.measureShow}
-        hasClose
-        isOutsideClose={false}
-        onRequestClose={onClose}
-        overlayStyle={{overflowY:"auto"}}
-        style={{overflow:"visible"}}
-        wrapperStyle={{overflow:"visible"}}
-        titleStyle={{margin:'0 7px',paddingTop:"7px"}}
-        contentStyle={{overflowY:"auto",display:'block',padding:"6px 28px 14px 32px",margin:0}}>
-        <div style={{paddingLeft:'9px',borderBottom:"1px solid #e6e6e6",paddingRight:'19px'}}>{this._renderOperation()}</div>
-        <SolutionLabel {...props.solution}/>
-        <Solution {...props.solution}/>
-        <Problem {...props.problem}/>
-        <div style={{margin:"46px 20px 0 16px"}}><SolutionGallery {...props.gallery}/></div>
-        <div style={{display:"flex",alignItems:"flex-end",marginTop:'36px'}}>
-          <div className="jazz-ecm-push-operation-label">{`${I18N.Setting.ECM.PushPanel.CreateUser}：`}</div>
-          <div style={{fontSize:'12px',color:'#9fa0a4',marginLeft:'5px'}}>{user || '-'}</div>
-        </div>
-        <Remark {...props.remark}/>
-      </NewDialog>
-    )*/
+
+        //currentSolution=MeasuresStore.getValidParams(currentSolution);
+  
+    };
+
     return(
       <EditSolution solution={currentSolution} 
                     isUnread={displayUnread(this.state.infoTabNo) && !currentSolution.getIn(['Problem','IsRead'])}

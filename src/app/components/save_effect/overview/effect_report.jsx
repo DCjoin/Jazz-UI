@@ -205,7 +205,7 @@ export default class EffectReport extends Component {
                   <span>{
                     (isWater ? I18N.SaveEffect.Chart.SavingWaterValue : I18N.SaveEffect.Chart.SavingValue)
                     + (currentYear ? '/' : '') +
-                    (currentYear ? (isWater ? I18N.SaveEffect.Chart.PredictSavingWater2 : I18N.SaveEffect.Chart.PredictSaving2) : '')
+                    (currentYear ? (isWater ? I18N.SaveEffect.Chart.PredictSavingWater : I18N.SaveEffect.Chart.PredictSaving) : '')
                 }</span>
                 </header>
                 <div className='report-sum-content'>
