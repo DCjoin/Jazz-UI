@@ -446,7 +446,7 @@ let RawDataChartPanel = createReactClass({
     var realData = this.convertData(data.Data, newConfig);
     var timeRange = this.initRange(newConfig, realData);
     //this.initNavigatorData(newConfig, timeRange, data);
-    this.props.chartType = "line";  //jacob: sometimes not display as line chart
+    // this.props.chartType = "line";  //jacob: sometimes not display as line chart
     if (this.props.chartType === "line" || this.props.chartType === "column") {
       this.initFlagSeriesData(newConfig, realData);
     }
