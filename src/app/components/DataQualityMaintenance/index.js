@@ -59,7 +59,6 @@ class Left extends Component {
   }
   _generateNodeConent(nodeData) {
     var type = nodeData.get('NodeType');
-    console.log(type);
     var icon = (
       <div className='node-content-icon'>
         <div className={classnames({
@@ -89,7 +88,6 @@ class Left extends Component {
   render() {
     let { hierarchy, selectedNode, onSelectNode, onOpenHierarchy } = this.props;
     let selectedIsBuilding = selectedNode && selectedNode.get('NodeType') === nodeType.Building;
-    selectedIsBuilding = true;
     return (
       <div className='data-quality-maintenance-left'>
         <div className='data-quality-maintenance-filter-time'></div>
@@ -102,7 +100,6 @@ class Left extends Component {
           <div>{'导出报告'}</div>
           <div onClick={(e) => {
             if( selectedIsBuilding ) {
-              console.log(e.target);
               this.setState({
                 openPopover: true,
                 popoverAnchorEl: e.target,
@@ -219,6 +216,7 @@ export default class DataQualityMaintenance extends Component {
               }}
               onClick={() => {
                 this.setState(() => ({needRefresh: false}));
+                this._getVEEDataStructure();
               }}
             />
           </div>
