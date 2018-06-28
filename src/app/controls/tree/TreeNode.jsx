@@ -400,7 +400,9 @@ var TreeNode = createReactClass({
   },
 
   render: function() {
-    var generateNode = ((this.props.treeSource === treeSource.FolderOperation && this.props.nodeData.get("Type") == nodeType.Widget) ? null : this.generateNode());
+    var generateNode = (
+      (this.props.treeSource === treeSource.FolderOperation && this.props.nodeData.get("Type") == nodeType.Widget)
+       ? null : this.generateNode());
     return (
 
       <div key={this.props.nodeData.get('Id')} id={this.props.nodeData.get('Id')} className="pop-tree-node-container">

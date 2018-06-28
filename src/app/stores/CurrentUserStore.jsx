@@ -330,6 +330,11 @@ if ( this.permit(PermissionCode.SOLUTION_FULL.FULL) ||
               name: 'log',
               getPath: RoutePath.customerSetting.log,
               title: I18N.MainMenu.TagBatchImportLog
+            },
+            {
+              name: 'data_quality_maintenance',
+              getPath: RoutePath.customerSetting.data_quality_maintenance,
+              title: I18N.MainMenu.DataQualityMaintenance
             }
           ]
         }];
