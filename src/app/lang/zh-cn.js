@@ -67,6 +67,7 @@ I18N.MainMenu.PTagManagement = '计量数据P';
 I18N.MainMenu.VTagManagement = '计量数据V';
 I18N.MainMenu.VEEMonitorRule = '异常监测规则';
 I18N.MainMenu.TagBatchImportLog = '配置导入日志';
+I18N.MainMenu.DataQualityMaintenance = '数据质量维护';
 I18N.MainMenu.HierarchyNodeSetting = '层级节点配置';
 I18N.MainMenu.HierarchyLog = '配置导入日志';
 I18N.MainMenu.CustomSetting = '自定义配置';

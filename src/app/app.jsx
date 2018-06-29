@@ -77,7 +77,7 @@ import HierarchyLog from './components/hierarchySetting/importLog/HierarchyLog.j
 import Diagnose from './components/Diagnose/Diagnose.jsx';
 import InputData from './components/DataAnalysis/InputData/InputDataPanel.jsx';
 import DataPanel from './components/DataAnalysis/InputData/DataPanel.jsx';
-
+import DataQualityMaintenance from './components/DataQualityMaintenance';
 
 window.currentUserId = getCookie('UserId');
 window.currentCustomerId = getCookie('currentCustomerId');
@@ -279,6 +279,9 @@ ReactDom.render(<Router history={browserHistory} routes={{
       }, {
         path: 'dash_board',
         component: Dashboard,
+      }, {
+        path: 'data_quality_maintenance',
+        component: DataQualityMaintenance
       }, ]
     }, {
       path: 'service/:cusnum',
