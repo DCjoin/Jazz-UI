@@ -39,6 +39,7 @@ app.get('/sso/metadata', (req, res) => res.header('Content-Type','text/xml').sen
 
 // Access URL for implementing SP-init SSO
 app.get('/:lang/spinitsso-redirect',(req, res) => {
+  let acsURL = new URL(req.query.callbackURL);
   // Configure your endpoint for IdP-initiated / SP-initiated SSO
 
   console.log(__dirname);
@@ -63,6 +64,46 @@ app.get('/:lang/spinitsso-redirect',(req, res) => {
   let spDomain='sp1';
   return res.redirect(redirectURL.href + "&callbackURL=" + encodeURIComponent(req.query.callbackURL) + "&sysId=" + SYSID + "&spDomain=" + encodeURIComponent(spDomain));
 });
+
+app.get('/:lang/sso-redirect-hierarchy/:customerId', (req, res) => {
+  let acsURL = new URL(req.query.callbackURL);
+  // Configure your endpoint for IdP-initiated / SP-initiated SSO
+  let parObj = {
+    sysId: 0,// 0云能效 1千里眼 2灯塔 8万丈云
+    Menu: "hierarchy",
+    CustomerId: req.params.customerId // 当前CustomerId
+  };
+  let parStr = encodeURIComponent(JSON.stringify(parObj));
+
+  const sp = ServiceProvider({
+    privateKey: fs.readFileSync(__dirname + '/SE-SP.pem'),
+    privateKeyPass: 'sesp!@#',
+    requestSignatureAlgorithm: 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256',
+
+    metadata: fs.readFileSync(__dirname + '/metadata_sp.xml', "utf-8").replace('${SSO_ACS_URL}', "https://emop-test.energymost.com/zh-cn/sso/acs"+"?par=" + parStr)
+
+  });
+
+  const idp = IdentityProvider({
+    metadata: fs.readFileSync(__dirname + '/onelogin_metadata.xml', "utf-8").split('${GUARD_UI_HOST}').join("http://passport-pft.energymost.com/Saml/SignOnService")
+  });
+
+
+  const url = sp.createLoginRequest(idp, 'redirect');
+
+  const redirectURL = new URL(url.context);
+
+  redirectURL.pathname = req.params.lang + redirectURL.pathname;
+  console.log(redirectURL.pathname);
+  let spDomain = req.hostname.split(".")[0] ? req.hostname.split(".")[0] : "";
+  // spDomain=spDomain==='dev'?'sp1':spDomain;
+  //因为sso的dev环境存在问题，暂时都指向sp1环境
+  // let spDomain = 'sp1';
+  console.log(spDomain);
+  console.log(redirectURL.href);
+
+  return res.redirect(redirectURL.href + "&callbackURL=" + encodeURIComponent(req.query.callbackURL) + "&sysId=" + SYSID + "&spDomain=" + encodeURIComponent(spDomain));
+})
 
 // This is the assertion service url where SAML Response is sent to
 app.post('/sso/acs', (req, res) => {
@@ -124,7 +165,7 @@ app.get('/:lang/logout',(req, res) => {
 
 app.get('/:lang/*', (req,res) => {
   var host = req.hostname;
-  var reg = /^((127\.0\.0\.1)|(localhost))$/;   
+  var reg = /^((127\.0\.0\.1)|(localhost))$/;
 　var trust = reg.test(host);
   console.log(host,trust);
   if(!trust) {

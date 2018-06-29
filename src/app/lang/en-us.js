@@ -67,6 +67,7 @@ I18N.MainMenu.PTagManagement = 'PTag';
 I18N.MainMenu.VTagManagement = 'VTag';
 I18N.MainMenu.VEEMonitorRule = 'VE&E';
 I18N.MainMenu.TagBatchImportLog = 'Import log';
+I18N.MainMenu.DataQualityMaintenance = '数据质量维护';
 I18N.MainMenu.HierarchyNodeSetting = 'Hierarchy';
 I18N.MainMenu.HierarchyLog = 'Import log';
 I18N.MainMenu.CustomSetting = 'Customer';
