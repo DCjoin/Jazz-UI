@@ -12,7 +12,8 @@ export default function ToggleIconPanel({isFolded=true,onToggle,children}){
         display: 'flex',
         flexDirection: 'column',
         position: 'relative',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        marginTop:'0'
       }} className='jazz-content'>
       <div className="pop-framework-right-actionbar" style={{minHeight:'30px'}}>
           <div className="pop-framework-right-actionbar-top">

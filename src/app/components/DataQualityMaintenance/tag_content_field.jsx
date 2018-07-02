@@ -67,7 +67,7 @@ export default class TagContentField extends Component {
             "jazz-ptag-right-fold": !this.props.showRawDataList,
             "jazz-ptag-right-expand": this.props.showRawDataList
 
-          })}>
+          })} style={{top:'56px'}}>
           <Panel onToggle={this.props.onToggle} isFolded={this.props.showLeft}>
             {this._renderHeader()}
             {this._renderContent()}

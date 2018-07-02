@@ -5,20 +5,19 @@ import Spin from '@emop-ui/piano/spin';
 import PropTypes from 'prop-types';
 import {nodeType} from 'constants/actionType/data_quality.jsx';
 import TagChart from './tag_chart.jsx';
+import TagNotice from './tag_notice.jsx';
 
 export default class AbnomalMonitor extends Component {
 
-    state={
-      isLoading:false
-    }
-
     _renderChart(){
-      // return this.props.nodeData.get("NodeType")===nodeType.Tag?<TagChart selectedTag={this.props.nodeData} showLeft={this.props.showLeft}/>:null
-      return <TagChart selectedTag={this.props.nodeData} showLeft={this.props.showLeft}/>
+      return this.props.nodeData.get("NodeType")===nodeType.Tag
+              ?<TagChart selectedTag={this.props.nodeData} 
+                         showLeft={this.props.showLeft}/>:null
   }
 
     _renderNotice(){
-      return null
+      return this.props.nodeData.get("NodeType")===nodeType.Tag?<TagNotice  selectedTag={this.props.nodeData}
+                                                                            anomalyType={1}/>:null
     }
 
     render() {
@@ -26,11 +25,6 @@ export default class AbnomalMonitor extends Component {
         display:'flex',
         flex:'1'
       };
-      if(this.state.isLoading){
-        return <div style={style}>
-          <Spin/>
-        </div>
-      }
       return(
          <div style={style}>
            {this._renderChart()}

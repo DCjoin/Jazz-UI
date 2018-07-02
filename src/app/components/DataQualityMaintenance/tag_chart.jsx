@@ -34,7 +34,7 @@ export default class TagChart extends Component {
 		this._onChanged = this._onChanged.bind(this);
 		this._onUpdate = this._onUpdate.bind(this);
 		this._onSwitchRawDataView = this._onSwitchRawDataView.bind(this);
-		// this._onCancel = this._onCancel.bind(this);
+		this._onDateSelectorChanged = this._onDateSelectorChanged.bind(this);
 	}
 
   _getInitDate() {
