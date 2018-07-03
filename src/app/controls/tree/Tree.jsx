@@ -304,7 +304,8 @@ var Tree = createReactClass({
           arrowClass: this.props.arrowClass,
           arrowIconCollapsedClass: this.props.arrowIconCollapsedClass,
           arrowIconExpandClass: this.props.arrowIconExpandClass,
-          treeSource: this.props.treeSource
+          treeSource: this.props.treeSource,
+          checkCollapseStatus: this.props.checkCollapseStatus,
         };
         parentNode.push(<TreeNode {...props}></TreeNode>);
       }
