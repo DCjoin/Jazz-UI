@@ -21,6 +21,7 @@
            window.GUARD_UI_HOST = '${GUARD_UI_HOST}';
             //window.APIPath = '';
             //test
+            //
           document.rawWrite = document.write;
           document.write = function(content) {
             if(content.indexOf('<script ') === 0) {
