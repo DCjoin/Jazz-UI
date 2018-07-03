@@ -5,19 +5,21 @@ import classnames from 'classnames';
 
 import { CircularProgress } from 'material-ui';
 import { Popover, PopoverAnimationVertical } from 'material-ui/Popover';
-
+import {dateAdd} from 'util/Util.jsx';
 import Button from '@emop-ui/piano/button';
 import Dialog from '@emop-ui/piano/dialog';
 
 import Tree from 'controls/tree/Tree.jsx';
-
+import DateTimeSelector from 'controls/DateTimeSelector.jsx';
 import { nodeType } from '../../constants/TreeConstants.jsx';
-
+import DataQuality from 'constants/actionType/data_quality.jsx';
 import DataQualityMaintenanceAction from '../../actions/data_quality_maintenance.jsx';
 import DataQualityMaintenanceStore from '../../stores/data_quality_maintenance.jsx';
 import CurrentUserStore from '../../stores/CurrentUserStore.jsx';
 
 import MonitorTimeDlg from './monitor_time_dlg.jsx';
+import TagContentField from './tag_content_field.jsx';
+import Panel from 'controls/toggle_icon_panel.jsx';
 
 function formatMomentToDateStr(date) {
   return date.toJSON();
@@ -51,7 +53,7 @@ class Left extends Component {
       popoverAnchorEl: null,
     };
 
-    // this._generateNodeConent = this._generateNodeConent.bind(this);
+    this._onDateSelectorChanged = this._onDateSelectorChanged.bind(this);
     this._handleRequestClose = this._handleRequestClose.bind(this);
   }
   _handleRequestClose() {
@@ -63,6 +65,32 @@ class Left extends Component {
   _checkCollapseStatus(node) {
     // console.log(node.toJS());
     return node && node.get('Children') && node.get('Children').size > 0 && node.get('Children').some(child => child.get('NodeType') === 999)
+  }
+  _onDateSelectorChanged(startDate, endDate, startTime, endTime) {
+     let that = this,
+      dateSelector = this.refs.dateTimeSelector,
+      timeRange = dateSelector.getDateTime();
+    if (timeRange.end - timeRange.start > 30 * 24 * 60 * 60 * 1000) {
+      let isStart = dateSelector.getTimeType();
+      if (isStart) {
+        endDate = dateAdd(startDate, 30, 'days');
+        endTime = startTime;
+        timeRange.end = new Date(endDate.setHours(endTime, 0, 0, 0));
+      } else {
+        //jacob 2016-04-05: 开始时间不能出现24点
+        startDate = dateAdd(endDate, -30, 'days');
+        startTime = endTime;
+        if(endTime==24)
+        {
+          startTime = 0;
+          startDate = dateAdd(startDate, 1, 'days');
+        }
+        timeRange.start = new Date(startDate.setHours(startTime, 0, 0, 0));
+      }
+    }
+
+    this.props.onDateSelectorChanged(timeRange.start,timeRange.end)
+
   }
   _generateNodeConent(nodeData) {
     var type = nodeData.get('NodeType');
@@ -93,11 +121,15 @@ class Left extends Component {
     );
   }
   render() {
-    let { hierarchy, selectedNode, onSelectNode, onOpenHierarchy } = this.props;
+    let { hierarchy, selectedNode, onSelectNode, onOpenHierarchy , startDate , endDate} = this.props;
     let selectedIsBuilding = selectedNode && selectedNode.get('NodeType') === nodeType.Building;
     return (
       <div className='data-quality-maintenance-left'>
-        <div className='data-quality-maintenance-filter-time'></div>
+        <div className='data-quality-maintenance-filter-time'>
+          <div className="text">{I18N.VEE.MonitorTime+"："}</div>
+          <DateTimeSelector ref='dateTimeSelector' showTime={false} endLeft='-100px'     startDate= {startDate}
+      endDate={endDate}  _onDateSelectorChanged={this._onDateSelectorChanged}/>
+        </div>
         <div className='data-quality-maintenance-filter-node'></div>
         <div className='data-quality-maintenance-hierarchy'>
           <PureTree hierarchy={hierarchy} selectedNode={selectedNode} onSelectNode={onSelectNode} generateNodeConent={this._generateNodeConent} checkCollapseStatus={this._checkCollapseStatus}/>
@@ -144,17 +176,16 @@ class Left extends Component {
 }
 class Right extends Component {
   render() {
-    let { selectedNode } = this.props;
-    let children = (<div className='flex-center' style={{fontSize: '16px', color: '#626469',}}>{'请在左边选择要查看的节点'}</div>);
-    if( selectedNode ) {
-      children = (<div className='flex-center'>{'显示图表:' + selectedNode.get('Name')}</div>);
+    let { selectedNode ,showLeft, onToggle} = this.props;
+
+    if( selectedNode ){
+      return(selectedNode.get("NodeType")===DataQuality.nodeType.Tag?<TagContentField nodeData={selectedNode} showLeft={showLeft} onToggle={onToggle}/>
+                                                                          :null)
+    }else{
+      return(<Panel onToggle={onToggle} isFolded={showLeft}>
+            <div className='flex-center' style={{fontSize: '16px', color: '#626469',}}>{'请在左边选择要查看的节点'}</div>
+          </Panel>)
     }
-    return (
-      <div className='data-quality-maintenance-right'>
-        <span className='icon-column-fold'/>
-        {children}
-      </div>
-    );
   }
 }
 
@@ -167,6 +198,7 @@ export default class DataQualityMaintenance extends Component {
       needRefresh: false,
       startTime: moment().subtract(1, 'months').startOf('day'),
       endTime: moment().startOf('day'),
+      showLeft:true
     };
     this._openSSOHierarchyUrl = this._openSSOHierarchyUrl.bind(this);
     this._onChange = this._onChange.bind(this);
@@ -243,16 +275,26 @@ export default class DataQualityMaintenance extends Component {
     }
     return (
       <div className='data-quality-maintenance-wrapper'>
-        {VEEDataStructure.get('HasHierarchy') &&
+        {VEEDataStructure.get('HasHierarchy') && this.state.showLeft &&
         <Left
           selectedNode={this.state.selectedNode}
           onSelectNode={(nodeData) => this.setState(() => ({selectedNode: nodeData}))}
           hierarchy={VEEDataStructure.getIn(['Tree', 0, 'Children'])}
           onOpenHierarchy={this._openSSOHierarchyUrl}
+          startDate={new Date(this.state.startTime)}
+          endDate={new Date(this.state.endTime)}
+          onDateSelectorChanged={(startDate,endDate)=>{
+                  this.setState({
+                    startTime:moment(startDate),
+                    endTime:moment(endDate)
+                  },()=>{this._getVEEDataStructure()})
+          }}
         />}
         {VEEDataStructure.get('HasHierarchy') &&
         <Right
+          showLeft={this.state.showLeft}
           selectedNode={this.state.selectedNode}
+          onToggle={()=>{this.setState({showLeft:!this.state.showLeft})}}
         />}
         {!VEEDataStructure.get('HasHierarchy') && this._renderNon()}
         {this._renderNeedRefresh()}

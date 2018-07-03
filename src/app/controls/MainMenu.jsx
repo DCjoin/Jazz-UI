@@ -110,12 +110,13 @@ var SubMainMenu = createReactClass({
       {showSubMenu} = this.state,
       {isActive, activeTitle} = this._checkSubIsActive(node.children);
     var menu = null;
+    var hasSub = this.props.node.children && this.props.node.children.length > 1;
     var listItems = this.props.node.children.map((item, i) => {
       return <ListMenu title={item.title} menuItems={item.list} onMenuItemClick={this._onMenuItemClick} isActive={isActive} index={i}/>;
     });
     var listNum = this.props.node.children.length;
     if (showSubMenu) {
-      menu = <Paper zDepth={1} className='jazz-mainmenu-main-sub-menu'>{listItems}</Paper>;
+      menu = <Paper zDepth={1} className={hasSub ? 'jazz-mainmenu-main-sub-menu' : ''}>{listItems}</Paper>;
     }
 
     var style=this.props.node.children.length>1?{}:{alignItems:'center'};

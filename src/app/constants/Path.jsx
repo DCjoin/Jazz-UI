@@ -133,5 +133,8 @@ module.exports = {
   },
   User:{
     startChangePassword:'/user/startChangePassword/{userName}'
+  },
+  Vee:{
+    getAnomaly:'/vee/anomalyNotification/{nodeId}/{nodeType}/{anomalyType}'
   }
 };
