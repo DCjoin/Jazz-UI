@@ -115,7 +115,7 @@ var SubMainMenu = createReactClass({
     });
     var listNum = this.props.node.children.length;
     if (showSubMenu) {
-      menu = <Paper zDepth={1}>{listItems}</Paper>;
+      menu = <Paper zDepth={1} className='jazz-mainmenu-main-sub-menu'>{listItems}</Paper>;
     }
 
     var style=this.props.node.children.length>1?{}:{alignItems:'center'};

@@ -124,6 +124,11 @@ var TreeNode = createReactClass({
     }
   },
   getDefaultCollapsed: function(props) {
+    if(props.checkCollapseStatus && typeof props.checkCollapseStatus === 'function' ) {
+      console.log(props.nodeData.toJS(), props.checkCollapseStatus(props.nodeData));
+      return props.checkCollapseStatus(props.nodeData);
+    }
+
     var levelStatus = false,
       checkedStatus = !this.getDefaultCollapsedBySelectedNode(props),
       collapseStatus = !(props.nodeData.get('Id') == props.collapsedNodeId);

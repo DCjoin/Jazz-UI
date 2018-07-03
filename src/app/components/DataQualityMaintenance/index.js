@@ -17,13 +17,15 @@ import DataQualityMaintenanceAction from '../../actions/data_quality_maintenance
 import DataQualityMaintenanceStore from '../../stores/data_quality_maintenance.jsx';
 import CurrentUserStore from '../../stores/CurrentUserStore.jsx';
 
+import MonitorTimeDlg from './monitor_time_dlg.jsx';
+
 function formatMomentToDateStr(date) {
   return date.toJSON();
 }
 
 class PureTree extends PureComponent {
   render() {
-    let { hierarchy, selectedNode, onSelectNode, generateNodeConent } = this.props;
+    let { hierarchy, selectedNode, onSelectNode, generateNodeConent, checkCollapseStatus } = this.props;
     let treePorps = {
       allNode: hierarchy,
       collapsedLevel: 0,
@@ -34,6 +36,7 @@ class PureTree extends PureComponent {
       generateNodeConent: generateNodeConent,
       selectedNode: selectedNode,
       treeNodeClass: 'data-quality-maintenance-tree-node',
+      checkCollapseStatus: checkCollapseStatus,
     };
     return (<Tree {...treePorps}></Tree>);
   }
@@ -56,6 +59,10 @@ class Left extends Component {
       openPopover: false,
       // popoverAnchorEl: null,
     }));
+  }
+  _checkCollapseStatus(node) {
+    // console.log(node.toJS());
+    return node && node.get('Children') && node.get('Children').size > 0 && node.get('Children').some(child => child.get('NodeType') === 999)
   }
   _generateNodeConent(nodeData) {
     var type = nodeData.get('NodeType');
@@ -93,7 +100,7 @@ class Left extends Component {
         <div className='data-quality-maintenance-filter-time'></div>
         <div className='data-quality-maintenance-filter-node'></div>
         <div className='data-quality-maintenance-hierarchy'>
-          <PureTree hierarchy={hierarchy} selectedNode={selectedNode} onSelectNode={onSelectNode} generateNodeConent={this._generateNodeConent}/>
+          <PureTree hierarchy={hierarchy} selectedNode={selectedNode} onSelectNode={onSelectNode} generateNodeConent={this._generateNodeConent} checkCollapseStatus={this._checkCollapseStatus}/>
         </div>
         <div className='data-quality-maintenance-actions-bar'>
           <div>{'配置规则'}</div>
@@ -249,6 +256,13 @@ export default class DataQualityMaintenance extends Component {
         />}
         {!VEEDataStructure.get('HasHierarchy') && this._renderNon()}
         {this._renderNeedRefresh()}
+        <MonitorTimeDlg
+          locale={this.props.router.params.lang}
+          open={true}
+          onChange={() => {console.log('onChange')}}
+          onSubmit={() => {console.log('onSubmit')}}
+          onCancel={() => {console.log('onCancel')}}
+        />
       </div>
     );
   }
