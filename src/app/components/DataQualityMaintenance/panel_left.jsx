@@ -4,6 +4,7 @@ import classnames from 'classnames';
 
 import { CircularProgress } from 'material-ui';
 import { Popover, PopoverAnimationVertical } from 'material-ui/Popover';
+import TextFiled from '@emop-ui/piano/text';
 
 import { nodeType } from 'constants/TreeConstants.jsx';
 
@@ -29,6 +30,83 @@ class PureTree extends PureComponent {
       checkCollapseStatus: checkCollapseStatus,
     };
     return (<Tree {...treePorps}></Tree>);
+  }
+}
+
+const FilterItems = [{
+  Id: 0,
+  Text: '空值',
+}, {
+  Id: 1,
+  Text: '负值',
+}, {
+  Id: 2,
+  Text: '跳变',
+}, {
+  Id: 3,
+  Text: '全部节点',
+}, ]
+
+class FilterBar extends PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      open: false,
+      anchorEl: null,
+    };
+    this._handleRequestClose = this._handleRequestClose.bind(this);
+  }
+  _handleRequestClose() {
+    this.setState(() => ({
+      open: false,
+    }));
+  }
+  render() {
+    let { value, onChange } = this.props;
+    return (
+      <div className="data-quality-maintenance-filter-node">
+        <TextFiled
+          suffixIconClassName='icon-drop-down'
+          width={232}
+          onClick={(e) => {
+            this.setState({
+              open: true,
+              anchorEl: e.currentTarget.parentNode,
+            });
+          }}
+          value={FilterItems.filter( item => item.Id === value )[0].Text}
+        />
+        <div className='search-button'>
+          <span className='icon-search'/>
+          <span>{'搜索'}</span>
+        </div>
+        <Popover
+          open={this.state.open}
+          anchorEl={this.state.anchorEl}
+          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+          targetOrigin={{horizontal: 'left', vertical: 'top'}}
+          onRequestClose={this._handleRequestClose}
+          style={{width: 232}}
+        >
+        {FilterItems.map( item =>
+          <div
+            style={{
+              width: 192
+            }}
+            className={classnames('select-hour-item', {
+              selected: item.Id === value
+            })}
+            onClick={() => {
+              this._handleRequestClose();
+              onChange(item.Id);
+            }}>
+            {item.Text}
+          </div>
+        )}
+        </Popover>
+      </div>
+    );
   }
 }
 
@@ -116,7 +194,7 @@ export default class Left extends Component {
           <div className="text">{I18N.VEE.MonitorTime+"："}</div>
           <DateTimeSelector ref='dateTimeSelector' showTime={false} endLeft='-100px' startDate={startDate} endDate={endDate}  _onDateSelectorChanged={this._onDateSelectorChanged}/>
         </div>
-        <div className='data-quality-maintenance-filter-node'></div>
+        <FilterBar onChange={(val) => {console.log(val)}} value={0} />
         <div className='data-quality-maintenance-hierarchy'>
           <PureTree hierarchy={hierarchy} selectedNode={selectedNode} onSelectNode={onSelectNode} generateNodeConent={this._generateNodeConent} checkCollapseStatus={this._checkCollapseStatus}/>
         </div>

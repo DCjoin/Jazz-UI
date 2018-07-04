@@ -107,30 +107,30 @@ class TextSelect extends Component {
           width={width}
           onClick={this.handleTouchTap}
           value={value || text}/>
-          <Popover
-            open={this.state.open}
-            anchorEl={this.state.anchorEl}
-            anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-            targetOrigin={{horizontal: 'left', vertical: 'top'}}
-            onRequestClose={this.handleRequestClose}
-            style={{width: 100, height: 240}}
-          >
-          {(Array(24) + '').split(',').map( ( val, i ) => {
-            let text = ('0' + i).substr(-2) + ':00';
-            return (
-              <div
-                className={classnames('select-hour-item', {
-                  selected: text === value
-                })}
-                onClick={() => {
-                  this.setState({open: false});
-                  onChange(text);
-                }}>
-                {text}
-              </div>
-            )
-          })}
-          </Popover>
+        <Popover
+          open={this.state.open}
+          anchorEl={this.state.anchorEl}
+          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+          targetOrigin={{horizontal: 'left', vertical: 'top'}}
+          onRequestClose={this.handleRequestClose}
+          style={{width: 100, height: 240}}
+        >
+        {(Array(24) + '').split(',').map( ( val, i ) => {
+          let text = ('0' + i).substr(-2) + ':00';
+          return (
+            <div
+              className={classnames('select-hour-item', {
+                selected: text === value
+              })}
+              onClick={() => {
+                this.setState({open: false});
+                onChange(text);
+              }}>
+              {text}
+            </div>
+          )
+        })}
+        </Popover>
       </div>
     );
   }
@@ -153,7 +153,7 @@ export default class MonitorTimeDlg extends Component {
     let time = '';
     if( props && props.open ) {
       if(props.startTime) {
-        let startTime = moment(props.startTime).subtract(8, 'hours');
+        let startTime = moment(props.startTime)/*.subtract(8, 'hours')*/;
         date = startTime.format('YYYY-MM-DD');
         time = startTime.format('hh:mm');
       }
@@ -206,6 +206,7 @@ export default class MonitorTimeDlg extends Component {
           </div>,
           <div>
             <Button flat secondary
+              disabled={!date || !time}
               label={'确定'}
               labelStyle={{
                 color: '#32ad3c',

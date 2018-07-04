@@ -128,13 +128,13 @@ export default class DataQualityMaintenance extends Component {
           this._getVEEDataStructure();
         }}/>
         <MonitorTimeDlg
-          startTime={scanSwitch.get('StartTime')}
+          startTime={scanSwitch.get('UpdateTime')}
           locale={this.props.router.params.lang}
           open={this.state.openMonitorTimeDlg}
           onSubmit={( startTimeStr ) => {
             DataQualityMaintenanceAction.saveScanSwitch(
               scanSwitch
-                .set('StartTime', startTimeStr)
+                .set('UpdateTime', startTimeStr)
                 .set('IsOpen', true).toJS());
 
             this.setState({
