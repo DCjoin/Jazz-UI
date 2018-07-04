@@ -39,14 +39,14 @@ var CalendarTime = createReactClass({
 
   _getTimeItems() {
     let timeArray = this._getTimeArray();
-
+    // return '123';
     return timeArray.map((timeItem, i) => {
       return (
-        <ClearFix key={i}>
+        <div key={i}>
           {this._getTimeElements(timeItem, i)}
-        </ClearFix>
+        </div>
       );
-    }, this);
+    });
   },
 
   _getTimeArray(){
@@ -64,7 +64,9 @@ var CalendarTime = createReactClass({
   },
 
   _getTimeElements(timeItem, i) {
+
     return timeItem.map((time, j) => {
+      // return <div>'123'</div>
       return (
         <ItemButton
           height={this.props.height}
@@ -74,7 +76,7 @@ var CalendarTime = createReactClass({
           selected={this.props.selectedTime === time.value}
           onTouchTap={this._onTimeTouchTap}/>
       );
-    }, this);
+    });
   },
 
   _onTimeTouchTap(e, time) {
