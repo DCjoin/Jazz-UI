@@ -27,6 +27,10 @@ function isBuilding( node ) {
   return node && node.get('NodeType') === nodeType.Building;
 }
 
+function hasNodeIdInTree( id, tree ) {
+  return tree.get('Id') === id || tree.get('Children').some( hasNodeIdInTree.bind(null, id) );
+}
+
 export default class DataQualityMaintenance extends Component {
   constructor(props) {
     super(props);
@@ -35,7 +39,8 @@ export default class DataQualityMaintenance extends Component {
       needRefresh: false,
       startTime: moment().subtract(1, 'months').startOf('day'),
       endTime: moment().startOf('day'),
-      showLeft:true,
+      showLeft: true,
+      filterType: 1,
     };
     this._openSSOHierarchyUrl = this._openSSOHierarchyUrl.bind(this);
     this._onChange = this._onChange.bind(this);
@@ -50,17 +55,29 @@ export default class DataQualityMaintenance extends Component {
   }
 
   _onChange() {
-    this.setState({
-      VEEDataStructure: DataQualityMaintenanceStore.getVEEDataStructure(),
-      scanSwitch: DataQualityMaintenanceStore.getScanSwitch(),
-    });
+    let storeVEEDataStructure = DataQualityMaintenanceStore.getVEEDataStructure();
+    let selectedNode = this.state.selectedNode;
+    if( storeVEEDataStructure !== this.state.VEEDataStructure && !storeVEEDataStructure.get('_loading') && selectedNode && !hasNodeIdInTree( selectedNode.get('Id'), storeVEEDataStructure.getIn(['Tree', 0]) ) ) {
+      selectedNode = undefined;
+
+      this.setState({
+        VEEDataStructure: storeVEEDataStructure,
+        scanSwitch: DataQualityMaintenanceStore.getScanSwitch(),
+        selectedNode: null,
+      });
+    } else {
+      this.setState({
+        VEEDataStructure: storeVEEDataStructure,
+        scanSwitch: DataQualityMaintenanceStore.getScanSwitch(),
+      });
+    }
   }
 
   _getVEEDataStructure(state = this.state) {
     DataQualityMaintenanceAction.getVEEDataStructure({
-      ExceptionType: 0,
-      StartTime: this.state.startTime.toJSON(),
-      EndTime: this.state.endTime.toJSON(),
+      ExceptionType: state.filterType,
+      StartTime: state.startTime.toJSON(),
+      EndTime: state.endTime.toJSON(),
       CustomerId: this.props.router.params.customerId,
       UserId: CurrentUserStore.getCurrentUser().Id,
     });
@@ -77,7 +94,7 @@ export default class DataQualityMaintenance extends Component {
     return (<div className='flex-center'><Button onClick={this._openSSOHierarchyUrl} label={'+ ' + '新建数据流架构'} outline secondary /></div>)
   }
   render() {
-    let { VEEDataStructure, scanSwitch, selectedNode } = this.state;
+    let { VEEDataStructure, scanSwitch, selectedNode, filterType } = this.state;
     if( !VEEDataStructure || VEEDataStructure.get('_loading') ) {
       return <div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>
     }
@@ -99,10 +116,10 @@ export default class DataQualityMaintenance extends Component {
           startDate={new Date(this.state.startTime)}
           endDate={new Date(this.state.endTime)}
           onDateSelectorChanged={(startDate,endDate)=>{
-                  this.setState({
-                    startTime:moment(startDate),
-                    endTime:moment(endDate)
-                  },()=>{this._getVEEDataStructure()})
+            this.setState({
+              startTime:moment(startDate),
+              endTime:moment(endDate)
+            }, this._getVEEDataStructure())
           }}
           switchMonitorTime={() => {
             if( scanSwitch.get('IsOpen') ) {
@@ -115,6 +132,8 @@ export default class DataQualityMaintenance extends Component {
               });
             }
           }}
+          onChangeFilterType={ val => this.setState({filterType: val}, this._getVEEDataStructure) }
+          filterType={filterType}
         />}
         {VEEDataStructure.get('HasHierarchy') &&
         <Right

@@ -34,16 +34,16 @@ class PureTree extends PureComponent {
 }
 
 const FilterItems = [{
-  Id: 0,
+  Id: 1,
   Text: '空值',
 }, {
-  Id: 1,
+  Id: 2,
   Text: '负值',
 }, {
-  Id: 2,
+  Id: 3,
   Text: '跳变',
 }, {
-  Id: 3,
+  Id: 0,
   Text: '全部节点',
 }, ]
 
@@ -121,16 +121,29 @@ export default class Left extends Component {
 
     this._onDateSelectorChanged = this._onDateSelectorChanged.bind(this);
     this._handleRequestClose = this._handleRequestClose.bind(this);
+    this._checkCollapseStatus = this._checkCollapseStatus.bind(this);
   }
   _handleRequestClose() {
     this.setState(() => ({
       openPopover: false,
-      // popoverAnchorEl: null,
     }));
   }
   _checkCollapseStatus(node) {
     // console.log(node.toJS());
-    return node && node.get('Children') && node.get('Children').size > 0 && node.get('Children').some(child => child.get('NodeType') === 999)
+    if( !node || !node.get('Children') || !node.get('Children').size ) {
+      return true;
+    }
+
+    let children = node.get('Children');
+    return children.some(child => child.get('NodeType') === 999);
+    // { filterType } = this.props;
+    // switch (this.props.filterType) {
+    //   case 1:
+    //   case 2:
+    //     return ;
+    //   case 3:
+    //     return ;
+    // }
   }
   _onDateSelectorChanged(startDate, endDate, startTime, endTime) {
      let that = this,
@@ -187,14 +200,26 @@ export default class Left extends Component {
     );
   }
   render() {
-    let { hierarchy, isBuilding, selectedNode, onSelectNode, onOpenHierarchy , startDate, endDate, switchMonitorTime, scanSwitch} = this.props;
+    let {
+      hierarchy,
+      isBuilding,
+      selectedNode,
+      onSelectNode,
+      onOpenHierarchy,
+      startDate,
+      endDate,
+      switchMonitorTime,
+      scanSwitch,
+      onChangeFilterType,
+      filterType,
+    } = this.props;
     return (
       <div className='data-quality-maintenance-left'>
         <div className='data-quality-maintenance-filter-time'>
           <div className="text">{I18N.VEE.MonitorTime+"："}</div>
-          <DateTimeSelector ref='dateTimeSelector' showTime={false} endLeft='-100px' startDate={startDate} endDate={endDate}  _onDateSelectorChanged={this._onDateSelectorChanged}/>
+          <DateTimeSelector disabled={!filterType} ref='dateTimeSelector' showTime={false} endLeft='-100px' startDate={startDate} endDate={endDate}  _onDateSelectorChanged={this._onDateSelectorChanged}/>
         </div>
-        <FilterBar onChange={(val) => {console.log(val)}} value={0} />
+        <FilterBar onChange={onChangeFilterType} value={filterType} />
         <div className='data-quality-maintenance-hierarchy'>
           <PureTree hierarchy={hierarchy} selectedNode={selectedNode} onSelectNode={onSelectNode} generateNodeConent={this._generateNodeConent} checkCollapseStatus={this._checkCollapseStatus}/>
         </div>
