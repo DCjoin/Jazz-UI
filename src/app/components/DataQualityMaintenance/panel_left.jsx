@@ -134,7 +134,11 @@ export default class Left extends Component {
       return true;
     }
 
-    let children = node.get('Children');
+    let { selectedNode } = this.props,
+    children = node.get('Children');
+    if( selectedNode && selectedNode.get('ParentId') === node.get('Id') ) {
+      return false;
+    }
     return children.some(child => child.get('NodeType') === 999);
     // { filterType } = this.props;
     // switch (this.props.filterType) {
