@@ -30,7 +30,7 @@ export default class TagNotice extends Component {
 
   componentWillReceiveProps(nextProps) {
     if(this.props.selectedTag.get("Id")!==nextProps.selectedTag.get("Id")){
-      DataQualityMaintenanceAction.getTagAnomaly(nextProps.selectedTag.get("Id"),nextProps.anomalyType);
+      DataQualityMaintenanceAction.getAnomalyNotification(nextProps.selectedTag.get("Id"),nextProps.selectedTag.get("NodeType"),nextProps.anomalyType);
       this.setState({
         notice:null
       })
