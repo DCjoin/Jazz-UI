@@ -155,7 +155,7 @@ export default class MonitorTimeDlg extends Component {
       if(props.startTime) {
         let startTime = moment(props.startTime)/*.subtract(8, 'hours')*/;
         date = startTime.format('YYYY-MM-DD');
-        time = startTime.format('hh:mm');
+        time = startTime.format('HH:mm');
       }
     }
     return {
