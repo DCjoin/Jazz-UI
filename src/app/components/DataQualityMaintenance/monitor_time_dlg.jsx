@@ -227,7 +227,6 @@ export default class MonitorTimeDlg extends Component {
       >
         <div className={classnames('monitor-time-dlg-field', {empty: !this.state.date})}>
           <TextCalendar
-            minDate={'2015-01-01'}
             maxDate={new Date()}
             locale={locale}
             width={240}
