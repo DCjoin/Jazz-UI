@@ -8,7 +8,10 @@ import {Action} from '../constants/actionType/data_quality_maintenance.jsx';
 
 let _VEEDataStructure = Immutable.fromJS({}),
     _VEETagAnomaly = Immutable.fromJS({}),
+     _scanSwitch = Immutable.fromJS({}),
     _VEESummary=Immutable.fromJS([]);
+   
+
 
 var DataQualityMaintenanceStore = assign({},PrototypeStore,{
   requestVEEDataStructure() {
@@ -19,6 +22,15 @@ var DataQualityMaintenanceStore = assign({},PrototypeStore,{
   },
   getVEEDataStructure(){
     return _VEEDataStructure;
+  },
+  requestScanSwitch() {
+    _scanSwitch = _scanSwitch.set('_loading', true);
+  },
+  setScanSwitch(data){
+    _scanSwitch = Immutable.fromJS(data);
+  },
+  getScanSwitch(){
+    return _scanSwitch;
   },
   setVEETagAnomaly(data){
     _VEETagAnomaly = Immutable.fromJS(data);
@@ -42,6 +54,14 @@ DataQualityMaintenanceStore.dispatchToken = AppDispatcher.register(function(acti
         break;
       case Action.GET_VEE_DATA_STRUCTURE_SUCCESS:
         DataQualityMaintenanceStore.setVEEDataStructure(action.data);
+        DataQualityMaintenanceStore.emitChange();
+        break;
+      case Action.GET_SCAN_SWITCH_REQUEST:
+        DataQualityMaintenanceStore.requestScanSwitch();
+        DataQualityMaintenanceStore.emitChange();
+        break;
+      case Action.GET_SCAN_SWITCH_SUCCESS:
+        DataQualityMaintenanceStore.setScanSwitch(action.data);
         DataQualityMaintenanceStore.emitChange();
         break;
       case Action.GET_VEE_TAG_ANOMALY_SUCCESS:

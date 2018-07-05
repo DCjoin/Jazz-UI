@@ -18,6 +18,7 @@ let DateTimeSelector = createReactClass({
     endTime: PropTypes.number,
     showTime: PropTypes.bool,
     isTimeFixed:PropTypes.bool,
+    disabled:PropTypes.bool,
   },
   getDefaultProps(){
     return {
@@ -198,7 +199,7 @@ let DateTimeSelector = createReactClass({
   },
   render() {
     var me = this;
-    var {showTime,isTimeFixed}=this.props;
+    var {showTime,isTimeFixed, disabled}=this.props;
     var dateStyle = {
       width: '112px',
       height: '32px',
@@ -214,7 +215,8 @@ let DateTimeSelector = createReactClass({
       onChange: function(value) {
         value=moment(value)._d;
         me._onChangeDateTime(value, null, null, null);
-      }
+      },
+      disabled,
     },
     startTimeProps={
       selectedTime:this.state.startTime,
@@ -233,6 +235,7 @@ let DateTimeSelector = createReactClass({
         value=moment(value)._d;
         me._onChangeDateTime(null, null, value, null);
       },
+      disabled,
     },
     endTimeProps={
       selectedTime:this.state.endTime,

@@ -85,6 +85,7 @@ class DatePicker extends React.Component {
     width: PropTypes.oneOfType([PropTypes.number.string]),
     datePickerClassName:PropTypes.string,
     isPopover: PropTypes.bool,
+    disabled: PropTypes.bool,
   };
 
   constructor(props) {
@@ -163,7 +164,7 @@ class DatePicker extends React.Component {
         }}
         value={value}
         floatingLabelFocusStyle={{fontSize:'19px'}}
-        onFocus={()=>{this.setState({popup:true})}} />
+        onFocus={()=>{!this.props.disabled && this.setState({popup:true})}} />
       </div>
     );
   }
@@ -214,6 +215,7 @@ export default class ViewableDatePicker extends React.Component {
     maxDateError: PropTypes.string,
     width: PropTypes.oneOfType([PropTypes.number.string]),
     isViewStatus: PropTypes.bool,
+    disabled: PropTypes.bool,
     name: PropTypes.string,
     errorText: PropTypes.string,
     dateFormatStr:PropTypes.string

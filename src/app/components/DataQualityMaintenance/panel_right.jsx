@@ -1,0 +1,21 @@
+import React, { Component } from 'react';
+
+import DataQuality from 'constants/actionType/data_quality.jsx';
+
+import TagContentField from './tag_content_field.jsx';
+import Panel from 'controls/toggle_icon_panel.jsx';
+
+export default class Right extends Component {
+  render() {
+    let { selectedNode ,showLeft, onToggle} = this.props;
+
+    if( selectedNode ){
+      return(selectedNode.get("NodeType")===DataQuality.nodeType.Tag?<TagContentField nodeData={selectedNode} showLeft={showLeft} onToggle={onToggle}/>
+                                                                          :null)
+    }else{
+      return(<Panel onToggle={onToggle} isFolded={showLeft}>
+            <div className='flex-center' style={{fontSize: '16px', color: '#626469',}}>{'请在左边选择要查看的节点'}</div>
+          </Panel>)
+    }
+  }
+}

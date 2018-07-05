@@ -22,6 +22,39 @@ module.exports = {
       }
     });
   },
+  getScanSwitch: ( hierarchyId ) => {
+    AppDispatcher.dispatch({
+      type: Action.GET_SCAN_SWITCH_REQUEST,
+    });
+    Ajax.get('/vee/getscanswitch' + '?hierarchyId=' + hierarchyId, {
+      success: function(data) {
+        AppDispatcher.dispatch({
+          type: Action.GET_SCAN_SWITCH_SUCCESS,
+          data
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
+  saveScanSwitch: (scanSwitch) => {
+    AppDispatcher.dispatch({
+      type: Action.GET_SCAN_SWITCH_REQUEST,
+    });
+    Ajax.post('/vee/savescanswitch', {
+      params: scanSwitch,
+      success: function(data) {
+        AppDispatcher.dispatch({
+          type: Action.GET_SCAN_SWITCH_SUCCESS,
+          data
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
   getAnomalyNotification: (nodeId,nodeType,anomalyType ) => {
    Ajax.get( Util.replacePathParams(Vee.getAnomaly, nodeId, nodeType,anomalyType), {
 		success: (data) => {
