@@ -27,7 +27,7 @@ export default class CloseMonitorDlg extends Component {
     return (
       <Dialog
         open={open}
-        title={'关闭数据监测后，下一周期将不再进行扫描检测。确定关闭数据监测吗？'}
+        title={'关闭数据监测后，下一周期将不再进行扫描监测。确定关闭数据监测吗？'}
         titleStyle={{
           padding: 0,
           margin: '24px 24px 16px',
