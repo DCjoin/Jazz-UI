@@ -248,15 +248,15 @@ export default class Left extends Component {
         <div className='data-quality-maintenance-actions-bar'>
           <div>{'配置规则'}</div>
           <div onClick={(e) => {
-            if( isBuilding ) {
+            // if( isBuilding ) {
               this.setState({
                 openPopover: true,
                 popoverAnchorEl: e.target,
               });
-            } else {
-              onOpenHierarchy();
-            }
-          }}>{isBuilding ? <div className='icon-drop-down'>{'更多'}</div> : '管理数据流'}</div>
+            // } else {
+            //   onOpenHierarchy();
+            // }
+          }}><div className='icon-drop-down'>{'更多'}</div></div>
         </div>
         {this.state.openPopover && <Popover
           style={{
@@ -278,7 +278,7 @@ export default class Left extends Component {
           >
             {'管理数据流'}
           </div>
-          <div className='data-quality-maintenance-actions-popover-item' onClick={() => {
+          {isBuilding && <div className='data-quality-maintenance-actions-popover-item' onClick={() => {
             if( !scanSwitch.get('_loading') ) {
               this.setState({
                 openPopover: false,
@@ -288,7 +288,7 @@ export default class Left extends Component {
           }}>{scanSwitch.get('_loading') ?
             <div className='flex-center'><CircularProgress size={20}/></div> :
             (scanSwitch.get('IsOpen') ? '关闭数据流' : '开启数据扫描')}
-          </div>
+          </div>}
         </Popover>}
       </div>
     );
