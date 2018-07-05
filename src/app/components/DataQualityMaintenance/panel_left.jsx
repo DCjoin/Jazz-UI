@@ -195,11 +195,29 @@ export default class Left extends Component {
         })}/>
       </div>
     );
+    let contentStyle = {};
+    if( nodeData.get('HasException') ) {
+      contentStyle.color = '#dc0a0a';
+    }
+    let alarm = null;
+    if( nodeData.get('IsNotRead') && nodeData.get('PhysicalStatus') === 0 ) {
+      alarm = (<div style={{
+        width: 6,
+        height: 6,
+        borderRadius: 3,
+        backgroundColor: '#ff4d4d',
+        alignSelf: 'flex-start',
+      }}/>);
+    }
+    if( nodeData.get('NodeType') === 999 ) {
+      icon = null;
+    }
 
     return (
-      <div className='tree-node-content'>
+      <div className='tree-node-content' style={contentStyle}>
         {icon}
         <div className='node-content-text' title={nodeData.get('Name')}>{nodeData.get('Name')}</div>
+        {alarm}
       </div>
     );
   }

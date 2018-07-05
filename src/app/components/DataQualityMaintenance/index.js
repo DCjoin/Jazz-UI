@@ -80,6 +80,13 @@ export default class DataQualityMaintenance extends Component {
       EndTime: state.endTime.toJSON(),
       CustomerId: this.props.router.params.customerId,
       UserId: CurrentUserStore.getCurrentUser().Id,
+
+      // "ExceptionType": 1,
+      // "StartTime": "2018-07-01T01:42:55.030Z",
+      // "EndTime": "2018-07-05T01:42:55.030Z",
+      // "CustomerId":345208,
+      // "UserId":301825,
+
     });
 
   }
