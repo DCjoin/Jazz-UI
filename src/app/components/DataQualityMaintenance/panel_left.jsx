@@ -287,7 +287,7 @@ export default class Left extends Component {
             }
           }}>{scanSwitch.get('_loading') ?
             <div className='flex-center'><CircularProgress size={20}/></div> :
-            (scanSwitch.get('IsOpen') ? '关闭数据流' : '开启数据扫描')}
+            (scanSwitch.get('IsOpen') ? '关闭数据扫描' : '开启数据扫描')}
           </div>}
         </Popover>}
       </div>
