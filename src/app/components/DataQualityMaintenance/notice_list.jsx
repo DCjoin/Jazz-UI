@@ -6,7 +6,7 @@ import DataQualityMaintenanceStore from 'stores/data_quality_maintenance.jsx';
 import NoticeBox from './notice_box.jsx';
 
 
-export default class TagNotice extends Component {
+export default class NoticeList extends Component {
 
   constructor(props) {
 		super(props);
@@ -24,13 +24,13 @@ export default class TagNotice extends Component {
 
   componentDidMount() {
     DataQualityMaintenanceStore.addChangeListener(this._onChange);
-    DataQualityMaintenanceAction.getAnomalyNotification(this.props.selectedTag.get("Id"),this.props.selectedTag.get("NodeType"),this.props.anomalyType)
+    DataQualityMaintenanceAction.getAnomalyNotification(this.props.selectedNode.get("Id"),this.props.selectedNode.get("NodeType"),this.props.anomalyType)
     // DataQualityMaintenanceAction.getAnomalyNotification(662400,999,2)
   }
 
   componentWillReceiveProps(nextProps) {
-    if(this.props.selectedTag.get("Id")!==nextProps.selectedTag.get("Id")){
-      DataQualityMaintenanceAction.getAnomalyNotification(nextProps.selectedTag.get("Id"),nextProps.selectedTag.get("NodeType"),nextProps.anomalyType);
+    if(this.props.selectedNode.get("Id")!==nextProps.selectedNode.get("Id")){
+      DataQualityMaintenanceAction.getAnomalyNotification(nextProps.selectedNode.get("Id"),nextProps.selectedNode.get("NodeType"),nextProps.anomalyType);
       this.setState({
         notice:null
       })

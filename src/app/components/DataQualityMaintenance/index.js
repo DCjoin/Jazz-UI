@@ -19,6 +19,7 @@ import CurrentUserStore from '../../stores/CurrentUserStore.jsx';
 
 import MonitorTimeDlg from './monitor_time_dlg.jsx';
 import TagContentField from './tag_content_field.jsx';
+import SummaryContentField from './summary_content_field.jsx';
 import Panel from 'controls/toggle_icon_panel.jsx';
 
 function formatMomentToDateStr(date) {
@@ -180,7 +181,7 @@ class Right extends Component {
 
     if( selectedNode ){
       return(selectedNode.get("NodeType")===DataQuality.nodeType.Tag?<TagContentField nodeData={selectedNode} showLeft={showLeft} onToggle={onToggle}/>
-                                                                          :null)
+                                                                          :<SummaryContentField nodeData={selectedNode} showLeft={showLeft} onToggle={onToggle}/>)
     }else{
       return(<Panel onToggle={onToggle} isFolded={showLeft}>
             <div className='flex-center' style={{fontSize: '16px', color: '#626469',}}>{'请在左边选择要查看的节点'}</div>
