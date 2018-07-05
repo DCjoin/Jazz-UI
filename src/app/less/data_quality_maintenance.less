@@ -56,9 +56,27 @@
     } 
   }
   &-filter-node {
-    height: 48px;
+    // height: 48px;
     border-bottom: 1px solid #e6e6e6;
     flex: none;
+    padding: 10px 8px 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    & .text-box-input {
+      background-color: unset;
+    }
+
+    .search-button {
+      color: #626469;
+      font-size: 14px;
+      cursor: pointer;
+
+      & .icon-search {
+        margin-right: 4px;
+      }
+    }
   }
   &-hierarchy {
     flex: 1;

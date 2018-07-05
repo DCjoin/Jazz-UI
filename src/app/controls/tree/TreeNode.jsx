@@ -125,7 +125,10 @@ var TreeNode = createReactClass({
   },
   getDefaultCollapsed: function(props) {
     if(props.checkCollapseStatus && typeof props.checkCollapseStatus === 'function' ) {
-      return props.checkCollapseStatus(props.nodeData);
+      let result = props.checkCollapseStatus(props.nodeData);
+      if( typeof result === 'boolean' ) {
+        return result;
+      }
     }
 
     var levelStatus = false,
