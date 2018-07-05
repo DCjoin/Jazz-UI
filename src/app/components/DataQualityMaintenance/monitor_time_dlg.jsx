@@ -155,7 +155,7 @@ export default class MonitorTimeDlg extends Component {
       if(props.startTime) {
         let startTime = moment(props.startTime)/*.subtract(8, 'hours')*/;
         date = startTime.format('YYYY-MM-DD');
-        time = startTime.format('hh:mm');
+        time = startTime.format('HH:mm');
       }
     }
     return {
@@ -169,12 +169,18 @@ export default class MonitorTimeDlg extends Component {
   }
   _onSubmit() {
     let { date, time } = this.state;
-    this.props.onSubmit( date + 'T' + time + ':00.000Z' );
-    this._onCancel();
+    if( date && time ) {
+      this.props.onSubmit( date + 'T' + time + ':00.000Z' );
+      this._onCancel();
+    } else {
+      this.setState({
+        error: true,
+      });
+    }
   }
   render() {
     let { open, onChange, onSubmit, locale } = this.props,
-    { date, time } = this.state;
+    { date, time, error } = this.state;
     return (
       <Dialog
         open={open}
@@ -190,6 +196,7 @@ export default class MonitorTimeDlg extends Component {
         contentStyle={{
           padding: 0,
           flexDirection: 'row',
+          position: 'relative',
         }}
         actions={[
           <div>
@@ -206,7 +213,6 @@ export default class MonitorTimeDlg extends Component {
           </div>,
           <div>
             <Button flat secondary
-              disabled={!date || !time}
               label={'确定'}
               labelStyle={{
                 color: '#32ad3c',
@@ -221,14 +227,13 @@ export default class MonitorTimeDlg extends Component {
       >
         <div className={classnames('monitor-time-dlg-field', {empty: !this.state.date})}>
           <TextCalendar
-            minDate={'2015-01-01'}
             maxDate={new Date()}
             locale={locale}
             width={240}
             text={'选择开始监测日期'}
             value={this.state.date}
             onChange={(val) => {
-              this.setState({date: val});
+              this.setState({date: val, error: false});
             }}
           />
         </div>
@@ -238,10 +243,16 @@ export default class MonitorTimeDlg extends Component {
             text={'选择时间'}
             value={this.state.time}
             onChange={(val) => {
-              this.setState({time: val});
+              this.setState({time: val, error: false});
             }}
           />
         </div>
+        {error && <div style={{
+          color: '#dc0a0a',
+          position: 'absolute',
+          fontSize: '12px',
+          top: 44.
+        }}>{'请完整填写监测日期和时间'}</div>}
       </Dialog>
     );
   }
