@@ -7,8 +7,11 @@ import Immutable from 'immutable';
 import {Action} from '../constants/actionType/data_quality_maintenance.jsx';
 
 let _VEEDataStructure = Immutable.fromJS({}),
-    _scanSwitch = Immutable.fromJS({}),
-    _VEETagAnomaly = Immutable.fromJS({});
+    _VEETagAnomaly = Immutable.fromJS({}),
+     _scanSwitch = Immutable.fromJS({}),
+    _VEESummary=Immutable.fromJS([]);
+   
+
 
 var DataQualityMaintenanceStore = assign({},PrototypeStore,{
   requestVEEDataStructure() {
@@ -35,6 +38,12 @@ var DataQualityMaintenanceStore = assign({},PrototypeStore,{
   getVEETagAnomaly(){
     return _VEETagAnomaly;
   },
+  setVEESummary(data){
+    _VEESummary = Immutable.fromJS(data);
+  },
+  getVEESummary(){
+    return _VEESummary;
+  },
 });
 
 DataQualityMaintenanceStore.dispatchToken = AppDispatcher.register(function(action) {
@@ -57,6 +66,10 @@ DataQualityMaintenanceStore.dispatchToken = AppDispatcher.register(function(acti
         break;
       case Action.GET_VEE_TAG_ANOMALY_SUCCESS:
         DataQualityMaintenanceStore.setVEETagAnomaly(action.data);
+        DataQualityMaintenanceStore.emitChange();
+        break;
+      case Action.GET_VEE_SUMMARY_SUCCESS:
+        DataQualityMaintenanceStore.setVEESummary(action.data);
         DataQualityMaintenanceStore.emitChange();
         break;
     }

@@ -65,4 +65,14 @@ module.exports = {
 		}
 	});
   },
+  getNodeSummary: (nodeId,nodeType,anomalyType ) => {
+   Ajax.get( Util.replacePathParams(Vee.getAnomaly, nodeId, nodeType,anomalyType), {
+		success: (data) => {
+			AppDispatcher.dispatch({
+				type: Action.GET_VEE_SUMMARY_SUCCESS,
+				data
+			});
+		}
+	});
+  },
 };
