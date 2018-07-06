@@ -147,9 +147,9 @@ class ChartComponent extends Component {
       xAxis: {
         ordinal: false, //must false for missing data
         type: 'datetime',
-        // tickPositioner: function(min, max) {
-        //   return ChartXAxisSetter.statics.setTicks.apply(this, arguments);
-        // },
+        tickPositioner: function(min, max) {
+          return ChartXAxisSetter.statics.setTicks.apply(this, arguments);
+        },
         crosshair: true,
         labels: {
           overflow: 'justify'
@@ -219,26 +219,6 @@ class ChartComponent extends Component {
         
           </div>
           `
-          // that.props.data.forEach((data,index)=>{
-          //   var {Time}=data.toJS();
-          //   Coordinates.forEach(Coordinate=>{
-          //     if(Coordinate.XCoordinate===x && Coordinate.YCoordinate===y){
-          //       content+= `<div>
-          //                   <div style="font-size:14px;color:#626469">${CommonFuns.formatDateByStep(j2d(Coordinate.Time,true),null,null,that.props.step)}</div>
-          //                   <div style="font-size:12px;color:${colorArr[index]}">(${dataLabelFormatter.call({
-          //         value: x
-          //       }, false)+xAxisUom}, ${dataLabelFormatter.call({
-          //         value: y
-          //       }, false)+yAxisUom})</div>
-          //                 </div>`
-          //     }
-          //   })
-          // })
-          // return `
-          // <div>
-          //   ${content}
-          // </div>
-          // `
         }
       },
       plotOptions: {
@@ -472,7 +452,7 @@ export default class SummaryChart extends Component {
     //   timeRanges: obj.timeRanges,
     //   refresh: this.state.refresh
     // };
-    if (this.state.data.size === 0) {
+    /*if (this.state.data.size === 0) {
       return (
         <div style={{
           display: 'flex',
@@ -481,7 +461,7 @@ export default class SummaryChart extends Component {
         }}>
         </div>
         )
-    } else {
+    } else {*/
       return (
         <div style={{
           display: 'flex',
@@ -492,7 +472,7 @@ export default class SummaryChart extends Component {
           {this._renderComment()}
         </div>
         )
-    }
+    // }
 
   }
 
