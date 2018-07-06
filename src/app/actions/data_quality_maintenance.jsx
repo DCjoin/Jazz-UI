@@ -65,8 +65,8 @@ module.exports = {
 		}
 	});
   },
-  getNodeSummary: (nodeId,nodeType,anomalyType ) => {
-   Ajax.get( Util.replacePathParams(Vee.getAnomaly, nodeId, nodeType,anomalyType), {
+  getNodeSummary: (nodeId,nodeType,anomalyType,startTime,endTime) => {
+   Ajax.get( Util.replacePathParams(Vee.getNodeSummary, nodeId, nodeType,anomalyType,startTime,endTime), {
 		success: (data) => {
 			AppDispatcher.dispatch({
 				type: Action.GET_VEE_SUMMARY_SUCCESS,

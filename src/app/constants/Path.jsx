@@ -135,6 +135,7 @@ module.exports = {
     startChangePassword:'/user/startChangePassword/{userName}'
   },
   Vee:{
-    getAnomaly:'/vee/anomalyNotification/{nodeId}/{nodeType}/{anomalyType}'
+    getAnomaly:'/vee/anomalyNotification/{nodeId}/{nodeType}/{anomalyType}',
+    getNodeSummary:'/vee/nodeSummary/{nodeId}/{nodeType}/{anomalyType}/{startTime}/{endTime}'
   }
 };
