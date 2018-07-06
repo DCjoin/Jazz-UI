@@ -19,6 +19,7 @@ import MonitorTimeDlg from './monitor_time_dlg.jsx';
 import CloseMonitorDlg from './close_monitor_dlg.jsx';
 import NeedRefreshDlg from './need_refresh_dlg.jsx';
 
+
 function formatMomentToDateStr(date) {
   return date.toJSON();
 }
