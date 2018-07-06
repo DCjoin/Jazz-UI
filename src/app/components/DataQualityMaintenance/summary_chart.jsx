@@ -148,7 +148,7 @@ class ChartComponent extends Component {
         ordinal: false, //must false for missing data
         type: 'datetime',
         tickPositioner: function(min, max) {
-          return ChartXAxisSetter.statics.setTicks.apply(this, arguments);
+          // return ChartXAxisSetter.statics.setTicks.apply(this, arguments);
         },
         crosshair: true,
         labels: {
