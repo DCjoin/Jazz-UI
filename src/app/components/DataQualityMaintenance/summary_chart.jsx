@@ -18,9 +18,9 @@ let {dateAdd} = CommonFuns;
 
 var Sdata=Immutable.fromJS([{
     "Time": "2018-07-03T16:00Z",
-    "NormalNodes": 0,
-    "AbnormalNodes": 0,
-    "IsNormal": true
+    "NormalNodes": 1,
+    "AbnormalNodes": 2,
+    "IsNormal": false
   },{
     "Time": "2018-07-03T16:15Z",
     "NormalNodes": 0,
@@ -71,7 +71,9 @@ class ChartComponent extends Component {
 
   getSeries(){
     return([{
-      data:this.props.data.map(({Time,IsNormal})=>{
+      type:'coloredline',
+      data:this.props.data.map((data,index)=>{
+        let {Time,IsNormal}=data.toJS();
         let color;
          if (!IsNormal) {
         color = '#f46a58'
@@ -81,6 +83,7 @@ class ChartComponent extends Component {
       return {
         x: moment.utc(Time).format('X'),
         y: 0,
+        index:index,
         fillColor: color,
         color: color,
         events: {
@@ -102,11 +105,16 @@ class ChartComponent extends Component {
   }
   
   getConfigObj(){
+    var that=this;
     return{
       colors: [
         '#42b4e6', '#e47f00', '#1a79a9', '#71cbf4', '#b10043',
         '#9fa0a4', '#87d200', '#626469', '#ffd100', '#df3870'
       ],
+      title:null,
+      legend:{
+        enabled:false
+      },
       lang: {
         loading: 'loading',
         months: [],
@@ -120,7 +128,6 @@ class ChartComponent extends Component {
       chart: {
         type: 'coloredline',
         panning: false,
-        zoomType: 'xy',
         backgroundColor: "#FBFBFB",
         plotBackgroundColor: null,
         plotBorderWidth: null,
@@ -150,9 +157,16 @@ class ChartComponent extends Component {
         dateTimeLabelFormats: {}
       },
       yAxis: {
-    	  visible:false,
+        title:{
+          text:null
+        },
         min:-1,
         max:1,
+        gridLineWidth:0,
+        labels: {
+              format:'{value}',
+              enabled:false
+          },
       },
       rangeSelector: {
         enabled: false
@@ -180,7 +194,52 @@ class ChartComponent extends Component {
         enabled: true,
         hideDelay: 100,
         shape: 'square',
-        xDateFormat: '%Y-%m-%d %H:%M:%S'
+        xDateFormat: '%Y-%m-%d %H:%M:%S',
+        useHTML: true,
+        formatter:function(){
+          var x=this.point.x;
+          var content='';
+          var j2d=CommonFuns.DataConverter.JsonToDateTime;
+          var data=that.props.data.getIn([this.point.index]);
+          var {Time,NormalNodes,AbnormalNodes}=data.toJS();
+          return `
+          <div>
+                  <div style="font-size:14px;color:#626469">${CommonFuns.formatDateByStep(j2d(Time,true),null,null,6)}</div>
+                    <div style="display:flex">
+                      <div style="font-size:12px;color:#626469">${that.props.name}${I18N.VEE.Summary+'：'}</div>
+                      <div style="font-size:12px;color:#11d9db">${I18N.VEE.normal}</div>
+                    </div>
+                    <div style="display:flex">
+                      <div style="font-size:12px;color:#626469">${I18N.format(I18N.VEE.SummaryTooltip1,NormalNodes+AbnormalNodes)}${I18N.VEE.SummaryTooltip2}</div>
+                      <div style="font-size:12px;color:#f46a58">${AbnormalNodes}</div>
+                      <div style="font-size:12px;color:#626469">${I18N.VEE.SummaryTooltip3}</div>
+                      <div style="font-size:12px;color:#f46a58">${I18N.VEE.abnormal}</div>
+                    </div>
+                        
+        
+          </div>
+          `
+          // that.props.data.forEach((data,index)=>{
+          //   var {Time}=data.toJS();
+          //   Coordinates.forEach(Coordinate=>{
+          //     if(Coordinate.XCoordinate===x && Coordinate.YCoordinate===y){
+          //       content+= `<div>
+          //                   <div style="font-size:14px;color:#626469">${CommonFuns.formatDateByStep(j2d(Coordinate.Time,true),null,null,that.props.step)}</div>
+          //                   <div style="font-size:12px;color:${colorArr[index]}">(${dataLabelFormatter.call({
+          //         value: x
+          //       }, false)+xAxisUom}, ${dataLabelFormatter.call({
+          //         value: y
+          //       }, false)+yAxisUom})</div>
+          //                 </div>`
+          //     }
+          //   })
+          // })
+          // return `
+          // <div>
+          //   ${content}
+          // </div>
+          // `
+        }
       },
       plotOptions: {
         series: {
@@ -193,25 +252,6 @@ class ChartComponent extends Component {
             }
           },
           turboThreshold: 3000
-        },
-        column: {
-          dataGrouping: {
-            enabled: false
-          },
-          groupPadding: 0.1,
-          shadow: false,
-          borderWidth: 0,
-          pointPadding: 0,
-          dataLabels: {
-            enabled: false,
-            shadow: true,
-            borderRadius: 5,
-            backgroundColor: 'white',
-            padding: 10,
-            borderWidth: 1,
-            borderColor: '#AAA',
-            y: -40
-          }
         },
         line: {
           dataGrouping: {
@@ -237,7 +277,7 @@ class ChartComponent extends Component {
             padding: 10,
             borderWidth: 1,
             borderColor: '#AAA',
-            y: -40
+            // y: -40
           }
         }
       },
@@ -283,7 +323,7 @@ export default class SummaryChart extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-      data: Sdata,
+      data: null,
       refresh: false,
       isLoading: true,
       start: this._getInitDate().start,
@@ -326,7 +366,7 @@ export default class SummaryChart extends Component {
 
   _onChanged() {
     this.setState({
-      // data: DataQualityMaintenanceStore.getVEESummary(),
+      data: DataQualityMaintenanceStore.getVEESummary(),
       isLoading: false,
     })
   }
@@ -404,10 +444,6 @@ export default class SummaryChart extends Component {
           <label className='abnormal-circle'/>
           <div className='label'>{I18N.Setting.Tag.PTagRawData.abnormal}</div>
         </div>
-        <div className='item'>
-          <label className='repair-circle'/>
-          <div className='label'>{I18N.Setting.Tag.PTagRawData.repair}</div>
-        </div>
       </div>
       )
   }
@@ -452,7 +488,7 @@ export default class SummaryChart extends Component {
           'flexDirection': 'column',
           flex: '1'
         }}>
-          <ChartComponent data={this.state.data}/>
+          <ChartComponent data={this.state.data} name={this.props.selectedNode.get("Name")}/>
           {this._renderComment()}
         </div>
         )
@@ -463,7 +499,7 @@ export default class SummaryChart extends Component {
 
   componentDidMount() {
     DataQualityMaintenanceStore.addChangeListener(this._onChanged);
-    // this._getSummaryData(this.props, true);
+    this._getSummaryData(this.props, true);
   }
 
     componentWillReceiveProps(nextProps) {
@@ -526,5 +562,5 @@ export default class SummaryChart extends Component {
 SummaryChart.propTypes= {
   selectedNode:PropTypes.object,
   showLeft:PropTypes.bool,
-  anomalyType:PropTypes.number
+  anomalyType:PropTypes.number,
 };
