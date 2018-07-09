@@ -72,6 +72,9 @@ class ChartComponent extends Component {
   getSeries(){
     return([{
       type:'coloredline',
+      option:{
+        step:6
+      },
       data:this.props.data.map((data,index)=>{
         let {Time,IsNormal}=data.toJS();
         let color;
@@ -148,7 +151,7 @@ class ChartComponent extends Component {
         ordinal: false, //must false for missing data
         type: 'datetime',
         tickPositioner: function(min, max) {
-          // return ChartXAxisSetter.statics.setTicks.apply(this, arguments);
+          return ChartXAxisSetter.statics.setTicks.apply(this, arguments);
         },
         crosshair: true,
         labels: {

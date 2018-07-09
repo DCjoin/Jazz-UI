@@ -162,7 +162,8 @@ export default class DataQualityMaintenance extends Component {
             DataQualityMaintenanceAction.saveScanSwitch(
               scanSwitch
                 .set('UpdateTime', startTimeStr)
-                .set('IsOpen', true).toJS());
+                .set('IsOpen', true)
+                .set("CustomerId",this.props.router.params.customerId).toJS());
 
             this.setState({
               openMonitorToast: true,
@@ -174,7 +175,7 @@ export default class DataQualityMaintenance extends Component {
           open={this.state.closeMonitorDlg}
           onSubmit={() => {
             DataQualityMaintenanceAction.saveScanSwitch(
-              scanSwitch.set('IsOpen', false).toJS());
+              scanSwitch.set('IsOpen', false).set("CustomerId",this.props.router.params.customerId).toJS());
             this.setState({
               closeMonitorToast: true,
             });
