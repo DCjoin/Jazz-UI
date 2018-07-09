@@ -425,7 +425,7 @@ export default class SummaryChart extends Component {
         </div>
         <div className='item'>
           <label className='abnormal-circle'/>
-          <div className='label'>{I18N.Setting.Tag.PTagRawData.abnormal}</div>
+          <div className='label'>{I18N.VEE.SummaryAbnormal}</div>
         </div>
       </div>
       )

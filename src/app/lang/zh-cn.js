@@ -2869,6 +2869,7 @@ I18N.VEE.MonitorTime = '监测时间';
 I18N.VEE.Summary = '汇总状态';
 I18N.VEE.normal = '正常';
 I18N.VEE.abnormal = '异常';
+I18N.VEE.SummaryAbnormal = '全部异常';
 I18N.VEE.SummaryTooltip1 = '共{0}个子节点，';
 I18N.VEE.SummaryTooltip2 = '其中';
 I18N.VEE.SummaryTooltip3= '个子节点';
