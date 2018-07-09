@@ -84,7 +84,7 @@ class ChartComponent extends Component {
           color = '#11d9db'
       }
       return {
-        x: moment.utc(Time).format('X'),
+        x: moment.utc(Time).valueOf(),
         y: 0,
         index:index,
         fillColor: color,

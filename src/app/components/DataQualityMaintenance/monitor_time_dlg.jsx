@@ -52,7 +52,7 @@ class TextCalendar extends Component {
             targetOrigin={{horizontal: 'left', vertical: 'top'}}
             onRequestClose={this.handleRequestClose}
           >
-            <Calendar hasJumpToday={hasJumpToday} value={text || !value ? new Date() : new Date(value)}
+            <Calendar hasJumpToday={hasJumpToday} value={!value ? new Date(moment().add(-1,'d').valueOf()) : new Date(value)}
               minDate={minDate && new Date(minDate)}
               maxDate={maxDate && new Date(maxDate)}
               shouldDisableDate ={shouldDisableDate }
@@ -227,7 +227,7 @@ export default class MonitorTimeDlg extends Component {
       >
         <div className={classnames('monitor-time-dlg-field', {empty: !this.state.date})}>
           <TextCalendar
-            maxDate={new Date()}
+            maxDate={new Date(moment().add(-1,'d').valueOf())}
             locale={locale}
             width={240}
             text={'选择开始监测日期'}
