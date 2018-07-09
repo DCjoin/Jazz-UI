@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import moment from 'moment';
 import classnames from 'classnames';
-
+import assign from "object-assign";
 import Popover from 'material-ui/Popover';
 
 import Dialog from '@emop-ui/piano/dialog';
@@ -164,7 +164,7 @@ export default class MonitorTimeDlg extends Component {
     };
   }
   _onCancel() {
-    this.setState(this._onOpenState());
+    this.setState(assign({},this._onOpenState(),{error:false}));
     this.props.onCancel();
   }
   _onSubmit() {
