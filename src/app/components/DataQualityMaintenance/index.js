@@ -118,6 +118,14 @@ export default class DataQualityMaintenance extends Component {
             if( isBuilding(nodeData) ) {
               DataQualityMaintenanceAction.getScanSwitch( nodeData.get('Id') );
             }
+            if(nodeData.get("IsNotRead")){
+              DataQualityMaintenanceAction.updatereadstatus( {"Id": nodeData.get('Id'),
+                                                              "NodeType": nodeData.get('NodeType'),
+                                                              "UpdateTime": moment().utc().format('YYYY-MM-DDTHH:mm:ss'),
+                                                              "IsNotRead": false,
+                                                              "UserId": CurrentUserStore.getCurrentUser().Id,
+                                                              "ExceptionType": this.state.filterType},nodeData);
+            }
           }}
           hierarchy={VEEDataStructure.getIn(['Tree', 0, 'Children'])}
           onOpenHierarchy={this._openSSOHierarchyUrl}

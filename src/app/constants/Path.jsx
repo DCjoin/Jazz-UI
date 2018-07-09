@@ -136,6 +136,7 @@ module.exports = {
   },
   Vee:{
     getAnomaly:'/vee/anomalyNotification/{nodeId}/{nodeType}/{anomalyType}',
-    getNodeSummary:'/vee/nodeSummary/{nodeId}/{nodeType}/{anomalyType}/{startTime}/{endTime}'
+    getNodeSummary:'/vee/nodeSummary/{nodeId}/{nodeType}/{anomalyType}/{startTime}/{endTime}',
+    updatereadstatus:'/vee/updatereadstatus'
   }
 };

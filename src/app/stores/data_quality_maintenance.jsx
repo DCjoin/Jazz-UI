@@ -44,6 +44,20 @@ var DataQualityMaintenanceStore = assign({},PrototypeStore,{
   getVEESummary(){
     return _VEESummary;
   },
+  updateReadStatus(node){
+    var tempStructure=_VEEDataStructure.getIn(['Tree', 0, 'Children']).toJS();
+    var f=(data)=>{
+      if(data.Id===node.get("Id") && data.NodeType===node.get("NodeType")){
+        data.IsNotRead=false
+      }else{
+        if(data.Children){
+          data.Children.forEach(child=>f(child))
+        }
+      }
+    }
+    tempStructure.forEach(structure=>f(structure));
+    _VEEDataStructure=_VEEDataStructure.setIn(['Tree', 0, 'Children'],Immutable.fromJS(tempStructure))
+  }
 });
 
 DataQualityMaintenanceStore.dispatchToken = AppDispatcher.register(function(action) {
@@ -70,6 +84,10 @@ DataQualityMaintenanceStore.dispatchToken = AppDispatcher.register(function(acti
         break;
       case Action.GET_VEE_SUMMARY_SUCCESS:
         DataQualityMaintenanceStore.setVEESummary(action.data);
+        DataQualityMaintenanceStore.emitChange();
+        break;
+      case Action.UPDATE_READ_STATUS_SUCCESS:
+        DataQualityMaintenanceStore.updateReadStatus(action.data);
         DataQualityMaintenanceStore.emitChange();
         break;
     }
