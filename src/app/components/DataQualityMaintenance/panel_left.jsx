@@ -40,7 +40,7 @@ const FilterItems = [{
   Id: 2,
   Text: '负值',
 }, {
-  Id: 3,
+  Id: 4,
   Text: '跳变',
 }, {
   Id: 0,
@@ -77,10 +77,6 @@ class FilterBar extends PureComponent {
           }}
           value={FilterItems.filter( item => item.Id === value )[0].Text}
         />
-        <div className='search-button'>
-          <span className='icon-search'/>
-          <span>{'搜索'}</span>
-        </div>
         <Popover
           open={this.state.open}
           anchorEl={this.state.anchorEl}

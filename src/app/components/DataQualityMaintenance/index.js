@@ -148,6 +148,7 @@ export default class DataQualityMaintenance extends Component {
           showLeft={this.state.showLeft}
           selectedNode={this.state.selectedNode}
           onToggle={()=>{this.setState({showLeft:!this.state.showLeft})}}
+          filterType={filterType}
         />}
         {!VEEDataStructure.get('HasHierarchy') && this._renderNon()}
         <NeedRefreshDlg open={this.state.needRefresh} onRefresh={() => {
