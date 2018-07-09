@@ -153,7 +153,7 @@ export default class MonitorTimeDlg extends Component {
     let time = '';
     if( props && props.open ) {
       if(props.startTime) {
-        let startTime = moment(props.startTime)/*.subtract(8, 'hours')*/;
+        let startTime = moment(props.startTime).add(8, 'hours');
         date = startTime.format('YYYY-MM-DD');
         time = startTime.format('HH:mm');
       }
@@ -170,7 +170,7 @@ export default class MonitorTimeDlg extends Component {
   _onSubmit() {
     let { date, time } = this.state;
     if( date && time ) {
-      this.props.onSubmit( date + 'T' + time + ':00.000Z' );
+      this.props.onSubmit( moment.utc(date+' '+time).add(-8,'h').format('YYYY-MM-DDTHH:mm'));
       this._onCancel();
     } else {
       this.setState({

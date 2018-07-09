@@ -2876,6 +2876,7 @@ I18N.VEE.abnormal = '异常';
 I18N.VEE.SummaryTooltip1 = '共{0}个子节点，';
 I18N.VEE.SummaryTooltip2 = '其中';
 I18N.VEE.SummaryTooltip3= '个子节点';
+I18N.VEE.abnormalTooltip= '未选择异常类型';
 I18N.VEE.Notice = {};
 I18N.VEE.Notice.Title = '异常通知';
 I18N.VEE.Notice.Happen = '发生{0}';//发生空值

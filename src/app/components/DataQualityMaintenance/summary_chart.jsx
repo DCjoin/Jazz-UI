@@ -482,14 +482,29 @@ export default class SummaryChart extends Component {
 
   componentDidMount() {
     DataQualityMaintenanceStore.addChangeListener(this._onChanged);
-    this._getSummaryData(this.props, true);
+    if(this.props.anomalyType===0){
+      this.setState({
+        data:Immutable.fromJS([]),
+        isLoading:false
+      })
+    }else{
+      this._getSummaryData(this.props, true);
+    }
+    
   }
 
     componentWillReceiveProps(nextProps) {
     var that = this;
-    if (!nextProps.selectedNode.equals(this.props.selectedNode)) {
-
-        that._getSummaryData(nextProps, true)
+    if (!nextProps.selectedNode.equals(this.props.selectedNode) || nextProps.anomalyType!==this.props.anomalyType) {
+        if(nextProps.anomalyType===0){
+          this.setState({
+            data:Immutable.fromJS([]),
+            isLoading:false
+          })
+        }else{
+          that._getSummaryData(nextProps, true)
+        }
+        
     }
     // || this.props.showRawDataList !== nextProps.showRawDataList
     if (this.props.showLeft !== nextProps.showLeft ) {
@@ -506,7 +521,7 @@ export default class SummaryChart extends Component {
   }
   shouldComponentUpdate(nextProps, nextState) {
     //  || this.props.showLeft !== nextProps.showLeft || this.props.showRawDataList !== nextProps.showRawDataList || 
-    return (nextProps.selectedNode !== this.props.selectedNode || this.props.showLeft !== nextProps.showLeft || !Immutable.fromJS(nextState).equals(Immutable.fromJS(this.state)));
+    return (nextProps.selectedNode !== this.props.selectedNode || nextProps.anomalyType !== this.props.anomalyType || this.props.showLeft !== nextProps.showLeft || !Immutable.fromJS(nextState).equals(Immutable.fromJS(this.state)));
   }
   componentWillUnmount() {
     DataQualityMaintenanceStore.removeChangeListener(this._onChanged);
