@@ -2875,6 +2875,7 @@ I18N.VEE.abnormalTooltip= '未选择异常类型';
 I18N.VEE.Notice = {};
 I18N.VEE.Notice.Title = '异常通知';
 I18N.VEE.Notice.Happen = '发生{0}';//发生空值
+I18N.VEE.Notice.NoNotice = '暂无异常通知';
 
 I18N.NetworkChecker = {};
 I18N.NetworkChecker.Msg1 = '网络连接异常';
