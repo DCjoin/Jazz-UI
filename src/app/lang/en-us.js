@@ -2869,6 +2869,7 @@ I18N.SaveEffect.Name = 'Title';
 I18N.SaveEffect.Description = 'Description';
 
 I18N.VEE = {};
+I18N.VEE.SummaryNode = '传输节点名称';
 I18N.VEE.MonitorTime = '监测时间';
 I18N.VEE.Summary = '汇总状态';
 I18N.VEE.normal = '正常';
