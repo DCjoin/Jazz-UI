@@ -39,7 +39,7 @@ export default class DataQualityMaintenance extends Component {
     this.state = {
       needRefresh: false,
       startTime: moment().subtract(1, 'months').startOf('day'),
-      endTime: moment().startOf('day'),
+      endTime: moment().startOf('day').add(1,'d'),
       showLeft: true,
       filterType: 1,
     };
