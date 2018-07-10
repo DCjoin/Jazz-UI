@@ -169,7 +169,7 @@ export default class Left extends Component {
         timeRange.start = new Date(startDate.setHours(startTime, 0, 0, 0));
       }
     }else{
-      
+
     }
 
     this.props.onDateSelectorChanged(timeRange.start,timeRange.end)
@@ -198,8 +198,6 @@ export default class Left extends Component {
     let contentStyle = {};
     if( nodeData.get('HasException') ) {
       contentStyle.color = '#dc0a0a';
-    }else{
-      contentStyle.color = '#626469'
     }
     let alarm = null;
     if( nodeData.get('IsNotRead') && nodeData.get('PhysicalStatus') === 0 ) {
@@ -258,11 +256,12 @@ export default class Left extends Component {
             // } else {
             //   onOpenHierarchy();
             // }
-          }}><div className='icon-drop-down'>{'更多'}</div></div>
+          }} className="data-quality-maintenance-morebtn"><div className='icon-drop-down'>{I18N.Common.Button.More}</div></div>
         </div>
         {this.state.openPopover && <Popover
           style={{
-            padding:'6px 0'
+            padding:'6px 0',
+            
           }}
           open={this.state.openPopover}
           anchorEl={this.state.popoverAnchorEl}
