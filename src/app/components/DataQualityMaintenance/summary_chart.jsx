@@ -264,7 +264,6 @@ class ChartComponent extends Component {
                       overflow: 'hidden',
                       borderRadius: '5px',
                       position:'relative',
-                      backgroundColor:'#ffffff'
                     }}>
       {this._renderContent()}      
       
