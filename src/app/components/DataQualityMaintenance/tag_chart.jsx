@@ -169,7 +169,7 @@ export default class TagChart extends Component {
           <div className='label'>
             {label + uom}
           </div>
-          {this.props.selectedTag.get('IsAccumulated') ? <FontIcon className='icon-change' style={switchIconStyle} ref="switchIcon" onClick={this._onSwitchRawDataView}/> : null}
+          {this.props.selectedTag.get('IsAccumulated') ? <FontIcon className='icon-change' color={"#32AD3C"} hoverColor={"#3DCD58"} style={switchIconStyle} ref="switchIcon" onClick={this._onSwitchRawDataView}/> : null}
         </div>
         <DateTimeSelector ref='dateTimeSelector' showTime={true} endLeft='-100px'     startDate= {this.state.startDate}
       endDate={this.state.endDate}

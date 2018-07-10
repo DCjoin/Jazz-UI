@@ -155,10 +155,10 @@ class ChartComponent extends Component {
         xDateFormat: '%Y-%m-%d %H:%M:%S',
         useHTML: true,
         formatter:function(){
-          var x=this.point.x;
+          var x=this.x;
           var content='';
           var j2d=CommonFuns.DataConverter.JsonToDateTime;
-          var data=that.props.data.getIn([this.point.index]);
+          var data=that.props.data.getIn([this.points[0].point.index]);
           var {Time,NormalNodes,AbnormalNodes,IsNormal}=data.toJS();
           return `
           <div>
@@ -264,7 +264,6 @@ class ChartComponent extends Component {
                       overflow: 'hidden',
                       borderRadius: '5px',
                       position:'relative',
-                      backgroundColor:'#ffffff'
                     }}>
       {this._renderContent()}      
       
@@ -392,7 +391,7 @@ export default class SummaryChart extends Component {
       <div className='jazz-ptag-rawdata-comment'>
         <div className='item'>
           <label className='normal-circle'/>
-          <div className='label'>{I18N.Setting.Tag.PTagRawData.normal}</div>
+          <div className='label'>{I18N.VEE.normal}</div>
         </div>
         <div className='item'>
           <label className='abnormal-circle'/>
@@ -440,7 +439,8 @@ export default class SummaryChart extends Component {
         <div style={{
           display: 'flex',
           'flexDirection': 'column',
-          flex: '1'
+          flex: '1',
+          marginTop:'20px'
         }}>
           <ChartComponent data={this.state.data} name={this.props.selectedNode.get("Name")}/>
           {this._renderComment()}
