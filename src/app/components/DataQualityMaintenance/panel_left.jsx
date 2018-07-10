@@ -168,6 +168,8 @@ export default class Left extends Component {
         }
         timeRange.start = new Date(startDate.setHours(startTime, 0, 0, 0));
       }
+    }else{
+      
     }
 
     this.props.onDateSelectorChanged(timeRange.start,timeRange.end)

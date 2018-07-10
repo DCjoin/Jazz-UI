@@ -135,7 +135,7 @@ export default class DataQualityMaintenance extends Component {
             this.setState({
               startTime:moment(startDate),
               endTime:moment(endDate)
-            }, this._getVEEDataStructure())
+            }, ()=>{this._getVEEDataStructure()})
           }}
           switchMonitorTime={() => {
             if( scanSwitch.get('IsOpen') ) {
