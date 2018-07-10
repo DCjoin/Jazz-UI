@@ -440,7 +440,8 @@ export default class SummaryChart extends Component {
         <div style={{
           display: 'flex',
           'flexDirection': 'column',
-          flex: '1'
+          flex: '1',
+          marginTop:'20px'
         }}>
           <ChartComponent data={this.state.data} name={this.props.selectedNode.get("Name")}/>
           {this._renderComment()}
