@@ -200,7 +200,7 @@ export default class Left extends Component {
       contentStyle.color = '#dc0a0a';
     }
     let alarm = null;
-    if( nodeData.get('IsNotRead') && nodeData.get('PhysicalStatus') === 0 ) {
+    if( nodeData.get('IsNotRead')) {
       alarm = (<div style={{
         width: 6,
         height: 6,
