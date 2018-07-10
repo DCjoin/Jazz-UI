@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import moment from 'moment';
 import classnames from 'classnames';
-
+import assign from "object-assign";
 import Popover from 'material-ui/Popover';
 
 import Dialog from '@emop-ui/piano/dialog';
@@ -52,7 +52,7 @@ class TextCalendar extends Component {
             targetOrigin={{horizontal: 'left', vertical: 'top'}}
             onRequestClose={this.handleRequestClose}
           >
-            <Calendar hasJumpToday={hasJumpToday} value={text || !value ? new Date() : new Date(value)}
+            <Calendar hasJumpToday={hasJumpToday} value={!value ? new Date(moment().add(-1,'d').valueOf()) : new Date(value)}
               minDate={minDate && new Date(minDate)}
               maxDate={maxDate && new Date(maxDate)}
               shouldDisableDate ={shouldDisableDate }
@@ -153,7 +153,7 @@ export default class MonitorTimeDlg extends Component {
     let time = '';
     if( props && props.open ) {
       if(props.startTime) {
-        let startTime = moment(props.startTime)/*.subtract(8, 'hours')*/;
+        let startTime = moment(props.startTime).add(8, 'hours');
         date = startTime.format('YYYY-MM-DD');
         time = startTime.format('HH:mm');
       }
@@ -164,13 +164,13 @@ export default class MonitorTimeDlg extends Component {
     };
   }
   _onCancel() {
-    this.setState(this._onOpenState());
+    this.setState(assign({},this._onOpenState(),{error:false}));
     this.props.onCancel();
   }
   _onSubmit() {
     let { date, time } = this.state;
     if( date && time ) {
-      this.props.onSubmit( date + 'T' + time + ':00.000Z' );
+      this.props.onSubmit( moment.utc(date+' '+time).add(-8,'h').format('YYYY-MM-DDTHH:mm'));
       this._onCancel();
     } else {
       this.setState({
@@ -227,7 +227,7 @@ export default class MonitorTimeDlg extends Component {
       >
         <div className={classnames('monitor-time-dlg-field', {empty: !this.state.date})}>
           <TextCalendar
-            maxDate={new Date()}
+            maxDate={new Date(moment().add(-1,'d').valueOf())}
             locale={locale}
             width={240}
             text={'选择开始监测日期'}

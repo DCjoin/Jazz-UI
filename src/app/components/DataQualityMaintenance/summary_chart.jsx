@@ -84,7 +84,7 @@ class ChartComponent extends Component {
           color = '#11d9db'
       }
       return {
-        x: moment.utc(Time).format('X'),
+        x: moment.utc(Time).valueOf(),
         y: 0,
         index:index,
         fillColor: color,
@@ -204,13 +204,13 @@ class ChartComponent extends Component {
           var content='';
           var j2d=CommonFuns.DataConverter.JsonToDateTime;
           var data=that.props.data.getIn([this.point.index]);
-          var {Time,NormalNodes,AbnormalNodes}=data.toJS();
+          var {Time,NormalNodes,AbnormalNodes,IsNormal}=data.toJS();
           return `
           <div>
                   <div style="font-size:14px;color:#626469">${CommonFuns.formatDateByStep(j2d(Time,true),null,null,6)}</div>
                     <div style="display:flex">
                       <div style="font-size:12px;color:#626469">${that.props.name}${I18N.VEE.Summary+'：'}</div>
-                      <div style="font-size:12px;color:#11d9db">${I18N.VEE.normal}</div>
+                      <div style="font-size:12px;color:${IsNormal?'#11d9db':'#f46a58'}">${IsNormal?I18N.VEE.normal:I18N.VEE.abnormal}</div>
                     </div>
                     <div style="display:flex">
                       <div style="font-size:12px;color:#626469">${I18N.format(I18N.VEE.SummaryTooltip1,NormalNodes+AbnormalNodes)}${I18N.VEE.SummaryTooltip2}</div>
@@ -425,7 +425,7 @@ export default class SummaryChart extends Component {
         </div>
         <div className='item'>
           <label className='abnormal-circle'/>
-          <div className='label'>{I18N.Setting.Tag.PTagRawData.abnormal}</div>
+          <div className='label'>{I18N.VEE.SummaryAbnormal}</div>
         </div>
       </div>
       )
@@ -482,14 +482,29 @@ export default class SummaryChart extends Component {
 
   componentDidMount() {
     DataQualityMaintenanceStore.addChangeListener(this._onChanged);
-    this._getSummaryData(this.props, true);
+    if(this.props.anomalyType===0){
+      this.setState({
+        data:Immutable.fromJS([]),
+        isLoading:false
+      })
+    }else{
+      this._getSummaryData(this.props, true);
+    }
+    
   }
 
     componentWillReceiveProps(nextProps) {
     var that = this;
-    if (!nextProps.selectedNode.equals(this.props.selectedNode)) {
-
-        that._getSummaryData(nextProps, true)
+    if (!nextProps.selectedNode.equals(this.props.selectedNode) || nextProps.anomalyType!==this.props.anomalyType) {
+        if(nextProps.anomalyType===0){
+          this.setState({
+            data:Immutable.fromJS([]),
+            isLoading:false
+          })
+        }else{
+          that._getSummaryData(nextProps, true)
+        }
+        
     }
     // || this.props.showRawDataList !== nextProps.showRawDataList
     if (this.props.showLeft !== nextProps.showLeft ) {
@@ -506,7 +521,7 @@ export default class SummaryChart extends Component {
   }
   shouldComponentUpdate(nextProps, nextState) {
     //  || this.props.showLeft !== nextProps.showLeft || this.props.showRawDataList !== nextProps.showRawDataList || 
-    return (nextProps.selectedNode !== this.props.selectedNode || this.props.showLeft !== nextProps.showLeft || !Immutable.fromJS(nextState).equals(Immutable.fromJS(this.state)));
+    return (nextProps.selectedNode !== this.props.selectedNode || nextProps.anomalyType !== this.props.anomalyType || this.props.showLeft !== nextProps.showLeft || !Immutable.fromJS(nextState).equals(Immutable.fromJS(this.state)));
   }
   componentWillUnmount() {
     DataQualityMaintenanceStore.removeChangeListener(this._onChanged);

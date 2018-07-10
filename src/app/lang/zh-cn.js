@@ -2864,16 +2864,20 @@ I18N.SaveEffect.Name = '名称';
 I18N.SaveEffect.Description = '描述';
 
 I18N.VEE = {};
+I18N.VEE.SummaryNode = '传输节点名称';
 I18N.VEE.MonitorTime = '监测时间';
 I18N.VEE.Summary = '汇总状态';
 I18N.VEE.normal = '正常';
 I18N.VEE.abnormal = '异常';
+I18N.VEE.SummaryAbnormal = '全部异常';
 I18N.VEE.SummaryTooltip1 = '共{0}个子节点，';
 I18N.VEE.SummaryTooltip2 = '其中';
 I18N.VEE.SummaryTooltip3= '个子节点';
+I18N.VEE.abnormalTooltip= '未选择异常类型';
 I18N.VEE.Notice = {};
 I18N.VEE.Notice.Title = '异常通知';
 I18N.VEE.Notice.Happen = '发生{0}';//发生空值
+I18N.VEE.Notice.NoNotice = '暂无异常通知';
 
 I18N.NetworkChecker = {};
 I18N.NetworkChecker.Msg1 = '网络连接异常';

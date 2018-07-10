@@ -75,4 +75,18 @@ module.exports = {
 		}
 	});
   },
+  updatereadstatus: (params,node) => {
+    Ajax.post(Vee.updatereadstatus, {
+      params,
+      success: function() {
+        AppDispatcher.dispatch({
+          type: Action.UPDATE_READ_STATUS_SUCCESS,
+          data:node
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
 };

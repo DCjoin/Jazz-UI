@@ -13,7 +13,7 @@ export default class SummaryContentField extends Component {
     var tagNameProps = {
       ref: 'name',
       isViewStatus: true,
-      title: I18N.Setting.Tag.TagName,
+      title: I18N.VEE.SummaryNode,
       defaultValue: this.props.nodeData.get('Name') || '',
       isRequired: true,
     };

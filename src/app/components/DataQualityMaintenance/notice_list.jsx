@@ -24,12 +24,15 @@ export default class NoticeList extends Component {
 
   componentDidMount() {
     DataQualityMaintenanceStore.addChangeListener(this._onChange);
-    DataQualityMaintenanceAction.getAnomalyNotification(this.props.selectedNode.get("Id"),this.props.selectedNode.get("NodeType"),this.props.anomalyType)
+    if(this.props.anomalyType!==0){
+       DataQualityMaintenanceAction.getAnomalyNotification(this.props.selectedNode.get("Id"),this.props.selectedNode.get("NodeType"),this.props.anomalyType)
+    }
+   
     // DataQualityMaintenanceAction.getAnomalyNotification(662400,999,2)
   }
 
   componentWillReceiveProps(nextProps) {
-    if(this.props.selectedNode.get("Id")!==nextProps.selectedNode.get("Id")){
+    if(this.props.selectedNode.get("Id")!==nextProps.selectedNode.get("Id") && this.props.anomalyType!==0){
       DataQualityMaintenanceAction.getAnomalyNotification(nextProps.selectedNode.get("Id"),nextProps.selectedNode.get("NodeType"),nextProps.anomalyType);
       this.setState({
         notice:null
@@ -42,6 +45,18 @@ export default class NoticeList extends Component {
   }
 
   render(){
+    if(this.props.anomalyType===0){
+      return(
+        <div className="notice-box">
+            <div className="notice-box-title">{I18N.VEE.Notice.Title}</div>
+              <div className="notice-box-list" style={{justifyContent: 'center',
+    alignItems: 'center',fontSize: '14px',color: '#626469'}}>
+                {I18N.VEE.abnormalTooltip}
+              </div>
+        </div>
+        
+      )
+    }
     return(
         <NoticeBox list={this.state.notice}/>
     )

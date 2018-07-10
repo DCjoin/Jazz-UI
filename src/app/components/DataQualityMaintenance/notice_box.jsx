@@ -13,6 +13,9 @@ export default class NoticeBox extends PureComponent {
         <div className="notice-box-title">{I18N.VEE.Notice.Title}</div>
         <div className="notice-box-list">
           {this.props.list===null?<Spin/>
+            :(this.props.list.size===0?
+            <div style={{display:'flex',flex:'1',justifyContent: 'center',
+    alignItems: 'center',fontSize: '14px',color: '#626469'}}>{I18N.VEE.Notice.NoNotice }</div>
             :this.props.list.map(item=>(
             <div className="notice-box-list-item">
               <div className="row">
@@ -24,7 +27,7 @@ export default class NoticeBox extends PureComponent {
                 <div className="text">{I18N.format(I18N.VEE.Notice.Happen,AnomalyTypeArr[item.get("AnomalyType")])}</div>
               </div>
             </div>
-          ))}
+          )))}
         </div>
       </div>
     )

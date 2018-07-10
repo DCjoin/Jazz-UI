@@ -39,7 +39,7 @@ export default class DataQualityMaintenance extends Component {
     this.state = {
       needRefresh: false,
       startTime: moment().subtract(1, 'months').startOf('day'),
-      endTime: moment().startOf('day'),
+      endTime: moment().startOf('day').add(1,'d'),
       showLeft: true,
       filterType: 1,
     };
@@ -117,6 +117,14 @@ export default class DataQualityMaintenance extends Component {
             this.setState(() => ({selectedNode: nodeData}));
             if( isBuilding(nodeData) ) {
               DataQualityMaintenanceAction.getScanSwitch( nodeData.get('Id') );
+            }
+            if(nodeData.get("IsNotRead")){
+              DataQualityMaintenanceAction.updatereadstatus( {"Id": nodeData.get('Id'),
+                                                              "NodeType": nodeData.get('NodeType'),
+                                                              "UpdateTime": moment().utc().format('YYYY-MM-DDTHH:mm:ss'),
+                                                              "IsNotRead": false,
+                                                              "UserId": CurrentUserStore.getCurrentUser().Id,
+                                                              "ExceptionType": this.state.filterType},nodeData);
             }
           }}
           hierarchy={VEEDataStructure.getIn(['Tree', 0, 'Children'])}
