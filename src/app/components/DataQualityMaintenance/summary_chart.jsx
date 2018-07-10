@@ -12,56 +12,11 @@ import ChartPanel from 'components/customerSetting/tag/RawDataChartPanel.jsx';
 import DataQualityMaintenanceAction from 'actions/data_quality_maintenance.jsx';
 import DataQualityMaintenanceStore from 'stores/data_quality_maintenance.jsx';
 import ChartXAxisSetter from '../energy/ChartXAxisSetter.jsx';
-import { CircularProgress, Checkbox, FontIcon,FlatButton} from 'material-ui';
+import Highstock from '../highcharts/Highstock.jsx';
+// import { CircularProgress, Checkbox, FontIcon,FlatButton} from 'material-ui';
+import { dateFormat } from 'util/Util.jsx';
 
 let {dateAdd} = CommonFuns;
-
-var Sdata=Immutable.fromJS([{
-    "Time": "2018-07-03T16:00Z",
-    "NormalNodes": 1,
-    "AbnormalNodes": 2,
-    "IsNormal": false
-  },{
-    "Time": "2018-07-03T16:15Z",
-    "NormalNodes": 0,
-    "AbnormalNodes": 0,
-    "IsNormal": true
-  },{
-    "Time": "2018-07-03T16:30Z",
-    "NormalNodes": 0,
-    "AbnormalNodes": 0,
-    "IsNormal": true
-  },{
-    "Time": "2018-07-03T16:45Z",
-    "NormalNodes": 0,
-    "AbnormalNodes": 0,
-    "IsNormal": true
-  },{
-    "Time": "2018-07-03T17:00Z",
-    "NormalNodes": 0,
-    "AbnormalNodes": 0,
-    "IsNormal": true
-  },{
-    "Time": "2018-07-03T17:15Z",
-    "NormalNodes": 0,
-    "AbnormalNodes": 0,
-    "IsNormal": true
-  },{
-    "Time": "2018-07-03T17:30Z",
-    "NormalNodes": 0,
-    "AbnormalNodes": 0,
-    "IsNormal": true
-  },{
-    "Time": "2018-07-03T17:45Z",
-    "NormalNodes": 0,
-    "AbnormalNodes": 0,
-    "IsNormal": true
-  },{
-    "Time": "2018-07-03T18:00Z",
-    "NormalNodes": 0,
-    "AbnormalNodes": 0,
-    "IsNormal": true
-  }])
 
 class ChartComponent extends Component {
     constructor(props) {
@@ -155,9 +110,9 @@ class ChartComponent extends Component {
         },
         crosshair: true,
         labels: {
-          overflow: 'justify'
+          overflow: 'justify',
         },
-        dateTimeLabelFormats: {}
+        dateTimeLabelFormats: {},             
       },
       yAxis: {
         title:{
@@ -268,6 +223,22 @@ class ChartComponent extends Component {
           }
   }
 
+  _setDateTimeLabelFormats(defaultConfig){
+    let cap = function(string) {
+      return string.charAt(0).toUpperCase() + string.substr(1);
+    };
+    var t = ['millisecond', 'second', 'minute', 'hour', 'day', 'dayhour', 'week', 'month', 'fullmonth', 'year'],
+      c = defaultConfig,
+      x = c.xAxis,
+      f = I18N.DateTimeFormat.HighFormat.RawData;
+
+    t.forEach(function(n) {
+      x.dateTimeLabelFormats[n] = (f[cap(n)]);
+    });
+
+    c.chart.cancelChartContainerclickBubble = true;
+    return c;
+  }
   _renderContent(){
     if(this.props.data===null){
       return(
@@ -279,7 +250,7 @@ class ChartComponent extends Component {
 
     // console.log(this.getConfigObj().stringify());
     return(
-        <Highcharts ref="highstock" className="heatmap" options={this.getConfigObj()}></Highcharts>
+        <Highstock ref="highstock" options={this._setDateTimeLabelFormats(this.getConfigObj())} afterChartCreated={()=>{}}></Highstock>
     
     )
   }

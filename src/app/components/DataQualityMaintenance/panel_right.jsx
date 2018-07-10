@@ -14,7 +14,7 @@ export default class Right extends Component {
                                                                           :<SummaryContentField nodeData={selectedNode} showLeft={showLeft} onToggle={onToggle} anomalyType={filterType}/>)
     }else{
       return(<Panel onToggle={onToggle} isFolded={showLeft}>
-            <div className='flex-center' style={{fontSize: '16px', color: '#626469',}}>{'请在左边选择要查看的节点'}</div>
+            <div className='flex-center' style={{fontSize: '16px', color: '#626469',}}>{I18N.VEE.NoChoiceTip}</div>
           </Panel>)
     }
   }

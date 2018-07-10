@@ -27,7 +27,7 @@ export default class CloseMonitorDlg extends Component {
     return (
       <Dialog
         open={open}
-        title={'关闭数据监测后，下一周期将不再进行扫描监测。确定关闭数据监测吗？'}
+        title={I18N.VEE.CloseMonitorTip}
         titleStyle={{
           padding: 0,
           margin: '24px 24px 16px',
@@ -43,7 +43,7 @@ export default class CloseMonitorDlg extends Component {
         actions={[
           <div>
             <Button flat secondary
-              label={'取消'}
+              label={I18N.Common.Button.Cancel2}
               labelStyle={{
                 color: '#666666',
               }}
@@ -55,7 +55,7 @@ export default class CloseMonitorDlg extends Component {
           </div>,
           <div>
             <Button flat secondary
-              label={'确定'}
+              label={I18N.Common.Button.Confirm}
               labelStyle={{
                 color: '#32ad3c',
               }}

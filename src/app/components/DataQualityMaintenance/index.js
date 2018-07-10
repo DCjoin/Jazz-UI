@@ -99,7 +99,7 @@ export default class DataQualityMaintenance extends Component {
   }
 
   _renderNon() {
-    return (<div className='flex-center'><Button onClick={this._openSSOHierarchyUrl} label={'+ ' + '新建数据流架构'} outline secondary /></div>)
+    return (<div className='flex-center'><Button onClick={this._openSSOHierarchyUrl} label={'+ ' + I18N.VEE.CreateDataStructure} outline secondary /></div>)
   }
   render() {
     let { VEEDataStructure, scanSwitch, selectedNode, filterType } = this.state;
@@ -135,7 +135,7 @@ export default class DataQualityMaintenance extends Component {
             this.setState({
               startTime:moment(startDate),
               endTime:moment(endDate)
-            }, this._getVEEDataStructure())
+            }, ()=>{this._getVEEDataStructure()})
           }}
           switchMonitorTime={() => {
             if( scanSwitch.get('IsOpen') ) {
@@ -196,12 +196,12 @@ export default class DataQualityMaintenance extends Component {
           this.setState({
             openMonitorToast: false,
           })
-        }}><div className='icon-check-circle'>{'该建筑已开启数据监测'}</div></Toast>
+        }}><div className='icon-check-circle'>{I18N.VEE.StartMonitor}</div></Toast>
         <Toast autoHideDuration={4000} className='toast-tip' open={this.state.closeMonitorToast} onRequestClose={() => {
           this.setState({
             closeMonitorToast: false,
           })
-        }}><div className='icon-check-circle'>{'该建筑已关闭数据监测'}</div></Toast>
+        }}><div className='icon-check-circle'>{I18N.VEE.CloseMonitor}</div></Toast>
       </div>
     );
   }
