@@ -24,7 +24,8 @@ export default class NeedRefreshDlg extends Component {
           </div>
         ]}
         contentStyle={{
-          padding: '24px 0 18px'
+          padding: '24px 0 18px',
+          color:'#666666'
         }}
       >{I18N.VEE.RefreshTip}</Dialog>
     );

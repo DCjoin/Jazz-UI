@@ -85,6 +85,7 @@ class FilterBar extends PureComponent {
           onRequestClose={this._handleRequestClose}
           style={{width: 232}}
         >
+        <div style={{padding:'6px 0'}}>
         {FilterItems.map( item =>
           <div
             style={{
@@ -99,7 +100,8 @@ class FilterBar extends PureComponent {
             }}>
             {item.Text}
           </div>
-        )}
+        )}</div>
+        
         </Popover>
       </div>
     );
