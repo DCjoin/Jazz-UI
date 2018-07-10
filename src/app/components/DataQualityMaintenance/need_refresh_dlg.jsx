@@ -12,7 +12,7 @@ export default class NeedRefreshDlg extends Component {
         actions={[
           <div>
             <Button flat secondary
-              label={'刷新页面'}
+              label={I18N.VEE.Refresh}
               labelStyle={{
                 color: '#32ad3c',
               }}
@@ -26,7 +26,7 @@ export default class NeedRefreshDlg extends Component {
         contentStyle={{
           padding: '24px 0 18px'
         }}
-      >{'刷新页面获取新数据流架构'}</Dialog>
+      >{I18N.VEE.RefreshTip}</Dialog>
     );
   }
 }

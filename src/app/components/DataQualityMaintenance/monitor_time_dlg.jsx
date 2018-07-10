@@ -184,7 +184,7 @@ export default class MonitorTimeDlg extends Component {
     return (
       <Dialog
         open={open}
-        title={'请选择开始监测时间'}
+        title={I18N.VEE.ChooseMonitorDate}
         titleStyle={{
           padding: 0,
           margin: '24px 24px 16px',
@@ -213,7 +213,7 @@ export default class MonitorTimeDlg extends Component {
           </div>,
           <div>
             <Button flat secondary
-              label={'确定'}
+              label={I18N.Common.Button.Confirm}
               labelStyle={{
                 color: '#32ad3c',
               }}
@@ -230,7 +230,7 @@ export default class MonitorTimeDlg extends Component {
             maxDate={new Date(moment().add(-1,'d').valueOf())}
             locale={locale}
             width={240}
-            text={'选择开始监测日期'}
+            text={I18N.VEE.ChooseMonitorDateTip}
             value={this.state.date}
             onChange={(val) => {
               this.setState({date: val, error: false});
@@ -240,7 +240,7 @@ export default class MonitorTimeDlg extends Component {
         <div className={classnames('monitor-time-dlg-field', {empty: !this.state.time})}>
           <TextSelect
             width={100}
-            text={'选择时间'}
+            text={I18N.VEE.SelectDate}
             value={this.state.time}
             onChange={(val) => {
               this.setState({time: val, error: false});
@@ -252,7 +252,7 @@ export default class MonitorTimeDlg extends Component {
           position: 'absolute',
           fontSize: '12px',
           top: 44.
-        }}>{'请完整填写监测日期和时间'}</div>}
+        }}>{I18N.VEE.MonitorErrorTip}</div>}
       </Dialog>
     );
   }

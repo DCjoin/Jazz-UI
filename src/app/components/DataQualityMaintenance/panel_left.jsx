@@ -35,16 +35,16 @@ class PureTree extends PureComponent {
 
 const FilterItems = [{
   Id: 1,
-  Text: '空值',
+  Text: I18N.Setting.VEEMonitorRule.NullValue,
 }, {
   Id: 2,
-  Text: '负值',
+  Text: I18N.Setting.VEEMonitorRule.NegativeValue,
 }, {
   Id: 4,
-  Text: '跳变',
+  Text: I18N.Setting.VEEMonitorRule.JumpValue,
 }, {
   Id: 0,
-  Text: '全部节点',
+  Text: I18N.VEE.AllNode,
 }, ]
 
 class FilterBar extends PureComponent {
@@ -194,6 +194,8 @@ export default class Left extends Component {
     let contentStyle = {};
     if( nodeData.get('HasException') ) {
       contentStyle.color = '#dc0a0a';
+    }else{
+      contentStyle.color = '#626469'
     }
     let alarm = null;
     if( nodeData.get('IsNotRead') && nodeData.get('PhysicalStatus') === 0 ) {
@@ -242,7 +244,7 @@ export default class Left extends Component {
           <PureTree hierarchy={hierarchy} selectedNode={selectedNode} onSelectNode={onSelectNode} generateNodeConent={this._generateNodeConent} checkCollapseStatus={this._checkCollapseStatus}/>
         </div>
         <div className='data-quality-maintenance-actions-bar'>
-          <div>{'配置规则'}</div>
+          <div>{I18N.VEE.ConfigRule}</div>
           <div onClick={(e) => {
             // if( isBuilding ) {
               this.setState({
@@ -272,7 +274,7 @@ export default class Left extends Component {
               this._handleRequestClose();
             }}
           >
-            {'管理数据流'}
+            {I18N.VEE.ManageData}
           </div>
           {isBuilding && <div className='data-quality-maintenance-actions-popover-item' onClick={() => {
             if( !scanSwitch.get('_loading') ) {
@@ -283,7 +285,7 @@ export default class Left extends Component {
             }
           }}>{scanSwitch.get('_loading') ?
             <div className='flex-center'><CircularProgress size={20}/></div> :
-            (scanSwitch.get('IsOpen') ? '关闭数据扫描' : '开启数据扫描')}
+            (scanSwitch.get('IsOpen') ? I18N.VEE.CloseMonitorBtn : I18N.VEE.StartMonitorBtn)}
           </div>}
         </Popover>}
       </div>
