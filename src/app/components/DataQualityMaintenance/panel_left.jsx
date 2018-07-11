@@ -204,6 +204,8 @@ export default class Left extends Component {
       alarm = (<div style={{
         width: 6,
         height: 6,
+        minWidth:6,
+        marginRight:'10px',
         borderRadius: 3,
         backgroundColor: '#ff4d4d',
         alignSelf: 'flex-start',
