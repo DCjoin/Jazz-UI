@@ -260,7 +260,7 @@ class ChartComponent extends Component {
       <div style={{flex: 1,
                       display: 'flex',
                       flexDirection: 'column',
-                      paddingBottom: '20px',
+                      // paddingBottom: '20px',
                       overflow: 'hidden',
                       borderRadius: '5px',
                       position:'relative',

@@ -68,7 +68,7 @@ class FilterBar extends PureComponent {
       <div className="data-quality-maintenance-filter-node">
         <TextFiled
           suffixIconClassName='icon-drop-down'
-          width={232}
+          width={294}
           onClick={(e) => {
             this.setState({
               open: true,
@@ -239,7 +239,7 @@ export default class Left extends Component {
       <div className='data-quality-maintenance-left'>
         <div className='data-quality-maintenance-filter-time'>
           <div className="text">{I18N.VEE.MonitorTime+"："}</div>
-          <DateTimeSelector disabled={!filterType} ref='dateTimeSelector' showTime={false} endLeft='-100px' startDate={startDate} endDate={endDate}  _onDateSelectorChanged={this._onDateSelectorChanged}/>
+          <DateTimeSelector disabled={!filterType} isDateViewStatus={true} ref='dateTimeSelector' showTime={false} endLeft='-100px' startDate={startDate} endDate={endDate}  _onDateSelectorChanged={this._onDateSelectorChanged}/>
         </div>
         <FilterBar onChange={onChangeFilterType} value={filterType} />
         <div className='data-quality-maintenance-hierarchy'>

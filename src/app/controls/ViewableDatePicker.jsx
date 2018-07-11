@@ -195,9 +195,16 @@ class DatePicker extends React.Component {
     if (this.props.errorText){
       error = this.props.errorText;
     }
+
+    var style = {width: this.props.width || 430,
+      height: '30px',display: 'flex',justifyContent: 'center',alignItems: 'center'}
+
     return (
       <div className={this.props.datePickerClassName}>
-        {this._renderTextField(error)}
+        {this.props.isDateEdited?this._renderTextField(error):<div className="jazz-viewableDatePicker jazz-viewableTextField" style={style} onClick={()=>{this.setState({popup:true})}}>
+                <div className="jazz-viewable-title" >{this.props.title}</div>
+                <div style={{fontSize:'14px',color:'#626469'}}>{this.props.value}</div>
+              </div>}
         {this._renderPopup(dateObject)}
       </div>
     );
