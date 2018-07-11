@@ -12,8 +12,7 @@ import {dateAdd} from 'util/Util.jsx';
 
 import Tree from 'controls/tree/Tree.jsx';
 import DateTimeSelector from 'controls/DateTimeSelector.jsx';
-
-
+import PopupPaper from 'controls/popup_paper.jsx';
 class PureTree extends PureComponent {
   render() {
     let { hierarchy, selectedNode, onSelectNode, generateNodeConent, checkCollapseStatus } = this.props;
@@ -65,7 +64,7 @@ class FilterBar extends PureComponent {
   render() {
     let { value, onChange } = this.props;
     return (
-      <div className="data-quality-maintenance-filter-node">
+      <div className="data-quality-maintenance-filter-node" style={{position:'relative'}}>
         <TextFiled
           suffixIconClassName='icon-drop-down'
           width={294}
@@ -77,13 +76,10 @@ class FilterBar extends PureComponent {
           }}
           value={FilterItems.filter( item => item.Id === value )[0].Text}
         />
-        <Popover
+        <PopupPaper
           open={this.state.open}
-          anchorEl={this.state.anchorEl}
-          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-          targetOrigin={{horizontal: 'left', vertical: 'top'}}
           onRequestClose={this._handleRequestClose}
-          style={{width: 232}}
+          style={{width: 232,position:'absolute',top:'48px'}}
         >
         <div style={{padding:'6px 0'}}>
         {FilterItems.map( item =>
@@ -102,7 +98,7 @@ class FilterBar extends PureComponent {
           </div>
         )}</div>
         
-        </Popover>
+        </PopupPaper>
       </div>
     );
   }

@@ -47,7 +47,7 @@ var CalendarTime = createReactClass({
       };
 
       return (
-        <DropDownMenu underlineStyle={{display:'none'}} iconStyle={{display:'none'}} value={this._getSelectedTimeIndex()} {...style}>
+        <DropDownMenu underlinneStyle={{display:'none'}} iconStyle={{display:'none'}} value={this._getSelectedTimeIndex()} {...style}>
             {this._getTimeItems()}
         </DropDownMenu>
 
