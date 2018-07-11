@@ -134,18 +134,11 @@ export default class Left extends Component {
 
     let { selectedNode } = this.props,
     children = node.get('Children');
-    if( selectedNode && selectedNode.get('ParentId') === node.get('Id') ) {
-      return false;
+    if( selectedNode ) {
+      return !(selectedNode.get('ParentId') === node.get('Id'))
     }
     return children.some(child => child.get('NodeType') === 999);
-    // { filterType } = this.props;
-    // switch (this.props.filterType) {
-    //   case 1:
-    //   case 2:
-    //     return ;
-    //   case 3:
-    //     return ;
-    // }
+
   }
   _onDateSelectorChanged(startDate, endDate, startTime, endTime) {
      let that = this,
