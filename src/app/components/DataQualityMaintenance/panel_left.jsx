@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import { CircularProgress } from 'material-ui';
 import { Popover, PopoverAnimationVertical } from 'material-ui/Popover';
 import TextFiled from '@emop-ui/piano/text';
-
+import Button from '@emop-ui/piano/button';
 import { nodeType } from 'constants/TreeConstants.jsx';
 
 import {dateAdd} from 'util/Util.jsx';
@@ -189,7 +189,7 @@ export default class Left extends Component {
           'icon-panel-box': type == nodeType.Panel,
           'icon-device': type == nodeType.Device,
           'icon-device-box': type == nodeType.Device,
-          'icon-column-fold': type == nodeType.Folder,
+          'icon-Gateway': type == nodeType.GateWay,
           'icon-image': type == nodeType.Widget,
           'icon-dimension-node': type == nodeType.Area,
         })}/>
@@ -235,6 +235,17 @@ export default class Left extends Component {
       onChangeFilterType,
       filterType,
     } = this.props;
+
+    // <div onClick={(e) => {
+    //   // if( isBuilding ) {
+    //     this.setState({
+    //       openPopover: true,
+    //       popoverAnchorEl: e.target,
+    //     });
+    //   // } else {
+    //   //   onOpenHierarchy();
+    //   // }
+    // }} className="data-quality-maintenance-morebtn"><div className='icon-drop-down'>{I18N.Common.Button.More}</div></div>
     return (
       <div className='data-quality-maintenance-left'>
         <div className='data-quality-maintenance-filter-time'>
@@ -247,16 +258,23 @@ export default class Left extends Component {
         </div>
         <div className='data-quality-maintenance-actions-bar'>
           <div>{I18N.VEE.ConfigRule}</div>
-          <div onClick={(e) => {
-            // if( isBuilding ) {
-              this.setState({
-                openPopover: true,
-                popoverAnchorEl: e.target,
-              });
-            // } else {
-            //   onOpenHierarchy();
-            // }
-          }} className="data-quality-maintenance-morebtn"><div className='icon-drop-down'>{I18N.Common.Button.More}</div></div>
+         
+        <Button label={I18N.Common.Button.More}
+                labelPosition="after"
+                outline secondary
+                iconClassName="icon-drop-down"
+                style={{flex:1}}
+                iconStyle={{marginTop: '4px'}}
+                onClick={(e) => {
+                  // if( isBuilding ) {
+                    this.setState({
+                      openPopover: true,
+                      popoverAnchorEl: e.currentTarget,
+                    });
+                  // } else {
+                  //   onOpenHierarchy();
+                  // }
+                }}/>
         </div>
         {this.state.openPopover && <Popover
           style={{
