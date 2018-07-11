@@ -261,7 +261,7 @@ export default class Left extends Component {
         <div className='data-quality-maintenance-actions-bar'>
           <div>{I18N.VEE.ConfigRule}</div>
          
-        <Button label={I18N.Common.Button.More}
+        {isBuilding?<Button label={I18N.Common.Button.More}
                 labelPosition="after"
                 outline secondary
                 iconClassName="icon-drop-down"
@@ -276,7 +276,12 @@ export default class Left extends Component {
                   // } else {
                   //   onOpenHierarchy();
                   // }
-                }}/>
+                }}/>:<Button label={I18N.VEE.ManageData}
+                outline secondary
+                style={{flex:1}}
+                onClick={(e) => {
+                  onOpenHierarchy();
+                }}/>}
         </div>
         {this.state.openPopover && <Popover
           style={{
