@@ -15,6 +15,7 @@ module.exports = {
     Hierarchy:2,
     Dimension:6,
     HierarchyOnly:1,
-    DimensionOnly:5
+    DimensionOnly:5,
+    GateWay:6
   }
 };
