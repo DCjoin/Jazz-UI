@@ -67,7 +67,7 @@ export default class SummaryContentField extends Component {
             "jazz-ptag-right-fold": !this.props.showRawDataList,
             "jazz-ptag-right-expand": this.props.showRawDataList
 
-          })} style={{top:'56px',left:'321px'}}>
+          })} style={{top:'56px',left:this.props.showLeft?'321px':'0'}}>
           <Panel onToggle={this.props.onToggle} isFolded={this.props.showLeft}>
             {this._renderHeader()}
             {this._renderContent()}

@@ -39,7 +39,7 @@ class ChartComponent extends Component {
           color = '#11d9db'
       }
       return {
-        x: moment.utc(Time).valueOf(),
+        x: moment.utc(Time).add(15,'m').valueOf(),
         y: 0,
         index:index,
         fillColor: color,
@@ -112,7 +112,9 @@ class ChartComponent extends Component {
         labels: {
           overflow: 'justify',
         },
-        dateTimeLabelFormats: {},             
+        dateTimeLabelFormats: {},
+        min:moment(that.props.start).valueOf(),
+        max:moment(that.props.end).valueOf(),         
       },
       yAxis: {
         title:{
@@ -442,7 +444,7 @@ export default class SummaryChart extends Component {
           flex: '1',
           marginTop:'20px'
         }}>
-          <ChartComponent data={this.state.data} name={this.props.selectedNode.get("Name")}/>
+          <ChartComponent data={this.state.data} name={this.props.selectedNode.get("Name")} start={this.state.start} end={this.state.end}/>
           {this._renderComment()}
         </div>
         )
