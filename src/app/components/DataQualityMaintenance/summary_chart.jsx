@@ -1,20 +1,18 @@
 'use strict';
 
 import React, { Component}  from "react";
-import Highcharts from '../highcharts/Highcharts.jsx';
 import Spin from '@emop-ui/piano/spin';
 import PropTypes from 'prop-types';
 import CommonFuns from 'util/Util.jsx';
 import Immutable from 'immutable';
 import moment from 'moment';
 import DateTimeSelector from 'controls/DateTimeSelector.jsx';
-import ChartPanel from 'components/customerSetting/tag/RawDataChartPanel.jsx';
 import DataQualityMaintenanceAction from 'actions/data_quality_maintenance.jsx';
 import DataQualityMaintenanceStore from 'stores/data_quality_maintenance.jsx';
 import ChartXAxisSetter from '../energy/ChartXAxisSetter.jsx';
 import Highstock from '../highcharts/Highstock.jsx';
 // import { CircularProgress, Checkbox, FontIcon,FlatButton} from 'material-ui';
-import { dateFormat } from 'util/Util.jsx';
+
 
 let {dateAdd} = CommonFuns;
 
