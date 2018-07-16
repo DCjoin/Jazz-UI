@@ -89,4 +89,18 @@ module.exports = {
       }
     });
   },
+  getrulebyid:(params)=>{
+    Ajax.post(Vee.getrulebyid, {
+      params,
+      success: function(data) {
+        AppDispatcher.dispatch({
+          type: Action.GET_RULE_BY_ID_SUCCESS,
+          data
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  }
 };

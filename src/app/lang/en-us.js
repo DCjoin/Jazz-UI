@@ -2899,6 +2899,16 @@ I18N.VEE.Notice = {};
 I18N.VEE.Notice.Title = 'Abnormal Notification';
 I18N.VEE.Notice.Happen = 'Occurred{0}';//Null Occurred
 I18N.VEE.Notice.NoNotice = 'No Abnormal Notification';
+I18N.VEE.Monitor= '异常监测';
+I18N.VEE.Basic= '基础属性';
+I18N.VEE.MonitorRule= '监测规则';
+I18N.VEE.Rule = {};
+I18N.VEE.Rule.Tip = '检测规则集（每天扫描时间点为1:00,9:00,17:00）';
+I18N.VEE.Rule.NoRule = '该数据点暂未配置监事规则，点击下方“编辑”按钮配置规则';
+I18N.VEE.Rule.NotifyConsecutiveHours = '当空值连续出现{0}小时通知用户';
+I18N.VEE.Rule.AutoRepairNullTip1 = '系统自动修复空值';
+I18N.VEE.Rule.AutoRepairNullTip2 = '（最多支持连续30天的空值修复）';
+I18N.VEE.Rule.JumpValueTip = '当跳变幅度超过{0}%时通知用户';
 
 I18N.NetworkChecker = {};
 I18N.NetworkChecker.Msg1 = 'Abnormal network connection, ';

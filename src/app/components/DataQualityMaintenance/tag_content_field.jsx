@@ -6,8 +6,24 @@ import classnames from 'classnames';
 import AbnormalMonitor from './abnomal_monitor.jsx';
 import PropTypes from 'prop-types';
 import ViewableTextField from 'controls/ViewableTextField.jsx';
+import Rule from './monitor_rule.jsx';
 
 export default class TagContentField extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      tabNo:1
+    };
+    this._onSwitchTab = this._onSwitchTab.bind(this);
+  }
+
+  _onSwitchTab(event) {
+    this.setState({
+      tabNo:event.target.getAttribute("data-tab-index")*1
+    })
+  }
 
     _renderHeader() {
     var tagNameProps = {
@@ -18,22 +34,24 @@ export default class TagContentField extends Component {
       isRequired: true,
     };
     return (
-      <div className="pop-manage-detail-header" style={{paddingTop:'10px',paddingLeft:'20px',paddingBottom:'8px'}}>
+      <div className="pop-manage-detail-header" style={{paddingTop:'10px',paddingLeft:'20px',paddingBottom:'6px'}}>
         <div className={classnames("pop-manage-detail-header-name", "jazz-header")}>
           <ViewableTextField  {...tagNameProps} />
-            {
-      false &&
-        <div className="pop-user-detail-tabs">
+        <div className={classnames("pop-user-detail-tabs","data-quality-tabs")}>
                   <span className={classnames({
           "pop-user-detail-tabs-tab": true,
-          "selected": me.props.showBasic
-        })} data-tab-index="1" onClick={me._onSwitchTab}>{I18N.Setting.Tag.BasicProperties}</span>
+          "selected": this.state.tabNo===1
+        })} data-tab-index="1" onClick={this._onSwitchTab}>{I18N.VEE.Monitor}</span>
                   <span className={classnames({
           "pop-user-detail-tabs-tab": true,
-          "selected": !me.props.showBasic
-        })} data-tab-index="2" onClick={me._onSwitchTab}>{displayStr}</span>
+          "selected": this.state.tabNo===2
+        })} data-tab-index="2" onClick={this._onSwitchTab}>{I18N.VEE.Basic}</span>
+                  <span className={classnames({
+          "pop-user-detail-tabs-tab": true,
+          "selected": this.state.tabNo===3
+        })} data-tab-index="3" onClick={this._onSwitchTab}>{I18N.VEE.MonitorRule}</span>
                 </div>
-      }
+
         </div>
       </div>
       );
@@ -48,7 +66,16 @@ export default class TagContentField extends Component {
             paddingRight:'10px'
           };
 
-          content=<AbnormalMonitor nodeData={this.props.nodeData} showLeft={this.props.showLeft} anomalyType={this.props.anomalyType}/>
+          switch(this.state.tabNo){
+            case 1:
+                  content=<AbnormalMonitor nodeData={this.props.nodeData} showLeft={this.props.showLeft} anomalyType={this.props.anomalyType}/>;
+                  break;
+            case 2: break;
+            case 3:
+                  content=<Rule selectTag={this.props.nodeData}/>;
+                  break;                
+
+          }        
 
           return (
             <div className="pop-manage-detail-content" style={style}>
