@@ -342,24 +342,27 @@
       }
 }
 .jazz-ptag-rawdata-list{
-  width:320px;
+  width:275px;
   background-color: #ffffff;
   position: absolute;
   right: 0;
   height: 100%;
-  width: 320px;
   display: flex;
   flex-direction: column;
   border-left:1px solid #ececec;
+  .buttonGroup{
+    text-align: center;
+    margin: 15px;
+  }
   .title{
-    height:48px;
-    min-height:48px;
+    height:28px;
+    min-height:28px;
     background-color: #32ad3c;
     color:#ffffff;
     display: flex;
     width: 100%;
-align-items: center;
-padding-left:20px
+    align-items: center;
+    padding-left:20px
   }
   .date{
     display: flex;
@@ -380,7 +383,7 @@ padding-left:20px
 }
 .jazz-ptag-rawdata-list-item{
   height: 40px;
-  width:320px;
+  width:275px;
   display: flex;
   align-items: center;
   font-size:14px;
@@ -400,7 +403,7 @@ padding-left:20px
 .jazz-ptag-panel{
   display: flex;
   flex: 1;
-  position: absolute;
+  /*position: absolute;*/
   top: 74px;
   bottom:0;
 }
@@ -436,5 +439,4 @@ padding-left:20px
           z-index:20;
         }
   }
-  
 }

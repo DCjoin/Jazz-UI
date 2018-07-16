@@ -10,6 +10,7 @@ import Immutable from 'immutable';
 import moment from 'moment';
 import DateTimeSelector from 'controls/DateTimeSelector.jsx';
 import ChartPanel from 'components/customerSetting/tag/RawDataChartPanel.jsx';
+import RawDataList from './drawer_datalist.jsx'
 
 import { CircularProgress, Checkbox, FontIcon,FlatButton} from 'material-ui';
 
@@ -29,7 +30,8 @@ export default class TagChart extends Component {
       startDate: this._getInitDate().startDate,
       endDate: this._getInitDate().endDate,
       startTime: this._getInitDate().startTime,
-      endTime: this._getInitDate().endTime
+      endTime: this._getInitDate().endTime,
+      onDrawerShow: false
 		};
 		this._onChanged = this._onChanged.bind(this);
 		this._onUpdate = this._onUpdate.bind(this);
@@ -118,7 +120,13 @@ export default class TagChart extends Component {
     })
 
   }
-
+  // 点击数据修复显示浮层操作
+  _onDrawerShow = () => {
+    this.setState({onDrawerShow: true})
+  }
+ _onDrawerRequestChange = () => {
+    this.setState({onDrawerShow: false})
+ }
   _renderToolBar() {
     var switchIconStyle = {
         fontSize: '16px',
@@ -144,20 +152,29 @@ export default class TagChart extends Component {
         cursor: 'pointer',
         color: '#767a7a'
       };
-    var autoRepairBtn = <FlatButton key={'autoRepairBtn'} label={I18N.Setting.VEEMonitorRule.AutoRepair}
-    style={pauseBtnStyle} labelStyle={labelStyle} onClick={() => {
-      TagAction.manualScanTag(
-        this.props.selectedTag.get('Id'),
-        moment(this.state.start).subtract(8, 'hours').format('YYYY-MM-DDTHH:mm:ss'),
-        moment(this.state.end).subtract(8, 'hours').format('YYYY-MM-DDTHH:mm:ss'),
-      )
-    }}/>;
-    var pauseBtn = <FlatButton label={I18N.Setting.Tag.PTagRawData.PauseMonitor}
-    style={pauseBtnStyle} labelStyle={labelStyle} onClick={this._onPauseDialogShow}/>;
+    // var autoRepairBtn = <FlatButton key={'autoRepairBtn'} label={I18N.Setting.VEEMonitorRule.AutoRepair}
+    // style={pauseBtnStyle} labelStyle={labelStyle} onClick={() => {
+    //   TagAction.manualScanTag(
+    //     this.props.selectedTag.get('Id'),
+    //     moment(this.state.start).subtract(8, 'hours').format('YYYY-MM-DDTHH:mm:ss'),
+    //     moment(this.state.end).subtract(8, 'hours').format('YYYY-MM-DDTHH:mm:ss'),
+    //   )
+    // }}/>;
+    // var pauseBtn = <FlatButton label={I18N.Setting.Tag.PTagRawData.PauseMonitor}
+    //   style={pauseBtnStyle} labelStyle={labelStyle} onClick={this._onPauseDialogShow}/>;
 
-  var rollbackBtn= <FlatButton label={I18N.Setting.Tag.PTagRawData.RollBack}
-  style={pauseBtnStyle} labelStyle={labelStyle} onClick={this._onRollBack}/>
+    // var rollbackBtn= <FlatButton label={I18N.Setting.Tag.PTagRawData.RollBack}
+    //   style={pauseBtnStyle} labelStyle={labelStyle} onClick={this._onRollBack}/>
 
+
+   // 新增的数据修复按钮
+    let dataRepairBtn = <FlatButton 
+                          label={I18N.Setting.Tag.PTagRawData.DataRepair}
+                          style={pauseBtnStyle} 
+                          labelStyle={labelStyle} 
+                          onClick={this._onDrawerShow}
+                          />;
+  
     var label = this.state.isRawData ? I18N.EM.Ratio.RawValue : I18N.Setting.Tag.PTagRawData.DifferenceValue;
     var uom=this.state.tagData.getIn(['TargetEnergyData', 0, 'Target', 'Uom']);
     if(uom==="null") uom=""
@@ -171,15 +188,13 @@ export default class TagChart extends Component {
           </div>
           {this.props.selectedTag.get('IsAccumulated') ? <FontIcon className='icon-change' color={"#32AD3C"} hoverColor={"#3DCD58"} style={switchIconStyle} ref="switchIcon" onClick={this._onSwitchRawDataView}/> : null}
         </div>
-        <DateTimeSelector ref='dateTimeSelector' showTime={true} endLeft='-100px'     startDate= {this.state.startDate}
+        <DateTimeSelector ref='dateTimeSelector' showTime={true} endLeft='-100px' startDate= {this.state.startDate}
       endDate={this.state.endDate}
       startTime={this.state.startTime}
       endTime={this.state.endTime}  _onDateSelectorChanged={this._onDateSelectorChanged}/>
         </div>
         <div className='rightside' style={{marginRight:'0'}}>
-          {autoRepairBtn}
-          {rollbackBtn}
-          {this.state.veeTagStatus.size === 0 ? null : pauseBtn}
+          {dataRepairBtn}
         </div>
       </div>
       )
@@ -228,6 +243,14 @@ export default class TagChart extends Component {
       timeRanges: obj.timeRanges,
       refresh: this.state.refresh
     };
+
+    var listProps = {
+      isRawData: this.state.isRawData,
+      step: this.props.selectedTag.get('CalculationStep'),
+      selectedTag: this.props.selectedTag,
+      openDrawer: this.state.onDrawerShow,
+      onRequestChange: this._onDrawerRequestChange
+    }
     if (this.state.tagData.getIn(['TargetEnergyData', 0, 'EnergyData']).size === 0) {
       return (
         <div style={{
@@ -246,6 +269,9 @@ export default class TagChart extends Component {
         }}>
           <ChartPanel {...chartProps}/>
           {this._renderComment()}
+          <div style={{display: 'flex'}}>
+              <RawDataList {...listProps} />
+          </div>
         </div>
         )
     }

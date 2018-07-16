@@ -1114,6 +1114,8 @@ I18N.Setting.Tag.PTagRawData.abnormal = 'Abnormal';
 I18N.Setting.Tag.PTagRawData.repair = 'Modify';
 I18N.Setting.Tag.PTagRawData.RollBack = 'Undo Modification';
 I18N.Setting.Tag.PTagRawData.ErrorMsg = 'Illegal Characters';
+I18N.Setting.Tag.PTagRawData.DataRepair = '数据修复';
+
 
 I18N.ServerError = {};
 I18N.ServerError.BtnLabel = 'OK';
