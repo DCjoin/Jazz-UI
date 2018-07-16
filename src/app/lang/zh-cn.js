@@ -1115,6 +1115,7 @@ I18N.Setting.Tag.PTagRawData.abnormal = '异常值';
 I18N.Setting.Tag.PTagRawData.repair = '修复值';
 I18N.Setting.Tag.PTagRawData.RollBack = '撤销修复';
 I18N.Setting.Tag.PTagRawData.ErrorMsg = '非法字符';
+I18N.Setting.Tag.PTagRawData.DataRepair = '数据修复';
 
 I18N.ServerError = {};
 I18N.ServerError.BtnLabel = '好';
@@ -2099,7 +2100,7 @@ I18N.Setting.VEEMonitorRule.JumpValueErrorMsg = '请输入正数，支持小数�
 I18N.Setting.VEEMonitorRule.JumpValueTitle = '跳变幅度（%）';
 I18N.Setting.VEEMonitorRule.Notify = '按连续时长设置通知规则';
 I18N.Setting.VEEMonitorRule.NotifyMsg = '仅空值需要单独设置通知规则，超出规则的部分发送报警邮件。';
-I18N.Setting.VEEMonitorRule.AutoRepair = '自动修复';
+I18N.Setting.VEEMonitorRule.AutoRepair = '空值修复';
 I18N.Setting.VEEMonitorRule.AutoRepairMsg = '最多支持30天的数据修复。';
 I18N.Setting.VEEMonitorRule.MonitorStartTime = '监测起始时间';
 I18N.Setting.VEEMonitorRule.MonitorInterval = '监测扫描间隔';

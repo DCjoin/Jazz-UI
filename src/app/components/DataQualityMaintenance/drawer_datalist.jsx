@@ -1,0 +1,410 @@
+'use strict';
+
+import React from "react";
+import PropTypes from 'prop-types';
+import ReactDom from 'react-dom';
+import {FlatButton, Drawer} from 'material-ui';
+import CircularProgress from 'material-ui/CircularProgress';
+import TextField from 'material-ui/TextField';
+import TagAction from 'actions/customerSetting/TagAction.jsx';
+import TagStore from 'stores/customerSetting/TagStore.jsx';
+import CommonFuns from '../../util/Util.jsx';
+import classnames from "classnames";
+import { List} from 'immutable';
+import moment from 'moment';
+import Regex from '../../constants/Regex.jsx';
+var createReactClass = require('create-react-class');
+
+function isValid(number){
+  if(number===null || number==="") return true;
+  //非数字
+  if(!CommonFuns.isNumeric(number)) return false;
+
+  //前9后6
+  if(!Regex.TagRule.test(number*1)) return false;
+
+  return true
+}
+
+let j2d = CommonFuns.DataConverter.JsonToDateTime;
+let dateItem = [],
+  indexItem = [];
+let ListItem = createReactClass({
+  propTypes: {
+    isRawData:PropTypes.bool,
+    time: PropTypes.string,
+    data: PropTypes.object,
+    onClick: PropTypes.func,
+    isSelected: PropTypes.bool,
+    onDataChange:PropTypes.func,
+  },
+  getInitialState(){
+    return{
+      isEdit:false,
+      value:this.props.data.get('DataValue'),
+      errorText:''
+    }
+  },
+  _onClick(){
+    this.setState({
+      isEdit:true,
+    },()=>{
+      if(!this.props.isSelected){
+        this.props.onClick();
+      }
+    })
+  },
+
+  render: function() {
+    let color,
+      time = this.props.time,
+      value;
+    if (this.props.data.get('DataQuality') === 9) {
+      color = '#f46a58'
+    } else {
+      if (this.props.data.get('DataQuality') === 6 || this.props.data.get('DataQuality') === 8) {
+        color = '#cfa9ff'
+      } else {
+        color = '#464949'
+      }
+    }
+
+    if(this.state.isEdit && this.props.isRawData){
+      value=<TextField
+              id={`${this.props.time}_${this.state.value}`}
+              value={this.state.value}
+              style={{
+                color:color
+              }}
+              underlineShow={this.props.isSelected}
+              onChange={(event)=>{
+                this.setState({
+                  value:event.target.value
+                })
+              }}
+              errorText={this.state.errorText}
+              onBlur={()=>{
+                if(this.state.value!==this.props.data.get('DataValue')){
+                  if(isValid(this.state.value)){
+                    this.setState({
+                      errorText:''
+                    },()=>{
+                      this.props.onDataChange(this.state.value)
+                    })
+
+                  }else {
+                    this.setState({
+                      errorText:I18N.Setting.Tag.PTagRawData.ErrorMsg
+                    })
+                  }
+
+                }
+              }}
+              />
+    }else {
+      value=(
+        <div style={{color: color}}>{this.props.data.get('DataValue')}</div>
+      )
+    }
+    return (
+      <div className={classnames({ "jazz-ptag-rawdata-list-item": true,"selected": this.props.isSelected})} onClick={this._onClick}>
+        <div style={{width: '122px'}}>{time}</div>
+            {value ? value : '-'}
+        </div>
+      )
+  },
+});
+
+let NewRawDataList = createReactClass({
+  propTypes: {
+    isRawData: PropTypes.bool,
+    step: PropTypes.number,
+    onRawDataChange:PropTypes.func,
+    rollBack:PropTypes.func,
+    selectedTag: PropTypes.object,
+    openDrawer: PropTypes.bool,
+  },
+  getInitialState: function() {
+    return {
+      selectedId: -1,
+      isLoading:false,
+    }
+  },
+  _setLoading:function(){
+    this.setState({
+      isLoading:true
+    })
+  },
+  _onScroll: function() {
+    var el = ReactDom.findDOMNode(this.refs.list),
+      head = ReactDom.findDOMNode(this.refs.header);
+    var scrollIndex = parseInt(el.scrollTop / 40);
+    //set scrollTop to scroll el.scrollTop=500
+    head.innerText = dateItem[scrollIndex];
+  },
+  _onItemClick: function(item) {
+    TagAction.selectListToPonit(item.nId);
+    this.setState({
+      selectedId: item.nId
+    })
+  },
+  _onDataChange(data,index){
+    var orgRawData=TagStore.getRawData();
+    var editRawData=orgRawData.getIn(['TargetEnergyData', 0, 'EnergyData',index]);
+    orgRawData=orgRawData.setIn(['TargetEnergyData', 0, 'EnergyData'],List.of(editRawData));
+    editRawData=editRawData.set('DataValue',data);
+
+    var newRawData=orgRawData.setIn(['TargetEnergyData', 0, 'EnergyData'],List.of(editRawData));
+    this.setState({
+      isLoading:true
+    },()=>{
+        this.props.onRawDataChange(newRawData.toJS(),orgRawData.toJS());
+    })
+  },
+  _renderCalendarItems: function(energyData) {
+    var Items = [],
+      currentDate = null,
+      firstDate = null,
+      pId = 0,
+      nId = 0,
+      that = this;
+    energyData.forEach((data, index) => {
+      let str = CommonFuns.formatDateValueForRawData(j2d(data.get('UtcTime')), this.props.step);
+      let date = str.split(' ')[0],
+        time = str.split(' ')[1];
+
+      if (currentDate !== date && currentDate !== null) {
+        Items.push(
+          <div className="date">{date}</div>
+        );
+        dateItem.push(date);
+        pId++;
+      }
+      if (currentDate === null) {
+        firstDate = date
+      }
+      currentDate = date;
+      Items.push(
+        <ListItem key={`${time}+${data}`} isRawData={this.props.isRawData} time={time} data={data} isSelected={this.state.selectedId === nId} pId={pId}
+          onClick={that._onItemClick.bind(this, {
+          data,
+          nId
+        })}
+        onDataChange={(data)=>{this._onDataChange(data,index)}}/>
+      )
+      indexItem[pId] = index;
+      pId++;
+      dateItem.push(date);
+      nId++;
+
+    });
+    if (this.refs.header) {
+      let head = ReactDom.findDOMNode(this.refs.header);
+      if(head.innerText===""){
+        if (firstDate === null) {
+          head.style.display = 'none';
+        } else {
+          head.style.display = 'flex';
+          head.innerText = firstDate;
+        }
+      }
+
+    }
+
+    var style = {
+      height: document.body.offsetHeight - 150
+    };
+    return (
+      <div className="list" ref='list' style={style} onScroll={that._onScroll}>
+          {Items}
+        </div>
+      )
+
+
+  },
+  _renderNormalItems: function(energyData) {
+    var Items = [],
+      nId = 0,
+      that = this;
+    energyData.forEach((data, index) => {
+      let str = CommonFuns.formatDateValueForRawData(j2d(data.get('UtcTime')), this.props.step);
+
+      Items.push(
+        <ListItem key={`${str}+${data}`} isRawData={this.props.isRawData} time={str} data={data} isSelected={this.state.selectedId === nId} onClick={that._onItemClick.bind(this, {
+          data,
+          nId
+        })}
+        onDataChange={(data)=>{this._onDataChange(data,index)}}/>
+      )
+      indexItem[nId] = index;
+      nId++;
+
+    });
+    var style = {
+      height: document.body.offsetHeight - 150
+    };
+    return (
+      <div className="list" ref='list' style={style}>
+          {Items}
+        </div>
+      )
+
+  },
+  _renderListItems: function() {
+    if (TagStore.getRawData().size === 0) return;
+    var data = this.props.isRawData ? TagStore.getRawData() : TagStore.getDifferenceData(),
+      energyData = data.getIn(['TargetEnergyData', 0, 'EnergyData']),
+      that = this;
+      // step是什么意思
+    if (this.props.step === 6 || this.props.step === 7 || this.props.step === 1) {
+      return that._renderCalendarItems(energyData)
+    } else {
+      return that._renderNormalItems(energyData)
+    }
+  },
+  _onChanged: function(flag) {
+    if (flag !== false) {
+      dateItem = [];
+      indexItem = [];
+      if (this.refs.list) {
+        var el = ReactDom.findDOMNode(this.refs.list);
+        el.scrollTop = 0;
+      }
+      this.setState({
+        selectedId: -1,
+        isLoading:false
+      })
+      this.forceUpdate();
+    }
+    else {
+      this.setState({
+        isLoading:false
+      })
+    }
+
+  },
+  _onListItemSelected: function(index) {
+    if (index !== this.state.selectedId) {
+      var el = ReactDom.findDOMNode(this.refs.list);
+      var id = indexItem.indexOf(index);
+      el.scrollTop = id * 40 + 1;
+      this.setState({
+        selectedId: index
+      })
+    }
+  },
+   _onRollBack:function(){
+    let d2j = CommonFuns.DataConverter.DatetimeToJson,
+      start = d2j(this.state.start, false),
+      end = d2j(this.state.end, false),
+      tagId=this.props.selectedTag.get('Id');
+      this.props.rollBack(tagId,start,end);
+
+  },
+  componentDidMount: function() {
+    TagStore.addTagDatasChangeListener(this._onChanged);
+    TagStore.addPointToListChangeListener(this._onListItemSelected);
+  },
+  componentWillReceiveProps: function(nextProps) {
+    if (nextProps.isRawData !== this.props.isRawData) {
+      dateItem = [];
+      indexItem = [];
+      if (this.refs.list) {
+        var el = ReactDom.findDOMNode(this.refs.list);
+        el.scrollTop = 0;
+      }
+      this.setState({
+        selectedId: -1
+      })
+    }
+    if (nextProps.step !== this.props.step) {
+      let head = ReactDom.findDOMNode(this.refs.header);
+      head.style.display = 'none';
+    }
+  },
+  componentWillUnmount: function() {
+    TagStore.removeTagDatasChangeListener(this._onChanged);
+    TagStore.removePointToListChangeListener(this._onListItemSelected);
+  },
+  render: function() {
+    var data = this.props.isRawData ? TagStore.getRawData() : TagStore.getDifferenceData(),
+      uom = data.getIn(['TargetEnergyData', 0, 'Target', 'Uom']);
+
+      if(uom==="null") uom=""
+          else uom='(' + uom + ')'
+    // 自动修复按钮
+    var labelStyle = {
+        color: '#464949',
+        fontSize: '12px'
+      },
+      pauseBtnStyle = {
+        border: '1px solid #e6e6e6',
+        height: '30px',
+        lineHeight:'30px',
+        width: '92px',
+        backgroundColor: '#ffffff',
+        marginLeft:'10px'
+      },
+      listBtnStyle = {
+        fontSize: '36px',
+        marginLeft: '30px',
+        height: '36px',
+        marginTop: '-8px',
+        cursor: 'pointer',
+        color: '#767a7a'
+      };
+    var autoRepairBtn = <FlatButton key={'autoRepairBtn'} 
+                                    label={I18N.Setting.VEEMonitorRule.AutoRepair}
+                                    style={pauseBtnStyle} labelStyle={labelStyle}
+                                    disableTouchRipple={false}
+                                    onClick={() => {
+                                      TagAction.manualScanTag(
+                                        this.props.selectedTag.get('Id'),
+                                        moment(this.state.start).subtract(8, 'hours').format('YYYY-MM-DDTHH:mm:ss'),
+                                        moment(this.state.end).subtract(8, 'hours').format('YYYY-MM-DDTHH:mm:ss'),
+                                      )
+                                    }}/>;
+    // 撤销修复
+  var rollbackBtn= <FlatButton label={I18N.Setting.Tag.PTagRawData.RollBack}
+  style={pauseBtnStyle} labelStyle={labelStyle} onClick={this._onRollBack}/>
+
+    var label = this.props.isRawData ? I18N.EM.Ratio.RawValue : I18N.Setting.Tag.PTagRawData.DifferenceValue;
+    if(this.state.isLoading){
+      return (<div className="jazz-ptag-rawdata-list flex-center"><CircularProgress  mode="indeterminate" size={80} /></div>)
+    }else {
+      return (
+      	<div>
+      		<Drawer width={275} 
+                  open={this.props.openDrawer} 
+                  openSecondary={true}
+                  docked={false}
+                  overlayStyle={{backgroundColor: 'none'}}
+                  onRequestChange={() => this.props.onRequestChange()}
+            >
+	          <div
+	            role="button"
+	          >
+	            <div className='jazz-ptag-rawdata-list'>
+		          <div className='buttonGroup'>
+		              {autoRepairBtn}
+		              {rollbackBtn}
+		          </div>
+		          <div className='title'>
+		            <div>{I18N.RawData.Time}</div>
+		            <div style={{marginLeft: '90px'}}>{label + uom }</div>
+		          </div>
+		          <div className="date" ref='header' style={{
+		          display: 'none'
+		        }}>
+		             </div>
+		               {this._renderListItems()}
+		        </div>
+	          </div>
+	        </Drawer>  
+	    </div>
+        )
+    }
+
+  },
+});
+module.exports = NewRawDataList;

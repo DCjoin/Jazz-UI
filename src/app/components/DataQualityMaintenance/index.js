@@ -41,7 +41,7 @@ export default class DataQualityMaintenance extends Component {
       startTime: moment().subtract(1, 'months').add(1, 'day').startOf('day'),
       endTime: moment().startOf('day').add(1,'d'),
       showLeft: true,
-      filterType: 1,
+      filterType: 1
     };
     this._openSSOHierarchyUrl = this._openSSOHierarchyUrl.bind(this);
     this._onChange = this._onChange.bind(this);
