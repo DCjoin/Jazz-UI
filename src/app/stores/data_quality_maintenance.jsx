@@ -9,7 +9,8 @@ import {Action} from '../constants/actionType/data_quality_maintenance.jsx';
 let _VEEDataStructure = Immutable.fromJS({}),
     _VEETagAnomaly = Immutable.fromJS({}),
      _scanSwitch = Immutable.fromJS({}),
-    _VEESummary=Immutable.fromJS([]);
+    _VEESummary=Immutable.fromJS([]),
+    _rule=Immutable.fromJS({});
    
 
 
@@ -57,6 +58,12 @@ var DataQualityMaintenanceStore = assign({},PrototypeStore,{
     }
     tempStructure.forEach(structure=>f(structure));
     _VEEDataStructure=_VEEDataStructure.setIn(['Tree', 0, 'Children'],Immutable.fromJS(tempStructure))
+  },
+  setRule(rule){
+    _rule=Immutable.fromJS(rule)
+  },
+  getRule(){
+    return _rule
   }
 });
 
@@ -88,6 +95,10 @@ DataQualityMaintenanceStore.dispatchToken = AppDispatcher.register(function(acti
         break;
       case Action.UPDATE_READ_STATUS_SUCCESS:
         DataQualityMaintenanceStore.updateReadStatus(action.data);
+        DataQualityMaintenanceStore.emitChange();
+        break;
+      case Action.GET_RULE_BY_ID_SUCCESS:
+        DataQualityMaintenanceStore.setRule(action.data);
         DataQualityMaintenanceStore.emitChange();
         break;
     }
