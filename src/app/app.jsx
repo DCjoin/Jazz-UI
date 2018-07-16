@@ -275,13 +275,19 @@ ReactDom.render(<Router history={browserHistory} routes={{
         component: HierarchyLog
       }, {
         path: 'KPICycle',
-        component: KPICycle
+        component: KPICycle,
+        onEnter: () => {
+          document.title = I18N.MainMenu.CustomerSetting;
+        },
       }, {
         path: 'dash_board',
         component: Dashboard,
       }, {
         path: 'data_quality_maintenance',
-        component: DataQualityMaintenance
+        component: DataQualityMaintenance,
+        onEnter: () => {
+          document.title = I18N.MainMenu.CustomerSetting;
+        },
       }, ]
     }, {
       path: 'service/:cusnum',

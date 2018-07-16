@@ -143,7 +143,14 @@ export default class PushConfirmDialog extends Component {
       }
 
       _getSaveSolution(){
-        return this.state.solution.set(
+        var solution=this.state.solution;
+        if(solution.getIn(['Problem', 'Name']).length>200){
+          solution=solution.setIn(['Problem', 'Name'],solution.getIn(['Problem', 'Name']).slice(0,200))
+        }
+        // if(solution.getIn(['Solution', 'Name']).length>200){
+        //   solution=solution.setIn(['Solution', 'Name'],solution.getIn(['Solution', 'Name']).slice(0,200))
+        // }
+        return solution.set(
                   'Solutions',
                   this.state.solution
                     .get('Solutions')

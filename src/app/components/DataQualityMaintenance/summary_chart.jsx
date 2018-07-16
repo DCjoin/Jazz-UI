@@ -1,67 +1,20 @@
 'use strict';
 
 import React, { Component}  from "react";
-import Highcharts from '../highcharts/Highcharts.jsx';
 import Spin from '@emop-ui/piano/spin';
 import PropTypes from 'prop-types';
 import CommonFuns from 'util/Util.jsx';
 import Immutable from 'immutable';
 import moment from 'moment';
 import DateTimeSelector from 'controls/DateTimeSelector.jsx';
-import ChartPanel from 'components/customerSetting/tag/RawDataChartPanel.jsx';
 import DataQualityMaintenanceAction from 'actions/data_quality_maintenance.jsx';
 import DataQualityMaintenanceStore from 'stores/data_quality_maintenance.jsx';
 import ChartXAxisSetter from '../energy/ChartXAxisSetter.jsx';
-import { CircularProgress, Checkbox, FontIcon,FlatButton} from 'material-ui';
+import Highstock from '../highcharts/Highstock.jsx';
+// import { CircularProgress, Checkbox, FontIcon,FlatButton} from 'material-ui';
+
 
 let {dateAdd} = CommonFuns;
-
-var Sdata=Immutable.fromJS([{
-    "Time": "2018-07-03T16:00Z",
-    "NormalNodes": 1,
-    "AbnormalNodes": 2,
-    "IsNormal": false
-  },{
-    "Time": "2018-07-03T16:15Z",
-    "NormalNodes": 0,
-    "AbnormalNodes": 0,
-    "IsNormal": true
-  },{
-    "Time": "2018-07-03T16:30Z",
-    "NormalNodes": 0,
-    "AbnormalNodes": 0,
-    "IsNormal": true
-  },{
-    "Time": "2018-07-03T16:45Z",
-    "NormalNodes": 0,
-    "AbnormalNodes": 0,
-    "IsNormal": true
-  },{
-    "Time": "2018-07-03T17:00Z",
-    "NormalNodes": 0,
-    "AbnormalNodes": 0,
-    "IsNormal": true
-  },{
-    "Time": "2018-07-03T17:15Z",
-    "NormalNodes": 0,
-    "AbnormalNodes": 0,
-    "IsNormal": true
-  },{
-    "Time": "2018-07-03T17:30Z",
-    "NormalNodes": 0,
-    "AbnormalNodes": 0,
-    "IsNormal": true
-  },{
-    "Time": "2018-07-03T17:45Z",
-    "NormalNodes": 0,
-    "AbnormalNodes": 0,
-    "IsNormal": true
-  },{
-    "Time": "2018-07-03T18:00Z",
-    "NormalNodes": 0,
-    "AbnormalNodes": 0,
-    "IsNormal": true
-  }])
 
 class ChartComponent extends Component {
     constructor(props) {
@@ -84,7 +37,7 @@ class ChartComponent extends Component {
           color = '#11d9db'
       }
       return {
-        x: moment.utc(Time).valueOf(),
+        x: moment.utc(Time).add(15,'m').valueOf(),
         y: 0,
         index:index,
         fillColor: color,
@@ -155,9 +108,11 @@ class ChartComponent extends Component {
         },
         crosshair: true,
         labels: {
-          overflow: 'justify'
+          overflow: 'justify',
         },
-        dateTimeLabelFormats: {}
+        dateTimeLabelFormats: {},
+        min:moment(that.props.start).valueOf(),
+        max:moment(that.props.end).valueOf(),         
       },
       yAxis: {
         title:{
@@ -200,10 +155,10 @@ class ChartComponent extends Component {
         xDateFormat: '%Y-%m-%d %H:%M:%S',
         useHTML: true,
         formatter:function(){
-          var x=this.point.x;
+          var x=this.x;
           var content='';
           var j2d=CommonFuns.DataConverter.JsonToDateTime;
-          var data=that.props.data.getIn([this.point.index]);
+          var data=that.props.data.getIn([this.points[0].point.index]);
           var {Time,NormalNodes,AbnormalNodes,IsNormal}=data.toJS();
           return `
           <div>
@@ -268,6 +223,22 @@ class ChartComponent extends Component {
           }
   }
 
+  _setDateTimeLabelFormats(defaultConfig){
+    let cap = function(string) {
+      return string.charAt(0).toUpperCase() + string.substr(1);
+    };
+    var t = ['millisecond', 'second', 'minute', 'hour', 'day', 'dayhour', 'week', 'month', 'fullmonth', 'year'],
+      c = defaultConfig,
+      x = c.xAxis,
+      f = I18N.DateTimeFormat.HighFormat.RawData;
+
+    t.forEach(function(n) {
+      x.dateTimeLabelFormats[n] = (f[cap(n)]);
+    });
+
+    c.chart.cancelChartContainerclickBubble = true;
+    return c;
+  }
   _renderContent(){
     if(this.props.data===null){
       return(
@@ -279,7 +250,7 @@ class ChartComponent extends Component {
 
     // console.log(this.getConfigObj().stringify());
     return(
-        <Highcharts ref="highstock" className="heatmap" options={this.getConfigObj()}></Highcharts>
+        <Highstock ref="highstock" options={this._setDateTimeLabelFormats(this.getConfigObj())} afterChartCreated={()=>{}}></Highstock>
     
     )
   }
@@ -289,11 +260,10 @@ class ChartComponent extends Component {
       <div style={{flex: 1,
                       display: 'flex',
                       flexDirection: 'column',
-                      paddingBottom: '20px',
+                      // paddingBottom: '20px',
                       overflow: 'hidden',
                       borderRadius: '5px',
                       position:'relative',
-                      backgroundColor:'#ffffff'
                     }}>
       {this._renderContent()}      
       
@@ -406,8 +376,8 @@ export default class SummaryChart extends Component {
   _renderToolBar() {
     return (
       <div className='jazz-ptag-rawdata-toolbar'>
-        <div className='leftside'>
-        <DateTimeSelector ref='dateTimeSelector' showTime={true} endLeft='-100px'     startDate= {this.state.startDate}
+        <div className='leftside' style={{marginLeft:'-20px'}}>
+        <DateTimeSelector ref='dateTimeSelector' isDateViewStatus={true} showTime={true} endLeft='-100px'     startDate= {this.state.startDate}
       endDate={this.state.endDate}
       startTime={this.state.startTime}
       endTime={this.state.endTime}  _onDateSelectorChanged={this._onDateSelectorChanged}/>
@@ -421,7 +391,7 @@ export default class SummaryChart extends Component {
       <div className='jazz-ptag-rawdata-comment'>
         <div className='item'>
           <label className='normal-circle'/>
-          <div className='label'>{I18N.Setting.Tag.PTagRawData.normal}</div>
+          <div className='label'>{I18N.VEE.normal}</div>
         </div>
         <div className='item'>
           <label className='abnormal-circle'/>
@@ -469,9 +439,10 @@ export default class SummaryChart extends Component {
         <div style={{
           display: 'flex',
           'flexDirection': 'column',
-          flex: '1'
+          flex: '1',
+          marginTop:'20px'
         }}>
-          <ChartComponent data={this.state.data} name={this.props.selectedNode.get("Name")}/>
+          <ChartComponent data={this.state.data} name={this.props.selectedNode.get("Name")} start={this.state.start} end={this.state.end}/>
           {this._renderComment()}
         </div>
         )

@@ -5,15 +5,14 @@ import classnames from 'classnames';
 import { CircularProgress } from 'material-ui';
 import { Popover, PopoverAnimationVertical } from 'material-ui/Popover';
 import TextFiled from '@emop-ui/piano/text';
-
+import Button from '@emop-ui/piano/button';
 import { nodeType } from 'constants/TreeConstants.jsx';
 
 import {dateAdd} from 'util/Util.jsx';
 
 import Tree from 'controls/tree/Tree.jsx';
 import DateTimeSelector from 'controls/DateTimeSelector.jsx';
-
-
+import PopupPaper from 'controls/popup_paper.jsx';
 class PureTree extends PureComponent {
   render() {
     let { hierarchy, selectedNode, onSelectNode, generateNodeConent, checkCollapseStatus } = this.props;
@@ -35,16 +34,16 @@ class PureTree extends PureComponent {
 
 const FilterItems = [{
   Id: 1,
-  Text: '空值',
+  Text: I18N.Setting.VEEMonitorRule.NullValue,
 }, {
   Id: 2,
-  Text: '负值',
+  Text: I18N.Setting.VEEMonitorRule.NegativeValue,
 }, {
   Id: 4,
-  Text: '跳变',
+  Text: I18N.Setting.VEEMonitorRule.JumpValue,
 }, {
   Id: 0,
-  Text: '全部节点',
+  Text: I18N.VEE.AllNode,
 }, ]
 
 class FilterBar extends PureComponent {
@@ -65,10 +64,10 @@ class FilterBar extends PureComponent {
   render() {
     let { value, onChange } = this.props;
     return (
-      <div className="data-quality-maintenance-filter-node">
+      <div className="data-quality-maintenance-filter-node" style={{position:'relative'}}>
         <TextFiled
           suffixIconClassName='icon-drop-down'
-          width={232}
+          width={294}
           onClick={(e) => {
             this.setState({
               open: true,
@@ -77,14 +76,12 @@ class FilterBar extends PureComponent {
           }}
           value={FilterItems.filter( item => item.Id === value )[0].Text}
         />
-        <Popover
+        <PopupPaper
           open={this.state.open}
-          anchorEl={this.state.anchorEl}
-          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-          targetOrigin={{horizontal: 'left', vertical: 'top'}}
           onRequestClose={this._handleRequestClose}
-          style={{width: 232}}
+          style={{width: 232,position:'absolute',top:'48px'}}
         >
+        <div style={{padding:'6px 0'}}>
         {FilterItems.map( item =>
           <div
             style={{
@@ -99,8 +96,9 @@ class FilterBar extends PureComponent {
             }}>
             {item.Text}
           </div>
-        )}
-        </Popover>
+        )}</div>
+        
+        </PopupPaper>
       </div>
     );
   }
@@ -132,18 +130,11 @@ export default class Left extends Component {
 
     let { selectedNode } = this.props,
     children = node.get('Children');
-    if( selectedNode && selectedNode.get('ParentId') === node.get('Id') ) {
-      return false;
+    if( selectedNode ) {
+      return !(selectedNode.get('ParentId') === node.get('Id'))
     }
     return children.some(child => child.get('NodeType') === 999);
-    // { filterType } = this.props;
-    // switch (this.props.filterType) {
-    //   case 1:
-    //   case 2:
-    //     return ;
-    //   case 3:
-    //     return ;
-    // }
+
   }
   _onDateSelectorChanged(startDate, endDate, startTime, endTime) {
      let that = this,
@@ -166,6 +157,8 @@ export default class Left extends Component {
         }
         timeRange.start = new Date(startDate.setHours(startTime, 0, 0, 0));
       }
+    }else{
+
     }
 
     this.props.onDateSelectorChanged(timeRange.start,timeRange.end)
@@ -185,7 +178,7 @@ export default class Left extends Component {
           'icon-panel-box': type == nodeType.Panel,
           'icon-device': type == nodeType.Device,
           'icon-device-box': type == nodeType.Device,
-          'icon-column-fold': type == nodeType.Folder,
+          'icon-Gateway': type == nodeType.GateWay,
           'icon-image': type == nodeType.Widget,
           'icon-dimension-node': type == nodeType.Area,
         })}/>
@@ -196,10 +189,12 @@ export default class Left extends Component {
       contentStyle.color = '#dc0a0a';
     }
     let alarm = null;
-    if( nodeData.get('IsNotRead') && nodeData.get('PhysicalStatus') === 0 ) {
+    if( nodeData.get('IsNotRead')) {
       alarm = (<div style={{
         width: 6,
         height: 6,
+        minWidth:6,
+        marginRight:'10px',
         borderRadius: 3,
         backgroundColor: '#ff4d4d',
         alignSelf: 'flex-start',
@@ -231,32 +226,56 @@ export default class Left extends Component {
       onChangeFilterType,
       filterType,
     } = this.props;
+
+    // <div onClick={(e) => {
+    //   // if( isBuilding ) {
+    //     this.setState({
+    //       openPopover: true,
+    //       popoverAnchorEl: e.target,
+    //     });
+    //   // } else {
+    //   //   onOpenHierarchy();
+    //   // }
+    // }} className="data-quality-maintenance-morebtn"><div className='icon-drop-down'>{I18N.Common.Button.More}</div></div>
     return (
       <div className='data-quality-maintenance-left'>
         <div className='data-quality-maintenance-filter-time'>
           <div className="text">{I18N.VEE.MonitorTime+"："}</div>
-          <DateTimeSelector disabled={!filterType} ref='dateTimeSelector' showTime={false} endLeft='-100px' startDate={startDate} endDate={endDate}  _onDateSelectorChanged={this._onDateSelectorChanged}/>
+          <DateTimeSelector disabled={!filterType} isDateViewStatus={true} ref='dateTimeSelector' showTime={false} endLeft='-100px' startDate={startDate} endDate={endDate}  _onDateSelectorChanged={this._onDateSelectorChanged}/>
         </div>
         <FilterBar onChange={onChangeFilterType} value={filterType} />
         <div className='data-quality-maintenance-hierarchy'>
           <PureTree hierarchy={hierarchy} selectedNode={selectedNode} onSelectNode={onSelectNode} generateNodeConent={this._generateNodeConent} checkCollapseStatus={this._checkCollapseStatus}/>
         </div>
         <div className='data-quality-maintenance-actions-bar'>
-          <div>{'配置规则'}</div>
-          <div onClick={(e) => {
-            // if( isBuilding ) {
-              this.setState({
-                openPopover: true,
-                popoverAnchorEl: e.target,
-              });
-            // } else {
-            //   onOpenHierarchy();
-            // }
-          }}><div className='icon-drop-down'>{'更多'}</div></div>
+          <div>{I18N.VEE.ConfigRule}</div>
+         
+        {isBuilding?<Button label={I18N.Common.Button.More}
+                labelPosition="after"
+                outline secondary
+                iconClassName="icon-drop-down"
+                style={{flex:1}}
+                iconStyle={{marginTop: '4px'}}
+                onClick={(e) => {
+                  // if( isBuilding ) {
+                    this.setState({
+                      openPopover: true,
+                      popoverAnchorEl: e.currentTarget,
+                    });
+                  // } else {
+                  //   onOpenHierarchy();
+                  // }
+                }}/>:<Button label={I18N.VEE.ManageData}
+                outline secondary
+                style={{flex:1}}
+                onClick={(e) => {
+                  onOpenHierarchy();
+                }}/>}
         </div>
         {this.state.openPopover && <Popover
           style={{
-            padding:'6px 0'
+            padding:'6px 0',
+            
           }}
           open={this.state.openPopover}
           anchorEl={this.state.popoverAnchorEl}
@@ -272,7 +291,7 @@ export default class Left extends Component {
               this._handleRequestClose();
             }}
           >
-            {'管理数据流'}
+            {I18N.VEE.ManageData}
           </div>
           {isBuilding && <div className='data-quality-maintenance-actions-popover-item' onClick={() => {
             if( !scanSwitch.get('_loading') ) {
@@ -283,7 +302,7 @@ export default class Left extends Component {
             }
           }}>{scanSwitch.get('_loading') ?
             <div className='flex-center'><CircularProgress size={20}/></div> :
-            (scanSwitch.get('IsOpen') ? '关闭数据扫描' : '开启数据扫描')}
+            (scanSwitch.get('IsOpen') ? I18N.VEE.CloseMonitorBtn : I18N.VEE.StartMonitorBtn)}
           </div>}
         </Popover>}
       </div>

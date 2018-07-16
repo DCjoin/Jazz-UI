@@ -19,11 +19,13 @@ let DateTimeSelector = createReactClass({
     showTime: PropTypes.bool,
     isTimeFixed:PropTypes.bool,
     disabled:PropTypes.bool,
+    isDateViewStatus:PropTypes.bool,
   },
   getDefaultProps(){
     return {
       showTime: true,
-      isTimeFixed:false
+      isTimeFixed:false,
+      isDateViewStatus:false
     };
   },
   setDateField(startDate, endDate, callback) {
@@ -211,6 +213,7 @@ let DateTimeSelector = createReactClass({
       dateFormatStr: 'YYYY-MM-DD',
       value: this.state.startDate && moment(this.state.startDate).format("YYYY-MM-DD"),
       isViewStatus:false,
+      isDateEdited:!this.props.isDateViewStatus,
       width:'92px',
       onChange: function(value) {
         value=moment(value)._d;
@@ -231,6 +234,8 @@ let DateTimeSelector = createReactClass({
       timeType: 1,
       //left: this.props.endLeft,
       width:'92px',
+      isViewStatus:false,
+      isDateEdited:!this.props.isDateViewStatus,
       onChange: function(value) {
         value=moment(value)._d;
         me._onChangeDateTime(null, null, value, null);

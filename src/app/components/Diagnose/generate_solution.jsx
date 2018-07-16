@@ -639,6 +639,12 @@ export default class GenerateSolution extends Component {
             this.setState({
               loading: true
             });
+            if(energySolution.getIn(['Problem', 'Name']).length>200){
+              energySolution=energySolution.setIn(['Problem', 'Name'],energySolution.getIn(['Problem', 'Name']).slice(0,200))
+            }
+            // if(energySolution.getIn(['Solution', 'Name']).length>200){
+            //   energySolution=energySolution.setIn(['Solution', 'Name'],energySolution.getIn(['Solution', 'Name']).slice(0,200))
+            // }
             let hasError = false;
             if( !energySolution.getIn(['Problem', 'Name']) ) {
               errorData = errorData.setIn(['Problem', 'Name'], I18N.Setting.Diagnose.PleaseInput + I18N.Setting.Diagnose.ProblemName);

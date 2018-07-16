@@ -1,4 +1,10 @@
 .data-quality-maintenance {
+  &-morebtn{
+    &:hover{
+      color:#32AD3C;
+      cursor: pointer;
+    }
+  }
   &-wrapper {    
     display: flex;
     flex: 1;
@@ -40,13 +46,13 @@
       font-size: 14px;
       color: @slate-grey;
       min-width: 70px;
-      margin-right:6px;
     }
     .jazz-full-border-datepicker{
       .jazz-full-border-datepicker-container{
         margin-left:4px;
         .jazz-energy-date-picker{
           margin-right:4px;
+          border:1px solid #e6e6e6;
           .jazz-month-picker-noempty{
             padding-left:10px;
           }
@@ -92,6 +98,7 @@
       color: #fff;
       background-color: #32ad3c;
     }
+    color:#626469
   }
   &-actions-bar {
     height: 36px;

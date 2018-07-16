@@ -130,7 +130,14 @@ export default class EditSolution extends Component {
             snackBarText:I18N.Setting.ECM.SaveSuccess,
             preSolution:this.state.solution
           },()=>{
-            this.props.onSave(this.state.solution,false)
+            var solution=this.state.solution;
+        if(solution.getIn(['Problem', 'Name']).length>200){
+          solution=solution.setIn(['Problem', 'Name'],solution.getIn(['Problem', 'Name']).slice(0,200))
+        }
+        // if(solution.getIn(['Solution', 'Name']).length>200){
+        //   solution=solution.setIn(['Solution', 'Name'],solution.getIn(['Solution', 'Name']).slice(0,200))
+        // }
+            this.props.onSave(solution,false)
           })
 
     }
@@ -148,7 +155,14 @@ export default class EditSolution extends Component {
             snackBarText:I18N.Setting.ECM.SaveSuccess,
             preSolution:this.state.solution
           },()=>{
-            this.props.onSave(this.state.solution,false)
+            var solution=this.state.solution;
+        if(solution.getIn(['Problem', 'Name']).length>200){
+          solution=solution.setIn(['Problem', 'Name'],solution.getIn(['Problem', 'Name']).slice(0,200))
+        }
+        // if(solution.getIn(['Solution', 'Name']).length>200){
+        //   solution=solution.setIn(['Solution', 'Name'],solution.getIn(['Solution', 'Name']).slice(0,200))
+        // }
+            this.props.onSave(solution,false)
           })
     }
       }
@@ -393,7 +407,15 @@ export default class EditSolution extends Component {
           this.setState({saveTipShow:false})
         }}
         actions={ [<Button key='pause' style={{marginRight:'16px'}} flat secondary label={I18N.Common.Button.Save} labelStyle={{color:'#32ad3c'}} 
-          onClick={()=>{this.props.onSave(this.state.solution.setIn(["Problem",'EnergySys'],this.state.energySys))}}
+          onClick={()=>{
+            var solution=this.state.solution;
+        if(solution.getIn(['Problem', 'Name']).length>200){
+          solution=solution.setIn(['Problem', 'Name'],solution.getIn(['Problem', 'Name']).slice(0,200))
+        }
+        // if(solution.getIn(['Solution', 'Name']).length>200){
+        //   solution=solution.setIn(['Solution', 'Name'],solution.getIn(['Solution', 'Name']).slice(0,200))
+        // }
+            this.props.onSave(solution.setIn(["Problem",'EnergySys'],this.state.energySys))}}
         />,
         <Button key='cancel' style={{marginRight:'16px'}} flat secondary  label={I18N.Common.Button.NotSave} 
                               onClick={() => {this.setState({
