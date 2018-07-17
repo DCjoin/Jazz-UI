@@ -6,9 +6,9 @@ COPY . /home/node/jazz-ui
 
 ARG NPM_TOKEN
 
-RUN yarn --force
+RUN npm install --force
 
-RUN yarn global add pm2
+RUN npm -g add pm2
 
 RUN rm .npmrc
 
