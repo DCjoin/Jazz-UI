@@ -8,9 +8,11 @@ ARG NPM_TOKEN
 
 RUN yarn --force
 
-RUN rm .npmrc
+RUN rm -f .npmrc
 
 RUN yarn global add pm2
+
+RUN rm .npmrc
 
 RUN npm run build-test && node shell/copy_server.js
 
