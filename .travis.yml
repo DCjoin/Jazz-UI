@@ -18,7 +18,6 @@ env:
   - ROLE="WebUI"
   - PACKAGE_VERSION="v6.1.0.${TRAVIS_BUILD_NUMBER}"
   - DOCKER_NS="se-rem-test"
-  - NPM_TOKEN="$NPM_TOKEN"
 
 before_install:
   - env
@@ -40,7 +39,7 @@ script:
 before_deploy:
   - cp compose-template.yml build/
   - cd build && zip -r ../${ARTIFACT_NAME} ./ && cd ..
-  - docker build --build-arg NPM_TOKEN=${NPM_TOKEN} -t $TAG .
+  - docker build --build-arg NPM_TOKEN=$NPM_TOKEN -t $TAG .
 #  - echo -n "${PACKAGE_VERSION}" > version.txt
 #  - zip -r --exclude=*node_modules* /tmp/${ARTIFACT_NAME} ./
   - 'curl -o upload.sh -H "Authorization: token ${GITHUB_TOKEN}" ${GITHUB_UPLOAD_SCRIPT}'
