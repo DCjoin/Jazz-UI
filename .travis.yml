@@ -20,6 +20,7 @@ env:
   - DOCKER_NS="se-rem-test"
 
 before_install:
+  - export NPM_TOKEN="$NPM_TOKEN"
   - env
   - yarn config set registry https://registry.npmjs.org
   - rm yarn.lock
