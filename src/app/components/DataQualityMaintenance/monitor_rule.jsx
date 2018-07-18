@@ -97,8 +97,8 @@ export default class MonitorRule extends Component {
                                 formStatus:formStatus.VIEW
                                })}
                                onChange={(path,value)=>{
-                                 this.setState(preState=>{
-                                  rule:preState.rule.set(path,value)
+                                 this.setState({
+                                  rule:this.state.rule.set(path,value)
                                  })
                                }}/>         
         )
