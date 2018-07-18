@@ -2907,6 +2907,9 @@ I18N.VEE.Rule.AutoRepairNullTip1 = '系统自动修复空值';
 I18N.VEE.Rule.AutoRepairNullTip2 = '（最多支持连续30天的空值修复）';
 I18N.VEE.Rule.JumpValueTip1 = '当跳变幅度超过';
 I18N.VEE.Rule.JumpValueTip2 = '时通知用户';
+I18N.VEE.Rule.NotifyConsecutiveHoursErrorTip = '请输入正整数';
+I18N.VEE.Rule.JumpRateTip = '请输入正数（小数点前最多9位、小数点后最多6位）';
+I18N.VEE.Rule.LeaveTip = '离开页面后，您所配置的规则集将不会保存，确定离开页面吗？';
 
 I18N.NetworkChecker = {};
 I18N.NetworkChecker.Msg1 = '网络连接异常';

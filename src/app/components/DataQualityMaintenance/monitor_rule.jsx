@@ -87,8 +87,10 @@ export default class MonitorRule extends Component {
                                onSave={()=>{this.setState({
                                  formStatus:formStatus.VIEW
                                },()=>{
+                                 var {JumpingRate,NotifyConsecutiveHours}=this.state.rule.toJS();
                                 DataQualityMaintenanceAction.updateRule({
-                                  Rule:this.state.rule.toJS(),
+                                  Rule:this.state.rule.set("JumpingRate",JumpingRate*1)
+                                                      .set("NotifyConsecutiveHours",NotifyConsecutiveHours*1).toJS(),
                                   TagIds:[this.props.selectTag.get("Id")]
                                 })
                                })}}
@@ -97,6 +99,14 @@ export default class MonitorRule extends Component {
                                 formStatus:formStatus.VIEW
                                })}
                                onChange={(path,value)=>{
+                                 var rule=this.state.rule.set(path,value);
+                                 if(path==='CheckNull'){
+                                  rule=rule.set("NotifyConsecutiveHours",8);
+                                  rule=rule.set("IsAutoRepairNull",true);
+                                 }
+                                 if(path==='CheckJumping'){
+                                  rule=rule.set("JumpingRate",500);
+                                 }
                                  this.setState({
                                   rule:this.state.rule.set(path,value)
                                  })
