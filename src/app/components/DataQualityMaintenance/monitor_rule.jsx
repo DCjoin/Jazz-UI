@@ -84,6 +84,7 @@ export default class MonitorRule extends Component {
             this.state.formStatus===formStatus.VIEW?
                   <ViewedRule rule={this.state.rule} onEdited={()=>{this.setState({formStatus:formStatus.EDIT})}}/>
                   :<EditedRule rule={this.state.rule} 
+                               hasBar={true} 
                                onSave={()=>{this.setState({
                                  formStatus:formStatus.VIEW
                                },()=>{
@@ -108,7 +109,7 @@ export default class MonitorRule extends Component {
                                   rule=rule.set("JumpingRate",500);
                                  }
                                  this.setState({
-                                  rule:this.state.rule.set(path,value)
+                                  rule:rule
                                  })
                                }}/>         
         )

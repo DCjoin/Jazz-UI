@@ -19,6 +19,7 @@ import MonitorTimeDlg from './monitor_time_dlg.jsx';
 import CloseMonitorDlg from './close_monitor_dlg.jsx';
 import NeedRefreshDlg from './need_refresh_dlg.jsx';
 
+import RulesConfigration from './multi_tags_rule_configuration.jsx';
 
 function formatMomentToDateStr(date) {
   return date.toJSON();
@@ -41,11 +42,13 @@ export default class DataQualityMaintenance extends Component {
       startTime: moment().subtract(1, 'months').add(1, 'day').startOf('day'),
       endTime: moment().startOf('day').add(1,'d'),
       showLeft: true,
-      filterType: 1
+      filterType: 1,
+      showConfig:false
     };
     this._openSSOHierarchyUrl = this._openSSOHierarchyUrl.bind(this);
     this._onChange = this._onChange.bind(this);
-
+    this._showConfig = this._showConfig.bind(this);
+    
     DataQualityMaintenanceStore.addChangeListener(this._onChange);
 
     this._getVEEDataStructure();
@@ -101,6 +104,13 @@ export default class DataQualityMaintenance extends Component {
   _renderNon() {
     return (<div className='flex-center'><Button onClick={this._openSSOHierarchyUrl} label={'+ ' + I18N.VEE.CreateDataStructure} outline secondary /></div>)
   }
+
+  _showConfig(){
+    this.setState({
+      showConfig:true
+    })
+  }
+
   render() {
     let { VEEDataStructure, scanSwitch, selectedNode, filterType } = this.state;
     if( !VEEDataStructure || VEEDataStructure.get('_loading') ) {
@@ -150,6 +160,7 @@ export default class DataQualityMaintenance extends Component {
           }}
           onChangeFilterType={ val => this.setState({filterType: val}, this._getVEEDataStructure) }
           filterType={filterType}
+          showConfig={this._showConfig}
         />}
         {VEEDataStructure.get('HasHierarchy') &&
         <Right
@@ -191,6 +202,8 @@ export default class DataQualityMaintenance extends Component {
           }}
           onCancel={() => {this.setState({closeMonitorDlg: false})}}
         />
+
+        {this.state.showConfig && <RulesConfigration/>}
 
         <Toast autoHideDuration={4000} className='toast-tip' open={this.state.openMonitorToast} onRequestClose={() => {
           this.setState({

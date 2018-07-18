@@ -141,7 +141,7 @@ export default class EditedRule extends Component {
             {this._renderNegativeValue()}
             {this._renderJumpingValue()}
         </div>
-        {this._renderFooter()}
+        {this.props.hasBar && this._renderFooter()}
         {this.state.leaveTipShow && this._renderLeaveTip()}
           </div>
     )
