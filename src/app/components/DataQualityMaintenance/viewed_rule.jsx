@@ -20,7 +20,7 @@ export default class ViewedRule extends Component {
           <FontIcon className='icon-check-mark' color={"#32AD3C"} style={{fontSize:'18px'}}/>
           <div className="text">{I18N.Setting.VEEMonitorRule.NullValue}</div>
         </div>
-        <div className="row" style={TextStyle}>{NotifyConsecutiveHoursTip1+NotifyConsecutiveHours+I18N.EM.Hour+NotifyConsecutiveHoursTip2}</div>
+        <div className="row" style={TextStyle}>{I18N.VEE.Rule.NotifyConsecutiveHoursTip1+NotifyConsecutiveHours+I18N.EM.Hour+I18N.VEE.Rule.NotifyConsecutiveHoursTip2}</div>
         {IsAutoRepairNull && <div className="row" style={{display:'flex'}}>
           <div style={TextStyle}>{I18N.VEE.Rule.AutoRepairNullTip1}</div>
           <div style={SubTextStyle}>{I18N.VEE.Rule.AutoRepairNullTip2}</div>
@@ -48,7 +48,7 @@ export default class ViewedRule extends Component {
           <FontIcon className='icon-check-mark' color={"#32AD3C"} style={{fontSize:'18px'}}/>
           <div className="text">{I18N.Setting.VEEMonitorRule.JumpValue}</div>
         </div>
-        <div className="row" style={TextStyle}>{I18N.format(I18N.VEE.Rule.JumpValueTip,JumpingRate)}</div>
+        <div className="row" style={TextStyle}>{I18N.VEE.Rule.JumpValueTip1+ JumpingRate+'%'+I18N.VEE.Rule.JumpValueTip2}</div>
       </div>
     )
   }
@@ -62,9 +62,15 @@ export default class ViewedRule extends Component {
   }
 
   render(){
-    var {CheckNull,CheckNegative ,CheckJumping }=this.props.rule.toJS();
+    var {CheckNull ,CheckNegative ,CheckJumping }=this.props.rule.toJS();
     var content=null;
       if(!CheckNull && !CheckNegative && !CheckJumping){
+        content=(
+          <div className="data-quality-rule-content" style={{justifyContent:'center',alignItems:'center'}}>
+            {I18N.VEE.Rule.NoRule}
+          </div>
+        )
+      }else{
         content=(
           <div className="data-quality-rule-content">
         <div style={SubTextStyle}>{I18N.VEE.Rule.Tip}</div>
@@ -73,12 +79,7 @@ export default class ViewedRule extends Component {
             {CheckJumping && this._renderJumpingValue()}
         </div>
         )
-      }else{
-        content=(
-          <div className="data-quality-rule-content" style={{justifyContent:'center',alignItems:'center'}}>
-            {I18N.VEE.Rule.NoRule}
-          </div>
-        )
+
       }
     return(
       <div className="data-quality-rule">
