@@ -36,7 +36,9 @@ export default class TextArea extends Component {
     var style={
       width,
       height:'28px',
-      border:errorStyle?'1px solid #dc0a0a':'1px solid #e6e6e6'
+      border:errorStyle?'1px solid #dc0a0a':'1px solid #e6e6e6',
+      padding:'0 10px',
+      boxSizing: 'border-box'
     },errorStyle={
       color:'#dc0a0a'
     };

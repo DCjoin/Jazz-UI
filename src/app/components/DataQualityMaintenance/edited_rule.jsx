@@ -25,10 +25,10 @@ export default class EditedRule extends Component {
         <Checkbox checked={CheckNull} label={I18N.Setting.VEEMonitorRule.NullValue} onCheck={()=>{this._onChange('CheckNull',!CheckNull)}}/>
         {CheckNull && <div className="data-quality-rule-section-config-field">
                         <div className="row" style={TextStyle}>
-                          {I18N.VEE.Rule.NotifyConsecutiveHoursTip1}
+                          <div>{I18N.VEE.Rule.NotifyConsecutiveHoursTip1}</div>
                           <TextArea value={NotifyConsecutiveHours} width={46} onChange={(value)=>{this._onChange("NotifyConsecutiveHours",value)}}/>
                           <div className="uom">{I18N.EM.Hour}</div>
-                          {I18N.VEE.Rule.NotifyConsecutiveHoursTip2}
+                          <div style={{marginLeft:'6px'}}>{I18N.VEE.Rule.NotifyConsecutiveHoursTip2}</div>
                         </div>
 
                         <div className="row">
@@ -57,7 +57,7 @@ export default class EditedRule extends Component {
     return(
       <div className="data-quality-rule-section">
         <Checkbox checked={CheckJumping} label={I18N.Setting.VEEMonitorRule.JumpValue} onCheck={()=>{this._onChange('CheckJumping',!CheckJumping)}}/>
-        {CheckNull && <div className="data-quality-rule-section-config-field">
+        {CheckJumping && <div className="data-quality-rule-section-config-field">
                         <div className="row" style={TextStyle}>
                           {I18N.VEE.Rule.JumpValueTip1}
                           <TextArea value={JumpingRate} width={46} onChange={(value)=>{this._onChange("JumpingRate",value)}}/>
