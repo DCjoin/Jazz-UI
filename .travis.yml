@@ -5,7 +5,7 @@ services:
   - docker
 
 node_js:
-  - "8.7.0"
+  - "8.9.1"
   
 cache:
   yarn: true
@@ -39,7 +39,7 @@ script:
 before_deploy:
   - cp compose-template.yml build/
   - cd build && zip -r ../${ARTIFACT_NAME} ./ && cd ..
-  - docker build --build-arg NPM_TOKEN=${NPM_TOKEN} -t $TAG .
+  - docker build --build-arg NPM_TOKEN=$NPM_TOKEN -t $TAG .
 #  - echo -n "${PACKAGE_VERSION}" > version.txt
 #  - zip -r --exclude=*node_modules* /tmp/${ARTIFACT_NAME} ./
   - 'curl -o upload.sh -H "Authorization: token ${GITHUB_TOKEN}" ${GITHUB_UPLOAD_SCRIPT}'

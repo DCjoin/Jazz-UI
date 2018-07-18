@@ -39,6 +39,22 @@ export default class MonitorRule extends Component {
     })
   }
 
+  componentWillReceiveProps(nextProps){
+    if(this.props.selectTag.get("Id")!==nextProps.selectTag.get("Id")){
+      this.setState({
+        rule:null,
+        formStatus:formStatus.VIEW
+      },()=>{
+        DataQualityMaintenanceAction.getrulebyid({
+          CustomerId:parseInt(this.context.router.params.customerId),
+          UserId: CurrentUserStore.getCurrentUser().Id,
+          TagId:this.props.selectTag.get("Id")
+        })
+      })
+
+    }
+  }
+
   componentWillUnmount() {
     DataQualityMaintenanceStore.removeChangeListener(this._onChanged);
   }
@@ -68,6 +84,18 @@ export default class MonitorRule extends Component {
             this.state.formStatus===formStatus.VIEW?
                   <ViewedRule rule={this.state.rule} onEdited={()=>{this.setState({formStatus:formStatus.EDIT})}}/>
                   :<EditedRule rule={this.state.rule} 
+                               onSave={()=>{this.setState({
+                                 formStatus:formStatus.VIEW
+                               },()=>{
+                                DataQualityMaintenanceAction.updateRule({
+                                  Rule:this.state.rule.toJS(),
+                                  TagIds:[this.props.selectTag.get("Id")]
+                                })
+                               })}}
+                               onCancel={()=>this.setState({
+                                rule:DataQualityMaintenanceStore.getRule(),
+                                formStatus:formStatus.VIEW
+                               })}
                                onChange={(path,value)=>{
                                  this.setState(preState=>{
                                   rule:preState.rule.set(path,value)
