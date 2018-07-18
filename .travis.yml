@@ -18,7 +18,6 @@ env:
   - ROLE="WebUI"
   - PACKAGE_VERSION="v6.1.0.${TRAVIS_BUILD_NUMBER}"
   - DOCKER_NS="se-rem-test"
-  - NPM_TOKEN="${NPM_TOKEN}"
 
 before_install:
   - env
