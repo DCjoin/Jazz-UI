@@ -8,7 +8,7 @@ ARG NPM_TOKEN
 
 RUN yarn --force
 
-RUN yarn gloabal add pm2
+RUN yarn global add pm2
 
 RUN rm .npmrc
 

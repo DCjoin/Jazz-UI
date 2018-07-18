@@ -14,8 +14,8 @@ const TextStyle={
 
 export default class EditedRule extends Component {
 
-  _onChang(path,value){
-    this.props.onChange({path,value})
+  _onChange(path,value){
+    this.props.onChange(path,value)
   }
 
   _renderNullValue(){
