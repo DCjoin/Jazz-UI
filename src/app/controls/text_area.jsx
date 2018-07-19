@@ -7,14 +7,16 @@ export default class TextArea extends Component {
   }
 
   validate(props=this.props){
-    if(props.regexFn && !props.regexFn(errorText)){
+    if(props.regexFn && !props.regexFn(props.value)){
       this.setState({
         errorText:this.props.errorText
       })
+      return false
     }else{
       this.setState({
         errorText:null
       })
+      return true
     }
   }
 
@@ -32,15 +34,18 @@ export default class TextArea extends Component {
 
   render(){
     var {width,onChange,value}=this.props;
-    var {errorStyle}=this.state;
+    var {errorText}=this.state;
     var style={
       width,
       height:'28px',
-      border:errorStyle?'1px solid #dc0a0a':'1px solid #e6e6e6',
+      border:errorText!==null?'1px solid #dc0a0a':'1px solid #e6e6e6',
       padding:'0 10px',
       boxSizing: 'border-box'
     },errorStyle={
-      color:'#dc0a0a'
+      color:'#dc0a0a',
+      left:'-10px',
+      width:'300px',
+      bottom:'-6px'
     };
     return(
       <TextField style={style}

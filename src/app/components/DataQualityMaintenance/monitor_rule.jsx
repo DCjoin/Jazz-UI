@@ -84,21 +84,32 @@ export default class MonitorRule extends Component {
             this.state.formStatus===formStatus.VIEW?
                   <ViewedRule rule={this.state.rule} onEdited={()=>{this.setState({formStatus:formStatus.EDIT})}}/>
                   :<EditedRule rule={this.state.rule} 
+                               hasBar={true} 
                                onSave={()=>{this.setState({
                                  formStatus:formStatus.VIEW
                                },()=>{
-                                DataQualityMaintenanceAction.updateRule({
-                                  Rule:this.state.rule.toJS(),
+                                 var {JumpingRate,NotifyConsecutiveHours}=this.state.rule.toJS();
+                                DataQualityMaintenanceAction.updateRule([{
+                                  Rule:this.state.rule.set("JumpingRate",JumpingRate*1)
+                                                      .set("NotifyConsecutiveHours",NotifyConsecutiveHours*1).toJS(),
                                   TagIds:[this.props.selectTag.get("Id")]
-                                })
+                                }])
                                })}}
                                onCancel={()=>this.setState({
                                 rule:DataQualityMaintenanceStore.getRule(),
                                 formStatus:formStatus.VIEW
                                })}
                                onChange={(path,value)=>{
+                                 var rule=this.state.rule.set(path,value);
+                                 if(path==='CheckNull'){
+                                  rule=rule.set("NotifyConsecutiveHours",8);
+                                  rule=rule.set("IsAutoRepairNull",true);
+                                 }
+                                 if(path==='CheckJumping'){
+                                  rule=rule.set("JumpingRate",500);
+                                 }
                                  this.setState({
-                                  rule:this.state.rule.set(path,value)
+                                  rule:rule
                                  })
                                }}/>         
         )

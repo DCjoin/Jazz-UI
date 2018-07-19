@@ -225,6 +225,7 @@ export default class Left extends Component {
       scanSwitch,
       onChangeFilterType,
       filterType,
+      showConfig
     } = this.props;
 
     // <div onClick={(e) => {
@@ -248,7 +249,7 @@ export default class Left extends Component {
           <PureTree hierarchy={hierarchy} selectedNode={selectedNode} onSelectNode={onSelectNode} generateNodeConent={this._generateNodeConent} checkCollapseStatus={this._checkCollapseStatus}/>
         </div>
         <div className='data-quality-maintenance-actions-bar'>
-          <div>{I18N.VEE.ConfigRule}</div>
+          <div onClick={showConfig}>{I18N.VEE.ConfigRule}</div>
          
         {isBuilding?<Button label={I18N.Common.Button.More}
                 labelPosition="after"

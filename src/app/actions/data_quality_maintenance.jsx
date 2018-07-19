@@ -6,11 +6,11 @@ import Util from 'util/Util.jsx';
 import {Vee} from 'constants/Path.jsx';
 
 var _structure_params=null;
-module.exports = {
-  getVEEDataStructure: (params) => {
-    AppDispatcher.dispatch({
+let DataQualityMaintenanceAction = {
+  getVEEDataStructure: (params,refresh=true) => {
+    if(refresh){AppDispatcher.dispatch({
       type: Action.GET_VEE_DATA_STRUCTURE_REQUEST,
-    });
+    });}
     _structure_params=params;
     Ajax.post('/vee/getdatastructure', {
       params,
@@ -106,11 +106,13 @@ module.exports = {
       }
     });
   },
-  updateRule:(params)=>{
+  updateRule(params){
+    console.log(this);
+    var that= this ;
     Ajax.post(Vee.updateRule, {
       params,
       success: function(data) {
-        this.getVEEDataStructure(_structure_params);
+        that.getVEEDataStructure(_structure_params,false);
       },
       error: function(err, res) {
         console.log(err, res);
@@ -118,3 +120,5 @@ module.exports = {
     });
   }
 };
+
+module.exports = DataQualityMaintenanceAction;
