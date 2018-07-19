@@ -107,11 +107,15 @@ let DataQualityMaintenanceAction = {
     });
   },
   updateRule(params){
-    console.log(this);
+
     var that= this ;
     Ajax.post(Vee.updateRule, {
       params,
-      success: function(data) {
+      success: function() {
+        AppDispatcher.dispatch({
+          type: Action.GET_RULE_BY_ID_SUCCESS,
+          data:params[0].Rule
+        });
         that.getVEEDataStructure(_structure_params,false);
       },
       error: function(err, res) {
