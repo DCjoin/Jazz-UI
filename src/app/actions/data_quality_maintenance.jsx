@@ -4,11 +4,14 @@ import { Action } from '../constants/actionType/data_quality_maintenance.jsx';
 import Ajax from '../ajax/Ajax.jsx';
 import Util from 'util/Util.jsx';
 import {Vee} from 'constants/Path.jsx';
-module.exports = {
-  getVEEDataStructure: (params) => {
-    AppDispatcher.dispatch({
+
+var _structure_params=null;
+let DataQualityMaintenanceAction = {
+  getVEEDataStructure: (params,refresh=true) => {
+    if(refresh){AppDispatcher.dispatch({
       type: Action.GET_VEE_DATA_STRUCTURE_REQUEST,
-    });
+    });}
+    _structure_params=params;
     Ajax.post('/vee/getdatastructure', {
       params,
       success: function(data) {
@@ -89,4 +92,33 @@ module.exports = {
       }
     });
   },
+  getrulebyid:(params)=>{
+    Ajax.post(Vee.getrulebyid, {
+      params,
+      success: function(data) {
+        AppDispatcher.dispatch({
+          type: Action.GET_RULE_BY_ID_SUCCESS,
+          data
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
+  updateRule(params){
+    console.log(this);
+    var that= this ;
+    Ajax.post(Vee.updateRule, {
+      params,
+      success: function(data) {
+        that.getVEEDataStructure(_structure_params,false);
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  }
 };
+
+module.exports = DataQualityMaintenanceAction;

@@ -223,3 +223,123 @@
     }
   }
 }
+
+.data-quality-tabs{
+  width:auto;
+  >span{
+    padding:0px;
+    margin-left:30px;
+    width:85px;
+    color:#626469
+  }
+  .pop-user-detail-tabs-tab.selected{
+    margin-bottom: -6px;
+  }
+}
+
+.data-quality-rule{
+  display: flex;
+  flex:1;
+  flex-direction: column;
+  &-content{
+    display: flex;
+    flex:1;
+    overflow-y: auto;
+    flex-direction: column;
+  }
+  &-footer{
+    height:50px;
+    min-height: 50px;
+    background-color: #fbfbfb;
+    box-shadow: 0 -1px 4px 0 rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    margin-left: -20px;
+  }
+  &-section{
+    margin-top:24px;
+    &-title{
+      display: flex;
+      >text{
+        font-size: 16px;
+        color: #0f0f0f;
+        margin-left:4px;
+      }
+    }
+    >.row{
+      margin-top:8px
+    }
+    &-config-field{
+      width:411px;
+      background-color: #f4f5f8;
+      padding:10px;
+      margin-top:9px;
+      >.row{
+        margin-top:6px;
+        display: flex;
+        align-items: center;
+        .uom{
+          padding: 0 10px;
+          height: 28px; 
+          line-height: 26px;
+          text-align: center;
+          vertical-align: middle;
+          border-radius: 2px;
+          background-color: #f2f2f2;
+          border: solid 1px @border;  
+          font-size: 14px;
+          color: #c0c0c0;
+          box-sizing: border-box;
+          margin-left: -1px;
+        }
+      }
+    }
+  }
+}
+
+
+.rules-configuration{
+  overflow-y: auto;
+  background-color: #fbfbfb;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top:0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  &-content{
+    margin: 0 auto;
+    min-width: 1024px;
+    max-width: 1440px;
+    width: 75%;
+    flex: 1;
+    &-header{
+      height:73px;
+      line-height: 73px;
+      border-bottom: 1px solid #e6e6e6;
+      vertical-align: middle;
+      font-size: 24px;
+      color:#0f0f0f
+    }
+  }
+  &-footer{
+    width: 100%;
+    height: 50px;
+    min-height: 50px;
+    background-color: #fbfbfb;
+    box-shadow: 0 -1px 4px 0 rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    &-content{
+      margin: 0 auto;
+      min-width: 1024px;
+      max-width: 1440px;
+      width: 75%;
+      display: flex;
+      align-content: center;
+    }
+  }
+}
+

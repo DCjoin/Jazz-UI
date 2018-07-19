@@ -93,6 +93,7 @@ var APP_DOWNLOAD_WDJ = process.env.APP_DOWNLOAD_WDJ;
 var APP_DOWNLOAD_BAIDU = process.env.APP_DOWNLOAD_BAIDU;
 var JAZZ_WEB_HOST = process.env.JAZZ_WEB_HOST;
 var GUARD_UI_HOST = process.env.GUARD_UI_HOST;
+var JAZZ_MILL_UI_URL=process.env.GUARD_UI_HOST;
 var APIBasePath='/api';
 
 let version = fs.readFileSync(path.resolve(__dirname, "./version.txt"), "utf-8");
@@ -217,7 +218,7 @@ app.get('/:lang/sso-redirect-hierarchy/:customerId', (req, res) => {
     privateKeyPass: 'sesp!@#',
     requestSignatureAlgorithm: 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256',
 
-    metadata: fs.readFileSync(__dirname + '/metadata_sp.xml', "utf-8").replace('${SSO_ACS_URL}', 'https://emop-test.energymost.com' +'/'+ req.params.lang+ "/sso/acs"+"?par=" + parStr)
+    metadata: fs.readFileSync(__dirname + '/metadata_sp.xml', "utf-8").replace('${SSO_ACS_URL}', JAZZ_MILL_UI_URL +'/'+ req.params.lang+ "/sso/acs"+"?par=" + parStr)
 
   });
 

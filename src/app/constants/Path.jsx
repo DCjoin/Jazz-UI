@@ -137,6 +137,8 @@ module.exports = {
   Vee:{
     getAnomaly:'/vee/anomalyNotification/{nodeId}/{nodeType}/{anomalyType}',
     getNodeSummary:'/vee/nodeSummary/{nodeId}/{nodeType}/{anomalyType}/{startTime}/{endTime}',
-    updatereadstatus:'/vee/updatereadstatus'
+    updatereadstatus:'/vee/updatereadstatus',
+    getrulebyid:'/vee/getrulebyid',
+    updateRule:'/vee/updaterule'
   }
 };
