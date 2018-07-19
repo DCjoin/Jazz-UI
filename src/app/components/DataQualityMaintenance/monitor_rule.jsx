@@ -89,11 +89,11 @@ export default class MonitorRule extends Component {
                                  formStatus:formStatus.VIEW
                                },()=>{
                                  var {JumpingRate,NotifyConsecutiveHours}=this.state.rule.toJS();
-                                DataQualityMaintenanceAction.updateRule({
+                                DataQualityMaintenanceAction.updateRule([{
                                   Rule:this.state.rule.set("JumpingRate",JumpingRate*1)
                                                       .set("NotifyConsecutiveHours",NotifyConsecutiveHours*1).toJS(),
                                   TagIds:[this.props.selectTag.get("Id")]
-                                })
+                                }])
                                })}}
                                onCancel={()=>this.setState({
                                 rule:DataQualityMaintenanceStore.getRule(),
