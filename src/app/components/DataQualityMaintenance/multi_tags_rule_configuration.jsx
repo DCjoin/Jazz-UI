@@ -53,23 +53,19 @@ export default class RulesConfigration extends Component {
   state = {
     step: 0,
     leaveTipShow:false,
-    config:Immutable.fromJS({
-      Rule:{
-        // Id: 0,
-        // Name: "string",
-        // CustomerId:parseInt(this.context.router.params.customerId),
-        CheckJumping: false,
-        JumpingRate: 0,
-        CheckNegative: false,
-        CheckNull: false,
-        // "Interval": 0,
-        // "Delay": 0,
-        NotifyConsecutiveHours: 0,
-        // "HierarchyId": 0,
-        IsAutoRepairNull: false
-      },
-      TagIds:[]
-    })
+    rule:Immutable.fromJS({// Id: 0,
+      // Name: "string",
+      // CustomerId:parseInt(this.context.router.params.customerId),
+      CheckJumping: false,
+      JumpingRate: 0,
+      CheckNegative: false,
+      CheckNull: false,
+      // "Interval": 0,
+      // "Delay": 0,
+      NotifyConsecutiveHours: 0,
+      // "HierarchyId": 0,
+      IsAutoRepairNull: false}),
+      tags:[]
   };
 
   _renderHeader(){
@@ -97,10 +93,10 @@ export default class RulesConfigration extends Component {
   }
 
   _renderContent(){
-    return this.state.step===0?<EditedRule rule={this.state.config.get("Rule")} 
+    return this.state.step===0?<EditedRule rule={this.state.rule} 
                                            hasBar={false}
                                            onChange={(path,value)=>{
-                                            var rule=this.state.config.get("Rule");
+                                            var rule=this.state.rule;
                                             rule=rule.set(path,value);
                                             if(path==='CheckNull'){
                                              rule=rule.set("NotifyConsecutiveHours",8);
@@ -110,7 +106,7 @@ export default class RulesConfigration extends Component {
                                              rule=rule.set("JumpingRate",500);
                                             }
                                             this.setState({
-                                              config:this.state.config.set('Rule',rule)
+                                              rule:rule
                                             })
                                           }}/>:null
   }
