@@ -3,7 +3,7 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import ReactDom from 'react-dom';
-import {FlatButton, Drawer} from 'material-ui';
+import {FlatButton, Drawer, FontIcon} from 'material-ui';
 import CircularProgress from 'material-ui/CircularProgress';
 import TextField from 'material-ui/TextField';
 import TagAction from 'actions/customerSetting/TagAction.jsx';
@@ -42,22 +42,37 @@ let ListItem = createReactClass({
     return{
       isEdit:false,
       value:this.props.data.get('DataValue'),
-      errorText:''
+      errorText:'',
+      hover: false
     }
   },
   _onClick(){
     this.setState({
       isEdit:true,
+      hover: false
     },()=>{
       if(!this.props.isSelected){
         this.props.onClick();
       }
     })
   },
-
+  _onMouseEnter(){
+    console.log("_onMouseEnter");
+    this.setState({
+        hover: true
+    });
+  },
+  _onMouseLeave(){
+    console.log("_onMouseLeave");
+    this.setState({
+        hover: false,
+        isEdit: false
+    })
+  },
   render: function() {
     let color,
       time = this.props.time,
+      that = this,
       value;
     if (this.props.data.get('DataQuality') === 9) {
       color = '#f46a58'
@@ -68,30 +83,32 @@ let ListItem = createReactClass({
         color = '#464949'
       }
     }
-
+    // isRawData为true表示原始值
     if(this.state.isEdit && this.props.isRawData){
-      value=<TextField
+      value= <input
               id={`${this.props.time}_${this.state.value}`}
               value={this.state.value}
               style={{
-                color:color
+                width: '138px',
+                height: '28px',
+                borderRadius: '2px',
+                border: '1px solid #32ad3c',
+                backgroundColor: '#fff'
               }}
-              underlineShow={this.props.isSelected}
               onChange={(event)=>{
                 this.setState({
                   value:event.target.value
                 })
               }}
-              errorText={this.state.errorText}
               onBlur={()=>{
-                if(this.state.value!==this.props.data.get('DataValue')){
+                console.log('是否走onblur事件流程', this.state.value, this.props.data.get('DataValue'))
+                if(this.state.value !== this.props.data.get('DataValue')){
                   if(isValid(this.state.value)){
-                    this.setState({
+                    that.setState({
                       errorText:''
                     },()=>{
-                      this.props.onDataChange(this.state.value)
+                      that.props.onDataChange(that.state.value)
                     })
-
                   }else {
                     this.setState({
                       errorText:I18N.Setting.Tag.PTagRawData.ErrorMsg
@@ -101,16 +118,25 @@ let ListItem = createReactClass({
                 }
               }}
               />
-    }else {
+    } else {
       value=(
-        <div style={{color: color}}>{this.props.data.get('DataValue')}</div>
+        <div style={{color: color, textAlign: 'center'}}>{this.props.data.get('DataValue') ? this.props.data.get('DataValue') : '-'}</div>
       )
     }
     return (
-      <div className={classnames({ "jazz-ptag-rawdata-list-item": true,"selected": this.props.isSelected})} onClick={this._onClick}>
-        <div style={{width: '122px'}}>{time}</div>
-            {value ? value : '-'}
-        </div>
+      <div className={classnames({ "jazz-ptag-rawdata-list-item": true,"selected": this.props.isSelected})}
+          onMouseEnter={() => this._onMouseEnter()}
+          onMouseLeave={() => this._onMouseLeave()}
+          >
+        <div style={{width: '110px'}}>{time}</div>
+        <div style={{textAlign: 'left'}}>{value}</div>
+        {
+          // 原始值的时候才可编辑，差值不显示编辑icon
+          this.state.hover && this.props.isRawData
+          ? <FontIcon className='icon-edit'  onClick={this._onClick} />
+          : null
+        }
+      </div>
       )
   },
 });
@@ -122,7 +148,7 @@ let NewRawDataList = createReactClass({
     onRawDataChange:PropTypes.func,
     rollBack:PropTypes.func,
     selectedTag: PropTypes.object,
-    openDrawer: PropTypes.bool,
+    openDrawer: PropTypes.bool
   },
   getInitialState: function() {
     return {
@@ -143,6 +169,7 @@ let NewRawDataList = createReactClass({
     head.innerText = dateItem[scrollIndex];
   },
   _onItemClick: function(item) {
+    console.log('item', item, item.nId)
     TagAction.selectListToPonit(item.nId);
     this.setState({
       selectedId: item.nId
@@ -196,7 +223,6 @@ let NewRawDataList = createReactClass({
       pId++;
       dateItem.push(date);
       nId++;
-
     });
     if (this.refs.header) {
       let head = ReactDom.findDOMNode(this.refs.header);
@@ -204,11 +230,9 @@ let NewRawDataList = createReactClass({
         if (firstDate === null) {
           head.style.display = 'none';
         } else {
-          head.style.display = 'flex';
           head.innerText = firstDate;
         }
       }
-
     }
 
     var style = {
@@ -230,11 +254,13 @@ let NewRawDataList = createReactClass({
       let str = CommonFuns.formatDateValueForRawData(j2d(data.get('UtcTime')), this.props.step);
 
       Items.push(
-        <ListItem key={`${str}+${data}`} isRawData={this.props.isRawData} time={str} data={data} isSelected={this.state.selectedId === nId} onClick={that._onItemClick.bind(this, {
-          data,
-          nId
-        })}
-        onDataChange={(data)=>{this._onDataChange(data,index)}}/>
+        <ListItem key={`${str}+${data}`}
+                  isRawData={this.props.isRawData}
+                  time={str}
+                  data={data}
+                  isSelected={this.state.selectedId === nId}
+                  onClick={that._onItemClick.bind(this, {data,nId})}
+                  onDataChange={(data)=>{this._onDataChange(data,index)}}/>
       )
       indexItem[nId] = index;
       nId++;
@@ -293,13 +319,11 @@ let NewRawDataList = createReactClass({
       })
     }
   },
-   _onRollBack:function(){
-    let d2j = CommonFuns.DataConverter.DatetimeToJson,
-      start = d2j(this.state.start, false),
-      end = d2j(this.state.end, false),
-      tagId=this.props.selectedTag.get('Id');
-      this.props.rollBack(tagId,start,end);
-
+  _onNullRepair: function () {
+    this.props.nullValRepair()
+  },
+   _onRollBack: function()  {
+      this.props.rollBack();
   },
   componentDidMount: function() {
     TagStore.addTagDatasChangeListener(this._onChanged);
@@ -327,46 +351,51 @@ let NewRawDataList = createReactClass({
     TagStore.removePointToListChangeListener(this._onListItemSelected);
   },
   render: function() {
-    var data = this.props.isRawData ? TagStore.getRawData() : TagStore.getDifferenceData(),
+    let disNullBtn;
+    if (this.props.filterType == 2 || this.props.filterType == 4) {
+      disNullBtn = true;
+    } else {
+      disNullBtn = false;
+    }
+    let data = this.props.isRawData ? TagStore.getRawData() : TagStore.getDifferenceData(),
       uom = data.getIn(['TargetEnergyData', 0, 'Target', 'Uom']);
-
       if(uom==="null") uom=""
           else uom='(' + uom + ')'
     // 自动修复按钮
-    var labelStyle = {
-        color: '#464949',
-        fontSize: '12px'
+    let labelStyle = {
+        color: '#32ad3c',
+        fontSize: '14px',
       },
-      pauseBtnStyle = {
-        border: '1px solid #e6e6e6',
-        height: '30px',
-        lineHeight:'30px',
-        width: '92px',
+      dislabelStyle = {
+        fontSize: '14px',
+        color: '#c0c0c0;'
+      },
+      autoRepairBtnStyle = {
+        height: '40px',
+        lineHeight:'40px',
         backgroundColor: '#ffffff',
-        marginLeft:'10px'
+        width: '50%',
+        borderRight: '1px solid #d8d8d8'
       },
-      listBtnStyle = {
-        fontSize: '36px',
-        marginLeft: '30px',
-        height: '36px',
-        marginTop: '-8px',
-        cursor: 'pointer',
-        color: '#767a7a'
+      rollbackBtnStyle = {
+        height: '40px',
+        lineHeight:'40px',
+        backgroundColor: '#ffffff',
+        width: '50%',
       };
-    var autoRepairBtn = <FlatButton key={'autoRepairBtn'} 
+    // 空值修复
+    var nullValueBtn = <FlatButton  key={'autoRepairBtn'}
                                     label={I18N.Setting.VEEMonitorRule.AutoRepair}
-                                    style={pauseBtnStyle} labelStyle={labelStyle}
-                                    disableTouchRipple={false}
-                                    onClick={() => {
-                                      TagAction.manualScanTag(
-                                        this.props.selectedTag.get('Id'),
-                                        moment(this.state.start).subtract(8, 'hours').format('YYYY-MM-DDTHH:mm:ss'),
-                                        moment(this.state.end).subtract(8, 'hours').format('YYYY-MM-DDTHH:mm:ss'),
-                                      )
-                                    }}/>;
+                                    style={autoRepairBtnStyle}
+                                    labelStyle={disNullBtn ? dislabelStyle : labelStyle}
+                                    disabled={disNullBtn}
+                                    onClick={this._onNullRepair}/>;
     // 撤销修复
-  var rollbackBtn= <FlatButton label={I18N.Setting.Tag.PTagRawData.RollBack}
-  style={pauseBtnStyle} labelStyle={labelStyle} onClick={this._onRollBack}/>
+  var rollbackBtn= <FlatButton
+                      label={I18N.Setting.Tag.PTagRawData.RollBack}
+                      style={rollbackBtnStyle}
+                      labelStyle={labelStyle}
+                      onClick={this._onRollBack}/>
 
     var label = this.props.isRawData ? I18N.EM.Ratio.RawValue : I18N.Setting.Tag.PTagRawData.DifferenceValue;
     if(this.state.isLoading){
@@ -374,8 +403,8 @@ let NewRawDataList = createReactClass({
     }else {
       return (
       	<div>
-      		<Drawer width={275} 
-                  open={this.props.openDrawer} 
+      		<Drawer width={283}
+                  open={this.props.openDrawer}
                   openSecondary={true}
                   docked={false}
                   overlayStyle={{backgroundColor: 'none'}}
@@ -386,25 +415,20 @@ let NewRawDataList = createReactClass({
 	          >
 	            <div className='jazz-ptag-rawdata-list'>
 		          <div className='buttonGroup'>
-		              {autoRepairBtn}
+		              {nullValueBtn}
 		              {rollbackBtn}
 		          </div>
-		          <div className='title'>
-		            <div>{I18N.RawData.Time}</div>
-		            <div style={{marginLeft: '90px'}}>{label + uom }</div>
+		          <div className='veetitle'>
+		            <div className="veedate" ref='header' style={{width: '110px'}}></div>
+		            <div className="veedate">{label + uom }</div>
 		          </div>
-		          <div className="date" ref='header' style={{
-		          display: 'none'
-		        }}>
-		             </div>
-		               {this._renderListItems()}
+		          {this._renderListItems()}
 		        </div>
 	          </div>
-	        </Drawer>  
+	        </Drawer>
 	    </div>
         )
     }
-
   },
 });
 module.exports = NewRawDataList;

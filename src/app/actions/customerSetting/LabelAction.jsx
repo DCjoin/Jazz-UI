@@ -4,7 +4,6 @@ import { Action } from '../../constants/actionType/customerSetting/Label.jsx';
 import Ajax from '../../ajax/Ajax.jsx';
 
 let LabelAction = {
-  //test
   getLabelList: function(CustomerId) {
     Ajax.post('/Customer/GetCustomerLabellings', {
       params: {

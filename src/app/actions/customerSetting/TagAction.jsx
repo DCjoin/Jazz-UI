@@ -7,6 +7,7 @@ import Path from 'constants/Path.jsx';
 import util from 'util/Util.jsx';
 
 
+
 var search = null;
 var formulaSearch = null;
 var lastTagParams={};
@@ -273,6 +274,7 @@ let TagAction = {
     });
   },
   rollBack:function(tagId,start,end){
+    console.log('rollback第一步')
     var url=util.replacePathParams(Path.RawData.RollBack, tagId),
         that=this;
     Ajax.post(url, {
@@ -281,10 +283,12 @@ let TagAction = {
         EndTime:end
       },
       success: function() {
+        console.log('rollback执行成功')
         var {tagId, step, StartTime, EndTime, refreshTagStatus}=lastTagParams;
         that.getTagsData(tagId, step, StartTime, EndTime, refreshTagStatus);
       },
       error: function(err, res) {
+        console.log('rollback执行失败')
       }
     });
   },
@@ -292,7 +296,7 @@ let TagAction = {
   manualScanTag: function(tagId, startTime, endTime) {
     Ajax.get(
       util.replacePathParams(
-        '/vee/manualscantag/{tagId}', 
+        '/vee/manualscantag/{tagId}',
         tagId), {
         params: {startTime, endTime},
         success: function() {

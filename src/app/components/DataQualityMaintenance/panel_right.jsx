@@ -12,10 +12,13 @@ export default class Right extends Component {
     if( selectedNode ){
        return(
         selectedNode.get("NodeType")===DataQuality.nodeType.Tag
-        ?  <TagContentField nodeData={selectedNode} showLeft={showLeft} onToggle={onToggle} anomalyType={filterType}/>
-        : <SummaryContentField nodeData={selectedNode} 
-                                showLeft={showLeft} 
-                                onToggle={onToggle} 
+        ?  <TagContentField nodeData={selectedNode}
+                            showLeft={showLeft}
+                            onToggle={onToggle}
+                            anomalyType={filterType}/>
+        : <SummaryContentField nodeData={selectedNode}
+                                showLeft={showLeft}
+                                onToggle={onToggle}
                                 anomalyType={filterType}
                                 />
         )

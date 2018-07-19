@@ -48,7 +48,9 @@ export default class TagContentField extends Component {
             paddingRight:'10px'
           };
 
-          content=<AbnormalMonitor nodeData={this.props.nodeData} showLeft={this.props.showLeft} anomalyType={this.props.anomalyType}/>
+          content=<AbnormalMonitor  nodeData={this.props.nodeData}
+                                    showLeft={this.props.showLeft}
+                                    anomalyType={this.props.anomalyType}/>
 
           return (
             <div className="pop-manage-detail-content" style={style}>
