@@ -49,7 +49,7 @@ export default class DataQualityMaintenance extends Component {
     this._openSSOHierarchyUrl = this._openSSOHierarchyUrl.bind(this);
     this._onChange = this._onChange.bind(this);
     this._showConfig = this._showConfig.bind(this);
-    
+
     DataQualityMaintenanceStore.addChangeListener(this._onChange);
 
     this._getVEEDataStructure();
@@ -173,6 +173,8 @@ export default class DataQualityMaintenance extends Component {
           selectedNode={this.state.selectedNode}
           onToggle={()=>{this.setState({showLeft:!this.state.showLeft})}}
           filterType={filterType}
+          startTime={this.state.startTime}
+          endTime={this.state.endTime}
         />}
         {!VEEDataStructure.get('HasHierarchy') && this._renderNon()}
         <NeedRefreshDlg open={this.state.needRefresh} onRefresh={() => {

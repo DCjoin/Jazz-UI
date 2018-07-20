@@ -133,7 +133,7 @@ export default class TagChart extends Component {
     let d2j = CommonFuns.DataConverter.DatetimeToJson,
         start = d2j(this.state.start, false),
         end = d2j(this.state.end, false),
-        tagId=this.props.selectedTag.get('Id');
+        tagId= this.props.selectedTag.get('Id');
         TagAction.rollBack(tagId,start,end,()=>{
           this.setState({openToast: true})
       });
