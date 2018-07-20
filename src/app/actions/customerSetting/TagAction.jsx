@@ -309,7 +309,29 @@ let TagAction = {
         }
       }
     );
+  },
+  // 获取在线 / 离线浮层列表数据
+  getLineData: function(tagId, NodeType, startTime, endTime) {
+    Ajax.post('/vee/onlinestatus', {
+      params: {
+        Id: tagId,
+        NodeType: NodeType,
+        startTime: startTime,
+        endTime: endTime
+      },
+      success: function(listData) {
+        AppDispatcher.dispatch({
+          type: Action.SET_LINE_LIST_DATA,
+          listData: listData
+        });
+      },
+      error: function(err, res) {
+
+      }
+    })
   }
+
+
 };
 
 module.exports = TagAction;

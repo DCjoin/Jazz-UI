@@ -44,6 +44,8 @@ let TAG_DATAS_CHANGE_EVENT = 'tagdataschange';
 let POINT_TO_LIST_CHANGE_EVENT = 'pointtolistchange';
 let LIST_TO_POINT_CHANGE_EVENT = 'listtopointchange';
 let TAG_DATAS_UPDATE_EVENT = 'tag_datas_update_event';
+// 数据质量维护新增
+let LINE_LIST_DATA_CHANGE_EVENT = 'line_list_data_change_event';
 
 
 var TagStore = assign({}, PrototypeStore, {
@@ -439,7 +441,17 @@ var TagStore = assign({}, PrototypeStore, {
   },
   emitListToPointChange(args) {
     this.emit(LIST_TO_POINT_CHANGE_EVENT, args);
-  }
+  },
+  // 数据质量维护，在线离线数据
+  addListDataListener(callback) {
+    this.on(LINE_LIST_DATA_CHANGE_EVENT, callback);
+  },
+  removeListDataListener(callback) {
+    this.removeListener(LINE_LIST_DATA_CHANGE_EVENT, callback);
+  },
+  emitListDataChange(args) {
+    this.emit(LINE_LIST_DATA_CHANGE_EVENT, args);
+  },
 });
 TagStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
@@ -515,6 +527,10 @@ TagStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case Action.SET_LIST_TO_POINT:
       TagStore.emitListToPointChange(action.nId);
+      break;
+    // 在线、离线列表数据
+    case Action.SET_LINE_LIST_DATA:
+      TagStore.emitListDataChange(action.listData);
       break;
   }
 });

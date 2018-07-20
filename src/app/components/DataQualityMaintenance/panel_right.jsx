@@ -7,19 +7,22 @@ import SummaryContentField from './summary_content_field.jsx';
 
 export default class Right extends Component {
   render() {
-    let { selectedNode ,showLeft, onToggle ,filterType, onDrawerShow} = this.props;
+    let { selectedNode ,showLeft, onToggle ,filterType, startTime, endTime} = this.props;
 
     if( selectedNode ){
+      // TagContentField 数据点，SummaryContentField网关 ,selectedNode.get("NodeType")是5,6等
        return(
         selectedNode.get("NodeType")===DataQuality.nodeType.Tag
         ?  <TagContentField nodeData={selectedNode}
                             showLeft={showLeft}
                             onToggle={onToggle}
                             anomalyType={filterType}/>
-        : <SummaryContentField nodeData={selectedNode}
+        : <SummaryContentField  nodeData={selectedNode}
                                 showLeft={showLeft}
                                 onToggle={onToggle}
                                 anomalyType={filterType}
+                                startTime={startTime}
+                                endTime={endTime}
                                 />
         )
     }else{
