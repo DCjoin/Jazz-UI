@@ -2913,6 +2913,7 @@ I18N.VEE.Rule.LeaveTip = '离开页面后，您所配置的规则集将不会保
 I18N.VEE.Rule.Config = '配置规则';
 I18N.VEE.Rule.ConfigStep1 = '配置监测规则';
 I18N.VEE.Rule.ConfigStep2 = '选择数据点';
+I18N.VEE.Rule.SelectTagTip = '请在左侧选择要查看的节点';
 
 I18N.NetworkChecker = {};
 I18N.NetworkChecker.Msg1 = '网络连接异常';

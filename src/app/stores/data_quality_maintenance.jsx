@@ -8,11 +8,11 @@ import {Action} from '../constants/actionType/data_quality_maintenance.jsx';
 
 let _VEEDataStructure = Immutable.fromJS({}),
     _VEETagAnomaly = Immutable.fromJS({}),
-     _scanSwitch = Immutable.fromJS({}),
+    _scanSwitch = Immutable.fromJS({}),
     _VEESummary=Immutable.fromJS([]),
-    _rule=Immutable.fromJS({});
-   
-
+    _rule=Immutable.fromJS({}),
+    _hierarchys=null,
+    _tags=null;
 
 var DataQualityMaintenanceStore = assign({},PrototypeStore,{
   requestVEEDataStructure() {
@@ -64,6 +64,18 @@ var DataQualityMaintenanceStore = assign({},PrototypeStore,{
   },
   getRule(){
     return _rule
+  },
+  setHierarchys(data){
+    _hierarchys=Immutable.fromJS(data)
+  },
+  getHierarchys(){
+    return _hierarchys
+  },
+  setTags(data){
+    _tags=Immutable.fromJS(data)
+  },
+  getTags(){
+    return _tags
   }
 });
 
@@ -101,6 +113,14 @@ DataQualityMaintenanceStore.dispatchToken = AppDispatcher.register(function(acti
         DataQualityMaintenanceStore.setRule(action.data);
         DataQualityMaintenanceStore.emitChange();
         break;
+      case Action.GET_TAG_SELECT_HIERARCHY_SUCCESS:
+        DataQualityMaintenanceStore.setHierarchys(action.data);
+        DataQualityMaintenanceStore.emitChange();
+        break; 
+      case Action.GET_DATA_STRUCTURE_TAGS:
+        DataQualityMaintenanceStore.setTags(action.data);
+        DataQualityMaintenanceStore.emitChange();
+        break;        
     }
 });
 
