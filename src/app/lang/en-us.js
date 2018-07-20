@@ -2921,6 +2921,9 @@ I18N.VEE.Rule.ConfigStep1 = '配置监测规则';
 I18N.VEE.Rule.ConfigStep2 = '选择数据点';
 I18N.VEE.ErrorMsg = '请输入数字';
 I18N.VEE.offlineTab = '在线/离线';
+I18N.VEE.TransLineInfo = '传输节点在线/离线信息';
+I18N.VEE.onlineText = '在线';
+I18N.VEE.offlineText = '离线';
 
 I18N.NetworkChecker = {};
 I18N.NetworkChecker.Msg1 = 'Abnormal network connection, ';
