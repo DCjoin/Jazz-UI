@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import TextField from 'material-ui/TextField';
+import ClickAway from './ClickAwayListener.jsx';
 
+@ClickAway
 export default class TextArea extends Component {
   state={
     errorText:null
@@ -20,12 +22,12 @@ export default class TextArea extends Component {
     }
   }
 
-  componentDidMount(){
+  onClickAway(){
     this.validate(this.props)
   }
 
-  componentWillReceiveProps(nextProps){
-    this.validate(nextProps)
+  componentDidMount(){
+    this.validate(this.props)
   }
 
   shouldComponentUpdate(nextProps, nextState){

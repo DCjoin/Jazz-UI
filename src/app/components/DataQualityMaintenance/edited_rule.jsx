@@ -109,10 +109,12 @@ export default class EditedRule extends Component {
         <Button label={I18N.Common.Button.Save} raised 
                 style={{width:'86px'}} 
                 onClick={()=>{
-                  var {JumpingRate,NotifyConsecutiveHours}=this.props.rule.toJS();
-                  if(jumpingRateRegexFn(JumpingRate) && notifyConsecutiveHoursRegexFn(NotifyConsecutiveHours)){
+                  var {JumpingRate,NotifyConsecutiveHours,CheckJumping,CheckNegative,CheckNull}=this.props.rule.toJS();
+                  if(CheckNull && !notifyConsecutiveHoursRegexFn(NotifyConsecutiveHours)){return}
+                  if(CheckJumping && !jumpingRateRegexFn(JumpingRate)){return}
+  
                     this.props.onSave()
-                  }
+        
                   }}/>
         <Button label={I18N.Common.Button.Cancel2} outline secondary style={{width:'86px',marginLeft:'16px'}} onClick={()=>{
           this.setState({

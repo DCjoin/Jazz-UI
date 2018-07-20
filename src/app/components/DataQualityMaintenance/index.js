@@ -206,7 +206,7 @@ export default class DataQualityMaintenance extends Component {
           onCancel={() => {this.setState({closeMonitorDlg: false})}}
         />
 
-        {this.state.showConfig && <RulesConfigration/>}
+        {this.state.showConfig && <RulesConfigration customerId={this.props.router.params.customerId} onCancel={()=>{this.setState({showConfig:false})}}/>}
 
         <Toast autoHideDuration={4000} className='toast-tip' open={this.state.openMonitorToast} onRequestClose={() => {
           this.setState({

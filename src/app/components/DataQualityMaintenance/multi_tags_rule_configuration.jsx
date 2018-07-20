@@ -11,6 +11,9 @@ import SvgIcon from 'material-ui/SvgIcon';
 import Immutable from 'immutable';
 import EditedRule from './edited_rule.jsx';
 import PropTypes from 'prop-types';
+import TagSelect from './tag_select.jsx';
+import DataQualityMaintenanceAction from 'actions/data_quality_maintenance.jsx';
+import Regex from 'constants/Regex.jsx';
 
 function stepLabelProps(stepValue, currentStep) {
 	let props = {
@@ -39,6 +42,24 @@ function stepLabelProps(stepValue, currentStep) {
 	return props;
 }
 
+var notifyConsecutiveHoursRegexFn=(value)=>{
+  //为空
+  if(value===null || value==='') return false
+  //正整数
+  if(value*1<0 || parseInt(value*1)!==value*1) return false
+
+  return true
+}
+
+var jumpingRateRegexFn=(value)=>{
+  //为空
+  if(value===null || value==='') return false
+  //前9后6 正数
+  if(!Regex.FactorRule.test(value*1)) return false
+
+  return true
+}
+
 export default class RulesConfigration extends Component {
 
   static contextTypes = {
@@ -47,27 +68,33 @@ export default class RulesConfigration extends Component {
 
   constructor(props) {
     super(props);
-
+    this.state = {
+      step: 0,
+      leaveTipShow:false,
+      rule:Immutable.fromJS({// Id: 0,
+        // Name: "string",
+        CustomerId:parseInt(this.props.customerId),
+        CheckJumping: false,
+        JumpingRate: 0,
+        CheckNegative: false,
+        CheckNull: false,
+        // "Interval": 0,
+        // "Delay": 0,
+        NotifyConsecutiveHours: 0,
+        // "HierarchyId": 0,
+        IsAutoRepairNull: false}),
+        selectTags:[]
+    };
   }
 
-  state = {
-    step: 0,
-    leaveTipShow:false,
-    rule:Immutable.fromJS({// Id: 0,
-      // Name: "string",
-      // CustomerId:parseInt(this.context.router.params.customerId),
-      CheckJumping: false,
-      JumpingRate: 0,
-      CheckNegative: false,
-      CheckNull: false,
-      // "Interval": 0,
-      // "Delay": 0,
-      NotifyConsecutiveHours: 0,
-      // "HierarchyId": 0,
-      IsAutoRepairNull: false}),
-      tags:[]
-  };
 
+
+  _getSaveParams(){
+    return this.state.selectTags.map(tagArr=>({
+      Rule:this.state.rule.set("HierarchyId",tagArr.buildingId),
+      TagIds:tagArr.tagIds
+    }))
+  }
   _renderHeader(){
     return(
       <div className="rules-configuration-content-header">
@@ -108,7 +135,9 @@ export default class RulesConfigration extends Component {
                                             this.setState({
                                               rule:rule
                                             })
-                                          }}/>:null
+                                          }}/>:<TagSelect selectTags={this.state.selectTags} onSelect={(selectTags)=>{
+                                            this.setState({selectTags})
+                                          }}/>
   }
 
   _renderLeaveTip(){
@@ -127,14 +156,22 @@ export default class RulesConfigration extends Component {
           {this.state.step===0 && <Button label={I18N.Paging.Button.NextStep} raised 
                   style={{width:'86px'}} 
                   onClick={()=>{
-                    this.setState({
-                      step:1
-                    })
+                    var {JumpingRate,NotifyConsecutiveHours,CheckJumping,CheckNull}=this.state.rule.toJS();
+
+                  if(CheckNull && !notifyConsecutiveHoursRegexFn(NotifyConsecutiveHours)){return}
+                  if(CheckJumping && !jumpingRateRegexFn(JumpingRate)){return}
+  
+                  this.setState({
+                    step:1
+                  })
+
+                   
                   }}/>}
           {this.state.step===1 && <Button label={I18N.Common.Button.Save} raised 
                   style={{width:'86px'}} 
                   onClick={()=>{
-                   
+                   DataQualityMaintenanceAction.updateRule(this._getSaveParams());
+                   this.props.onCancel();
                   }}/>}
           <Button label={I18N.Common.Button.Cancel2} outline secondary style={{width:'86px',marginLeft:'16px'}} onClick={()=>{
             this.setState({
