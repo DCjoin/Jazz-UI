@@ -122,6 +122,34 @@ let DataQualityMaintenanceAction = {
         console.log(err, res);
       }
     });
+  },
+  getHierarchys(params){
+    Ajax.post(Vee.getdatastructurewithouttag, {
+      params,
+      success: function(data) {
+        AppDispatcher.dispatch({
+          type: Action.GET_TAG_SELECT_HIERARCHY_SUCCESS,
+          data
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
+  getTags(params){
+    Ajax.post(Vee.getdatastructuretags, {
+      params,
+      success: function(data) {
+        AppDispatcher.dispatch({
+          type: Action.GET_DATA_STRUCTURE_TAGS,
+          data
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
   }
 };
 
