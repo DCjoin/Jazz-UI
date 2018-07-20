@@ -75,12 +75,12 @@ export default class RulesConfigration extends Component {
         // Name: "string",
         CustomerId:parseInt(this.props.customerId),
         CheckJumping: false,
-        JumpingRate: 500,
+        JumpingRate: 0,
         CheckNegative: false,
         CheckNull: false,
         // "Interval": 0,
         // "Delay": 0,
-        NotifyConsecutiveHours: 8,
+        NotifyConsecutiveHours: 0,
         // "HierarchyId": 0,
         IsAutoRepairNull: false}),
         selectTags:[]
@@ -156,12 +156,15 @@ export default class RulesConfigration extends Component {
           {this.state.step===0 && <Button label={I18N.Paging.Button.NextStep} raised 
                   style={{width:'86px'}} 
                   onClick={()=>{
-                    var {JumpingRate,NotifyConsecutiveHours}=this.state.rule.toJS();
-                  if((jumpingRateRegexFn(JumpingRate) && notifyConsecutiveHoursRegexFn(NotifyConsecutiveHours))){
-                    this.setState({
-                      step:1
-                    })
-                  }
+                    var {JumpingRate,NotifyConsecutiveHours,CheckJumping,CheckNull}=this.state.rule.toJS();
+
+                  if(CheckNull && !notifyConsecutiveHoursRegexFn(NotifyConsecutiveHours)){return}
+                  if(CheckJumping && !jumpingRateRegexFn(JumpingRate)){return}
+  
+                  this.setState({
+                    step:1
+                  })
+
                    
                   }}/>}
           {this.state.step===1 && <Button label={I18N.Common.Button.Save} raised 
