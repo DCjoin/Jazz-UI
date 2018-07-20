@@ -2913,6 +2913,8 @@ I18N.VEE.Rule.LeaveTip = '离开页面后，您所配置的规则集将不会保
 I18N.VEE.Rule.Config = '配置规则';
 I18N.VEE.Rule.ConfigStep1 = '配置监测规则';
 I18N.VEE.Rule.ConfigStep2 = '选择数据点';
+I18N.VEE.ErrorMsg = '请输入数字';
+I18N.VEE.offlineTab = '在线/离线';
 
 I18N.NetworkChecker = {};
 I18N.NetworkChecker.Msg1 = '网络连接异常';

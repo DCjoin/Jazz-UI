@@ -128,16 +128,17 @@ export default class TagChart extends Component {
   _onDrawerRequestChange = () => {
       this.setState({onDrawerShow: false})
   }
-  // 空值修复
+  // 撤销修复
   _onRollback = () => {
     let d2j = CommonFuns.DataConverter.DatetimeToJson,
-      start = d2j(this.state.start, false),
-      end = d2j(this.state.end, false),
-      tagId=this.props.selectedTag.get('Id');
-      console.log('rollback',tagId,start,end)
-      TagAction.rollBack(tagId,start,end);
+        start = d2j(this.state.start, false),
+        end = d2j(this.state.end, false),
+        tagId=this.props.selectedTag.get('Id');
+        TagAction.rollBack(tagId,start,end,()=>{
+          this.setState({openToast: true})
+      });
   }
-  // 撤销修复
+  // 空值修复
   _onNullValRepair = () => {
       let tagId = this.props.selectedTag.get('Id'),
           start = moment(this.state.start).subtract(8, 'hours').format('YYYY-MM-DDTHH:mm:ss'),
@@ -217,7 +218,7 @@ export default class TagChart extends Component {
           {dataRepairBtn}
         </div>
 
-        <Toast autoHideDuration={4000}
+        <Toast autoHideDuration={3000}
                className="toast-tip"
                open={this.state.openToast}
                onRequestClose={() => {
@@ -232,26 +233,25 @@ export default class TagChart extends Component {
   }
 
     _renderComment() {
-    return (
-      <div className='jazz-ptag-rawdata-comment'>
-        <div className='item'>
-          <label className='normal-circle'/>
-          <div className='label'>{I18N.Setting.Tag.PTagRawData.normal}</div>
+      return (
+        <div className='jazz-ptag-rawdata-comment'>
+          <div className='item'>
+            <label className='normal-circle'/>
+            <div className='label'>{I18N.Setting.Tag.PTagRawData.normal}</div>
+          </div>
+          <div className='item'>
+            <label className='abnormal-circle'/>
+            <div className='label'>{I18N.Setting.Tag.PTagRawData.abnormal}</div>
+          </div>
+          <div className='item'>
+            <label className='repair-circle'/>
+            <div className='label'>{I18N.Setting.Tag.PTagRawData.repair}</div>
+          </div>
         </div>
-        <div className='item'>
-          <label className='abnormal-circle'/>
-          <div className='label'>{I18N.Setting.Tag.PTagRawData.abnormal}</div>
-        </div>
-        <div className='item'>
-          <label className='repair-circle'/>
-          <div className='label'>{I18N.Setting.Tag.PTagRawData.repair}</div>
-        </div>
-      </div>
-      )
-  }
-  _onRawDatachange(newData,orgData) {
+        )
+    }
+  _onRawDataChange(newData,orgData) {
       // this.refs.tagDetail._setLoading();
-      console.log('111', newData, orgData)
       TagAction.modifyTagRawData(newData,orgData);
   }
   _renderChartComponent() {
@@ -288,7 +288,7 @@ export default class TagChart extends Component {
       filterType: this.props.filterType,
       rollBack: this._onRollback,
       nullValRepair: this._onNullValRepair,
-      onDataChange: this._onRawDatachange
+      onRawDataChange:this._onRawDataChange
     }
     if (this.state.tagData.getIn(['TargetEnergyData', 0, 'EnergyData']).size === 0) {
       return (

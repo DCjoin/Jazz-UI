@@ -420,6 +420,11 @@
   &:hover{
     background-color:#f4f4f4
   }
+  // 重写icon-edit样式
+  .icon-edit:before{
+    width: 14px;
+    height: 15px;
+  }
 }
 .jazz-ptag-panel{
   display: flex;
@@ -460,4 +465,27 @@
           z-index:20;
         }
   }
+}
+.errortips{
+  position: absolute;
+  bottom: 40px;
+  color: red;
+  font-size: 12px;
+  background-color: #fff;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
+  padding: 4px 8px;
+  text-align: center;
+  left: 30px;
+}
+
+// 在线/离线btn显示
+.offlineBtn{
+  position: absolute;
+  left: 435px;
+  color: #32ad3c;
+  font-size: 12px;
+  border: 1px solid #32ad3c;
+  padding: 2px 8px;
+  bottom: 5px;
+  cursor: pointer;
 }

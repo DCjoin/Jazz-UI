@@ -273,8 +273,7 @@ let TagAction = {
       }
     });
   },
-  rollBack:function(tagId,start,end){
-    console.log('rollback第一步')
+  rollBack:function(tagId,start,end, callback){
     var url=util.replacePathParams(Path.RawData.RollBack, tagId),
         that=this;
     Ajax.post(url, {
@@ -283,12 +282,13 @@ let TagAction = {
         EndTime:end
       },
       success: function() {
-        console.log('rollback执行成功')
+        if (callback){
+          callback()
+        }
         var {tagId, step, StartTime, EndTime, refreshTagStatus}=lastTagParams;
         that.getTagsData(tagId, step, StartTime, EndTime, refreshTagStatus);
       },
       error: function(err, res) {
-        console.log('rollback执行失败')
       }
     });
   },

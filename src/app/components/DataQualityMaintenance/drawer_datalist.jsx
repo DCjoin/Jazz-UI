@@ -49,7 +49,8 @@ let ListItem = createReactClass({
   _onClick(){
     this.setState({
       isEdit:true,
-      hover: false
+      hover: false,
+      errorText:''
     },()=>{
       if(!this.props.isSelected){
         this.props.onClick();
@@ -57,16 +58,17 @@ let ListItem = createReactClass({
     })
   },
   _onMouseEnter(){
-    console.log("_onMouseEnter");
     this.setState({
-        hover: true
+        hover: true,
+        isEdit: false,
+        errorText:''
     });
   },
   _onMouseLeave(){
-    console.log("_onMouseLeave");
     this.setState({
         hover: false,
-        isEdit: false
+        isEdit: false,
+        errorText: ''
     })
   },
   render: function() {
@@ -101,7 +103,6 @@ let ListItem = createReactClass({
                 })
               }}
               onBlur={()=>{
-                console.log('是否走onblur事件流程', this.state.value, this.props.data.get('DataValue'))
                 if(this.state.value !== this.props.data.get('DataValue')){
                   if(isValid(this.state.value)){
                     that.setState({
@@ -111,7 +112,7 @@ let ListItem = createReactClass({
                     })
                   }else {
                     this.setState({
-                      errorText:I18N.Setting.Tag.PTagRawData.ErrorMsg
+                      errorText: I18N.VEE.ErrorMsg
                     })
                   }
 
@@ -125,15 +126,22 @@ let ListItem = createReactClass({
     }
     return (
       <div className={classnames({ "jazz-ptag-rawdata-list-item": true,"selected": this.props.isSelected})}
-          onMouseEnter={() => this._onMouseEnter()}
-          onMouseLeave={() => this._onMouseLeave()}
+          onMouseEnter={() => {!this.state.isEdit ? this._onMouseEnter() : null}}
+          onMouseLeave={() => {!this.state.isEdit ? this._onMouseLeave() : null}}
           >
         <div style={{width: '110px'}}>{time}</div>
-        <div style={{textAlign: 'left'}}>{value}</div>
+        <div style={{textAlign: 'left', position: 'relative'}}>
+          {
+            this.state.errorText
+            ? <div className="errortips">{this.state.errorText}</div>
+            : null
+          }
+            {value}
+        </div>
         {
           // 原始值的时候才可编辑，差值不显示编辑icon
           this.state.hover && this.props.isRawData
-          ? <FontIcon className='icon-edit'  onClick={this._onClick} />
+          ? <FontIcon className='icon-edit'  onClick={this._onClick}/>
           : null
         }
       </div>
@@ -169,7 +177,6 @@ let NewRawDataList = createReactClass({
     head.innerText = dateItem[scrollIndex];
   },
   _onItemClick: function(item) {
-    console.log('item', item, item.nId)
     TagAction.selectListToPonit(item.nId);
     this.setState({
       selectedId: item.nId
@@ -180,7 +187,6 @@ let NewRawDataList = createReactClass({
     var editRawData=orgRawData.getIn(['TargetEnergyData', 0, 'EnergyData',index]);
     orgRawData=orgRawData.setIn(['TargetEnergyData', 0, 'EnergyData'],List.of(editRawData));
     editRawData=editRawData.set('DataValue',data);
-
     var newRawData=orgRawData.setIn(['TargetEnergyData', 0, 'EnergyData'],List.of(editRawData));
     this.setState({
       isLoading:true

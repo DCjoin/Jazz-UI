@@ -35,8 +35,13 @@ export default class TagContentField extends Component {
     };
     return (
       <div className="pop-manage-detail-header" style={{paddingTop:'10px',paddingLeft:'20px',paddingBottom:'6px'}}>
-        <div className={classnames("pop-manage-detail-header-name", "jazz-header")}>
+        <div className={classnames("pop-manage-detail-header-name", "jazz-header")} style={{position: 'relative'}}>
           <ViewableTextField  {...tagNameProps} />
+          {
+            this.props.nodeData
+            ? <span className="offlineBtn">{I18N.VEE.offlineTab}</span>
+            : null
+          }
         <div className={classnames("pop-user-detail-tabs","data-quality-tabs")}>
                   <span className={classnames({
           "pop-user-detail-tabs-tab": true,
