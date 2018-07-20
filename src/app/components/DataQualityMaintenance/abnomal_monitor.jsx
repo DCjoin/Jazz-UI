@@ -12,10 +12,11 @@ export default class AbnomalMonitor extends Component {
 
     _renderChart(){
       return this.props.nodeData.get("NodeType")===nodeType.Tag
-              ?<TagChart selectedTag={this.props.nodeData} 
+              ?<TagChart selectedTag={this.props.nodeData}
                          showLeft={this.props.showLeft}
+                         filterType={this.props.anomalyType}
                          />
-              :<SummaryChart selectedNode={this.props.nodeData} 
+              :<SummaryChart selectedNode={this.props.nodeData}
                          showLeft={this.props.showLeft}
                          anomalyType={this.props.anomalyType}
                          />
