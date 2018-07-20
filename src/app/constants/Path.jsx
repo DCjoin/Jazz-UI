@@ -139,6 +139,8 @@ module.exports = {
     getNodeSummary:'/vee/nodeSummary/{nodeId}/{nodeType}/{anomalyType}/{startTime}/{endTime}',
     updatereadstatus:'/vee/updatereadstatus',
     getrulebyid:'/vee/getrulebyid',
-    updateRule:'/vee/updaterule'
+    updateRule:'/vee/updaterule',
+    getdatastructurewithouttag:'/vee/getdatastructurewithouttag',
+    getdatastructuretags:'/vee/getdatastructuretags'
   }
 };
