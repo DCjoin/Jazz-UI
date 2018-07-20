@@ -112,6 +112,7 @@ export default class DataQualityMaintenance extends Component {
   }
 
   render() {
+    // filterType 字段控制负值、空值、跳变等字段的显示
     let { VEEDataStructure, scanSwitch, selectedNode, filterType } = this.state;
     if( !VEEDataStructure || VEEDataStructure.get('_loading') ) {
       return <div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>

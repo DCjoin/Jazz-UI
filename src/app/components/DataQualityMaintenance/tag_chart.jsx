@@ -10,7 +10,8 @@ import Immutable from 'immutable';
 import moment from 'moment';
 import DateTimeSelector from 'controls/DateTimeSelector.jsx';
 import ChartPanel from 'components/customerSetting/tag/RawDataChartPanel.jsx';
-import RawDataList from './drawer_datalist.jsx'
+import RawDataList from './drawer_datalist.jsx';
+import Toast from '@emop-ui/piano/toast';
 
 import { CircularProgress, Checkbox, FontIcon,FlatButton} from 'material-ui';
 
@@ -31,7 +32,8 @@ export default class TagChart extends Component {
       endDate: this._getInitDate().endDate,
       startTime: this._getInitDate().startTime,
       endTime: this._getInitDate().endTime,
-      onDrawerShow: false
+      onDrawerShow: false,  // 抽屉浮层
+      openToast: false  // toast显示
 		};
 		this._onChanged = this._onChanged.bind(this);
 		this._onUpdate = this._onUpdate.bind(this);
@@ -107,7 +109,6 @@ export default class TagChart extends Component {
         timeRange.start = new Date(startDate.setHours(startTime, 0, 0, 0));
       }
     }
-
     this.setState({
       start: timeRange.start,
       end: timeRange.end,
@@ -124,9 +125,27 @@ export default class TagChart extends Component {
   _onDrawerShow = () => {
     this.setState({onDrawerShow: true})
   }
- _onDrawerRequestChange = () => {
-    this.setState({onDrawerShow: false})
- }
+  _onDrawerRequestChange = () => {
+      this.setState({onDrawerShow: false})
+  }
+  // 撤销修复
+  _onRollback = () => {
+    let d2j = CommonFuns.DataConverter.DatetimeToJson,
+        start = d2j(this.state.start, false),
+        end = d2j(this.state.end, false),
+        tagId=this.props.selectedTag.get('Id');
+        TagAction.rollBack(tagId,start,end,()=>{
+          this.setState({openToast: true})
+      });
+  }
+  // 空值修复
+  _onNullValRepair = () => {
+      let tagId = this.props.selectedTag.get('Id'),
+          start = moment(this.state.start).subtract(8, 'hours').format('YYYY-MM-DDTHH:mm:ss'),
+          end = moment(this.state.end).subtract(8, 'hours').format('YYYY-MM-DDTHH:mm:ss');
+        console.log('manualScanTag',tagId,start,end)
+        TagAction.manualScanTag(tagId,start,end);
+  }
   _renderToolBar() {
     var switchIconStyle = {
         fontSize: '16px',
@@ -168,13 +187,13 @@ export default class TagChart extends Component {
 
 
    // 新增的数据修复按钮
-    let dataRepairBtn = <FlatButton 
+    let dataRepairBtn = <FlatButton
                           label={I18N.Setting.Tag.PTagRawData.DataRepair}
-                          style={pauseBtnStyle} 
-                          labelStyle={labelStyle} 
+                          style={pauseBtnStyle}
+                          labelStyle={labelStyle}
                           onClick={this._onDrawerShow}
                           />;
-  
+
     var label = this.state.isRawData ? I18N.EM.Ratio.RawValue : I18N.Setting.Tag.PTagRawData.DifferenceValue;
     var uom=this.state.tagData.getIn(['TargetEnergyData', 0, 'Target', 'Uom']);
     if(uom==="null") uom=""
@@ -188,37 +207,53 @@ export default class TagChart extends Component {
           </div>
           {this.props.selectedTag.get('IsAccumulated') ? <FontIcon className='icon-change' color={"#32AD3C"} hoverColor={"#3DCD58"} style={switchIconStyle} ref="switchIcon" onClick={this._onSwitchRawDataView}/> : null}
         </div>
-        <DateTimeSelector ref='dateTimeSelector' showTime={true} endLeft='-100px' startDate= {this.state.startDate}
-      endDate={this.state.endDate}
-      startTime={this.state.startTime}
-      endTime={this.state.endTime}  _onDateSelectorChanged={this._onDateSelectorChanged}/>
+        <DateTimeSelector ref='dateTimeSelector' showTime={true} endLeft='-100px'
+                          startDate= {this.state.startDate}
+                          endDate={this.state.endDate}
+                          startTime={this.state.startTime}
+                          endTime={this.state.endTime}
+                          _onDateSelectorChanged={this._onDateSelectorChanged}/>
         </div>
         <div className='rightside' style={{marginRight:'0'}}>
           {dataRepairBtn}
         </div>
+
+        <Toast autoHideDuration={3000}
+               className="toast-tip"
+               open={this.state.openToast}
+               onRequestClose={() => {
+                this.setState({
+                  openToast: false,
+              })
+            }}>
+            撤销修复成功
+        </Toast>
       </div>
       )
   }
 
     _renderComment() {
-    return (
-      <div className='jazz-ptag-rawdata-comment'>
-        <div className='item'>
-          <label className='normal-circle'/>
-          <div className='label'>{I18N.Setting.Tag.PTagRawData.normal}</div>
+      return (
+        <div className='jazz-ptag-rawdata-comment'>
+          <div className='item'>
+            <label className='normal-circle'/>
+            <div className='label'>{I18N.Setting.Tag.PTagRawData.normal}</div>
+          </div>
+          <div className='item'>
+            <label className='abnormal-circle'/>
+            <div className='label'>{I18N.Setting.Tag.PTagRawData.abnormal}</div>
+          </div>
+          <div className='item'>
+            <label className='repair-circle'/>
+            <div className='label'>{I18N.Setting.Tag.PTagRawData.repair}</div>
+          </div>
         </div>
-        <div className='item'>
-          <label className='abnormal-circle'/>
-          <div className='label'>{I18N.Setting.Tag.PTagRawData.abnormal}</div>
-        </div>
-        <div className='item'>
-          <label className='repair-circle'/>
-          <div className='label'>{I18N.Setting.Tag.PTagRawData.repair}</div>
-        </div>
-      </div>
-      )
+        )
+    }
+  _onRawDataChange(newData,orgData) {
+      // this.refs.tagDetail._setLoading();
+      TagAction.modifyTagRawData(newData,orgData);
   }
-
   _renderChartComponent() {
     let d2j = CommonFuns.DataConverter.DatetimeToJson,
       start = d2j(this.state.start, false),
@@ -249,7 +284,11 @@ export default class TagChart extends Component {
       step: this.props.selectedTag.get('CalculationStep'),
       selectedTag: this.props.selectedTag,
       openDrawer: this.state.onDrawerShow,
-      onRequestChange: this._onDrawerRequestChange
+      onRequestChange: this._onDrawerRequestChange,
+      filterType: this.props.filterType,
+      rollBack: this._onRollback,
+      nullValRepair: this._onNullValRepair,
+      onRawDataChange:this._onRawDataChange
     }
     if (this.state.tagData.getIn(['TargetEnergyData', 0, 'EnergyData']).size === 0) {
       return (
@@ -308,7 +347,7 @@ export default class TagChart extends Component {
     }
   }
   shouldComponentUpdate(nextProps, nextState) {
-    //  || this.props.showLeft !== nextProps.showLeft || this.props.showRawDataList !== nextProps.showRawDataList || 
+    //  || this.props.showLeft !== nextProps.showLeft || this.props.showRawDataList !== nextProps.showRawDataList ||
     return (nextProps.selectedTag !== this.props.selectedTag || this.props.showLeft !== nextProps.showLeft || !Immutable.fromJS(nextState).equals(Immutable.fromJS(this.state)));
   }
   componentWillUnmount() {
@@ -337,7 +376,7 @@ export default class TagChart extends Component {
         <div className='jazz-ptag-rawdata'>
             {this._renderToolBar()}
             {this._renderChartComponent()}
-          </div>
+        </div>
         )
     }
 
