@@ -2919,6 +2919,7 @@ I18N.VEE.TransLineInfo = '传输节点在线/离线信息';
 I18N.VEE.onlineText = '在线';
 I18N.VEE.offlineText = '离线';
 I18N.VEE.Rule.SelectTagTip = '请在左侧选择要查看的节点';
+I18N.VEE.ExceptionNodeOnly = '只显示有问题的节点';
 
 
 I18N.NetworkChecker = {};
