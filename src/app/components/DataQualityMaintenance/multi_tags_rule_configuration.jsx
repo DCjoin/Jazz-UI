@@ -75,12 +75,12 @@ export default class RulesConfigration extends Component {
         // Name: "string",
         CustomerId:parseInt(this.props.customerId),
         CheckJumping: false,
-        JumpingRate: 0,
+        JumpingRate: 500,
         CheckNegative: false,
         CheckNull: false,
         // "Interval": 0,
         // "Delay": 0,
-        NotifyConsecutiveHours: 0,
+        NotifyConsecutiveHours: 8,
         // "HierarchyId": 0,
         IsAutoRepairNull: false}),
         selectTags:[]
@@ -157,7 +157,7 @@ export default class RulesConfigration extends Component {
                   style={{width:'86px'}} 
                   onClick={()=>{
                     var {JumpingRate,NotifyConsecutiveHours}=this.state.rule.toJS();
-                  if(jumpingRateRegexFn(JumpingRate) && notifyConsecutiveHoursRegexFn(NotifyConsecutiveHours)){
+                  if((jumpingRateRegexFn(JumpingRate) && notifyConsecutiveHoursRegexFn(NotifyConsecutiveHours))){
                     this.setState({
                       step:1
                     })

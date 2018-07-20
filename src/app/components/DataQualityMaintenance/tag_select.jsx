@@ -166,7 +166,8 @@ export default class TagSelect extends Component {
                                       CustomerId: this.context.router.params.customerId,
                                       UserId: CurrentUserStore.getCurrentUser().Id,
                                       Id:node.get("Id"),
-                                      NodeType: node.get("NodeType")})
+                                      NodeType: node.get("NodeType"),
+                                      SubType:node.get("SubType")})                                      
                                   })
                                 }
                                 
