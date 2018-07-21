@@ -21,6 +21,11 @@ import NeedRefreshDlg from './need_refresh_dlg.jsx';
 
 import RulesConfigration from './multi_tags_rule_configuration.jsx';
 
+import PermissionCode from 'constants/PermissionCode.jsx';
+import privilegeUtil from 'util/privilegeUtil.jsx';
+
+var isDataQualityFull=()=>privilegeUtil.isFull( PermissionCode.DATA_QUALITY_MAINTENANCE, CurrentUserStore.getCurrentPrivilege() )
+
 function formatMomentToDateStr(date) {
   return date.toJSON();
 }
@@ -104,8 +109,9 @@ export default class DataQualityMaintenance extends Component {
   }
 
   _renderNon() {
-    return (<div className='flex-center'><Button onClick={this._openSSOHierarchyUrl} label={'+ ' + I18N.VEE.CreateDataStructure} outline secondary /></div>)
-  }
+    return isDataQualityFull()?(<div className='flex-center'><Button onClick={this._openSSOHierarchyUrl} label={'+ ' + I18N.VEE.CreateDataStructure} outline secondary /></div>)
+                              :(<div className="flex-center" style={{fontSixe:'16px',color:'#666666'}}>{I18N.VEE.NoPrivilege}</div>)
+  }     
 
   _showConfig(){
     this.setState({

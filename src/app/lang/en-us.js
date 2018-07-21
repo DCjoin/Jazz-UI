@@ -2008,6 +2008,7 @@ I18N.Privilege.Role.SaveEffect = 'Energy Saving Effect';
 I18N.Privilege.Role.CLevelAPP = 'C-Level APP';
 I18N.Privilege.Role.BestSolution = 'best practices';
 I18N.Privilege.Role.SolutionLibrary = 'Solution Library';
+I18N.Privilege.Role.DataQualityMaintenance = '数据质量维护';
 
 I18N.Remark = {};
 I18N.Remark.Label = 'Comment';
@@ -2926,6 +2927,7 @@ I18N.VEE.onlineText = '在线';
 I18N.VEE.offlineText = '离线';
 I18N.VEE.Rule.SelectTagTip = '请在左侧选择要查看的节点';
 I18N.VEE.ExceptionNodeOnly = '只显示有问题的节点';
+I18N.VEE.NoPrivilege = '未配置数据质量维护，请联系管理员';
 
 
 I18N.NetworkChecker = {};

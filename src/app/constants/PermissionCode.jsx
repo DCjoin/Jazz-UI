@@ -192,11 +192,15 @@ const PermissionCode = function() {
 	TAG_MANAGEMENT: {
 		getLabel: () => I18N.Privilege.Role.TagManagement,
 		FULL: 1208,
+		PLATFORM_FULL:2152,
+		PLATFORM_READONLY:2153,
 	},
 
 	HIERARCHY_MANAGEMENT: {
 		getLabel: () => I18N.Privilege.Role.HierarchyManagement,
 		FULL: 1207,
+		PLATFORM_FULL:2154,
+		PLATFORM_READONLY:2155,
 	},
 
 	CUSTOM_LABELING: {
@@ -236,6 +240,12 @@ const PermissionCode = function() {
   SOLUTION_LIBRARY: {
     getLabel: () => I18N.Privilege.Role.SolutionLibrary,
     FULL: 1500,
+	},
+	
+	DATA_QUALITY_MAINTENANCE: {
+    getLabel: () => I18N.Privilege.Role.DataQualityMaintenance,
+		FULL: 1351,
+		READONLY: 1350,
   },
 
 };
