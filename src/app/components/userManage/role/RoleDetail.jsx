@@ -18,7 +18,7 @@ import ViewableTextField from 'controls/ViewableTextField.jsx';
 import NewDialog from 'controls/NewDialog.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
 import LinkButton from 'controls/LinkButton.jsx';
-
+import PermissionCode from 'constants/PermissionCode.jsx';
 
 class PrivilegeList extends Component {
   constructor(props) {

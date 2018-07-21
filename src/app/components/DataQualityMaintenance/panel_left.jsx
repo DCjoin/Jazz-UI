@@ -14,6 +14,11 @@ import Tree from 'controls/tree/Tree.jsx';
 import DateTimeSelector from 'controls/DateTimeSelector.jsx';
 import PopupPaper from 'controls/popup_paper.jsx';
 import Toggle from 'material-ui/Toggle';
+import PermissionCode from 'constants/PermissionCode.jsx';
+import privilegeUtil from 'util/privilegeUtil.jsx';
+import CurrentUserStore from 'stores/CurrentUserStore.jsx';
+
+var isDataQualityFull=()=>privilegeUtil.isFull( PermissionCode.DATA_QUALITY_MAINTENANCE, CurrentUserStore.getCurrentPrivilege() )
 
 class PureTree extends PureComponent {
   render() {
@@ -271,7 +276,7 @@ export default class Left extends Component {
         <div className='data-quality-maintenance-hierarchy'>
           <PureTree hierarchy={hierarchy} selectedNode={selectedNode} onSelectNode={onSelectNode} generateNodeConent={this._generateNodeConent} checkCollapseStatus={this._checkCollapseStatus}/>
         </div>
-        <div className='data-quality-maintenance-actions-bar'>
+        {isDataQualityFull() && <div className='data-quality-maintenance-actions-bar'>
           <div onClick={showConfig}>{I18N.VEE.ConfigRule}</div>
          
         {isBuilding?<Button label={I18N.Common.Button.More}
@@ -295,7 +300,7 @@ export default class Left extends Component {
                 onClick={(e) => {
                   onOpenHierarchy();
                 }}/>}
-        </div>
+        </div>}
         {this.state.openPopover && <Popover
           style={{
             padding:'6px 0',

@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import Button from '@emop-ui/piano/button';
 import { FontIcon} from 'material-ui';
+import PermissionCode from 'constants/PermissionCode.jsx';
+import privilegeUtil from 'util/privilegeUtil.jsx';
+import CurrentUserStore from 'stores/CurrentUserStore.jsx';
+
+var isDataQualityFull=()=>privilegeUtil.isFull( PermissionCode.DATA_QUALITY_MAINTENANCE, CurrentUserStore.getCurrentPrivilege() )
 
 const TextStyle={
   fontSize: '14px',
@@ -84,7 +89,7 @@ export default class ViewedRule extends Component {
     return(
       <div className="data-quality-rule">
         {content}
-        {this._renderFooter()}
+        {isDataQualityFull() && this._renderFooter()}
           </div>
     )
   }
