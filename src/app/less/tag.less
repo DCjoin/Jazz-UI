@@ -504,3 +504,52 @@
   }
 }
 
+.basic_property{
+  .tagbasicline{
+    display: flex;
+    height: 88px;
+    border-bottom: 1px solid #e6e6e6;
+    &:first-child{
+      border-bottom: none;
+    }
+    >div{
+      width:236px;
+      margin-right: 20px;
+      p{
+        &:first-child{
+          font-size: 14px;
+          color: #9fa0a4;
+        }
+      }
+      .content{
+        color: #333333;
+        font-size: 14px;
+      }
+    }
+  }
+  .basicline{
+    margin: 16px;
+    line-height: 28px;
+    .title{
+      font-size: 14px;
+      color: #9fa0a4;
+    }
+    .content{
+      color: #333333;
+      font-size: 14px;
+    }
+  }
+  .lastline{
+    height: 88px;
+    p{
+      &:first-child{
+        font-size: 14px;
+        color: #9fa0a4;
+      }
+    }
+    .content{
+      color: #333333;
+      font-size: 14px;
+    }
+  }
+}

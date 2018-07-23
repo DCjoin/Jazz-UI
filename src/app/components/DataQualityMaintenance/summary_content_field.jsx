@@ -10,6 +10,7 @@ import TagStore from 'stores/customerSetting/TagStore.jsx';
 import TagAction from 'actions/customerSetting/TagAction.jsx';
 import { Drawer} from 'material-ui';
 import moment from 'moment';
+import Basic from './basic_property.jsx'
 
 export default class SummaryContentField extends Component {
   constructor(props) {
@@ -17,10 +18,15 @@ export default class SummaryContentField extends Component {
 
     this.state = {
       openDrawer: false,
-      listData: []
+      listData: [],
+      tabNo:1
     };
   }
-
+  _onSwitchTab = (event) => {
+    this.setState({
+      tabNo:event.target.getAttribute("data-tab-index")*1
+    })
+  }
   _renderHeader() {
     var tagNameProps = {
       ref: 'name',
@@ -39,19 +45,20 @@ export default class SummaryContentField extends Component {
             ? <span className="offlineBtn" onClick={this._onLineAndOffline}>{I18N.VEE.offlineTab}</span>
             : null
           }
-    {
-      false &&
-        <div className="pop-user-detail-tabs">
-                  <span className={classnames({
-          "pop-user-detail-tabs-tab": true,
-          "selected": me.props.showBasic
-        })} data-tab-index="1" onClick={me._onSwitchTab}>{I18N.Setting.Tag.BasicProperties}</span>
-                  <span className={classnames({
-          "pop-user-detail-tabs-tab": true,
-          "selected": !me.props.showBasic
-        })} data-tab-index="2" onClick={me._onSwitchTab}>{displayStr}</span>
-                </div>
-      }
+          <div className={classnames("pop-user-detail-tabs","data-quality-tabs")}>
+            <span className={classnames({
+                "pop-user-detail-tabs-tab": true,
+                "selected": this.state.tabNo===1
+              })} data-tab-index="1" onClick={this._onSwitchTab}>
+              {I18N.VEE.Monitor}
+            </span>
+            <span className={classnames({
+                "pop-user-detail-tabs-tab": true,
+                "selected": this.state.tabNo===2
+              })} data-tab-index="2" onClick={this._onSwitchTab}>
+              {I18N.VEE.Basic}
+            </span>
+          </div>
         </div>
       </div>
       );
@@ -74,22 +81,29 @@ export default class SummaryContentField extends Component {
   _onChanged = (listData) => {
     this.setState({listData: listData})
   }
-      _renderContent() {
-          var content = null;
-          var style = {
-            display: 'flex',
-            paddingTop:'24px',
-            paddingLeft:'20px',
-            paddingRight:'10px'
-          };
-
-          content=<AbnormalMonitor nodeData={this.props.nodeData} showLeft={this.props.showLeft} anomalyType={this.props.anomalyType}/>
-
-          return (
-            <div className="pop-manage-detail-content" style={style}>
-              {content}
-            </div>
-            );
+  _renderContent() {
+      var content = null;
+      var style = {
+        display: 'flex',
+        paddingTop:'24px',
+        paddingLeft:'20px',
+        paddingRight:'10px'
+      };
+      switch(this.state.tabNo){
+        case 1:
+              content=<AbnormalMonitor nodeData={this.props.nodeData}
+                                       showLeft={this.props.showLeft}
+                                       anomalyType={this.props.anomalyType}/>;
+              break;
+        case 2:
+              content=<Basic nodeData={this.props.nodeData}/>;
+              break;
+      }
+      return (
+        <div className="pop-manage-detail-content" style={style}>
+          {content}
+        </div>
+      );
   }
 
     render() {

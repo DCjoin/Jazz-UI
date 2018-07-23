@@ -6,7 +6,6 @@ import { CircularProgress } from 'material-ui';
 import Button from '@emop-ui/piano/button';
 import Dialog from '@emop-ui/piano/dialog';
 import Toast from '@emop-ui/piano/toast';
-
 import { nodeType } from 'constants/TreeConstants.jsx';
 import DataQuality from 'constants/actionType/data_quality.jsx';
 import DataQualityMaintenanceAction from 'actions/data_quality_maintenance.jsx';

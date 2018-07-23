@@ -7,6 +7,7 @@ import AbnormalMonitor from './abnomal_monitor.jsx';
 import PropTypes from 'prop-types';
 import ViewableTextField from 'controls/ViewableTextField.jsx';
 import Rule from './monitor_rule.jsx';
+import Basic from './basic_property.jsx'
 
 export default class TagContentField extends Component {
 
@@ -71,7 +72,8 @@ export default class TagContentField extends Component {
                             showLeft={this.props.showLeft}
                             anomalyType={this.props.anomalyType}/>;
                   break;
-            case 2: break;
+            case 2: content=<Basic nodeData={this.props.nodeData}/>;
+                  break;
             case 3:
                   content=<Rule selectTag={this.props.nodeData}/>;
                   break;
