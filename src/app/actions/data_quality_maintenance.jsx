@@ -150,6 +150,47 @@ let DataQualityMaintenanceAction = {
         console.log(err, res);
       }
     });
+  },
+  getAllIndustries: function(customerId,cb) {
+    var that = this;
+    Ajax.post('/Administration/GetAllIndustries', {
+      params: {
+        includeRoot: false,
+        onlyLeaf: true,
+        sysId:1
+      },
+      success: function(industries) {
+        AppDispatcher.dispatch({
+          type: Action.GET_ALL_INDUSTRIES_FOR_HIERARCHY,
+          industries: industries
+        });
+        if(cb){cb()}
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
+  getAllZones: function(customerId,cb) {
+    var that = this;
+    Ajax.post('/Administration/GetAllZones', {
+      params: {
+        includeRoot: false
+      },
+      success: function(zones) {
+        AppDispatcher.dispatch({
+          type: Action.GET_ALL_ZONES_FOR_HIERARCHY,
+          zones: zones
+        });
+        if(cb){cb()}
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
+  getBuilding(){
+    
   }
 };
 
