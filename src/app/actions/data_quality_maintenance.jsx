@@ -195,7 +195,39 @@ let DataQualityMaintenanceAction = {
 
   // 获取基础属性页面数据
   getBasicPageData(params) {
-    // Ajax.post(Vee.getdatastructuretags, {
+    let url = '';
+    switch(params.nodeType) {
+      case 0:
+          url = '/vee/info/org/';
+          break;
+      case 1:
+          url = '/vee/info/site/';
+          break;
+      case 2:
+          url = '/vee/info/building/';
+          break;
+      case 5:
+          url = '/vee/info/device/';
+          break;
+      case 6:
+          url = '/vee/info/gateway/';
+          break;
+      case 999:
+          url = '/vee/info/tag/';
+          break;
+    }
+    Ajax.get(url + params.id, {
+      success: function(data) {
+        AppDispatcher.dispatch({
+          type: Action.GET_BASIC_PROPERTY_DATA,
+          data
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+    // Ajax.post('/vee/info/org', {
     //   params,
     //   success: function(data) {
     //     AppDispatcher.dispatch({
