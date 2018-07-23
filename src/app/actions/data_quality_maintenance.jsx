@@ -151,6 +151,7 @@ let DataQualityMaintenanceAction = {
       }
     });
   },
+
   getAllIndustries: function(customerId,cb) {
     var that = this;
     Ajax.post('/Administration/GetAllIndustries', {
@@ -190,7 +191,22 @@ let DataQualityMaintenanceAction = {
     });
   },
   getBuilding(){
-    
+  },
+
+  // 获取基础属性页面数据
+  getBasicPageData(params) {
+    // Ajax.post(Vee.getdatastructuretags, {
+    //   params,
+    //   success: function(data) {
+    //     AppDispatcher.dispatch({
+    //       type: Action.GET_BASIC_PROPERTY_DATA,
+    //       data
+    //     });
+    //   },
+    //   error: function(err, res) {
+    //     console.log(err, res);
+    //   }
+    // });
   }
 };
 

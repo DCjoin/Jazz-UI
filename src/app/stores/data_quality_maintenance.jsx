@@ -116,11 +116,15 @@ DataQualityMaintenanceStore.dispatchToken = AppDispatcher.register(function(acti
       case Action.GET_TAG_SELECT_HIERARCHY_SUCCESS:
         DataQualityMaintenanceStore.setHierarchys(action.data);
         DataQualityMaintenanceStore.emitChange();
-        break; 
+        break;
       case Action.GET_DATA_STRUCTURE_TAGS:
         DataQualityMaintenanceStore.setTags(action.data);
         DataQualityMaintenanceStore.emitChange();
-        break;        
+        break;
+      // 基础睡属性页面数据
+      case Action.GET_BASIC_PROPERTY_DATA:
+        DataQualityMaintenanceStore.emitChange(action.pagedata);
+        break;
     }
 });
 
