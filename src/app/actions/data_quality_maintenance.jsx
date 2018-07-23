@@ -150,6 +150,21 @@ let DataQualityMaintenanceAction = {
         console.log(err, res);
       }
     });
+  },
+  // 获取基础属性页面数据
+  getBasicPageData(params) {
+    // Ajax.post(Vee.getdatastructuretags, {
+    //   params,
+    //   success: function(data) {
+    //     AppDispatcher.dispatch({
+    //       type: Action.GET_BASIC_PROPERTY_DATA,
+    //       data
+    //     });
+    //   },
+    //   error: function(err, res) {
+    //     console.log(err, res);
+    //   }
+    // });
   }
 };
 
