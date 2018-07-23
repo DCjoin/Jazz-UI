@@ -20,6 +20,11 @@ import NeedRefreshDlg from './need_refresh_dlg.jsx';
 
 import RulesConfigration from './multi_tags_rule_configuration.jsx';
 
+import PermissionCode from 'constants/PermissionCode.jsx';
+import privilegeUtil from 'util/privilegeUtil.jsx';
+
+var isDataQualityFull=()=>privilegeUtil.isFull( PermissionCode.DATA_QUALITY_MAINTENANCE, CurrentUserStore.getCurrentPrivilege() )
+
 function formatMomentToDateStr(date) {
   return date.toJSON();
 }
@@ -42,7 +47,8 @@ export default class DataQualityMaintenance extends Component {
       endTime: moment().startOf('day').add(1,'d'),
       showLeft: true,
       filterType: 1,
-      showConfig:false
+      showConfig:false,
+      exceptionNodeOnly:false
     };
     this._openSSOHierarchyUrl = this._openSSOHierarchyUrl.bind(this);
     this._onChange = this._onChange.bind(this);
@@ -83,6 +89,7 @@ export default class DataQualityMaintenance extends Component {
       EndTime: state.endTime.toJSON(),
       CustomerId: this.props.router.params.customerId,
       UserId: CurrentUserStore.getCurrentUser().Id,
+      ExceptionNodeOnly:this.state.exceptionNodeOnly
 
       // "ExceptionType": 1,
       // "StartTime": "2018-07-01T01:42:55.030Z",
@@ -101,8 +108,9 @@ export default class DataQualityMaintenance extends Component {
   }
 
   _renderNon() {
-    return (<div className='flex-center'><Button onClick={this._openSSOHierarchyUrl} label={'+ ' + I18N.VEE.CreateDataStructure} outline secondary /></div>)
-  }
+    return isDataQualityFull()?(<div className='flex-center'><Button onClick={this._openSSOHierarchyUrl} label={'+ ' + I18N.VEE.CreateDataStructure} outline secondary /></div>)
+                              :(<div className="flex-center" style={{fontSixe:'16px',color:'#666666'}}>{I18N.VEE.NoPrivilege}</div>)
+  }     
 
   _showConfig(){
     this.setState({
@@ -112,7 +120,7 @@ export default class DataQualityMaintenance extends Component {
 
   render() {
     // filterType 字段控制负值、空值、跳变等字段的显示
-    let { VEEDataStructure, scanSwitch, selectedNode, filterType } = this.state;
+    let { VEEDataStructure, scanSwitch, selectedNode, filterType,exceptionNodeOnly } = this.state;
     if( !VEEDataStructure || VEEDataStructure.get('_loading') ) {
       return <div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>
     }
@@ -161,6 +169,8 @@ export default class DataQualityMaintenance extends Component {
           onChangeFilterType={ val => this.setState({filterType: val}, this._getVEEDataStructure) }
           filterType={filterType}
           showConfig={this._showConfig}
+          exceptionNodeOnly={exceptionNodeOnly}
+          onChangeExceptionNodeOnly={(e,value)=>this.setState({exceptionNodeOnly:value},this._getVEEDataStructure)}
         />}
         {VEEDataStructure.get('HasHierarchy') &&
         <Right

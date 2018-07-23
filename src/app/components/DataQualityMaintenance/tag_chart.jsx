@@ -14,6 +14,11 @@ import RawDataList from './drawer_datalist.jsx';
 import Toast from '@emop-ui/piano/toast';
 
 import { CircularProgress, Checkbox, FontIcon,FlatButton} from 'material-ui';
+import PermissionCode from 'constants/PermissionCode.jsx';
+import privilegeUtil from 'util/privilegeUtil.jsx';
+import CurrentUserStore from 'stores/CurrentUserStore.jsx';
+
+var isDataQualityFull=()=>privilegeUtil.isFull( PermissionCode.DATA_QUALITY_MAINTENANCE, CurrentUserStore.getCurrentPrivilege() )
 
 let {dateAdd} = CommonFuns;
 
@@ -214,9 +219,9 @@ export default class TagChart extends Component {
                           endTime={this.state.endTime}
                           _onDateSelectorChanged={this._onDateSelectorChanged}/>
         </div>
-        <div className='rightside' style={{marginRight:'0'}}>
+        {isDataQualityFull() && <div className='rightside' style={{marginRight:'0'}}>
           {dataRepairBtn}
-        </div>
+        </div>}
 
         <Toast autoHideDuration={3000}
                className="toast-tip"

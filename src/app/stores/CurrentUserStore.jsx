@@ -367,16 +367,19 @@ if ( this.permit(PermissionCode.SOLUTION_FULL.FULL) ||
         });
       }
 
-      customerChildren.push({
-        title: '数据质量',
-        list: [
-          {
-            name: 'data_quality_maintenance',
-            getPath: RoutePath.customerSetting.data_quality_maintenance,
-            title: I18N.MainMenu.DataQualityMaintenance
-          }
-        ]
-      })
+      if(this.permit(PermissionCode.DATA_QUALITY_MAINTENANCE.FULL) || this.permit(PermissionCode.DATA_QUALITY_MAINTENANCE.READONLY)){
+        customerChildren.push({
+          title: '数据质量',
+          list: [
+            {
+              name: 'data_quality_maintenance',
+              getPath: RoutePath.customerSetting.data_quality_maintenance,
+              title: I18N.MainMenu.DataQualityMaintenance
+            }
+          ]
+        })
+      }
+
 
       menuItems.push({
         name: 'customerSetting',

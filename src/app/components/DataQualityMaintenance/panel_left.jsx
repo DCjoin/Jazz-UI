@@ -13,6 +13,13 @@ import {dateAdd} from 'util/Util.jsx';
 import Tree from 'controls/tree/Tree.jsx';
 import DateTimeSelector from 'controls/DateTimeSelector.jsx';
 import PopupPaper from 'controls/popup_paper.jsx';
+import Toggle from 'material-ui/Toggle';
+import PermissionCode from 'constants/PermissionCode.jsx';
+import privilegeUtil from 'util/privilegeUtil.jsx';
+import CurrentUserStore from 'stores/CurrentUserStore.jsx';
+
+var isDataQualityFull=()=>privilegeUtil.isFull( PermissionCode.DATA_QUALITY_MAINTENANCE, CurrentUserStore.getCurrentPrivilege() )
+
 class PureTree extends PureComponent {
   render() {
     let { hierarchy, selectedNode, onSelectNode, generateNodeConent, checkCollapseStatus } = this.props;
@@ -104,6 +111,24 @@ class FilterBar extends PureComponent {
   }
 }
 
+var NodeFilterBar=function({exceptionNodeOnly,onChangeExceptionNodeOnly}){
+  var style={
+    height: '40px',
+    backgroundColor: '#f7f7f7',
+    display:'flex',
+    flexDirection:'row',
+    alignItems:'center',
+    justifyContent: 'space-between',
+    padding:'0 16px'
+  }
+  return(
+    <div style={style}>
+      <div style={{    fontSize:'14px',
+      color:'#626469'}}>{I18N.VEE.ExceptionNodeOnly}</div>
+      <Toggle style={{width:'46px'}} toggled={exceptionNodeOnly} onToggle={onChangeExceptionNodeOnly}/>
+    </div>
+  )
+}
 export default class Left extends Component {
   constructor(props) {
     super(props);
@@ -225,7 +250,9 @@ export default class Left extends Component {
       scanSwitch,
       onChangeFilterType,
       filterType,
-      showConfig
+      showConfig,
+      exceptionNodeOnly,
+      onChangeExceptionNodeOnly
     } = this.props;
 
     // <div onClick={(e) => {
@@ -245,10 +272,11 @@ export default class Left extends Component {
           <DateTimeSelector disabled={!filterType} isDateViewStatus={true} ref='dateTimeSelector' showTime={false} endLeft='-100px' startDate={startDate} endDate={endDate}  _onDateSelectorChanged={this._onDateSelectorChanged}/>
         </div>
         <FilterBar onChange={onChangeFilterType} value={filterType} />
+        <NodeFilterBar exceptionNodeOnly={exceptionNodeOnly} onChangeExceptionNodeOnly={onChangeExceptionNodeOnly}/>
         <div className='data-quality-maintenance-hierarchy'>
           <PureTree hierarchy={hierarchy} selectedNode={selectedNode} onSelectNode={onSelectNode} generateNodeConent={this._generateNodeConent} checkCollapseStatus={this._checkCollapseStatus}/>
         </div>
-        <div className='data-quality-maintenance-actions-bar'>
+        {isDataQualityFull() && <div className='data-quality-maintenance-actions-bar'>
           <div onClick={showConfig}>{I18N.VEE.ConfigRule}</div>
          
         {isBuilding?<Button label={I18N.Common.Button.More}
@@ -272,7 +300,7 @@ export default class Left extends Component {
                 onClick={(e) => {
                   onOpenHierarchy();
                 }}/>}
-        </div>
+        </div>}
         {this.state.openPopover && <Popover
           style={{
             padding:'6px 0',
