@@ -135,7 +135,7 @@ export default class SummaryContentField extends Component {
                   ? this.state.listData.map((v, i) => {
                     return (
                       <li>
-                        <span className="drawer-time">{v.OccurTime}</span>
+                        <span className="drawer-time">{moment(v.OccurTime, "YYYY/MM/DD HH:MM").format("YYYY年MM月DD日 HH:MM")}</span>
                         {
                           v.PhysicalStatus
                           ? <span style={{color: '#32ad3c'}}>{I18N.VEE.onlineText}</span>

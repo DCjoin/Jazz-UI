@@ -97,9 +97,7 @@ function checkScrollEnable() {
 	if( getComputedStyle(document.querySelector('.jazz-mobile-qr')).display !== 'none' ) {
 		return false;
 	}
-	if( getComputedStyle(document.querySelector('.contact-us-card')).display !== 'none' ) {
-		return false;
-	}
+	//
 	if( document.querySelector('.jazz-login-dialog') || document.querySelector('.dialog') ) {
 		return false;
 	}
@@ -597,7 +595,16 @@ export default class NewLogin extends Component {
 				  			<div>186-1688-5310</div>
 				  			<div>yujin.guo@schneider-electric.com</div>
 				  		</div>
-				  	</a>|
+				  	</a>
+						|
+						<a className='contact-us-link' href='javascript:void(0)' target="_blank">
+				  		{I18N.Login.CorruptionCenter}
+				  		<div className='contact-us-card' style={{width: '300px'}}>
+				  			<div>{I18N.Login.CorruptionTelephone}  186-1688-5310</div>
+				  			<div>{I18N.Login.CorruptionMail}  xiaodi-max.wang@schneider-electric.com</div>
+				  		</div>
+				  	</a>
+						|
 				    <a href={`${RoutePath.login({
 				    	lang: (this.props.router.params.lang === 'en-us') ? 'zh-cn' : 'en-us'
 				   })}`} target="_blank">{I18N.Platform.InEnglish}</a>
