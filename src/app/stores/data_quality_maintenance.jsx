@@ -33,7 +33,7 @@ var DataQualityMaintenanceStore = assign({},PrototypeStore,{
         data.get("Children").forEach(child=>{f(child)})
       }
     }
-    if(_VEEDataStructure.size!==0 && !_VEEDataStructure.get('_loading')){_VEEDataStructure.getIn(['Tree', 0, 'Children']).forEach(child=>{f(child)});}
+    if(_VEEDataStructure.size!==0 && !_VEEDataStructure.get('_loading') && _VEEDataStructure.get('Tree').size>0){_VEEDataStructure.getIn(['Tree', 0, 'Children']).forEach(child=>{f(child)});}
     return node
   },
   getVEEDataStructure(){

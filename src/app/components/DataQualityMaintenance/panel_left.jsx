@@ -276,7 +276,7 @@ export default class Left extends Component {
           <DateTimeSelector disabled={!filterType} isDateViewStatus={true} ref='dateTimeSelector' showTime={false} endLeft='-100px' startDate={startDate} endDate={endDate}  _onDateSelectorChanged={this._onDateSelectorChanged}/>
         </div>
         <FilterBar onChange={onChangeFilterType} value={filterType} />
-        <NodeFilterBar exceptionNodeOnly={exceptionNodeOnly} onChangeExceptionNodeOnly={onChangeExceptionNodeOnly}/>
+        {filterType!==0 && <NodeFilterBar exceptionNodeOnly={exceptionNodeOnly} onChangeExceptionNodeOnly={onChangeExceptionNodeOnly}/>}
         <div className='data-quality-maintenance-hierarchy'>
           <PureTree hierarchy={hierarchy} selectedNode={selectedNode} onSelectNode={onSelectNode} generateNodeConent={this._generateNodeConent} checkCollapseStatus={this._checkCollapseStatus}/>
         </div>
