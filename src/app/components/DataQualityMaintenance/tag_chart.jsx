@@ -261,7 +261,8 @@ export default class TagChart extends Component {
     }
   _onRawDataChange(newData,orgData) {
       // this.refs.tagDetail._setLoading();
-      TagAction.modifyTagRawData(newData,orgData);
+      console.log(newData, orgData, 'tag_chart')
+      TagAction.modifyTagRawData(newData, orgData);
   }
   _renderChartComponent() {
     let d2j = CommonFuns.DataConverter.DatetimeToJson,
@@ -293,11 +294,11 @@ export default class TagChart extends Component {
       step: this.props.selectedTag.get('CalculationStep'),
       selectedTag: this.props.selectedTag,
       openDrawer: this.state.onDrawerShow,
-      onRequestChange: this._onDrawerRequestChange,
       filterType: this.props.filterType,
-      rollBack: this._onRollback,
-      nullValRepair: this._onNullValRepair,
-      onRawDataChange:this._onRawDataChange
+      onRequestChange: this._onDrawerRequestChange, // 点击其他区域关闭的func
+      rollBack: this._onRollback,  // 侧消修复的func
+      nullValRepair: this._onNullValRepair, // 空值修复的func
+      onRawDataChange:this._onRawDataChange // 渲染列表的func
     }
     if (this.state.tagData.getIn(['TargetEnergyData', 0, 'EnergyData']).size === 0) {
       return (

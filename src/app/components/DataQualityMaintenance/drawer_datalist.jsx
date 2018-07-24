@@ -13,6 +13,7 @@ import classnames from "classnames";
 import { List} from 'immutable';
 import moment from 'moment';
 import Regex from '../../constants/Regex.jsx';
+// import { inherits } from "../../../../node_modules/util";
 var createReactClass = require('create-react-class');
 
 function isValid(number){
@@ -121,7 +122,7 @@ let ListItem = createReactClass({
               />
     } else {
       value=(
-        <div style={{color: color, textAlign: 'center'}}>{this.props.data.get('DataValue')!== '' ? this.props.data.get('DataValue') : '-'}</div>
+        <div style={{color: color, textAlign: 'center'}}>{(this.props.data.get('DataValue') || this.props.data.get('DataValue') == 0) ? this.props.data.get('DataValue') : '-'}</div>
       )
     }
     return (
@@ -242,15 +243,14 @@ let NewRawDataList = createReactClass({
     }
 
     var style = {
-      height: document.body.offsetHeight - 150
+      height: document.body.offsetHeight - 85,
+      overflow: 'inherit'
     };
     return (
       <div className="list" ref='list' style={style} onScroll={that._onScroll}>
           {Items}
         </div>
       )
-
-
   },
   _renderNormalItems: function(energyData) {
     var Items = [],
@@ -273,7 +273,8 @@ let NewRawDataList = createReactClass({
 
     });
     var style = {
-      height: document.body.offsetHeight - 150
+      height: document.body.offsetHeight - 85,
+      overflow: 'inherit'
     };
     return (
       <div className="list" ref='list' style={style}>
@@ -418,7 +419,7 @@ let NewRawDataList = createReactClass({
 	          <div
 	            role="button"
 	          >
-	            <div className='jazz-ptag-rawdata-list'>
+	            <div className='jazz-ptag-rawdata-list' style={{width: '283px'}}>
 		          <div className='buttonGroup'>
 		              {nullValueBtn}
 		              {rollbackBtn}

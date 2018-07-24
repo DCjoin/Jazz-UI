@@ -258,27 +258,27 @@ let DataQualityMaintenanceAction = {
   // 获取基础属性页面数据
   getBasicPageData(params) {
     let url = '';
-    switch(params.nodeType) {
+    switch(params.NodeType) {
       case 0:
-          url = '/vee/info/org/';
+          url = '/vee/info/org/' + params.id;
           break;
       case 1:
-          url = '/vee/info/site/';
+          url = '/vee/info/site/' + params.id;
           break;
       case 2:
-          url = '/vee/info/building/';
+          url = '/vee/info/building/' + params.id;
           break;
       case 5:
-          url = '/vee/info/device/';
+          url = '/vee/info/device/' + params.id;
           break;
       case 6:
-          url = '/vee/info/gateway/';
+          url = '/vee/info/gateway/' + params.id + '/' + params.SubType;
           break;
       case 999:
-          url = '/vee/info/tag/';
+          url = '/vee/info/tag/' + params.id;
           break;
     }
-    Ajax.get(url + params.id, {
+    Ajax.get(url, {
       success: function(data) {
         AppDispatcher.dispatch({
           type: Action.GET_BASIC_PROPERTY_DATA,
@@ -289,18 +289,6 @@ let DataQualityMaintenanceAction = {
         console.log(err, res);
       }
     });
-    // Ajax.post('/vee/info/org', {
-    //   params,
-    //   success: function(data) {
-    //     AppDispatcher.dispatch({
-    //       type: Action.GET_BASIC_PROPERTY_DATA,
-    //       data
-    //     });
-    //   },
-    //   error: function(err, res) {
-    //     console.log(err, res);
-    //   }
-    // });
   }
 };
 
