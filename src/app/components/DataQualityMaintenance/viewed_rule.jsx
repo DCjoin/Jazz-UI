@@ -71,7 +71,7 @@ export default class ViewedRule extends Component {
     var content=null;
       if(!CheckNull && !CheckNegative && !CheckJumping){
         content=(
-          <div className="data-quality-rule-content" style={{justifyContent:'center',alignItems:'center'}}>
+          <div className="data-quality-rule-content" style={{justifyContent:'center',alignItems:'center',color:'#666666',fontSize:'16px'}}>
             {I18N.VEE.Rule.NoRule}
           </div>
         )

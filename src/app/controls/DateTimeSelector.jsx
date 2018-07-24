@@ -253,7 +253,7 @@ let DateTimeSelector = createReactClass({
         <ViewableDatePicker {...startDateProps}/>
         {showTime &&  <CalendarTime ref='startTime' {...startTimeProps}/>}
       </div>
-      <span>{I18N.EM.To2}</span>
+      <span  style={{color:disabled?'#c0c0c0':'#626469'}}>{I18N.EM.To2}</span>
       <div className='jazz-full-border-datepicker-container'>
         <ViewableDatePicker {...endDateProps}/>
         {this.props.showTime && <CalendarTime ref='endTime' {...endTimeProps}/>}

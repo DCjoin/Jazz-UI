@@ -90,7 +90,7 @@ class FilterBar extends PureComponent {
         <PopupPaper
           open={this.state.open}
           onRequestClose={this._handleRequestClose}
-          style={{width: 232,position:'absolute',top:'48px'}}
+          style={{width: 232,position:'absolute',top:'48px',left:'16px',zIndex:'100px'}}
         >
         <div style={{padding:'6px 0'}}>
         {FilterItems.map( item =>
@@ -272,7 +272,7 @@ export default class Left extends Component {
     return (
       <div className='data-quality-maintenance-left'>
         <div className='data-quality-maintenance-filter-time'>
-          <div className="text">{I18N.VEE.MonitorTime+"："}</div>
+          <div className="text" style={{color:!filterType?'#c0c0c0':'#626469'}}>{I18N.VEE.MonitorTime+"："}</div>
           <DateTimeSelector disabled={!filterType} isDateViewStatus={true} ref='dateTimeSelector' showTime={false} endLeft='-100px' startDate={startDate} endDate={endDate}  _onDateSelectorChanged={this._onDateSelectorChanged}/>
         </div>
         <FilterBar onChange={onChangeFilterType} value={filterType} />
@@ -287,7 +287,7 @@ export default class Left extends Component {
                 labelPosition="after"
                 outline secondary
                 iconClassName="icon-drop-down"
-                style={{flex:1}}
+                style={{flex:1,borderRadius:'0px'}}
                 iconStyle={{marginTop: '4px'}}
                 onClick={(e) => {
                   // if( isBuilding ) {
@@ -300,7 +300,7 @@ export default class Left extends Component {
                   // }
                 }}/>:<Button label={I18N.VEE.ManageData}
                 outline secondary
-                style={{flex:1}}
+                style={{flex:1,borderRadius:'0px'}}
                 onClick={(e) => {
                   onOpenHierarchy();
                 }}/>}
