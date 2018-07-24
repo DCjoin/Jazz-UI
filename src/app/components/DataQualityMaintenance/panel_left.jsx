@@ -287,7 +287,7 @@ export default class Left extends Component {
                 labelPosition="after"
                 outline secondary
                 iconClassName="icon-drop-down"
-                style={{flex:1}}
+                style={{flex:1,borderRadius:'0px'}}
                 iconStyle={{marginTop: '4px'}}
                 onClick={(e) => {
                   // if( isBuilding ) {
@@ -300,7 +300,7 @@ export default class Left extends Component {
                   // }
                 }}/>:<Button label={I18N.VEE.ManageData}
                 outline secondary
-                style={{flex:1}}
+                style={{flex:1,borderRadius:'0px'}}
                 onClick={(e) => {
                   onOpenHierarchy();
                 }}/>}
