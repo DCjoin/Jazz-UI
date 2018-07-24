@@ -13,16 +13,12 @@ let _VEEDataStructure = Immutable.fromJS({}),
     _VEESummary=Immutable.fromJS([]),
     _rule=Immutable.fromJS({}),
     _hierarchys=null,
-<<<<<<< HEAD
     _tags=null;
 // 基础属性
-let BASCI_PAGE_DATA = 'basic_page_data';
-=======
-    _tags=null,
+let BASCI_PAGE_DATA = 'basic_page_data',
     _building=null,
     _industry=null,
     _zone=null;
->>>>>>> 790b869069e54d393b5b4e2902b38553c0015def
 
 var DataQualityMaintenanceStore = assign({},PrototypeStore,{
   requestVEEDataStructure() {
