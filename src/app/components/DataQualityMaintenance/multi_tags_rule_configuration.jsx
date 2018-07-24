@@ -46,7 +46,7 @@ var notifyConsecutiveHoursRegexFn=(value)=>{
   //为空
   if(value===null || value==='') return false
   //正整数
-  if(value*1<0 || parseInt(value*1)!==value*1) return false
+  if(value*1<=0 || parseInt(value*1)!==value*1) return false
 
   return true
 }
