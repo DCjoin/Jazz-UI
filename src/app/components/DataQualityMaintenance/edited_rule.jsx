@@ -17,7 +17,7 @@ var notifyConsecutiveHoursRegexFn=(value)=>{
   //为空
   if(value===null || value==='') return false
   //正整数
-  if(value*1<0 || parseInt(value*1)!==value*1) return false
+  if(value*1<=0 || parseInt(value*1)!==value*1) return false
 
   return true
 }
@@ -45,7 +45,7 @@ export default class EditedRule extends Component {
 
     return(
       <div className="data-quality-rule-section">
-        <Checkbox checked={CheckNull} label={I18N.Setting.VEEMonitorRule.NullValue} onCheck={()=>{this._onChange('CheckNull',!CheckNull)}}/>
+        <Checkbox checked={CheckNull} style={{width:'100px'}} label={I18N.Setting.VEEMonitorRule.NullValue} onCheck={()=>{this._onChange('CheckNull',!CheckNull)}}/>
         {CheckNull && <div className="data-quality-rule-section-config-field">
                         <div className="row" style={TextStyle}>
                           <div style={{marginRight:'6px'}}>{I18N.VEE.Rule.NotifyConsecutiveHoursTip1}</div>
@@ -75,7 +75,7 @@ export default class EditedRule extends Component {
     return(
       <div className="data-quality-rule-section">
         <div className="data-quality-rule-section-title">
-          <Checkbox checked={CheckNegative} label={I18N.Setting.VEEMonitorRule.NegativeValue} onCheck={()=>{this._onChange('CheckNegative',!CheckNegative)}}/>
+          <Checkbox checked={CheckNegative} style={{width:'100px'}} label={I18N.Setting.VEEMonitorRule.NegativeValue} onCheck={()=>{this._onChange('CheckNegative',!CheckNegative)}}/>
         </div>
       </div>
     )
@@ -86,7 +86,7 @@ export default class EditedRule extends Component {
     
     return(
       <div className="data-quality-rule-section">
-        <Checkbox checked={CheckJumping} label={I18N.Setting.VEEMonitorRule.JumpValue} onCheck={()=>{this._onChange('CheckJumping',!CheckJumping)}}/>
+        <Checkbox checked={CheckJumping} style={{width:'100px'}} label={I18N.Setting.VEEMonitorRule.JumpValue} onCheck={()=>{this._onChange('CheckJumping',!CheckJumping)}}/>
         {CheckJumping && <div className="data-quality-rule-section-config-field" style={{paddingBottom:jumpingRateRegexFn(JumpingRate)?'10px':'31px'}}>
                         <div className="row" style={TextStyle}>
                           {I18N.VEE.Rule.JumpValueTip1}

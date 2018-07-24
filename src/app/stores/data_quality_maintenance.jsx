@@ -13,9 +13,16 @@ let _VEEDataStructure = Immutable.fromJS({}),
     _VEESummary=Immutable.fromJS([]),
     _rule=Immutable.fromJS({}),
     _hierarchys=null,
+<<<<<<< HEAD
     _tags=null;
 // 基础属性
 let BASCI_PAGE_DATA = 'basic_page_data';
+=======
+    _tags=null,
+    _building=null,
+    _industry=null,
+    _zone=null;
+>>>>>>> 790b869069e54d393b5b4e2902b38553c0015def
 
 var DataQualityMaintenanceStore = assign({},PrototypeStore,{
   requestVEEDataStructure() {
@@ -90,6 +97,24 @@ var DataQualityMaintenanceStore = assign({},PrototypeStore,{
   emitListDataChange(args) {
     this.emit(BASCI_PAGE_DATA, args);
   },
+  setBuilding(data){
+    _building=Immutable.fromJS(data)
+  },
+  getBuilding(){
+    return _building
+  },
+  setIndustry(data){
+    _industry=data
+  },
+  getIndustry(){
+    return _industry
+  },
+  setZone(data){
+    _zone=data
+  },
+  getZone(){
+    return _zone
+  }
 });
 
 DataQualityMaintenanceStore.dispatchToken = AppDispatcher.register(function(action) {
@@ -137,6 +162,16 @@ DataQualityMaintenanceStore.dispatchToken = AppDispatcher.register(function(acti
       // 基础属性页面数据
       case Action.GET_BASIC_PROPERTY_DATA:
         DataQualityMaintenanceStore.emitListDataChange(action.data);
+        break;
+      case Action.GET_BUILDING_BASIC_SUCCESS:
+        DataQualityMaintenanceStore.setBuilding(action.data);
+        DataQualityMaintenanceStore.emitChange();
+        break;
+      case Action.GET_ALL_INDUSTRIES_FOR_DATAQUALITY:
+        DataQualityMaintenanceStore.setIndustry(action.data);
+        break;
+      case Action.GET_ALL_ZONES_FOR_DATAQUALITY:
+        DataQualityMaintenanceStore.setZone(action.data);
         break;
     }
 });

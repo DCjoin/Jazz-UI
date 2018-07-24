@@ -30,7 +30,7 @@ export default class Organization extends Component {
     };
     let nodeType = this.props.nodeData.get("NodeType");
     return (
-      <div className="pop-manage-detail-header" style={{paddingTop:'10px',paddingLeft:'20px',paddingBottom:'8px', position:'relative'}}>
+      <div className="pop-manage-detail-header" style={{paddingTop:'10px',paddingLeft:'20px',paddingBottom:'6px', position:'relative'}}>
         <div className={classnames("pop-manage-detail-header-name", "jazz-header")}>
           <ViewableTextField  {...tagNameProps} />
           <div className={classnames("pop-user-detail-tabs","data-quality-tabs")}>

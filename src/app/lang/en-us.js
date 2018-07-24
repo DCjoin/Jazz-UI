@@ -74,6 +74,7 @@ I18N.MainMenu.CustomSetting = 'Customer';
 I18N.MainMenu.HierarchySetting = 'Hierarchy';
 I18N.MainMenu.CustomizedLabeling = 'Labelling';
 I18N.MainMenu.KPICycle = 'KPI Cycle';
+I18N.MainMenu.DataQuality = '数据质量';
 
 I18N.MainMenu.Calendar = 'Calendar';
 I18N.MainMenu.WorkdaySetting = 'Work day';

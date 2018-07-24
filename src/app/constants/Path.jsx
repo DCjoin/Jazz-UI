@@ -141,6 +141,7 @@ module.exports = {
     getrulebyid:'/vee/getrulebyid',
     updateRule:'/vee/updaterule',
     getdatastructurewithouttag:'/vee/getdatastructurewithouttag',
-    getdatastructuretags:'/vee/getdatastructuretags'
+    getdatastructuretags:'/vee/getdatastructuretags',
+    getBuilding:'/vee/info/building/{id}'
   }
 };
