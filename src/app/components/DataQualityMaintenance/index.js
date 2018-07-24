@@ -110,7 +110,7 @@ export default class DataQualityMaintenance extends Component {
   _renderNon() {
     return isDataQualityFull()?(<div className='flex-center'><Button onClick={this._openSSOHierarchyUrl} label={'+ ' + I18N.VEE.CreateDataStructure} outline secondary /></div>)
                               :(<div className="flex-center" style={{fontSixe:'16px',color:'#666666'}}>{I18N.VEE.NoPrivilege}</div>)
-  }     
+  }
 
   _showConfig(){
     this.setState({

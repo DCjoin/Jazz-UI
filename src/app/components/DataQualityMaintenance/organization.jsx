@@ -90,4 +90,6 @@ export default class Organization extends Component {
 }
 Organization.propTypes= {
   nodeData:PropTypes.object,
+  showLeft:PropTypes.bool,
+  onToggle:PropTypes.func,
 };

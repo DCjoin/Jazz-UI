@@ -75,8 +75,9 @@ export default class SummaryContentField extends Component {
     let NodeType = this.props.nodeData.get("NodeType"),
         tagId =  this.props.nodeData.get("Id"),
         startTime = moment(this.props.startTime).format('YYYY-MM-DDTHH:mm:ss'),
-        endTime = moment(this.props.endTime).format('YYYY-MM-DDTHH:mm:ss');
-    TagAction.getLineData(tagId, NodeType, startTime, endTime)
+        endTime = moment(this.props.endTime).format('YYYY-MM-DDTHH:mm:ss'),
+        SubType = this.props.nodeData.get("SubType");
+    TagAction.getLineData(tagId, NodeType, startTime, endTime,SubType)
   }
   _onChanged = (listData) => {
     this.setState({listData: listData})
@@ -133,9 +134,10 @@ export default class SummaryContentField extends Component {
                 {
                   this.state.listData.length
                   ? this.state.listData.map((v, i) => {
+                    let showTime = moment.utc(v.OccurTime).format(I18N.DateTimeFormat.IntervalFormat.RangeFullMinute);
                     return (
                       <li>
-                        <span className="drawer-time">{moment(v.OccurTime, "YYYY/MM/DD HH:MM").format("YYYY年MM月DD日 HH:MM")}</span>
+                        <span className="drawer-time">{showTime}</span>
                         {
                           v.PhysicalStatus
                           ? <span style={{color: '#32ad3c'}}>{I18N.VEE.onlineText}</span>

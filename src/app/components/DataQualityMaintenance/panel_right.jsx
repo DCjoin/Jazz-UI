@@ -10,7 +10,6 @@ import Organization from './organization.jsx'
 export default class Right extends Component {
   render() {
     let { selectedNode ,showLeft, onToggle ,filterType, startTime, endTime} = this.props;
-    console.log(DataQuality.nodeType, 'DataQuality.nodeType')
     if( selectedNode ){
       // TagContentField 数据点，SummaryContentField网关 ,selectedNode.get("NodeType")是5,6等
 
@@ -20,6 +19,7 @@ export default class Right extends Component {
                                     showLeft={showLeft}
                                     onToggle={onToggle}
                                     anomalyType={filterType}/>;
+        // 5
         case DataQuality.nodeType.Device:
         return <SummaryContentField nodeData={selectedNode}
                                     showLeft={showLeft}
@@ -28,6 +28,7 @@ export default class Right extends Component {
                                     startTime={startTime}
                                     endTime={endTime}
                                     />;
+          // 6
         case DataQuality.nodeType.GateWay:
             return <SummaryContentField nodeData={selectedNode}
                                         showLeft={showLeft}
@@ -40,9 +41,13 @@ export default class Right extends Component {
         case DataQuality.nodeType.Building:
             return <BuildingContentField nodeData={selectedNode}/>;
         case DataQuality.nodeType.Organization:
-            return <Organization nodeData={selectedNode}/>;
+            return <Organization  nodeData={selectedNode}
+                                  showLeft={showLeft}
+                                  onToggle={onToggle}/>;
         case DataQuality.nodeType.Site:
-            return <Organization nodeData={selectedNode}/>;
+            return <Organization  nodeData={selectedNode}
+                                  showLeft={showLeft}
+                                  onToggle={onToggle}/>;
       }
     }else{
       return(<Panel onToggle={onToggle} isFolded={showLeft}>

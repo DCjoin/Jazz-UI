@@ -311,11 +311,12 @@ let TagAction = {
     );
   },
   // 获取在线 / 离线浮层列表数据
-  getLineData: function(tagId, NodeType, startTime, endTime) {
+  getLineData: function(tagId, NodeType, startTime, endTime, SubType) {
     Ajax.post('/vee/onlinestatus', {
       params: {
         Id: tagId,
         NodeType: NodeType,
+        SubType: SubType,
         startTime: startTime,
         endTime: endTime
       },

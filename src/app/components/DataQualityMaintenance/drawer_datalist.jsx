@@ -418,7 +418,7 @@ let NewRawDataList = createReactClass({
 	          <div
 	            role="button"
 	          >
-	            <div className='jazz-ptag-rawdata-list'>
+	            <div className='jazz-ptag-rawdata-list' style={{width: '283px'}}>
 		          <div className='buttonGroup'>
 		              {nullValueBtn}
 		              {rollbackBtn}

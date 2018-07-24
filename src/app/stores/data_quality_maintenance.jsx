@@ -5,6 +5,7 @@ import PrototypeStore from './PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
 import {Action} from '../constants/actionType/data_quality_maintenance.jsx';
+import { couldStartTrivia } from '../../../node_modules/typescript';
 
 let _VEEDataStructure = Immutable.fromJS({}),
     _VEETagAnomaly = Immutable.fromJS({}),
@@ -13,6 +14,8 @@ let _VEEDataStructure = Immutable.fromJS({}),
     _rule=Immutable.fromJS({}),
     _hierarchys=null,
     _tags=null;
+// 基础属性
+let BASCI_PAGE_DATA = 'basic_page_data';
 
 var DataQualityMaintenanceStore = assign({},PrototypeStore,{
   requestVEEDataStructure() {
@@ -76,7 +79,17 @@ var DataQualityMaintenanceStore = assign({},PrototypeStore,{
   },
   getTags(){
     return _tags
-  }
+  },
+   // 基础属性
+   addListDataListener(callback) {
+    this.on(BASCI_PAGE_DATA, callback);
+  },
+  removeListDataListener(callback) {
+    this.removeListener(BASCI_PAGE_DATA, callback);
+  },
+  emitListDataChange(args) {
+    this.emit(BASCI_PAGE_DATA, args);
+  },
 });
 
 DataQualityMaintenanceStore.dispatchToken = AppDispatcher.register(function(action) {
@@ -121,9 +134,9 @@ DataQualityMaintenanceStore.dispatchToken = AppDispatcher.register(function(acti
         DataQualityMaintenanceStore.setTags(action.data);
         DataQualityMaintenanceStore.emitChange();
         break;
-      // 基础睡属性页面数据
+      // 基础属性页面数据
       case Action.GET_BASIC_PROPERTY_DATA:
-        DataQualityMaintenanceStore.emitChange(action.pagedata);
+        DataQualityMaintenanceStore.emitListDataChange(action.data);
         break;
     }
 });
