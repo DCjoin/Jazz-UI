@@ -34,6 +34,10 @@ export default class TextArea extends Component {
     return nextProps.value!==this.props.value || this.state.errorText!==nextState.errorText
   }
 
+  componentWillReceiveProps(nextProps){
+    this.validate(nextProps)
+  }
+
   render(){
     var {width,onChange,value}=this.props;
     var {errorText}=this.state;

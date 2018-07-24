@@ -65,14 +65,13 @@ export default class DataQualityMaintenance extends Component {
 
   _onChange() {
     let storeVEEDataStructure = DataQualityMaintenanceStore.getVEEDataStructure();
-    let selectedNode = this.state.selectedNode;
-    if( storeVEEDataStructure !== this.state.VEEDataStructure && !storeVEEDataStructure.get('_loading') && selectedNode && !hasNodeIdInTree( selectedNode.get('Id'), storeVEEDataStructure.getIn(['Tree', 0]) ) ) {
-      selectedNode = undefined;
+    let selectedNodeId = this.state.selectedNodeId;
+    if( storeVEEDataStructure !== this.state.VEEDataStructure && !storeVEEDataStructure.get('_loading') && selectedNodeId && !hasNodeIdInTree( selectedNodeId, storeVEEDataStructure.getIn(['Tree', 0]) ) ) {
 
       this.setState({
         VEEDataStructure: storeVEEDataStructure,
         scanSwitch: DataQualityMaintenanceStore.getScanSwitch(),
-        selectedNode: null,
+        selectedNodeId: null,
       });
     } else {
       this.setState({
@@ -120,7 +119,8 @@ export default class DataQualityMaintenance extends Component {
 
   render() {
     // filterType 字段控制负值、空值、跳变等字段的显示
-    let { VEEDataStructure, scanSwitch, selectedNode, filterType,exceptionNodeOnly } = this.state;
+    let { VEEDataStructure, scanSwitch, selectedNodeId, filterType,exceptionNodeOnly } = this.state;
+    var selectedNode=DataQualityMaintenanceStore.getDataNodeById(selectedNodeId);
     if( !VEEDataStructure || VEEDataStructure.get('_loading') ) {
       return <div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>
     }
@@ -132,17 +132,9 @@ export default class DataQualityMaintenance extends Component {
           scanSwitch={scanSwitch}
           selectedNode={selectedNode}
           onSelectNode={(nodeData) => {
-            this.setState(() => ({selectedNode: nodeData}));
+            this.setState(() => ({selectedNodeId: nodeData.get("Id")}));
             if( isBuilding(nodeData) ) {
               DataQualityMaintenanceAction.getScanSwitch( nodeData.get('Id') );
-            }
-            if(nodeData.get("IsNotRead")){
-              DataQualityMaintenanceAction.updatereadstatus( {"Id": nodeData.get('Id'),
-                                                              "NodeType": nodeData.get('NodeType'),
-                                                              "UpdateTime": moment().utc().format('YYYY-MM-DDTHH:mm:ss'),
-                                                              "IsNotRead": false,
-                                                              "UserId": CurrentUserStore.getCurrentUser().Id,
-                                                              "ExceptionType": this.state.filterType},nodeData);
             }
           }}
           hierarchy={VEEDataStructure.getIn(['Tree', 0, 'Children'])}
@@ -175,7 +167,7 @@ export default class DataQualityMaintenance extends Component {
         {VEEDataStructure.get('HasHierarchy') &&
         <Right
           showLeft={this.state.showLeft}
-          selectedNode={this.state.selectedNode}
+          selectedNode={selectedNode}
           onToggle={()=>{this.setState({showLeft:!this.state.showLeft})}}
           filterType={filterType}
           startTime={this.state.startTime}
