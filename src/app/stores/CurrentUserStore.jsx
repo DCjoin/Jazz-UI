@@ -369,7 +369,7 @@ if ( this.permit(PermissionCode.SOLUTION_FULL.FULL) ||
 
       if(this.permit(PermissionCode.DATA_QUALITY_MAINTENANCE.FULL) || this.permit(PermissionCode.DATA_QUALITY_MAINTENANCE.READONLY)){
         customerChildren.push({
-          title: '数据质量',
+          title: I18N.MainMenu.DataQuality,
           list: [
             {
               name: 'data_quality_maintenance',

@@ -1,52 +1,147 @@
 import React, { Component } from 'react';
-import Immutable from 'immutable';
+import PropTypes from 'prop-types';
+import DataQualityMaintenanceAction from 'actions/data_quality_maintenance.jsx';
+import DataQualityMaintenanceStore from 'stores/data_quality_maintenance.jsx';
+import Panel from 'controls/toggle_icon_panel.jsx';
+import _ from 'lodash-es';
+import ViewableMap from 'controls/ViewableMap.jsx';
+import {FontIcon} from 'material-ui';
+import classnames from 'classnames';
+import ViewableTextField from 'controls/ViewableTextField.jsx';
+import Spin from '@emop-ui/piano/spin';
 
-var building=Immutable.fromJS({
-            "id": 0,//层级节点ID
-            "parentId": 0,//父节点ID
-            "customerId": 0,//客户ID
-            "name": "string",//名称
-            "code": "string",
-            "type": 0,//层级类型：Customer=-1，Organization=0,Site=1,Building=2,Room=3,Panel=4,Device=5,Gatway=6
-            "systemIds": [//归属的产品类型 0,云能效;1,千里眼;2,机器顾问;8,信息顾问;32,变频顾问
-                0
-            ],
-            "industryId": 8,//所属行业
-            ZoneId:1,
-            "buildingArea": 0,//面积
-            "finishingDate": "2018-06-08T06:38:39.038Z",//竣工日期
-            "subType": 0,//楼宇类型：原来的建筑类型=1,项目=2,工厂车间=3
-            "customerName": "string",//客户名称
-            "logo": {//图标信息
-                "id": 0,
-                "hierarchyId": 0,
-                "logo": "string",//图标的相对路径
-                "imageId": "string"
-            },
-            "location": {//位置信息
-                "buildingId": 0,
-                Latitude:40.00644,
-                Longitude:116.494155,
-                "updateTime": "2018-06-08T06:38:39.039Z",
-                "province": "string",//省
-                "updateUser": "string",
-                "updateUserId": 0,
-                "cityId": 0,//城市ID
-                "address": "北京市朝阳区施耐德大厦A座"//详细地址
-            },
-            "administrators": [//维护负责人
-                {
-                "id": 0,
-                "hierarchyId": 0,
-                "name": "string",//姓名
-                "title": "string",//职位
-                "telephone": "string",//电话
-                "email": "string"//邮箱
-                }
-            ]
-})
+var Admin=({admin})=>{
+  var {Id,Name,Title,Telephone,Email}=admin;
+    return(
+      <div className="data-quality-building-basic-admin" id={Id}>
+        <div className="row">
+          <div className="name" title={Name}>{Name}</div>
+          <div className="title" title={Title}>{Title}</div>
+        </div>
+        <div className="row">
+          <FontIcon className='icon-massive-phone' color={"#999999"} style={{fontSize:'14px'}}/>
+          <div className="text" title={Telephone} style={{marginLeft:'6px'}}>{Telephone}</div>
+        </div>
+        <div className="row">
+        <FontIcon className='icon-email' color={"#999999"} style={{fontSize:'14px'}}/>
+          <div className="text" title={Email} style={{marginLeft:'6px'}}>{Email}</div>
+        </div>
+      </div>
+)}
+
 export default class BuildingContent extends Component {
-  render(){
-    return null
+
+  static contextTypes = {
+    router: PropTypes.object,
+  };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      building: null,
+    };
+
+    this._onChanged = this._onChanged.bind(this);
+
   }
+
+  _onChanged(){
+    this.setState({
+      building:DataQualityMaintenanceStore.getBuilding()
+    })
+  }
+
+  _renderHeader() {
+    var tagNameProps = {
+      ref: 'tagName',
+      isViewStatus: true,
+      title: I18N.Setting.Tag.TagName,
+      defaultValue: this.props.nodeData.get('Name') || '',
+      isRequired: true,
+    };
+    return (
+      <div className="pop-manage-detail-header" style={{paddingTop:'10px',paddingLeft:'20px',paddingBottom:'6px'}}>
+        <div className={classnames("pop-manage-detail-header-name", "jazz-header")} style={{position: 'relative'}}>
+          <ViewableTextField  {...tagNameProps} />
+        <div className={classnames("pop-user-detail-tabs","data-quality-tabs")}>
+                  <span className={classnames({
+          "pop-user-detail-tabs-tab": true,
+          "selected": true
+        })} data-tab-index="1">{I18N.VEE.Basic}</span>
+                </div>
+
+        </div>
+      </div>
+      );
+    }
+
+    _renderContent() {
+
+      if(this.state.building===null){
+        return(<div className="flex-center">
+        <Spin/>
+      </div>)
+      }
+      var style = {
+        display: 'flex',
+        padding:'24px 0 0 20px'
+      };
+      var {Code ,IndustryId ,ZoneId,Location,Administrators}=this.state.building.toJS();
+      return (
+        <div className="data-quality-building-basic" style={style}>
+          <div className="section">
+            <div className="title">{I18N.VEE.BasicProperty.Code}</div>
+            <div className="text">{Code}</div>
+          </div>
+          {IndustryId && IndustryId!==0 && <div className="section">
+            <div className="title">{I18N.Setting.Building.Industry}</div>
+            <div className="text">{_.find(DataQualityMaintenanceStore.getIndustry(),industry=>industry.Id===IndustryId).Comment}</div>
+          </div>}
+          {ZoneId && ZoneId!==0 && <div className="section">
+            <div className="title">{I18N.Setting.Building.Zone}</div>
+            <div className="text">{_.find(DataQualityMaintenanceStore.getZone(),zone=>zone.Id===ZoneId).Comment}</div>
+          </div>}
+          {Location && Location.Address && <div className="section">
+          <ViewableMap title={I18N.Setting.Building.Address} address={Location.Address} lng={Location.Longitude}  lat={Location.Latitude}  isView={true}></ViewableMap>
+          </div>}
+          {Administrators.length>0 && 
+            <div className="section">{Administrators.map(administrator=><Admin admin={administrator}/>)}</div>}
+        </div>
+        );
+}
+
+
+  componentDidMount() {
+    DataQualityMaintenanceStore.addChangeListener(this._onChanged);
+    DataQualityMaintenanceAction.getBuilding(parseInt(this.context.router.params.customerId),this.props.nodeData.get('Id'));
+  }
+
+  componentWillUnmount() {
+    DataQualityMaintenanceStore.removeChangeListener(this._onChanged);
+  }
+
+  render(){
+
+    return (
+      <div className={classnames({
+        'jazz-ptag-panel': true,
+        "jazz-ptag-left-fold": !this.props.showLeft,
+        "jazz-ptag-left-expand": this.props.showLeft,
+        "jazz-ptag-right-fold": !this.props.showRawDataList,
+        "jazz-ptag-right-expand": this.props.showRawDataList
+
+      })} style={{top:'56px',left:this.props.showLeft?'321px':'0'}}>
+      <Panel onToggle={this.props.onToggle} isFolded={this.props.showLeft}>
+        {this._renderHeader()}
+        {this._renderContent()}
+      </Panel>
+    </div>
+      );
+  }
+}
+
+BuildingContent.defaultProps={
+  showLeft:true,
+  showRawDataList:false,
 }
