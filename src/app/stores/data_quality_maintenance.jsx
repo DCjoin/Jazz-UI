@@ -12,7 +12,10 @@ let _VEEDataStructure = Immutable.fromJS({}),
     _VEESummary=Immutable.fromJS([]),
     _rule=Immutable.fromJS({}),
     _hierarchys=null,
-    _tags=null;
+    _tags=null,
+    _building=null,
+    _industry=null,
+    _zone=null;
 
 var DataQualityMaintenanceStore = assign({},PrototypeStore,{
   requestVEEDataStructure() {
@@ -76,6 +79,24 @@ var DataQualityMaintenanceStore = assign({},PrototypeStore,{
   },
   getTags(){
     return _tags
+  },
+  setBuilding(data){
+    _building=Immutable.fromJS(data)
+  },
+  getBuilding(){
+    return _building
+  },
+  setIndustry(data){
+    _industry=data
+  },
+  getIndustry(){
+    return _industry
+  },
+  setZone(data){
+    _zone=data
+  },
+  getZone(){
+    return _zone
   }
 });
 
@@ -124,6 +145,16 @@ DataQualityMaintenanceStore.dispatchToken = AppDispatcher.register(function(acti
       // 基础睡属性页面数据
       case Action.GET_BASIC_PROPERTY_DATA:
         DataQualityMaintenanceStore.emitChange(action.pagedata);
+        break;
+      case Action.GET_BUILDING_BASIC_SUCCESS:
+        DataQualityMaintenanceStore.setBuilding(action.data);
+        DataQualityMaintenanceStore.emitChange();
+        break;
+      case Action.GET_ALL_INDUSTRIES_FOR_DATAQUALITY:
+        DataQualityMaintenanceStore.setIndustry(action.data);
+        break;
+      case Action.GET_ALL_ZONES_FOR_DATAQUALITY:
+        DataQualityMaintenanceStore.setZone(action.data);
         break;
     }
 });

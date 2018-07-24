@@ -74,6 +74,7 @@ I18N.MainMenu.CustomSetting = '自定义配置';
 I18N.MainMenu.HierarchySetting = '层级配置';
 I18N.MainMenu.CustomizedLabeling = '能效标识';
 I18N.MainMenu.KPICycle = '指标计算周期';
+I18N.MainMenu.DataQuality = '数据质量';
 
 I18N.MainMenu.Calendar = '日历配置';
 I18N.MainMenu.WorkdaySetting = '工休日';
