@@ -5,7 +5,7 @@ import PrototypeStore from './PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
 import {Action} from '../constants/actionType/data_quality_maintenance.jsx';
-import { couldStartTrivia } from '../../../node_modules/typescript';
+// import { couldStartTrivia } from '../../../node_modules/typescript';
 
 let _VEEDataStructure = Immutable.fromJS({}),
     _VEETagAnomaly = Immutable.fromJS({}),
