@@ -242,7 +242,7 @@ let NewRawDataList = createReactClass({
     }
 
     var style = {
-      height: document.body.offsetHeight - 150
+      height: document.body.offsetHeight - 85
     };
     return (
       <div className="list" ref='list' style={style} onScroll={that._onScroll}>
@@ -273,7 +273,7 @@ let NewRawDataList = createReactClass({
 
     });
     var style = {
-      height: document.body.offsetHeight - 150
+      height: document.body.offsetHeight - 85
     };
     return (
       <div className="list" ref='list' style={style}>

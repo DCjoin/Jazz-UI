@@ -258,7 +258,7 @@ let TagAction = {
       nId: nId
     });
   },
-  modifyTagRawData:function(newEnergyData,orgEnergyData ){
+  modifyTagRawData:function(newEnergyData, orgEnergyData){
     var that=this;
     Ajax.post('/Energy/ModifyTagRawData', {
       params: {
