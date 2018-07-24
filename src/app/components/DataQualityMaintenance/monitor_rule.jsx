@@ -73,13 +73,6 @@ export default class MonitorRule extends Component {
       )
     }else{
       var {CheckNull,CheckNegative ,CheckJumping }=this.state.rule.toJS();
-      if(!CheckNull && !CheckNegative && !CheckJumping){
-        return(
-          <div className="data-quality-rule" style={{display:'flex',flex:'1',justifyContent:'center',alignItems:'center'}}>
-            {I18N.VEE.Rule.NoRule}
-          </div>
-        )
-      }else{
         return(
             this.state.formStatus===formStatus.VIEW?
                   <ViewedRule rule={this.state.rule} onEdited={()=>{this.setState({formStatus:formStatus.EDIT})}}/>
@@ -113,7 +106,7 @@ export default class MonitorRule extends Component {
                                  })
                                }}/>         
         )
-      }
+
 
     }
   }
