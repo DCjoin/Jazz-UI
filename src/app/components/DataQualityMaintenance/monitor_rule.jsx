@@ -95,11 +95,11 @@ export default class MonitorRule extends Component {
                                onChange={(path,value)=>{
                                  var rule=this.state.rule.set(path,value);
                                  if(path==='CheckNull'){
-                                  rule=rule.set("NotifyConsecutiveHours",8);
-                                  rule=rule.set("IsAutoRepairNull",true);
+                                  rule=rule.set("NotifyConsecutiveHours",value?8:0);
+                                  rule=rule.set("IsAutoRepairNull",value);
                                  }
                                  if(path==='CheckJumping'){
-                                  rule=rule.set("JumpingRate",500);
+                                  rule=rule.set("JumpingRate",value?500:0);
                                  }
                                  this.setState({
                                   rule:rule

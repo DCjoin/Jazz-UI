@@ -24,6 +24,18 @@ var DataQualityMaintenanceStore = assign({},PrototypeStore,{
   setVEEDataStructure(data){
     _VEEDataStructure = Immutable.fromJS(data);
   },
+  getDataNodeById(id){
+    var node=null;
+    var f=(data)=>{
+      if(data.get("Id")===id){
+        node=data
+      }else if(data.get("Children") && data.get("Children").size>0){
+        data.get("Children").forEach(child=>{f(child)})
+      }
+    }
+    if(_VEEDataStructure.size!==0 && !_VEEDataStructure.get('_loading') && _VEEDataStructure.get('Tree').size>0){_VEEDataStructure.getIn(['Tree', 0, 'Children']).forEach(child=>{f(child)});}
+    return node
+  },
   getVEEDataStructure(){
     return _VEEDataStructure;
   },
