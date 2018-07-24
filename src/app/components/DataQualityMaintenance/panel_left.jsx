@@ -272,7 +272,7 @@ export default class Left extends Component {
     return (
       <div className='data-quality-maintenance-left'>
         <div className='data-quality-maintenance-filter-time'>
-          <div className="text">{I18N.VEE.MonitorTime+"："}</div>
+          <div className="text" style={{color:!filterType?'#c0c0c0':'#626469'}}>{I18N.VEE.MonitorTime+"："}</div>
           <DateTimeSelector disabled={!filterType} isDateViewStatus={true} ref='dateTimeSelector' showTime={false} endLeft='-100px' startDate={startDate} endDate={endDate}  _onDateSelectorChanged={this._onDateSelectorChanged}/>
         </div>
         <FilterBar onChange={onChangeFilterType} value={filterType} />

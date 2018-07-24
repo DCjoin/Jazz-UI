@@ -8,6 +8,7 @@ import moment from 'moment';
 import Calendar from './calendar/Calendar.jsx';
 import ClickAway from './ClickAwayListener.jsx';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 const pattern1 = /^\d{4}-\d{2}-\d{2}$/;
 const format1 = "YYYY-MM-DD";
 const pattern2 = /^\d{4}\/\d{2}\/\d{2}$/;
@@ -202,7 +203,8 @@ class DatePicker extends React.Component {
 
     return (
       <div className={this.props.datePickerClassName}>
-        {this.props.isDateEdited?this._renderTextField(error):<div className="jazz-viewableDatePicker jazz-viewableTextField" style={style} onClick={!this.props.disabled?()=>{this.setState({popup:true})}:()=>{}}>
+        {this.props.isDateEdited?this._renderTextField(error):<div className={classnames({"jazz-viewableDatePicker":true,"jazz-viewableTextField":true,'disabled':this.props.disabled})}
+        style={style} onClick={!this.props.disabled?()=>{this.setState({popup:true})}:()=>{}}>
                 <div className="jazz-viewable-title" >{this.props.title}</div>
                 <div style={{fontSize:'14px',color:this.props.disabled?'#c0c0c0':'#626469'}}>{this.props.value}</div>
               </div>}
