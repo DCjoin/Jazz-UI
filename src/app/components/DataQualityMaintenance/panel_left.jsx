@@ -20,6 +20,10 @@ import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 
 var isDataQualityFull=()=>privilegeUtil.isFull( PermissionCode.DATA_QUALITY_MAINTENANCE, CurrentUserStore.getCurrentPrivilege() )
 
+function hasNodeIdInTree( id, tree ) {
+  return tree.get('Id') === id || tree.get('Children').some( hasNodeIdInTree.bind(null, id) );
+}
+
 class PureTree extends PureComponent {
   render() {
     let { hierarchy, selectedNode, onSelectNode, generateNodeConent, checkCollapseStatus } = this.props;
@@ -156,7 +160,7 @@ export default class Left extends Component {
     let { selectedNode } = this.props,
     children = node.get('Children');
     if( selectedNode ) {
-      return !(selectedNode.get('ParentId') === node.get('Id'))
+      return !(selectedNode.get('ParentId') === node.get('Id')) && !hasNodeIdInTree(selectedNode.get("Id"),node)
     }
     return children.some(child => child.get('NodeType') === 999);
 
