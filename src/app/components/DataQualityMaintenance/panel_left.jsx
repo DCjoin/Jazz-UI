@@ -90,7 +90,7 @@ class FilterBar extends PureComponent {
         <PopupPaper
           open={this.state.open}
           onRequestClose={this._handleRequestClose}
-          style={{width: 232,position:'absolute',top:'48px'}}
+          style={{width: 232,position:'absolute',top:'48px',left:'16px',zIndex:'100px'}}
         >
         <div style={{padding:'6px 0'}}>
         {FilterItems.map( item =>
