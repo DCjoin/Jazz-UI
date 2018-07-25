@@ -128,7 +128,7 @@ export default class SummaryContentField extends Component {
                   overlayStyle={{backgroundColor: 'none'}}
                   onRequestChange={() => this.setState({openDrawer: false})}
             >
-		        <div>
+		        <div style={{height:'100%'}}>
             <ul className="line-drawer-ul">
               <li style={{color: '#333', fontSize: '16px', backgroundColor: '#f4f5f8'}}>{I18N.VEE.TransLineInfo}</li>
                 {
@@ -146,7 +146,7 @@ export default class SummaryContentField extends Component {
                       </li>
                     )
                   })
-                  : null
+                  : <p className="none-info-tips">{I18N.VEE.NoneOnlineandOfflineInformation}</p>
                 }
             </ul>
 	          </div>

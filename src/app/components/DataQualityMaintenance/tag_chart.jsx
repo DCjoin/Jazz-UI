@@ -148,7 +148,6 @@ export default class TagChart extends Component {
       let tagId = this.props.selectedTag.get('Id'),
           start = moment(this.state.start).subtract(8, 'hours').format('YYYY-MM-DDTHH:mm:ss'),
           end = moment(this.state.end).subtract(8, 'hours').format('YYYY-MM-DDTHH:mm:ss');
-        console.log('manualScanTag',tagId,start,end)
         TagAction.manualScanTag(tagId,start,end);
   }
   _renderToolBar() {
@@ -231,7 +230,7 @@ export default class TagChart extends Component {
                   openToast: false,
               })
             }}>
-            撤销修复成功
+            {I18N.VEE.Notice.RollBackSuccess}
         </Toast>
       </div>
       )

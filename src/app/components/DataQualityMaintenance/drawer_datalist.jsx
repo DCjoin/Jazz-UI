@@ -348,10 +348,10 @@ let NewRawDataList = createReactClass({
         selectedId: -1
       })
     }
-    if (nextProps.step !== this.props.step) {
-      let head = ReactDom.findDOMNode(this.refs.header);
-      head.style.display = 'none';
-    }
+    // if (nextProps.step !== this.props.step) {
+    //   let head = ReactDom.findDOMNode(this.refs.header);
+    //   head.style.display = 'none';
+    // }
   },
   componentWillUnmount: function() {
     TagStore.removeTagDatasChangeListener(this._onChanged);
