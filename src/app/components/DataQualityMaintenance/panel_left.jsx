@@ -43,6 +43,9 @@ class PureTree extends PureComponent {
   }
 }
 
+var DataManageButton=({value,onClick})=>(
+  <div className="data-quality-manage-button"></div>
+)
 const FilterItems = [{
   id: 1,
   text: I18N.Setting.VEEMonitorRule.NullValue,
@@ -72,42 +75,6 @@ class FilterBar extends PureComponent {
       open: false,
     }));
   }
-//   <div className="data-quality-maintenance-filter-node" style={{position:'relative'}}>
-//   <TextFiled
-//     suffixIconClassName='icon-drop-down'
-//     width={294}
-//     onClick={(e) => {
-//       this.setState({
-//         open: true,
-//         anchorEl: e.currentTarget.parentNode,
-//       });
-//     }}
-//     value={FilterItems.filter( item => item.Id === value )[0].Text}
-//   />
-//   <PopupPaper
-//     open={this.state.open}
-//     onRequestClose={this._handleRequestClose}
-//     style={{width: 232,position:'absolute',top:'48px',left:'16px',zIndex:'100px'}}
-//   >
-//   <div style={{padding:'6px 0'}}>
-//   {FilterItems.map( item =>
-//     <div
-//       style={{
-//         width: 192
-//       }}
-//       className={classnames('select-hour-item', {
-//         selected: item.Id === value
-//       })}
-//       onClick={() => {
-//         this._handleRequestClose();
-//         onChange(item.Id);
-//       }}>
-//       {item.Text}
-//     </div>
-//   )}</div>
-  
-//   </PopupPaper>
-// </div>
   render() {
     let { value, onChange } = this.props;
     return (
