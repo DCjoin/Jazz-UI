@@ -600,7 +600,7 @@ export default class NewLogin extends Component {
 						<a className='contact-us-link' href='javascript:void(0)' target="_blank">
 				  		{I18N.Login.CorruptionCenter}
 				  		<div className='contact-us-card' style={{width: '300px'}}>
-				  			<div>{I18N.Login.CorruptionTelephone}  186-1688-5310</div>
+				  			<div>{I18N.Login.CorruptionTelephone}  010-65037064</div>
 				  			<div>{I18N.Login.CorruptionMail}  xiaodi-max.wang@schneider-electric.com</div>
 				  		</div>
 				  	</a>
