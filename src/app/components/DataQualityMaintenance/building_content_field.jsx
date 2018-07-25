@@ -56,7 +56,7 @@ export default class BuildingContent extends Component {
     var tagNameProps = {
       ref: 'tagName',
       isViewStatus: true,
-      title: I18N.Setting.Tag.TagName,
+      title: I18N.Setting.KPI.Group.BuildingConfig.Name,
       defaultValue: this.props.nodeData.get('Name') || '',
       isRequired: true,
     };
