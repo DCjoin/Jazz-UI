@@ -159,7 +159,9 @@ export default class TagChart extends Component {
       },
       labelStyle = {
         color: '#464949',
-        fontSize: '12px'
+        fontSize: '14px',
+        height: '30px',
+        lineHeight:'30px'
       },
       pauseBtnStyle = {
         border: '1px solid #e6e6e6',
@@ -168,14 +170,6 @@ export default class TagChart extends Component {
         width: '92px',
         backgroundColor: '#ffffff',
         marginLeft:'10px'
-      },
-      listBtnStyle = {
-        fontSize: '36px',
-        marginLeft: '30px',
-        height: '36px',
-        marginTop: '-8px',
-        cursor: 'pointer',
-        color: '#767a7a'
       };
     // var autoRepairBtn = <FlatButton key={'autoRepairBtn'} label={I18N.Setting.VEEMonitorRule.AutoRepair}
     // style={pauseBtnStyle} labelStyle={labelStyle} onClick={() => {
@@ -211,7 +205,7 @@ export default class TagChart extends Component {
           <div className='label' style={{lineHeight:'20px'}}>
             {label + uom}
           </div>
-          {this.props.selectedTag.get('IsAccumulated') ? 
+          {this.props.selectedTag.get('IsAccumulated') ?
           <FontIcon className={classnames('icon-change','hover')}
            color={"#32AD3C"} hoverColor={"#3DCD58"} style={switchIconStyle} ref="switchIcon" onClick={this._onSwitchRawDataView}/> : null}
         </div>
@@ -287,18 +281,6 @@ export default class TagChart extends Component {
       timeRanges: obj.timeRanges,
       refresh: this.state.refresh
     };
-
-    var listProps = {
-      isRawData: this.state.isRawData,
-      step: this.props.selectedTag.get('CalculationStep'),
-      selectedTag: this.props.selectedTag,
-      openDrawer: this.state.onDrawerShow,
-      filterType: this.props.filterType,
-      onRequestChange: this._onDrawerRequestChange, // 点击其他区域关闭的func
-      rollBack: this._onRollback,  // 侧消修复的func
-      nullValRepair: this._onNullValRepair, // 空值修复的func
-      onRawDataChange:this._onRawDataChange // 渲染列表的func
-    }
     if (this.state.tagData.getIn(['TargetEnergyData', 0, 'EnergyData']).size === 0) {
       return (
         <div style={{
@@ -317,9 +299,7 @@ export default class TagChart extends Component {
         }}>
           <ChartPanel {...chartProps}/>
           {this._renderComment()}
-          <div style={{display: 'flex'}}>
-              <RawDataList {...listProps} />
-          </div>
+
         </div>
         )
     }
@@ -364,34 +344,32 @@ export default class TagChart extends Component {
     TagStore.removeTagDatasUpdateListener(this._onUpdate);
   }
 
-
-
   render() {
-
-    if (this.state.isLoading) {
-      return (
-        <div style={{
-          display: 'flex',
-          flex: 1,
-          'alignItems': 'center',
-          'justifyContent': 'center'
-        }}>
-                    <Spin/>
-                  </div>
-        )
-
-    } else {
-      return (
-        <div className='jazz-ptag-rawdata'>
-            {this._renderToolBar()}
-            {this._renderChartComponent()}
-        </div>
-        )
+    let listProps = {
+      isRawData: this.state.isRawData,
+      step: this.props.selectedTag.get('CalculationStep'),
+      selectedTag: this.props.selectedTag,
+      openDrawer: this.state.onDrawerShow,
+      filterType: this.props.filterType,
+      onRequestChange: this._onDrawerRequestChange, // 点击其他区域关闭的func
+      rollBack: this._onRollback,  // 侧消修复的func
+      nullValRepair: this._onNullValRepair, // 空值修复的func
+      onRawDataChange:this._onRawDataChange // 渲染列表的func
     }
-
-
+      return(
+            <div className='jazz-ptag-rawdata'>
+              {
+                this.state.isLoading
+                  ? <div style={{display: 'flex', flex: 1, alignItems: 'center', justifyContent: 'center'}}><Spin/></div>
+                  :  <div>{this._renderToolBar()}
+                      {this._renderChartComponent()}</div>
+                }
+                <div style={{display: 'flex'}}>
+                    <RawDataList {...listProps} />
+                </div>
+            </div>
+      )
   }
-
 }
 
 TagChart.propTypes= {

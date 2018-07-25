@@ -71,16 +71,18 @@ export default class SummaryContentField extends Component {
     }
   // 在线离线操作
   _onLineAndOffline = () => {
-    this.setState({openDrawer: true});
     let NodeType = this.props.nodeData.get("NodeType"),
         tagId =  this.props.nodeData.get("Id"),
         startTime = moment(this.props.startTime).format('YYYY-MM-DDTHH:mm:ss'),
         endTime = moment(this.props.endTime).format('YYYY-MM-DDTHH:mm:ss'),
         SubType = this.props.nodeData.get("SubType");
-    TagAction.getLineData(tagId, NodeType, startTime, endTime,SubType)
+    TagAction.getLineData(tagId, NodeType, startTime, endTime,SubType);
   }
   _onChanged = (listData) => {
-    this.setState({listData: listData})
+    this.setState({
+      listData: listData,
+      openDrawer: true
+    })
   }
   _renderContent() {
       var content = null;
