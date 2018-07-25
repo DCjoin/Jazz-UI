@@ -14,6 +14,7 @@ import PropTypes from 'prop-types';
 import TagSelect from './tag_select.jsx';
 import DataQualityMaintenanceAction from 'actions/data_quality_maintenance.jsx';
 import Regex from 'constants/Regex.jsx';
+import Toast from '@emop-ui/piano/toast';
 
 function stepLabelProps(stepValue, currentStep) {
 	let props = {
@@ -71,6 +72,7 @@ export default class RulesConfigration extends Component {
     this.state = {
       step: 0,
       leaveTipShow:false,
+      toastShow:false,
       rule:Immutable.fromJS({// Id: 0,
         // Name: "string",
         CustomerId:parseInt(this.props.customerId),
@@ -170,8 +172,15 @@ export default class RulesConfigration extends Component {
           {this.state.step===1 && <Button label={I18N.Common.Button.Save} raised 
                   style={{width:'86px'}} 
                   onClick={()=>{
-                   DataQualityMaintenanceAction.updateRule(this._getSaveParams());
+                  if(this.state.selectTags.length===0){
+                    this.setState({
+                      toastShow:true
+                    })
+                  }else{
+                    DataQualityMaintenanceAction.updateRule(this._getSaveParams());
                    this.props.onCancel();
+                  }
+                   
                   }}/>}
           <Button label={I18N.Common.Button.Cancel2} outline secondary style={{width:'86px',marginLeft:'16px'}} onClick={()=>{
             this.setState({
@@ -193,6 +202,11 @@ export default class RulesConfigration extends Component {
             </div>
             {this._renderFooter()}
             {this.state.leaveTipShow && this._renderLeaveTip()}
+            <Toast autoHideDuration={4000} className='toast-tip' open={this.state.toastShow} onRequestClose={() => {
+              this.setState({
+                toastShow: false,
+              })
+        }}><div className='icon-check-circle'>{I18N.VEE.Rule.NoSelectTagTip}</div></Toast>
           </div>
         )
     }

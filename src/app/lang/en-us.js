@@ -2929,6 +2929,7 @@ I18N.VEE.onlineText = '在线';
 I18N.VEE.offlineText = '离线';
 I18N.VEE.NoneOnlineandOfflineInformation = '暂无在线/离线消息';
 I18N.VEE.Rule.SelectTagTip = '请在左侧选择要查看的节点';
+I18N.VEE.Rule.NoSelectTagTip = '请至少选择一个数据点';
 I18N.VEE.BasicProperty = {};
 I18N.VEE.BasicProperty.Code = '编码';
 I18N.VEE.BasicProperty.Relate = '关联要素';
