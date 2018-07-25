@@ -212,21 +212,24 @@ app.get('/:lang/sso-redirect-hierarchy/:customerId', (req, res) => {
     CustomerId: req.params.customerId // 当前CustomerId
   };
   let parStr = encodeURIComponent(JSON.stringify(parObj));
-
+  console.log("******wyh*****");
+  console.log(JAZZ_MILL_UI_URL + req.params.lang+ "/sso/acs"+"?par=" + parStr)
   const sp = ServiceProvider({
     privateKey: fs.readFileSync(__dirname + '/SE-SP.pem'),
     privateKeyPass: 'sesp!@#',
     requestSignatureAlgorithm: 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256',
-    metadata: fs.readFileSync(__dirname + '/metadata_sp.xml', "utf-8").replace('${SSO_ACS_URL}', "https://emop-pft.energymost.com/zh-cn/sso/acs"+"?par=" + parStr)
-    // metadata: fs.readFileSync(__dirname + '/metadata_sp.xml', "utf-8").replace('${SSO_ACS_URL}', JAZZ_MILL_UI_URL + req.params.lang+ "/sso/acs"+"?par=" + parStr)
+    // metadata: fs.readFileSync(__dirname + '/metadata_sp.xml', "utf-8").replace('${SSO_ACS_URL}', "https://emop-pft.energymost.com/zh-cn/sso/acs"+"?par=" + parStr)
+    metadata: fs.readFileSync(__dirname + '/metadata_sp.xml', "utf-8").replace('${SSO_ACS_URL}', JAZZ_MILL_UI_URL + req.params.lang+ "/sso/acs"+"?par=" + parStr)
 
   });
 
   const idp = IdentityProvider({
-    metadata: fs.readFileSync(__dirname + '/onelogin_metadata.xml', "utf-8").split('${GUARD_UI_HOST}').join("http://passport-pft.energymost.com/Saml/SignOnService")
+    // metadata: fs.readFileSync(__dirname + '/onelogin_metadata.xml', "utf-8").split('${GUARD_UI_HOST}').join("http://passport-pft.energymost.com/Saml/SignOnService")
 
-    // metadata: fs.readFileSync(__dirname + '/onelogin_metadata.xml', "utf-8").split('${GUARD_UI_HOST}').join(GUARD_UI_HOST + "Saml/SignOnService")
+    metadata: fs.readFileSync(__dirname + '/onelogin_metadata.xml', "utf-8").split('${GUARD_UI_HOST}').join(GUARD_UI_HOST + "Saml/SignOnService")
   });
+  console.log("******wyh*****");
+  console.log(GUARD_UI_HOST + "Saml/SignOnService")
 
 
   const url = sp.createLoginRequest(idp, 'redirect');
