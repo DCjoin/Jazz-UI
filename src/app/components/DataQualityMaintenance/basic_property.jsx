@@ -107,13 +107,21 @@ let Html3 = createReactClass({
    data: PropTypes.object
  },
  render: function() {
-  let pageData = this.props.pageData;
+
+  let pageData = this.props.pageData,
+      CollectionMethod = '';
+  if (pageData.CollectionMethod == 1) {
+    CollectionMethod = I18N.Setting.Tag.Meter;
+  } else if (pageData.CollectionMethod == 2) {
+    CollectionMethod = I18N.Setting.Tag.Manual;
+  }
+
    return (
    <div>
      <div className="tagbasicline">
         <div>
           <p>{I18N.VEE.BasicProperty.CollectionType}</p>
-          <p className='content'>{pageData.CollectionMethod == 1 ? I18N.Setting.Tag.Meter : I18N.Setting.Tag.Manual}</p>
+          <p className='content'>{CollectionMethod}</p>
         </div>
         <div>
           <p>{I18N.VEE.BasicProperty.Code}</p>
