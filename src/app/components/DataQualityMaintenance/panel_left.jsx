@@ -7,7 +7,7 @@ import { Popover, PopoverAnimationVertical } from 'material-ui/Popover';
 import TextFiled from '@emop-ui/piano/text';
 import Button from '@emop-ui/piano/button';
 import { nodeType } from 'constants/TreeConstants.jsx';
-
+import SelectField from '@emop-ui/piano/select-field';
 import {dateAdd} from 'util/Util.jsx';
 
 import Tree from 'controls/tree/Tree.jsx';
@@ -44,17 +44,17 @@ class PureTree extends PureComponent {
 }
 
 const FilterItems = [{
-  Id: 1,
-  Text: I18N.Setting.VEEMonitorRule.NullValue,
+  id: 1,
+  text: I18N.Setting.VEEMonitorRule.NullValue,
 }, {
-  Id: 2,
-  Text: I18N.Setting.VEEMonitorRule.NegativeValue,
+  id: 2,
+  text: I18N.Setting.VEEMonitorRule.NegativeValue,
 }, {
-  Id: 4,
-  Text: I18N.Setting.VEEMonitorRule.JumpValue,
+  id: 4,
+  text: I18N.Setting.VEEMonitorRule.JumpValue,
 }, {
-  Id: 0,
-  Text: I18N.VEE.AllNode,
+  id: 0,
+  text: I18N.VEE.AllNode,
 }, ]
 
 class FilterBar extends PureComponent {
@@ -72,44 +72,51 @@ class FilterBar extends PureComponent {
       open: false,
     }));
   }
+//   <div className="data-quality-maintenance-filter-node" style={{position:'relative'}}>
+//   <TextFiled
+//     suffixIconClassName='icon-drop-down'
+//     width={294}
+//     onClick={(e) => {
+//       this.setState({
+//         open: true,
+//         anchorEl: e.currentTarget.parentNode,
+//       });
+//     }}
+//     value={FilterItems.filter( item => item.Id === value )[0].Text}
+//   />
+//   <PopupPaper
+//     open={this.state.open}
+//     onRequestClose={this._handleRequestClose}
+//     style={{width: 232,position:'absolute',top:'48px',left:'16px',zIndex:'100px'}}
+//   >
+//   <div style={{padding:'6px 0'}}>
+//   {FilterItems.map( item =>
+//     <div
+//       style={{
+//         width: 192
+//       }}
+//       className={classnames('select-hour-item', {
+//         selected: item.Id === value
+//       })}
+//       onClick={() => {
+//         this._handleRequestClose();
+//         onChange(item.Id);
+//       }}>
+//       {item.Text}
+//     </div>
+//   )}</div>
+  
+//   </PopupPaper>
+// </div>
   render() {
     let { value, onChange } = this.props;
     return (
-      <div className="data-quality-maintenance-filter-node" style={{position:'relative'}}>
-        <TextFiled
-          suffixIconClassName='icon-drop-down'
-          width={294}
-          onClick={(e) => {
-            this.setState({
-              open: true,
-              anchorEl: e.currentTarget.parentNode,
-            });
-          }}
-          value={FilterItems.filter( item => item.Id === value )[0].Text}
-        />
-        <PopupPaper
-          open={this.state.open}
-          onRequestClose={this._handleRequestClose}
-          style={{width: 232,position:'absolute',top:'48px',left:'16px',zIndex:'100px'}}
-        >
-        <div style={{padding:'6px 0'}}>
-        {FilterItems.map( item =>
-          <div
-            style={{
-              width: 192
-            }}
-            className={classnames('select-hour-item', {
-              selected: item.Id === value
-            })}
-            onClick={() => {
-              this._handleRequestClose();
-              onChange(item.Id);
-            }}>
-            {item.Text}
-          </div>
-        )}</div>
-        
-        </PopupPaper>
+      <div className="data-quality-maintenance-filter-node">
+        <SelectField width={294}
+                     value={value} 
+                     menuItems={FilterItems}
+                     menuClassName="data-quality-maintenance-filter-node-menu"
+                     onChange={onChange}/>
       </div>
     );
   }
