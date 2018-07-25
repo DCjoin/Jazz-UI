@@ -1,8 +1,7 @@
 import React, { Component, PureComponent } from 'react';
 
 import classnames from 'classnames';
-
-import { CircularProgress } from 'material-ui';
+import { CircularProgress ,FontIcon} from 'material-ui';
 import { Popover, PopoverAnimationVertical } from 'material-ui/Popover';
 import TextFiled from '@emop-ui/piano/text';
 import Button from '@emop-ui/piano/button';
@@ -43,9 +42,18 @@ class PureTree extends PureComponent {
   }
 }
 
-var DataManageButton=({value,onClick})=>(
-  <div className="data-quality-manage-button"></div>
+var DataManageButton=({label,onClick})=>(
+  <div className="data-quality-manage-button" onClick={onClick}>{label}</div>
 )
+
+var MoreButton=({label,onClick})=>(
+  <div className="data-quality-more-button" onClick={onClick}>
+    <div className="text">{label}</div>
+    <FontIcon className="icon-drop-down" style={{fontSize:'16px',marginLeft:'4px',color:'#626469'}}/>
+  </div>
+)
+
+
 const FilterItems = [{
   id: 1,
   text: I18N.Setting.VEEMonitorRule.NullValue,
@@ -254,50 +262,31 @@ export default class Left extends Component {
         <div className='data-quality-maintenance-hierarchy'>
           <PureTree hierarchy={hierarchy} selectedNode={selectedNode} onSelectNode={onSelectNode} generateNodeConent={this._generateNodeConent} checkCollapseStatus={this._checkCollapseStatus}/>
         </div>
-        {isDataQualityFull() && <div className='data-quality-maintenance-actions-bar'>
+        {isDataQualityFull() && <div className='data-quality-maintenance-actions-bar' style={{position:'relative'}}>
           <div onClick={showConfig}>{I18N.VEE.ConfigRule}</div>
          
-        {isBuilding?<Button label={I18N.Common.Button.More}
-                labelPosition="after"
-                outline secondary
-                iconClassName="icon-drop-down"
-                style={{flex:1,borderRadius:'0px'}}
-                iconStyle={{marginTop: '4px'}}
-                onClick={(e) => {
-                  // if( isBuilding ) {
-                    this.setState({
-                      openPopover: true,
-                      popoverAnchorEl: e.currentTarget,
-                    });
-                  // } else {
-                  //   onOpenHierarchy();
-                  // }
-                }}/>:<Button label={I18N.VEE.ManageData}
-                outline secondary
-                style={{flex:1,borderRadius:'0px'}}
-                onClick={(e) => {
+        {isBuilding?<MoreButton label={I18N.Common.Button.More}
+                                onClick={(e) => {
+                                  // if( isBuilding ) {
+                                    this.setState({
+                                      openPopover: true,
+                                      popoverAnchorEl: e.currentTarget,
+                                    });
+                                  // } else {
+                                  //   onOpenHierarchy();
+                                  // }
+                                }}/>:<DataManageButton label={I18N.VEE.ManageData} onClick={(e) => {
                   onOpenHierarchy();
                 }}/>}
-        </div>}
-        {this.state.openPopover && <Popover
-          style={{
-            padding:'6px 0',
-            
-          }}
-          open={this.state.openPopover}
-          anchorEl={this.state.popoverAnchorEl}
-          anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-          targetOrigin={{horizontal: 'right', vertical: 'bottom'}}
-          onRequestClose={this._handleRequestClose}
-          animation={PopoverAnimationVertical}
-        >
-          <div
-            className='data-quality-maintenance-actions-popover-item'
-            onClick={() => {
-              onOpenHierarchy();
-              this._handleRequestClose();
-            }}
-          >
+        {this.state.openPopover && 
+          <PopupPaper style={{padding:'6px 0',position:'absolute',right:'0',bottom:'37px'}} onRequestClose={this._handleRequestClose} open={this.state.openPopover}>
+            <div
+              className='data-quality-maintenance-actions-popover-item'
+              onClick={() => {
+                onOpenHierarchy();
+                this._handleRequestClose();
+              }}
+            >
             {I18N.VEE.ManageData}
           </div>
           {isBuilding && <div className='data-quality-maintenance-actions-popover-item' onClick={() => {
@@ -311,7 +300,9 @@ export default class Left extends Component {
             <div className='flex-center'><CircularProgress size={20}/></div> :
             (scanSwitch.get('IsOpen') ? I18N.VEE.CloseMonitorBtn : I18N.VEE.StartMonitorBtn)}
           </div>}
-        </Popover>}
+          </PopupPaper>}
+        </div>}
+        
       </div>
     );
   }
