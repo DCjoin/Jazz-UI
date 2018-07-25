@@ -22,7 +22,7 @@ export default class ViewedRule extends Component {
     return(
       <div className="data-quality-rule-section">
         <div className="data-quality-rule-section-title">
-          <FontIcon className='icon-check-mark' color={"#32AD3C"} style={{fontSize:'18px'}}/>
+          <FontIcon className='icon-check-mark' color={"#32AD3C"} style={{fontSize:'18px',marginRight:'4px'}}/>
           <div className="text">{I18N.Setting.VEEMonitorRule.NullValue}</div>
         </div>
         <div className="row" style={TextStyle}>{I18N.VEE.Rule.NotifyConsecutiveHoursTip1+NotifyConsecutiveHours+I18N.EM.Hour+I18N.VEE.Rule.NotifyConsecutiveHoursTip2}</div>
@@ -38,7 +38,7 @@ export default class ViewedRule extends Component {
     return(
       <div className="data-quality-rule-section">
         <div className="data-quality-rule-section-title">
-          <FontIcon className='icon-check-mark' color={"#32AD3C"} style={{fontSize:'18px'}}/>
+          <FontIcon className='icon-check-mark' color={"#32AD3C"} style={{fontSize:'18px',marginRight:'4px'}}/>
           <div className="text">{I18N.Setting.VEEMonitorRule.NegativeValue}</div>
         </div>
       </div>
@@ -50,7 +50,7 @@ export default class ViewedRule extends Component {
     return(
       <div className="data-quality-rule-section">
         <div className="data-quality-rule-section-title">
-          <FontIcon className='icon-check-mark' color={"#32AD3C"} style={{fontSize:'18px'}}/>
+          <FontIcon className='icon-check-mark' color={"#32AD3C"} style={{fontSize:'18px',marginRight:'4px'}}/>
           <div className="text">{I18N.Setting.VEEMonitorRule.JumpValue}</div>
         </div>
         <div className="row" style={TextStyle}>{I18N.VEE.Rule.JumpValueTip1+ JumpingRate+'%'+I18N.VEE.Rule.JumpValueTip2}</div>

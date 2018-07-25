@@ -361,7 +361,7 @@ export default class TagChart extends Component {
               {
                 this.state.isLoading
                   ? <div style={{display: 'flex', flex: 1, alignItems: 'center', justifyContent: 'center'}}><Spin/></div>
-                  :  <div style={{display:'flex',flex:'1'}}>{this._renderToolBar()}
+                  :  <div style={{display:'flex',flex:'1',flexDirection:'column'}}>{this._renderToolBar()}
                       {this._renderChartComponent()}</div>
                 }
                 <div style={{display: 'flex'}}>
