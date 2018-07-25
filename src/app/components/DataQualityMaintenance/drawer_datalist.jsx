@@ -413,13 +413,13 @@ let NewRawDataList = createReactClass({
       		<Drawer width={283}
                   open={this.props.openDrawer}
                   openSecondary={true}
-                  docked={false}
                   onRequestChange={() => this.props.onRequestChange()}
             >
 	          <div
 	            role="button"
 	          >
 	            <div className='jazz-ptag-rawdata-list' style={{width: '283px'}}>
+              <div>{I18N.Setting.Tag.PTagRawData.DataRepair}</div>
 		          <div className='buttonGroup'>
 		              {nullValueBtn}
 		              {rollbackBtn}

@@ -211,7 +211,7 @@ export default class TagChart extends Component {
           <div className='label' style={{lineHeight:'20px'}}>
             {label + uom}
           </div>
-          {this.props.selectedTag.get('IsAccumulated') ? 
+          {this.props.selectedTag.get('IsAccumulated') ?
           <FontIcon className={classnames('icon-change','hover')}
            color={"#32AD3C"} hoverColor={"#3DCD58"} style={switchIconStyle} ref="switchIcon" onClick={this._onSwitchRawDataView}/> : null}
         </div>
@@ -364,34 +364,14 @@ export default class TagChart extends Component {
     TagStore.removeTagDatasUpdateListener(this._onUpdate);
   }
 
-
-
   render() {
-
-    if (this.state.isLoading) {
-      return (
-        <div style={{
-          display: 'flex',
-          flex: 1,
-          'alignItems': 'center',
-          'justifyContent': 'center'
-        }}>
-                    <Spin/>
-                  </div>
-        )
-
-    } else {
-      return (
-        <div className='jazz-ptag-rawdata'>
-            {this._renderToolBar()}
-            {this._renderChartComponent()}
-        </div>
-        )
-    }
-
-
+      return this.state.isLoading
+            ? <div style={{display: 'flex', flex: 1, alignItems: 'center', justifyContent: 'center'}}><Spin/></div>
+            : <div className='jazz-ptag-rawdata'>
+                {this._renderToolBar()}
+                {this._renderChartComponent()}
+            </div>
   }
-
 }
 
 TagChart.propTypes= {
