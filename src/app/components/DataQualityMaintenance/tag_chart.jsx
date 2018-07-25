@@ -1,5 +1,5 @@
 'use strict';
-
+import classnames from 'classnames';
 import React, { Component}  from "react";
 import Spin from '@emop-ui/piano/spin';
 import PropTypes from 'prop-types';
@@ -12,6 +12,7 @@ import DateTimeSelector from 'controls/DateTimeSelector.jsx';
 import ChartPanel from 'components/customerSetting/tag/RawDataChartPanel.jsx';
 import RawDataList from './drawer_datalist.jsx';
 import Toast from '@emop-ui/piano/toast';
+import IconButton from 'material-ui/IconButton';
 
 import { CircularProgress, Checkbox, FontIcon,FlatButton} from 'material-ui';
 import PermissionCode from 'constants/PermissionCode.jsx';
@@ -153,7 +154,8 @@ export default class TagChart extends Component {
   _renderToolBar() {
     var switchIconStyle = {
         fontSize: '16px',
-        margin: '0 -2px 0 8px'
+        margin: '0 -2px 0 8px',
+        lineHeight:'21px'
       },
       labelStyle = {
         color: '#464949',
@@ -206,10 +208,12 @@ export default class TagChart extends Component {
       <div className='jazz-ptag-rawdata-toolbar'>
         <div className='leftside'>
         <div className='switch-accumulated' style={{marginRight:'4px'}}>
-          <div className='label'>
+          <div className='label' style={{lineHeight:'20px'}}>
             {label + uom}
           </div>
-          {this.props.selectedTag.get('IsAccumulated') ? <FontIcon className='icon-change' color={"#32AD3C"} hoverColor={"#3DCD58"} style={switchIconStyle} ref="switchIcon" onClick={this._onSwitchRawDataView}/> : null}
+          {this.props.selectedTag.get('IsAccumulated') ? 
+          <FontIcon className={classnames('icon-change','hover')}
+           color={"#32AD3C"} hoverColor={"#3DCD58"} style={switchIconStyle} ref="switchIcon" onClick={this._onSwitchRawDataView}/> : null}
         </div>
         <DateTimeSelector ref='dateTimeSelector' showTime={true} endLeft='-100px'
                           startDate= {this.state.startDate}
