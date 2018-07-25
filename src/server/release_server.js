@@ -93,7 +93,7 @@ var APP_DOWNLOAD_WDJ = process.env.APP_DOWNLOAD_WDJ;
 var APP_DOWNLOAD_BAIDU = process.env.APP_DOWNLOAD_BAIDU;
 var JAZZ_WEB_HOST = process.env.JAZZ_WEB_HOST;
 var GUARD_UI_HOST = process.env.GUARD_UI_HOST;
-var JAZZ_MILL_UI_URL=process.env.GUARD_UI_HOST;
+var JAZZ_MILL_UI_URL=process.env.JAZZ_MILL_UI_URL;
 var APIBasePath='/api';
 
 let version = fs.readFileSync(path.resolve(__dirname, "./version.txt"), "utf-8");

@@ -4,7 +4,7 @@ import React from "react";
 import { FontIcon } from 'material-ui';
 import classNames from 'classnames';
 
-export default function ToggleIconPanel({isFolded=true,onToggle,children}){
+export default function ToggleIconPanel({isFolded=true,toggleEnabled=true,onToggle,children}){
   //when left field is unfold ,Panel "isFolded" is true 
   return(
     <div style={{
@@ -15,7 +15,7 @@ export default function ToggleIconPanel({isFolded=true,onToggle,children}){
         overflow: 'hidden',
         marginTop:'0'
       }} className='jazz-content'>
-      <div className="pop-framework-right-actionbar" style={{minHeight:'30px'}}>
+      {toggleEnabled && <div className="pop-framework-right-actionbar" style={{minHeight:'30px'}}>
           <div className="pop-framework-right-actionbar-top">
             <div className="toggle-btn pop-framework-right-actionbar-top-fold-btn" style={{
               "color": "#939796"
@@ -24,7 +24,7 @@ export default function ToggleIconPanel({isFolded=true,onToggle,children}){
             </div>
           </div>
 
-      </div>
+      </div>}
       {children}
     </div>
   )
