@@ -5,13 +5,11 @@ import PropTypes from 'prop-types';
 import ReactDom from 'react-dom';
 import {FlatButton, Drawer, FontIcon} from 'material-ui';
 import CircularProgress from 'material-ui/CircularProgress';
-import TextField from 'material-ui/TextField';
 import TagAction from 'actions/customerSetting/TagAction.jsx';
 import TagStore from 'stores/customerSetting/TagStore.jsx';
 import CommonFuns from '../../util/Util.jsx';
 import classnames from "classnames";
 import { List} from 'immutable';
-import moment from 'moment';
 import Regex from '../../constants/Regex.jsx';
 // import { inherits } from "../../../../node_modules/util";
 var createReactClass = require('create-react-class');
@@ -60,22 +58,19 @@ let ListItem = createReactClass({
   },
   _onMouseEnter(){
     this.setState({
-        hover: true,
-        isEdit: false,
-        errorText:''
+        hover: true
     });
   },
   _onMouseLeave(){
     this.setState({
-        hover: false,
-        isEdit: false,
-        errorText: ''
+        hover: false
     })
   },
   componentWillReceiveProps(nextProps){
     if(nextProps.isSelected!==this.props.isSelected && !nextProps.isSelected){
       this.setState({
-        isEdit:false
+        isEdit:false,
+        errorText: ''
       })
     }
   },
@@ -181,7 +176,6 @@ let NewRawDataList = createReactClass({
     var el = ReactDom.findDOMNode(this.refs.list),
       head = ReactDom.findDOMNode(this.refs.header);
     var scrollIndex = parseInt(el.scrollTop / 40);
-    //set scrollTop to scroll el.scrollTop=500
     head.innerText = dateItem[scrollIndex];
   },
   _onItemClick: function(item) {
@@ -213,7 +207,6 @@ let NewRawDataList = createReactClass({
       let str = CommonFuns.formatDateValueForRawData(j2d(data.get('UtcTime')), this.props.step);
       let date = str.split(' ')[0],
         time = str.split(' ')[1];
-
       if (currentDate !== date && currentDate !== null) {
         Items.push(
           <div className="date">{date}</div>
@@ -240,13 +233,9 @@ let NewRawDataList = createReactClass({
     });
     if (this.refs.header) {
       let head = ReactDom.findDOMNode(this.refs.header);
-      if(head.innerText===""){
-        if (firstDate === null) {
-          head.style.display = 'none';
-        } else {
+
           head.innerText = firstDate;
-        }
-      }
+
     }
 
     var style = {
