@@ -161,10 +161,11 @@ class ChartComponent extends Component {
           var data=that.props.data.getIn([this.points[0].point.index]);
           var {Time,NormalNodes,AbnormalNodes,IsNormal}=data.toJS();
           return `
-          <div>
+          <div style="max-width:360px">
                   <div style="font-size:14px;color:#626469">${CommonFuns.formatDateByStep(j2d(Time,true),null,null,6)}</div>
                     <div style="display:flex">
-                      <div style="font-size:12px;color:#626469">${that.props.name}${I18N.VEE.Summary+'：'}</div>
+                      <div style="font-size:12px;color:#626469;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;" title=${that.props.name}>${that.props.name}</div>
+                      <div style="font-size:12px;color:#626469">${I18N.VEE.Summary+'：'}</div>
                       <div style="font-size:12px;color:${IsNormal?'#11d9db':'#f46a58'}">${IsNormal?I18N.VEE.normal:I18N.VEE.abnormal}</div>
                     </div>
                     <div style="display:flex">

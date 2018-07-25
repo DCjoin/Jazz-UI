@@ -72,6 +72,13 @@ let ListItem = createReactClass({
         errorText: ''
     })
   },
+  componentWillReceiveProps(nextProps){
+    if(nextProps.isSelected!==this.props.isSelected && !nextProps.isSelected){
+      this.setState({
+        isEdit:false
+      })
+    }
+  },
   render: function() {
     let color,
       time = this.props.time,
@@ -87,7 +94,7 @@ let ListItem = createReactClass({
       }
     }
     // isRawData为true表示原始值
-    if(this.state.isEdit && this.props.isRawData){
+    if(this.state.isEdit && this.props.isRawData && this.props.isSelected){
       value= <input
               id={`${this.props.time}_${this.state.value}`}
               value={this.state.value}
