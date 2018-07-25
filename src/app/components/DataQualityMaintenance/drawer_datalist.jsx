@@ -243,8 +243,7 @@ let NewRawDataList = createReactClass({
     }
 
     var style = {
-      height: document.body.offsetHeight - 85,
-      overflow: 'inherit'
+      height: document.body.offsetHeight - 85
     };
     return (
       <div className="list" ref='list' style={style} onScroll={that._onScroll}>
@@ -273,8 +272,7 @@ let NewRawDataList = createReactClass({
 
     });
     var style = {
-      height: document.body.offsetHeight - 85,
-      overflow: 'inherit'
+      height: document.body.offsetHeight - 85
     };
     return (
       <div className="list" ref='list' style={style}>
@@ -413,23 +411,25 @@ let NewRawDataList = createReactClass({
       		<Drawer width={283}
                   open={this.props.openDrawer}
                   openSecondary={true}
-                  onRequestChange={() => this.props.onRequestChange()}
             >
 	          <div
 	            role="button"
 	          >
 	            <div className='jazz-ptag-rawdata-list' style={{width: '283px'}}>
-              <div>{I18N.Setting.Tag.PTagRawData.DataRepair}</div>
-		          <div className='buttonGroup'>
-		              {nullValueBtn}
-		              {rollbackBtn}
+                <div className='top-title'>
+                  <span className="text">{I18N.Setting.Tag.PTagRawData.DataRepair}</span>
+                  <span className="cancelBtn" onClick={this.props.onRequestChange}>X</span>
+                </div>
+                <div className='buttonGroup'>
+                    {nullValueBtn}
+                    {rollbackBtn}
+                </div>
+                <div className='veetitle'>
+                  <div className="veedate" ref='header' style={{width: '110px'}}></div>
+                  <div className="veedate">{label + uom }</div>
+                </div>
+                {this._renderListItems()}
 		          </div>
-		          <div className='veetitle'>
-		            <div className="veedate" ref='header' style={{width: '110px'}}></div>
-		            <div className="veedate">{label + uom }</div>
-		          </div>
-		          {this._renderListItems()}
-		        </div>
 	          </div>
 	        </Drawer>
 	    </div>
