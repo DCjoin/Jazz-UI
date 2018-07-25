@@ -67,7 +67,7 @@ export default class Right extends Component {
                                   onToggle={onToggle}/>;
       }
     }else{
-      return(<Panel onToggle={onToggle} isFolded={showLeft}>
+      return(<Panel onToggle={onToggle} isFolded={showLeft} toggleEnabled={false}>
             <div className='flex-center' style={{fontSize: '16px', color: '#626469',}}>{I18N.VEE.NoChoiceTip}</div>
           </Panel>)
     }
