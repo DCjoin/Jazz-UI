@@ -159,7 +159,9 @@ export default class TagChart extends Component {
       },
       labelStyle = {
         color: '#464949',
-        fontSize: '12px'
+        fontSize: '14px',
+        height: '30px',
+        lineHeight:'30px'
       },
       pauseBtnStyle = {
         border: '1px solid #e6e6e6',
@@ -168,14 +170,6 @@ export default class TagChart extends Component {
         width: '92px',
         backgroundColor: '#ffffff',
         marginLeft:'10px'
-      },
-      listBtnStyle = {
-        fontSize: '36px',
-        marginLeft: '30px',
-        height: '36px',
-        marginTop: '-8px',
-        cursor: 'pointer',
-        color: '#767a7a'
       };
     // var autoRepairBtn = <FlatButton key={'autoRepairBtn'} label={I18N.Setting.VEEMonitorRule.AutoRepair}
     // style={pauseBtnStyle} labelStyle={labelStyle} onClick={() => {
