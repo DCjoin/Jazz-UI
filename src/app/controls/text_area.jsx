@@ -5,18 +5,21 @@ import ClickAway from './ClickAwayListener.jsx';
 @ClickAway
 export default class TextArea extends Component {
   state={
-    errorText:null
+    errorText:null,
+    borderStyle:'1px solid #e6e6e6'
   }
 
   validate(props=this.props){
     if(props.regexFn && !props.regexFn(props.value)){
       this.setState({
-        errorText:this.props.errorText
+        errorText:this.props.errorText,
+        borderStyle:'1px solid #dc0a0a',
       })
       return false
     }else{
       this.setState({
-        errorText:null
+        errorText:null,
+        borderStyle:'1px solid #e6e6e6',
       })
       return true
     }
@@ -31,7 +34,7 @@ export default class TextArea extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState){
-    return nextProps.value!==this.props.value || this.state.errorText!==nextState.errorText
+    return nextProps.value!==this.props.value || this.state.errorText!==nextState.errorText || this.state.borderStyle!==nextState.borderStyle
   }
 
   componentWillReceiveProps(nextProps){
@@ -44,7 +47,7 @@ export default class TextArea extends Component {
     var style={
       width,
       height:'28px',
-      border:errorText!==null?'1px solid #dc0a0a':'1px solid #e6e6e6',
+      border:this.state.borderStyle,
       padding:'0 10px',
       boxSizing: 'border-box'
     },errorStyle={
@@ -57,6 +60,10 @@ export default class TextArea extends Component {
       <TextField style={style}
                   value={value}
                   underlineShow={false}
+                  onClick={()=>{if(this.state.borderStyle.indexOf('e6e6e6')!==-1){
+                    this.setState({borderStyle:'1px solid #32ad3c'})
+                  }
+                    }}
                   errorText={this.state.errorText}
                   errorStyle={errorStyle}
                   onChange={(event, newValue)=>{onChange(newValue)}}/>

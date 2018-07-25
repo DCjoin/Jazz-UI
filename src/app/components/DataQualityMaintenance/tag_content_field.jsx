@@ -62,7 +62,8 @@ export default class TagContentField extends Component {
           var content = null;
           var style = {
             display: 'flex',
-            padding:'24px 10px 22px 20px'
+            padding:'24px 10px 0px 20px',
+            paddingBottom:this.state.tabNo===1?'22px':'0px'
           };
 
           switch(this.state.tabNo){
