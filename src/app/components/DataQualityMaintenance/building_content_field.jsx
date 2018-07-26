@@ -24,7 +24,7 @@ var Admin=({admin})=>{
         </div>
         <div className="row">
         <FontIcon className='icon-email' color={"#999999"} style={{fontSize:'14px'}}/>
-          <div className="text" title={Email} style={{marginLeft:'6px'}}>{Email}</div>
+          <div className="text" title={Email} style={{marginLeft:'6px',wordBreak: 'break-all'}}>{Email}</div>
         </div>
       </div>
 )}
