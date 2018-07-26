@@ -106,7 +106,9 @@ export default class BuildingContent extends Component {
           <ViewableMap title={I18N.Setting.Building.Address} address={Location.Address} lng={Location.Longitude}  lat={Location.Latitude}  isView={true}></ViewableMap>
           </div>}
           {Administrators.length>0 && 
-            <div className="section">{Administrators.map(administrator=><Admin admin={administrator}/>)}</div>}
+            <div className="section">
+            <div className="title">{I18N.Setting.CustomerManagement.Administrator}</div>
+            {Administrators.map(administrator=><Admin admin={administrator}/>)}</div>}
         </div>
         );
 }
