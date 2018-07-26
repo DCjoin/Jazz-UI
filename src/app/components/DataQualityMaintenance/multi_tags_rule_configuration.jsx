@@ -206,7 +206,7 @@ export default class RulesConfigration extends Component {
               this.setState({
                 toastShow: false,
               })
-        }}><div className='icon-check-circle'>{I18N.VEE.Rule.NoSelectTagTip}</div></Toast>
+        }}><div className='icon-clean'>{I18N.VEE.Rule.NoSelectTagTip}</div></Toast>
           </div>
         )
     }
