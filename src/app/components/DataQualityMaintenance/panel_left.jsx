@@ -263,7 +263,7 @@ export default class Left extends Component {
           <PureTree hierarchy={hierarchy} selectedNode={selectedNode} onSelectNode={onSelectNode} generateNodeConent={this._generateNodeConent} checkCollapseStatus={this._checkCollapseStatus}/>
         </div>
         {isDataQualityFull() && <div className='data-quality-maintenance-actions-bar' style={{position:'relative'}}>
-          <div onClick={showConfig}>{I18N.VEE.ConfigRule}</div>
+          <DataManageButton label={I18N.VEE.ConfigRule} onClick={showConfig}/>
          
         {isBuilding?<MoreButton label={I18N.Common.Button.More}
                                 onClick={(e) => {

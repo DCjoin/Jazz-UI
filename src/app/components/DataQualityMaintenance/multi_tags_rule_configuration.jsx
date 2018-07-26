@@ -17,6 +17,9 @@ import Regex from 'constants/Regex.jsx';
 import Toast from '@emop-ui/piano/toast';
 
 function stepLabelProps(stepValue, currentStep) {
+  if(stepValue<=currentStep){
+    return null
+  }
 	let props = {
 		style: {
 			height: 50,
@@ -195,7 +198,7 @@ export default class RulesConfigration extends Component {
     render(){
         return(
           <div className="rules-configuration">
-            <div className="rules-configuration-content">
+            <div className="rules-configuration-content" style={{paddingLeft:'20px'}}>
               {this._renderHeader()}
               {this._renderSteper()}
               {this._renderContent()}
