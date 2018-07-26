@@ -52,7 +52,7 @@ export default class EditedRule extends Component {
 
                           <TextArea ref="notify_consecutive_hours"
                                     value={NotifyConsecutiveHours} 
-                                    width={46} 
+                                    width={56} 
                                     onChange={(value)=>{this._onChange("NotifyConsecutiveHours",value)}}
                                     regexFn={notifyConsecutiveHoursRegexFn}
                                     errorText={I18N.VEE.Rule.NotifyConsecutiveHoursErrorTip}/>
@@ -89,9 +89,10 @@ export default class EditedRule extends Component {
         <Checkbox checked={CheckJumping} style={{width:'100px'}} label={I18N.Setting.VEEMonitorRule.JumpValue} onCheck={()=>{this._onChange('CheckJumping',!CheckJumping)}}/>
         {CheckJumping && <div className="data-quality-rule-section-config-field" style={{paddingBottom:jumpingRateRegexFn(JumpingRate)?'10px':'31px'}}>
                         <div className="row" style={TextStyle}>
-                          {I18N.VEE.Rule.JumpValueTip1}
+                        <div style={{marginRight:'6px'}}>{I18N.VEE.Rule.JumpValueTip1}</div>
+                          
                           <TextArea value={JumpingRate} 
-                                    width={66} 
+                                    width={76} 
                                     onChange={(value)=>{this._onChange("JumpingRate",value)}}
                                     regexFn={jumpingRateRegexFn}
                                     errorText={I18N.VEE.Rule.JumpRateTip}/>
@@ -127,7 +128,7 @@ export default class EditedRule extends Component {
 
   _renderLeaveTip(){
     return(
-      <Dialog open={this.state.leaveTipShow} actionsContainerStyle={{textAlign: 'right'}} contentStyle={{margin: '8px 24px', color: '#626469'}} actions={[
+      <Dialog open={this.state.leaveTipShow} actionsContainerStyle={{textAlign: 'right'}} contentStyle={{margin: '8px 24px', color: '#626469',paddingLeft:'0'}} actions={[
         <FlatButton primary inDialog label={I18N.Setting.Diagnose.LeavePage} onClick={this.props.onCancel}/>,
         <FlatButton label={I18N.Common.Button.Cancel2} onClick={() => { this.setState({leaveTipShow: false}) }}/>
       ]}>{I18N.VEE.Rule.LeaveTip}</Dialog>
@@ -136,8 +137,8 @@ export default class EditedRule extends Component {
 
   render(){
     return(
-      <div className="data-quality-rule">
-        <div className="data-quality-rule-content">
+      <div className="data-quality-rule" style={{marginLeft:'-20px'}}>
+        <div className="data-quality-rule-content" style={{paddingLeft:'20px'}}>
         <div style={SubTextStyle}>{I18N.VEE.Rule.Tip}</div>
             {this._renderNullValue()}
             {this._renderNegativeValue()}

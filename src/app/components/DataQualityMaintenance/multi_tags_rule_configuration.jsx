@@ -144,7 +144,7 @@ export default class RulesConfigration extends Component {
 
   _renderLeaveTip(){
     return(
-      <Dialog open={this.state.leaveTipShow} actionsContainerStyle={{textAlign: 'right'}} contentStyle={{margin: '8px 24px', color: '#626469'}} actions={[
+      <Dialog open={this.state.leaveTipShow} actionsContainerStyle={{textAlign: 'right'}} contentStyle={{margin: '8px 24px', color: '#626469',paddingLeft:'0'}} actions={[
         <FlatButton primary inDialog label={I18N.Setting.Diagnose.LeavePage} onClick={this.props.onCancel}/>,
         <FlatButton label={I18N.Common.Button.Cancel2} onClick={() => { this.setState({leaveTipShow: false}) }}/>
       ]}>{I18N.VEE.Rule.LeaveTip}</Dialog>

@@ -80,7 +80,7 @@ export default class Organization extends Component {
             "jazz-ptag-right-expand": this.props.showRawDataList
 
           })} style={{top:'56px',left:this.props.showLeft?'321px':'0'}}>
-          <Panel onToggle={this.props.onToggle} isFolded={this.props.showLeft}>
+          <Panel onToggle={this.props.onToggle} isFolded={this.props.showLeft} toggleEnabled={false}>
             {this._renderHeader()}
             {this._renderContent()}
           </Panel>

@@ -62,7 +62,8 @@ export default class TagContentField extends Component {
           var content = null;
           var style = {
             display: 'flex',
-            padding:'24px 0 0 20px'
+            padding:'24px 10px 0px 20px',
+            paddingBottom:this.state.tabNo===1?'22px':'0px'
           };
 
           switch(this.state.tabNo){
@@ -98,7 +99,7 @@ export default class TagContentField extends Component {
             "jazz-ptag-right-expand": this.props.showRawDataList
 
           })} style={{top:'56px',left:this.props.showLeft?'321px':'0'}}>
-          <Panel onToggle={this.props.onToggle} isFolded={this.props.showLeft}>
+          <Panel onToggle={this.props.onToggle} isFolded={this.props.showLeft} toggleEnabled={false}>
             {this._renderHeader()}
             {this._renderContent()}
           </Panel>
