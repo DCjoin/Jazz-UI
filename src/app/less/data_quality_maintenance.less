@@ -446,10 +446,14 @@
   }
   &-admin{
     width: 492px;
+    min-width: 492px;
     height: 114px;
     border-radius: 2px;
     background-color: #f4f5f8;
     padding:9px 16px;
+    margin-right:20px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
     >.row{
       margin-bottom: 9px;
       display: flex;
@@ -458,13 +462,13 @@
         font-size: 16px;
         color: #333333;
         margin-right:20px;
-        flex:1;
+        max-width:33%;
         .hiddenEllipsis;
       }
       >.title{
         font-size: 14px;
         color: #999999;
-        flex:2;
+        max-width:66%;
         .hiddenEllipsis;
       }
       >.text{

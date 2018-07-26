@@ -321,11 +321,11 @@ if ( this.permit(PermissionCode.SOLUTION_FULL.FULL) ||
               getPath: RoutePath.customerSetting.vtag,
               title: I18N.MainMenu.VTagManagement
             },
-            {
-              name: 'vee',
-              getPath: RoutePath.customerSetting.vee,
-              title: I18N.MainMenu.VEEMonitorRule
-            },
+            // {
+            //   name: 'vee',
+            //   getPath: RoutePath.customerSetting.vee,
+            //   title: I18N.MainMenu.VEEMonitorRule
+            // },
             {
               name: 'log',
               getPath: RoutePath.customerSetting.log,
