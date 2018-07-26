@@ -78,6 +78,7 @@ let ListItem = createReactClass({
     let color,
       time = this.props.time,
       that = this,
+      inputStyle,
       value;
     if (this.props.data.get('DataQuality') === 9) {
       color = '#f46a58'
@@ -88,17 +89,24 @@ let ListItem = createReactClass({
         color = '#464949'
       }
     }
+    if (this.state.errorText) {
+      inputStyle = '1px solid #dc0a0a';
+    } else {
+      inputStyle = '1px solid #32ad3c';
+    }
     // isRawData为true表示原始值
     if(this.state.isEdit && this.props.isRawData && this.props.isSelected){
       value= <input
               id={`${this.props.time}_${this.state.value}`}
               value={this.state.value}
+              autofocus={'autofocus'}
               style={{
                 width: '138px',
                 height: '28px',
                 borderRadius: '2px',
-                border: '1px solid #32ad3c',
-                backgroundColor: '#fff'
+                border: inputStyle,
+                backgroundColor: '#fff',
+                outline: 'none'
               }}
               onChange={(event)=>{
                 this.setState({
@@ -133,7 +141,7 @@ let ListItem = createReactClass({
           onMouseLeave={() => {!this.state.isEdit ? this._onMouseLeave() : null}}
           >
         <div style={{width: '110px'}}>{time}</div>
-        <div style={{textAlign: 'left', position: 'relative'}}>
+        <div className="line-data-wrap">
           {
             this.state.errorText
             ? <div className="errortips">{this.state.errorText}</div>
@@ -144,7 +152,7 @@ let ListItem = createReactClass({
         {
           // 原始值的时候才可编辑，差值不显示编辑icon
           this.state.hover && this.props.isRawData
-          ? <FontIcon className='icon-edit'  onClick={this._onClick}/>
+          ? <FontIcon className='icon-edit'  onClick={this._onClick} />
           : null
         }
       </div>
@@ -364,7 +372,6 @@ let NewRawDataList = createReactClass({
           else uom='(' + uom + ')'
     // 自动修复按钮
     let labelStyle = {
-        color: '#32ad3c',
         fontSize: '14px',
       },
       dislabelStyle = {
@@ -422,7 +429,7 @@ let NewRawDataList = createReactClass({
                 </div>
                 <div className='veetitle'>
                   <div className="veedate" ref='header' style={{width: '110px'}}></div>
-                  <div className="veedate">{label + uom }</div>
+                  <div className="veedate">{label + uom}</div>
                 </div>
                 {this._renderListItems()}
 		          </div>

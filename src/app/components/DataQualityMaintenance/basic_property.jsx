@@ -62,10 +62,10 @@ let Html1 = createReactClass({
    let pageData = this.props.pageData;
    return (
    <div>
-     <div className="basicline">
+     { pageData.Code ? <div className="basicline">
         <div className="title">{I18N.VEE.BasicProperty.Code}</div>
         <div className="content">{pageData.Code}</div>
-      </div>
+      </div> : null }
    </div>)
  }
 });
@@ -80,22 +80,38 @@ let Html2 = createReactClass({
     let pageData = this.props.pageData;
     return (
     <div>
-      <div className="basicline">
-        <div className="title">{I18N.VEE.BasicProperty.Code}</div>
-        <div className="content">{pageData.Code}</div>
-      </div>
-      <div className="basicline">
-        <div className="title">{I18N.VEE.BasicProperty.Relate}</div>
-        <div className="content">{pageData.PhysicalStatus ? I18N.VEE.onlineText : I18N.VEE.offlineText}</div>
-      </div>
-      <div className="basicline">
-        <div className="title">{I18N.VEE.BasicProperty.DeviceType}</div>
-        <div className="content">{pageData.Type}</div>
-      </div>
-      <div className="basicline">
-        <div className="title">{I18N.VEE.BasicProperty.DeviceTypeNumber}</div>
-        <div className="content">{pageData.Class}</div>
-      </div>
+      {
+        pageData.Code != '' && pageData.Code != null
+        ? <div className="basicline">
+            <div className="title">{I18N.VEE.BasicProperty.Code}</div>
+            <div className="content">{pageData.Code}</div>
+          </div>
+        : null
+      }
+      {
+        pageData.PhysicalStatus != '' && pageData.PhysicalStatus != null
+        ? <div className="basicline">
+            <div className="title">{I18N.VEE.BasicProperty.Relate}</div>
+            <div className="content">{pageData.PhysicalStatus ? I18N.VEE.onlineText : I18N.VEE.offlineText}</div>
+          </div>
+        : null
+      }
+      {
+        pageData.Type !=null
+        ? <div className="basicline">
+            <div className="title">{I18N.VEE.BasicProperty.DeviceType}</div>
+            <div className="content">{pageData.Type}</div>
+          </div>
+        : null
+      }
+      {
+        pageData.Class != null
+        ? <div className="basicline">
+            <div className="title">{I18N.VEE.BasicProperty.DeviceTypeNumber}</div>
+            <div className="content">{pageData.Class}</div>
+          </div>
+        : null
+      }
     </div>)
   }
 });
@@ -107,34 +123,47 @@ let Html3 = createReactClass({
    data: PropTypes.object
  },
  render: function() {
-
   let pageData = this.props.pageData,
       CollectionMethod = '';
   if (pageData.CollectionMethod == 1) {
-    CollectionMethod = I18N.Setting.Tag.Meter;
+    CollectionMethod = I18N.Common.Glossary.Auto;
   } else if (pageData.CollectionMethod == 2) {
     CollectionMethod = I18N.Setting.Tag.Manual;
   }
-
    return (
    <div>
      <div className="tagbasicline">
-        <div>
-          <p>{I18N.VEE.BasicProperty.CollectionType}</p>
-          <p className='content'>{CollectionMethod}</p>
-        </div>
-        <div>
-          <p>{I18N.VEE.BasicProperty.Code}</p>
-          <p className='content'>{pageData.Code}</p>
-        </div>
-        <div>
-          <p>{I18N.VEE.BasicProperty.WatchCode}</p>
-          <p className='content'>{pageData.MeterCode}</p>
-        </div>
-        <div>
-          <p>{I18N.VEE.BasicProperty.Channel}</p>
-          <p className='content'>{pageData.ChannelId}</p>
-        </div>
+        {
+          CollectionMethod ? <div>
+                                <p>{I18N.VEE.BasicProperty.CollectionType}</p>
+                                <p className='content'>{CollectionMethod}</p>
+                              </div>
+                            : null
+        }
+        {
+          pageData.Code !=='' && pageData.Code !=null
+          ? <div>
+              <p>{I18N.VEE.BasicProperty.Code}</p>
+              <p className='content'>{pageData.Code}</p>
+            </div>
+          : null
+        }
+        {
+          pageData.MeterCode !=='' && pageData.MeterCode!=null
+          ? <div>
+              <p>{I18N.VEE.BasicProperty.WatchCode}</p>
+              <p className='content'>{pageData.MeterCode}</p>
+            </div>
+          :null
+        }
+        {
+          pageData.ChannelId !== '' && pageData.ChannelId!=null
+          ? <div>
+              <p>{I18N.VEE.BasicProperty.Channel}</p>
+              <p className='content'>{pageData.ChannelId}</p>
+            </div>
+          : null
+        }
      </div>
      <div className="tagbasicline">
         <div>
@@ -142,46 +171,91 @@ let Html3 = createReactClass({
           <p className='content'>{switchCalculationStep(pageData.CalculationStep)}</p>
         </div>
      </div>
-     <div className="tagbasicline">
-        <div>
-          <p>{I18N.VEE.BasicProperty.ComputeType}</p>
-          <p className='content'>{switchCalculationType(pageData.CalculationType)}</p>
+      {
+        pageData.CalculationType!= null && pageData.IsAccumulated!=null
+        ?  <div className="tagbasicline">
+                {
+                  pageData.CalculationType !=='' && pageData.CalculationType!= null
+                  ? <div>
+                      <p>{I18N.VEE.BasicProperty.ComputeType}</p>
+                      <p className='content'>{switchCalculationType(pageData.CalculationType)}</p>
+                    </div>
+                  : null
+                }
+                {
+                  pageData.IsAccumulated !=='' && pageData.IsAccumulated!=null
+                  ? <div>
+                      <p>{I18N.VEE.BasicProperty.IsAllCompute}</p>
+                      <p className='content'>{pageData.IsAccumulated ? I18N.Setting.DataAnalysis.Tou.CancelMulti : I18N.Setting.DataAnalysis.Tou.NotCancelMulti  }</p>
+                    </div>
+                  : null
+                }
+              </div>
+          : null
+      }
+      {
+        pageData.CommodityName!=null && pageData.UomName != null
+        ? <div className="tagbasicline">
+              {
+                pageData.CommodityName !== '' && pageData.CommodityName!=null
+                ?  <div>
+                    <p>{I18N.VEE.BasicProperty.Medium}</p>
+                    <p className='content'>{pageData.CommodityName}</p>
+                  </div>
+                : null
+              }
+              {
+                pageData.UomName !=='' && pageData.UomName != null
+                ? <div>
+                    <p>{I18N.VEE.BasicProperty.Unit}</p>
+                    <p className='content'>{pageData.UomName}</p>
+                  </div>
+                : null
+              }
+          </div>
+        : null
+      }
+
+     {
+       pageData.EnergyLabelName !=='' && pageData.EnergyLabelName !=null
+       ? <div className="tagbasicline">
+            <div>
+              <p>{I18N.VEE.BasicProperty.ResourceTag}</p>
+              <p className='content'>{pageData.EnergyLabelName }</p>
+            </div>
+          </div>
+        : null
+     }
+     {
+       pageData.Slope!= null && pageData.Offset!=null
+       ? <div className="tagbasicline">
+            {
+              pageData.Slope !=='' && pageData.Slope!= null
+              ? <div>
+                  <p>{I18N.VEE.BasicProperty.Rate}</p>
+                  <p className='content'>{pageData.Slope}</p>
+                </div>
+              : null
+            }
+            {
+              pageData.Offset !=='' && pageData.Offset!=null
+              ? <div>
+                  <p>{I18N.VEE.BasicProperty.Offset}</p>
+                  <p className='content'>{pageData.Offset}</p>
+                </div>
+              : null
+            }
+          </div>
+        : null
+     }
+     {
+       pageData.Comment !=='' && pageData.Comment != null
+       ? <div className="lastline">
+          <p>{I18N.VEE.BasicProperty.Note}</p>
+          <p className='content'>{pageData.Comment }</p>
         </div>
-        <div>
-          <p>{I18N.VEE.BasicProperty.IsAllCompute}</p>
-          <p className='content'>{pageData.IsAccumulated ? I18N.Setting.DataAnalysis.Tou.CancelMulti : I18N.Setting.DataAnalysis.Tou.NotCancelMulti  }</p>
-        </div>
-     </div>
-     <div className="tagbasicline">
-        <div>
-          <p>{I18N.VEE.BasicProperty.Medium}</p>
-          <p className='content'>{pageData.CommodityName}</p>
-        </div>
-        <div>
-          <p>{I18N.VEE.BasicProperty.Unit}</p>
-          <p className='content'>{pageData.UomName}</p>
-        </div>
-     </div>
-     <div className="tagbasicline">
-        <div>
-          <p>{I18N.VEE.BasicProperty.ResourceTag}</p>
-          <p className='content'>{pageData.EnergyLabelName }</p>
-        </div>
-     </div>
-     <div className="tagbasicline">
-        <div>
-          <p>{I18N.VEE.BasicProperty.Rate}</p>
-          <p className='content'>{pageData.Slope}</p>
-        </div>
-        <div>
-          <p>{I18N.VEE.BasicProperty.Offset}</p>
-          <p className='content'>{pageData.Offset}</p>
-        </div>
-     </div>
-     <div className="lastline">
-        <p>{I18N.VEE.BasicProperty.Note}</p>
-        <p className='content'>{pageData.Comment }</p>
-     </div>
+        : null
+      }
    </div>)
  }
 })

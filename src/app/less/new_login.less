@@ -125,18 +125,24 @@ body {
             content: '';
             width: 10px;
             height: 10px;
-            bottom: -8px;
+            bottom: -4px;
             position: absolute;
-            border-right: 2px solid rgba(0, 0, 0, 0.15);
-            border-bottom: 2px solid rgba(0, 0, 0, 0.15);
+            box-shadow: 2px 2px rgba(0, 0, 0, 0.15);
             transform: rotateZ(45deg);
             background-color: #fff;
             left: 125px;
         }
     }
+    & .contact-us-card-add{
+        width:300px;
+        left: -136px;
+        &:before {
+            left: 150px;
+        }
+    }
 
     & .contact-us-link:hover {
-        color: @life-green;
+        color: #32ad3c;
         position: relative;
 
         & .contact-us-card {
