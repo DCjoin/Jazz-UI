@@ -108,7 +108,8 @@ export default class BuildingContent extends Component {
           {Administrators.length>0 && 
             <div className="section">
             <div className="title">{I18N.Setting.CustomerManagement.Administrator}</div>
-            {Administrators.map(administrator=><Admin admin={administrator}/>)}</div>}
+            <div style={{display:'flex',flexWrap:'wrap'}}>{Administrators.map(administrator=><Admin admin={administrator}/>)}</div>
+            </div>}
         </div>
         );
 }
@@ -117,6 +118,16 @@ export default class BuildingContent extends Component {
   componentDidMount() {
     DataQualityMaintenanceStore.addChangeListener(this._onChanged);
     DataQualityMaintenanceAction.getBuilding(parseInt(this.context.router.params.customerId),this.props.nodeData.get('Id'));
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.nodeData.get("Id")!==this.props.nodeData.get('Id')){
+      this.setState({
+        building:null
+      },()=>{
+        DataQualityMaintenanceAction.getBuilding(parseInt(this.context.router.params.customerId),nextProps.nodeData.get('Id'));
+      })
+    }
   }
 
   componentWillUnmount() {

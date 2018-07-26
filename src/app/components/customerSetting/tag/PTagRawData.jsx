@@ -304,9 +304,6 @@ let PTagRawData = createReactClass({
       endTime={this.state.endTime}  _onDateSelectorChanged={this._onDateSelectorChanged}/>
         </div>
         <div className='rightside'>
-          {autoRepairBtn}
-          {rollbackBtn}
-          {this.state.veeTagStatus.size === 0 ? null : pauseBtn}
            <FontIcon className='icon-taglist-fold' style={listBtnStyle} ref="listBtn" onClick={this._onSwitchListView}/>
         </div>
       </div>
