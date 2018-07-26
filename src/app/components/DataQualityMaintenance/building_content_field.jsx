@@ -85,7 +85,7 @@ export default class BuildingContent extends Component {
       }
       var style = {
         display: 'flex',
-        padding:'24px 0 0 20px'
+        paddingLeft:'20px'
       };
       var {Code ,IndustryId ,ZoneId,Location,Administrators}=this.state.building.toJS();
       return (
@@ -102,8 +102,8 @@ export default class BuildingContent extends Component {
             <div className="title">{I18N.Setting.Building.Zone}</div>
             <div className="text">{_.find(DataQualityMaintenanceStore.getZone(),zone=>zone.Id===ZoneId).Comment}</div>
           </div>}
-          {Location && Location.Province && <div className="section">
-          <ViewableMap title={I18N.Setting.Building.Address} address={Location.Address} lng={Location.Longitude}  lat={Location.Latitude}  isView={true}></ViewableMap>
+          {Location && (Location.Province || Location.Address) && <div className="section">
+          <ViewableMap title={I18N.Setting.Building.Address} address={Location.Province || Location.Address} lng={Location.Longitude}  lat={Location.Latitude}  isView={true}></ViewableMap>
           </div>}
           {Administrators.length>0 && 
             <div className="section">

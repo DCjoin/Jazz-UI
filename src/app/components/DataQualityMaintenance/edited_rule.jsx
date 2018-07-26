@@ -108,7 +108,7 @@ export default class EditedRule extends Component {
     return(
       <div className="data-quality-rule-footer">
         <Button label={I18N.Common.Button.Save} raised 
-                style={{width:'86px'}} 
+                style={{width:'86px',marginLeft:'20px'}} 
                 onClick={()=>{
                   var {JumpingRate,NotifyConsecutiveHours,CheckJumping,CheckNegative,CheckNull}=this.props.rule.toJS();
                   if(CheckNull && !notifyConsecutiveHoursRegexFn(NotifyConsecutiveHours)){return}
