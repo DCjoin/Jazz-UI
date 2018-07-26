@@ -228,7 +228,7 @@ export default class TagChart extends Component {
                   openToast: false,
               })
             }}>
-            {I18N.VEE.Notice.RollBackSuccess}
+            <div className='icon-check-circle'>{I18N.VEE.Notice.RollBackSuccess}</div>
         </Toast>
       </div>
       )
