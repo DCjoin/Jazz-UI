@@ -12,9 +12,8 @@ import DateTimeSelector from 'controls/DateTimeSelector.jsx';
 import ChartPanel from 'components/customerSetting/tag/RawDataChartPanel.jsx';
 import RawDataList from './drawer_datalist.jsx';
 import Toast from '@emop-ui/piano/toast';
-import IconButton from 'material-ui/IconButton';
 
-import { CircularProgress, Checkbox, FontIcon,FlatButton} from 'material-ui';
+import { FontIcon,FlatButton} from 'material-ui';
 import PermissionCode from 'constants/PermissionCode.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
@@ -161,7 +160,7 @@ export default class TagChart extends Component {
         color: '#464949',
         fontSize: '14px',
         height: '30px',
-        lineHeight:'30px'
+        lineHeight:'31px'
       },
       pauseBtnStyle = {
         border: '1px solid #e6e6e6',
@@ -171,21 +170,6 @@ export default class TagChart extends Component {
         backgroundColor: '#ffffff',
         marginLeft:'10px'
       };
-    // var autoRepairBtn = <FlatButton key={'autoRepairBtn'} label={I18N.Setting.VEEMonitorRule.AutoRepair}
-    // style={pauseBtnStyle} labelStyle={labelStyle} onClick={() => {
-    //   TagAction.manualScanTag(
-    //     this.props.selectedTag.get('Id'),
-    //     moment(this.state.start).subtract(8, 'hours').format('YYYY-MM-DDTHH:mm:ss'),
-    //     moment(this.state.end).subtract(8, 'hours').format('YYYY-MM-DDTHH:mm:ss'),
-    //   )
-    // }}/>;
-    // var pauseBtn = <FlatButton label={I18N.Setting.Tag.PTagRawData.PauseMonitor}
-    //   style={pauseBtnStyle} labelStyle={labelStyle} onClick={this._onPauseDialogShow}/>;
-
-    // var rollbackBtn= <FlatButton label={I18N.Setting.Tag.PTagRawData.RollBack}
-    //   style={pauseBtnStyle} labelStyle={labelStyle} onClick={this._onRollBack}/>
-
-
    // 新增的数据修复按钮
     let dataRepairBtn = <FlatButton
                           label={I18N.Setting.Tag.PTagRawData.DataRepair}
@@ -254,7 +238,6 @@ export default class TagChart extends Component {
     }
   _onRawDataChange(newData,orgData) {
       // this.refs.tagDetail._setLoading();
-      console.log(newData, orgData, 'tag_chart')
       TagAction.modifyTagRawData(newData, orgData);
   }
   _renderChartComponent() {
@@ -343,7 +326,6 @@ export default class TagChart extends Component {
     TagStore.removeTagDatasChangeListener(this._onChanged);
     TagStore.removeTagDatasUpdateListener(this._onUpdate);
   }
-
   render() {
     let listProps = {
       isRawData: this.state.isRawData,
