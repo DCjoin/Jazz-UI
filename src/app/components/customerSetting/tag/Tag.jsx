@@ -151,6 +151,7 @@ let Tag = createReactClass({
       showRawDataList: showRawDataList,
       isRawData: isRawData
     });
+    console.log(this.state.isRawData, 'tag page')
   },
   _onTagListChange: function() {
     var tagList = TagStore.getTagList();
@@ -675,7 +676,7 @@ let Tag = createReactClass({
     if (this.state.selectedTag !== null && this.props.tagType === 1) {
       var listProps = {
         ref:'rawDataList',
-        isRawData: false,
+        isRawData: this.state.isRawData,
         step: this.state.selectedTag.get('CalculationStep'),
         onRawDataChange:this._onRawDataChange
       };
