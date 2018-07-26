@@ -300,8 +300,8 @@ var ViewableTextField = createReactClass({
         <div style={{
           'width': width
         }} >
-          <div className="pop-viewable-title">{this.props.title}</div>
-          <div className="pop-viewable-value" title={v}>{v}
+          <div className="pop-viewable-title" style={{fontSize:'14px',color:'#9fa0a4',marginBottom:'8px'}}>{this.props.title}</div>
+          <div className="pop-viewable-value" title={v} style={{fontSize:'14px',color:'#333333',marginBottom:'8px'}}>{v}
             {afterValue}</div>
         </div>
       );

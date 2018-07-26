@@ -254,7 +254,7 @@ export default class Left extends Component {
     return (
       <div className='data-quality-maintenance-left'>
         <div className='data-quality-maintenance-filter-time'>
-          <div className="text" style={{color:!filterType?'#c0c0c0':'#626469'}}>{I18N.VEE.MonitorTime+"："}</div>
+          <div className="text" style={{color:!filterType?'#c0c0c0':'#626469',width:'80px'}}>{I18N.VEE.MonitorTime+"："}</div>
           <DateTimeSelector disabled={!filterType} isDateViewStatus={true} ref='dateTimeSelector' showTime={false} endLeft='-100px' startDate={startDate} endDate={endDate}  _onDateSelectorChanged={this._onDateSelectorChanged}/>
         </div>
         <FilterBar onChange={onChangeFilterType} value={filterType} />
@@ -263,7 +263,7 @@ export default class Left extends Component {
           <PureTree hierarchy={hierarchy} selectedNode={selectedNode} onSelectNode={onSelectNode} generateNodeConent={this._generateNodeConent} checkCollapseStatus={this._checkCollapseStatus}/>
         </div>
         {isDataQualityFull() && <div className='data-quality-maintenance-actions-bar' style={{position:'relative'}}>
-          <div onClick={showConfig}>{I18N.VEE.ConfigRule}</div>
+          <DataManageButton label={I18N.VEE.ConfigRule} onClick={showConfig}/>
          
         {isBuilding?<MoreButton label={I18N.Common.Button.More}
                                 onClick={(e) => {
