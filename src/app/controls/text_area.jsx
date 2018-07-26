@@ -49,7 +49,8 @@ export default class TextArea extends Component {
       height:'28px',
       border:this.state.borderStyle,
       padding:'0 10px',
-      boxSizing: 'border-box'
+      boxSizing: 'border-box',
+      borderRadius:'2px'
     },errorStyle={
       color:'#dc0a0a',
       left:'-10px',
@@ -60,6 +61,7 @@ export default class TextArea extends Component {
       <TextField style={style}
                   value={value}
                   underlineShow={false}
+                  inputStyle={{color:'#666666'}}
                   onClick={()=>{if(this.state.borderStyle.indexOf('e6e6e6')!==-1){
                     this.setState({borderStyle:'1px solid #32ad3c'})
                   }

@@ -219,7 +219,7 @@ app.get('/:lang/sso-redirect-hierarchy/:customerId', (req, res) => {
     privateKeyPass: 'sesp!@#',
     requestSignatureAlgorithm: 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256',
     // metadata: fs.readFileSync(__dirname + '/metadata_sp.xml', "utf-8").replace('${SSO_ACS_URL}', "https://emop-pft.energymost.com/zh-cn/sso/acs"+"?par=" + parStr)
-    metadata: fs.readFileSync(__dirname + '/metadata_sp.xml', "utf-8").replace('${SSO_ACS_URL}', JAZZ_MILL_UI_URL + req.params.lang+ "/sso/acs"+"?par=" + parStr)
+    metadata: fs.readFileSync(__dirname + '/metadata_sp.xml', "utf-8").replace('${SSO_ACS_URL}', JAZZ_MILL_UI_URL + '/'+req.params.lang+ "/sso/acs"+"?par=" + parStr)
 
   });
 
