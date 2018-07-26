@@ -227,9 +227,7 @@ export class ProblemDetail extends Component {
         </div>
         {hasEnergySys && <div style={{marginLeft: 20,zIndex:'3'}}>
           <div className='field-title'>{I18N.Setting.Diagnose.EnergySys}{!isRequired && <span className='subtitle'>{I18N.Setting.Diagnose.Require}</span>}</div>
-          <SelectField width={346}
-
-          
+          <SelectField width={346}          
                        hintText={I18N.Setting.Diagnose.PleaseSelect}
                        menuItems={menuitems.concat(Object.keys(ProblemMarkEnum).map(key => (
             {text:I18N.Setting.DataAnalysis.EnergyProblem.MarkEnum[ProblemMarkEnum[key]],
@@ -241,6 +239,7 @@ export class ProblemDetail extends Component {
                                                              onChange(['Problem', 'EnergySys'], value);
                                                             onBlur && onBlur(['Problem', 'EnergySys'], value);
                                                      }}/>
+          {errorData.getIn(['Problem', 'EnergySys']) && <div style={{fontSize:'12px',color:'#dc0a0a',marginTop:'4px'}}>{errorData.getIn(['Problem', 'EnergySys'])}</div>}
         </div>}
       </div>
       <div className='field-wrapper'>
