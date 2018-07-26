@@ -212,8 +212,6 @@ app.get('/:lang/sso-redirect-hierarchy/:customerId', (req, res) => {
     CustomerId: req.params.customerId // 当前CustomerId
   };
   let parStr = encodeURIComponent(JSON.stringify(parObj));
-  console.log("******wyh*****");
-  console.log(JAZZ_MILL_UI_URL + req.params.lang+ "/sso/acs"+"?par=" + parStr)
   const sp = ServiceProvider({
     privateKey: fs.readFileSync(__dirname + '/SE-SP.pem'),
     privateKeyPass: 'sesp!@#',
@@ -228,9 +226,6 @@ app.get('/:lang/sso-redirect-hierarchy/:customerId', (req, res) => {
 
     metadata: fs.readFileSync(__dirname + '/onelogin_metadata.xml', "utf-8").split('${GUARD_UI_HOST}').join(GUARD_UI_HOST + "Saml/SignOnService")
   });
-  console.log("******wyh*****");
-  console.log(GUARD_UI_HOST + "Saml/SignOnService")
-
 
   const url = sp.createLoginRequest(idp, 'redirect');
 

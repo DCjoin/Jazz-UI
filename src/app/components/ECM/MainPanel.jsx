@@ -79,7 +79,7 @@ export default class MainPanel extends Component {
     return (
       <div className="jazz-ecm-tab-title">
         {I18N.Setting.ECM.AlreadyPush}
-        {this.state.unRead?<BubbleIcon style={{width:'5px',height:'5px'}}/>:null}
+        {true?<BubbleIcon style={{width:'6px',height:'6px',marginLeft:'1px',marginTop:'-7px'}}/>:null}
       </div>
     )
 

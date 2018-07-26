@@ -102,11 +102,14 @@ export default class BuildingContent extends Component {
             <div className="title">{I18N.Setting.Building.Zone}</div>
             <div className="text">{_.find(DataQualityMaintenanceStore.getZone(),zone=>zone.Id===ZoneId).Comment}</div>
           </div>}
-          {Location && Location.Address && <div className="section">
+          {Location && Location.Province && <div className="section">
           <ViewableMap title={I18N.Setting.Building.Address} address={Location.Address} lng={Location.Longitude}  lat={Location.Latitude}  isView={true}></ViewableMap>
           </div>}
           {Administrators.length>0 && 
-            <div className="section">{Administrators.map(administrator=><Admin admin={administrator}/>)}</div>}
+            <div className="section">
+            <div className="title">{I18N.Setting.CustomerManagement.Administrator}</div>
+            <div style={{display:'flex',flexWrap:'wrap'}}>{Administrators.map(administrator=><Admin admin={administrator}/>)}</div>
+            </div>}
         </div>
         );
 }
@@ -115,6 +118,16 @@ export default class BuildingContent extends Component {
   componentDidMount() {
     DataQualityMaintenanceStore.addChangeListener(this._onChanged);
     DataQualityMaintenanceAction.getBuilding(parseInt(this.context.router.params.customerId),this.props.nodeData.get('Id'));
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.nodeData.get("Id")!==this.props.nodeData.get('Id')){
+      this.setState({
+        building:null
+      },()=>{
+        DataQualityMaintenanceAction.getBuilding(parseInt(this.context.router.params.customerId),nextProps.nodeData.get('Id'));
+      })
+    }
   }
 
   componentWillUnmount() {
