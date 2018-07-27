@@ -421,7 +421,7 @@ let NewRawDataList = createReactClass({
 	            <div className='jazz-ptag-rawdata-list' style={{width: '283px'}}>
                 <div className='top-title'>
                   <span className="text">{I18N.Setting.Tag.PTagRawData.DataRepair}</span>
-                  <span className="cancelBtn" onClick={this.props.onRequestChange}>X</span>
+                  <FontIcon className='icon-multiplication' onClick={this.props.onRequestChange} />
                 </div>
                 <div className='buttonGroup'>
                     {nullValueBtn}

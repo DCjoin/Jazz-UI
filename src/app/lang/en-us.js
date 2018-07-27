@@ -2948,7 +2948,7 @@ I18N.VEE.BasicProperty.Offset = 'Offset';
 I18N.VEE.BasicProperty.Note = 'Note';
 I18N.VEE.ExceptionNodeOnly = 'Only Show Problematic Nodes';
 I18N.VEE.NoPrivilege = 'No privilege of Data Quality Maintenance, Please contact the Administrator';
-
+I18N.VEE.SiteOrganization = '园区/组织名称';
 
 I18N.NetworkChecker = {};
 I18N.NetworkChecker.Msg1 = 'Abnormal network connection, ';

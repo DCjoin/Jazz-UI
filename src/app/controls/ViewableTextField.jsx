@@ -294,7 +294,7 @@ var ViewableTextField = createReactClass({
         }
       }
       var width = assign({
-        width: 430
+        maxWidth: 430
       }, this.props.style).width;
       textField = (
         <div style={{
