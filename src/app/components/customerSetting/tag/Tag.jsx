@@ -676,7 +676,7 @@ let Tag = createReactClass({
     if (this.state.selectedTag !== null && this.props.tagType === 1) {
       var listProps = {
         ref:'rawDataList',
-        isRawData: this.state.isRawData,
+        isRawData: false,
         step: this.state.selectedTag.get('CalculationStep'),
         onRawDataChange:this._onRawDataChange
       };
