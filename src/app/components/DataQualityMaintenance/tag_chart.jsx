@@ -156,11 +156,12 @@ export default class TagChart extends Component {
         margin: '0 -2px 0 8px',
         lineHeight:'21px'
       },
+
       labelStyle = {
         color: '#464949',
         fontSize: '14px',
-        height: '30px',
-        lineHeight:'31px'
+        marginTop: '-5px',
+        display: 'inline-block'
       },
       pauseBtnStyle = {
         border: '1px solid #e6e6e6',

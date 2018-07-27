@@ -90,10 +90,10 @@ export default class BuildingContent extends Component {
       var {Code ,IndustryId ,ZoneId,Location,Administrators}=this.state.building.toJS();
       return (
         <div className="data-quality-building-basic" style={style}>
-          <div className="section">
+        {Code && Code!==0 && <div className="section">
             <div className="title">{I18N.VEE.BasicProperty.Code}</div>
             <div className="text">{Code}</div>
-          </div>
+          </div>}
           {IndustryId && IndustryId!==0 && <div className="section">
             <div className="title">{I18N.Setting.Building.Industry}</div>
             <div className="text">{_.find(DataQualityMaintenanceStore.getIndustry(),industry=>industry.Id===IndustryId).Comment}</div>
@@ -105,7 +105,7 @@ export default class BuildingContent extends Component {
           {Location && (Location.Province || Location.Address) && <div className="section">
           <ViewableMap title={I18N.Setting.Building.Address} address={Location.Province || Location.Address} lng={Location.Longitude}  lat={Location.Latitude}  isView={true}></ViewableMap>
           </div>}
-          {Administrators.length>0 && 
+          {Administrators.length>0 &&
             <div className="section">
             <div className="title">{I18N.Setting.CustomerManagement.Administrator}</div>
             <div style={{display:'flex',flexWrap:'wrap'}}>{Administrators.map(administrator=><Admin admin={administrator}/>)}</div>
