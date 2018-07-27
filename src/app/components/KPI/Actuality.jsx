@@ -111,6 +111,7 @@ export default class Actuality extends Component {
 	componentWillMount() {
 		this._showReportEdit = this._showReportEdit.bind(this);
 		this._removeEditPage = this._removeEditPage.bind(this);
+		this._onBuildingChanged=this._onBuildingChanged.bind(this);
 
 
 		this._getInitialState(this.props, this.context);
@@ -120,6 +121,13 @@ export default class Actuality extends Component {
 			UserAction.getCustomerByUser(CurrentUserStore.getCurrentUser().Id);
 		}
 
+	}
+
+	componentDidMount(){
+		HierarchyStore.addBuildingListListener(this._onBuildingChanged);
+	}
+	componentWillUnmount(){
+		HierarchyStore.removeBuildingListListener(this._onBuildingChanged);
 	}
 	componentWillReceiveProps(nextProps, nextContext) {
 		if( nextContext.hierarchyId && !util.shallowEqual(nextContext.hierarchyId, this.context.hierarchyId) || this.props.params.type !== nextProps.params.type ) {
@@ -134,6 +142,13 @@ export default class Actuality extends Component {
 			configType: null,
 		});
 	}
+
+	_onBuildingChanged(){
+		this.setState({
+			buildingList: HierarchyStore.getBuildingList(),
+		})
+	}
+
 	_loadInitData(props, context) {
 		if( isReport(props) && canView() ) {
 			this.setState({
