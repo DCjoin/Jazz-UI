@@ -50,7 +50,9 @@ export default class TextArea extends Component {
       border:this.state.borderStyle,
       padding:'0 10px',
       boxSizing: 'border-box',
-      borderRadius:'2px'
+      borderBottomLeftRadius:'2px',
+      borderTopLeftRadius:'2px',
+      backgroundColor:'#ffffff'
     },errorStyle={
       color:'#dc0a0a',
       left:'-10px',
