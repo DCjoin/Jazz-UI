@@ -112,9 +112,6 @@ var DataQualityMaintenanceStore = assign({},PrototypeStore,{
     return _building
   },
   setIndustry(data){
-    data.forEach(item=>{
-      data=data.concat(item.Children)
-    })
     _industry=data
   },
   getIndustry(){
