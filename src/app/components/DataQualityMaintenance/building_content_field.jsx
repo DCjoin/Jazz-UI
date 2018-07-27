@@ -92,10 +92,10 @@ export default class BuildingContent extends Component {
       var industry=_.find(DataQualityMaintenanceStore.getIndustry(),industry=>industry.Id===IndustryId);
       return (
         <div className="data-quality-building-basic" style={style}>
-          <div className="section">
+          {Code!==null && <div className="section">
             <div className="title">{I18N.VEE.BasicProperty.Code}</div>
             <div className="text">{Code}</div>
-          </div>
+          </div>}
           {IndustryId!==0 && IndustryId && industry && <div className="section">
             <div className="title">{I18N.Setting.Building.Industry}</div>
             <div className="text">{_.find(DataQualityMaintenanceStore.getIndustry(),industry=>industry.Id===IndustryId).Comment}</div>
