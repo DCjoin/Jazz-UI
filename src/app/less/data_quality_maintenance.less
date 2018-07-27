@@ -99,6 +99,9 @@
     overflow-x: none;
     overflow-y: auto;
     font-size: 14px;
+    .pop-tree-view {
+      width:320px;
+    }
   }
   &-tree-node {
     &:hover:not(.selected) {
@@ -324,6 +327,7 @@
   left: 0;
   right: 0;
   bottom: 0;
+  z-index: 100;
   &-content{
     margin: 0 auto;
     min-width: 1024px;

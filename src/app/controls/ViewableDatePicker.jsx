@@ -265,6 +265,9 @@ export default class ViewableDatePicker extends React.Component {
   }
 }
 
+ViewableDatePicker.defaultProps={
+  isDateEdited:true
+}
 // const DISPLAY_FORMAT = "YYYY年MM月DD日";
 // function formatDateStr(date){
 //     if(date){

@@ -24,7 +24,7 @@ var Admin=({admin})=>{
         </div>
         <div className="row">
         <FontIcon className='icon-email' color={"#999999"} style={{fontSize:'14px'}}/>
-          <div className="text" title={Email} style={{marginLeft:'6px'}}>{Email}</div>
+          <div className="text" title={Email} style={{marginLeft:'6px',wordBreak: 'break-all'}}>{Email}</div>
         </div>
       </div>
 )}
@@ -88,17 +88,19 @@ export default class BuildingContent extends Component {
         paddingLeft:'20px'
       };
       var {Code ,IndustryId ,ZoneId,Location,Administrators}=this.state.building.toJS();
+
+      var industry=_.find(DataQualityMaintenanceStore.getIndustry(),industry=>industry.Id===IndustryId);
       return (
         <div className="data-quality-building-basic" style={style}>
           <div className="section">
             <div className="title">{I18N.VEE.BasicProperty.Code}</div>
             <div className="text">{Code}</div>
           </div>
-          {IndustryId && IndustryId!==0 && <div className="section">
+          {IndustryId!==0 && IndustryId && industry && <div className="section">
             <div className="title">{I18N.Setting.Building.Industry}</div>
             <div className="text">{_.find(DataQualityMaintenanceStore.getIndustry(),industry=>industry.Id===IndustryId).Comment}</div>
           </div>}
-          {ZoneId && ZoneId!==0 && <div className="section">
+          {ZoneId!==0 && ZoneId && <div className="section">
             <div className="title">{I18N.Setting.Building.Zone}</div>
             <div className="text">{_.find(DataQualityMaintenanceStore.getZone(),zone=>zone.Id===ZoneId).Comment}</div>
           </div>}
