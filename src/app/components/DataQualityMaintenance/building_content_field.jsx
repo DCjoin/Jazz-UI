@@ -96,11 +96,11 @@ export default class BuildingContent extends Component {
             <div className="title">{I18N.VEE.BasicProperty.Code}</div>
             <div className="text">{Code}</div>
           </div>
-          {IndustryId && IndustryId!==0 && industry && <div className="section">
+          {IndustryId!==0 && IndustryId && industry && <div className="section">
             <div className="title">{I18N.Setting.Building.Industry}</div>
             <div className="text">{_.find(DataQualityMaintenanceStore.getIndustry(),industry=>industry.Id===IndustryId).Comment}</div>
           </div>}
-          {ZoneId && ZoneId!==0 && <div className="section">
+          {ZoneId!==0 && ZoneId && <div className="section">
             <div className="title">{I18N.Setting.Building.Zone}</div>
             <div className="text">{_.find(DataQualityMaintenanceStore.getZone(),zone=>zone.Id===ZoneId).Comment}</div>
           </div>}
