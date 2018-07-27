@@ -311,10 +311,10 @@ let RawDataList = createReactClass({
         selectedId: -1
       })
     }
-    if (nextProps.step !== this.props.step) {
-      let head = ReactDom.findDOMNode(this.refs.header);
-      head.style.display = 'none';
-    }
+    // if (nextProps.step !== this.props.step) {
+    //   let head = ReactDom.findDOMNode(this.refs.header);
+    //   head.style.display = 'none';
+    // }
   },
   componentWillUnmount: function() {
     TagStore.removeTagDatasChangeListener(this._onChanged);
@@ -326,7 +326,6 @@ let RawDataList = createReactClass({
 
       if(uom==="null") uom=""
           else uom='(' + uom + ')'
-
     var label = this.props.isRawData ? I18N.EM.Ratio.RawValue : I18N.Setting.Tag.PTagRawData.DifferenceValue;
     if(this.state.isLoading){
       return (<div className="jazz-ptag-rawdata-list flex-center"><CircularProgress  mode="indeterminate" size={80} /></div>)

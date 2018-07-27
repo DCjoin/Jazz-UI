@@ -81,7 +81,7 @@ let Html2 = createReactClass({
     return (
     <div>
       {
-        pageData.Code != '' && pageData.Code != null
+        pageData.Code !== '' && pageData.Code != null
         ? <div className="basicline">
             <div className="title">{I18N.VEE.BasicProperty.Code}</div>
             <div className="content">{pageData.Code}</div>
@@ -89,7 +89,7 @@ let Html2 = createReactClass({
         : null
       }
       {
-        pageData.PhysicalStatus != '' && pageData.PhysicalStatus != null
+        pageData.PhysicalStatus !== '' && pageData.PhysicalStatus != null
         ? <div className="basicline">
             <div className="title">{I18N.VEE.BasicProperty.Relate}</div>
             <div className="content">{pageData.PhysicalStatus ? I18N.VEE.onlineText : I18N.VEE.offlineText}</div>
@@ -97,7 +97,7 @@ let Html2 = createReactClass({
         : null
       }
       {
-        pageData.Type !=null
+        pageData.Type !=null && pageData.Type !== ''
         ? <div className="basicline">
             <div className="title">{I18N.VEE.BasicProperty.DeviceType}</div>
             <div className="content">{pageData.Type}</div>
@@ -105,7 +105,7 @@ let Html2 = createReactClass({
         : null
       }
       {
-        pageData.Class != null
+        pageData.Class != null && pageData.Class !== ''
         ? <div className="basicline">
             <div className="title">{I18N.VEE.BasicProperty.DeviceTypeNumber}</div>
             <div className="content">{pageData.Class}</div>

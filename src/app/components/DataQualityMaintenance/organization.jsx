@@ -24,10 +24,11 @@ export default class Organization extends Component {
     var tagNameProps = {
       ref: 'name',
       isViewStatus: true,
-      title: I18N.VEE.SummaryNode,
+      title: I18N.VEE.SiteOrganization,
       defaultValue: this.props.nodeData.get('Name') || '',
       isRequired: true,
     };
+    console.log(tagNameProps, 'tagNameProps')
     let nodeType = this.props.nodeData.get("NodeType");
     return (
       <div className="pop-manage-detail-header" style={{paddingTop:'10px',paddingLeft:'20px',paddingBottom:'6px', position:'relative'}}>

@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import ViewableTextField from 'controls/ViewableTextField.jsx';
 import TagStore from 'stores/customerSetting/TagStore.jsx';
 import TagAction from 'actions/customerSetting/TagAction.jsx';
-import { Drawer} from 'material-ui';
+import { Drawer, FontIcon } from 'material-ui';
 import moment from 'moment';
 import Basic from './basic_property.jsx'
 
@@ -37,15 +37,22 @@ export default class SummaryContentField extends Component {
     };
     let nodeType = this.props.nodeData.get("NodeType");
     return (
-      <div className="pop-manage-detail-header" style={{paddingTop:'10px',paddingLeft:'20px',paddingBottom:'6px', position:'relative'}}>
-        <div className={classnames("pop-manage-detail-header-name", "jazz-header")}>
+      <div className="pop-manage-detail-header"
+          style={{
+            paddingTop:'10px',
+            paddingLeft:'20px',
+            paddingBottom:'6px',
+            position:'relative'
+            }}>
+        <div className={classnames("pop-manage-detail-header-name", "jazz-header")} style={{justifyContent: 'flex-start'}}>
           <ViewableTextField  {...tagNameProps} />
           {
             (nodeType == 5 || nodeType == 6)
-            ? <span className="offlineBtn" onClick={this._onLineAndOffline}>{I18N.VEE.offlineTab}</span>
+            ? <div className="bindingiconWrap"><FontIcon className='icon-binding'  onClick={this._onLineAndOffline} /></div>
             : null
           }
-          <div className={classnames("pop-user-detail-tabs","data-quality-tabs")}>
+          <div className={classnames("pop-user-detail-tabs","data-quality-tabs")}
+                          style={{position:'absolute', right: '25px'}}>
             <span className={classnames({
                 "pop-user-detail-tabs-tab": true,
                 "selected": this.state.tabNo===1
