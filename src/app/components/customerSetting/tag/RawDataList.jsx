@@ -202,15 +202,8 @@ let RawDataList = createReactClass({
     });
     if (this.refs.header) {
       let head = ReactDom.findDOMNode(this.refs.header);
-      if(head.innerText===""){
-        if (firstDate === null) {
-          head.style.display = 'none';
-        } else {
           head.style.display = 'flex';
           head.innerText = firstDate;
-        }
-      }
-
     }
 
     var style = {
