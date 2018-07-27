@@ -300,7 +300,6 @@ let RawDataList = createReactClass({
     TagStore.addPointToListChangeListener(this._onListItemSelected);
   },
   componentWillReceiveProps: function(nextProps) {
-    console.log(nextProps.isRawData,this.props.isRawData, 'this page' )
     if (nextProps.isRawData !== this.props.isRawData) {
       dateItem = [];
       indexItem = [];
