@@ -88,13 +88,15 @@ export default class BuildingContent extends Component {
         paddingLeft:'20px'
       };
       var {Code ,IndustryId ,ZoneId,Location,Administrators}=this.state.building.toJS();
+
+      var industry=_.find(DataQualityMaintenanceStore.getIndustry(),industry=>industry.Id===IndustryId);
       return (
         <div className="data-quality-building-basic" style={style}>
           <div className="section">
             <div className="title">{I18N.VEE.BasicProperty.Code}</div>
             <div className="text">{Code}</div>
           </div>
-          {IndustryId && IndustryId!==0 && <div className="section">
+          {IndustryId && IndustryId!==0 && industry && <div className="section">
             <div className="title">{I18N.Setting.Building.Industry}</div>
             <div className="text">{_.find(DataQualityMaintenanceStore.getIndustry(),industry=>industry.Id===IndustryId).Comment}</div>
           </div>}
