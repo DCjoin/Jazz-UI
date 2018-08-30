@@ -51,12 +51,12 @@ chunk    {0} bundle.js, main.css (bundle) 6.2 MB {1} [initial]
  [1510] ./src/app/components/userManage/role/Role.jsx 7.06 kB {0}
  [1513] ./src/app/components/userManage/user/User.jsx 11.7 kB {0}
  [2160] ./~/react-tap-event-plugin/src/injectTapEventPlugin.js 1.04 kB {0}
- [2230] multi (webpack)-dev-server/client?http://localhost:3000 webpack/hot/dev-server ./src/app/app.jsx 52 bytes {0}
+ [2230] multi (webpack)-dev-server/client?http://localhost:2000 webpack/hot/dev-server ./src/app/app.jsx 52 bytes {0}
      + 1328 hidden modules
 chunk    {1} vendors.js (vendors) 3.17 MB [entry] [rendered]
    [21] ./~/react-dom/index.js 59 bytes {1}
    [22] ./~/react-router/lib/index.js 3.62 kB {1}
-  [482] (webpack)-dev-server/client?http://localhost:3000 5.68 kB {1}
+  [482] (webpack)-dev-server/client?http://localhost:2000 5.68 kB {1}
   [483] (webpack)/hot/dev-server.js 1.57 kB {1}
  [1302] ./reference.jsx 545 bytes {1}
  [1749] ./src/app/less/images/app-store.png 58 bytes {1}
@@ -68,7 +68,7 @@ chunk    {1} vendors.js (vendors) 3.17 MB [entry] [rendered]
  [2221] (webpack)-dev-server/client/overlay.js 3.73 kB {1}
  [2222] (webpack)-dev-server/client/socket.js 897 bytes {1}
  [2225] (webpack)/hot/log-apply-result.js 1.02 kB {1}
- [2229] multi (webpack)-dev-server/client?http://localhost:3000 webpack/hot/dev-server ./reference.jsx 52 bytes {1}
+ [2229] multi (webpack)-dev-server/client?http://localhost:2000 webpack/hot/dev-server ./reference.jsx 52 bytes {1}
      + 873 hidden modules
 Child html-webpack-plugin for "..\index.html":
             Asset    Size  Chunks  Chunk Names

@@ -42,7 +42,8 @@ let ListItem = createReactClass({
       isEdit:false,
       value:this.props.data.get('DataValue'),
       errorText:'',
-      hover: false
+      hover: false,
+      isFirstLine: false
     }
   },
   _onClick(){
@@ -145,6 +146,11 @@ let ListItem = createReactClass({
           {
             this.state.errorText
             ? <div className="errortips">{this.state.errorText}</div>
+            : null
+          }
+          {
+            this.state.errorText && this.state.isFirstLine
+            ? <div className="errortips-first">{this.state.errorText}</div>
             : null
           }
             {value}

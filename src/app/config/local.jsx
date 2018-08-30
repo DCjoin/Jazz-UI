@@ -9,7 +9,7 @@ export default {
   // ServeAddress: "http://localhost/webapihost",
   ServeAddress: "http://web-api-test.energymost.com",
   // ServeAddress: "http://mirror.energymost.com",
-  // ServeAddress: "http://localhost:8080",
+  // ServeAddress: "http://localhost:8089",
 
   APIBasePath: "/API",
   socketServer: "",

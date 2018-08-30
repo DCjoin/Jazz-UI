@@ -18,7 +18,7 @@ import CurrentUserAction from 'actions/CurrentUserAction.jsx';
 import LoginAction from 'actions/LoginActionCreator.jsx';
 import LoginStore from 'stores/LoginStore.jsx';
 
-const CAN_TRIAL_SP_NAME = ['dev', 'sp1', 'www','localhost:8080'];
+const CAN_TRIAL_SP_NAME = ['dev', 'sp1', 'www','localhost:8089'];
 
 var w = window;
 var d = document;

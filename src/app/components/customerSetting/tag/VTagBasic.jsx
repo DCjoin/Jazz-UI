@@ -24,25 +24,32 @@ var VTagBasic = createReactClass({
     }
   },
   _getCalculationStepList: function() {
-    let calculationStepList = [{
+    let calculationStepList = [
+      {
+        payload: 6,
+        text: I18N.Common.AggregationStep.Min15
+      },
+    {
       payload: 1,
       text: I18N.Common.AggregationStep.Hourly
-    }, {
-      payload: 8,
-      text: I18N.Common.AggregationStep.Hour2
-    }, {
-      payload: 9,
-      text: I18N.Common.AggregationStep.Hour4
-    }, {
-      payload: 10,
-      text: I18N.Common.AggregationStep.Hour6
-    }, {
-      payload: 11,
-      text: I18N.Common.AggregationStep.Hour8
-    }, {
-      payload: 12,
-      text: I18N.Common.AggregationStep.Hour12
-    }, {
+    },
+    /*  {
+         payload: 8,
+         text: I18N.Common.AggregationStep.Hour2
+       }, {
+         payload: 9,
+         text: I18N.Common.AggregationStep.Hour4
+       }, {
+         payload: 10,
+         text: I18N.Common.AggregationStep.Hour6
+       }, {
+         payload: 11,
+         text: I18N.Common.AggregationStep.Hour8
+       }, {
+         payload: 12,
+         text: I18N.Common.AggregationStep.Hour12
+       },*/
+     {
       payload: 2,
       text: I18N.Common.AggregationStep.Daily
     }, {
@@ -100,6 +107,8 @@ var VTagBasic = createReactClass({
         title: I18N.Setting.Tag.CalculationStep,
         defaultValue: CalculationStep,
         dataItems: me._getCalculationStepList(),
+
+
         didChanged: value => {
           me.props.mergeTag({
             value,
@@ -107,6 +116,7 @@ var VTagBasic = createReactClass({
           });
         }
       },
+
       calculationTypeProps = {
         ref: 'calculationType',
         isViewStatus: isView,

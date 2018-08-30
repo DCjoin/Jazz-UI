@@ -164,7 +164,8 @@ ReactDom.render(<Router history={browserHistory} routes={{
         {
           path: 'blankPage',
           component: BlankPage
-        },{
+        },
+        {
           path: 'actuality',
           indexRoute: {
             onEnter: (router, replaceState) => {

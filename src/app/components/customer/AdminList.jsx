@@ -79,7 +79,7 @@ var AdminList = createReactClass({
       index: index,
       showDialog: true,
       dialogContent: admin,
-      inAdd: !!inAdd
+      inAdd,
     });
     this.setState({
       state
@@ -375,21 +375,21 @@ var AdminDialog = createReactClass({
     }
 
     return (
-      <NewDialog 
+      <NewDialog
         actions={[
-          <FlatButton 
+          <FlatButton
             label={saveButtonTitle}
             disabled={disabled}
-            onTouchTap = {this.handleClickFinish} />, 
+            onTouchTap = {this.handleClickFinish} />,
           <FlatButton
             label={I18N.Common.Button.Cancel}
             onTouchTap={
             this.handleClickCancel
-            }/>]} 
-        dismissOnClickAway={false} 
-        modal={true} 
-        open={true} 
-        ref="dialog1" 
+            }/>]}
+        dismissOnClickAway={false}
+        modal={true}
+        open={true}
+        ref="dialog1"
         style={{
           zIndex: 200
         }}>

@@ -2,8 +2,12 @@
 
 import React from "react";
 import PropTypes from 'prop-types';
-import ViewableTextField from '../../../controls/ViewableTextField.jsx';
+/* 6.40以前版本的上拉填充
+ import ViewableTextField from '../../../controls/ViewableTextField.jsx';*/
 import MonitorTag from './MonitorTag.jsx';
+// 加入算符框
+import FormulaBox from '../../VtagFormula/FormulaBox.jsx'
+import ViewFormlaBox from '../../VtagFormula/ViewFormlaBox.jsx'
 var createReactClass = require('create-react-class');
 var TagFormula = createReactClass({
   propTypes: {
@@ -11,10 +15,7 @@ var TagFormula = createReactClass({
     mergeTag: PropTypes.func,
     isViewStatus: PropTypes.bool
   },
-  getInitialState: function() {
-    return {
-    };
-  },
+  // 点击编辑 添加到填充框中的样式和事件
   _onRowClick: function(type, code) {
     var value = this.refs.formula.getValue();
     var tagType;
@@ -34,6 +35,7 @@ var TagFormula = createReactClass({
       });
     });
   },
+  // 输入框，算符框 查看态和编辑态的判断
   _renderFormula: function() {
     var me = this;
     var isView = this.props.isViewStatus;
@@ -45,6 +47,7 @@ var TagFormula = createReactClass({
       isRequired: true,
       multiLine: true,
       maxLen: -1,
+      // 正则替换
       regexFn: this.validateFormula,
       hintText: I18N.Setting.Tag.FormulaEditText,
       didChanged: value => {
@@ -58,18 +61,31 @@ var TagFormula = createReactClass({
     if (this.props.selectedTag.get('Formula') === '' && this.props.isViewStatus) {
       formular = null;
     } else {
+      // 计算公式上拉的样式
       formular = (<div className={"jazz-tag-formula-content-top"}>
       <div style={{
         fontSize: '14px',
         color: '#abafae'
-      }}>{I18N.Setting.Tag.Formula}</div>
-      <div className={"jazz-tag-formula-content-top-input"}>
-        <ViewableTextField {...fomulaProps}/>
+      }}>
+      {/* 计算公式 */}
+        {I18N.Setting.Tag.Formula}
+      </div>
+      {/* 填充内容 */}
+      <div className={"jazz-tag-formula-content-top-input"} style={{
+        margintop:'6px'
+        }}>
+        {/* 计算属性 * 6.40版本前的
+          <ViewableTextField {...fomulaProps}/> /}
+         {/* 计算公式的位置(算符，填充框) */}
+         <ViewFormlaBox {...fomulaProps} /> 
+         
       </div>
     </div>);
     }
     return formular;
   },
+
+  // 编辑按钮事件
   _renderTable: function() {
     var table = null;
     if (this.props.selectedTag.get('Formula') === '' && this.props.isViewStatus) {

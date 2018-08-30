@@ -12,13 +12,13 @@ var useragent = require('useragent');
 var APIBasePath = require('./APIBasePath.js');
 var acsObj = {};
 
-var publicPath = 'http://localhost:3000/build/';
+var publicPath = 'http://localhost:2000/build/';
 
 var STYLE_URL = publicPath + "main.css";
 var APP_URL = publicPath + 'bundle.js';
 var VENDOR_URL = publicPath + 'vendors.js';
 
-const PORT = 8080;
+const PORT = 8089;
 const app = express();
 
 var bodyParser = require('body-parser');
@@ -49,7 +49,7 @@ app.get('/:lang/spinitsso-redirect',(req, res) => {
     privateKey: fs.readFileSync(__dirname + '/SE-SP.pem'),
     privateKeyPass: 'sesp!@#',
     requestSignatureAlgorithm: 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256',
-    metadata: fs.readFileSync(__dirname + '/metadata_sp.xml', "utf-8").replace('${SSO_ACS_URL}', "http://localhost:8080/sso/acs")
+    metadata: fs.readFileSync(__dirname + '/metadata_sp.xml', "utf-8").replace('${SSO_ACS_URL}', "http://localhost:8089/sso/acs")
   });
 
   const idp = IdentityProvider({

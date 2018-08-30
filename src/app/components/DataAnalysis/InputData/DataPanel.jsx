@@ -22,6 +22,7 @@ import {Snackbar} from 'material-ui';
 
 function getRelativeDateByStep(step){
 		switch (step) {
+			// 步长显示最近天数的数据
 			case TimeGranularity.Min15:
 			case TimeGranularity.Min30:
 			case TimeGranularity.Hourly:

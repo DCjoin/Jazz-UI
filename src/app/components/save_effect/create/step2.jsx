@@ -704,6 +704,7 @@ export default class Step2 extends Component {
 							<ViewableDropDownMenu
 								defaultValue={CalculationStep}
 								isViewStatus={BenchmarkModel === Model.Manual || BenchmarkModel === Model.Contrast}
+								// 计算步长
 								title={I18N.SaveEffect.Create.ConfigCalcStep}
 								valueField='id'
 								textField='label'

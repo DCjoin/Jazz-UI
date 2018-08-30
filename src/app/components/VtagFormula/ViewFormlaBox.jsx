@@ -5,7 +5,9 @@ import ReactDOM from 'react-dom';
 import {TextField} from 'material-ui';
 import _isString from 'lodash-es/isString';
 import assign from 'object-assign';
-import util from '../util/Util.jsx';
+import util from '../../util/Util.jsx';
+import FormulaToolbar from "./FormulaToolbar.jsx";
+import ContentEditable from "./React-contenteditable.jsx";
 
 var _ = {
   isString: _isString
@@ -158,7 +160,6 @@ var ViewableTextField = createReactClass({
   clearValue() {
     if (this.refs.TextField) {
       this.refs.TextField.clearValue();
-      console.log("this.refs.TextField",this.refs.TextField);
     }
   },
   // Need remove
@@ -294,7 +295,16 @@ var ViewableTextField = createReactClass({
       }
       // 编辑态样式
       textField = (
-        <div style={{marginTop:'-5px'}}><TextField ref="TextField" {...inputProps} {...this.props}/>
+        <div style={{marginTop:'-8px'}}>
+          {/* <TextField ref="TextField" {...inputProps} {...this.props}/> */}
+          <ContentEditable
+          // style={errorStyle}
+          // ref="ContentEditable"
+          // onBlur={(val) => this._onFormulaBlur(val)}
+          // onChange={() => {}}
+          // html={formulaHtml}
+          />
+          <FormulaToolbar />
         </div>
       );
     } else {
@@ -312,12 +322,16 @@ var ViewableTextField = createReactClass({
       }, this.props.style).width;
       // 默认显示查看态样式
       textField = (
-        <div style={{
-          'width': width
-        }} >
-          <div className="pop-viewable-title" style={{fontSize:'14px',color:'#9fa0a4',marginBottom:'8px'}}>{this.props.title}</div>
-          <div className="pop-viewable-value" title={v} style={{fontSize:'14px',color:'#333333',marginBottom:'8px'}}>{v}
-            {afterValue}</div>
+        <div>
+
+          {/* <div className="pop-viewable-title" style={{fontSize:'14px',color:'#9fa0a4',marginBottom:'8px'}}>
+            {this.props.title}
+          </div> */}
+
+          <div className="pop-viewable-value" title={v} style={{fontSize:'14px',color:'#666666', overflow:'auto', backgroundColor:'#fbfbfb',border:'none' }}>
+            {v}
+            {afterValue}
+          </div>
         </div>
       );
     }
@@ -330,7 +344,7 @@ var ViewableTextField = createReactClass({
     style = assign({}, style, this.props.style);
 
     return (
-      <div className="pop-viewableTextField" style={style}>
+      <div className="box-Wrapper">
         {textField}
       </div>
       );
